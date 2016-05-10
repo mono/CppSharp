@@ -120,20 +120,28 @@
         {
             t = t.Desugar();
 
-            var tag = t as TagType;
-            if (tag != null)
-            {
-                decl = tag.Declaration as T;
-                return decl != null;
-            }
-
+            TagType tagType = null;
             var type = t as TemplateSpecializationType;
             if (type != null)
             {
-                var templatedClass = ((ClassTemplate)type.Template).TemplatedClass;
-                decl = templatedClass.CompleteDeclaration == null
-                    ? templatedClass as T
-                    : (T) templatedClass.CompleteDeclaration;
+                if (type.IsDependent)
+                {
+                    var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
+                    decl = templatedClass.CompleteDeclaration == null
+                        ? templatedClass as T
+                        : (T) templatedClass.CompleteDeclaration;
+                    return decl != null;
+                }
+                tagType = (TagType) type.Desugared;
+            }
+            else
+            {
+                tagType = t as TagType;
+            }
+
+            if (tagType != null)
+            {
+                decl = tagType.Declaration as T;
                 return decl != null;
             }
 

@@ -586,9 +586,8 @@ namespace CppSharp
         public override AST.Type VisitInjectedClassName(InjectedClassNameType type)
         {
             var _type = new CppSharp.AST.InjectedClassNameType();
-            _type.TemplateSpecialization = Visit(type.TemplateSpecialization)
-                as AST.TemplateSpecializationType;
             _type.Class = declConverter.Visit(type.Class) as AST.Class;
+            _type.InjectedSpecializationType = VisitQualified(type.InjectedSpecializationType);
             VisitType(type, _type);
             return _type;
         }

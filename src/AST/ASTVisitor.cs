@@ -179,16 +179,14 @@ namespace CppSharp.AST
                 }
             }
 
-            return template.Template.Visit(this);
+            return template.IsDependent ? template.Template.Visit(this) :
+                template.GetClassTemplateSpecialization().Visit(this);
         }
 
         public virtual bool VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals)
         {
-            if (!VisitType(param, quals))
-                return false;
-
-            return true;
+            return VisitType(param, quals);
         }
 
         public virtual bool VisitTemplateParameterSubstitutionType(
@@ -376,6 +374,9 @@ namespace CppSharp.AST
 
             foreach (var templateParameter in template.Parameters)
                 templateParameter.Visit(this);
+
+            foreach (var specialization in template.Specializations)
+                specialization.Visit(this);
 
             return true;
         }

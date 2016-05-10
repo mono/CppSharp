@@ -387,6 +387,11 @@ namespace CppSharp.Generators.CSharp
             {
                 if (ContextKind != CSharpTypePrinterContextKind.Native)
                     return GetNestedQualifiedName(decl);
+                // HACK: we can actually get the specialization directly by using TemplateSpecializationType.GetClassTemplateSpecialization()
+                // however, that returns the original specialisation which Clang places in the original name-space
+                // so if we specialise a template located in a dependency, we get uncompilable code
+                // so let's get the specialisation object from the current name-space by matching by name and template arguments
+                // this will be fixed when we have support for generating multiple libraries from a single AST
                 return GetTemplateSpecializationInternal(template);
             }
 

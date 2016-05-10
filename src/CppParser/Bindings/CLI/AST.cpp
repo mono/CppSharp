@@ -950,14 +950,14 @@ CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType(CppSharp::Pa
     NativePtr = new ::CppSharp::CppParser::AST::InjectedClassNameType(arg0);
 }
 
-CppSharp::Parser::AST::TemplateSpecializationType^ CppSharp::Parser::AST::InjectedClassNameType::TemplateSpecialization::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::InjectedClassNameType::InjectedSpecializationType::get()
 {
-    return (((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateSpecializationType((::CppSharp::CppParser::AST::TemplateSpecializationType*)((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization);
+    return (&((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->InjectedSpecializationType == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->InjectedSpecializationType);
 }
 
-void CppSharp::Parser::AST::InjectedClassNameType::TemplateSpecialization::set(CppSharp::Parser::AST::TemplateSpecializationType^ value)
+void CppSharp::Parser::AST::InjectedClassNameType::InjectedSpecializationType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization = (::CppSharp::CppParser::AST::TemplateSpecializationType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->InjectedSpecializationType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::InjectedClassNameType::Class::get()

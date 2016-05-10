@@ -234,9 +234,9 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(1, integerInst.Arguments.Count);
             var intArgument = integerInst.Arguments[0];
             Assert.AreEqual(new BuiltinType(PrimitiveType.Int), intArgument.Type.Type);
-            Class classTemplate;
-            Assert.IsTrue(typeDef.Type.TryGetClass(out classTemplate));
-            Assert.AreEqual(classTemplate, template.TemplatedClass);
+            ClassTemplateSpecialization classTemplateSpecialization;
+            Assert.IsTrue(typeDef.Type.TryGetDeclaration(out classTemplateSpecialization));
+            Assert.AreSame(classTemplateSpecialization.TemplatedDecl.TemplatedClass, template.TemplatedClass);
         }
 
         [Test]

@@ -220,7 +220,7 @@ class CS_API InjectedClassNameType : public Type
 {
 public:
     InjectedClassNameType();
-    TemplateSpecializationType* TemplateSpecialization;
+    QualifiedType InjectedSpecializationType;
     CppSharp::CppParser::AST::Class* Class;
 };
 

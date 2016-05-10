@@ -2184,7 +2184,7 @@ namespace CppSharp
 
             public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -2194,9 +2194,9 @@ namespace CppSharp
                     public byte IsDependent;
 
                     [FieldOffset(8)]
-                    public global::System.IntPtr TemplateSpecialization;
+                    public CppSharp.Parser.AST.QualifiedType.Internal InjectedSpecializationType;
 
-                    [FieldOffset(12)]
+                    [FieldOffset(16)]
                     public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -2222,7 +2222,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(InjectedClassNameType.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.InjectedClassNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2246,7 +2246,7 @@ namespace CppSharp
                 public InjectedClassNameType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2255,7 +2255,7 @@ namespace CppSharp
                 public InjectedClassNameType(CppSharp.Parser.AST.InjectedClassNameType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2264,21 +2264,16 @@ namespace CppSharp
                     Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
-                public CppSharp.Parser.AST.TemplateSpecializationType TemplateSpecialization
+                public CppSharp.Parser.AST.QualifiedType InjectedSpecializationType
                 {
                     get
                     {
-                        CppSharp.Parser.AST.TemplateSpecializationType __result0;
-                        if (((Internal*) __Instance)->TemplateSpecialization == IntPtr.Zero) __result0 = null;
-                        else if (CppSharp.Parser.AST.TemplateSpecializationType.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplateSpecialization))
-                            __result0 = (CppSharp.Parser.AST.TemplateSpecializationType) CppSharp.Parser.AST.TemplateSpecializationType.NativeToManagedMap[((Internal*) __Instance)->TemplateSpecialization];
-                        else __result0 = CppSharp.Parser.AST.TemplateSpecializationType.__CreateInstance(((Internal*) __Instance)->TemplateSpecialization);
-                        return __result0;
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(((Internal*) __Instance)->InjectedSpecializationType);
                     }
 
                     set
                     {
-                        ((Internal*) __Instance)->TemplateSpecialization = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((Internal*) __Instance)->InjectedSpecializationType = ReferenceEquals(value, null) ? new CppSharp.Parser.AST.QualifiedType.Internal() : *(CppSharp.Parser.AST.QualifiedType.Internal*) (value.__Instance);
                     }
                 }
 

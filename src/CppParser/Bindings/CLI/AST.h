@@ -844,10 +844,10 @@ namespace CppSharp
 
                 ~InjectedClassNameType();
 
-                property CppSharp::Parser::AST::TemplateSpecializationType^ TemplateSpecialization
+                property CppSharp::Parser::AST::QualifiedType^ InjectedSpecializationType
                 {
-                    CppSharp::Parser::AST::TemplateSpecializationType^ get();
-                    void set(CppSharp::Parser::AST::TemplateSpecializationType^);
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
                 property CppSharp::Parser::AST::Class^ Class

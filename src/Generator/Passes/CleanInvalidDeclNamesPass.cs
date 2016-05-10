@@ -63,6 +63,13 @@ namespace CppSharp.Passes
             base.VisitClassDecl(@class);
             uniqueName = currentUniqueName;
 
+            if (@class is ClassTemplateSpecialization &&
+                !(from c in @class.Namespace.Classes
+                  where c.Name == @class.Name && !(@class is ClassTemplateSpecialization) &&
+                      c != ((ClassTemplateSpecialization) @class).TemplatedDecl.TemplatedClass
+                  select c).Any())
+                return true;
+
             if (@class.Namespace.Classes.Any(d => d != @class && d.Name == @class.Name))
             {
                 StringBuilder str = new StringBuilder();

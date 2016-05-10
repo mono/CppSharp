@@ -25,25 +25,27 @@ namespace CppSharp.Types
 
         public string GetTemplateParameterList()
         {
-            var paramsList = new List<string>();
             if (Kind == TypePrinterContextKind.Template)
             {
-                var template = Declaration as Template;
-                paramsList = template.Parameters.Select(param => param.Name)
-                    .ToList();
+                var template = (Template) Declaration;
+                return string.Join(", ", template.Parameters.Select(p => p.Name));
             }
+
+            var type = Type.Desugar();
+            IEnumerable<TemplateArgument> templateArgs;
+            var templateSpecializationType = type as TemplateSpecializationType;
+            if (templateSpecializationType != null)
+                templateArgs = templateSpecializationType.Arguments;
             else
+                templateArgs = ((ClassTemplateSpecialization) ((TagType) type).Declaration).Arguments;
+
+            var paramsList = new List<string>();
+            foreach (var arg in templateArgs.Where(a => a.Kind == TemplateArgument.ArgumentKind.Type))
             {
-                var type = Type.Desugar() as TemplateSpecializationType;
-                foreach (var arg in type.Arguments)
-                {
-                    if (arg.Kind != TemplateArgument.ArgumentKind.Type)
-                        continue;
-                    var argType = arg.Type.Type.IsPointerToPrimitiveType()
-                        ? new CILType(typeof(System.IntPtr))
-                        : arg.Type.Type;
-                    paramsList.Add(argType.ToString());
-                }
+                var argType = arg.Type.Type.IsPointerToPrimitiveType()
+                    ? new CILType(typeof(System.IntPtr))
+                    : arg.Type.Type;
+                paramsList.Add(argType.ToString());
             }
 
             return string.Join(", ", paramsList);

@@ -21,8 +21,14 @@ namespace CppSharp.Tests
 
         public override Type CSharpSignatureType(CSharpTypePrinterContext ctx)
         {
-            var templateArgument = ((TemplateSpecializationType) ctx.Type.Desugar()).Arguments[0];
-            return templateArgument.Type.Type;
+            var type = ctx.Type.Desugar();
+            ClassTemplateSpecialization classTemplateSpecialization;
+            var templateSpecializationType = type as TemplateSpecializationType;
+            if (templateSpecializationType != null)
+                classTemplateSpecialization = templateSpecializationType.GetClassTemplateSpecialization();
+            else
+                classTemplateSpecialization = (ClassTemplateSpecialization) ((TagType) type).Declaration;
+            return classTemplateSpecialization.Arguments[0].Type.Type;
         }
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)

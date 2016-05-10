@@ -153,7 +153,6 @@ TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
 
 InjectedClassNameType::InjectedClassNameType()
     : Type(TypeKind::InjectedClassName)
-    , TemplateSpecialization(0)
     , Class(0)
 {
 }

@@ -20,6 +20,9 @@ class DLL_API DependentValueFields
 {
 private:
     T field;
+    union {
+        int unionField;
+    };
 };
 
 template <typename T>

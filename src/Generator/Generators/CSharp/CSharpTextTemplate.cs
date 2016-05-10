@@ -315,11 +315,25 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Namespace);
             WriteLine("namespace {0}", classTemplate.Name);
             WriteStartBraceIndent();
+
+            IList<ClassTemplateSpecialization> specializations;
             if (classTemplate.TemplatedClass.Fields.Any(f => f.IsDependent && !f.Type.IsAddress()))
-                foreach (var specialization in classTemplate.Specializations)
-                    GenerateClassInternals(specialization);
+                specializations = classTemplate.Specializations;
             else
-                GenerateClassInternals(classTemplate.Specializations[0]);
+                specializations = new[] { classTemplate.Specializations[0] };
+
+            foreach (var nestedClass in specializations[0].Classes.Where(c => !c.IsDependent))
+            {
+                GenerateClassProlog(nestedClass);
+                NewLine();
+                WriteStartBraceIndent();
+                GenerateClassInternals(nestedClass);
+                WriteCloseBraceIndent();
+            }
+            NewLine();
+            foreach (var specialization in specializations)
+                GenerateClassInternals(specialization);
+
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }

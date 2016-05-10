@@ -2093,6 +2093,9 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto ICNT = new InjectedClassNameType();
         ICNT->Class = static_cast<Class*>(WalkDeclaration(
             ICN->getDecl(), 0, /*IgnoreSystemDecls=*/false));
+        ICNT->InjectedSpecializationType = GetQualifiedType(
+            ICN->getInjectedSpecializationType(),
+            WalkType(ICN->getInjectedSpecializationType()));
 
         Ty = ICNT;
         break;

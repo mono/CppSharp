@@ -634,6 +634,18 @@ namespace CppSharp.AST
 
         public Type Desugared;
 
+        public ClassTemplateSpecialization GetClassTemplateSpecialization()
+        {
+            var tagType = Desugared as TagType;
+            if (tagType != null)
+                return (ClassTemplateSpecialization) tagType.Declaration;
+
+            var injectedClassNameType = (InjectedClassNameType) Desugared;
+            var injectedSpecializationType = (TemplateSpecializationType)
+                injectedClassNameType.InjectedSpecializationType.Type;
+            return injectedSpecializationType.GetClassTemplateSpecialization();
+        }
+
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {
@@ -776,6 +788,8 @@ namespace CppSharp.AST
             TemplateSpecialization = (TemplateSpecializationType) type.TemplateSpecialization.Clone();
             Class = type.Class;
         }
+
+        public QualifiedType InjectedSpecializationType { get; set; }
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())

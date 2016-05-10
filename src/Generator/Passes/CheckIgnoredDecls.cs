@@ -28,6 +28,18 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        {
+            if (!base.VisitClassTemplateDecl(template))
+                return false;
+
+            // templates are not supported yet
+            foreach (var specialization in template.Specializations)
+                specialization.ExplicitlyIgnore();
+
+            return true;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
             if (AlreadyVisited(decl))
