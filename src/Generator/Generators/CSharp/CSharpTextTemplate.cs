@@ -72,27 +72,21 @@ namespace CppSharp.Generators.CSharp
             return types.Replace("global::System.", string.Empty).Replace("*", "Ptr").Replace('.', '_');
         }
 
-        public static string GetSuffixForInternal(ClassTemplateSpecialization templateSpecialization,
+        public static string GetSuffixForInternal(ClassTemplateSpecialization specialization,
             CSharpTypePrinter typePrinter)
         {
-            return templateSpecialization == null ? string.Empty :
-                GetSuffixForInternal(templateSpecialization.TemplatedDecl.TemplatedDecl,
-                    templateSpecialization.Arguments, typePrinter);
-        }
-
-        public static string GetSuffixForInternal(Declaration template,
-            IEnumerable<TemplateArgument> args, CSharpTypePrinter typePrinter)
-        {
-            if (((Class) template).Fields.All(f => !f.IsDependent || f.Type.IsAddress()))
+            if (specialization.TemplatedDecl.TemplatedClass.Fields.All(
+                f => !f.IsDependent || f.Type.IsAddress()))
                 return string.Empty;
 
-            if (args.All(a => a.Type.Type != null && a.Type.Type.IsAddress()))
+            if (specialization.Arguments.All(
+                a => a.Type.Type != null && a.Type.Type.IsAddress()))
                 return "_Ptr";
 
             // we don't want internals in the names of internals :)
             typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
             var suffix = new StringBuilder();
-            foreach (var argType in from argType in args
+            foreach (var argType in from argType in specialization.Arguments
                                     where argType.Type.Type != null
                                     select argType.Type.ToString())
             {
@@ -674,7 +668,8 @@ namespace CppSharp.Generators.CSharp
                 Write("new ");
 
             var templateSpecialization = @class as ClassTemplateSpecialization;
-            var suffix = Helpers.GetSuffixForInternal(templateSpecialization, TypePrinter);
+            var suffix = templateSpecialization == null ? string.Empty :
+                Helpers.GetSuffixForInternal(templateSpecialization, TypePrinter);
             WriteLine("{0}partial struct Internal{1}",
                 templateSpecialization != null ? "unsafe " : string.Empty, suffix);
         }

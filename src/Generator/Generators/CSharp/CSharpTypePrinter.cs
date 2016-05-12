@@ -387,12 +387,10 @@ namespace CppSharp.Generators.CSharp
             {
                 if (ContextKind != CSharpTypePrinterContextKind.Native)
                     return GetNestedQualifiedName(decl);
-                // HACK: we can actually get the specialization directly by using TemplateSpecializationType.GetClassTemplateSpecialization()
-                // however, that returns the original specialisation which Clang places in the original name-space
-                // so if we specialise a template located in a dependency, we get uncompilable code
-                // so let's get the specialisation object from the current name-space by matching by name and template arguments
-                // this will be fixed when we have support for generating multiple libraries from a single AST
-                return GetTemplateSpecializationInternal(template);
+                var specialization = template.GetClassTemplateSpecialization();
+                return string.Format("{0}.Internal{1}",
+                    GetNestedQualifiedName(specialization.TemplatedDecl.Namespace, specialization),
+                    Helpers.GetSuffixForInternal(specialization, this));
             }
 
             typeMap.Declaration = decl;
@@ -414,65 +412,6 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(decl) +
                 (ContextKind == CSharpTypePrinterContextKind.Native ?
                     ".Internal" : string.Empty);
-        }
-
-        private string GetTemplateSpecializationInternal(TemplateSpecializationType template)
-        {
-            var classTemplate = template.Template as ClassTemplate;
-            if (classTemplate != null)
-            {
-                foreach (var specialization in classTemplate.Specializations)
-                {
-                    if (FoundMatchingSpecialization(template.Arguments,
-                        specialization.Arguments, classTemplate.Parameters))
-                    {
-                        return GetNestedQualifiedName(specialization.TemplatedDecl) +
-                            ".Internal" + Helpers.GetSuffixForInternal(
-                                template.Template.TemplatedDecl, specialization.Arguments, this);
-                    }
-                }
-            }
-            var functionTemplate = (FunctionTemplate) template.Template;
-            foreach (var specialization in functionTemplate.Specializations)
-            {
-                if (FoundMatchingSpecialization(template.Arguments,
-                    specialization.Arguments, functionTemplate.Parameters))
-                {
-                    return GetNestedQualifiedName(specialization.SpecializedFunction) +
-                        ".Internal" + Helpers.GetSuffixForInternal(
-                            template.Template.TemplatedDecl, specialization.Arguments, this);
-                }
-            }
-            var qualifiedName = GetNestedQualifiedName(template.Template.TemplatedDecl);
-            return qualifiedName + ".Internal" +
-                Helpers.GetSuffixForInternal(template.Template.TemplatedDecl, template.Arguments, this);
-        }
-
-        private static bool FoundMatchingSpecialization(
-            IList<TemplateArgument> templateTypeArguments,
-            IEnumerable<TemplateArgument> templateSpecializationArguments,
-            IList<TemplateParameter> templateParameters)
-        {
-            var usedTemplateArguments = new List<TemplateArgument>(templateSpecializationArguments);
-            for (int i = usedTemplateArguments.Count - 1; i >= templateTypeArguments.Count; i--)
-            {
-                var templateParameter = templateParameters[i];
-                var typeTemplateParameter = templateParameter as TypeTemplateParameter;
-                if (typeTemplateParameter != null &&
-                    typeTemplateParameter.DefaultArgument.Type != null)
-                {
-                    usedTemplateArguments.RemoveAt(i);
-                    continue;
-                }
-                var nonTypeTemplateParameter = templateParameter as NonTypeTemplateParameter;
-                if (nonTypeTemplateParameter != null &&
-                    nonTypeTemplateParameter.DefaultArgument != null)
-                {
-                    usedTemplateArguments.RemoveAt(i);
-                    continue;
-                }
-            }
-            return usedTemplateArguments.SequenceEqual(templateTypeArguments);
         }
 
         private string GetCSharpSignature(TypeMap typeMap)
@@ -675,9 +614,14 @@ namespace CppSharp.Generators.CSharp
 
         private string GetNestedQualifiedName(Declaration decl)
         {
+            return GetNestedQualifiedName(decl.Namespace, decl);
+        }
+
+        private string GetNestedQualifiedName(Declaration @namespace, Declaration decl)
+        {
             var names = new List<string> { decl.Name };
 
-            var ctx = decl.Namespace;
+            var ctx = @namespace;
             while (ctx != null)
             {
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
