@@ -19,17 +19,15 @@ namespace CppSharp
                 return platform == PlatformID.Unix || platform == PlatformID.MacOSX;
             }
         }
+
         public DriverOptions()
         {
-            Headers = new List<string>();
-            Libraries = new List<string>();
-
             Abi = IsUnixPlatform ? CppAbi.Itanium : CppAbi.Microsoft;
             MicrosoftMode = !IsUnixPlatform;
 
             OutputDir = Directory.GetCurrentDirectory();
-            Libraries = new List<string>();
-            CheckSymbols = false;
+
+            Module = new Module();
 
             GeneratorKind = GeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
@@ -62,34 +60,42 @@ namespace CppSharp
         public bool DryRun;
 
         // Parser options
-        public List<string> Headers;
+        public List<string> Headers { get { return Module.Headers; } }
         public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
+
+        public Module Module { get; set; }
 
         public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
-        public List<string> Libraries;
+        public List<string> Libraries { get { return Module.Headers; } }
         public bool CheckSymbols;
 
-        private string sharedLibraryName;
         public string SharedLibraryName
         {
-            get
-            {
-                if (string.IsNullOrEmpty(sharedLibraryName))
-                    return LibraryName;
-                return sharedLibraryName;
-            }
-            set { sharedLibraryName = value; }
+            get { return Module.SharedLibraryName; }
+            set { Module.SharedLibraryName = value; }
         }
 
         // Generator options
         public GeneratorKind GeneratorKind;
-        public string OutputNamespace;
+
+        public string OutputNamespace
+        {
+            get { return Module.OutputNamespace; }
+            set { Module.OutputNamespace = value; }
+        }
+
         public string OutputDir;
-        public string LibraryName;
+
+        public string LibraryName
+        {
+            get { return Module.LibraryName; }
+            set { Module.LibraryName = value; }
+        }
+
         public bool OutputInteropIncludes;
         public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
@@ -152,28 +158,14 @@ namespace CppSharp
 
         public string InlinesLibraryName
         {
-            get
-            {
-                if (string.IsNullOrEmpty(inlinesLibraryName))
-                {
-                    return string.Format("{0}-inlines", OutputNamespace);
-                }
-                return inlinesLibraryName;
-            }
-            set { inlinesLibraryName = value; }
+            get { return Module.InlinesLibraryName; }
+            set { Module.InlinesLibraryName = value; }
         }
 
         public string TemplatesLibraryName
         {
-            get
-            {
-                if (string.IsNullOrEmpty(templatesLibraryName))
-                {
-                    return string.Format("{0}-templates", OutputNamespace);
-                }
-                return templatesLibraryName;
-            }
-            set { templatesLibraryName = value; }
+            get { return Module.TemplatesLibraryName; }
+            set { Module.TemplatesLibraryName = value; }
         }
 
         public bool IsCSharpGenerator
@@ -205,9 +197,6 @@ namespace CppSharp
         /// C# end only: force patching of the virtual entries of the functions in this list.
         /// </summary>
         public List<string> ExplicitlyPatchedVirtualFunctions { get; private set; }
-
-        private string inlinesLibraryName;
-        private string templatesLibraryName;
     }
 
     public class InvalidOptionException : Exception
