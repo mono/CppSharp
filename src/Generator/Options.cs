@@ -70,7 +70,7 @@ namespace CppSharp
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
-        public List<string> Libraries { get { return Module.Headers; } }
+        public List<string> Libraries { get { return Module.Libraries; } }
         public bool CheckSymbols;
 
         public string SharedLibraryName
