@@ -159,7 +159,7 @@ void Parser::SetupHeader()
 
     for (unsigned I = 0, E = Opts->Arguments.size(); I != E; ++I)
     {
-        const String& Arg = Opts->Arguments[I];
+        const auto& Arg = Opts->Arguments[I];
         args.push_back(Arg.c_str());
     }
 
@@ -210,27 +210,27 @@ void Parser::SetupHeader()
     if (Opts->Verbose)
         HSOpts.Verbose = true;
 
-    for (unsigned I = 0, E = Opts->IncludeDirs.size(); I != E; ++I)
+    for (unsigned I = 0, E = Opts->Module->IncludeDirs.size(); I != E; ++I)
     {
-        const String& s = Opts->IncludeDirs[I];
+        const auto& s = Opts->Module->IncludeDirs[I];
         HSOpts.AddPath(s, frontend::Angled, false, false);
     }
 
     for (unsigned I = 0, E = Opts->SystemIncludeDirs.size(); I != E; ++I)
     {
-        String s = Opts->SystemIncludeDirs[I];
+        const auto& s = Opts->SystemIncludeDirs[I];
         HSOpts.AddPath(s, frontend::System, false, false);
     }
 
-    for (unsigned I = 0, E = Opts->Defines.size(); I != E; ++I)
+    for (unsigned I = 0, E = Opts->Module->Defines.size(); I != E; ++I)
     {
-        const String& define = Opts->Defines[I];
+        const auto& define = Opts->Module->Defines[I];
         PPOpts.addMacroDef(define);
     }
 
-    for (unsigned I = 0, E = Opts->Undefines.size(); I != E; ++I)
+    for (unsigned I = 0, E = Opts->Module->Undefines.size(); I != E; ++I)
     {
-        const String& undefine = Opts->Undefines[I];
+        const auto& undefine = Opts->Module->Undefines[I];
         PPOpts.addMacroUndef(undefine);
     }
 
@@ -2334,7 +2334,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     F->ReturnType = GetQualifiedType(FD->getReturnType(),
         WalkType(FD->getReturnType(), &RTL));
 
-    String Mangled = GetDeclMangledName(FD);
+    const auto& Mangled = GetDeclMangledName(FD);
     F->Mangled = Mangled;
 
     clang::SourceLocation ParamStartLoc = FD->getLocStart();
@@ -3476,9 +3476,9 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
 
     llvm::StringRef FileEntry;
 
-    for (unsigned I = 0, E = Opts->LibraryDirs.size(); I != E; ++I)
+    for (unsigned I = 0, E = Opts->Module->LibraryDirs.size(); I != E; ++I)
     {
-        auto& LibDir = Opts->LibraryDirs[I];
+        auto& LibDir = Opts->Module->LibraryDirs[I];
         llvm::SmallString<256> Path(LibDir);
         llvm::sys::path::append(Path, File);
 

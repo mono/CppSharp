@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using CppSharp.Parser;
 
 namespace CppSharp
 {
-    public class Module
+    /// <summary>
+    /// Contains sets of headers and optionally libraries to wrap in a one target library.
+    /// </summary>
+    public class Module : AbstractModule
     {
         public Module()
         {

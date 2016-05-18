@@ -10,6 +10,19 @@
 
 namespace CppSharp { namespace CppParser {
 
+AbstractModule::AbstractModule()
+{
+}
+
+AbstractModule::~AbstractModule()
+{
+}
+
+DEF_VECTOR_STRING(AbstractModule, IncludeDirs)
+DEF_VECTOR_STRING(AbstractModule, LibraryDirs)
+DEF_VECTOR_STRING(AbstractModule, Defines)
+DEF_VECTOR_STRING(AbstractModule, Undefines)
+
 ParserOptions::ParserOptions()
     : ASTContext(0)
     , ToolSetToUse(0)
@@ -20,16 +33,13 @@ ParserOptions::ParserOptions()
     , Verbose(false)
     , LanguageVersion(CppParser::LanguageVersion::CPlusPlus11)
     , TargetInfo(0)
+    , Module(0)
 {
 }
 
 DEF_VECTOR_STRING(ParserOptions, Arguments)
 DEF_STRING(ParserOptions, FileName)
-DEF_VECTOR_STRING(ParserOptions, IncludeDirs)
 DEF_VECTOR_STRING(ParserOptions, SystemIncludeDirs)
-DEF_VECTOR_STRING(ParserOptions, Defines)
-DEF_VECTOR_STRING(ParserOptions, Undefines)
-DEF_VECTOR_STRING(ParserOptions, LibraryDirs)
 DEF_STRING(ParserOptions, TargetTriple)
 DEF_STRING(ParserTargetInfo, ABI)
 

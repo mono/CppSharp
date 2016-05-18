@@ -60,23 +60,21 @@ namespace CppSharp
         public bool DryRun;
 
         // Parser options
-        public List<string> Headers { get { return Module.Headers; } }
+        public List<string> Headers { get { return ((Module) Module).Headers; } }
         public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
-
-        public Module Module { get; set; }
 
         public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
-        public List<string> Libraries { get { return Module.Libraries; } }
+        public List<string> Libraries { get { return ((Module) Module).Libraries; } }
         public bool CheckSymbols;
 
         public string SharedLibraryName
         {
-            get { return Module.SharedLibraryName; }
-            set { Module.SharedLibraryName = value; }
+            get { return ((Module) Module).SharedLibraryName; }
+            set { ((Module) Module).SharedLibraryName = value; }
         }
 
         // Generator options
@@ -84,16 +82,16 @@ namespace CppSharp
 
         public string OutputNamespace
         {
-            get { return Module.OutputNamespace; }
-            set { Module.OutputNamespace = value; }
+            get { return ((Module) Module).OutputNamespace; }
+            set { ((Module) Module).OutputNamespace = value; }
         }
 
         public string OutputDir;
 
         public string LibraryName
         {
-            get { return Module.LibraryName; }
-            set { Module.LibraryName = value; }
+            get { return ((Module) Module).LibraryName; }
+            set { ((Module) Module).LibraryName = value; }
         }
 
         public bool OutputInteropIncludes;
@@ -158,14 +156,14 @@ namespace CppSharp
 
         public string InlinesLibraryName
         {
-            get { return Module.InlinesLibraryName; }
-            set { Module.InlinesLibraryName = value; }
+            get { return ((Module) Module).InlinesLibraryName; }
+            set { ((Module) Module).InlinesLibraryName = value; }
         }
 
         public string TemplatesLibraryName
         {
-            get { return Module.TemplatesLibraryName; }
-            set { Module.TemplatesLibraryName = value; }
+            get { return ((Module) Module).TemplatesLibraryName; }
+            set { ((Module) Module).TemplatesLibraryName = value; }
         }
 
         public bool IsCSharpGenerator

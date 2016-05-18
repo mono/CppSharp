@@ -31,6 +31,17 @@ enum class LanguageVersion
     CPlusPlus11
 };
 
+class CS_API AbstractModule
+{
+public:
+    AbstractModule();
+    VECTOR_STRING(IncludeDirs)
+    VECTOR_STRING(LibraryDirs)
+    VECTOR_STRING(Defines)
+    VECTOR_STRING(Undefines)
+    ~AbstractModule();
+};
+
 struct CS_API ParserOptions
 {
     ParserOptions();
@@ -41,11 +52,7 @@ struct CS_API ParserOptions
     STRING(FileName)
 
     // Include directories
-    VECTOR_STRING(IncludeDirs)
     VECTOR_STRING(SystemIncludeDirs)
-    VECTOR_STRING(Defines)
-    VECTOR_STRING(Undefines)
-    VECTOR_STRING(LibraryDirs)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
@@ -60,6 +67,8 @@ struct CS_API ParserOptions
     LanguageVersion LanguageVersion;
 
     ParserTargetInfo* TargetInfo;
+
+    AbstractModule* Module;
 };
 
 enum class ParserDiagnosticLevel

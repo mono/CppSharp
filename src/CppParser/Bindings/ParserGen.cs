@@ -71,8 +71,8 @@ namespace CppSharp
                 SetupLinuxOptions(options);
 
             var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
-            options.addIncludeDirs(basePath);
-            options.addLibraryDirs(".");
+            options.Module.addIncludeDirs(basePath);
+            options.Module.addLibraryDirs(".");
 
             options.OutputDir = Path.Combine(GetSourceDirectory("src"), "CppParser",
                 "Bindings", Kind.ToString());
@@ -89,7 +89,7 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
-            string[] sysincdirs = new[] {
+            string[] sysincdirs = {
                 "/usr/include/c++/4.8",
                 "/usr/include/x86_64-linux-gnu/c++/4.8",
                 "/usr/include/c++/4.8/backward",
