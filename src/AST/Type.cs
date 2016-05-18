@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
@@ -636,11 +637,16 @@ namespace CppSharp.AST
 
         public ClassTemplateSpecialization GetClassTemplateSpecialization()
         {
-            var tagType = Desugared as TagType;
+            var finalType = Desugared.GetFinalPointee() ?? Desugared;
+
+            var tagType = finalType as TagType;
             if (tagType != null)
                 return (ClassTemplateSpecialization) tagType.Declaration;
 
-            var injectedClassNameType = (InjectedClassNameType) Desugared;
+            var injectedClassNameType = finalType as InjectedClassNameType;
+            if (injectedClassNameType == null)
+                return null;
+
             var injectedSpecializationType = (TemplateSpecializationType)
                 injectedClassNameType.InjectedSpecializationType.Type;
             return injectedSpecializationType.GetClassTemplateSpecialization();

@@ -179,8 +179,11 @@ namespace CppSharp.AST
                 }
             }
 
-            return template.IsDependent ? template.Template.Visit(this) :
-                template.GetClassTemplateSpecialization().Visit(this);
+            if (template.IsDependent)
+                return template.Template.Visit(this);
+
+            var specialization = template.GetClassTemplateSpecialization();
+            return specialization != null && specialization.Visit(this);
         }
 
         public virtual bool VisitTemplateParameterType(TemplateParameterType param,
