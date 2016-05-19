@@ -1,4 +1,5 @@
-﻿using CppSharp.Utils;
+﻿using System.Collections.Generic;
+using CppSharp.Utils;
 using NUnit.Framework;
 
 namespace CppSharp.Generator.Tests
@@ -9,12 +10,7 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesWindows()
         {
-            var driverOptions = new DriverOptions();
-            driverOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
-            driverOptions.Libraries.Add("ls-windows");
-            var driver = new Driver(driverOptions, new TextDiagnosticPrinter());
-            Assert.IsTrue(driver.ParseLibraries());
-            var dependencies = driver.Symbols.Libraries[0].Dependencies;
+            var dependencies = GetDependencies("ls-windows");
             Assert.AreEqual("msys-intl-8.dll", dependencies[0]);
             Assert.AreEqual("msys-2.0.dll", dependencies[1]);
             Assert.AreEqual("KERNEL32.dll", dependencies[2]);
@@ -23,12 +19,7 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesLinux()
         {
-            var driverOptions = new DriverOptions();
-            driverOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
-            driverOptions.Libraries.Add("ls-linux");
-            var driver = new Driver(driverOptions, new TextDiagnosticPrinter());
-            Assert.IsTrue(driver.ParseLibraries());
-            var dependencies = driver.Symbols.Libraries[0].Dependencies;
+            var dependencies = GetDependencies("ls-linux");
             Assert.AreEqual("libselinux.so.1", dependencies[0]);
             Assert.AreEqual("librt.so.1", dependencies[1]);
             Assert.AreEqual("libacl.so.1", dependencies[2]);
@@ -38,15 +29,23 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesOSX()
         {
-            var driverOptions = new DriverOptions();
-            driverOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
-            driverOptions.Libraries.Add("ls-osx");
-            var driver = new Driver(driverOptions, new TextDiagnosticPrinter());
-            Assert.IsTrue(driver.ParseLibraries());
-            var dependencies = driver.Symbols.Libraries[0].Dependencies;
+            var dependencies = GetDependencies("ls-osx");
             Assert.AreEqual("libutil.dylib", dependencies[0]);
             Assert.AreEqual("libncurses.5.4.dylib", dependencies[1]);
             Assert.AreEqual("libSystem.B.dylib", dependencies[2]);
+        }
+
+        private static IList<string> GetDependencies(string library)
+        {
+            var driverOptions = new DriverOptions();
+            driverOptions.Module.LibraryDirs.Add(GeneratorTest.GetTestsDirectory("Native"));
+            driverOptions.Libraries.Add(library);
+            var driver = new Driver(driverOptions, new TextDiagnosticPrinter());
+            foreach (var libraryDir in driverOptions.Module.LibraryDirs)
+                driverOptions.addLibraryDirs(libraryDir);
+            Assert.IsTrue(driver.ParseLibraries());
+            var dependencies = driver.Symbols.Libraries[0].Dependencies;
+            return dependencies;
         }
     }
 }

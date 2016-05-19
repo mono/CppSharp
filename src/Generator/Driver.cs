@@ -458,6 +458,19 @@ namespace CppSharp
             var driver = new Driver(options, Log);
 
             library.Setup(driver);
+
+            foreach (var includeDir in options.Module.IncludeDirs)
+                options.addIncludeDirs(includeDir);
+
+            foreach (var libraryDir in options.Module.LibraryDirs)
+                options.addLibraryDirs(libraryDir);
+
+            foreach (var define in options.Module.Defines)
+                options.addDefines(define);
+
+            foreach (var undefine in options.Module.Undefines)
+                options.addUndefines(undefine);
+
             driver.Setup();
 
             if(driver.Options.Verbose)

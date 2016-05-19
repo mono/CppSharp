@@ -42,16 +42,16 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.TargetTriple = "i686-apple-darwin12.4.0";
 
-            options.addDefines ("__STDC_LIMIT_MACROS");
-            options.addDefines ("__STDC_CONSTANT_MACROS");
+            options.Module.Defines.Add("__STDC_LIMIT_MACROS");
+            options.Module.Defines.Add("__STDC_CONSTANT_MACROS");
 
             var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
-            options.addIncludeDirs(Path.Combine(llvmPath, "include"));
-            options.addIncludeDirs(Path.Combine(llvmPath, "build", "include"));
-            options.addIncludeDirs (Path.Combine (llvmPath, "build", "tools", "clang", "include"));
-            options.addIncludeDirs(Path.Combine(clangPath, "include"));
+            options.Module.IncludeDirs.Add(Path.Combine(llvmPath, "include"));
+            options.Module.IncludeDirs.Add(Path.Combine(llvmPath, "build", "include"));
+            options.Module.IncludeDirs.Add(Path.Combine (llvmPath, "build", "tools", "clang", "include"));
+            options.Module.IncludeDirs.Add(Path.Combine(clangPath, "include"));
         }
 
         public void SetupPasses(Driver driver)

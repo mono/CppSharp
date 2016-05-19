@@ -6,12 +6,20 @@ namespace CppSharp
     {
         public Module()
         {
+            IncludeDirs = new List<string>();
             Headers = new List<string>();
+            LibraryDirs = new List<string>();
             Libraries = new List<string>();
+            Defines = new List<string>();
+            Undefines = new List<string>();
         }
 
+        public List<string> IncludeDirs { get; private set; }
         public List<string> Headers { get; private set; }
+        public List<string> LibraryDirs { get; set; }
         public List<string> Libraries { get; private set; }
+        public List<string> Defines { get; set; }
+        public List<string> Undefines { get; set; }
         public string OutputNamespace { get; set; }
 
         public string SharedLibraryName

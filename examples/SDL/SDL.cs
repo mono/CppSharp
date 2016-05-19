@@ -13,7 +13,7 @@ namespace CppSharp
             options.LibraryName = "SDL";
             options.Headers.Add("SDL.h");
             var sdlPath = Path.Combine(GetExamplesDirectory("SDL"), "SDL-2.0/include");
-            options.addIncludeDirs(sdlPath);
+            options.Module.IncludeDirs.Add(sdlPath);
             options.OutputDir = "SDL";
         }
 

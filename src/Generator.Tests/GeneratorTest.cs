@@ -46,7 +46,7 @@ namespace CppSharp.Utils
                 options.TargetTriple = Environment.Is64BitProcess ? "x86_64-apple-darwin" : "i686-apple-darwin";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
-            options.addIncludeDirs(path);
+            options.Module.IncludeDirs.Add(path);
 
             // Remove this hardcoded path once we update our LLVM binary packages to bundle
             // the built-in Clang includes.
