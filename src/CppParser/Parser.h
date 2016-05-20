@@ -21,7 +21,6 @@
 #include "CppParser.h"
 
 #include <string>
-typedef std::string String;
 
 namespace clang {
   namespace CodeGen {
