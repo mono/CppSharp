@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -79,8 +80,9 @@ namespace CppSharp.AST
             {
                 foreach (var symbol in library.Symbols)
                 {
-                    Symbols[symbol] = library;
-                    if (symbol.StartsWith("__"))
+                    if (!Symbols.ContainsKey(symbol))
+                        Symbols[symbol] = library;
+                    if (symbol.StartsWith("__", StringComparison.Ordinal))
                     {
                         string stripped = symbol.Substring(1);
                         if (!Symbols.ContainsKey(stripped))

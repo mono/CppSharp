@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -13,9 +16,14 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (IsExternalDeclaration(unit) && unit.IsGenerated)
-                unit.GenerationKind = GenerationKind.Link;
-                
+            if (unit.IsValid && !unit.IsSystemHeader && unit.HasDeclarations)
+            {
+                var includeDir = Path.GetDirectoryName(unit.FilePath);
+                unit.Module = DriverOptions.Modules.FirstOrDefault(
+                    m => m.IncludeDirs.Contains(includeDir)) ?? DriverOptions.MainModule;
+                unit.Module.Units.Add(unit);
+            }
+
             // Try to get an include path that works from the original include
             // directories paths.
             if (unit.IsValid)
@@ -64,7 +72,7 @@ namespace CppSharp.Passes
 
             foreach (var path in DriverOptions.NoGenIncludeDirs)
             {
-                if (translationUnit.FilePath.StartsWith(path))
+                if (translationUnit.FilePath.StartsWith(path, StringComparison.Ordinal))
                     return true;
             }
 

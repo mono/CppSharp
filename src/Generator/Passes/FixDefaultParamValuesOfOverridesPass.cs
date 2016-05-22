@@ -11,7 +11,11 @@ namespace CppSharp.Passes
                 Method rootBaseMethod = ((Class) method.Namespace).GetBaseMethod(method);
                 for (int i = 0; i < method.Parameters.Count; i++)
                 {
-                    method.Parameters[i].DefaultArgument = rootBaseMethod.Parameters[i].DefaultArgument;
+                    if (rootBaseMethod.Parameters[i].DefaultArgument != null)
+                    {
+                        method.Parameters[i].DefaultArgument =
+                            rootBaseMethod.Parameters[i].DefaultArgument.Clone();
+                    }
                 }
             }
             return base.VisitMethodDecl(method);

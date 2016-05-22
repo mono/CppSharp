@@ -15,13 +15,11 @@ namespace CppSharp.Generator.Tests
             Options = new DriverOptions();
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
-            Options.Module.IncludeDirs.Add(testsPath);
+            Options.addIncludeDirs(testsPath);
 
             Options.Headers.AddRange(files);
 
             Driver = new Driver(Options, new TextDiagnosticPrinter());
-            foreach (var includeDir in Options.Module.IncludeDirs)
-                Options.addIncludeDirs(includeDir);
             Driver.SetupIncludes();
             Driver.BuildParseOptions();
             if (!Driver.ParseCode())

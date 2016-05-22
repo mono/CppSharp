@@ -38,11 +38,9 @@ namespace CppSharp.Generator.Tests
         private static IList<string> GetDependencies(string library)
         {
             var driverOptions = new DriverOptions();
-            driverOptions.Module.LibraryDirs.Add(GeneratorTest.GetTestsDirectory("Native"));
+            driverOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             driverOptions.Libraries.Add(library);
             var driver = new Driver(driverOptions, new TextDiagnosticPrinter());
-            foreach (var libraryDir in driverOptions.Module.LibraryDirs)
-                driverOptions.addLibraryDirs(libraryDir);
             Assert.IsTrue(driver.ParseLibraries());
             var dependencies = driver.Symbols.Libraries[0].Dependencies;
             return dependencies;

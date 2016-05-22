@@ -40,7 +40,6 @@ namespace CppSharp.Generators.CSharp
                     switch (callExpr.Declaration.GenerationKind)
                     {
                         case GenerationKind.Generate:
-                        case GenerationKind.Link:
                             return new CSharpExpressionPrinterResult
                             {
                                 Value = string.Format("{0}.{1}({2})",

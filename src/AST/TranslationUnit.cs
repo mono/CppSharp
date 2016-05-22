@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,6 +24,12 @@ namespace CppSharp.AST
 
         /// Contains the macros present in the unit.
         public List<MacroDefinition> Macros;
+
+        public Module Module
+        {
+            get { return (Module) module.Target; }
+            set { module = new WeakReference(value); }
+        }
 
         public bool IsSystemHeader { get; set; }
 
@@ -75,5 +82,7 @@ namespace CppSharp.AST
                     (fileRelativePath = Path.Combine(FileRelativeDirectory, FileName));
             }
         }
+
+        private WeakReference module;
     }
 }

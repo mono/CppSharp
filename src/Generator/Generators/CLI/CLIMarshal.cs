@@ -313,7 +313,7 @@ namespace CppSharp.Generators.CLI
         public string QualifiedIdentifier(Declaration decl)
         {
             if (Context.Driver.Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Context.Driver.Options.OutputNamespace,
+                return string.Format("{0}::{1}", decl.TranslationUnit.Module.OutputNamespace,
                     decl.QualifiedName);
             return string.Format("{0}", decl.QualifiedName);
         }

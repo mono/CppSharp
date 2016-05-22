@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -15,6 +14,7 @@ using Microsoft.CSharp;
 using CppSharp.Parser;
 using System.CodeDom;
 using System;
+using System.Reflection;
 
 namespace CppSharp
 {
@@ -67,15 +67,18 @@ namespace CppSharp
 
         static void ValidateOptions(DriverOptions options)
         {
-            if (string.IsNullOrWhiteSpace(options.LibraryName))
-                throw new InvalidOptionException();
+            foreach (var module in options.Modules)
+            {
+                if (string.IsNullOrWhiteSpace(module.LibraryName))
+                    throw new InvalidOptionException("One of your modules has no library name.");
+
+                if (string.IsNullOrWhiteSpace(module.OutputNamespace))
+                    module.OutputNamespace = module.LibraryName;
+            }
 
             if (options.NoGenIncludeDirs != null)
                 foreach (var incDir in options.NoGenIncludeDirs)
                     options.addIncludeDirs(incDir);
-
-            if (string.IsNullOrWhiteSpace(options.OutputNamespace))
-                options.OutputNamespace = options.LibraryName;
         }
 
         public void Setup()
@@ -194,6 +197,21 @@ namespace CppSharp
                 options.addLibraryDirs(lib);
             }
 
+            foreach (var module in Options.Modules.Where(m => m.Headers.Contains(file.Path)))
+            {
+                foreach (var include in module.IncludeDirs)
+                    options.addIncludeDirs(include);
+
+                foreach (var define in module.Defines)
+                    options.addDefines(define);
+
+                foreach (var undefine in module.Undefines)
+                    options.addUndefines(undefine);
+
+                foreach (var library in module.Libraries)
+                    options.addLibraryDirs(library);
+            }
+
             return options;
         }
 
@@ -213,7 +231,7 @@ namespace CppSharp
 
         public void BuildParseOptions()
         {
-            foreach (var header in Options.Headers)
+            foreach (var header in Options.Modules.SelectMany(m => m.Headers))
             {
                 var source = Project.AddFile(header);
                 source.Options = BuildParseOptions(source);
@@ -224,7 +242,7 @@ namespace CppSharp
 
         public bool ParseLibraries()
         {
-            foreach (var library in Options.Libraries)
+            foreach (var library in Options.Modules.SelectMany(m => m.Libraries))
             {
                 if (this.Symbols.Libraries.Any(l => l.FileName == library))
                     continue;
@@ -248,7 +266,6 @@ namespace CppSharp
 
         public void SetupPasses(ILibrary library)
         { 
-            TranslationUnitPasses.AddPass(new CleanUnitPass(Options));
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
@@ -290,8 +307,8 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
                 if (Options.GenerateDefaultValuesForArguments)
                 {
-                    TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
                     TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
+                    TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
                 }
             }
 
@@ -331,7 +348,7 @@ namespace CppSharp
             return Generator.Generate();
         }
 
-        public void SaveCode(List<GeneratorOutput> outputs)
+        public void SaveCode(IEnumerable<GeneratorOutput> outputs)
         {
             var outputPath = Path.GetFullPath(Options.OutputDir);
 
@@ -352,32 +369,22 @@ namespace CppSharp
                 if (Options.GenerateName != null)
                     fileBase = Options.GenerateName(output.TranslationUnit);
 
-                if (Options.IsCSharpGenerator && Options.CompileCode)
+                foreach (var template in output.Templates)
                 {
-                    compileUnits.AddRange(
-                        output.Templates.Select(t => new CodeSnippetCompileUnit(t.Generate())));
-                    compileUnits.AddRange(
-                        Options.CodeFiles.Select(c => new CodeSnippetCompileUnit(File.ReadAllText(c))));
-                }
-                else
-                {
-                    foreach (var template in output.Templates)
-                    {
-                        var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
-                        Diagnostics.Message("Generated '{0}'", fileRelativePath);
+                    var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
 
-                        var file = Path.Combine(outputPath, fileRelativePath);
-                        File.WriteAllText(file, template.Generate());
-                        Options.CodeFiles.Add(file);
-                    }
+                    var file = Path.Combine(outputPath, fileRelativePath);
+                    File.WriteAllText(file, template.Generate());
+                    output.TranslationUnit.Module.CodeFiles.Add(file);
                 }
             }
         }
 
-        public void CompileCode()
+        public void CompileCode(AST.Module module)
         {
-            var assemblyFile = string.IsNullOrEmpty(Options.LibraryName) ?
-                "out.dll" : Options.LibraryName + ".dll";
+            var assemblyFile = string.IsNullOrEmpty(module.LibraryName) ?
+                "out.dll" : module.LibraryName + ".dll";
 
             var docFile = Path.ChangeExtension(Path.GetFileName(assemblyFile), ".xml");
 
@@ -414,8 +421,8 @@ namespace CppSharp
             using (var codeProvider = new CSharpCodeProvider(
                 new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
             {
-                compilerResults = codeProvider.CompileAssemblyFromDom(
-                    compilerParameters, compileUnits.ToArray());
+                compilerResults = codeProvider.CompileAssemblyFromFile(
+                    compilerParameters, module.CodeFiles.ToArray());
             }
 
             var errors = compilerResults.Errors.Cast<CompilerError>().Where(e => !e.IsWarning &&
@@ -429,7 +436,7 @@ namespace CppSharp
             {
                 Diagnostics.Message("Compilation succeeded.");
                 var wrapper = Path.Combine(outputDir, assemblyFile);
-                foreach (var library in Options.Libraries)
+                foreach (var library in module.Libraries)
                     libraryMappings[library] = wrapper;
             }
         }
@@ -444,7 +451,6 @@ namespace CppSharp
             GeneratorOutputPasses.AddPass(pass);
         }
 
-        private readonly List<CodeSnippetCompileUnit> compileUnits = new List<CodeSnippetCompileUnit>();
         private bool hasParsingErrors;
     }
 
@@ -458,18 +464,6 @@ namespace CppSharp
             var driver = new Driver(options, Log);
 
             library.Setup(driver);
-
-            foreach (var includeDir in options.Module.IncludeDirs)
-                options.addIncludeDirs(includeDir);
-
-            foreach (var libraryDir in options.Module.LibraryDirs)
-                options.addLibraryDirs(libraryDir);
-
-            foreach (var define in options.Module.Defines)
-                options.addDefines(define);
-
-            foreach (var undefine in options.Module.Undefines)
-                options.addUndefines(undefine);
 
             driver.Setup();
 
@@ -497,6 +491,8 @@ namespace CppSharp
                 Log.Error("CppSharp has encountered an error while parsing code.");
                 return;
             }
+
+            new CleanUnitPass(options).VisitLibrary(driver.ASTContext);
 
             if (!options.Quiet)
                 Log.Message("Processing code...");
@@ -526,7 +522,8 @@ namespace CppSharp
             {
                 driver.SaveCode(outputs);
                 if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
-                    driver.CompileCode();
+                    foreach (var module in driver.Options.Modules)
+                        driver.CompileCode(module);
             }
 
             driver.Generator.Dispose();

@@ -41,11 +41,7 @@ namespace CppSharp.AST
         /// <summary>
         /// Declaration is generated to be used internally.
         /// </summary>
-        Internal,
-        /// <summary>
-        /// Declaration was already generated in a linked assembly.
-        /// </summary>
-        Link, 
+        Internal
     }
 
     /// <summary>
@@ -252,8 +248,7 @@ namespace CppSharp.AST
             {
                 var k = GenerationKind;
                 return k == GenerationKind.Generate
-                    || k == GenerationKind.Internal
-                    || k == GenerationKind.Link;
+                    || k == GenerationKind.Internal;
             }
         }
 

@@ -631,7 +631,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             names.Reverse();
-            if (names[0] == driver.Options.OutputNamespace)
+            if (names[0] == Generator.CurrentOutputNamespace)
                 names.RemoveAt(0);
             return string.Join(".", names);
         }

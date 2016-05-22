@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     public class Module
     {
@@ -12,6 +12,8 @@ namespace CppSharp
             Libraries = new List<string>();
             Defines = new List<string>();
             Undefines = new List<string>();
+            Units = new List<TranslationUnit>();
+            CodeFiles = new List<string>();
         }
 
         public List<string> IncludeDirs { get; private set; }
@@ -21,6 +23,9 @@ namespace CppSharp
         public List<string> Defines { get; set; }
         public List<string> Undefines { get; set; }
         public string OutputNamespace { get; set; }
+
+        public List<TranslationUnit> Units { get; private set; }
+        public List<string> CodeFiles { get; private set; }
 
         public string SharedLibraryName
         {

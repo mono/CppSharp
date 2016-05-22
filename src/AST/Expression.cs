@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -7,6 +9,8 @@ namespace CppSharp.AST
         public string DebugText;
 
         public abstract TV Visit<TV>(IExpressionVisitor<TV> visitor);
+
+        public abstract Expression Clone();
     }
 
     public class BuiltinTypeExpression : Expression
@@ -39,6 +43,19 @@ namespace CppSharp.AST
         {
             return visitor.VisitExpression(this);
         }
+
+        public override Expression Clone()
+        {
+            return new BuiltinTypeExpression
+            {
+                Value = this.Value,
+                Type = this.Type,
+                DebugText = this.DebugText,
+                Class = this.Class,
+                Declaration = this.Declaration,
+                String = this.String
+            };
+        }
     }
 
     public class BinaryOperator : Expression
@@ -59,6 +76,16 @@ namespace CppSharp.AST
         {
             return visitor.VisitExpression(this);
         }
+
+        public override Expression Clone()
+        {
+            return new BinaryOperator(LHS.Clone(), RHS.Clone(), OpcodeStr)
+            {
+                DebugText = this.DebugText,
+                Declaration = this.Declaration,
+                String = this.String
+            };
+        }
     }
 
     public class CallExpr : Expression
@@ -75,6 +102,18 @@ namespace CppSharp.AST
         {
             return visitor.VisitExpression(this);
         }
+
+        public override Expression Clone()
+        {
+            var clone = new CallExpr
+            {
+                DebugText = this.DebugText,
+                Declaration = this.Declaration,
+                String = this.String
+            };
+            clone.Arguments.AddRange(Arguments.Select(a => a.Clone()));
+            return clone;
+        }
     }
 
     public class CXXConstructExpr : Expression
@@ -90,6 +129,18 @@ namespace CppSharp.AST
         public override T Visit<T>(IExpressionVisitor<T> visitor)
         {
             return visitor.VisitExpression(this);
+        }
+
+        public override Expression Clone()
+        {
+            var clone = new CXXConstructExpr
+            {
+                DebugText = this.DebugText,
+                Declaration = this.Declaration,
+                String = this.String
+            };
+            clone.Arguments.AddRange(Arguments.Select(a => a.Clone()));
+            return clone;
         }
     }
 

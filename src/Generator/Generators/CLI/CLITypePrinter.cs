@@ -327,7 +327,7 @@ namespace CppSharp.Generators.CLI
 
             string rootNamespace = null;
             if (Options.GenerateLibraryNamespace)
-                names.Add(rootNamespace = Driver.Options.OutputNamespace);
+                names.Add(rootNamespace = decl.TranslationUnit.Module.OutputNamespace);
 
             if (!string.IsNullOrEmpty(decl.Namespace.QualifiedName))
             {

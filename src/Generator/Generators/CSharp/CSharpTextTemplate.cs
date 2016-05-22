@@ -167,7 +167,7 @@ namespace CppSharp.Generators.CSharp
             if (Options.GenerateLibraryNamespace)
             {
                 PushBlock(CSharpBlockKind.Namespace);
-                WriteLine("namespace {0}", Driver.Options.OutputNamespace);
+                WriteLine("namespace {0}", TranslationUnit.Module.OutputNamespace);
                 WriteStartBraceIndent();
             }
 
@@ -829,9 +829,9 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
-        private Tuple<string, string> GetDeclarationLibrarySymbol(IMangledDecl decl)
+        private Tuple<string, string> GetDeclarationLibrarySymbol(Variable decl)
         {
-            var library = Options.SharedLibraryName;
+            var library = decl.TranslationUnit.Module.SharedLibraryName;
 
             if (!Options.CheckSymbols)
                 goto Out;
@@ -1555,8 +1555,9 @@ namespace CppSharp.Generators.CSharp
                     return;
                 }
                 var typeFullName = TypePrinter.VisitClassDecl(@class);
-                if (!string.IsNullOrEmpty(Driver.Options.OutputNamespace))
-                    typeFullName = string.Format("{0}.{1}", Driver.Options.OutputNamespace, typeFullName);
+                if (!string.IsNullOrEmpty(@class.TranslationUnit.Module.OutputNamespace))
+                    typeFullName = string.Format("{0}.{1}",
+                        @class.TranslationUnit.Module.OutputNamespace, typeFullName);
                 WriteLine("SetupVTables(GetType().FullName == \"{0}\");", typeFullName);
             }
         }
@@ -1573,7 +1574,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var param = method.Parameters[i];
-                if (!param.IsGenerated && param.GenerationKind != GenerationKind.Link)
+                if (!param.IsGenerated)
                     continue;
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
@@ -1600,7 +1601,7 @@ namespace CppSharp.Generators.CSharp
             if (hasReturn)
                 Write("var {0} = ", Helpers.ReturnIdentifier);
 
-            if (method.IsGenerated || method.GenerationKind == GenerationKind.Link)
+            if (method.IsGenerated)
             {
                 WriteLine("{0}.{1}({2});", Helpers.TargetIdentifier,
                     method.Name, string.Join(", ", marshals));              
@@ -1682,7 +1683,8 @@ namespace CppSharp.Generators.CSharp
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
 
-            WriteLine("private static {0} {1}Instance;", GetDelegateName(Driver.Delegates[method]),
+            WriteLine("private static {0} {1}Instance;",
+                GetDelegateName(method, @class.TranslationUnit.Module.OutputNamespace),
                 vTableMethodDelegateName);
             NewLine();
 
@@ -2483,13 +2485,15 @@ namespace CppSharp.Generators.CSharp
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
-                delegateId, GetDelegateName(Driver.Delegates[method]), Helpers.SlotIdentifier);
+                delegateId, GetDelegateName(method, method.TranslationUnit.Module.OutputNamespace),
+                Helpers.SlotIdentifier);
         }
 
-        private string GetDelegateName(DelegatesPass.DelegateDefinition @delegate)
+        private string GetDelegateName(Function function, string outputNamespace)
         {
+            var @delegate = Driver.Delegates[function];
             if (string.IsNullOrWhiteSpace(@delegate.Namespace) ||
-                Driver.Options.OutputNamespace == @delegate.Namespace)
+                outputNamespace == @delegate.Namespace)
             {
                 return @delegate.Signature;
             }
@@ -3086,7 +3090,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.InternalsClassMethod);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
 
-            string libName = Options.SharedLibraryName;
+            string libName = function.TranslationUnit.Module.SharedLibraryName;
 
             if (Options.CheckSymbols)
             {
@@ -3102,7 +3106,7 @@ namespace CppSharp.Generators.CSharp
                 libName = libName.Substring(3);
             }
             if (libName == null)
-                libName = Options.SharedLibraryName;
+                libName = function.TranslationUnit.Module.SharedLibraryName;
 
             if (Options.GenerateInternalImports)
                 libName = "__Internal";

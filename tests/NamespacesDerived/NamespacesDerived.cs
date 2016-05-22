@@ -19,17 +19,6 @@ namespace CppSharp.Tests
             driver.Options.GeneratePropertiesAdvanced = true;
         }
 
-        public override void Preprocess(Driver driver, ASTContext ctx)
-        {
-            foreach (TranslationUnit unit in ctx.TranslationUnits)
-            {
-                if (unit.FileName != "NamespacesDerived.h")
-                {
-                    unit.GenerationKind = GenerationKind.Link;
-                }
-            }
-        }
-
         public override void Postprocess(Driver driver, ASTContext ctx)
         {
             new CaseRenamePass(

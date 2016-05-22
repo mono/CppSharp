@@ -11,21 +11,21 @@ namespace CppSharp.Passes
     {
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (!base.VisitTranslationUnit(unit))
+            if (!base.VisitTranslationUnit(unit) || !unit.IsValid ||
+                unit.IsSystemHeader || !unit.HasDeclarations)
                 return false;
 
             var fileName = unit.TranslationUnit.FileName;
             if (rootNamespaceRenames.ContainsKey(fileName))
             {
                 var rootNamespace = rootNamespaceRenames[fileName];
-                if (this.Driver.Options.OutputNamespace != rootNamespace)
-                    unit.Name = rootNamespace;
+                unit.Name = rootNamespace;
             }
             else if (unit.GenerationKind == GenerationKind.Generate)
             {
                 if (Driver.Options.IsCSharpGenerator)
-                    unit.Name = Driver.Options.OutputNamespace;
-                rootNamespaceRenames.Add(fileName, Driver.Options.OutputNamespace);
+                    unit.Name = unit.Module.OutputNamespace;
+                rootNamespaceRenames.Add(fileName, unit.Module.OutputNamespace);
             }
             return true;
         }
