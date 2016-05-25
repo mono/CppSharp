@@ -1627,6 +1627,8 @@ static const clang::Type* GetFinalType(const clang::Type* Ty)
 
 bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
 {
+    // HACK: the completion of types is temporarily suspended because of problems with QtWidgets; will restore when it's time to wrap functions in template types
+    return false;
     auto FinalType = GetFinalType(QualType.getTypePtr());
     if (auto Tag = FinalType->getAsTagDecl())
     {

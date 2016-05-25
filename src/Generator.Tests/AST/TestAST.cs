@@ -226,8 +226,7 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(3, template.Specializations.Count);
             Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[0].SpecializationKind);
             Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[1].SpecializationKind);
-            // the instantian is not declared in the header but we force the completion the types in our parser
-            Assert.AreEqual(TemplateSpecializationKind.ImplicitInstantiation, template.Specializations[2].SpecializationKind);
+            Assert.AreEqual(TemplateSpecializationKind.Undeclared, template.Specializations[2].SpecializationKind);
             var typeDef = AstContext.FindTypedef("TestTemplateClassInt").FirstOrDefault();
             Assert.IsNotNull(typeDef, "Couldn't find TestTemplateClassInt typedef.");
             var integerInst = typeDef.Type as TemplateSpecializationType;
