@@ -1,11 +1,13 @@
-CppSharp is a collection of libraries for working with C++ code from .NET.
+CppSharp is a collection of libraries for working with C++ code from
+high-level languages.
 
 It has multiple use cases, from parsing C++ code to automatically generating
-.NET bindings for wrapping C/C++ native code allowing interoperability with
-managed languages like C#.
+bindings for wrapping C/C++ native code allowing interoperability with
+high-level languages. The supported target languages at present are C#
+(hence the name of the project) and C++/CLI.
 
-This can be used to consume an existing native library in your managed code
-or add scripting support to a native codebase.
+This can be used to consume an existing native library in your high-level
+code or add scripting support to a native codebase.
 
 1. [Libraries](#libraries)
 2. [Documentation](#documentation)
