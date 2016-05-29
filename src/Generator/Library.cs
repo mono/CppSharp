@@ -254,13 +254,33 @@ namespace CppSharp
         public static void SetMethodParameterUsage(this ASTContext context,
             string className, string methodName, int parameterIndex, ParameterUsage usage)
         {
+            SetMethodParameterUsage(context, className, methodName, -1, parameterIndex, usage);
+        }
+
+        /// <summary>
+        /// Sets the parameter usage for a method parameter.
+        /// </summary>
+        /// <param name="parameterIndex">first parameter has index 1</param>
+        public static void SetMethodParameterUsage(this ASTContext context,
+            string className, string methodName, int parameterCount, int parameterIndex,
+            ParameterUsage usage)
+        {
             if (parameterIndex <= 0 )
                  throw new ArgumentException("parameterIndex");
 
             var @class = context.FindCompleteClass(className);
-            var method = @class.Methods.Find(m => m.Name == methodName);
+
+            Method method;
+
+            if (parameterCount >= 0)
+                method = @class.Methods.Find(m => m.Name == methodName
+                                          && m.Parameters.Count == parameterCount);
+            else
+                method = @class.Methods.Find(m => m.Name == methodName);
+
             if (method == null)
                 throw new ArgumentException("methodName");
+
             if (method.Parameters.Count < parameterIndex)
                 throw new ArgumentException("parameterIndex");
 
