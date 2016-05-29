@@ -38,6 +38,7 @@ code or add scripting support to a native codebase.
  * Easily extensible semantics via user passes 
  * Work-in-progress support for STL (C++/CLI only)
  * Strongly-typed customization APIs and type maps
+ * Default values of parameters (for target languages which support them)
 
 ### AST 
 
