@@ -12,7 +12,6 @@ using CppSharp.Passes;
 using CppSharp.Types;
 using Microsoft.CSharp;
 using CppSharp.Parser;
-using System.CodeDom;
 using System;
 using System.Reflection;
 
@@ -99,24 +98,29 @@ namespace CppSharp
                 Options.SetupMSVC();
         }
 
-        void OnSourceFileParsed(SourceFile file, ParserResult result)
+        void OnSourceFileParsed(IList<SourceFile> files, ParserResult result)
         {
-            OnFileParsed(file.Path, result);
+            OnFileParsed(files.Select(f => f.Path), result);
         }
 
         void OnFileParsed(string file, ParserResult result)
         {
+            OnFileParsed(new[] { file }, result);
+        }
+
+        void OnFileParsed(IEnumerable<string> files, ParserResult result)
+        {
             switch (result.Kind)
             {
                 case ParserResultKind.Success:
-                    Diagnostics.Message("Parsed '{0}'", file);
+                    Diagnostics.Message("Parsed '{0}'", string.Join(", ", files));
                     break;
                 case ParserResultKind.Error:
-                    Diagnostics.Error("Error parsing '{0}'", file);
+                    Diagnostics.Error("Error parsing '{0}'", string.Join(", ", files));
                     hasParsingErrors = true;
                     break;
                 case ParserResultKind.FileNotFound:
-                    Diagnostics.Error("File '{0}' was not found", file);
+                    Diagnostics.Error("A file from '{0}' was not found", string.Join(",", files));
                     break;
             }
 
@@ -137,11 +141,10 @@ namespace CppSharp
             }
         }
 
-        public ParserOptions BuildParseOptions(SourceFile file)
+        public ParserOptions BuildParserOptions()
         {
             var options = new ParserOptions
             {
-                FileName = file.Path,
                 Abi = Options.Abi,
                 ToolSetToUse = Options.ToolSetToUse,
                 TargetTriple = Options.TargetTriple,
@@ -197,7 +200,7 @@ namespace CppSharp
                 options.addLibraryDirs(lib);
             }
 
-            foreach (var module in Options.Modules.Where(m => m.Headers.Contains(file.Path)))
+            foreach (var module in Options.Modules)
             {
                 foreach (var include in module.IncludeDirs)
                     options.addIncludeDirs(include);
@@ -219,8 +222,8 @@ namespace CppSharp
         {
             var parser = new ClangParser(new Parser.AST.ASTContext());
 
-            parser.SourceParsed += OnSourceFileParsed;
-            parser.ParseProject(Project);
+            parser.SourcesParsed += OnSourceFileParsed;
+            parser.ParseProject(Project, Options.UnityBuild);
            
             TargetInfo = parser.GetTargetInfo(Options);
 
@@ -234,7 +237,7 @@ namespace CppSharp
             foreach (var header in Options.Modules.SelectMany(m => m.Headers))
             {
                 var source = Project.AddFile(header);
-                source.Options = BuildParseOptions(source);
+                source.Options = BuildParserOptions();
             }
         }
 
@@ -416,7 +419,7 @@ namespace CppSharp
                          !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
                     .Select(l => libraryMappings[l])).ToArray());
 
-            Diagnostics.Message("Compiling generated code...");
+            Diagnostics.Message("Compiling {0}...", module.LibraryName);
             CompilerResults compilerResults;
             using (var codeProvider = new CSharpCodeProvider(
                 new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
@@ -523,7 +526,11 @@ namespace CppSharp
                 driver.SaveCode(outputs);
                 if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
                     foreach (var module in driver.Options.Modules)
+                    {
                         driver.CompileCode(module);
+                        if (driver.HasCompilationErrors)
+                            break;
+                    }
             }
 
             driver.Generator.Dispose();

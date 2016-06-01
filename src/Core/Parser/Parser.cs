@@ -18,7 +18,7 @@ namespace CppSharp
         /// <summary>
         /// Fired when source files are parsed.
         /// </summary>
-        public Action<SourceFile, ParserResult> SourceParsed = delegate {};
+        public Action<IList<SourceFile>, ParserResult> SourcesParsed = delegate {};
 
         /// <summary>
         /// Fired when library files are parsed.
@@ -50,28 +50,45 @@ namespace CppSharp
         /// <summary>
         /// Parses a C++ source file to a translation unit.
         /// </summary>
-        public ParserResult ParseSourceFile(SourceFile file)
+        private ParserResult ParseSourceFile(SourceFile file)
         {
             var options = file.Options;
             options.ASTContext = ASTContext;
-            options.FileName = file.Path;
+            options.addSourceFiles(file.Path);
 
             var result = Parser.ClangParser.ParseHeader(options);
-            SourceParsed(file, result);
+            SourcesParsed(new[] { file }, result);
 
             return result;
         }
 
         /// <summary>
+        /// Parses C++ source files to a translation unit.
+        /// </summary>
+        private void ParseSourceFiles(IList<SourceFile> files)
+        {
+            var options = files[0].Options;
+            options.ASTContext = ASTContext;
+
+            foreach (var file in files)
+                options.addSourceFiles(file.Path);
+            using (var result = Parser.ClangParser.ParseHeader(options))
+                SourcesParsed(files, result);
+        }
+
+        /// <summary>
         /// Parses the project source files.
         /// </summary>
-        public void ParseProject(Project project)
+        public void ParseProject(Project project, bool unityBuild)
         {
             // TODO: Search for cached AST trees on disk
             // TODO: Do multi-threaded parsing of source files
-            
-            foreach (var parserResult in project.Sources.Select(s => ParseSourceFile(s)).ToList())
-                parserResult.Dispose();
+
+            if (unityBuild)
+                ParseSourceFiles(project.Sources);
+            else
+                foreach (var parserResult in project.Sources.Select(s => ParseSourceFile(s)).ToList())
+                    parserResult.Dispose();
         }
 
         /// <summary>
@@ -79,7 +96,7 @@ namespace CppSharp
         /// </summary>
         public ParserResult ParseLibrary(string file, ParserOptions options)
         {
-            options.FileName = file;
+            options.LibraryFile = file;
 
             var result = Parser.ClangParser.ParseLibrary(options);
             LibraryParsed(file, result);

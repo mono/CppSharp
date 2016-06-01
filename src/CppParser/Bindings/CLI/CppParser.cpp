@@ -46,6 +46,25 @@ void CppSharp::Parser::ParserOptions::clearArguments()
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearArguments();
 }
 
+System::String^ CppSharp::Parser::ParserOptions::getSourceFiles(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getSourceFiles(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::ParserOptions::addSourceFiles(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addSourceFiles(arg0);
+}
+
+void CppSharp::Parser::ParserOptions::clearSourceFiles()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearSourceFiles();
+}
+
 System::String^ CppSharp::Parser::ParserOptions::getIncludeDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getIncludeDirs(i);
@@ -166,18 +185,24 @@ unsigned int CppSharp::Parser::ParserOptions::ArgumentsCount::get()
     return __ret;
 }
 
-System::String^ CppSharp::Parser::ParserOptions::FileName::get()
+System::String^ CppSharp::Parser::ParserOptions::LibraryFile::get()
 {
-    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getFileName();
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getLibraryFile();
     if (__ret == nullptr) return nullptr;
     return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
-void CppSharp::Parser::ParserOptions::FileName::set(System::String^ s)
+void CppSharp::Parser::ParserOptions::LibraryFile::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->setFileName(arg0);
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->setLibraryFile(arg0);
+}
+
+unsigned int CppSharp::Parser::ParserOptions::SourceFilesCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getSourceFilesCount();
+    return __ret;
 }
 
 unsigned int CppSharp::Parser::ParserOptions::IncludeDirsCount::get()

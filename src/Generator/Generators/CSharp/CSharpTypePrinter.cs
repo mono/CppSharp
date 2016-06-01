@@ -5,7 +5,6 @@ using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
-using System.Linq;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -142,7 +141,7 @@ namespace CppSharp.Generators.CSharp
                 Class @class;
                 if (arrayType.TryGetClass(out @class))
                 {
-                    return new CSharpTypePrinterResult()
+                    return new CSharpTypePrinterResult
                     {
                         Type = "fixed byte",
                         NameSuffix = string.Format("[{0}]", array.Size * @class.Layout.Size)
@@ -158,7 +157,7 @@ namespace CppSharp.Generators.CSharp
 
                 // Do not write the fixed keyword multiple times for nested array types
                 var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
-                return new CSharpTypePrinterResult()
+                return new CSharpTypePrinterResult
                 {
                     Type = string.Format("{0}{1}", fixedKeyword, arrayElemType),
                     NameSuffix = string.Format("[{0}]", array.Size)
