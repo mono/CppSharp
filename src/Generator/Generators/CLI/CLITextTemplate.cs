@@ -84,9 +84,10 @@ namespace CppSharp.Generators.CLI
             if (Options.GenerateLibraryNamespace)
             {
                 if (string.IsNullOrEmpty(decl.QualifiedName))
-                    return string.Format("{0}", Options.OutputNamespace);
+                    return string.Format("{0}", decl.TranslationUnit.Module.OutputNamespace);
 
-                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
+                return string.Format("{0}::{1}",
+                    decl.TranslationUnit.Module.OutputNamespace, decl.QualifiedName);
             }
                 
             return decl.QualifiedName;

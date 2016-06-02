@@ -27,7 +27,7 @@ namespace CppSharp
 
             OutputDir = Directory.GetCurrentDirectory();
 
-            Module = new Module();
+            Modules = new List<Module>();
 
             GeneratorKind = GeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
@@ -38,8 +38,6 @@ namespace CppSharp
             CommentPrefix = "///";
 
             Encoding = Encoding.ASCII;
-
-            CodeFiles = new List<string>();
 
             StripLibPrefix = true;
 
@@ -59,24 +57,34 @@ namespace CppSharp
         /// </summary>
         public bool DryRun;
 
+        public List<Module> Modules { get; private set; }
+
+        public Module MainModule
+        {
+            get
+            {
+                if (Modules.Count == 0)
+                    Modules.Add(new Module());
+                return Modules[0];
+            }
+        }
+
         // Parser options
-        public List<string> Headers { get { return Module.Headers; } }
+        public List<string> Headers { get { return MainModule.Headers; } }
         public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
-
-        public Module Module { get; set; }
 
         public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
-        public List<string> Libraries { get { return Module.Libraries; } }
+        public List<string> Libraries { get { return MainModule.Libraries; } }
         public bool CheckSymbols;
 
         public string SharedLibraryName
         {
-            get { return Module.SharedLibraryName; }
-            set { Module.SharedLibraryName = value; }
+            get { return MainModule.SharedLibraryName; }
+            set { MainModule.SharedLibraryName = value; }
         }
 
         // Generator options
@@ -84,16 +92,16 @@ namespace CppSharp
 
         public string OutputNamespace
         {
-            get { return Module.OutputNamespace; }
-            set { Module.OutputNamespace = value; }
+            get { return MainModule.OutputNamespace; }
+            set { MainModule.OutputNamespace = value; }
         }
 
         public string OutputDir;
 
         public string LibraryName
         {
-            get { return Module.LibraryName; }
-            set { Module.LibraryName = value; }
+            get { return MainModule.LibraryName; }
+            set { MainModule.LibraryName = value; }
         }
 
         public bool OutputInteropIncludes;
@@ -129,7 +137,7 @@ namespace CppSharp
 
         /// <summary>
         /// If set to true the CLI generator will use ObjectOverridesPass to create
-        /// Equals, GetHashCode and (if the insertion operator << is overloaded) ToString
+        /// Equals, GetHashCode and (if the insertion operator &lt;&lt; is overloaded) ToString
         /// methods.
         /// </summary>
         public bool GenerateObjectOverrides;
@@ -158,14 +166,14 @@ namespace CppSharp
 
         public string InlinesLibraryName
         {
-            get { return Module.InlinesLibraryName; }
-            set { Module.InlinesLibraryName = value; }
+            get { return MainModule.InlinesLibraryName; }
+            set { MainModule.InlinesLibraryName = value; }
         }
 
         public string TemplatesLibraryName
         {
-            get { return Module.TemplatesLibraryName; }
-            set { Module.TemplatesLibraryName = value; }
+            get { return MainModule.TemplatesLibraryName; }
+            set { MainModule.TemplatesLibraryName = value; }
         }
 
         public bool IsCSharpGenerator
@@ -178,7 +186,6 @@ namespace CppSharp
             get { return GeneratorKind == GeneratorKind.CLI; }
         }
 
-        public List<string> CodeFiles { get; private set; }
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
         /// <summary>
@@ -201,5 +208,9 @@ namespace CppSharp
 
     public class InvalidOptionException : Exception
     {
+        public InvalidOptionException(string message) :
+            base(message)
+        {
+        }
     }
 }

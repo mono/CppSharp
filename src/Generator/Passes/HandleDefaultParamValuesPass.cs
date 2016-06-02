@@ -37,9 +37,10 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!base.VisitFunctionDecl(function))
+            if (!base.VisitFunctionDecl(function) || function.TranslationUnit.IsSystemHeader)
                 return false;
 
+            Generator.CurrentOutputNamespace = function.TranslationUnit.Module.OutputNamespace;
             var overloadIndices = new List<int>(function.Parameters.Count);
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
@@ -199,14 +200,14 @@ namespace CppSharp.Passes
                 switch (builtin.Type)
                 {
                     case PrimitiveType.Float:
-                        if (statement.String.EndsWith(".F"))
+                        if (statement.String.EndsWith(".F", System.StringComparison.Ordinal))
                         {
                             result = statement.String.Replace(".F", ".0F");
                             return true;
                         }
                         break;
                     case PrimitiveType.Double:
-                        if (statement.String.EndsWith("."))
+                        if (statement.String.EndsWith(".", System.StringComparison.Ordinal))
                         {
                             result = statement.String + '0';
                             return true;

@@ -99,6 +99,7 @@ namespace CppSharp.Generators.CLI
         {
             // Create a new tree of namespaces out of the type references found.
             var rootNamespace = new TranslationUnit();
+            rootNamespace.Module = TranslationUnit.Module;
 
             var sortedRefs = typeReferences.ToList();
             sortedRefs.Sort((ref1, ref2) =>
@@ -192,7 +193,7 @@ namespace CppSharp.Generators.CLI
             {
                 PushBlock(CLIBlockKind.Namespace, @namespace);
                 WriteLine("namespace {0}", isTopLevel
-                                               ? Options.OutputNamespace
+                                               ? @namespace.TranslationUnit.Module.OutputNamespace
                                                : @namespace.Name);
                 WriteStartBraceIndent();
             }

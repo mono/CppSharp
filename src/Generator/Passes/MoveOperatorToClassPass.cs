@@ -18,13 +18,12 @@ namespace CppSharp.Passes
             Class @class = null;
             foreach (var param in function.Parameters)
             {
-                FunctionToInstanceMethodPass.GetClassParameter(
-                    param, out @class);
-
-                if (@class != null) break;
+                if (FunctionToInstanceMethodPass.GetClassParameter(param, out @class))
+                    break;
             }
 
-            if (@class == null)
+            if (@class == null ||
+                @class.TranslationUnit.Module != function.TranslationUnit.Module)
                 return false;
 
             // Create a new fake method so it acts as a static method.
