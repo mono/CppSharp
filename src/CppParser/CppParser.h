@@ -37,8 +37,9 @@ struct CS_API ParserOptions
 
     VECTOR_STRING(Arguments)
 
-    // C/C++ header file name.
-    STRING(FileName)
+    STRING(LibraryFile)
+    // C/C++ header file names.
+    VECTOR_STRING(SourceFiles)
 
     // Include directories
     VECTOR_STRING(IncludeDirs)

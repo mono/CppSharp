@@ -89,10 +89,15 @@ namespace CppSharp
                 unsigned int get();
             }
 
-            property System::String^ FileName
+            property System::String^ LibraryFile
             {
                 System::String^ get();
                 void set(System::String^);
+            }
+
+            property unsigned int SourceFilesCount
+            {
+                unsigned int get();
             }
 
             property unsigned int IncludeDirsCount
@@ -185,6 +190,12 @@ namespace CppSharp
             void addArguments(System::String^ s);
 
             void clearArguments();
+
+            System::String^ getSourceFiles(unsigned int i);
+
+            void addSourceFiles(System::String^ s);
+
+            void clearSourceFiles();
 
             System::String^ getIncludeDirs(unsigned int i);
 

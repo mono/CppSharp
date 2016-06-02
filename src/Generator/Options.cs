@@ -156,6 +156,12 @@ namespace CppSharp
         /// </summary>
         public bool GenerateFinalizers;
 
+        /// <summary>
+        /// If this option is off (the default), each header is parsed separately which is much slower
+        /// but safer because of a clean state of the preprocessor for each header.
+        /// </summary>
+        public bool UnityBuild { get; set; }
+
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;

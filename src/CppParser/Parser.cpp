@@ -3222,13 +3222,13 @@ void Parser::HandleDiagnostics(ParserResult* res)
     }
 }
 
-ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
+ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, ParserResult* res)
 {
     assert(Opts->ASTContext && "Expected a valid ASTContext");
 
     res->ASTContext = Lib;
 
-    if (File.empty())
+    if (SourceFiles.empty())
     {
         res->Kind = ParserResultKind::FileNotFound;
         return res;
@@ -3250,20 +3250,28 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
         std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
         0> Includers;
 
-    auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
-        clang::SourceLocation(), /*isAngled*/true,
-        nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr);
-    if (!FileEntry)
+    std::vector<const clang::FileEntry*> FileEntries;
+    for (const auto& SourceFile : SourceFiles)
     {
-        res->Kind = ParserResultKind::FileNotFound;
-        return res;
+        auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(SourceFile,
+            clang::SourceLocation(), /*isAngled*/true,
+            nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr);
+        if (!FileEntry)
+        {
+            res->Kind = ParserResultKind::FileNotFound;
+            return res;
+        }
+        FileEntries.push_back(FileEntry);
     }
 
     // Create a virtual file that includes the header. This gets rid of some
     // Clang warnings about parsing an header file as the main file.
 
     std::string str;
-    str += "#include \"" + File + "\"" + "\n";
+    for (const auto& SourceFile : SourceFiles)
+    {
+        str += "#include \"" + SourceFile + "\"" + "\n";
+    }
     str += "\0";
 
     auto buffer = llvm::MemoryBuffer::getMemBuffer(str);
@@ -3287,6 +3295,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     AST = &C->getASTContext();
 
+    auto FileEntry = FileEntries[0];
     auto FileName = FileEntry->getName();
     auto Unit = Lib->FindOrCreateModule(FileName);
 
@@ -3294,7 +3303,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     HandleDeclaration(TU, Unit);
 
     if (Unit->OriginalPtr == nullptr)
-        Unit->OriginalPtr = (void*) FileEntry;
+        Unit->OriginalPtr = (void*)FileEntry;
 
     // Initialize enough Clang codegen machinery so we can get at ABI details.
     llvm::LLVMContext Ctx;
@@ -3524,7 +3533,7 @@ ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
 
     auto res = new ParserResult();
     res->CodeParser = new Parser(Opts);
-    return res->CodeParser->ParseHeader(Opts->FileName, res);
+    return res->CodeParser->ParseHeader(Opts->SourceFiles, res);
 }
 
 ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
@@ -3534,7 +3543,7 @@ ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
 
     auto res = new ParserResult();
     res->CodeParser = new Parser(Opts);
-    return res->CodeParser->ParseLibrary(Opts->FileName, res);
+    return res->CodeParser->ParseLibrary(Opts->LibraryFile, res);
 }
 
 ParserTargetInfo* ClangParser::GetTargetInfo(ParserOptions* Opts)

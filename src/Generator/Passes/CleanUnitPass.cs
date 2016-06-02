@@ -18,9 +18,10 @@ namespace CppSharp.Passes
         {
             if (unit.IsValid && !unit.IsSystemHeader && unit.HasDeclarations)
             {
-                var includeDir = Path.GetDirectoryName(unit.FilePath);
+                var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
                 unit.Module = DriverOptions.Modules.FirstOrDefault(
-                    m => m.IncludeDirs.Contains(includeDir)) ?? DriverOptions.MainModule;
+                    m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
+                    DriverOptions.MainModule;
                 unit.Module.Units.Add(unit);
             }
 
