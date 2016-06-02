@@ -141,7 +141,7 @@ namespace CppSharp
             }
         }
 
-        public ParserOptions BuildParserOptions()
+        public ParserOptions BuildParserOptions(SourceFile file = null)
         {
             var options = new ParserOptions
             {
@@ -200,7 +200,8 @@ namespace CppSharp
                 options.addLibraryDirs(lib);
             }
 
-            foreach (var module in Options.Modules)
+            foreach (var module in Options.Modules.Where(
+                m => file == null || m.Headers.Contains(file.Path)))
             {
                 foreach (var include in module.IncludeDirs)
                     options.addIncludeDirs(include);
@@ -237,8 +238,11 @@ namespace CppSharp
             foreach (var header in Options.Modules.SelectMany(m => m.Headers))
             {
                 var source = Project.AddFile(header);
-                source.Options = BuildParserOptions();
+                if (!Options.UnityBuild)
+                    source.Options = BuildParserOptions(source);
             }
+            if (Options.UnityBuild)
+                Project.Sources[0].Options = BuildParserOptions();
         }
 
         public ParserTargetInfo TargetInfo { get; set; }
