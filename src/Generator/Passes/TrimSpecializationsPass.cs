@@ -29,6 +29,10 @@ namespace CppSharp.Passes
                     template.Specializations.Remove(specialization);
             }
 
+            for (int i = template.Specializations.Count - 1; i >= 0; i--)
+                if (template.Specializations[i] is ClassTemplatePartialSpecialization)
+                    template.Specializations.RemoveAt(i);
+
             return true;
         }
     }

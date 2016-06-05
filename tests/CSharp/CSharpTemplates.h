@@ -64,3 +64,18 @@ private:
                                            TwoTemplateArgs<int*, int> p2,
                                            TwoTemplateArgs<int*, float> p3);
 };
+
+template <typename Key, typename T>
+class PartiallySpecialized
+{
+};
+
+template <typename Key>
+class PartiallySpecialized<Key, int>
+{
+    union
+    {
+        int i;
+        float f;
+    };
+};
