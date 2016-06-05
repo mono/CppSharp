@@ -85,6 +85,7 @@ namespace CppSharp.Generators.CSharp
 
             // we don't want internals in the names of internals :)
             typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
+            typePrinter.PushMarshalKind(CSharpMarshalKind.Unknown);
             var suffix = new StringBuilder();
             foreach (var argType in from argType in specialization.Arguments
                                     where argType.Type.Type != null
@@ -94,6 +95,7 @@ namespace CppSharp.Generators.CSharp
                 suffix.Append(argType);
             }
             typePrinter.PopContext();
+            typePrinter.PopMarshalKind();
             FormatTypesStringForIdentifier(suffix);
             return suffix.ToString();
         }

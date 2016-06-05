@@ -52,7 +52,7 @@ public:
     TemplateSpecializer();
 private:
     IndependentFields<int> independentFields;
-    DependentValueFields<int> dependentValueFields;
+    DependentValueFields<bool> dependentValueFields;
     DependentPointerFields<int> dependentPointerFields;
     HasDefaultTemplateArgument<int> hasDefaultTemplateArgument;
     DependentValueFields<T1> dependentPointerFieldsT1;

@@ -510,7 +510,7 @@ public class CSharpTests : GeneratorTestFixture
         foreach (var internalType in new[]
             {
                 typeof(CSharp.IndependentFields.Internal),
-                typeof(CSharp.DependentValueFields.Internal_int),
+                typeof(CSharp.DependentValueFields.Internal_bool),
                 typeof(CSharp.DependentValueFields.Internal_float),
                 typeof(CSharp.DependentPointerFields.Internal),
                 typeof(CSharp.DependentValueFields.Internal_Ptr),
