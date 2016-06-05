@@ -77,7 +77,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (!nested &&
                 specialization.TemplatedDecl.TemplatedClass.Fields.All(
-                    f => !f.IsDependent || f.Type.IsAddress()))
+                    f => !(f.Type.Desugar() is TemplateParameterType)))
                 return string.Empty;
 
             if (specialization.Arguments.All(
@@ -338,7 +338,8 @@ namespace CppSharp.Generators.CSharp
         private void GenerateClassTemplateSpecializationInternal(ClassTemplate classTemplate)
         {
             IList<ClassTemplateSpecialization> specializations;
-            if (classTemplate.TemplatedClass.Fields.Any(f => f.IsDependent && !f.Type.IsAddress()))
+            if (classTemplate.TemplatedClass.Fields.Any(
+                f => f.Type.Desugar() is TemplateParameterType))
                 specializations = classTemplate.Specializations;
             else
                 specializations = new[] { classTemplate.Specializations[0] };
