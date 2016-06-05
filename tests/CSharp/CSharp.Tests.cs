@@ -514,7 +514,7 @@ public class CSharpTests : GeneratorTestFixture
                 typeof(CSharp.DependentValueFields.Internal_float),
                 typeof(CSharp.DependentPointerFields.Internal),
                 typeof(CSharp.DependentValueFields.Internal_Ptr),
-                typeof(CSharp.HasDefaultTemplateArgument.Internal_int_IndependentFields)
+                typeof(CSharp.HasDefaultTemplateArgument.Internal_int_IndependentFields_int)
             })
         {
             var independentFields = internalType.GetFields();

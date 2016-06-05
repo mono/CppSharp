@@ -611,6 +611,11 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(@enum);
         }
 
+        public string GetNestedQualifiedName(ClassTemplateSpecialization decl)
+        {
+            return GetNestedQualifiedName(decl.Namespace, decl);
+        }
+
         private string GetNestedQualifiedName(Declaration decl)
         {
             return GetNestedQualifiedName(decl.Namespace, decl);

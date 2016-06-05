@@ -57,6 +57,8 @@ private:
     HasDefaultTemplateArgument<int> hasDefaultTemplateArgument;
     DependentValueFields<T1> dependentPointerFieldsT1;
     DependentValueFields<T2> dependentPointerFieldsT2;
+    DependentValueFields<IndependentFields<int>> specializeWithSpecialization;
+    DependentValueFields<IndependentFields<bool>> specializeWithSameSpecialization;
     void completeSpecializationInParameter(DependentValueFields<float> p1,
                                            DependentValueFields<int*> p2,
                                            DependentValueFields<float*> p3);

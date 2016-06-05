@@ -73,10 +73,11 @@ namespace CppSharp.Generators.CSharp
         }
 
         public static string GetSuffixForInternal(ClassTemplateSpecialization specialization,
-            CSharpTypePrinter typePrinter)
+            CSharpTypePrinter typePrinter, bool nested = false)
         {
-            if (specialization.TemplatedDecl.TemplatedClass.Fields.All(
-                f => !f.IsDependent || f.Type.IsAddress()))
+            if (!nested &&
+                specialization.TemplatedDecl.TemplatedClass.Fields.All(
+                    f => !f.IsDependent || f.Type.IsAddress()))
                 return string.Empty;
 
             if (specialization.Arguments.All(
@@ -84,18 +85,44 @@ namespace CppSharp.Generators.CSharp
                 return "_Ptr";
 
             // we don't want internals in the names of internals :)
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
-            typePrinter.PushMarshalKind(CSharpMarshalKind.Unknown);
+            if (!nested)
+            {
+                typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
+                typePrinter.PushMarshalKind(CSharpMarshalKind.Unknown);
+            }
             var suffix = new StringBuilder();
             foreach (var argType in from argType in specialization.Arguments
                                     where argType.Type.Type != null
-                                    select argType.Type.ToString())
+                                    select argType.Type.Type)
             {
                 suffix.Append('_');
+                ClassTemplateSpecialization nestedSpecialization;
+                if (argType.TryGetDeclaration(out nestedSpecialization))
+                {
+                    suffix.Append(typePrinter.GetNestedQualifiedName(nestedSpecialization));
+                    suffix.Append(GetSuffixForInternal(nestedSpecialization, typePrinter, true));
+                    continue;
+                }
+                Class @class;
+                if (argType.TryGetClass(out @class))
+                {
+                    nestedSpecialization = @class.Namespace as ClassTemplateSpecialization;
+                    if (nestedSpecialization != null)
+                    {
+                        suffix.Append(typePrinter.GetNestedQualifiedName(nestedSpecialization));
+                        suffix.Append(GetSuffixForInternal(nestedSpecialization, typePrinter, true));
+                        suffix.Append('_');
+                        suffix.Append(@class.Name);
+                        continue;
+                    }
+                }
                 suffix.Append(argType);
             }
-            typePrinter.PopContext();
-            typePrinter.PopMarshalKind();
+            if (!nested)
+            {
+                typePrinter.PopContext();
+                typePrinter.PopMarshalKind();
+            }
             FormatTypesStringForIdentifier(suffix);
             return suffix.ToString();
         }
