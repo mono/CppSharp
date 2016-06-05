@@ -282,6 +282,7 @@ namespace CppSharp
                 if (Options.GenerateInlines)
                     TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
                 TranslationUnitPasses.AddPass(new TrimSpecializationsPass());
+                TranslationUnitPasses.AddPass(new MoveNestedTemplateInternalsPass());
                 TranslationUnitPasses.AddPass(new GenerateTemplatesCodePass());
             }
 

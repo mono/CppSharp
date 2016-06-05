@@ -50,6 +50,10 @@ class DLL_API TemplateSpecializer
 {
 public:
     TemplateSpecializer();
+    template <typename T>
+    class NestedTemplate
+    {
+    };
 private:
     IndependentFields<int> independentFields;
     DependentValueFields<bool> dependentValueFields;
@@ -59,6 +63,7 @@ private:
     DependentValueFields<T2> dependentPointerFieldsT2;
     DependentValueFields<IndependentFields<int>> specializeWithSpecialization;
     DependentValueFields<IndependentFields<bool>> specializeWithSameSpecialization;
+    NestedTemplate<int> nestedTemplate;
     void completeSpecializationInParameter(DependentValueFields<float> p1,
                                            DependentValueFields<int*> p2,
                                            DependentValueFields<float*> p3);

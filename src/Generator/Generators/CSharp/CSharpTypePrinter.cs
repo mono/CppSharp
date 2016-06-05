@@ -388,7 +388,7 @@ namespace CppSharp.Generators.CSharp
                     return GetNestedQualifiedName(decl);
                 var specialization = template.GetClassTemplateSpecialization();
                 return string.Format("{0}.Internal{1}",
-                    GetNestedQualifiedName(specialization.TemplatedDecl.Namespace, specialization),
+                    GetNestedQualifiedName(specialization),
                     Helpers.GetSuffixForInternal(specialization, this));
             }
 
@@ -611,21 +611,30 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(@enum);
         }
 
-        public string GetNestedQualifiedName(ClassTemplateSpecialization decl)
+        public string GetNestedQualifiedName(Declaration decl)
         {
-            return GetNestedQualifiedName(decl.Namespace, decl);
-        }
+            var names = new List<string>();
 
-        private string GetNestedQualifiedName(Declaration decl)
-        {
-            return GetNestedQualifiedName(decl.Namespace, decl);
-        }
-
-        private string GetNestedQualifiedName(Declaration @namespace, Declaration decl)
-        {
-            var names = new List<string> { decl.Name };
-
-            var ctx = @namespace;
+            Declaration ctx;
+            var specialization = decl as ClassTemplateSpecialization;
+            if (specialization != null)
+            {
+                ctx = specialization.TemplatedDecl.Namespace;
+                if (specialization.OriginalNamespace is Class)
+                {
+                    names.Add(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
+                    ctx = ctx.Namespace;
+                }
+                else
+                {
+                    names.Add(decl.Name);
+                }
+            }
+            else
+            {
+                names.Add(decl.Name);
+                ctx = decl.Namespace;
+            }
             while (ctx != null)
             {
                 if (!string.IsNullOrWhiteSpace(ctx.Name))

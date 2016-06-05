@@ -348,7 +348,10 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             PushBlock(CSharpBlockKind.Namespace);
-            WriteLine("namespace {0}", classTemplate.Name);
+            WriteLine("namespace {0}{1}",
+                classTemplate.OriginalNamespace is Class ?
+                    classTemplate.OriginalNamespace.Name + '_' : string.Empty,
+                classTemplate.Name);
             WriteStartBraceIndent();
 
             foreach (var specialization in specializations)
