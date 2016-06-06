@@ -14,6 +14,7 @@ using Microsoft.CSharp;
 using CppSharp.Parser;
 using System;
 using System.Reflection;
+using CppSharp.Utils;
 
 namespace CppSharp
 {
@@ -96,6 +97,23 @@ namespace CppSharp
                 Options.SetupXcode();
             else if (Platform.IsWindows && !Options.NoBuiltinIncludes)
                 Options.SetupMSVC();
+        }
+
+        public void SortModulesByDependencies()
+        {
+            if (Options.Modules.All(m => m.Libraries.Any()))
+            {
+                var sortedModules = Options.Modules.TopologicalSort(m =>
+                {
+                    return from library in Symbols.Libraries
+                           where m.Libraries.Contains(library.FileName)
+                           from module in Options.Modules
+                           where library.Dependencies.Intersect(module.Libraries).Any()
+                           select module;
+                });
+                Options.Modules.Clear();
+                Options.Modules.AddRange(sortedModules);
+            }
         }
 
         void OnSourceFileParsed(IList<SourceFile> files, ParserResult result)
@@ -492,6 +510,7 @@ namespace CppSharp
             if (!options.Quiet)
                 Log.Message("Parsing code...");
 
+            driver.SortModulesByDependencies();
             driver.BuildParseOptions();
 
             if (!driver.ParseCode())
