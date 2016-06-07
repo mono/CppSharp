@@ -86,7 +86,8 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
+            if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore
+                || method.TranslationUnit.IsSystemHeader)
                 return false;
 
             var @params = method.GatherInternalParams(Driver.Options.IsItaniumLikeAbi, true).ToList();
