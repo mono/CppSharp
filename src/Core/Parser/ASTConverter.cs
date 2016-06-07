@@ -343,6 +343,7 @@ namespace CppSharp
                 var unit = Context.getTranslationUnits(i);
                 var _unit = declConverter.Visit(unit) as AST.TranslationUnit;
                 _ctx.TranslationUnits.Add(_unit);
+                declConverter.VisitDeclContext(unit, _unit);
             }
 
             foreach (var nativeObject in typeConverter.NativeObjects)
@@ -821,7 +822,7 @@ namespace CppSharp
             NativeObjects.Add(decl);
         }
 
-        void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)
+        public void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)
         {
             for (uint i = 0; i < ctx.NamespacesCount; ++i)
             {
@@ -897,7 +898,6 @@ namespace CppSharp
             }
 
             VisitDeclaration(decl, _unit);
-            VisitDeclContext(decl, _unit);
             return _unit;
         }
 
