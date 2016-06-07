@@ -1,3 +1,4 @@
+using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
@@ -5,7 +6,6 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-
     public class NamespacesDerivedTests : GeneratorTest
     {
         public NamespacesDerivedTests(GeneratorKind kind)
@@ -13,10 +13,24 @@ namespace CppSharp.Tests
         {
         }
 
-        public override void SetupPasses(Driver driver)
+        public override void Setup(Driver driver)
         {
+            base.Setup(driver);
             driver.Options.GenerateDefaultValuesForArguments = true;
             driver.Options.GeneratePropertiesAdvanced = true;
+
+            driver.Options.Modules[0].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
+            var @base = "NamespacesBase";
+            var module = new Module();
+            module.IncludeDirs.Add(Path.GetFullPath(GetTestsDirectory(@base)));
+            module.Headers.Add(string.Format("{0}.h", @base));
+            module.OutputNamespace = @base;
+            module.SharedLibraryName = string.Format("{0}.Native", @base);
+            // Workaround for CLR which does not check for .dll if the name already has a dot
+            if (System.Type.GetType("Mono.Runtime") == null)
+                module.SharedLibraryName += ".dll";
+            module.LibraryName = string.Format("{0}.CSharp", @base);
+            driver.Options.Modules.Insert(0, module);
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)
@@ -27,14 +41,13 @@ namespace CppSharp.Tests
         }
     }
 
-    public class NamespacesDerived {
+    public class NamespacesDerived
+    {
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
             ConsoleDriver.Run(new NamespacesDerivedTests(GeneratorKind.CSharp));
         }
-
     }
 }
 
