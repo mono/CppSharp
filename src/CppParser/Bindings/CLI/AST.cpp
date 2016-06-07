@@ -3531,6 +3531,73 @@ void CppSharp::Parser::AST::TemplateParameter::IsParameterPack::set(bool value)
     ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->IsParameterPack = value;
 }
 
+CppSharp::Parser::AST::TemplateTemplateParameter::TemplateTemplateParameter(::CppSharp::CppParser::AST::TemplateTemplateParameter* native)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)native)
+{
+}
+
+CppSharp::Parser::AST::TemplateTemplateParameter^ CppSharp::Parser::AST::TemplateTemplateParameter::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::TemplateTemplateParameter((::CppSharp::CppParser::AST::TemplateTemplateParameter*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::TemplateTemplateParameter::~TemplateTemplateParameter()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TemplateTemplateParameter*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::TemplateTemplateParameter::TemplateTemplateParameter()
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateTemplateParameter();
+}
+
+CppSharp::Parser::AST::TemplateTemplateParameter::TemplateTemplateParameter(CppSharp::Parser::AST::TemplateTemplateParameter^ _0)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &arg0 = *(::CppSharp::CppParser::AST::TemplateTemplateParameter*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateTemplateParameter(arg0);
+}
+
+bool CppSharp::Parser::AST::TemplateTemplateParameter::IsParameterPack::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateTemplateParameter*)NativePtr)->IsParameterPack;
+}
+
+void CppSharp::Parser::AST::TemplateTemplateParameter::IsParameterPack::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::TemplateTemplateParameter*)NativePtr)->IsParameterPack = value;
+}
+
+bool CppSharp::Parser::AST::TemplateTemplateParameter::IsPackExpansion::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateTemplateParameter*)NativePtr)->IsPackExpansion;
+}
+
+void CppSharp::Parser::AST::TemplateTemplateParameter::IsPackExpansion::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::TemplateTemplateParameter*)NativePtr)->IsPackExpansion = value;
+}
+
+bool CppSharp::Parser::AST::TemplateTemplateParameter::IsExpandedParameterPack::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateTemplateParameter*)NativePtr)->IsExpandedParameterPack;
+}
+
+void CppSharp::Parser::AST::TemplateTemplateParameter::IsExpandedParameterPack::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::TemplateTemplateParameter*)NativePtr)->IsExpandedParameterPack = value;
+}
+
 CppSharp::Parser::AST::TypeTemplateParameter::TypeTemplateParameter(::CppSharp::CppParser::AST::TypeTemplateParameter* native)
     : CppSharp::Parser::AST::TemplateParameter((::CppSharp::CppParser::AST::TemplateParameter*)native)
 {

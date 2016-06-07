@@ -727,12 +727,17 @@ namespace CppSharp.Generators.CSharp
             return type.Visit(this).Type;
         }
 
-        public CSharpTypePrinterResult VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        public CSharpTypePrinterResult VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
+        {
+            return templateTemplateParameter.Name;
+        }
+
+        public CSharpTypePrinterResult VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
         {
             return templateParameter.Name;
         }
 
-        public CSharpTypePrinterResult VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        public CSharpTypePrinterResult VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             return nonTypeTemplateParameter.Name;
         }

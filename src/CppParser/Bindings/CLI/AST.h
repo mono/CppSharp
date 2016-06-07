@@ -85,6 +85,7 @@ namespace CppSharp
             ref class TemplateParameterSubstitutionType;
             ref class TemplateParameterType;
             ref class TemplateSpecializationType;
+            ref class TemplateTemplateParameter;
             ref class TextComment;
             ref class TranslationUnit;
             ref class Type;
@@ -152,8 +153,9 @@ namespace CppSharp
                 MacroExpansion = 19,
                 TranslationUnit = 20,
                 Friend = 21,
-                TemplateTypeParm = 22,
-                NonTypeTemplateParm = 23
+                TemplateTemplateParm = 22,
+                TemplateTypeParm = 23,
+                NonTypeTemplateParm = 24
             };
 
             public enum struct AccessSpecifier
@@ -2093,6 +2095,37 @@ namespace CppSharp
                 }
 
                 property bool IsParameterPack
+                {
+                    bool get();
+                    void set(bool);
+                }
+            };
+
+            public ref class TemplateTemplateParameter : CppSharp::Parser::AST::Template
+            {
+            public:
+
+                TemplateTemplateParameter(::CppSharp::CppParser::AST::TemplateTemplateParameter* native);
+                static TemplateTemplateParameter^ __CreateInstance(::System::IntPtr native);
+                TemplateTemplateParameter();
+
+                TemplateTemplateParameter(CppSharp::Parser::AST::TemplateTemplateParameter^ _0);
+
+                ~TemplateTemplateParameter();
+
+                property bool IsParameterPack
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsPackExpansion
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsExpandedParameterPack
                 {
                     bool get();
                     void set(bool);

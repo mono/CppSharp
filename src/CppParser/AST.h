@@ -356,6 +356,7 @@ enum class DeclarationKind
     MacroExpansion,
     TranslationUnit,
     Friend,
+    TemplateTemplateParm,
     TemplateTypeParm,
     NonTypeTemplateParm
 };
@@ -759,6 +760,17 @@ public:
     unsigned int Depth;
     unsigned int Index;
     bool IsParameterPack;
+};
+
+class CS_API TemplateTemplateParameter : public Template
+{
+public:
+    TemplateTemplateParameter();
+    ~TemplateTemplateParameter();
+
+    bool IsParameterPack;
+    bool IsPackExpansion;
+    bool IsExpandedParameterPack;
 };
 
 class CS_API TypeTemplateParameter : public TemplateParameter

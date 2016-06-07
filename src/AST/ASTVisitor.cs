@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -453,7 +454,18 @@ namespace CppSharp.AST
             return true;
         }
 
-        public virtual bool VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        public bool VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
+        {
+            if (!VisitDeclaration(templateTemplateParameter))
+                return false;
+
+            foreach (var templateParameter in templateTemplateParameter.Parameters)
+                templateParameter.Visit(this);
+
+            return true;
+        }
+
+        public virtual bool VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
         {
             if (!VisitDeclaration(templateParameter))
                 return false;
@@ -461,7 +473,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        public bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             if (!VisitDeclaration(nonTypeTemplateParameter))
                 return false;

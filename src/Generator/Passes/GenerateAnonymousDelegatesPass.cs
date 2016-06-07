@@ -63,6 +63,9 @@ namespace CppSharp.Passes
         /// <returns>The new type.</returns>
         private QualifiedType CheckType(DeclarationContext @namespace, QualifiedType type)
         {
+            if (type.Type.IsDependent)
+                return type;
+
             var pointerType = type.Type as PointerType;
             if (pointerType == null)
                 return type;

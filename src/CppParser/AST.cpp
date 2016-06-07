@@ -98,6 +98,18 @@ TemplateParameter::~TemplateParameter()
 {
 }
 
+TemplateTemplateParameter::TemplateTemplateParameter()
+    : Template(DeclarationKind::TemplateTemplateParm)
+    , IsParameterPack(false)
+    , IsPackExpansion(false)
+    , IsExpandedParameterPack(false)
+{
+}
+
+TemplateTemplateParameter::~TemplateTemplateParameter()
+{
+}
+
 // TemplateParameter
 TypeTemplateParameter::TypeTemplateParameter()
     : TemplateParameter(DeclarationKind::TemplateTypeParm)

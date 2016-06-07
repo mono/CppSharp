@@ -150,6 +150,9 @@ namespace CppSharp.Types
 
         public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
+            if (template.Template.TemplatedDecl == null)
+                return string.Empty;
+
             return string.Format("{0}<{1}>", template.Template.TemplatedDecl.Visit(this),
                 string.Join(", ",
                 template.Arguments.Where(
@@ -343,7 +346,12 @@ namespace CppSharp.Types
             return type.Visit(this);
         }
 
-        public string VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        public string VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
+        {
+            return templateTemplateParameter.Name;
+        }
+
+        public string VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
         {
             if (templateParameter.DefaultArgument.Type == null)
                 return templateParameter.Name;
@@ -352,7 +360,7 @@ namespace CppSharp.Types
                 templateParameter.DefaultArgument.Visit(this));
         }
 
-        public string VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        public string VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             if (nonTypeTemplateParameter.DefaultArgument == null)
                 return nonTypeTemplateParameter.Name;

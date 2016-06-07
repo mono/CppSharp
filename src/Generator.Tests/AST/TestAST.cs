@@ -151,12 +151,17 @@ namespace CppSharp.Generator.Tests.AST
                 throw new System.NotImplementedException();
             }
 
-            public bool VisitTemplateParameter(TypeTemplateParameter templateParameter)
+            public bool VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
             {
                 throw new NotImplementedException();
             }
 
-            public bool VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+            public bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
             {
                 throw new NotImplementedException();
             }

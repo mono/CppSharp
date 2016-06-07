@@ -1,9 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CppSharp.AST
 {
-    public abstract class TemplateParameter : Declaration
+    public class TemplateTemplateParameter : Template
+    {
+        /// <summary>
+        /// Whether this template template parameter is a template parameter pack.
+        /// <para>template&lt;template&lt;class T&gt; ...MetaFunctions&gt; struct Apply;</para>
+        /// </summary>
+        public bool IsParameterPack { get; set; }
+
+        /// <summary>
+        /// Whether this parameter pack is a pack expansion.
+        /// <para>A template template parameter pack is a pack expansion if its template parameter list contains an unexpanded parameter pack.</para>
+        /// </summary>
+        public bool IsPackExpansion { get; set; }
+
+        /// <summary>
+        /// Whether this parameter is a template template parameter pack that has a known list of different template parameter lists at different positions.
+        /// A parameter pack is an expanded parameter pack when the original parameter pack's template parameter list was itself a pack expansion, and that expansion has already been expanded. For exampe, given:
+        /// <para>
+        /// template&lt;typename...Types&gt; struct Outer { template&lt;template&lt;Types&gt; class...Templates> struct Inner; };
+        /// </para>
+        /// The parameter pack Templates is a pack expansion, which expands the pack Types.When Types is supplied with template arguments by instantiating Outer, the instantiation of Templates is an expanded parameter pack.
+        /// </summary>
+        public bool IsExpandedParameterPack { get; set; }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitTemplateTemplateParameterDecl(this);
+        }
+    }
+
+    /// <summary>
+    /// Represents a template parameter
+    /// </summary>
+    public class TypeTemplateParameter : Declaration
     {
         /// <summary>
         /// Get the nesting depth of the template parameter.
@@ -23,13 +57,7 @@ namespace CppSharp.AST
         /// </para>
         /// </summary>
         public bool IsParameterPack { get; set; }
-    }
 
-    /// <summary>
-    /// Represents a template parameter
-    /// </summary>
-    public class TypeTemplateParameter : TemplateParameter
-    {
         // Generic type constraint
         public string Constraint;
 
@@ -37,15 +65,34 @@ namespace CppSharp.AST
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
-            return visitor.VisitTemplateParameter(this);
+            return visitor.VisitTemplateParameterDecl(this);
         }
     }
 
     /// <summary>
     /// Represents a hard-coded template parameter
     /// </summary>
-    public class NonTypeTemplateParameter : TemplateParameter
+    public class NonTypeTemplateParameter : Declaration
     {
+        /// <summary>
+        /// Get the nesting depth of the template parameter.
+        /// </summary>
+        public uint Depth { get; set; }
+
+        /// <summary>
+        /// Get the index of the template parameter within its parameter list.
+        /// </summary>
+        public uint Index { get; set; }
+
+        /// <summary>
+        /// Whether this parameter is a non-type template parameter pack.
+        /// <para>
+        /// If the parameter is a parameter pack, the type may be a PackExpansionType.In the following example, the Dims parameter is a parameter pack (whose type is 'unsigned').
+        /// <para>template&lt;typename T, unsigned...Dims&gt; struct multi_array;</para>
+        /// </para>
+        /// </summary>
+        public bool IsParameterPack { get; set; }
+
         public Expression DefaultArgument { get; set; }
 
         /// <summary>
@@ -79,7 +126,7 @@ namespace CppSharp.AST
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
-            return visitor.VisitNonTypeTemplateParameter(this);
+            return visitor.VisitNonTypeTemplateParameterDecl(this);
         }
     }
 
@@ -108,18 +155,18 @@ namespace CppSharp.AST
 
         protected Template()
         {
-            Parameters = new List<TemplateParameter>();
+            Parameters = new List<Declaration>();
         }
 
         protected Template(Declaration decl)
         {
             TemplatedDecl = decl;
-            Parameters = new List<TemplateParameter>();
+            Parameters = new List<Declaration>();
         }
 
         public Declaration TemplatedDecl;
 
-        public List<TemplateParameter> Parameters;
+        public List<Declaration> Parameters;
 
         public override string ToString()
         {

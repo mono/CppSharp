@@ -430,12 +430,17 @@ namespace CppSharp.Generators.CLI
             return type.Visit(this);
         }
 
-        public string VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        public string VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
+        {
+            return templateTemplateParameter.Name;
+        }
+
+        public string VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
         {
             return templateParameter.Name;
         }
 
-        public string VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        public string VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             return nonTypeTemplateParameter.Name;
         }

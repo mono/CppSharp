@@ -91,3 +91,30 @@ class PartiallySpecialized<Key, int>
         float f;
     };
 };
+
+template<class T>
+class HasResultType {
+    typedef char Yes;
+    typedef void *No;
+    template<typename U> static Yes test(int, const typename U::result_type * = 0);
+    template<typename U> static No test(double);
+public:
+    enum { Value = (sizeof(test<T>(0)) == sizeof(Yes)) };
+};
+
+template <typename Functor, bool foo = HasResultType<Functor>::Value>
+struct LazyResultType { typedef typename Functor::result_type Type; };
+template <typename Functor>
+struct LazyResultType<Functor, false> { typedef void Type; };
+
+template <class InputSequence, class MapFunctor>
+struct MapResultType
+{
+    typedef typename LazyResultType<MapFunctor>::Type ResultType;
+};
+
+template <template <typename> class InputSequence, typename MapFunctor, typename T>
+struct MapResultType<InputSequence<T>, MapFunctor>
+{
+    typedef InputSequence<typename LazyResultType<MapFunctor>::Type> ResultType;
+};

@@ -397,7 +397,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     auto startLoc = SM.getExpansionLoc(D->getLocStart());
     auto startOffset = SM.getFileOffset(startLoc);
 
-    if (clang::dyn_cast_or_null<clang::TranslationUnitDecl>(D))
+    if (clang::dyn_cast_or_null<clang::TranslationUnitDecl>(D) || !startLoc.isValid())
         return startLoc;
 
     auto lineNo = SM.getExpansionLineNumber(startLoc);
@@ -1004,6 +1004,24 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
     CT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
     return CT;
+}
+
+//-----------------------------------//
+
+TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(clang::TemplateTemplateParmDecl* TTP)
+{
+    auto TP = new TemplateTemplateParameter();
+    HandleDeclaration(TTP, TP);
+    TP->Parameters = WalkTemplateParameterList(TTP->getTemplateParameters());
+    TP->IsParameterPack = TTP->isParameterPack();
+    TP->IsPackExpansion = TTP->isPackExpansion();
+    TP->IsExpandedParameterPack = TTP->isExpandedParameterPack();
+    if (TTP->getTemplatedDecl())
+    {
+        auto TD = WalkDeclaration(TTP->getTemplatedDecl(), /*IgnoreSystemDecls=*/false);
+        TP->TemplatedDecl = TD;
+    }
+    return TP;
 }
 
 //-----------------------------------//
@@ -2917,17 +2935,20 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     if (IgnoreSystemDecls && !IsValidDeclaration(D->getLocation()))
         return nullptr;
 
-    for(auto it = D->attr_begin(); it != D->attr_end(); ++it)
+    if (D->hasAttrs())
     {
-        Attr* Attr = (*it);
+        for (auto it = D->attr_begin(); it != D->attr_end(); ++it)
+        {
+            Attr* Attr = (*it);
 
-        if(Attr->getKind() != clang::attr::Annotate)
-            continue;
+            if (Attr->getKind() != clang::attr::Annotate)
+                continue;
 
-        AnnotateAttr* Annotation = cast<AnnotateAttr>(Attr);
-        assert(Annotation != nullptr);
+            AnnotateAttr* Annotation = cast<AnnotateAttr>(Attr);
+            assert(Annotation != nullptr);
 
-        StringRef AnnotationText = Annotation->getAnnotation();
+            StringRef AnnotationText = Annotation->getAnnotation();
+        }
     }
 
     Declaration* Decl = nullptr;
@@ -3099,6 +3120,12 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         auto FD = cast<FriendDecl>(D);
         Decl = WalkFriend(FD);
+        break;
+    }
+    case Decl::TemplateTemplateParm:
+    {
+        auto TTP = cast<TemplateTemplateParmDecl>(D);
+        Decl = WalkTemplateTemplateParameter(TTP);
         break;
     }
     case Decl::TemplateTypeParm:

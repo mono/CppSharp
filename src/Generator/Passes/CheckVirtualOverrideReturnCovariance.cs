@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System;
+using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
@@ -242,12 +243,17 @@ namespace CppSharp.Passes
             return false;
         }
 
-        public bool VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        public bool VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
         {
             return false;
         }
 
-        public bool VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        public bool VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
+        {
+            return false;
+        }
+
+        public bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             return false;
         }

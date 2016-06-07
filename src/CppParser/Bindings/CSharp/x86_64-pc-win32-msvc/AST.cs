@@ -57,8 +57,9 @@ namespace CppSharp
                 MacroExpansion = 19,
                 TranslationUnit = 20,
                 Friend = 21,
-                TemplateTypeParm = 22,
-                NonTypeTemplateParm = 23
+                TemplateTemplateParm = 22,
+                TemplateTypeParm = 23,
+                NonTypeTemplateParm = 24
             }
 
             public enum AccessSpecifier
@@ -8056,6 +8057,181 @@ namespace CppSharp
                     set
                     {
                         ((Internal*) __Instance)->IsParameterPack = (byte) (value ? 1 : 0);
+                    }
+                }
+            }
+
+            public unsafe partial class TemplateTemplateParameter : CppSharp.Parser.AST.Template, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 232)]
+                public new partial struct Internal
+                {
+                    [FieldOffset(0)]
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
+
+                    [FieldOffset(4)]
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
+
+                    [FieldOffset(8)]
+                    public global::System.IntPtr _Namespace;
+
+                    [FieldOffset(16)]
+                    public CppSharp.Parser.SourceLocation.Internal Location;
+
+                    [FieldOffset(20)]
+                    public int LineNumberStart;
+
+                    [FieldOffset(24)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(128)]
+                    public byte IsIncomplete;
+
+                    [FieldOffset(129)]
+                    public byte IsDependent;
+
+                    [FieldOffset(130)]
+                    public byte IsImplicit;
+
+                    [FieldOffset(136)]
+                    public global::System.IntPtr CompleteDeclaration;
+
+                    [FieldOffset(144)]
+                    public uint DefinitionOrder;
+
+                    [FieldOffset(176)]
+                    public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(184)]
+                    public global::System.IntPtr Comment;
+
+                    [FieldOffset(192)]
+                    public global::System.IntPtr TemplatedDecl;
+
+                    [FieldOffset(224)]
+                    public byte IsParameterPack;
+
+                    [FieldOffset(225)]
+                    public byte IsPackExpansion;
+
+                    [FieldOffset(226)]
+                    public byte IsExpandedParameterPack;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="??0TemplateTemplateParameter@AST@CppParser@CppSharp@@QEAA@XZ")]
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="??0TemplateTemplateParameter@AST@CppParser@CppSharp@@QEAA@AEBV0123@@Z")]
+                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="??1TemplateTemplateParameter@AST@CppParser@CppSharp@@QEAA@XZ")]
+                    internal static extern void dtor_0(global::System.IntPtr instance, int delete);
+                }
+
+                public static new TemplateTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new TemplateTemplateParameter(native.ToPointer(), skipVTables);
+                }
+
+                public static TemplateTemplateParameter __CreateInstance(TemplateTemplateParameter.Internal native, bool skipVTables = false)
+                {
+                    return new TemplateTemplateParameter(native, skipVTables);
+                }
+
+                private static void* __CopyValue(TemplateTemplateParameter.Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(232);
+                    CppSharp.Parser.AST.TemplateTemplateParameter.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private TemplateTemplateParameter(TemplateTemplateParameter.Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected TemplateTemplateParameter(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public TemplateTemplateParameter()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(232);
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
+                }
+
+                public TemplateTemplateParameter(CppSharp.Parser.AST.TemplateTemplateParameter _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(232);
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
+                public bool IsParameterPack
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->IsParameterPack != 0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->IsParameterPack = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsPackExpansion
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->IsPackExpansion != 0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->IsPackExpansion = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsExpandedParameterPack
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->IsExpandedParameterPack != 0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->IsExpandedParameterPack = (byte) (value ? 1 : 0);
                     }
                 }
             }

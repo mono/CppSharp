@@ -139,7 +139,8 @@ namespace CppSharp
         public abstract TRet VisitClassTemplatePartialSpecialization(
             ClassTemplatePartialSpecialization decl);
         public abstract TRet VisitFunctionTemplate(FunctionTemplate decl);
-        public abstract TRet VisitTemplateParameter(TypeTemplateParameter decl);
+        public abstract TRet VisitTemplateTemplateParameter(TemplateTemplateParameter decl);
+        public abstract TRet VisitTypeTemplateParameter(TypeTemplateParameter decl);
         public abstract TRet VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl);
 
         public virtual TRet Visit(Parser.AST.Declaration decl)
@@ -231,10 +232,15 @@ namespace CppSharp
                         var _decl = FunctionTemplate.__CreateInstance(decl.__Instance);
                         return VisitFunctionTemplate(_decl);
                     }
+                case DeclarationKind.TemplateTemplateParm:
+                    {
+                        var _decl = TemplateTemplateParameter.__CreateInstance(decl.__Instance);
+                        return VisitTemplateTemplateParameter(_decl);
+                    }
                 case DeclarationKind.TemplateTypeParm:
                     {
                         var _decl = TypeTemplateParameter.__CreateInstance(decl.__Instance);
-                        return VisitTemplateParameter(_decl);
+                        return VisitTypeTemplateParameter(_decl);
                     }
                 case DeclarationKind.NonTypeTemplateParm:
                     {
@@ -1439,7 +1445,7 @@ namespace CppSharp
             for (uint i = 0; i < template.ParametersCount; ++i)
             {
                 var param = template.getParameters(i);
-                var _param = (AST.TemplateParameter) Visit(param);
+                var _param = Visit(param);
                 _template.Parameters.Add(_param);
             }
         }
@@ -1641,7 +1647,7 @@ namespace CppSharp
             return _macro;
         }
 
-        public override AST.Declaration VisitTemplateParameter(TypeTemplateParameter decl)
+        public override AST.Declaration VisitTypeTemplateParameter(TypeTemplateParameter decl)
         {
             var templateParameter = new AST.TypeTemplateParameter();
             VisitDeclaration(decl, templateParameter);
@@ -1664,6 +1670,16 @@ namespace CppSharp
             nonTypeTemplateParameter.IsPackExpansion = decl.IsPackExpansion;
             nonTypeTemplateParameter.IsExpandedParameterPack = decl.IsExpandedParameterPack;
             return nonTypeTemplateParameter;
+        }
+
+        public override AST.Declaration VisitTemplateTemplateParameter(TemplateTemplateParameter decl)
+        {
+            var templateTemplateParameter = new AST.TemplateTemplateParameter();
+            VisitTemplate(decl, templateTemplateParameter);
+            templateTemplateParameter.IsParameterPack = decl.IsParameterPack;
+            templateTemplateParameter.IsPackExpansion = decl.IsPackExpansion;
+            templateTemplateParameter.IsExpandedParameterPack = decl.IsExpandedParameterPack;
+            return templateTemplateParameter;
         }
     }
 

@@ -88,6 +88,7 @@ protected:
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
+    TemplateTemplateParameter* WalkTemplateTemplateParameter(clang::TemplateTemplateParmDecl* TTP);
     TypeTemplateParameter* WalkTypeTemplateParameter(clang::TemplateTypeParmDecl* TTPD);
     NonTypeTemplateParameter* WalkNonTypeTemplateParameter(clang::NonTypeTemplateParmDecl* TTPD);
     std::vector<Declaration*> WalkTemplateParameterList(const clang::TemplateParameterList* TPL);
