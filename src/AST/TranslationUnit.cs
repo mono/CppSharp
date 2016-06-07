@@ -27,7 +27,7 @@ namespace CppSharp.AST
 
         public Module Module
         {
-            get { return (Module) module.Target; }
+            get { return (module != null) ? (Module) module.Target : null; }
             set { module = new WeakReference(value); }
         }
 
