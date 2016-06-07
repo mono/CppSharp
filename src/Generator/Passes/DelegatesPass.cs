@@ -93,19 +93,21 @@ namespace CppSharp.Passes
             var @params = method.GatherInternalParams(Driver.Options.IsItaniumLikeAbi, true).ToList();
             var delegateName = GenerateDelegateSignature(@params, method.ReturnType);
 
+            var module = method.TranslationUnit.Module;
+
             Namespace namespaceDelegates;
-            if (namespacesDelegates.ContainsKey(method.TranslationUnit.Module))
+            if (namespacesDelegates.ContainsKey(module))
             {
-                namespaceDelegates = namespacesDelegates[method.TranslationUnit.Module];
+                namespaceDelegates = namespacesDelegates[module];
             }
             else
             {
                 namespaceDelegates = new Namespace
                 {
                     Name = DelegatesNamespace,
-                    Namespace = method.TranslationUnit.Module.Units.Last()
+                    Namespace = module.Units.Last()
                 };
-                namespacesDelegates.Add(method.TranslationUnit.Module, namespaceDelegates);
+                namespacesDelegates.Add(module, namespaceDelegates);
             }
 
             var @delegate = new TypedefDecl
@@ -124,20 +126,21 @@ namespace CppSharp.Passes
                     Namespace = namespaceDelegates
                 };
 
-            Generator.CurrentOutputNamespace = method.TranslationUnit.Module.OutputNamespace;
+            Generator.CurrentOutputNamespace = module.OutputNamespace;
             var delegateString = @delegate.Visit(TypePrinter).Type;
             var existingDelegate = GetExistingDelegate(
                 method.TranslationUnit.Module.Libraries, delegateString);
+
             if (existingDelegate != null)
             {
                 Driver.Delegates.Add(method, existingDelegate);
                 return true;
             }
 
-            existingDelegate = new DelegateDefinition(
-                method.TranslationUnit.Module.OutputNamespace, delegateString);
+            existingDelegate = new DelegateDefinition(module.OutputNamespace, delegateString);
             Driver.Delegates.Add(method, existingDelegate);
-            foreach (var library in method.TranslationUnit.Module.Libraries)
+
+            foreach (var library in module.Libraries)
                 libsDelegates[library].Add(delegateString, existingDelegate);
 
             namespaceDelegates.Declarations.Add(@delegate);
