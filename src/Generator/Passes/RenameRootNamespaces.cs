@@ -11,8 +11,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (!base.VisitTranslationUnit(unit) || !unit.IsValid ||
-                unit.IsSystemHeader || !unit.HasDeclarations)
+            if (!base.VisitTranslationUnit(unit) || !unit.IsValid || unit.IsSystemHeader)
                 return false;
 
             var fileName = unit.TranslationUnit.FileName;

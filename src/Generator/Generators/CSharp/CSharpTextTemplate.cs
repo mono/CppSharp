@@ -254,7 +254,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var templateGroups = (from template in context.Templates.OfType<ClassTemplate>()
-                                  where template.Specializations.Count > 0
+                                  where !template.IsIncomplete && template.Specializations.Count > 0
                                   group template by context.Classes.Contains(template.TemplatedClass)
                                   into @group
                                   select @group).ToList();
@@ -2621,7 +2621,7 @@ namespace CppSharp.Generators.CSharp
             var templateSpecialization = function.Namespace as ClassTemplateSpecialization;
 
             string @namespace = templateSpecialization != null ?
-                (function.Namespace.OriginalName + '.') : string.Empty;
+                (templateSpecialization.Namespace.OriginalName + '.') : string.Empty;
 
             CheckArgumentRange(function);
             var functionName = string.Format("{0}Internal.{1}", @namespace,

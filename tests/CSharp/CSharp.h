@@ -1,5 +1,6 @@
 #include "../Tests.h"
 #include <cstdint>
+#include "AnotherUnit.h"
 
 class DLL_API Foo
 {
@@ -23,6 +24,7 @@ public:
 
 protected:
     int P;
+    TemplateInAnotherUnit<int> templateInAnotherUnit;
 };
 
 class DLL_API Quux

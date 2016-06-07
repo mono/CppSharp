@@ -49,7 +49,7 @@ namespace CppSharp.Passes
             var result = base.VisitLibrary(context);
 
             foreach (var module in Driver.Options.Modules.Where(m => namespacesDelegates.ContainsKey(m)))
-                module.Units.Last().Declarations.Add(namespacesDelegates[module]);
+                module.Units.Last(u => u.HasDeclarations).Declarations.Add(namespacesDelegates[module]);
 
             return result;
         }

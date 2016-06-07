@@ -8,7 +8,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            if (!base.VisitClassTemplateDecl(template))
+            if (!base.VisitClassTemplateDecl(template) || template.IsIncomplete)
                 return false;
 
             template.Specializations.RemoveAll(
@@ -22,12 +22,9 @@ namespace CppSharp.Passes
                               a => a.Type.Type != null && a.Type.Type.IsAddress()) into @group
                           select @group).ToList();
 
-            var lastGroup = groups.Last();
-            if (lastGroup.Key)
-            {
-                foreach (var specialization in lastGroup.Skip(1))
+            foreach (var group in groups.Where(g => g.Key))
+                foreach (var specialization in group.Skip(1))
                     template.Specializations.Remove(specialization);
-            }
 
             for (int i = template.Specializations.Count - 1; i >= 0; i--)
                 if (template.Specializations[i] is ClassTemplatePartialSpecialization)

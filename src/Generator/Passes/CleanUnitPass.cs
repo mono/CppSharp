@@ -16,7 +16,10 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (unit.IsValid && !unit.IsSystemHeader && unit.HasDeclarations)
+            if (!base.VisitTranslationUnit(unit))
+                return false;
+
+            if (unit.IsValid && !unit.IsSystemHeader)
             {
                 var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
                 unit.Module = DriverOptions.Modules.FirstOrDefault(

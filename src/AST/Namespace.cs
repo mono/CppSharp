@@ -419,7 +419,8 @@ namespace CppSharp.AST
             {
                 Func<Declaration, bool> pred = (t => t.IsGenerated);
                 return Enums.Exists(pred) || HasFunctions || Typedefs.Exists(pred)
-                    || Classes.Any() || Namespaces.Exists(n => n.HasDeclarations);
+                    || Classes.Any(pred) || Namespaces.Exists(n => n.HasDeclarations) ||
+                    Templates.Any(pred);
             }
         }
 

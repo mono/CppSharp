@@ -1,4 +1,5 @@
 #include "../Tests.h"
+#include "AnotherUnit.h"
 
 class DLL_API T1
 {
@@ -46,6 +47,9 @@ class HasDefaultTemplateArgument
     T field;
 };
 
+template <typename T>
+class TemplateInAnotherUnit;
+
 class DLL_API TemplateSpecializer
 {
 public:
@@ -61,6 +65,7 @@ private:
     HasDefaultTemplateArgument<int> hasDefaultTemplateArgument;
     DependentValueFields<T1> dependentPointerFieldsT1;
     DependentValueFields<T2> dependentPointerFieldsT2;
+    TemplateInAnotherUnit<float> templateInAnotherUnit;
     DependentValueFields<IndependentFields<int>> specializeWithSpecialization;
     DependentValueFields<IndependentFields<bool>> specializeWithSameSpecialization;
     NestedTemplate<int> nestedTemplate;

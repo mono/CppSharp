@@ -51,6 +51,11 @@ public:
 template <typename T>
 class TemplateClass
 {
+    union
+    {
+        int i;
+        float f;
+    };
 };
 
 class DLL_API HasVirtualInCore

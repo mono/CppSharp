@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -18,6 +19,17 @@ namespace CppSharp.Passes
         {
             if (!base.VisitClassTemplateDecl(template))
                 return false;
+
+            if (template.IsIncomplete)
+            {
+                var completeDeclaration = (ClassTemplate) template.CompleteDeclaration;
+                foreach (var specialization in template.Specializations.Where(
+                    spec => completeDeclaration.Specializations.All(s => s.USR != spec.USR)))
+                {
+                    specialization.TemplatedDecl = completeDeclaration;
+                    completeDeclaration.Specializations.Add(specialization);
+                }
+            }
 
             EnsureCompleteDeclaration(template.TemplatedDecl);
 

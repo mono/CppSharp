@@ -60,6 +60,7 @@ public:
     Abstract* getAbstract();
 private:
     TemplateClass<int> t;
+    TemplateClass<Derived> d;
 };
 
 class DLL_API HasVirtualInDependency : public HasVirtualInCore
