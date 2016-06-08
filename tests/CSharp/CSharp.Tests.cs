@@ -191,6 +191,7 @@ public class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultEnumAssignedBitwiseOr();
             methodsWithDefaultValues.DefaultEnumAssignedBitwiseOrShort();
             methodsWithDefaultValues.DefaultNonEmptyCtor();
+            methodsWithDefaultValues.DefaultNonEmptyCtorWithNullPtr();
             methodsWithDefaultValues.DefaultMappedToEnum();
             methodsWithDefaultValues.DefaultMappedToZeroEnum();
             methodsWithDefaultValues.DefaultMappedToEnumAssignedWithCtor();

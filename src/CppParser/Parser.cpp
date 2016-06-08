@@ -2785,7 +2785,9 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
             {
                 auto SubTemporaryExpr = TemporaryExpr->GetTemporaryExpr();
                 auto Cast = dyn_cast<CastExpr>(SubTemporaryExpr);
-                if (!Cast || Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
+                if (!Cast ||
+                    (Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass &&
+                     Cast->getSubExprAsWritten()->getStmtClass() != Stmt::CXXNullPtrLiteralExprClass))
                     return WalkExpression(SubTemporaryExpr);
                 return new AST::CXXConstructExpr(GetStringFromStatement(Expr),
                     WalkDeclaration(ConstructorExpr->getConstructor()));

@@ -447,6 +447,10 @@ void MethodsWithDefaultValues::defaultNonEmptyCtor(QGenericArgument arg)
 {
 }
 
+void MethodsWithDefaultValues::defaultNonEmptyCtorWithNullPtr(QGenericArgument arg)
+{
+}
+
 void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
 {
 }

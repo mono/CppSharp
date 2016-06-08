@@ -356,6 +356,7 @@ public:
     void defaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
     void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
     void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
+    void defaultNonEmptyCtorWithNullPtr(QGenericArgument arg = QGenericArgument(nullptr));
     void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
