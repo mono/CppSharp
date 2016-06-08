@@ -120,6 +120,7 @@ namespace CppSharp.Passes
             var function = decl as Function;
             if (function != null && function.SynthKind != FunctionSynthKind.AdjustedMethod)
             {
+                declarations.Add(function.Namespace);
                 // account for overloads
                 declarations.AddRange(GetFunctionsWithTheSameParams(function));
             }

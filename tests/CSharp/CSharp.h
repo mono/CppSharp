@@ -16,6 +16,7 @@ public:
     int (STDCALL *attributedFunctionPtr)();
     bool isNoParams();
     void setNoParams();
+    void foo(int i);
 
     static const int rename = 5;
     static int makeFunctionCall();

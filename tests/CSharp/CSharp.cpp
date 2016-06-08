@@ -41,6 +41,10 @@ void Foo::setNoParams()
 {
 }
 
+void Foo::foo(int i)
+{
+}
+
 const int Foo::rename;
 
 int Foo::makeFunctionCall()
