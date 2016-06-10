@@ -520,6 +520,7 @@ namespace CppSharp
             }
 
             new CleanUnitPass(options).VisitLibrary(driver.ASTContext);
+            options.Modules.RemoveAll(m => m.Units.All(u => u.Declarations.Count == 0));
 
             if (!options.Quiet)
                 Log.Message("Processing code...");
