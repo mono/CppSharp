@@ -157,21 +157,21 @@ namespace CppSharp.Passes
         static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class, out int index,
             CXXOperatorKind op1, CXXOperatorKind op2, Type typeLeft, Type typeRight)
         {
-            var first = @class.Operators.FirstOrDefault(o => o.OperatorKind == op1 &&
+            var first = @class.Operators.FirstOrDefault(o => o.IsGenerated && o.OperatorKind == op1 &&
                 o.Parameters.First().Type.Equals(typeLeft) && o.Parameters.Last().Type.Equals(typeRight));
-            var second = @class.Operators.FirstOrDefault(o => o.OperatorKind == op2 &&
+            var second = @class.Operators.FirstOrDefault(o => o.IsGenerated && o.OperatorKind == op2 &&
                 o.Parameters.First().Type.Equals(typeLeft) && o.Parameters.Last().Type.Equals(typeRight));
 
             var hasFirst = first != null;
             var hasSecond = second != null;
 
-            if (hasFirst && (!hasSecond || !second.IsGenerated))
+            if (hasFirst && !hasSecond)
             {
                 index = @class.Methods.IndexOf(first);
                 return op2;
             }
 
-            if (hasSecond && (!hasFirst || !first.IsGenerated))
+            if (hasSecond && !hasFirst)
             {
                 index = @class.Methods.IndexOf(second);
                 return op1;
