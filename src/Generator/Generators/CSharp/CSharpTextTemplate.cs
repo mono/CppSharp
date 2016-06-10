@@ -229,7 +229,8 @@ namespace CppSharp.Generators.CSharp
             var isNamespace = context is Namespace;
             var isTranslationUnit = context is TranslationUnit;
 
-            var shouldGenerateNamespace = isNamespace && !isTranslationUnit;
+            var shouldGenerateNamespace = isNamespace && !isTranslationUnit &&
+                context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete));
 
             if (shouldGenerateNamespace)
             {
