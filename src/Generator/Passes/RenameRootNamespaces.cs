@@ -14,17 +14,17 @@ namespace CppSharp.Passes
             if (!base.VisitTranslationUnit(unit) || !unit.IsValid || unit.IsSystemHeader)
                 return false;
 
-            var fileName = unit.TranslationUnit.FileName;
-            if (rootNamespaceRenames.ContainsKey(fileName))
+            var filePath = unit.TranslationUnit.FilePath;
+            if (rootNamespaceRenames.ContainsKey(filePath))
             {
-                var rootNamespace = rootNamespaceRenames[fileName];
+                var rootNamespace = rootNamespaceRenames[filePath];
                 unit.Name = rootNamespace;
             }
             else if (unit.GenerationKind == GenerationKind.Generate)
             {
                 if (Driver.Options.IsCSharpGenerator)
                     unit.Name = unit.Module.OutputNamespace;
-                rootNamespaceRenames.Add(fileName, unit.Module.OutputNamespace);
+                rootNamespaceRenames.Add(filePath, unit.Module.OutputNamespace);
             }
             return true;
         }
