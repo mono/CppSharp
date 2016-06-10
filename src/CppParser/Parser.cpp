@@ -3049,8 +3049,6 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::Function:
     {
         FunctionDecl* FD = cast<FunctionDecl>(D);
-        if (!FD->isFirstDecl())
-            break;
 
         // Check for and ignore built-in functions.
         if (FD->getBuiltinID() != 0)
