@@ -32,6 +32,7 @@ namespace CppSharp.AST
 
         public bool VisitFunctionReturnType = true;
         public bool VisitFunctionParameters = true;
+        public bool VisitEventParameters = true;
         public bool VisitTemplateArguments = true;
     }
 
@@ -448,8 +449,9 @@ namespace CppSharp.AST
             if (!VisitDeclaration(@event))
                 return false;
 
-            foreach (var param in @event.Parameters)
-                param.Visit(this);
+            if (Options.VisitEventParameters)
+                foreach (var param in @event.Parameters)
+                    param.Visit(this);
 
             return true;
         }
