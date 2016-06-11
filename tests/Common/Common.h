@@ -883,27 +883,29 @@ public:
 class DLL_API BaseClassVirtual
 {
 public:
-    virtual int retInt();
+    typedef Foo Foo1;
+    virtual int retInt(const Foo1& foo);
     static BaseClassVirtual getBase();
 };
 
 class DLL_API DerivedClassVirtual : public BaseClassVirtual
 {
 public:
-    virtual int retInt();
+    typedef Foo Foo2;
+    virtual int retInt(const Foo2& foo);
 };
 
 class DLL_API DerivedClassAbstractVirtual : public DerivedClassVirtual
 {
 public:
-    virtual int retInt() = 0;
+    virtual int retInt(const Foo& foo) = 0;
 };
 
 class DLL_API DerivedClassOverrideAbstractVirtual : public DerivedClassAbstractVirtual
 {
 public:
     DerivedClassOverrideAbstractVirtual();
-    virtual int retInt();
+    virtual int retInt(const Foo& foo);
 };
 
 class DLL_API BufferForVirtualFunction : public BaseClassVirtual
@@ -916,7 +918,7 @@ class DLL_API OverridesNonDirectVirtual : public BufferForVirtualFunction
 {
 public:
     OverridesNonDirectVirtual();
-    virtual int retInt();
+    virtual int retInt(const Foo& foo);
 };
 
 namespace boost

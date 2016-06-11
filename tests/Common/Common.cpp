@@ -544,26 +544,26 @@ HasProblematicFields HasVirtualReturningHasProblematicFields::returnsProblematic
     return HasProblematicFields();
 }
 
-int BaseClassVirtual::retInt()
+int BaseClassVirtual::retInt(const Foo1& foo)
 {
-	return 1;
+    return 1;
 }
 
 BaseClassVirtual BaseClassVirtual::getBase()
 {
-	return DerivedClassVirtual();
+    return DerivedClassVirtual();
 }
 
-int DerivedClassVirtual::retInt()
+int DerivedClassVirtual::retInt(const Foo2& foo)
 {
-	return 2;
+    return 2;
 }
 
 DerivedClassOverrideAbstractVirtual::DerivedClassOverrideAbstractVirtual()
 {
 }
 
-int DerivedClassOverrideAbstractVirtual::retInt()
+int DerivedClassOverrideAbstractVirtual::retInt(const Foo& foo)
 {
     return 1;
 }
@@ -576,7 +576,7 @@ OverridesNonDirectVirtual::OverridesNonDirectVirtual()
 {
 }
 
-int OverridesNonDirectVirtual::retInt()
+int OverridesNonDirectVirtual::retInt(const Foo& foo)
 {
     return 3;
 }
