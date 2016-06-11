@@ -60,6 +60,10 @@ namespace CppSharp.Generators.CSharp
                         default:
                             return new CSharpExpressionPrinterResult { Value = expr.String };
                     }
+                case StatementClass.DeclarationReference:
+                    if (expr.Declaration is Variable)
+                        return new CSharpExpressionPrinterResult { Value = expr.Declaration.Name };
+                    goto default;
                 default:
                     return new CSharpExpressionPrinterResult { Value = expr.String };
             }

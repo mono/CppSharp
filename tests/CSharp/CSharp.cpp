@@ -1,6 +1,6 @@
 #include "CSharp.h"
 
-Foo::Foo()
+Foo::Foo(char* name)
 {
     A = 10;
     P = 50;
@@ -381,6 +381,8 @@ MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int b
 {
 }
 
+char* MethodsWithDefaultValues::stringConstant = "test";
+
 MethodsWithDefaultValues::MethodsWithDefaultValues(Foo foo)
 {
     m_foo = foo;
@@ -532,6 +534,10 @@ void MethodsWithDefaultValues::defaultWithPropertyCall(int f)
 }
 
 void MethodsWithDefaultValues::defaultWithGetPropertyCall(int f)
+{
+}
+
+void MethodsWithDefaultValues::defaultWithStringConstant(const Foo& arg)
 {
 }
 

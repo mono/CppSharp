@@ -6,7 +6,7 @@ using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
 
-public class CSharpTests : GeneratorTestFixture
+public unsafe class CSharpTests : GeneratorTestFixture
 {
     public class ExtendsWrapper : TestOverrideFromSecondaryBase
     {
@@ -210,6 +210,7 @@ public class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultWithFunctionCall();
             methodsWithDefaultValues.DefaultWithPropertyCall();
             methodsWithDefaultValues.DefaultWithGetPropertyCall();
+            methodsWithDefaultValues.DefaultWithStringConstant();
         }
     }
 
