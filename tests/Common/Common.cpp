@@ -80,9 +80,9 @@ Bar* Bar::returnPointerToValueType()
     return this;
 }
 
-bool Bar::operator ==(const Bar& other) const
+bool Bar::operator ==(const Bar& arg1) const
 {
-    return A == other.A && B == other.B;
+    return A == arg1.A && B == arg1.B;
 }
 
 bool operator ==(Bar::Item item, const Bar& bar)

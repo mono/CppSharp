@@ -1160,7 +1160,7 @@ namespace CppSharp.Generators.CLI
             if (param.Type is BuiltinType)
                 return paramMarshal;
 
-            var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
+            var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
 
             var isRef = param.IsOut || param.IsInOut;
             // Since both pointers and references to types are wrapped as CLI

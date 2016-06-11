@@ -2911,7 +2911,7 @@ namespace CppSharp.Generators.CSharp
                 return new ParamMarshal { Name = name, Param = param };
             }
 
-            var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
+            var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };
 
             if (param.IsOut || param.IsInOut)

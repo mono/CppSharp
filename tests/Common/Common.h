@@ -85,7 +85,7 @@ struct DLL_API Bar
 
     Bar* returnPointerToValueType();
 
-    bool operator ==(const Bar& other) const;
+    bool operator ==(const Bar& arg1) const;
 };
 
 DLL_API bool operator ==(Bar::Item item, const Bar& bar);
