@@ -267,6 +267,16 @@ enum class Flags
     Flag3 = 4
 };
 
+class DLL_API UsesPointerToEnumInParamOfVirtual
+{
+public:
+    UsesPointerToEnumInParamOfVirtual();
+    virtual ~UsesPointerToEnumInParamOfVirtual();
+    virtual QFlags<Flags> hasPointerToEnumInParam(const QFlags<Flags>& pointerToEnum) const;
+    static QFlags<Flags> callOverrideOfHasPointerToEnumInParam(
+        const UsesPointerToEnumInParamOfVirtual* object, const QFlags<Flags>& pointerToEnum);
+};
+
 DLL_API Flags operator|(Flags lhs, Flags rhs);
 
 enum UntypedFlags

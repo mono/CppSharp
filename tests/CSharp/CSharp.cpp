@@ -350,6 +350,25 @@ TestCopyConstructorVal::TestCopyConstructorVal(const TestCopyConstructorVal& oth
     B = other.B;
 }
 
+UsesPointerToEnumInParamOfVirtual::UsesPointerToEnumInParamOfVirtual()
+{
+}
+
+UsesPointerToEnumInParamOfVirtual::~UsesPointerToEnumInParamOfVirtual()
+{
+}
+
+QFlags<Flags> UsesPointerToEnumInParamOfVirtual::hasPointerToEnumInParam(const QFlags<Flags>& pointerToEnum) const
+{
+    return pointerToEnum;
+}
+
+QFlags<Flags> UsesPointerToEnumInParamOfVirtual::callOverrideOfHasPointerToEnumInParam(
+        const UsesPointerToEnumInParamOfVirtual* object, const QFlags<Flags>& pointerToEnum)
+{
+    return object->hasPointerToEnumInParam(pointerToEnum);
+}
+
 Flags operator|(Flags lhs, Flags rhs)
 {
     return static_cast<Flags>(static_cast<int>(lhs) | static_cast<int>(rhs));

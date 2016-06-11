@@ -504,6 +504,16 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
     }
+    
+    [Test]
+    public void TestGetEnumFromNativePointer()
+    {
+        using (var getEnumFromNativePointer = new GetEnumFromNativePointer())
+        {
+            Assert.That(UsesPointerToEnumInParamOfVirtual.CallOverrideOfHasPointerToEnumInParam(
+                getEnumFromNativePointer, Flags.Flag3), Is.EqualTo(Flags.Flag3));
+        }
+    }
 
     // HACK: the completion of types is temporarily suspended because of problems with QtWidgets
     [Test, Ignore]
@@ -537,6 +547,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(fieldOffsetKey.Value, Is.EqualTo(0));
             var fieldOffsetValue = (FieldOffsetAttribute) independentFields[1].GetCustomAttribute(typeof(FieldOffsetAttribute));
             Assert.That(fieldOffsetValue.Value, Is.EqualTo(Marshal.SizeOf(IntPtr.Zero)));
+        }
+    }
+
+    private class GetEnumFromNativePointer : UsesPointerToEnumInParamOfVirtual
+    {
+        public override Flags HasPointerToEnumInParam(Flags pointerToEnum)
+        {
+            return base.HasPointerToEnumInParam(pointerToEnum);
         }
     }
 }
