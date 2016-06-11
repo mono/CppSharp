@@ -1117,3 +1117,9 @@ private:
     SpecialisesVoid<void>* s;
     SpecialisesVoidInUnion<void>* h;
 };
+
+class DLL_API HasAbstractOperator
+{
+public:
+    virtual bool operator==(const HasAbstractOperator& other) = 0;
+};
