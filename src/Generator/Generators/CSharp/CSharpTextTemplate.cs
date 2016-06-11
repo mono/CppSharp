@@ -725,7 +725,9 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassProlog(Class @class)
         {
-            Write(@class.IsInternal ? "internal " : Helpers.GetAccess(@class.Access));
+            // private classes must be visible to because the internal structs can be used in dependencies
+            // the proper fix is InternalsVisibleTo
+            Write(@class.Access == AccessSpecifier.Protected ? "protected " : "public ");
             if (@class.Access == AccessSpecifier.Protected)
                 Write("internal ");
             Write("unsafe ");
