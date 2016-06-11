@@ -38,7 +38,10 @@ namespace CppSharp.Tests
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write(ctx.Parameter.Name);
+            if (ctx.Parameter.Type.IsAddress())
+                ctx.Return.Write("new global::System.IntPtr(&{0})", ctx.Parameter.Name);
+            else
+                ctx.Return.Write(ctx.Parameter.Name);
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)

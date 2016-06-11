@@ -360,7 +360,7 @@ public:
     void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
     void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
     void defaultNonEmptyCtorWithNullPtr(QGenericArgument arg = QGenericArgument(nullptr));
-    void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
+    QFlags<Flags> defaultMappedToEnum(const QFlags<Flags>& qFlags = Flags::Flag3);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
     void defaultImplicitCtorInt(Quux arg = 0);

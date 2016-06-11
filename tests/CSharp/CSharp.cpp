@@ -457,8 +457,9 @@ void MethodsWithDefaultValues::defaultNonEmptyCtorWithNullPtr(QGenericArgument a
 {
 }
 
-void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
+QFlags<Flags> MethodsWithDefaultValues::defaultMappedToEnum(const QFlags<Flags>& qFlags)
 {
+    return qFlags;
 }
 
 void MethodsWithDefaultValues::defaultMappedToZeroEnum(QFlags<Flags> qFlags)
