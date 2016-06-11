@@ -5,6 +5,7 @@ using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
+using System.Linq;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -41,7 +42,14 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
         IDeclVisitor<CSharpTypePrinterResult>
     {
-        public static string IntPtrType = "global::System.IntPtr";
+        public const string IntPtrType = "global::System.IntPtr";
+
+        public static bool AppendGlobal { get; set; }
+
+        static CSharpTypePrinter()
+        {
+            AppendGlobal = true;
+        }
 
         private readonly Driver driver;
 
@@ -623,7 +631,7 @@ namespace CppSharp.Generators.CSharp
                 if (specialization.OriginalNamespace is Class)
                 {
                     names.Add(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
-                    ctx = ctx.Namespace;
+                    ctx = ctx.Namespace ?? ctx;
                 }
                 else
                 {
@@ -635,18 +643,23 @@ namespace CppSharp.Generators.CSharp
                 names.Add(decl.Name);
                 ctx = decl.Namespace;
             }
-            while (ctx != null)
+            while (!(ctx is TranslationUnit))
             {
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
                     names.Add(ctx.Name);
 
                 ctx = ctx.Namespace;
             }
+            if (!string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
+                names.Add(ctx.TranslationUnit.Module.OutputNamespace);
 
             names.Reverse();
-            if (names[0] == Generator.CurrentOutputNamespace)
+            var isInCurrentOutputNamespace = names[0] == Generator.CurrentOutputNamespace;
+            if (isInCurrentOutputNamespace)
                 names.RemoveAt(0);
-            return string.Join(".", names);
+
+            return (isInCurrentOutputNamespace || !AppendGlobal ?
+                string.Empty : "global::") + string.Join(".", names);
         }
 
         public CSharpTypePrinterResult VisitVariableDecl(Variable variable)

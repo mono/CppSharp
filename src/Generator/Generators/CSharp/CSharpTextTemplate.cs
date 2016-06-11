@@ -90,6 +90,7 @@ namespace CppSharp.Generators.CSharp
                 typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
                 typePrinter.PushMarshalKind(CSharpMarshalKind.Unknown);
             }
+            CSharpTypePrinter.AppendGlobal = false;
             var suffix = new StringBuilder();
             foreach (var argType in from argType in specialization.Arguments
                                     where argType.Type.Type != null
@@ -123,6 +124,7 @@ namespace CppSharp.Generators.CSharp
                 typePrinter.PopContext();
                 typePrinter.PopMarshalKind();
             }
+            CSharpTypePrinter.AppendGlobal = true;
             FormatTypesStringForIdentifier(suffix);
             return suffix.ToString();
         }
@@ -2535,7 +2537,7 @@ namespace CppSharp.Generators.CSharp
             {
                 return @delegate.Signature;
             }
-            return string.Format("{0}.{1}", @delegate.Namespace, @delegate.Signature);
+            return string.Format("global::{0}.{1}", @delegate.Namespace, @delegate.Signature);
         }
 
         private void GenerateOperator(Method method)

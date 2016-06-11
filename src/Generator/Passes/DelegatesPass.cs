@@ -166,7 +166,7 @@ namespace CppSharp.Passes
         private string GenerateDelegateSignature(IEnumerable<Parameter> @params, QualifiedType returnType)
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-
+            CSharpTypePrinter.AppendGlobal = false;
             var typesBuilder = new StringBuilder();
             if (!returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
@@ -187,6 +187,7 @@ namespace CppSharp.Passes
                 delegateName = "Func_" + delegateName;
 
             TypePrinter.PopContext();
+            CSharpTypePrinter.AppendGlobal = true;
             return delegateName;
         }
 

@@ -70,3 +70,12 @@ public:
     HasVirtualInDependency* managedObject;
     int callManagedOverride();
 };
+
+namespace NamespacesBase
+{
+    class DLL_API ClassInNamespaceNamedAfterDependency
+    {
+    private:
+        Base base;
+    };
+}

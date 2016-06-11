@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -43,6 +44,7 @@ namespace CppSharp.Passes
 
         private bool UpdateName(Function function)
         {
+            Generator.CurrentOutputNamespace = function.TranslationUnit.Module.OutputNamespace;
             var @params = function.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
             // Include the conversion type in case of conversion operators
@@ -184,6 +186,13 @@ namespace CppSharp.Passes
                 method.Index = total++;
 
             return false;
+        }
+
+        public override bool VisitDeclaration(Declaration decl)
+        {
+            if (decl.Namespace != null && decl.TranslationUnit.IsSystemHeader)
+                return false;
+            return base.VisitDeclaration(decl);
         }
 
         private static IEnumerable<Field> GetAllFields(Class @class, List<Field> fields = null)

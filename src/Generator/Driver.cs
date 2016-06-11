@@ -327,7 +327,6 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
-            TranslationUnitPasses.AddPass(new RenameRootNamespacesPass());
             if (Options.IsCSharpGenerator)
             {
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
