@@ -36,9 +36,9 @@ System::String^ CppSharp::Parser::ParserOptions::getArguments(unsigned int i)
 
 void CppSharp::Parser::ParserOptions::addArguments(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addArguments(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addArguments(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearArguments()
@@ -55,9 +55,9 @@ System::String^ CppSharp::Parser::ParserOptions::getSourceFiles(unsigned int i)
 
 void CppSharp::Parser::ParserOptions::addSourceFiles(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addSourceFiles(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addSourceFiles(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearSourceFiles()
@@ -74,9 +74,9 @@ System::String^ CppSharp::Parser::ParserOptions::getIncludeDirs(unsigned int i)
 
 void CppSharp::Parser::ParserOptions::addIncludeDirs(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addIncludeDirs(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addIncludeDirs(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearIncludeDirs()
@@ -93,9 +93,9 @@ System::String^ CppSharp::Parser::ParserOptions::getSystemIncludeDirs(unsigned i
 
 void CppSharp::Parser::ParserOptions::addSystemIncludeDirs(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addSystemIncludeDirs(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addSystemIncludeDirs(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearSystemIncludeDirs()
@@ -112,9 +112,9 @@ System::String^ CppSharp::Parser::ParserOptions::getDefines(unsigned int i)
 
 void CppSharp::Parser::ParserOptions::addDefines(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addDefines(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addDefines(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearDefines()
@@ -131,9 +131,9 @@ System::String^ CppSharp::Parser::ParserOptions::getUndefines(unsigned int i)
 
 void CppSharp::Parser::ParserOptions::addUndefines(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addUndefines(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addUndefines(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearUndefines()
@@ -150,9 +150,9 @@ System::String^ CppSharp::Parser::ParserOptions::getLibraryDirs(unsigned int i)
 
 void CppSharp::Parser::ParserOptions::addLibraryDirs(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addLibraryDirs(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addLibraryDirs(__arg0);
 }
 
 void CppSharp::Parser::ParserOptions::clearLibraryDirs()
@@ -165,8 +165,8 @@ CppSharp::Parser::ParserOptions::ParserOptions(CppSharp::Parser::ParserOptions^ 
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::ParserOptions*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ParserOptions(arg0);
+    auto &__arg0 = *(::CppSharp::CppParser::ParserOptions*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserOptions(__arg0);
 }
 
 System::IntPtr CppSharp::Parser::ParserOptions::__Instance::get()
@@ -194,9 +194,9 @@ System::String^ CppSharp::Parser::ParserOptions::LibraryFile::get()
 
 void CppSharp::Parser::ParserOptions::LibraryFile::set(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->setLibraryFile(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->setLibraryFile(__arg0);
 }
 
 unsigned int CppSharp::Parser::ParserOptions::SourceFilesCount::get()
@@ -244,9 +244,9 @@ System::String^ CppSharp::Parser::ParserOptions::TargetTriple::get()
 
 void CppSharp::Parser::ParserOptions::TargetTriple::set(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->setTargetTriple(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->setTargetTriple(__arg0);
 }
 
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserOptions::ASTContext::get()
@@ -366,8 +366,8 @@ CppSharp::Parser::ParserDiagnostic::ParserDiagnostic(CppSharp::Parser::ParserDia
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ParserDiagnostic(arg0);
+    auto &__arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserDiagnostic(__arg0);
 }
 
 System::IntPtr CppSharp::Parser::ParserDiagnostic::__Instance::get()
@@ -389,9 +389,9 @@ System::String^ CppSharp::Parser::ParserDiagnostic::FileName::get()
 
 void CppSharp::Parser::ParserDiagnostic::FileName::set(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->setFileName(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->setFileName(__arg0);
 }
 
 System::String^ CppSharp::Parser::ParserDiagnostic::Message::get()
@@ -403,9 +403,9 @@ System::String^ CppSharp::Parser::ParserDiagnostic::Message::get()
 
 void CppSharp::Parser::ParserDiagnostic::Message::set(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->setMessage(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->setMessage(__arg0);
 }
 
 CppSharp::Parser::ParserDiagnosticLevel CppSharp::Parser::ParserDiagnostic::Level::get()
@@ -465,8 +465,8 @@ CppSharp::Parser::ParserResult::ParserResult(CppSharp::Parser::ParserResult^ _0)
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::ParserResult*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ParserResult(arg0);
+    auto &__arg0 = *(::CppSharp::CppParser::ParserResult*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserResult(__arg0);
 }
 
 CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::getDiagnostics(unsigned int i)
@@ -480,8 +480,8 @@ void CppSharp::Parser::ParserResult::addDiagnostics(CppSharp::Parser::ParserDiag
 {
     if (ReferenceEquals(s, nullptr))
         throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)s->NativePtr;
-    ((::CppSharp::CppParser::ParserResult*)NativePtr)->addDiagnostics(arg0);
+    auto &__arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)s->NativePtr;
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->addDiagnostics(__arg0);
 }
 
 void CppSharp::Parser::ParserResult::clearDiagnostics()
@@ -553,24 +553,24 @@ CppSharp::Parser::ClangParser::~ClangParser()
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseHeader(CppSharp::Parser::ParserOptions^ Opts)
 {
-    auto arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
-    auto __ret = ::CppSharp::CppParser::ClangParser::ParseHeader(arg0);
+    auto __arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
+    auto __ret = ::CppSharp::CppParser::ClangParser::ParseHeader(__arg0);
     if (__ret == nullptr) return nullptr;
     return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*)__ret);
 }
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseLibrary(CppSharp::Parser::ParserOptions^ Opts)
 {
-    auto arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
-    auto __ret = ::CppSharp::CppParser::ClangParser::ParseLibrary(arg0);
+    auto __arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
+    auto __ret = ::CppSharp::CppParser::ClangParser::ParseLibrary(__arg0);
     if (__ret == nullptr) return nullptr;
     return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*)__ret);
 }
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ClangParser::GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts)
 {
-    auto arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
-    auto __ret = ::CppSharp::CppParser::ClangParser::GetTargetInfo(arg0);
+    auto __arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
+    auto __ret = ::CppSharp::CppParser::ClangParser::GetTargetInfo(__arg0);
     if (__ret == nullptr) return nullptr;
     return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)__ret);
 }
@@ -586,8 +586,8 @@ CppSharp::Parser::ClangParser::ClangParser(CppSharp::Parser::ClangParser^ _0)
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::ClangParser*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ClangParser(arg0);
+    auto &__arg0 = *(::CppSharp::CppParser::ClangParser*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ClangParser(__arg0);
 }
 
 System::IntPtr CppSharp::Parser::ClangParser::__Instance::get()

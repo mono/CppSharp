@@ -30,8 +30,8 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTar
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(arg0);
+    auto &__arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(__arg0);
 }
 
 System::IntPtr CppSharp::Parser::ParserTargetInfo::__Instance::get()
@@ -53,9 +53,9 @@ System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
 
 void CppSharp::Parser::ParserTargetInfo::ABI::set(System::String^ s)
 {
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->setABI(arg0);
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->setABI(__arg0);
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::Char16Type::get()

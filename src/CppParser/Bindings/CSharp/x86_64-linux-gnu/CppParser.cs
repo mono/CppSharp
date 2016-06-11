@@ -309,8 +309,8 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
                     throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                var arg0 = _0.__Instance;
-                Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                var __arg0 = _0.__Instance;
+                Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
             }
 
             public void Dispose()
@@ -335,9 +335,9 @@ namespace CppSharp
 
             public void addArguments(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearArguments()
@@ -353,9 +353,9 @@ namespace CppSharp
 
             public void addSourceFiles(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addSourceFiles_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addSourceFiles_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearSourceFiles()
@@ -371,9 +371,9 @@ namespace CppSharp
 
             public void addIncludeDirs(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addIncludeDirs_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addIncludeDirs_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearIncludeDirs()
@@ -389,9 +389,9 @@ namespace CppSharp
 
             public void addSystemIncludeDirs(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addSystemIncludeDirs_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addSystemIncludeDirs_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearSystemIncludeDirs()
@@ -407,9 +407,9 @@ namespace CppSharp
 
             public void addDefines(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addDefines_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addDefines_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearDefines()
@@ -425,9 +425,9 @@ namespace CppSharp
 
             public void addUndefines(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addUndefines_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addUndefines_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearUndefines()
@@ -443,9 +443,9 @@ namespace CppSharp
 
             public void addLibraryDirs(string s)
             {
-                var arg0 = Marshal.StringToHGlobalAnsi(s);
-                Internal.addLibraryDirs_0((__Instance + __PointerAdjustment), arg0);
-                Marshal.FreeHGlobal(arg0);
+                var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addLibraryDirs_0((__Instance + __PointerAdjustment), __arg0);
+                Marshal.FreeHGlobal(__arg0);
             }
 
             public void clearLibraryDirs()
@@ -472,9 +472,9 @@ namespace CppSharp
 
                 set
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    Internal.setLibraryFile_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                    Internal.setLibraryFile_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
             }
 
@@ -542,9 +542,9 @@ namespace CppSharp
 
                 set
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    Internal.setTargetTriple_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                    Internal.setTargetTriple_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
             }
 
@@ -780,8 +780,8 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
                     throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                var arg0 = _0.__Instance;
-                Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                var __arg0 = _0.__Instance;
+                Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
             }
 
             public void Dispose()
@@ -808,9 +808,9 @@ namespace CppSharp
 
                 set
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    Internal.setFileName_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                    Internal.setFileName_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
             }
 
@@ -824,9 +824,9 @@ namespace CppSharp
 
                 set
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    Internal.setMessage_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                    Internal.setMessage_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
             }
 
@@ -977,8 +977,8 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
                     throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                var arg0 = _0.__Instance;
-                Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                var __arg0 = _0.__Instance;
+                Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
             }
 
             public void Dispose()
@@ -1006,8 +1006,8 @@ namespace CppSharp
             {
                 if (ReferenceEquals(s, null))
                     throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                var arg0 = s.__Instance;
-                Internal.addDiagnostics_0((__Instance + __PointerAdjustment), arg0);
+                var __arg0 = s.__Instance;
+                Internal.addDiagnostics_0((__Instance + __PointerAdjustment), __arg0);
             }
 
             public void clearDiagnostics()
@@ -1169,8 +1169,8 @@ namespace CppSharp
 
             public static CppSharp.Parser.ParserResult ParseHeader(CppSharp.Parser.ParserOptions Opts)
             {
-                var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
-                var __ret = Internal.ParseHeader_0(arg0);
+                var __arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
+                var __ret = Internal.ParseHeader_0(__arg0);
                 CppSharp.Parser.ParserResult __result0;
                 if (__ret == IntPtr.Zero) __result0 = null;
                 else if (CppSharp.Parser.ParserResult.NativeToManagedMap.ContainsKey(__ret))
@@ -1181,8 +1181,8 @@ namespace CppSharp
 
             public static CppSharp.Parser.ParserResult ParseLibrary(CppSharp.Parser.ParserOptions Opts)
             {
-                var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
-                var __ret = Internal.ParseLibrary_0(arg0);
+                var __arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
+                var __ret = Internal.ParseLibrary_0(__arg0);
                 CppSharp.Parser.ParserResult __result0;
                 if (__ret == IntPtr.Zero) __result0 = null;
                 else if (CppSharp.Parser.ParserResult.NativeToManagedMap.ContainsKey(__ret))
@@ -1193,8 +1193,8 @@ namespace CppSharp
 
             public static CppSharp.Parser.ParserTargetInfo GetTargetInfo(CppSharp.Parser.ParserOptions Opts)
             {
-                var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
-                var __ret = Internal.GetTargetInfo_0(arg0);
+                var __arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
+                var __ret = Internal.GetTargetInfo_0(__arg0);
                 CppSharp.Parser.ParserTargetInfo __result0;
                 if (__ret == IntPtr.Zero) __result0 = null;
                 else if (CppSharp.Parser.ParserTargetInfo.NativeToManagedMap.ContainsKey(__ret))

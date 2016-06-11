@@ -665,8 +665,9 @@ namespace CppSharp.AST
             var type = obj as TemplateSpecializationType;
             if (type == null) return false;
 
-            return Arguments.SequenceEqual(type.Arguments)
-                && Template.Name == type.Template.Name;
+            return Arguments.SequenceEqual(type.Arguments) &&
+                ((Template != null && Template.Name == type.Template.Name) ||
+                Desugared == type.Desugared);
         }
 
         public override int GetHashCode()

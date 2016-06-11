@@ -315,8 +315,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = kind;
-                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = kind;
+                    Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public Type(CppSharp.Parser.AST.Type _0)
@@ -326,8 +326,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -694,8 +694,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.Declaration Declaration
@@ -809,8 +809,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -969,8 +969,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -997,8 +997,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addParameters_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addParameters_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearParameters()
@@ -1128,8 +1128,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedPointee
@@ -1234,8 +1234,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Pointee
@@ -1327,8 +1327,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.TypedefDecl Declaration
@@ -1428,8 +1428,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Modified
@@ -1540,8 +1540,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Decayed
@@ -1853,8 +1853,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1877,8 +1877,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -2021,8 +2021,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2167,8 +2167,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Replacement
@@ -2263,8 +2263,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType InjectedSpecializationType
@@ -2371,8 +2371,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
             }
 
@@ -2448,8 +2448,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
             }
 
@@ -2528,8 +2528,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public CppSharp.Parser.AST.PrimitiveType Type
@@ -2779,8 +2779,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -2808,8 +2808,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addComponents_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addComponents_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearComponents()
@@ -2914,8 +2914,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -3101,8 +3101,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -3130,8 +3130,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addVFTables_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addVFTables_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearVFTables()
@@ -3394,8 +3394,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(92);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = kind;
-                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = kind;
+                    Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public Declaration(CppSharp.Parser.AST.Declaration _0)
@@ -3405,8 +3405,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -3438,8 +3438,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addPreprocessedEntities_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addPreprocessedEntities_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearPreprocessedEntities()
@@ -3457,9 +3457,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -3473,9 +3473,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setUSR_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setUSR_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -3489,9 +3489,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setDebugText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setDebugText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -3951,8 +3951,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(204);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = kind;
-                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = kind;
+                    Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public DeclarationContext(CppSharp.Parser.AST.DeclarationContext _0)
@@ -3963,8 +3963,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -3991,8 +3991,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addNamespaces_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addNamespaces_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearNamespaces()
@@ -4015,8 +4015,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addEnums_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addEnums_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearEnums()
@@ -4039,8 +4039,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addFunctions_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addFunctions_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearFunctions()
@@ -4063,8 +4063,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addClasses_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addClasses_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearClasses()
@@ -4087,8 +4087,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addTemplates_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addTemplates_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearTemplates()
@@ -4111,8 +4111,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addTypedefs_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addTypedefs_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearTypedefs()
@@ -4135,8 +4135,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addVariables_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addVariables_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearVariables()
@@ -4159,8 +4159,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addFriends_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addFriends_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearFriends()
@@ -4367,8 +4367,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4507,8 +4507,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4617,8 +4617,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -4645,9 +4645,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setString_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setString_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -4746,8 +4746,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4839,8 +4839,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4862,9 +4862,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setOpcodeStr_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setOpcodeStr_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -4988,8 +4988,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5016,8 +5016,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -5118,8 +5118,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5146,8 +5146,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -5290,8 +5290,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5557,8 +5557,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5585,8 +5585,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addParameters_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addParameters_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearParameters()
@@ -5604,9 +5604,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setMangled_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setMangled_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -5620,9 +5620,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setSignature_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setSignature_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -5962,8 +5962,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6329,8 +6329,8 @@ namespace CppSharp
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
                             throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var arg0 = _0.__Instance;
-                        Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                        var __arg0 = _0.__Instance;
+                        Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                     }
 
                     protected override void Dispose(bool disposing)
@@ -6352,9 +6352,9 @@ namespace CppSharp
 
                         set
                         {
-                            var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setExpression_0((__Instance + __PointerAdjustment), arg0);
-                            Marshal.FreeHGlobal(arg0);
+                            var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                            Internal.setExpression_0((__Instance + __PointerAdjustment), __arg0);
+                            Marshal.FreeHGlobal(__arg0);
                         }
                     }
 
@@ -6422,8 +6422,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6450,8 +6450,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addItems_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addItems_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearItems()
@@ -6641,8 +6641,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6664,9 +6664,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setMangled_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setMangled_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -6963,8 +6963,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7157,8 +7157,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7394,8 +7394,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7422,8 +7422,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addBases_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addBases_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearBases()
@@ -7446,8 +7446,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addFields_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addFields_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearFields()
@@ -7470,8 +7470,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addMethods_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addMethods_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearMethods()
@@ -7494,8 +7494,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addSpecifiers_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addSpecifiers_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearSpecifiers()
@@ -7802,8 +7802,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(108);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = kind;
-                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = kind;
+                    Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public Template()
@@ -7823,8 +7823,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_3((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_3((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7851,8 +7851,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addParameters_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addParameters_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearParameters()
@@ -7996,8 +7996,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(104);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = kind;
-                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = kind;
+                    Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public TemplateParameter(CppSharp.Parser.AST.TemplateParameter _0)
@@ -8008,8 +8008,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8183,8 +8183,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8358,8 +8358,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8516,8 +8516,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8720,8 +8720,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8748,8 +8748,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addSpecializations_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addSpecializations_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearSpecializations()
@@ -8936,8 +8936,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8960,8 +8960,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -9159,8 +9159,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -9306,8 +9306,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -9334,8 +9334,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addSpecializations_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addSpecializations_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearSpecializations()
@@ -9457,8 +9457,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -9486,8 +9486,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -9670,8 +9670,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -9936,8 +9936,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -9959,9 +9959,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -9975,9 +9975,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setExpression_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setExpression_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -10111,8 +10111,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -10134,9 +10134,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -10150,9 +10150,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -10324,8 +10324,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -10352,8 +10352,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addMacros_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addMacros_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearMacros()
@@ -10371,9 +10371,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setFileName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setFileName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -10528,8 +10528,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -10554,9 +10554,9 @@ namespace CppSharp
 
                 public void addSymbols(string s)
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(s);
-                    Internal.addSymbols_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                    Internal.addSymbols_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
 
                 public void clearSymbols()
@@ -10572,9 +10572,9 @@ namespace CppSharp
 
                 public void addDependencies(string s)
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(s);
-                    Internal.addDependencies_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(s);
+                    Internal.addDependencies_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
 
                 public void clearDependencies()
@@ -10592,9 +10592,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setFileName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setFileName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -10725,8 +10725,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -10758,8 +10758,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addTranslationUnits_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addTranslationUnits_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearTranslationUnits()
@@ -10840,8 +10840,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = kind;
-                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = kind;
+                    Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public Comment(CppSharp.Parser.AST.Comment _0)
@@ -10951,8 +10951,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = Kind;
-                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = Kind;
+                    Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public BlockContentComment(CppSharp.Parser.AST.BlockContentComment _0)
@@ -11059,8 +11059,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -11087,8 +11087,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addBlocks_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addBlocks_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearBlocks()
@@ -11181,8 +11181,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = Kind;
-                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = Kind;
+                    Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public InlineContentComment(CppSharp.Parser.AST.InlineContentComment _0)
@@ -11305,8 +11305,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -11333,8 +11333,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addContent_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addContent_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearContent()
@@ -11505,8 +11505,8 @@ namespace CppSharp
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
                             throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var arg0 = _0.__Instance;
-                        Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                        var __arg0 = _0.__Instance;
+                        Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                     }
 
                     public void Dispose()
@@ -11533,9 +11533,9 @@ namespace CppSharp
 
                         set
                         {
-                            var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                            Marshal.FreeHGlobal(arg0);
+                            var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                            Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                            Marshal.FreeHGlobal(__arg0);
                         }
                     }
                 }
@@ -11588,8 +11588,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = Kind;
-                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = Kind;
+                    Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public BlockCommandComment(CppSharp.Parser.AST.BlockCommandComment _0)
@@ -11600,8 +11600,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -11624,8 +11624,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -11767,8 +11767,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -11907,8 +11907,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -11930,8 +11930,8 @@ namespace CppSharp
                 {
                     fixed (uint* __refParamPtr0 = &s)
                     {
-                        var arg0 = __refParamPtr0;
-                        Internal.addPosition_0((__Instance + __PointerAdjustment), arg0);
+                        var __arg0 = __refParamPtr0;
+                        Internal.addPosition_0((__Instance + __PointerAdjustment), __arg0);
                     }
                 }
 
@@ -12034,8 +12034,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -12057,9 +12057,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
             }
@@ -12164,8 +12164,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -12192,8 +12192,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addLines_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addLines_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearLines()
@@ -12301,8 +12301,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -12324,9 +12324,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
             }
@@ -12477,8 +12477,8 @@ namespace CppSharp
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
                             throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var arg0 = _0.__Instance;
-                        Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                        var __arg0 = _0.__Instance;
+                        Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                     }
 
                     public void Dispose()
@@ -12505,9 +12505,9 @@ namespace CppSharp
 
                         set
                         {
-                            var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                            Marshal.FreeHGlobal(arg0);
+                            var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                            Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                            Marshal.FreeHGlobal(__arg0);
                         }
                     }
                 }
@@ -12562,8 +12562,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -12586,8 +12586,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearArguments()
@@ -12706,8 +12706,8 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var arg0 = Kind;
-                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = Kind;
+                    Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public HTMLTagComment(CppSharp.Parser.AST.HTMLTagComment _0)
@@ -12872,8 +12872,8 @@ namespace CppSharp
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
                             throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var arg0 = _0.__Instance;
-                        Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                        var __arg0 = _0.__Instance;
+                        Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                     }
 
                     public void Dispose()
@@ -12900,9 +12900,9 @@ namespace CppSharp
 
                         set
                         {
-                            var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setName_0((__Instance + __PointerAdjustment), arg0);
-                            Marshal.FreeHGlobal(arg0);
+                            var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                            Internal.setName_0((__Instance + __PointerAdjustment), __arg0);
+                            Marshal.FreeHGlobal(__arg0);
                         }
                     }
 
@@ -12916,9 +12916,9 @@ namespace CppSharp
 
                         set
                         {
-                            var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setValue_0((__Instance + __PointerAdjustment), arg0);
-                            Marshal.FreeHGlobal(arg0);
+                            var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                            Internal.setValue_0((__Instance + __PointerAdjustment), __arg0);
+                            Marshal.FreeHGlobal(__arg0);
                         }
                     }
                 }
@@ -12973,8 +12973,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -12997,8 +12997,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = s.__Instance;
-                    Internal.addAttributes_0((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = s.__Instance;
+                    Internal.addAttributes_0((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void clearAttributes()
@@ -13016,9 +13016,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setTagName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setTagName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -13119,8 +13119,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -13142,9 +13142,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setTagName_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setTagName_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
             }
@@ -13236,8 +13236,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -13259,9 +13259,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
             }
@@ -13367,8 +13367,8 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var arg0 = _0.__Instance;
-                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
                 public void Dispose()
@@ -13395,9 +13395,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 
@@ -13411,9 +13411,9 @@ namespace CppSharp
 
                     set
                     {
-                        var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setBriefText_0((__Instance + __PointerAdjustment), arg0);
-                        Marshal.FreeHGlobal(arg0);
+                        var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setBriefText_0((__Instance + __PointerAdjustment), __arg0);
+                        Marshal.FreeHGlobal(__arg0);
                     }
                 }
 

@@ -226,8 +226,8 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
                     throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                var arg0 = _0.__Instance;
-                Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                var __arg0 = _0.__Instance;
+                Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
             }
 
             public void Dispose()
@@ -254,9 +254,9 @@ namespace CppSharp
 
                 set
                 {
-                    var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    Internal.setABI_0((__Instance + __PointerAdjustment), arg0);
-                    Marshal.FreeHGlobal(arg0);
+                    var __arg0 = Marshal.StringToHGlobalAnsi(value);
+                    Internal.setABI_0((__Instance + __PointerAdjustment), __arg0);
+                    Marshal.FreeHGlobal(__arg0);
                 }
             }
 
