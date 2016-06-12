@@ -895,6 +895,8 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
     TS->Name = CTS->getName();
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    CT->Specializations.push_back(TS);
+
     auto& TAL = CTS->getTemplateArgs();
     auto TSI = CTS->getTypeAsWritten();
     if (TSI)
@@ -907,7 +909,6 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
     {
         TS->Arguments = WalkTemplateArgumentList(&TAL, (clang::TemplateSpecializationTypeLoc*) 0);
     }
-    CT->Specializations.push_back(TS);
 
     if (CTS->isCompleteDefinition())
         WalkRecordCXX(CTS, TS);
@@ -931,14 +932,14 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
     TS = new ClassTemplatePartialSpecialization();
     HandleDeclaration(CTS, TS);
 
-    TS->Name = CTS->getName();
-
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
     TS->_Namespace = NS;
-
+    TS->Name = CTS->getName();
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    CT->Specializations.push_back(TS);
+
     auto& TAL = CTS->getTemplateArgs();
     if (auto TSI = CTS->getTypeAsWritten())
     {
@@ -946,7 +947,6 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
         auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
         TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
     }
-    CT->Specializations.push_back(TS);
 
     if (CTS->isCompleteDefinition())
         WalkRecordCXX(CTS, TS);
@@ -1028,8 +1028,6 @@ TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(clang::Template
 
 TypeTemplateParameter* Parser::WalkTypeTemplateParameter(clang::TemplateTypeParmDecl* TTPD)
 {
-    using namespace clang;
-
     auto TP = new CppSharp::CppParser::TypeTemplateParameter();
     TP->Name = GetDeclName(TTPD);
     HandleDeclaration(TTPD, TP);
@@ -1046,8 +1044,6 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(clang::TemplateTypeParm
 
 NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(clang::NonTypeTemplateParmDecl* NTTPD)
 {
-    using namespace clang;
-
     auto NTP = new CppSharp::CppParser::NonTypeTemplateParameter();
     NTP->Name = GetDeclName(NTTPD);
     HandleDeclaration(NTTPD, NTP);
