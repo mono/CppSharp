@@ -1580,7 +1580,7 @@ namespace CppSharp.Generators.CSharp
                      entry.Kind == VTableComponentKind.DeletingDtorPointer) &&
                     !entry.IsIgnored() &&
                     (!destructorOnly || entry.Method.IsDestructor ||
-                     Driver.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.OriginalName)))
+                     Driver.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.QualifiedOriginalName)))
                     WriteLine("{0} = _Thunks[{1}];", managedVftableEntry, wrappedEntries.IndexOf(entry));
                 else
                     WriteLine("{0} = {1};", managedVftableEntry, nativeVftableEntry);

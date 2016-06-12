@@ -41,7 +41,7 @@ namespace CppSharp
 
             StripLibPrefix = true;
 
-            ExplicitlyPatchedVirtualFunctions = new List<string>();
+            ExplicitlyPatchedVirtualFunctions = new HashSet<string>();
         }
 
         // General options
@@ -209,7 +209,7 @@ namespace CppSharp
         /// <summary>
         /// C# end only: force patching of the virtual entries of the functions in this list.
         /// </summary>
-        public List<string> ExplicitlyPatchedVirtualFunctions { get; private set; }
+        public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; private set; }
     }
 
     public class InvalidOptionException : Exception
