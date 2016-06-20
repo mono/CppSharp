@@ -97,8 +97,7 @@ private:
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
-    Field* WalkVTablePointer(const std::string& prefix, Class* Class,
-        const clang::RecordDecl * RD, const clang::CharUnits& Offset);
+    QualifiedType GetQualifiedType(clang::QualType qual, clang::TypeLoc* TL = 0);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
