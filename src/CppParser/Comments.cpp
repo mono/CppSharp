@@ -256,7 +256,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
     return _Comment;
 }
 
-void Parser::HandleComments(clang::Decl* D, Declaration* Decl)
+void Parser::HandleComments(const clang::Decl* D, Declaration* Decl)
 {
     using namespace clang;
 

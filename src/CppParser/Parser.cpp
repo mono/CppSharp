@@ -573,7 +573,7 @@ VTableLayout Parser::WalkVTableLayout(const clang::VTableLayout& VTLayout)
 }
 
 
-void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
+void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
 {
     using namespace clang;
 
@@ -619,7 +619,7 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
     }
 }
 
-Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
+Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
 {
     using namespace clang;
     Process = false;
@@ -667,7 +667,7 @@ Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
     return RC;
 }
 
-Class* Parser::WalkRecord(clang::RecordDecl* Record)
+Class* Parser::WalkRecord(const clang::RecordDecl* Record)
 {
     bool Process;
     auto RC = GetRecord(Record, Process);
@@ -680,7 +680,7 @@ Class* Parser::WalkRecord(clang::RecordDecl* Record)
     return RC;
 }
 
-Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+Class* Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record)
 {
     bool Process;
     auto RC = GetRecord(Record, Process);
@@ -695,7 +695,7 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 
 static int I = 0;
 
-void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
+void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 {
     using namespace clang;
 
@@ -795,12 +795,12 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::Type* Ty)
     return nullptr;
 }
 
-void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
+void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
 {
     using namespace clang;
 
     auto& Sema = C->getSema();
-    Sema.ForceDeclarationOfImplicitMembers(Record);
+    Sema.ForceDeclarationOfImplicitMembers(const_cast<clang::CXXRecordDecl*>(Record));
 
     WalkRecord(Record, RC);
 
@@ -876,7 +876,7 @@ WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
 }
 
 ClassTemplateSpecialization*
-Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS)
+Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecializationDecl* CTS)
 {
     using namespace clang;
 
@@ -919,7 +919,7 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
 //-----------------------------------//
 
 ClassTemplatePartialSpecialization*
-Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS)
+Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartialSpecializationDecl* CTS)
 {
     using namespace clang;
 
@@ -1340,11 +1340,19 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
 
 //-----------------------------------//
 
-Field* Parser::WalkFieldCXX(clang::FieldDecl* FD, Class* Class)
+Field* Parser::WalkFieldCXX(const clang::FieldDecl* FD, Class* Class)
 {
     using namespace clang;
 
-    Field* F = new Field();
+    const auto& USR = GetDeclUSR(FD);
+
+    auto FoundField = std::find_if(Class->Fields.begin(), Class->Fields.end(),
+        [&](Field* Field) { return Field->USR == USR; });
+
+    if (FoundField != Class->Fields.end())
+        return *FoundField;
+
+    auto F = new Field();
     HandleDeclaration(FD, F);
 
     F->_Namespace = Class;
@@ -1420,24 +1428,26 @@ TranslationUnit* Parser::GetTranslationUnit(const clang::Decl* D)
     return Unit;
 }
 
-DeclarationContext* Parser::GetNamespace(clang::Decl* D,
-                                                   clang::DeclContext *Ctx)
+DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
+    const clang::DeclContext *Ctx)
 {
     using namespace clang;
 
+    auto Context = Ctx;
+
     // If the declaration is at global scope, just early exit.
-    if (Ctx->isTranslationUnit())
+    if (Context->isTranslationUnit())
         return GetTranslationUnit(D);
 
-    TranslationUnit* Unit = GetTranslationUnit(cast<Decl>(Ctx));
+    TranslationUnit* Unit = GetTranslationUnit(cast<Decl>(Context));
 
     // Else we need to do a more expensive check to get all the namespaces,
     // and then perform a reverse iteration to get the namespaces in order.
-    typedef SmallVector<DeclContext *, 8> ContextsTy;
+    typedef SmallVector<const DeclContext *, 8> ContextsTy;
     ContextsTy Contexts;
 
-    for(; Ctx != nullptr; Ctx = Ctx->getParent())
-        Contexts.push_back(Ctx);
+    for(; Context != nullptr; Context = Context->getParent())
+        Contexts.push_back(Context);
 
     assert(Contexts.back()->isTranslationUnit());
     Contexts.pop_back();
@@ -1446,13 +1456,13 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
 
     for (auto I = Contexts.rbegin(), E = Contexts.rend(); I != E; ++I)
     {
-        DeclContext* Ctx = *I;
+        const auto* Ctx = *I;
 
         switch(Ctx->getDeclKind())
         {
         case Decl::Namespace:
         {
-            NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
+            auto ND = cast<NamespaceDecl>(Ctx);
             if (ND->isAnonymousNamespace())
                 continue;
             auto Name = ND->getName();
@@ -1508,7 +1518,7 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
     return DC;
 }
 
-DeclarationContext* Parser::GetNamespace(clang::Decl *D)
+DeclarationContext* Parser::GetNamespace(const clang::Decl *D)
 {
     return GetNamespace(D, D->getDeclContext());
 }
@@ -2195,7 +2205,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
 //-----------------------------------//
 
-Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
+Enumeration* Parser::WalkEnum(const clang::EnumDecl* ED)
 {
     using namespace clang;
 
@@ -2855,7 +2865,7 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
     }
 }
 
-void Parser::HandleOriginalText(clang::Decl* D, Declaration* Decl)
+void Parser::HandleOriginalText(const clang::Decl* D, Declaration* Decl)
 {
     auto& SM = C->getSourceManager();
     auto& LangOpts = C->getLangOpts();
@@ -2869,7 +2879,7 @@ void Parser::HandleOriginalText(clang::Decl* D, Declaration* Decl)
         Decl->DebugText = DeclText;
 }
 
-void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
+void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
 {
     if (Decl->OriginalPtr != nullptr)
         return;

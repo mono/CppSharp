@@ -431,7 +431,7 @@ public:
     CS_IGNORE ClassTemplate* FindClassTemplate(const std::string& USR);
     CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& USR);
 
-    CS_IGNORE Enumeration* FindEnum(void* OriginalPtr);
+    CS_IGNORE Enumeration* FindEnum(const void* OriginalPtr);
     CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
     CS_IGNORE Enumeration* FindEnumWithItem(const std::string& Name);
 

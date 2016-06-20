@@ -58,28 +58,28 @@ public:
                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserTargetInfo*  GetTargetInfo();
 
-protected:
+private:
 
     // AST traversers
     void WalkAST();
     Declaration* WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     Declaration* WalkDeclarationDef(clang::Decl* D);
-    Enumeration* WalkEnum(clang::EnumDecl* ED);
+    Enumeration* WalkEnum(const clang::EnumDecl* ED);
 	Enumeration::Item* WalkEnumItem(clang::EnumConstantDecl* ECD);
     Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
-    Class* GetRecord(clang::RecordDecl* Record, bool& IsComplete);
-    Class* WalkRecord(clang::RecordDecl* Record);
-    void WalkRecord(clang::RecordDecl* Record, Class* RC);
-    Class* WalkRecordCXX(clang::CXXRecordDecl* Record);
-    void WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC);
+    Class* GetRecord(const clang::RecordDecl* Record, bool& IsComplete);
+    Class* WalkRecord(const clang::RecordDecl* Record);
+    void WalkRecord(const clang::RecordDecl* Record, Class* RC);
+    Class* WalkRecordCXX(const clang::CXXRecordDecl* Record);
+    void WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC);
     ClassTemplateSpecialization*
-    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
+    WalkClassTemplateSpecialization(const clang::ClassTemplateSpecializationDecl* CTS);
     ClassTemplatePartialSpecialization*
-    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
+    WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartialSpecializationDecl* CTS);
     Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
-    Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
+    Field* WalkFieldCXX(const clang::FieldDecl* FD, Class* Class);
     FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
     Variable* WalkVariable(clang::VarDecl* VD);
     Friend* WalkFriend(clang::FriendDecl* FD);
@@ -96,7 +96,9 @@ protected:
     FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
-    void WalkVTable(clang::CXXRecordDecl* RD, Class* C);
+    void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
+    Field* WalkVTablePointer(const std::string& prefix, Class* Class,
+        const clang::RecordDecl * RD, const clang::CharUnits& Offset);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
@@ -120,12 +122,12 @@ protected:
         SourceLocationKind *Kind = 0);
     TranslationUnit* GetTranslationUnit(const clang::Decl* D);
 
-    DeclarationContext* GetNamespace(clang::Decl* D, clang::DeclContext* Ctx);
-    DeclarationContext* GetNamespace(clang::Decl* D);
+    DeclarationContext* GetNamespace(const clang::Decl* D, const clang::DeclContext* Ctx);
+    DeclarationContext* GetNamespace(const clang::Decl* D);
 
-    void HandleDeclaration(clang::Decl* D, Declaration* Decl);
-    void HandleOriginalText(clang::Decl* D, Declaration* Decl);
-    void HandleComments(clang::Decl* D, Declaration* Decl);
+    void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
+    void HandleOriginalText(const clang::Decl* D, Declaration* Decl);
+    void HandleComments(const clang::Decl* D, Declaration* Decl);
     void HandleDiagnostics(ParserResult* res);
 
     int Index;
@@ -136,7 +138,6 @@ protected:
     clang::TargetCXXABI::Kind TargetABI;
     clang::CodeGen::CodeGenTypes* CodeGenTypes;
 
-private:
     ParserResultKind ReadSymbols(llvm::StringRef File,
                                  llvm::object::basic_symbol_iterator Begin,
                                  llvm::object::basic_symbol_iterator End,

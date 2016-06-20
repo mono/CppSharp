@@ -361,7 +361,7 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
     return _class;
 }
 
-Enumeration* DeclarationContext::FindEnum(void* OriginalPtr)
+Enumeration* DeclarationContext::FindEnum(const void* OriginalPtr)
 {
     auto foundEnum = std::find_if(Enums.begin(), Enums.end(),
         [&](Enumeration* enumeration) { return enumeration->OriginalPtr == OriginalPtr; });
