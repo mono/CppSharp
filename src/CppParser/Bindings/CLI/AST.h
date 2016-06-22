@@ -1046,16 +1046,34 @@ namespace CppSharp
 
                 ~LayoutField();
 
+                property System::String^ Name
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
+                property CppSharp::Parser::AST::DeclarationContext^ _Namespace
+                {
+                    CppSharp::Parser::AST::DeclarationContext^ get();
+                    void set(CppSharp::Parser::AST::DeclarationContext^);
+                }
+
                 property unsigned int Offset
                 {
                     unsigned int get();
                     void set(unsigned int);
                 }
 
-                property CppSharp::Parser::AST::Field^ Field
+                property CppSharp::Parser::AST::QualifiedType^ QualifiedType
                 {
-                    CppSharp::Parser::AST::Field^ get();
-                    void set(CppSharp::Parser::AST::Field^);
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
+                property ::System::IntPtr FieldPtr
+                {
+                    ::System::IntPtr get();
+                    void set(::System::IntPtr);
                 }
 
                 protected:

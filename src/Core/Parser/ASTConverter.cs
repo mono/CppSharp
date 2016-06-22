@@ -687,7 +687,7 @@ namespace CppSharp
 
         public HashSet<IDisposable> NativeObjects { get; private set; }
 
-        public override AST.Declaration Visit(Parser.AST.Declaration decl)
+        public override AST.Declaration Visit(Declaration decl)
         {
             if (decl == null)
                 return null;
@@ -1348,8 +1348,13 @@ namespace CppSharp
             for (uint i = 0; i < layout.FieldsCount; i++)
             {
                 var field = layout.getFields(i);
-                _layout.Fields.Add(new AST.LayoutField(field.Offset,
-                    (AST.Field) Visit(field.Field)));
+                var _field = new AST.LayoutField();
+                _field.Namespace = (AST.DeclarationContext) Visit(field._Namespace);
+                _field.Offset = field.Offset;
+                _field.Name = field.Name;
+                _field.QualifiedType = typeConverter.VisitQualified(field.QualifiedType);
+                _field.FieldPtr = field.FieldPtr;
+                _layout.Fields.Add(_field);
             }
 
             return _layout;

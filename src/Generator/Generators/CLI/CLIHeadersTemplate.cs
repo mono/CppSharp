@@ -439,9 +439,9 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             // check for value types because some of the ignored fields may back properties;
             // not the case for ref types because the NativePtr pattern is used there
-            foreach (var field in @class.Layout.Fields.Where(f => !ASTUtils.CheckIgnoreField(f.Field)))
+            foreach (var field in @class.Fields.Where(f => !ASTUtils.CheckIgnoreField(f)))
             {
-                var property = @class.Properties.FirstOrDefault(p => p.Field == field.Field);
+                var property = @class.Properties.FirstOrDefault(p => p.Field == field);
                 if (property != null && !property.IsInRefTypeAndBackedByValueClassField())
                 {
                     GenerateField(@class, field);
@@ -450,15 +450,16 @@ namespace CppSharp.Generators.CLI
             PopIndent();
         }
 
-        private void GenerateField(Class @class, LayoutField layoutField)
+        private void GenerateField(Class @class, Field field)
         {
-            PushBlock(CLIBlockKind.Field, layoutField.Field);
+            PushBlock(CLIBlockKind.Field, field);
 
-            GenerateDeclarationCommon(layoutField.Field);
+            GenerateDeclarationCommon(field);
             if (@class.IsUnion)
                 WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
-                    layoutField.Offset);
-            WriteLine("{0} {1};", layoutField.Field.Type, layoutField.Field.Name);
+                    @class.Layout.Fields.Single(
+                        f => f.Namespace == @class && f.FieldPtr == field.OriginalPtr).Offset);
+            WriteLine("{0} {1};", field.Type, field.Name);
 
             PopBlock();
         }
@@ -630,7 +631,7 @@ namespace CppSharp.Generators.CLI
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
-                    GenerateField(@class, @class.Layout.Fields.Single(f => f.Field == prop.Field));
+                    GenerateField(@class, prop.Field);
                     continue;
                 }
 

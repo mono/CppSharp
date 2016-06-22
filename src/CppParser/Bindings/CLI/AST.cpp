@@ -1333,6 +1333,30 @@ void CppSharp::Parser::AST::LayoutField::__Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::AST::LayoutField*)object.ToPointer();
 }
 
+System::String^ CppSharp::Parser::AST::LayoutField::Name::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->getName();
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::AST::LayoutField::Name::set(System::String^ s)
+{
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->setName(__arg0);
+}
+
+CppSharp::Parser::AST::DeclarationContext^ CppSharp::Parser::AST::LayoutField::_Namespace::get()
+{
+    return (((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->_Namespace == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->_Namespace);
+}
+
+void CppSharp::Parser::AST::LayoutField::_Namespace::set(CppSharp::Parser::AST::DeclarationContext^ value)
+{
+    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->_Namespace = (::CppSharp::CppParser::AST::DeclarationContext*)value->NativePtr;
+}
+
 unsigned int CppSharp::Parser::AST::LayoutField::Offset::get()
 {
     return ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Offset;
@@ -1343,14 +1367,24 @@ void CppSharp::Parser::AST::LayoutField::Offset::set(unsigned int value)
     ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Offset = value;
 }
 
-CppSharp::Parser::AST::Field^ CppSharp::Parser::AST::LayoutField::Field::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::LayoutField::QualifiedType::get()
 {
-    return (((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Field == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Field((::CppSharp::CppParser::AST::Field*)((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Field);
+    return (&((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->QualifiedType == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->QualifiedType);
 }
 
-void CppSharp::Parser::AST::LayoutField::Field::set(CppSharp::Parser::AST::Field^ value)
+void CppSharp::Parser::AST::LayoutField::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Field = (::CppSharp::CppParser::AST::Field*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+::System::IntPtr CppSharp::Parser::AST::LayoutField::FieldPtr::get()
+{
+    return ::System::IntPtr(((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->FieldPtr);
+}
+
+void CppSharp::Parser::AST::LayoutField::FieldPtr::set(::System::IntPtr value)
+{
+    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->FieldPtr = (void*)value;
 }
 
 CppSharp::Parser::AST::ClassLayout::ClassLayout(::CppSharp::CppParser::AST::ClassLayout* native)

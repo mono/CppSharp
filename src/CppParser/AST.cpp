@@ -189,9 +189,20 @@ VFTableInfo::VFTableInfo(const VFTableInfo& rhs) : VBTableIndex(rhs.VBTableIndex
     VFPtrOffset(rhs.VFPtrOffset), VFPtrFullOffset(rhs.VFPtrFullOffset),
     Layout(rhs.Layout) {}
 
-LayoutField::LayoutField() {}
+LayoutField::LayoutField() : _Namespace(0), Offset(0), FieldPtr(0) {}
+
+LayoutField::LayoutField(const LayoutField & other)
+    : _Namespace(other._Namespace)
+    , Offset(other.Offset)
+    , Name(other.Name)
+    , QualifiedType(other.QualifiedType)
+    , FieldPtr(other.FieldPtr)
+{
+}
 
 LayoutField::~LayoutField() {}
+
+DEF_STRING(LayoutField, Name)
 
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
     VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}

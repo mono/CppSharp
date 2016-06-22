@@ -82,7 +82,18 @@ std::string GetCurrentLibraryDir()
 #endif
 }
 
-void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl *RD,
+LayoutField Parser::WalkVTablePointer(Class* Class,
+    const clang::CharUnits& Offset, const std::string& prefix)
+{
+    LayoutField LayoutField;
+    LayoutField.Offset = Offset.getQuantity();
+    LayoutField._Namespace = Class;
+    LayoutField.Name = prefix + "_" + Class->Name;
+    LayoutField.QualifiedType = GetQualifiedType(C->getASTContext().VoidPtrTy);
+    return LayoutField;
+}
+
+void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl* RD,
     clang::CharUnits Offset, bool IncludeVirtualBases)
 {
     using namespace clang;
@@ -90,8 +101,26 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl *RD,
     const auto &Layout = C->getASTContext().getASTRecordLayout(RD);
     auto CXXRD = dyn_cast<CXXRecordDecl>(RD);
 
+    auto Parent = static_cast<AST::Class*>(
+        WalkDeclaration(RD, /*IgnoreSystemDecls =*/false));
+
     // Dump bases.
     if (CXXRD) {
+        const CXXRecordDecl *PrimaryBase = Layout.getPrimaryBase();
+        bool HasOwnVFPtr = Layout.hasOwnVFPtr();
+        bool HasOwnVBPtr = Layout.hasOwnVBPtr();
+
+        // Vtable pointer.
+        if (CXXRD->isDynamicClass() && !PrimaryBase &&
+            !C->getASTContext().getTargetInfo().getCXXABI().isMicrosoft()) {
+            auto VPtr = WalkVTablePointer(Parent, Offset, "vptr");
+            Class->Layout->Fields.push_back(VPtr);
+        }
+        else if (HasOwnVFPtr) {
+            auto VTPtr = WalkVTablePointer(Parent, Offset, "vfptr");
+            Class->Layout->Fields.push_back(VTPtr);
+        }
+
         // Collect nvbases.
         SmallVector<const CXXRecordDecl *, 4> Bases;
         for (const CXXBaseSpecifier &Base : CXXRD->bases()) {
@@ -113,30 +142,39 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl *RD,
             ReadLayoutFields(Class, Base, BaseOffset,
                 /*IncludeVirtualBases=*/false);
         }
+
+        // vbptr (for Microsoft C++ ABI)
+        if (HasOwnVBPtr) {
+            auto VBPtr = WalkVTablePointer(Parent,
+                Offset + Layout.getVBPtrOffset(), "vbptr");
+            Class->Layout->Fields.push_back(VBPtr);
+        }
     }
 
     // Dump fields.
     uint64_t FieldNo = 0;
     for (RecordDecl::field_iterator I = RD->field_begin(),
         E = RD->field_end(); I != E; ++I, ++FieldNo) {
-        const FieldDecl &Field = **I;
+        auto Field = *I;
         uint64_t LocalFieldOffsetInBits = Layout.getFieldOffset(FieldNo);
         CharUnits FieldOffset =
             Offset + C->getASTContext().toCharUnitsFromBits(LocalFieldOffsetInBits);
 
         // Recursively dump fields of record type.
-        if (auto RT = Field.getType()->getAs<RecordType>())
+        if (auto RT = Field->getType()->getAs<RecordType>())
         {
             auto TU = GetTranslationUnit(RT->getDecl());
             if (TU->IsSystemHeader)
                 continue;
         }
 
-        auto Parent = WalkDeclaration(RD, /*IgnoreSystemDecls =*/false);
-        auto F = WalkFieldCXX(&Field, static_cast<AST::Class*>(Parent));
+        auto F = WalkFieldCXX(Field, Parent);
         LayoutField LayoutField;
+        LayoutField._Namespace = F->_Namespace;
         LayoutField.Offset = FieldOffset.getQuantity();
-        LayoutField.Field = F;
+        LayoutField.Name = F->Name;
+        LayoutField.QualifiedType = GetQualifiedType(Field->getType());
+        LayoutField.FieldPtr = (void*)Field;
         Class->Layout->Fields.push_back(LayoutField);
     }
 
@@ -150,6 +188,12 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl *RD,
             const CXXRecordDecl *VBase = Base.getType()->getAsCXXRecordDecl();
 
             CharUnits VBaseOffset = Offset + Layout.getVBaseClassOffset(VBase);
+
+            if (VtorDisps.find(VBase)->second.hasVtorDisp()) {
+                auto VtorDisp = WalkVTablePointer(Parent,
+                    VBaseOffset - CharUnits::fromQuantity(4), "vtordisp");
+                Class->Layout->Fields.push_back(VtorDisp);
+            }
 
             ReadLayoutFields(Class, VBase, VBaseOffset,
                 /*IncludeVirtualBases=*/false);

@@ -63,6 +63,10 @@ namespace CppSharp.Passes
             base.VisitClassDecl(@class);
             uniqueName = currentUniqueName;
 
+            if (!@class.IsDependent)
+                foreach (var field in @class.Layout.Fields.Where(f => string.IsNullOrEmpty(f.Name)))
+                    field.Name = @class.Name == "_" ? "__" : "_";
+
             if (@class is ClassTemplateSpecialization &&
                 !(from c in @class.Namespace.Classes
                   where c.Name == @class.Name && !(@class is ClassTemplateSpecialization) &&

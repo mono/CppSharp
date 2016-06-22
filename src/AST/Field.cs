@@ -10,8 +10,6 @@ namespace CppSharp.AST
 
         public Class Class { get; set; }
 
-        public Expression Expression { get; set; }
-
         public bool IsBitField { get; set; }
 
         public uint BitWidth { get; set; }
@@ -31,7 +29,6 @@ namespace CppSharp.AST
         {
             QualifiedType = field.QualifiedType;
             Class = field.Class;
-            Expression = field.Expression;
             IsBitField = field.IsBitField;
             BitWidth = field.BitWidth;
         }

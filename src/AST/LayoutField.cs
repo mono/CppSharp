@@ -1,28 +1,20 @@
-﻿namespace CppSharp.AST
+﻿using System;
+
+namespace CppSharp.AST
 {
     public class LayoutField
     {
-        public LayoutField(uint offset, Field field)
-        {
-            Field = field;
-            Offset = offset;
-        }
-
+        public DeclarationContext Namespace { get; set; }
         public uint Offset { get; set; }
-
-        public string Name
-        {
-            get { return name ?? Field.OriginalName; }
-            set { name = value; }
-        }
-
-        public Field Field { get; set; }
+        public QualifiedType QualifiedType { get; set; }
+        public string Name { get; set; }
+        public IntPtr FieldPtr { get; set; }
+        public bool IsVTablePtr { get { return FieldPtr == IntPtr.Zero; } }
+        public Expression Expression { get; set; }
 
         public override string ToString()
         {
-            return string.Format("{0} | {1}", Offset, Field.OriginalName);
+            return string.Format("{0} | {1}", Offset, Name);
         }
-
-        private string name;
     }
 }

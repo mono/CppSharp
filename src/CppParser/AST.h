@@ -315,15 +315,19 @@ struct CS_API VFTableInfo
     VTableLayout Layout;
 };
 
-class Field;
+class DeclarationContext;
 
 class CS_API LayoutField
 {
 public:
     LayoutField();
+    LayoutField(const LayoutField& other);
     ~LayoutField();
+    DeclarationContext* _Namespace;
     unsigned Offset;
-    Field* Field;
+    STRING(Name)
+    QualifiedType QualifiedType;
+    void* FieldPtr;
 };
 
 struct CS_API ClassLayout

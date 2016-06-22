@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -132,5 +134,19 @@ namespace CppSharp.AST
         public int Alignment;
         public int Size;
         public int DataSize;
+
+        public IList<LayoutField> VTablePointers
+        {
+            get
+            {
+                if (vTablePointers == null)
+                {
+                    vTablePointers = new List<LayoutField>(Fields.Where(f => f.IsVTablePtr));
+                }
+                return vTablePointers;
+            }
+        }
+
+        private List<LayoutField> vTablePointers;
     }
 }

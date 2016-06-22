@@ -601,8 +601,6 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            if (@class.IsDynamic)
-                GenerateVTablePointers(@class);
             foreach (var field in @class.Layout.Fields)
                 GenerateClassInternalsField(field);
             if (@class.IsGenerated && !(@class is ClassTemplateSpecialization))
@@ -791,16 +789,15 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateClassInternalsField(LayoutField layoutField)
+        private void GenerateClassInternalsField(LayoutField field)
         {
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Declaration decl;
-            var field = layoutField.Field;
-            field.Type.TryGetDeclaration(out decl);
+            field.QualifiedType.Type.TryGetDeclaration(out decl);
             if (decl != null && decl.TranslationUnit.IsSystemHeader)
                 return;
 
-            var safeIdentifier = Helpers.SafeIdentifier(layoutField.Name);
+            var safeIdentifier = Helpers.SafeIdentifier(field.Name);
 
             if(safeIdentifier.All(c => c.Equals('_')))
             {
@@ -809,13 +806,13 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            WriteLine("[FieldOffset({0})]", layoutField.Offset);
+            WriteLine("[FieldOffset({0})]", field.Offset);
 
             TypePrinter.PushMarshalKind(CSharpMarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
             TypePrinter.PopMarshalKind();
 
-            var fieldType = field.Type.Desugar().IsAddress() ?
+            var fieldType = field.QualifiedType.Type.Desugar().IsAddress() ?
                 CSharpTypePrinter.IntPtrType : fieldTypePrinted.Type;
 
             var fieldName = safeIdentifier;
@@ -837,22 +834,23 @@ namespace CppSharp.Generators.CSharp
 
             // Workaround a bug in Mono when handling fixed arrays in P/Invoke declarations.
             // https://bugzilla.xamarin.com/show_bug.cgi?id=33571
-            var arrayType = field.Type.Desugar() as ArrayType;
+            var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
             if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
                 arrayType.Size > 0)
             {
                 for (var i = 1; i < arrayType.Size; ++i)
                 {
-                    var dummy = new Field
+                    var dummy = new LayoutField
                     {
+                        Namespace = field.Namespace,
+                        Offset = (uint) (field.Offset + i * arrayType.ElementSize / 8),
+                        QualifiedType = new QualifiedType(arrayType.Type),
                         Name = string.Format("{0}_{1}_{2}", Helpers.DummyIdentifier,
                             safeIdentifier, i),
-                        QualifiedType = new QualifiedType(arrayType.Type),
-                        Namespace = field.Namespace
+                        FieldPtr = field.FieldPtr
                     };
 
-                    GenerateClassInternalsField(new LayoutField(
-                        (uint) (layoutField.Offset + i * arrayType.ElementSize / 8), dummy));
+                    GenerateClassInternalsField(dummy);
                 }
             }
         }
@@ -975,7 +973,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    var name = @class.Layout.Fields.First(f => f.Field == field).Name;
+                    var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
                     ctx.ReturnVarName = string.Format("{0}{1}{2}",
                         @class.IsValueType
                             ? Helpers.InstanceField
@@ -1027,7 +1025,8 @@ namespace CppSharp.Generators.CSharp
                 type = originalType.ToString();
             }
 
-            var name = ((Class) field.Namespace).Layout.Fields.First(f => f.Field == field).Name;
+            var name = ((Class) field.Namespace).Layout.Fields.First(
+                f => f.FieldPtr == field.OriginalPtr).Name;
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
                 type, arrPtrIden, Helpers.InstanceField, Helpers.SafeIdentifier(name)));
             WriteStartBraceIndent();
@@ -1118,7 +1117,7 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteStartBraceIndent();
 
-                var name = @class.Layout.Fields.First(f => f.Field == field).Name;
+                var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     Kind = CSharpMarshalKind.NativeField,
@@ -1300,7 +1299,7 @@ namespace CppSharp.Generators.CSharp
                 ArrayType arrayType = prop.Type as ArrayType;
                 if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType() && prop.Field != null)
                 {
-                    var name = @class.Layout.Fields.First(f => f.Field == prop.Field).Name;
+                    var name = @class.Layout.Fields.First(f => f.FieldPtr == prop.Field.OriginalPtr).Name;
                     GenerateClassField(prop.Field);
                     WriteLine("private bool {0};",
                         GeneratedIdentifier(string.Format("{0}Initialised", name)));
@@ -1443,7 +1442,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("var native = (Internal*) {0}.ToPointer();", Helpers.InstanceIdentifier);
             NewLine();
 
-            SaveOriginalVTablePointers(@class.Layout.VFTables);
+            SaveOriginalVTablePointers(@class.Layout.VTablePointers);
 
             NewLine();
 
@@ -1510,13 +1509,16 @@ namespace CppSharp.Generators.CSharp
                 AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly);
         }
 
-        private void SaveOriginalVTablePointers(IEnumerable<VFTableInfo> vfTables)
+        private void SaveOriginalVTablePointers(IList<LayoutField> vTablePtrs)
         {
             if (Driver.Options.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
-                    string.Join(", ", vfTables.Select((v, i) => string.Format("((Internal*) native)->vfptr{0}.ToPointer()", i))));
+                    string.Join(", ",
+                        vTablePtrs.Select(v => string.Format("((Internal*) native)->{0}.ToPointer()", v.Name))));
             else
-                WriteLine("__OriginalVTables = new void*[] { ((Internal*) native)->vfptr0.ToPointer() };");
+                WriteLine(
+                    "__OriginalVTables = new void*[] {{ ((Internal*) native)->{0}.ToPointer() }};",
+                    vTablePtrs[0].Name);
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1525,23 +1527,24 @@ namespace CppSharp.Generators.CSharp
             var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
             WriteLine("{0} = new void*[{1}];", managedVTables, @class.Layout.VFTables.Count);
 
-            for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+            for (int i = 0; i < @class.Layout.VFTables.Count; i++)
             {
-                var vfptr = @class.Layout.VFTables[tableIndex];
+                var vfptr = @class.Layout.VFTables[i];
                 var size = vfptr.Layout.Components.Count;
                 WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});",
-                    tableIndex, size, Driver.TargetInfo.PointerWidth / 8);
-                WriteLine("{0}[{1}] = vfptr{1}.ToPointer();", managedVTables, tableIndex);
+                    i, size, Driver.TargetInfo.PointerWidth / 8);
+                WriteLine("{0}[{1}] = vfptr{1}.ToPointer();", managedVTables, i);
 
-                AllocateNewVTableEntries(vfptr.Layout.Components, wrappedEntries, tableIndex,
-                    destructorOnly);
+                AllocateNewVTableEntries(vfptr.Layout.Components, wrappedEntries,
+                    @class.Layout.VTablePointers[i].Name, i, destructorOnly);
             }
 
             WriteCloseBraceIndent();
             NewLine();
 
-            for (var i = 0; i < @class.Layout.VFTables.Count; i++)
-                WriteLine("native->vfptr{0} = new IntPtr({1}[{0}]);", i, managedVTables);
+            for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
+                WriteLine("native->{0} = new IntPtr({1}[{2}]);",
+                    @class.Layout.VTablePointers[i].Name, managedVTables, i);
         }
 
         private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1558,16 +1561,17 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0}[0] = vfptr0.ToPointer();", managedVTables);
 
             AllocateNewVTableEntries(@class.Layout.Layout.Components,
-                wrappedEntries, 0, destructorOnly);
+                wrappedEntries, @class.Layout.VTablePointers[0].Name, 0, destructorOnly);
 
             WriteCloseBraceIndent();
             NewLine();
 
-            WriteLine("native->vfptr0 = new IntPtr({0}[0]);", managedVTables);
+            WriteLine("native->{0} = new IntPtr({1}[0]);",
+                @class.Layout.VTablePointers[0].Name, managedVTables);
         }
 
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
-            IList<VTableComponent> wrappedEntries, int tableIndex, bool destructorOnly)
+            IList<VTableComponent> wrappedEntries, string vptr, int tableIndex, bool destructorOnly)
         {
             var pointerSize = Driver.TargetInfo.PointerWidth / 8;
             for (var i = 0; i < entries.Count; i++)
@@ -1576,7 +1580,7 @@ namespace CppSharp.Generators.CSharp
                 var offset = pointerSize
                     * (i - (Options.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
 
-                var nativeVftableEntry = string.Format("*(void**)(native->vfptr{0} + {1})", tableIndex, offset);
+                var nativeVftableEntry = string.Format("*(void**)(native->{0} + {1})", vptr, offset);
                 var managedVftableEntry = string.Format("*(void**)(vfptr{0} + {1})", tableIndex, offset);
 
                 if ((entry.Kind == VTableComponentKind.FunctionPointer ||
@@ -1759,32 +1763,6 @@ namespace CppSharp.Generators.CSharp
             nativeId = nativeId.Trim('@');
 
             return string.Format("_{0}Delegate", nativeId);
-        }
-
-        public void GenerateVTablePointers(Class @class)
-        {
-            if (Options.IsMicrosoftAbi)
-            {
-                var index = 0;
-                foreach (var info in @class.Layout.VFTables)
-                {
-                    PushBlock(CSharpBlockKind.InternalsClassField);
-
-                    WriteLine("[FieldOffset({0})]", info.VFPtrFullOffset);
-                    WriteLine("public global::System.IntPtr vfptr{0};", index++);
-
-                    PopBlock(NewLineKind.BeforeNextBlock);
-                }
-            }
-            else
-            {
-                PushBlock(CSharpBlockKind.InternalsClassField);
-
-                WriteLine("[FieldOffset(0)]");
-                WriteLine("public global::System.IntPtr vfptr0;");
-
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
         }
 
         #endregion
@@ -1994,12 +1972,12 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
                     if (Options.IsMicrosoftAbi)
-                        for (var i = 0; i < @class.Layout.VFTables.Count; i++)
-                            WriteLine("((Internal*) {0})->vfptr{1} = new global::System.IntPtr(__OriginalVTables[{1}]);",
-                                Helpers.InstanceIdentifier, i);
+                        for (var i = 0; i < @class.Layout.VTablePointers.Count; i++)
+                            WriteLine("((Internal*) {0})->{1} = new global::System.IntPtr(__OriginalVTables[{2}]);",
+                                Helpers.InstanceIdentifier, @class.Layout.VTablePointers[i].Name, i);
                     else
-                        WriteLine("((Internal*) {0})->vfptr0 = new global::System.IntPtr(__OriginalVTables[0]);",
-                            Helpers.InstanceIdentifier);
+                        WriteLine("((Internal*) {0})->{1} = new global::System.IntPtr(__OriginalVTables[0]);",
+                            Helpers.InstanceIdentifier, @class.Layout.VTablePointers[0].Name);
                 }
             }
 
@@ -2095,7 +2073,7 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 if (@class.IsAbstractImpl || hasVTables)
-                    SaveOriginalVTablePointers(@class.Layout.VFTables);
+                    SaveOriginalVTablePointers(@class.Layout.VTablePointers);
 
                 if (setupVTables)
                 {

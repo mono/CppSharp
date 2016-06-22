@@ -169,11 +169,11 @@ namespace CppSharp.Passes
             if (!@class.IsDependent)
             {
                 foreach (var fields in @class.Layout.Fields.GroupBy(
-                    f => f.Field.OriginalName).Select(g => g.ToList()))
+                    f => f.Name).Select(g => g.ToList()))
                 {
                     for (var i = 1; i < fields.Count; i++)
                     {
-                        var name = fields[i].Field.OriginalName;
+                        var name = fields[i].Name;
                         fields[i].Name = (string.IsNullOrEmpty(name) ? "__" : name) + i;
                     }
                 }
