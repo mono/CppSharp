@@ -1292,6 +1292,67 @@ void CppSharp::Parser::AST::VFTableInfo::Layout::set(CppSharp::Parser::AST::VTab
     ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->Layout = *(::CppSharp::CppParser::AST::VTableLayout*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::LayoutField::LayoutField(::CppSharp::CppParser::AST::LayoutField* native)
+    : __ownsNativeInstance(false)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::LayoutField^ CppSharp::Parser::AST::LayoutField::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::LayoutField((::CppSharp::CppParser::AST::LayoutField*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::LayoutField::~LayoutField()
+{
+    delete NativePtr;
+}
+
+CppSharp::Parser::AST::LayoutField::LayoutField()
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::LayoutField();
+}
+
+CppSharp::Parser::AST::LayoutField::LayoutField(CppSharp::Parser::AST::LayoutField^ _0)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::LayoutField*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::LayoutField(__arg0);
+}
+
+System::IntPtr CppSharp::Parser::AST::LayoutField::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::LayoutField::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::LayoutField*)object.ToPointer();
+}
+
+unsigned int CppSharp::Parser::AST::LayoutField::Offset::get()
+{
+    return ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Offset;
+}
+
+void CppSharp::Parser::AST::LayoutField::Offset::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Offset = value;
+}
+
+CppSharp::Parser::AST::Field^ CppSharp::Parser::AST::LayoutField::Field::get()
+{
+    return (((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Field == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Field((::CppSharp::CppParser::AST::Field*)((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Field);
+}
+
+void CppSharp::Parser::AST::LayoutField::Field::set(CppSharp::Parser::AST::Field^ value)
+{
+    ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->Field = (::CppSharp::CppParser::AST::Field*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::ClassLayout::ClassLayout(::CppSharp::CppParser::AST::ClassLayout* native)
     : __ownsNativeInstance(false)
 {
@@ -1334,6 +1395,26 @@ void CppSharp::Parser::AST::ClassLayout::clearVFTables()
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->clearVFTables();
 }
 
+CppSharp::Parser::AST::LayoutField^ CppSharp::Parser::AST::ClassLayout::getFields(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->getFields(i);
+    auto ____ret = new ::CppSharp::CppParser::AST::LayoutField(__ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::LayoutField((::CppSharp::CppParser::AST::LayoutField*)____ret);
+}
+
+void CppSharp::Parser::AST::ClassLayout::addFields(CppSharp::Parser::AST::LayoutField^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::LayoutField*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->addFields(__arg0);
+}
+
+void CppSharp::Parser::AST::ClassLayout::clearFields()
+{
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->clearFields();
+}
+
 CppSharp::Parser::AST::ClassLayout::ClassLayout(CppSharp::Parser::AST::ClassLayout^ _0)
 {
     __ownsNativeInstance = true;
@@ -1356,6 +1437,12 @@ void CppSharp::Parser::AST::ClassLayout::__Instance::set(System::IntPtr object)
 unsigned int CppSharp::Parser::AST::ClassLayout::VFTablesCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->getVFTablesCount();
+    return __ret;
+}
+
+unsigned int CppSharp::Parser::AST::ClassLayout::FieldsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->getFieldsCount();
     return __ret;
 }
 
@@ -3062,16 +3149,6 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Field::QualifiedTyp
 void CppSharp::Parser::AST::Field::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
     ((::CppSharp::CppParser::AST::Field*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
-}
-
-unsigned int CppSharp::Parser::AST::Field::Offset::get()
-{
-    return ((::CppSharp::CppParser::AST::Field*)NativePtr)->Offset;
-}
-
-void CppSharp::Parser::AST::Field::Offset::set(unsigned int value)
-{
-    ((::CppSharp::CppParser::AST::Field*)NativePtr)->Offset = value;
 }
 
 CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::Field::Class::get()

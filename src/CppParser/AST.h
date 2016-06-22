@@ -315,6 +315,17 @@ struct CS_API VFTableInfo
     VTableLayout Layout;
 };
 
+class Field;
+
+class CS_API LayoutField
+{
+public:
+    LayoutField();
+    ~LayoutField();
+    unsigned Offset;
+    Field* Field;
+};
+
 struct CS_API ClassLayout
 {
     ClassLayout();
@@ -326,6 +337,7 @@ struct CS_API ClassLayout
     int Alignment;
     int Size;
     int DataSize;
+    VECTOR(LayoutField, Fields)
 };
 
 #pragma endregion
@@ -706,7 +718,6 @@ public:
     DECLARE_DECL_KIND(Field, Field)
     ~Field();
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
-    unsigned Offset;
     CppSharp::CppParser::AST::Class* Class;
     bool IsBitField;
     unsigned BitWidth;

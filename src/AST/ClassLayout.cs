@@ -85,7 +85,10 @@ namespace CppSharp.AST
         public ClassLayout()
         {
             VFTables = new List<VFTableInfo>();
+            Fields = new List<LayoutField>();
         }
+
+        public List<LayoutField> Fields { get; private set; }
 
         public ClassLayout(ClassLayout classLayout)
             : this()

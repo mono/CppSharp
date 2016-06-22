@@ -152,7 +152,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!VisitDeclaration(@class))
+            if (!base.VisitClassDecl(@class))
                 return false;
 
             if (@class.IsIncomplete)
@@ -166,11 +166,17 @@ namespace CppSharp.Passes
             foreach (var function in @class.Functions)
                 VisitFunctionDecl(function);
 
-            foreach (var fields in GetAllFields(@class).GroupBy(f => f.OriginalName).Where(
-                g => !string.IsNullOrEmpty(g.Key)).Select(g => g.ToList()))
+            if (!@class.IsDependent)
             {
-                for (var i = 1; i < fields.Count; i++)
-                    fields[i].InternalName = fields[i].OriginalName + i;
+                foreach (var fields in @class.Layout.Fields.GroupBy(
+                    f => f.Field.OriginalName).Select(g => g.ToList()))
+                {
+                    for (var i = 1; i < fields.Count; i++)
+                    {
+                        var name = fields[i].Field.OriginalName;
+                        fields[i].Name = (string.IsNullOrEmpty(name) ? "__" : name) + i;
+                    }
+                }
             }
 
             foreach (var property in @class.Properties)

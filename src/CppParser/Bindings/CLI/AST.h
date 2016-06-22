@@ -61,6 +61,7 @@ namespace CppSharp
             ref class InjectedClassNameType;
             ref class InlineCommandComment;
             ref class InlineContentComment;
+            ref class LayoutField;
             ref class MacroDefinition;
             ref class MacroExpansion;
             ref class MemberPointerType;
@@ -165,14 +166,56 @@ namespace CppSharp
                 Public = 2
             };
 
-            public enum struct CXXMethodKind
+            public enum struct RawCommentKind
             {
-                Normal = 0,
-                Constructor = 1,
-                Destructor = 2,
-                Conversion = 3,
-                Operator = 4,
-                UsingDirective = 5
+                Invalid = 0,
+                OrdinaryBCPL = 1,
+                OrdinaryC = 2,
+                BCPLSlash = 3,
+                BCPLExcl = 4,
+                JavaDoc = 5,
+                Qt = 6,
+                Merged = 7
+            };
+
+            public enum struct CommentKind
+            {
+                FullComment = 0,
+                BlockContentComment = 1,
+                BlockCommandComment = 2,
+                ParamCommandComment = 3,
+                TParamCommandComment = 4,
+                VerbatimBlockComment = 5,
+                VerbatimLineComment = 6,
+                ParagraphComment = 7,
+                HTMLTagComment = 8,
+                HTMLStartTagComment = 9,
+                HTMLEndTagComment = 10,
+                TextComment = 11,
+                InlineContentComment = 12,
+                InlineCommandComment = 13,
+                VerbatimBlockLineComment = 14
+            };
+
+            public enum struct CppAbi
+            {
+                Itanium = 0,
+                Microsoft = 1,
+                ARM = 2,
+                iOS = 3,
+                iOS64 = 4
+            };
+
+            public enum struct VTableComponentKind
+            {
+                VCallOffset = 0,
+                VBaseOffset = 1,
+                OffsetToTop = 2,
+                RTTI = 3,
+                FunctionPointer = 4,
+                CompleteDtorPointer = 5,
+                DeletingDtorPointer = 6,
+                UnusedFunctionPointer = 7
             };
 
             public enum struct CXXOperatorKind
@@ -234,6 +277,15 @@ namespace CppSharp
                 Unknown = 5
             };
 
+            public enum struct TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
+            };
+
             public enum struct StatementClass
             {
                 Any = 0,
@@ -246,34 +298,14 @@ namespace CppSharp
                 ExplicitCastExpr = 7
             };
 
-            public enum struct TemplateSpecializationKind
+            public enum struct CXXMethodKind
             {
-                Undeclared = 0,
-                ImplicitInstantiation = 1,
-                ExplicitSpecialization = 2,
-                ExplicitInstantiationDeclaration = 3,
-                ExplicitInstantiationDefinition = 4
-            };
-
-            public enum struct CppAbi
-            {
-                Itanium = 0,
-                Microsoft = 1,
-                ARM = 2,
-                iOS = 3,
-                iOS64 = 4
-            };
-
-            public enum struct VTableComponentKind
-            {
-                VCallOffset = 0,
-                VBaseOffset = 1,
-                OffsetToTop = 2,
-                RTTI = 3,
-                FunctionPointer = 4,
-                CompleteDtorPointer = 5,
-                DeletingDtorPointer = 6,
-                UnusedFunctionPointer = 7
+                Normal = 0,
+                Constructor = 1,
+                Destructor = 2,
+                Conversion = 3,
+                Operator = 4,
+                UsingDirective = 5
             };
 
             public enum struct PrimitiveType
@@ -305,37 +337,6 @@ namespace CppSharp
                 FunctionHead = 3,
                 FunctionParameters = 4,
                 FunctionBody = 5
-            };
-
-            public enum struct RawCommentKind
-            {
-                Invalid = 0,
-                OrdinaryBCPL = 1,
-                OrdinaryC = 2,
-                BCPLSlash = 3,
-                BCPLExcl = 4,
-                JavaDoc = 5,
-                Qt = 6,
-                Merged = 7
-            };
-
-            public enum struct CommentKind
-            {
-                FullComment = 0,
-                BlockContentComment = 1,
-                BlockCommandComment = 2,
-                ParamCommandComment = 3,
-                TParamCommandComment = 4,
-                VerbatimBlockComment = 5,
-                VerbatimLineComment = 6,
-                ParagraphComment = 7,
-                HTMLTagComment = 8,
-                HTMLStartTagComment = 9,
-                HTMLEndTagComment = 10,
-                TextComment = 11,
-                InlineContentComment = 12,
-                InlineCommandComment = 13,
-                VerbatimBlockLineComment = 14
             };
 
             public enum struct ArchType
@@ -1026,6 +1027,41 @@ namespace CppSharp
                 bool __ownsNativeInstance;
             };
 
+            public ref class LayoutField : ICppInstance
+            {
+            public:
+
+                property ::CppSharp::CppParser::AST::LayoutField* NativePtr;
+                property System::IntPtr __Instance
+                {
+                    virtual System::IntPtr get();
+                    virtual void set(System::IntPtr instance);
+                }
+
+                LayoutField(::CppSharp::CppParser::AST::LayoutField* native);
+                static LayoutField^ __CreateInstance(::System::IntPtr native);
+                LayoutField();
+
+                LayoutField(CppSharp::Parser::AST::LayoutField^ _0);
+
+                ~LayoutField();
+
+                property unsigned int Offset
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property CppSharp::Parser::AST::Field^ Field
+                {
+                    CppSharp::Parser::AST::Field^ get();
+                    void set(CppSharp::Parser::AST::Field^);
+                }
+
+                protected:
+                bool __ownsNativeInstance;
+            };
+
             public ref class ClassLayout : ICppInstance
             {
             public:
@@ -1046,6 +1082,11 @@ namespace CppSharp
                 ~ClassLayout();
 
                 property unsigned int VFTablesCount
+                {
+                    unsigned int get();
+                }
+
+                property unsigned int FieldsCount
                 {
                     unsigned int get();
                 }
@@ -1097,6 +1138,12 @@ namespace CppSharp
                 void addVFTables(CppSharp::Parser::AST::VFTableInfo^ s);
 
                 void clearVFTables();
+
+                CppSharp::Parser::AST::LayoutField^ getFields(unsigned int i);
+
+                void addFields(CppSharp::Parser::AST::LayoutField^ s);
+
+                void clearFields();
 
                 protected:
                 bool __ownsNativeInstance;
@@ -1881,12 +1928,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
-                }
-
-                property unsigned int Offset
-                {
-                    unsigned int get();
-                    void set(unsigned int);
                 }
 
                 property CppSharp::Parser::AST::Class^ Class

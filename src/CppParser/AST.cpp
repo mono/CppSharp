@@ -189,10 +189,16 @@ VFTableInfo::VFTableInfo(const VFTableInfo& rhs) : VBTableIndex(rhs.VBTableIndex
     VFPtrOffset(rhs.VFPtrOffset), VFPtrFullOffset(rhs.VFPtrFullOffset),
     Layout(rhs.Layout) {}
 
+LayoutField::LayoutField() {}
+
+LayoutField::~LayoutField() {}
+
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
     VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}
 
 DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
+
+DEF_VECTOR(ClassLayout, LayoutField, Fields)
 
 Declaration::Declaration(DeclarationKind kind)
     : Kind(kind)
@@ -650,7 +656,7 @@ DEF_STRING(Variable, Mangled)
 BaseClassSpecifier::BaseClassSpecifier() : Type(0), Offset(0) {}
 
 Field::Field() : Declaration(DeclarationKind::Field), Class(0),
-    IsBitField(false), BitWidth(0), Offset(0) {}
+    IsBitField(false), BitWidth(0) {}
 
 Field::~Field() {}
 
