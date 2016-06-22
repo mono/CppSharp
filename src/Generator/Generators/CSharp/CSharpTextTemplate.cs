@@ -603,7 +603,8 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsDynamic)
                 GenerateVTablePointers(@class);
-            GenerateClassFields(@class, @class, GenerateClassInternalsField, true);
+            foreach (var field in @class.Layout.Fields)
+                GenerateClassInternalsField(field);
             if (@class.IsGenerated && !(@class is ClassTemplateSpecialization))
             {
                 var functions = GatherClassInternalFunctions(@class);
@@ -790,16 +791,16 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateClassInternalsField(Class owner, Field field)
+        private void GenerateClassInternalsField(LayoutField layoutField)
         {
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
-            Class @class;
-            field.Type.TryGetClass(out @class);
-            if ((field.Type.IsDependent && !field.Type.IsPointer() &&
-                !(@class != null && @class.IsUnion)) || (@class != null && @class.TranslationUnit.IsSystemHeader))
+            Declaration decl;
+            var field = layoutField.Field;
+            field.Type.TryGetDeclaration(out decl);
+            if (decl != null && decl.TranslationUnit.IsSystemHeader)
                 return;
 
-            var safeIdentifier = Helpers.SafeIdentifier(field.InternalName);
+            var safeIdentifier = Helpers.SafeIdentifier(layoutField.Name);
 
             if(safeIdentifier.All(c => c.Equals('_')))
             {
@@ -808,8 +809,7 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            WriteLine("[FieldOffset({0})]", field.OffsetInBytes +
-                owner.ComputeNonVirtualBaseClassOffsetTo((Class) field.Namespace));
+            WriteLine("[FieldOffset({0})]", layoutField.Offset);
 
             TypePrinter.PushMarshalKind(CSharpMarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
@@ -822,7 +822,7 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
                 fieldName += fieldTypePrinted.NameSuffix;
 
-            var access = @class != null && !@class.IsGenerated ? "internal" : "public";
+            var access = decl != null && !decl.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
@@ -848,11 +848,11 @@ namespace CppSharp.Generators.CSharp
                         Name = string.Format("{0}_{1}_{2}", Helpers.DummyIdentifier,
                             safeIdentifier, i),
                         QualifiedType = new QualifiedType(arrayType.Type),
-                        Offset = (uint) (field.Offset + i * arrayType.ElementSize),
-                        Namespace = owner
+                        Namespace = field.Namespace
                     };
 
-                    GenerateClassInternalsField(owner, dummy);
+                    GenerateClassInternalsField(new LayoutField(
+                        (uint) (layoutField.Offset + i * arrayType.ElementSize / 8), dummy));
                 }
             }
         }
@@ -975,12 +975,13 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
+                    var name = @class.Layout.Fields.First(f => f.Field == field).Name;
                     ctx.ReturnVarName = string.Format("{0}{1}{2}",
-                    @class.IsValueType
-                        ? Helpers.InstanceField
-                        : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
-                    @class.IsValueType ? "." : "->",
-                    Helpers.SafeIdentifier(field.InternalName));
+                        @class.IsValueType
+                            ? Helpers.InstanceField
+                            : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
+                        @class.IsValueType ? "." : "->",
+                        Helpers.SafeIdentifier(name));
                 }
                 param.Visit(marshal);
 
@@ -1026,9 +1027,9 @@ namespace CppSharp.Generators.CSharp
                 type = originalType.ToString();
             }
 
+            var name = ((Class) field.Namespace).Layout.Fields.First(f => f.Field == field).Name;
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
-                type, arrPtrIden, Helpers.InstanceField,
-                Helpers.SafeIdentifier(field.InternalName)));
+                type, arrPtrIden, Helpers.InstanceField, Helpers.SafeIdentifier(name)));
             WriteStartBraceIndent();
             if (Driver.Options.MarshalCharAsManagedChar && isChar)
                 WriteLine("var {0} = ({1}) {2};", arrPtr, originalType, arrPtrIden);
@@ -1117,6 +1118,7 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteStartBraceIndent();
 
+                var name = @class.Layout.Fields.First(f => f.Field == field).Name;
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     Kind = CSharpMarshalKind.NativeField,
@@ -1126,7 +1128,7 @@ namespace CppSharp.Generators.CSharp
                             ? Helpers.InstanceField
                             : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
                         @class.IsValueType ? "." : "->",
-                        Helpers.SafeIdentifier(field.InternalName)),
+                        Helpers.SafeIdentifier(name)),
                     ReturnType = decl.QualifiedType
                 };
 
@@ -1298,9 +1300,10 @@ namespace CppSharp.Generators.CSharp
                 ArrayType arrayType = prop.Type as ArrayType;
                 if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType() && prop.Field != null)
                 {
+                    var name = @class.Layout.Fields.First(f => f.Field == prop.Field).Name;
                     GenerateClassField(prop.Field);
                     WriteLine("private bool {0};",
-                        GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.InternalName)));
+                        GeneratedIdentifier(string.Format("{0}Initialised", name)));
                 }
 
                 GenerateDeclarationCommon(prop);

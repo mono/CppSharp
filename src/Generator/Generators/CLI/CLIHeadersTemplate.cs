@@ -439,9 +439,9 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             // check for value types because some of the ignored fields may back properties;
             // not the case for ref types because the NativePtr pattern is used there
-            foreach (var field in @class.Fields.Where(f => !ASTUtils.CheckIgnoreField(f)))
+            foreach (var field in @class.Layout.Fields.Where(f => !ASTUtils.CheckIgnoreField(f.Field)))
             {
-                var property = @class.Properties.FirstOrDefault(p => p.Field == field);
+                var property = @class.Properties.FirstOrDefault(p => p.Field == field.Field);
                 if (property != null && !property.IsInRefTypeAndBackedByValueClassField())
                 {
                     GenerateField(@class, field);
@@ -450,15 +450,15 @@ namespace CppSharp.Generators.CLI
             PopIndent();
         }
 
-        private void GenerateField(Class @class, Field field)
+        private void GenerateField(Class @class, LayoutField layoutField)
         {
-            PushBlock(CLIBlockKind.Field, field);
+            PushBlock(CLIBlockKind.Field, layoutField.Field);
 
-            GenerateDeclarationCommon(field);
+            GenerateDeclarationCommon(layoutField.Field);
             if (@class.IsUnion)
                 WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
-                    field.Offset);
-            WriteLine("{0} {1};", field.Type, field.Name);
+                    layoutField.Offset);
+            WriteLine("{0} {1};", layoutField.Field.Type, layoutField.Field.Name);
 
             PopBlock();
         }
@@ -630,7 +630,7 @@ namespace CppSharp.Generators.CLI
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
-                    GenerateField(@class, prop.Field);
+                    GenerateField(@class, @class.Layout.Fields.Single(f => f.Field == prop.Field));
                     continue;
                 }
 

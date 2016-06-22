@@ -82,6 +82,81 @@ std::string GetCurrentLibraryDir()
 #endif
 }
 
+void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl *RD,
+    clang::CharUnits Offset, bool IncludeVirtualBases)
+{
+    using namespace clang;
+
+    const auto &Layout = C->getASTContext().getASTRecordLayout(RD);
+    auto CXXRD = dyn_cast<CXXRecordDecl>(RD);
+
+    // Dump bases.
+    if (CXXRD) {
+        // Collect nvbases.
+        SmallVector<const CXXRecordDecl *, 4> Bases;
+        for (const CXXBaseSpecifier &Base : CXXRD->bases()) {
+            assert(!Base.getType()->isDependentType() &&
+                "Cannot layout class with dependent bases.");
+            if (!Base.isVirtual())
+                Bases.push_back(Base.getType()->getAsCXXRecordDecl());
+        }
+
+        // Sort nvbases by offset.
+        std::stable_sort(Bases.begin(), Bases.end(),
+            [&](const CXXRecordDecl *L, const CXXRecordDecl *R) {
+            return Layout.getBaseClassOffset(L) < Layout.getBaseClassOffset(R);
+        });
+
+        // Dump (non-virtual) bases
+        for (const CXXRecordDecl *Base : Bases) {
+            CharUnits BaseOffset = Offset + Layout.getBaseClassOffset(Base);
+            ReadLayoutFields(Class, Base, BaseOffset,
+                /*IncludeVirtualBases=*/false);
+        }
+    }
+
+    // Dump fields.
+    uint64_t FieldNo = 0;
+    for (RecordDecl::field_iterator I = RD->field_begin(),
+        E = RD->field_end(); I != E; ++I, ++FieldNo) {
+        const FieldDecl &Field = **I;
+        uint64_t LocalFieldOffsetInBits = Layout.getFieldOffset(FieldNo);
+        CharUnits FieldOffset =
+            Offset + C->getASTContext().toCharUnitsFromBits(LocalFieldOffsetInBits);
+
+        // Recursively dump fields of record type.
+        if (auto RT = Field.getType()->getAs<RecordType>())
+        {
+            auto TU = GetTranslationUnit(RT->getDecl());
+            if (TU->IsSystemHeader)
+                continue;
+        }
+
+        auto Parent = WalkDeclaration(RD, /*IgnoreSystemDecls =*/false);
+        auto F = WalkFieldCXX(&Field, static_cast<AST::Class*>(Parent));
+        LayoutField LayoutField;
+        LayoutField.Offset = FieldOffset.getQuantity();
+        LayoutField.Field = F;
+        Class->Layout->Fields.push_back(LayoutField);
+    }
+
+    // Dump virtual bases.
+    if (CXXRD && IncludeVirtualBases) {
+        const ASTRecordLayout::VBaseOffsetsMapTy &VtorDisps =
+            Layout.getVBaseOffsetsMap();
+
+        for (const CXXBaseSpecifier &Base : CXXRD->vbases()) {
+            assert(Base.isVirtual() && "Found non-virtual class!");
+            const CXXRecordDecl *VBase = Base.getType()->getAsCXXRecordDecl();
+
+            CharUnits VBaseOffset = Offset + Layout.getVBaseClassOffset(VBase);
+
+            ReadLayoutFields(Class, VBase, VBaseOffset,
+                /*IncludeVirtualBases=*/false);
+        }
+    }
+}
+
 static std::string GetClangResourceDir()
 {
     using namespace llvm;
@@ -729,6 +804,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
         RC->Layout->Size = (int)Layout->getSize().getQuantity();
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
+        ReadLayoutFields(RC, Record, CharUnits(), true);
     }
 
     for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
@@ -749,11 +825,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         case Decl::Field:
         {
             auto FD = cast<FieldDecl>(D);
-            auto Field = WalkFieldCXX(FD, RC);
-
-            if (Layout)
-                Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
-
+            WalkFieldCXX(FD, RC);
             break;
         }
         case Decl::AccessSpec:
@@ -1342,6 +1414,12 @@ Field* Parser::WalkFieldCXX(const clang::FieldDecl* FD, Class* Class)
     using namespace clang;
 
     const auto& USR = GetDeclUSR(FD);
+
+    auto FoundField = std::find_if(Class->Fields.begin(), Class->Fields.end(),
+        [&](Field* Field) { return Field->USR == USR; });
+
+    if (FoundField != Class->Fields.end())
+        return *FoundField;
 
     auto F = new Field();
     HandleDeclaration(FD, F);

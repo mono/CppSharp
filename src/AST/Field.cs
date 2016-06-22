@@ -8,13 +8,7 @@ namespace CppSharp.AST
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
 
-        public uint Offset { get; set; }
         public Class Class { get; set; }
-
-        public uint OffsetInBytes
-        {
-            get { return Offset / (sizeof (byte) * 8); }
-        }
 
         public Expression Expression { get; set; }
 
@@ -22,15 +16,8 @@ namespace CppSharp.AST
 
         public uint BitWidth { get; set; }
 
-        public string InternalName
-        {
-            get { return internalName ?? (internalName = OriginalName); }
-            set { internalName = value; }
-        }
-
         public Field()
         {
-            Offset = 0;
         }
 
         public Field(string name, QualifiedType type, AccessSpecifier access)
@@ -38,13 +25,11 @@ namespace CppSharp.AST
             Name = name;
             QualifiedType = type;
             Access = access;
-            Offset = 0;
         }
 
         public Field(Field field): base(field)
         {
             QualifiedType = field.QualifiedType;
-            Offset = field.Offset;
             Class = field.Class;
             Expression = field.Expression;
             IsBitField = field.IsBitField;
@@ -55,7 +40,5 @@ namespace CppSharp.AST
         {
             return visitor.VisitFieldDecl(this);
         }
-
-        private string internalName;
     }
 }

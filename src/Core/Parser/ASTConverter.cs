@@ -1255,7 +1255,6 @@ namespace CppSharp
             _field.QualifiedType = typeConverter.VisitQualified(
                 decl.QualifiedType);
             _field.Access = VisitAccessSpecifier(decl.Access);
-            _field.Offset = decl.Offset;
             _field.Class = Visit(decl.Class) as AST.Class;
             _field.IsBitField = decl.IsBitField;
             _field.BitWidth = decl.BitWidth;
@@ -1344,6 +1343,13 @@ namespace CppSharp
                 var vftableInfo = layout.getVFTables(i);
                 var _vftableInfo = VisitVFTableInfo(vftableInfo);
                 _layout.VFTables.Add(_vftableInfo);
+            }
+
+            for (uint i = 0; i < layout.FieldsCount; i++)
+            {
+                var field = layout.getFields(i);
+                _layout.Fields.Add(new AST.LayoutField(field.Offset,
+                    (AST.Field) Visit(field.Field)));
             }
 
             return _layout;
