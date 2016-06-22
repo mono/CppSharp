@@ -62,12 +62,12 @@ private:
 
     // AST traversers
     void WalkAST();
-    Declaration* WalkDeclaration(clang::Decl* D,
+    Declaration* WalkDeclaration(const clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     Declaration* WalkDeclarationDef(clang::Decl* D);
     Enumeration* WalkEnum(const clang::EnumDecl* ED);
 	Enumeration::Item* WalkEnumItem(clang::EnumConstantDecl* ECD);
-    Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
+    Function* WalkFunction(const clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
     Class* GetRecord(const clang::RecordDecl* Record, bool& IsComplete);
     Class* WalkRecord(const clang::RecordDecl* Record);
@@ -78,22 +78,22 @@ private:
     WalkClassTemplateSpecialization(const clang::ClassTemplateSpecializationDecl* CTS);
     ClassTemplatePartialSpecialization*
     WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartialSpecializationDecl* CTS);
-    Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
+    Method* WalkMethodCXX(const clang::CXXMethodDecl* MD);
     Field* WalkFieldCXX(const clang::FieldDecl* FD, Class* Class);
     FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
-    Variable* WalkVariable(clang::VarDecl* VD);
-    Friend* WalkFriend(clang::FriendDecl* FD);
+    Variable* WalkVariable(const clang::VarDecl* VD);
+    Friend* WalkFriend(const clang::FriendDecl* FD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     bool ShouldCompleteType(const clang::QualType& QualType, bool LocValid);
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
-    TemplateTemplateParameter* WalkTemplateTemplateParameter(clang::TemplateTemplateParmDecl* TTP);
-    TypeTemplateParameter* WalkTypeTemplateParameter(clang::TemplateTypeParmDecl* TTPD);
-    NonTypeTemplateParameter* WalkNonTypeTemplateParameter(clang::NonTypeTemplateParmDecl* TTPD);
+    TemplateTemplateParameter* WalkTemplateTemplateParameter(const clang::TemplateTemplateParmDecl* TTP);
+    TypeTemplateParameter* WalkTypeTemplateParameter(const clang::TemplateTypeParmDecl* TTPD);
+    NonTypeTemplateParameter* WalkNonTypeTemplateParameter(const clang::NonTypeTemplateParmDecl* TTPD);
     std::vector<Declaration*> WalkTemplateParameterList(const clang::TemplateParameterList* TPL);
-    ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
-    FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
+    ClassTemplate* WalkClassTemplate(const clang::ClassTemplateDecl* TD);
+    FunctionTemplate* WalkFunctionTemplate(const clang::FunctionTemplateDecl* TD);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
@@ -108,9 +108,9 @@ private:
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(clang::Decl* D);
+    std::string GetDeclMangledName(const clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
-    void WalkFunction(clang::FunctionDecl* FD, Function* F,
+    void WalkFunction(const clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(Declaration* Decl);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,

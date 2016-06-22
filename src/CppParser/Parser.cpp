@@ -286,7 +286,7 @@ void Parser::SetupHeader()
 
 //-----------------------------------//
 
-std::string Parser::GetDeclMangledName(clang::Decl* D)
+std::string Parser::GetDeclMangledName(const clang::Decl* D)
 {
     using namespace clang;
 
@@ -298,7 +298,7 @@ std::string Parser::GetDeclMangledName(clang::Decl* D)
 
     if (!CanMangle) return "";
 
-    NamedDecl* ND = cast<NamedDecl>(D);
+    auto ND = cast<NamedDecl>(D);
     std::unique_ptr<MangleContext> MC;
     
     switch(TargetABI)
@@ -971,7 +971,7 @@ std::vector<Declaration*> Parser::WalkTemplateParameterList(const clang::Templat
 
 //-----------------------------------//
 
-ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
+ClassTemplate* Parser::WalkClassTemplate(const clang::ClassTemplateDecl* TD)
 {
     auto NS = GetNamespace(TD);
     assert(NS && "Expected a valid namespace");
@@ -1007,7 +1007,7 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 
 //-----------------------------------//
 
-TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(clang::TemplateTemplateParmDecl* TTP)
+TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(const clang::TemplateTemplateParmDecl* TTP)
 {
     auto TP = new TemplateTemplateParameter();
     HandleDeclaration(TTP, TP);
@@ -1025,7 +1025,7 @@ TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(clang::Template
 
 //-----------------------------------//
 
-TypeTemplateParameter* Parser::WalkTypeTemplateParameter(clang::TemplateTypeParmDecl* TTPD)
+TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTypeParmDecl* TTPD)
 {
     auto TP = new CppSharp::CppParser::TypeTemplateParameter();
     TP->Name = GetDeclName(TTPD);
@@ -1040,7 +1040,7 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(clang::TemplateTypeParm
 
 //-----------------------------------//
 
-NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(clang::NonTypeTemplateParmDecl* NTTPD)
+NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonTypeTemplateParmDecl* NTTPD)
 {
     auto NTP = new CppSharp::CppParser::NonTypeTemplateParameter();
     NTP->Name = GetDeclName(NTTPD);
@@ -1158,7 +1158,7 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
 
 //-----------------------------------//
 
-FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
+FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl* TD)
 {
     using namespace clang;
 
@@ -1264,7 +1264,7 @@ static CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name)
     llvm_unreachable("Unknown OverloadedOperator");
 }
 
-Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
+Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
@@ -2280,7 +2280,7 @@ Enumeration::Item* Parser::WalkEnumItem(clang::EnumConstantDecl* ECD)
 //-----------------------------------//
 
 static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
-    clang::CodeGen::CodeGenTypes* CodeGenTypes, clang::FunctionDecl* FD)
+    clang::CodeGen::CodeGenTypes* CodeGenTypes, const clang::FunctionDecl* FD)
 {
     using namespace clang;
     if (auto CD = dyn_cast<clang::CXXConstructorDecl>(FD)) {
@@ -2305,7 +2305,7 @@ static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
     return true;
 }
 
-void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
+void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
                           bool IsDependent)
 {
     using namespace clang;
@@ -2430,7 +2430,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->SpecializationInfo = WalkFunctionTemplateSpec(FTSI, F);
 
-    CXXMethodDecl* MD;
+    const CXXMethodDecl* MD;
     if ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
         !CanCheckCodeGenInfo(C->getSema(), MD->getThisType(C->getASTContext()).getTypePtr()))
         return;
@@ -2457,7 +2457,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     }
 }
 
-Function* Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
+Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool IsDependent,
                                      bool AddToNamespace)
 {
     using namespace clang;
@@ -2530,7 +2530,7 @@ void Parser::WalkAST()
 
 //-----------------------------------//
 
-Variable* Parser::WalkVariable(clang::VarDecl *VD)
+Variable* Parser::WalkVariable(const clang::VarDecl *VD)
 {
     using namespace clang;
 
@@ -2561,7 +2561,7 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
 
 //-----------------------------------//
 
-Friend* Parser::WalkFriend(clang::FriendDecl *FD)
+Friend* Parser::WalkFriend(const clang::FriendDecl *FD)
 {
     using namespace clang;
 
@@ -2912,7 +2912,7 @@ Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
         /*CanBeDefinition=*/true);
 }
 
-Declaration* Parser::WalkDeclaration(clang::Decl* D,
+Declaration* Parser::WalkDeclaration(const clang::Decl* D,
                                            bool IgnoreSystemDecls,
                                            bool CanBeDefinition)
 {
@@ -2947,7 +2947,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
     case Decl::Record:
     {
-        RecordDecl* RD = cast<RecordDecl>(D);
+        auto RD = cast<RecordDecl>(D);
 
         auto Record = WalkRecord(RD);
 
@@ -2968,7 +2968,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::CXXRecord:
     {
-        CXXRecordDecl* RD = cast<CXXRecordDecl>(D);
+        auto RD = cast<CXXRecordDecl>(D);
 
         auto Class = WalkRecordCXX(RD);
 
@@ -2989,7 +2989,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::ClassTemplate:
     {
-        ClassTemplateDecl* TD = cast<ClassTemplateDecl>(D);
+        auto TD = cast<ClassTemplateDecl>(D);
         auto Template = WalkClassTemplate(TD); 
         
         Decl = Template;
@@ -3013,7 +3013,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::FunctionTemplate:
     {
-        FunctionTemplateDecl* TD = cast<FunctionTemplateDecl>(D);
+        auto TD = cast<FunctionTemplateDecl>(D);
         auto FT = WalkFunctionTemplate(TD);
 
         Decl = FT;
@@ -3035,7 +3035,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::Function:
     {
-        FunctionDecl* FD = cast<FunctionDecl>(D);
+        auto FD = cast<FunctionDecl>(D);
 
         // Check for and ignore built-in functions.
         if (FD->getBuiltinID() != 0)
@@ -3046,7 +3046,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::LinkageSpec:
     {
-        LinkageSpecDecl* LS = cast<LinkageSpecDecl>(D);
+        auto LS = cast<LinkageSpecDecl>(D);
         
         for (auto it = LS->decls_begin(); it != LS->decls_end(); ++it)
         {
@@ -3076,7 +3076,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::Namespace:
     {
-        NamespaceDecl* ND = cast<NamespaceDecl>(D);
+        auto ND = cast<NamespaceDecl>(D);
 
         for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
         {
