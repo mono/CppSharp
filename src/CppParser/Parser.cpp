@@ -959,7 +959,8 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
         auto BaseDecl = GetCXXRecordDeclFromBaseType(BS.getType().getTypePtr());
         if (BaseDecl && Layout)
         {
-            auto Offset = Layout->getBaseClassOffset(BaseDecl);
+            auto Offset = BS.isVirtual() ? Layout->getVBaseClassOffset(BaseDecl)
+                : Layout->getBaseClassOffset(BaseDecl);
             Base->Offset = Offset.getQuantity();
         }
 

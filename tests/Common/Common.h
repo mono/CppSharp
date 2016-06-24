@@ -678,6 +678,11 @@ public:
     int Value;
 };
 
+class DLL_API ClassWithVirtualBase : public virtual ClassC
+{
+
+};
+
 // Test decltype
 int Expr = 0;
 DLL_API decltype(Expr) TestDecltype()
