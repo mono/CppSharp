@@ -126,6 +126,14 @@
             {
                 if (type.IsDependent)
                 {
+                    if (type.Template is TypeAliasTemplate)
+                    {
+                        Class @class;
+                        type.Desugared.TryGetClass(out @class);
+                        decl = @class as T;
+                        return decl != null;
+                    }
+
                     var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
                     decl = templatedClass.CompleteDeclaration == null
                         ? templatedClass as T
