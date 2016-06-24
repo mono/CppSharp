@@ -3306,6 +3306,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::UnresolvedUsingValue:
     case Decl::IndirectField:
     case Decl::StaticAssert:
+    case Decl::NamespaceAlias:
+        break;
     default:
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());
