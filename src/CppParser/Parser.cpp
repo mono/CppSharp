@@ -2421,7 +2421,8 @@ static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
 {
     auto FinalType = GetFinalType(Ty);
 
-    if (FinalType->isDependentType() || FinalType->isInstantiationDependentType())
+    if (Ty->isDependentType() || FinalType->isDependentType() ||
+        FinalType->isInstantiationDependentType())
         return false;
 
     if (auto RT = FinalType->getAs<clang::RecordType>())

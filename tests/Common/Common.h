@@ -1,4 +1,4 @@
-#include "../Tests.h"
+﻿#include "../Tests.h"
 #include "AnotherUnit.h"
 
 #ifdef _WIN32
@@ -966,6 +966,13 @@ namespace boost
     struct make_tuple_traits<detail::ignore_t(detail::ignore_t)>
     {
         typedef detail::swallow_assign type;
+    };
+
+    template<class T>
+    struct is_class_or_union
+    {
+        template <class U>
+        static char is_class_or_union_tester(void(U::*)(void));
     };
 }
 
