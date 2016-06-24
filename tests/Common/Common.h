@@ -1103,6 +1103,9 @@ protected:
     void function(ProtectedEnum param);
 };
 
+using custom_int_t = int;
+void FuncWithTypeAlias(custom_int_t i);
+
 struct TestsTypes
 {
     int(*FunctionNoProto)();

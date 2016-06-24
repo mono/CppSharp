@@ -383,6 +383,8 @@ public class CommonTests : GeneratorTestFixture
     {
         var ret = common.Function();
         Assert.That(ret, Is.EqualTo(5));
+
+        common.FuncWithTypeAlias(0);
     }
 
     [Test]

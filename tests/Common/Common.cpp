@@ -618,3 +618,7 @@ HasProtectedEnum::HasProtectedEnum()
 void HasProtectedEnum::function(ProtectedEnum param)
 {
 }
+
+void FuncWithTypeAlias(custom_int_t i)
+{
+}

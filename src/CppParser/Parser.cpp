@@ -3184,8 +3184,9 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         break;
     }
     case Decl::Typedef:
+    case Decl::TypeAlias:
     {
-        auto TD = cast<clang::TypedefDecl>(D);
+        auto TD = cast<clang::TypedefNameDecl>(D);
 
         auto NS = GetNamespace(TD);
         auto Name = GetDeclName(TD);
