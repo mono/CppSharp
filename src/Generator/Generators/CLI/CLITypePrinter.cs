@@ -444,5 +444,10 @@ namespace CppSharp.Generators.CLI
         {
             return nonTypeTemplateParameter.Name;
         }
+
+        public string VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

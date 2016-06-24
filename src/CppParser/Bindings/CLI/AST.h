@@ -91,6 +91,7 @@ namespace CppSharp
             ref class TextComment;
             ref class TranslationUnit;
             ref class Type;
+            ref class TypeAliasTemplate;
             ref class TypeQualifiers;
             ref class TypeTemplateParameter;
             ref class TypedefDecl;
@@ -145,19 +146,20 @@ namespace CppSharp
                 AccessSpecifier = 9,
                 Class = 10,
                 Template = 11,
-                ClassTemplate = 12,
-                ClassTemplateSpecialization = 13,
-                ClassTemplatePartialSpecialization = 14,
-                FunctionTemplate = 15,
-                Namespace = 16,
-                PreprocessedEntity = 17,
-                MacroDefinition = 18,
-                MacroExpansion = 19,
-                TranslationUnit = 20,
-                Friend = 21,
-                TemplateTemplateParm = 22,
-                TemplateTypeParm = 23,
-                NonTypeTemplateParm = 24
+                TypeAliasTemplate = 12,
+                ClassTemplate = 13,
+                ClassTemplateSpecialization = 14,
+                ClassTemplatePartialSpecialization = 15,
+                FunctionTemplate = 16,
+                Namespace = 17,
+                PreprocessedEntity = 18,
+                MacroDefinition = 19,
+                MacroExpansion = 20,
+                TranslationUnit = 21,
+                Friend = 22,
+                TemplateTemplateParm = 23,
+                TemplateTypeParm = 24,
+                NonTypeTemplateParm = 25
             };
 
             public enum struct AccessSpecifier
@@ -2168,6 +2170,19 @@ namespace CppSharp
                 void addParameters(CppSharp::Parser::AST::Declaration^ s);
 
                 void clearParameters();
+            };
+
+            public ref class TypeAliasTemplate : CppSharp::Parser::AST::Template
+            {
+            public:
+
+                TypeAliasTemplate(::CppSharp::CppParser::AST::TypeAliasTemplate* native);
+                static TypeAliasTemplate^ __CreateInstance(::System::IntPtr native);
+                TypeAliasTemplate();
+
+                TypeAliasTemplate(CppSharp::Parser::AST::TypeAliasTemplate^ _0);
+
+                ~TypeAliasTemplate();
             };
 
             public ref class TemplateParameter : CppSharp::Parser::AST::Declaration

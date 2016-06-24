@@ -92,6 +92,7 @@ private:
     TypeTemplateParameter* WalkTypeTemplateParameter(const clang::TemplateTypeParmDecl* TTPD);
     NonTypeTemplateParameter* WalkNonTypeTemplateParameter(const clang::NonTypeTemplateParmDecl* TTPD);
     std::vector<Declaration*> WalkTemplateParameterList(const clang::TemplateParameterList* TPL);
+    TypeAliasTemplate* WalkTypeAliasTemplate(const clang::TypeAliasTemplateDecl* TD);
     ClassTemplate* WalkClassTemplate(const clang::ClassTemplateDecl* TD);
     FunctionTemplate* WalkFunctionTemplate(const clang::FunctionTemplateDecl* TD);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);

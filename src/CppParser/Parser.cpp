@@ -1278,6 +1278,36 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
 
 //-----------------------------------//
 
+TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
+    const clang::TypeAliasTemplateDecl* TD)
+{
+    using namespace clang;
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto USR = GetDeclUSR(TD);
+    auto TA = NS->FindTypeAliasTemplate(USR);
+    if (TA != nullptr)
+        return TA;
+
+    // TODO: Add this when we add TypeAliasDecl to AST.
+    //auto TemplatedDecl = TD->getTemplatedDecl();
+
+    TA = new TypeAliasTemplate();
+    HandleDeclaration(TD, TA);
+
+    TA->Name = GetDeclName(TD);
+    //TA->TemplatedDecl = TAD;
+    TA->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
+
+    NS->Templates.push_back(TA);
+
+    return TA;
+}
+
+//-----------------------------------//
+
 FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl* TD)
 {
     using namespace clang;
@@ -3146,6 +3176,14 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         Decl = FT;
         break;
     }
+    case Decl::TypeAliasTemplate:
+    {
+        auto TD = cast<TypeAliasTemplateDecl>(D);
+        auto TA = WalkTypeAliasTemplate(TD);
+
+        Decl = TA;
+        break;
+    }
     case Decl::Enum:
     {
         auto ED = cast<EnumDecl>(D);
@@ -3268,8 +3306,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::UnresolvedUsingValue:
     case Decl::IndirectField:
     case Decl::StaticAssert:
-    case Decl::TypeAliasTemplate:
-        break;
     default:
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());

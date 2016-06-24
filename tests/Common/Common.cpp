@@ -622,3 +622,8 @@ void HasProtectedEnum::function(ProtectedEnum param)
 void FuncWithTypeAlias(custom_int_t i)
 {
 }
+
+void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i)
+{
+
+}

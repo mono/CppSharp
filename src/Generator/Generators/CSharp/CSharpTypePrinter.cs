@@ -754,6 +754,11 @@ namespace CppSharp.Generators.CSharp
         {
             return nonTypeTemplateParameter.Name;
         }
+
+        public CSharpTypePrinterResult VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public static class CSharpTypePrinterExtensions

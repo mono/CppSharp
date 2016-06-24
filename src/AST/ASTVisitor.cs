@@ -372,6 +372,17 @@ namespace CppSharp.AST
             return true;
         }
 
+        public virtual bool VisitTypeAliasTemplateDecl(TypeAliasTemplate template)
+        {
+            if (!VisitDeclaration(template))
+                return false;
+
+            foreach (var templateParameter in template.Parameters)
+                templateParameter.Visit(this);
+
+            return true;
+        }
+
         public virtual bool VisitClassTemplateDecl(ClassTemplate template)
         {
             if (!VisitDeclaration(template))

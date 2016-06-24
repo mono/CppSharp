@@ -258,6 +258,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
+        {
+            return false;
+        }
+
         #endregion
     }
 

@@ -175,6 +175,17 @@ namespace CppSharp.AST
     }
 
     /// <summary>
+    /// Declaration of a type alias template.
+    /// </summary>
+    public class TypeAliasTemplate : Template
+    {
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitTypeAliasTemplateDecl(this);
+        }
+    }
+
+    /// <summary>
     /// Declaration of a class template.
     /// </summary>
     public class ClassTemplate : Template

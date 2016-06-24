@@ -3651,6 +3651,43 @@ void CppSharp::Parser::AST::Template::TemplatedDecl::set(CppSharp::Parser::AST::
     ((::CppSharp::CppParser::AST::Template*)NativePtr)->TemplatedDecl = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::TypeAliasTemplate::TypeAliasTemplate(::CppSharp::CppParser::AST::TypeAliasTemplate* native)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)native)
+{
+}
+
+CppSharp::Parser::AST::TypeAliasTemplate^ CppSharp::Parser::AST::TypeAliasTemplate::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::TypeAliasTemplate((::CppSharp::CppParser::AST::TypeAliasTemplate*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::TypeAliasTemplate::~TypeAliasTemplate()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TypeAliasTemplate*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::TypeAliasTemplate::TypeAliasTemplate()
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::TypeAliasTemplate();
+}
+
+CppSharp::Parser::AST::TypeAliasTemplate::TypeAliasTemplate(CppSharp::Parser::AST::TypeAliasTemplate^ _0)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::TypeAliasTemplate*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::TypeAliasTemplate(__arg0);
+}
+
 CppSharp::Parser::AST::TemplateParameter::TemplateParameter(::CppSharp::CppParser::AST::TemplateParameter* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {

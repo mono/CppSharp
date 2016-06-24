@@ -84,8 +84,6 @@ AttributedType::AttributedType() : Type(TypeKind::Attributed) {}
 DecayedType::DecayedType() : Type(TypeKind::Decayed) {}
 
 // Template
-Template::Template(DeclarationKind kind) : Declaration(kind) {}
-
 TemplateParameter::TemplateParameter(DeclarationKind kind)
     : Declaration(kind)
     , Depth(0)
@@ -460,7 +458,7 @@ Function* DeclarationContext::FindFunction(const std::string& USR)
         return *foundFunction;
 
     auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->TemplatedDecl->USR == USR; });
+        [&](Template* t) { return t->TemplatedDecl && t->TemplatedDecl->USR == USR; });
 
     if (foundTemplate != Templates.end())
         return static_cast<Function*>((*foundTemplate)->TemplatedDecl);
@@ -476,6 +474,19 @@ DeclarationContext::FindClassTemplate(const std::string& USR)
 
     if (foundTemplate != Templates.end())
         return static_cast<ClassTemplate*>(*foundTemplate);
+
+    return nullptr;
+}
+
+TypeAliasTemplate*
+DeclarationContext::FindTypeAliasTemplate(const std::string& USR)
+{
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->USR == USR; }
+    );
+
+    if (foundTemplate != Templates.end())
+        return static_cast<TypeAliasTemplate*>(*foundTemplate);
 
     return nullptr;
 }
@@ -712,7 +723,13 @@ DEF_VECTOR(Class, AccessSpecifierDecl*, Specifiers)
 Template::Template() : Declaration(DeclarationKind::Template),
     TemplatedDecl(0) {}
 
+Template::Template(DeclarationKind kind) : Declaration(kind), TemplatedDecl(0) {}
+
 DEF_VECTOR(Template, Declaration*, Parameters)
+
+TypeAliasTemplate::TypeAliasTemplate() : Template(DeclarationKind::TypeAliasTemplate) {}
+
+TypeAliasTemplate::~TypeAliasTemplate() {}
 
 ClassTemplate::ClassTemplate() : Template(DeclarationKind::ClassTemplate) {}
 

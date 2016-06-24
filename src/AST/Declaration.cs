@@ -389,5 +389,6 @@ namespace CppSharp.AST
         T VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter);
         T VisitTemplateParameterDecl(TypeTemplateParameter templateParameter);
         T VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter);
+        T VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate);
     }
 }

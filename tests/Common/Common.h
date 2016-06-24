@@ -1104,7 +1104,11 @@ protected:
 };
 
 using custom_int_t = int;
-void FuncWithTypeAlias(custom_int_t i);
+DLL_API void FuncWithTypeAlias(custom_int_t i);
+
+template<typename T>
+using TypeAliasTemplate = TemplateWithVirtual<T>;
+DLL_API void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i);
 
 struct TestsTypes
 {

@@ -133,6 +133,7 @@ namespace CppSharp
         public abstract TRet VisitField(Field decl);
         public abstract TRet VisitAccessSpecifier(AccessSpecifierDecl decl);
         public abstract TRet VisitClass(Class decl);
+        public abstract TRet VisitTypeAliasTemplate(TypeAliasTemplate decl);
         public abstract TRet VisitClassTemplate(ClassTemplate decl);
         public abstract TRet VisitClassTemplateSpecialization(
             ClassTemplateSpecialization decl);
@@ -231,6 +232,11 @@ namespace CppSharp
                     {
                         var _decl = FunctionTemplate.__CreateInstance(decl.__Instance);
                         return VisitFunctionTemplate(_decl);
+                    }
+                case DeclarationKind.TypeAliasTemplate:
+                    {
+                        var _decl = TypeAliasTemplate.__CreateInstance(decl.__Instance);
+                        return VisitTypeAliasTemplate(_decl);
                     }
                 case DeclarationKind.TemplateTemplateParm:
                     {
@@ -1467,6 +1473,14 @@ namespace CppSharp
                 var _param = Visit(param);
                 _template.Parameters.Add(_param);
             }
+        }
+
+        public override AST.Declaration VisitTypeAliasTemplate(TypeAliasTemplate decl)
+        {
+            var _decl = new AST.TypeAliasTemplate();
+            VisitTemplate(decl, _decl);
+
+            return _decl;
         }
 
         public override AST.Declaration VisitClassTemplate(ClassTemplate decl)

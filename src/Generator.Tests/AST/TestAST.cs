@@ -165,6 +165,11 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new NotImplementedException();
             }
+
+            public bool VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 

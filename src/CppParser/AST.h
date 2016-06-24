@@ -372,6 +372,7 @@ enum class DeclarationKind
     AccessSpecifier,
     Class,
     Template,
+    TypeAliasTemplate,
     ClassTemplate,
     ClassTemplateSpecialization,
     ClassTemplatePartialSpecialization,
@@ -433,6 +434,7 @@ class Function;
 class TypedefDecl;
 class Namespace;
 class Template;
+class TypeAliasTemplate;
 class ClassTemplate;
 class FunctionTemplate;
 class Variable;
@@ -454,6 +456,7 @@ public:
     CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create);
 
+    CS_IGNORE TypeAliasTemplate* FindTypeAliasTemplate(const std::string& USR);
     CS_IGNORE ClassTemplate* FindClassTemplate(const std::string& USR);
     CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& USR);
 
@@ -775,6 +778,13 @@ public:
     DECLARE_DECL_KIND(Template, Template)
     Declaration* TemplatedDecl;
     VECTOR(Declaration*, Parameters)
+};
+
+class CS_API TypeAliasTemplate : public Template
+{
+public:
+    TypeAliasTemplate();
+    ~TypeAliasTemplate();
 };
 
 class CS_API TemplateParameter : public Declaration

@@ -368,5 +368,10 @@ namespace CppSharp.Types
             return string.Format("{0} = {1}",  nonTypeTemplateParameter.Name,
                 nonTypeTemplateParameter.DefaultArgument.String);
         }
+
+        public string VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
