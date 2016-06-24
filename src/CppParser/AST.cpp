@@ -142,7 +142,7 @@ NonTypeTemplateParameter::NonTypeTemplateParameter(const NonTypeTemplateParamete
 
 NonTypeTemplateParameter::~NonTypeTemplateParameter() {}
 
-TemplateArgument::TemplateArgument() : Declaration(0) {}
+TemplateArgument::TemplateArgument() : Declaration(0), Integral(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
     : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
