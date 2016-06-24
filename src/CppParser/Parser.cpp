@@ -87,13 +87,12 @@ LayoutField Parser::WalkVTablePointer(Class* Class,
 {
     LayoutField LayoutField;
     LayoutField.Offset = Offset.getQuantity();
-    LayoutField._Namespace = Class;
     LayoutField.Name = prefix + "_" + Class->Name;
     LayoutField.QualifiedType = GetQualifiedType(C->getASTContext().VoidPtrTy);
     return LayoutField;
 }
 
-void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl* RD,
+void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     clang::CharUnits Offset, bool IncludeVirtualBases)
 {
     using namespace clang;
@@ -103,6 +102,11 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl* RD,
 
     auto Parent = static_cast<AST::Class*>(
         WalkDeclaration(RD, /*IgnoreSystemDecls =*/false));
+
+    LayoutBase LayoutBase;
+    LayoutBase.Offset = Offset.getQuantity();
+    LayoutBase.Class = Parent;
+    Class->Layout->Bases.push_back(LayoutBase);
 
     // Dump bases.
     if (CXXRD) {
@@ -139,7 +143,7 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl* RD,
         // Dump (non-virtual) bases
         for (const CXXRecordDecl *Base : Bases) {
             CharUnits BaseOffset = Offset + Layout.getBaseClassOffset(Base);
-            ReadLayoutFields(Class, Base, BaseOffset,
+            ReadClassLayout(Class, Base, BaseOffset,
                 /*IncludeVirtualBases=*/false);
         }
 
@@ -170,7 +174,6 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl* RD,
 
         auto F = WalkFieldCXX(Field, Parent);
         LayoutField LayoutField;
-        LayoutField._Namespace = F->_Namespace;
         LayoutField.Offset = FieldOffset.getQuantity();
         LayoutField.Name = F->Name;
         LayoutField.QualifiedType = GetQualifiedType(Field->getType());
@@ -195,7 +198,7 @@ void Parser::ReadLayoutFields(Class* Class, const clang::RecordDecl* RD,
                 Class->Layout->Fields.push_back(VtorDisp);
             }
 
-            ReadLayoutFields(Class, VBase, VBaseOffset,
+            ReadClassLayout(Class, VBase, VBaseOffset,
                 /*IncludeVirtualBases=*/false);
         }
     }
@@ -848,7 +851,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
         RC->Layout->Size = (int)Layout->getSize().getQuantity();
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
-        ReadLayoutFields(RC, Record, CharUnits(), true);
+        ReadClassLayout(RC, Record, CharUnits(), true);
     }
 
     for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)

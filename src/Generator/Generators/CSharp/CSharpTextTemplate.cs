@@ -842,7 +842,6 @@ namespace CppSharp.Generators.CSharp
                 {
                     var dummy = new LayoutField
                     {
-                        Namespace = field.Namespace,
                         Offset = (uint) (field.Offset + i * arrayType.ElementSize / 8),
                         QualifiedType = new QualifiedType(arrayType.Type),
                         Name = string.Format("{0}_{1}_{2}", Helpers.DummyIdentifier,
@@ -2055,7 +2054,8 @@ namespace CppSharp.Generators.CSharp
             {
                 if (@class.HasBaseClass)
                     WriteLine("{0} = {1};", Helpers.PointerAdjustmentIdentifier,
-                        @class.ComputeNonVirtualBaseClassOffsetTo(@class.BaseClass));
+                        @class.Layout.Bases.Where(
+                            b => b.Class == @class.BaseClass).Select(b => b.Offset).FirstOrDefault());
                 if (!@class.IsAbstractImpl)
                 {
                     WriteLine("if (native == null)");
@@ -2793,11 +2793,12 @@ namespace CppSharp.Generators.CSharp
             var to = function.OriginalFunction == null ? @from.BaseClass :
                 (Class) function.OriginalFunction.Namespace;
 
-            var baseOffset = 0;
+            var baseOffset = 0u;
             if (to != null)
             {
                 to = to.OriginalClass ?? to;
-                baseOffset = @from.ComputeNonVirtualBaseClassOffsetTo(to);
+                baseOffset = from.Layout.Bases.Where(
+                    b => b.Class == to).Select(b => b.Offset).FirstOrDefault();
             }
             var isPrimaryBase = from.BaseClass == to;
             if (isPrimaryBase)

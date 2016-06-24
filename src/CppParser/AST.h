@@ -315,19 +315,28 @@ struct CS_API VFTableInfo
     VTableLayout Layout;
 };
 
-class DeclarationContext;
-
 class CS_API LayoutField
 {
 public:
     LayoutField();
     LayoutField(const LayoutField& other);
     ~LayoutField();
-    DeclarationContext* _Namespace;
     unsigned Offset;
     STRING(Name)
     QualifiedType QualifiedType;
     void* FieldPtr;
+};
+
+class Class;
+
+class CS_API LayoutBase
+{
+public:
+    LayoutBase();
+    LayoutBase(const LayoutBase& other);
+    ~LayoutBase();
+    unsigned Offset;
+    Class* Class;
 };
 
 struct CS_API ClassLayout
@@ -342,6 +351,7 @@ struct CS_API ClassLayout
     int Size;
     int DataSize;
     VECTOR(LayoutField, Fields)
+    VECTOR(LayoutBase, Bases)
 };
 
 #pragma endregion

@@ -1349,12 +1349,20 @@ namespace CppSharp
             {
                 var field = layout.getFields(i);
                 var _field = new AST.LayoutField();
-                _field.Namespace = (AST.DeclarationContext) Visit(field._Namespace);
                 _field.Offset = field.Offset;
                 _field.Name = field.Name;
                 _field.QualifiedType = typeConverter.VisitQualified(field.QualifiedType);
                 _field.FieldPtr = field.FieldPtr;
                 _layout.Fields.Add(_field);
+            }
+
+            for (uint i = 0; i < layout.BasesCount; i++)
+            {
+                var @base = layout.getBases(i);
+                var _base = new AST.LayoutBase();
+                _base.Offset = @base.Offset;
+                _base.Class = (AST.Class) Visit(@base.Class);
+                _layout.Bases.Add(_base);
             }
 
             return _layout;

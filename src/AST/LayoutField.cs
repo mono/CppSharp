@@ -4,7 +4,6 @@ namespace CppSharp.AST
 {
     public class LayoutField
     {
-        public DeclarationContext Namespace { get; set; }
         public uint Offset { get; set; }
         public QualifiedType QualifiedType { get; set; }
         public string Name { get; set; }

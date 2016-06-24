@@ -61,6 +61,7 @@ namespace CppSharp
             ref class InjectedClassNameType;
             ref class InlineCommandComment;
             ref class InlineContentComment;
+            ref class LayoutBase;
             ref class LayoutField;
             ref class MacroDefinition;
             ref class MacroExpansion;
@@ -1042,7 +1043,7 @@ namespace CppSharp
                 static LayoutField^ __CreateInstance(::System::IntPtr native);
                 LayoutField();
 
-                LayoutField(CppSharp::Parser::AST::LayoutField^ _0);
+                LayoutField(CppSharp::Parser::AST::LayoutField^ other);
 
                 ~LayoutField();
 
@@ -1050,12 +1051,6 @@ namespace CppSharp
                 {
                     System::String^ get();
                     void set(System::String^);
-                }
-
-                property CppSharp::Parser::AST::DeclarationContext^ _Namespace
-                {
-                    CppSharp::Parser::AST::DeclarationContext^ get();
-                    void set(CppSharp::Parser::AST::DeclarationContext^);
                 }
 
                 property unsigned int Offset
@@ -1074,6 +1069,41 @@ namespace CppSharp
                 {
                     ::System::IntPtr get();
                     void set(::System::IntPtr);
+                }
+
+                protected:
+                bool __ownsNativeInstance;
+            };
+
+            public ref class LayoutBase : ICppInstance
+            {
+            public:
+
+                property ::CppSharp::CppParser::AST::LayoutBase* NativePtr;
+                property System::IntPtr __Instance
+                {
+                    virtual System::IntPtr get();
+                    virtual void set(System::IntPtr instance);
+                }
+
+                LayoutBase(::CppSharp::CppParser::AST::LayoutBase* native);
+                static LayoutBase^ __CreateInstance(::System::IntPtr native);
+                LayoutBase();
+
+                LayoutBase(CppSharp::Parser::AST::LayoutBase^ other);
+
+                ~LayoutBase();
+
+                property unsigned int Offset
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property CppSharp::Parser::AST::Class^ Class
+                {
+                    CppSharp::Parser::AST::Class^ get();
+                    void set(CppSharp::Parser::AST::Class^);
                 }
 
                 protected:
@@ -1105,6 +1135,11 @@ namespace CppSharp
                 }
 
                 property unsigned int FieldsCount
+                {
+                    unsigned int get();
+                }
+
+                property unsigned int BasesCount
                 {
                     unsigned int get();
                 }
@@ -1162,6 +1197,12 @@ namespace CppSharp
                 void addFields(CppSharp::Parser::AST::LayoutField^ s);
 
                 void clearFields();
+
+                CppSharp::Parser::AST::LayoutBase^ getBases(unsigned int i);
+
+                void addBases(CppSharp::Parser::AST::LayoutBase^ s);
+
+                void clearBases();
 
                 protected:
                 bool __ownsNativeInstance;

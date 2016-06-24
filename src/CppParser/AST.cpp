@@ -189,11 +189,10 @@ VFTableInfo::VFTableInfo(const VFTableInfo& rhs) : VBTableIndex(rhs.VBTableIndex
     VFPtrOffset(rhs.VFPtrOffset), VFPtrFullOffset(rhs.VFPtrFullOffset),
     Layout(rhs.Layout) {}
 
-LayoutField::LayoutField() : _Namespace(0), Offset(0), FieldPtr(0) {}
+LayoutField::LayoutField() : Offset(0), FieldPtr(0) {}
 
 LayoutField::LayoutField(const LayoutField & other)
-    : _Namespace(other._Namespace)
-    , Offset(other.Offset)
+    : Offset(other.Offset)
     , Name(other.Name)
     , QualifiedType(other.QualifiedType)
     , FieldPtr(other.FieldPtr)
@@ -204,12 +203,20 @@ LayoutField::~LayoutField() {}
 
 DEF_STRING(LayoutField, Name)
 
+LayoutBase::LayoutBase() : Offset(0), Class(0) {}
+
+LayoutBase::LayoutBase(const LayoutBase& other) : Offset(other.Offset), Class(other.Class) {}
+
+LayoutBase::~LayoutBase() {}
+
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
     VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}
 
 DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
 
 DEF_VECTOR(ClassLayout, LayoutField, Fields)
+
+DEF_VECTOR(ClassLayout, LayoutBase, Bases)
 
 Declaration::Declaration(DeclarationKind kind)
     : Kind(kind)

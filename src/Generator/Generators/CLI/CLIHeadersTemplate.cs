@@ -457,8 +457,7 @@ namespace CppSharp.Generators.CLI
             GenerateDeclarationCommon(field);
             if (@class.IsUnion)
                 WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
-                    @class.Layout.Fields.Single(
-                        f => f.Namespace == @class && f.FieldPtr == field.OriginalPtr).Offset);
+                    @class.Layout.Fields.Single(f => f.FieldPtr == field.OriginalPtr).Offset);
             WriteLine("{0} {1};", field.Type, field.Name);
 
             PopBlock();
