@@ -875,6 +875,10 @@ public:
     static bool dtorCalled;
 };
 
+class DLL_API ClassWithVirtualBase : public virtual Foo
+{
+};
+
 namespace NamespaceA
 {
 	CS_VALUE_TYPE class DLL_API A
