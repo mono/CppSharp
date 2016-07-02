@@ -274,7 +274,7 @@ void Parser::SetupHeader()
         args.push_back("-std=gnu++98");
         break;
     default:
-        args.push_back("-std=gnu++11");
+        args.push_back(Opts->MicrosoftMode ? "-std=gnu++14" : "-std=gnu++11");
         break;
     }
     args.push_back("-fno-rtti");
@@ -2649,7 +2649,7 @@ SourceLocationKind Parser::GetLocationKind(const clang::SourceLocation& Loc)
     clang::SourceManager& SM = C->getSourceManager();
     clang::PresumedLoc PLoc = SM.getPresumedLoc(Loc);
 
-    if(PLoc.isInvalid())
+    if (PLoc.isInvalid())
         return SourceLocationKind::Invalid;
 
     const char *FileName = PLoc.getFilename();
