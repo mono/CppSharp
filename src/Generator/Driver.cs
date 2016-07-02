@@ -230,8 +230,8 @@ namespace CppSharp
                 foreach (var undefine in module.Undefines)
                     options.addUndefines(undefine);
 
-                foreach (var library in module.Libraries)
-                    options.addLibraryDirs(library);
+                foreach (var libraryDir in module.LibraryDirs)
+                    options.addLibraryDirs(libraryDir);
             }
 
             return options;
@@ -267,22 +267,28 @@ namespace CppSharp
 
         public bool ParseLibraries()
         {
-            foreach (var library in Options.Modules.SelectMany(m => m.Libraries))
+            foreach (var module in Options.Modules)
             {
-                if (this.Symbols.Libraries.Any(l => l.FileName == library))
-                    continue;
+                foreach (var libraryDir in module.LibraryDirs)
+                    Options.addLibraryDirs(libraryDir);
 
-                var parser = new ClangParser();
-                parser.LibraryParsed += OnFileParsed;
-
-                using (var res = parser.ParseLibrary(library, Options))
+                foreach (var library in module.Libraries)
                 {
-                    if (res.Kind != ParserResultKind.Success)
+                    if (Symbols.Libraries.Any(l => l.FileName == library))
                         continue;
 
-                    Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+                    var parser = new ClangParser();
+                    parser.LibraryParsed += OnFileParsed;
 
-                    res.Library.Dispose();
+                    using (var res = parser.ParseLibrary(library, Options))
+                    {
+                        if (res.Kind != ParserResultKind.Success)
+                            continue;
+
+                        Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+
+                        res.Library.Dispose();
+                    }
                 }
             }
 
