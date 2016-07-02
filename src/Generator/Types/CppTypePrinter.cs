@@ -296,6 +296,11 @@ namespace CppSharp.Types
             return VisitDeclaration(typedef);
         }
 
+        public string VisitTypeAliasDecl(TypeAlias typeAlias)
+        {
+            return VisitDeclaration(typeAlias);
+        }
+
         public string VisitEnumDecl(Enumeration @enum)
         {
             return VisitDeclaration(@enum);

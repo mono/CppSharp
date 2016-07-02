@@ -132,13 +132,13 @@ public:
     QualifiedType Pointee;
 };
 
-class TypedefDecl;
+class TypedefNameDecl;
 
 class CS_API TypedefType : public Type
 {
 public:
     TypedefType();
-    TypedefDecl* Declaration;
+    TypedefNameDecl* Declaration;
 };
 
 class CS_API AttributedType : public Type
@@ -362,6 +362,7 @@ enum class DeclarationKind
 {
     DeclarationContext,
     Typedef,
+    TypeAlias,
     Parameter,
     Function,
     Method,
@@ -432,6 +433,7 @@ class Class;
 class Enumeration;
 class Function;
 class TypedefDecl;
+class TypeAlias;
 class Namespace;
 class Template;
 class TypeAliasTemplate;
@@ -468,6 +470,8 @@ public:
 
     CS_IGNORE TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
 
+    CS_IGNORE TypeAlias* FindTypeAlias(const std::string& Name, bool Create = false);
+
     CS_IGNORE Variable* FindVariable(const std::string& USR);
 
     CS_IGNORE Friend* FindFriend(const std::string& USR);
@@ -478,6 +482,7 @@ public:
     VECTOR(Class*, Classes)
     VECTOR(Template*, Templates)
     VECTOR(TypedefDecl*, Typedefs)
+    VECTOR(TypeAlias*, TypeAliases)
     VECTOR(Variable*, Variables)
     VECTOR(Friend*, Friends)
 
@@ -486,12 +491,27 @@ public:
     bool IsAnonymous;
 };
 
-class CS_API TypedefDecl : public Declaration
+class CS_API TypedefNameDecl : public Declaration
+{
+public:
+    TypedefNameDecl(DeclarationKind kind);
+    ~TypedefNameDecl();
+    CppSharp::CppParser::AST::QualifiedType QualifiedType;
+};
+
+class CS_API TypedefDecl : public TypedefNameDecl
 {
 public:
     DECLARE_DECL_KIND(TypedefDecl, Typedef)
     ~TypedefDecl();
-    CppSharp::CppParser::AST::QualifiedType QualifiedType;
+};
+
+class CS_API TypeAlias : public TypedefNameDecl
+{
+public:
+    TypeAlias();
+    ~TypeAlias();
+    TypeAliasTemplate* DescribedAliasTemplate;
 };
 
 class CS_API Friend : public Declaration

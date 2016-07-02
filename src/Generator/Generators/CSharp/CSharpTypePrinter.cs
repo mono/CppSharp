@@ -614,6 +614,11 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(typedef);
         }
 
+        public CSharpTypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
+        {
+            return GetNestedQualifiedName(typeAlias);
+        }
+
         public CSharpTypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
             return GetNestedQualifiedName(@enum);

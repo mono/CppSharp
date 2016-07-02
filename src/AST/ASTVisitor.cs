@@ -348,6 +348,17 @@ namespace CppSharp.AST
             return typedef.Type.Visit(this, typedef.QualifiedType.Qualifiers);
         }
 
+        public bool VisitTypeAliasDecl(TypeAlias typeAlias)
+        {
+            if (!VisitDeclaration(typeAlias))
+                return false;
+
+            if (typeAlias.Type == null)
+                return false;
+
+            return typeAlias.Type.Visit(this, typeAlias.QualifiedType.Qualifiers);
+        }
+
         public virtual bool VisitEnumDecl(Enumeration @enum)
         {
             if (!VisitDeclaration(@enum))

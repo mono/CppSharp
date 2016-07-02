@@ -106,6 +106,11 @@ namespace CppSharp.Generator.Tests.AST
                 throw new System.NotImplementedException();
             }
 
+            public bool VisitTypeAliasDecl(TypeAlias typeAlias)
+            {
+                throw new NotImplementedException();
+            }
+
             public bool VisitEnumDecl(Enumeration @enum)
             {
                 throw new System.NotImplementedException();

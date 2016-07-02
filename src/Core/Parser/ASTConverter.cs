@@ -123,6 +123,7 @@ namespace CppSharp
         public abstract TRet VisitTranslationUnit(TranslationUnit decl);
         public abstract TRet VisitNamespace(Namespace decl);
         public abstract TRet VisitTypedef(TypedefDecl decl);
+        public abstract TRet VisitTypeAlias(TypeAlias decl);
         public abstract TRet VisitParameter(Parameter decl);
         public abstract TRet VisitFunction(Function decl);
         public abstract TRet VisitMethod(Method decl);
@@ -162,6 +163,11 @@ namespace CppSharp
                     {
                         var _decl = TypedefDecl.__CreateInstance(decl.__Instance);
                         return VisitTypedef(_decl);
+                    }
+                case DeclarationKind.TypeAlias:
+                    {
+                        var _decl = TypeAlias.__CreateInstance(decl.__Instance);
+                        return VisitTypeAlias(_decl);
                     }
                 case DeclarationKind.Parameter:
                     {
@@ -487,7 +493,7 @@ namespace CppSharp
 
         public override AST.Type VisitMemberPointer(MemberPointerType type)
         {
-            var _type = new CppSharp.AST.MemberPointerType();
+            var _type = new AST.MemberPointerType();
             VisitType(type, _type);
             _type.QualifiedPointee = VisitQualified(type.Pointee);
             return _type;
@@ -495,16 +501,15 @@ namespace CppSharp
 
         public override AST.Type VisitTypedef(TypedefType type)
         {
-            var _type = new CppSharp.AST.TypedefType();
+            var _type = new AST.TypedefType();
             VisitType(type, _type);
-            _type.Declaration = declConverter.Visit(type.Declaration)
-                as AST.TypedefDecl;
+            _type.Declaration = (AST.TypedefNameDecl) declConverter.Visit(type.Declaration);
             return _type;
         }
 
         public override AST.Type VisitAttributed(AttributedType type)
         {
-            var _type = new CppSharp.AST.AttributedType();
+            var _type = new AST.AttributedType();
             VisitType(type, _type);
             _type.Modified = VisitQualified(type.Modified);
             _type.Equivalent = VisitQualified(type.Equivalent);
@@ -513,7 +518,7 @@ namespace CppSharp
 
         public override AST.Type VisitDecayed(DecayedType type)
         {
-            var _type = new CppSharp.AST.DecayedType();
+            var _type = new AST.DecayedType();
             _type.Decayed = VisitQualified(type.Decayed);
             _type.Original = VisitQualified(type.Original);
             _type.Pointee = VisitQualified(type.Pointee);
@@ -930,6 +935,17 @@ namespace CppSharp
             _typedef.QualifiedType = typeConverter.VisitQualified(decl.QualifiedType);
 
             return _typedef;
+        }
+
+        public override AST.Declaration VisitTypeAlias(TypeAlias decl)
+        {
+            var _typeAlias = new AST.TypeAlias();
+            VisitDeclaration(decl, _typeAlias);
+            _typeAlias.QualifiedType = typeConverter.VisitQualified(decl.QualifiedType);
+            if (decl.DescribedAliasTemplate != null)
+                _typeAlias.DescribedAliasTemplate = (AST.TypeAliasTemplate) Visit(decl.DescribedAliasTemplate);
+
+            return _typeAlias;
         }
 
         public override AST.Declaration VisitParameter(Parameter decl)

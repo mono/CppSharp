@@ -380,6 +380,11 @@ namespace CppSharp.Generators.CLI
             return typedef.Name;
         }
 
+        public string VisitTypeAliasDecl(TypeAlias typeAlias)
+        {
+            return typeAlias.Name;
+        }
+
         public string VisitEnumDecl(Enumeration @enum)
         {
             return @enum.Name;

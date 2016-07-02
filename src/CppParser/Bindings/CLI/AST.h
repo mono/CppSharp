@@ -91,10 +91,12 @@ namespace CppSharp
             ref class TextComment;
             ref class TranslationUnit;
             ref class Type;
+            ref class TypeAlias;
             ref class TypeAliasTemplate;
             ref class TypeQualifiers;
             ref class TypeTemplateParameter;
             ref class TypedefDecl;
+            ref class TypedefNameDecl;
             ref class TypedefType;
             ref class VFTableInfo;
             ref class VTableComponent;
@@ -136,30 +138,31 @@ namespace CppSharp
             {
                 DeclarationContext = 0,
                 Typedef = 1,
-                Parameter = 2,
-                Function = 3,
-                Method = 4,
-                Enumeration = 5,
-                EnumerationItem = 6,
-                Variable = 7,
-                Field = 8,
-                AccessSpecifier = 9,
-                Class = 10,
-                Template = 11,
-                TypeAliasTemplate = 12,
-                ClassTemplate = 13,
-                ClassTemplateSpecialization = 14,
-                ClassTemplatePartialSpecialization = 15,
-                FunctionTemplate = 16,
-                Namespace = 17,
-                PreprocessedEntity = 18,
-                MacroDefinition = 19,
-                MacroExpansion = 20,
-                TranslationUnit = 21,
-                Friend = 22,
-                TemplateTemplateParm = 23,
-                TemplateTypeParm = 24,
-                NonTypeTemplateParm = 25
+                TypeAlias = 2,
+                Parameter = 3,
+                Function = 4,
+                Method = 5,
+                Enumeration = 6,
+                EnumerationItem = 7,
+                Variable = 8,
+                Field = 9,
+                AccessSpecifier = 10,
+                Class = 11,
+                Template = 12,
+                TypeAliasTemplate = 13,
+                ClassTemplate = 14,
+                ClassTemplateSpecialization = 15,
+                ClassTemplatePartialSpecialization = 16,
+                FunctionTemplate = 17,
+                Namespace = 18,
+                PreprocessedEntity = 19,
+                MacroDefinition = 20,
+                MacroExpansion = 21,
+                TranslationUnit = 22,
+                Friend = 23,
+                TemplateTemplateParm = 24,
+                TemplateTypeParm = 25,
+                NonTypeTemplateParm = 26
             };
 
             public enum struct AccessSpecifier
@@ -624,10 +627,10 @@ namespace CppSharp
 
                 ~TypedefType();
 
-                property CppSharp::Parser::AST::TypedefDecl^ Declaration
+                property CppSharp::Parser::AST::TypedefNameDecl^ Declaration
                 {
-                    CppSharp::Parser::AST::TypedefDecl^ get();
-                    void set(CppSharp::Parser::AST::TypedefDecl^);
+                    CppSharp::Parser::AST::TypedefNameDecl^ get();
+                    void set(CppSharp::Parser::AST::TypedefNameDecl^);
                 }
             };
 
@@ -1382,6 +1385,11 @@ namespace CppSharp
                     unsigned int get();
                 }
 
+                property unsigned int TypeAliasesCount
+                {
+                    unsigned int get();
+                }
+
                 property unsigned int VariablesCount
                 {
                     unsigned int get();
@@ -1434,6 +1442,12 @@ namespace CppSharp
 
                 void clearTypedefs();
 
+                CppSharp::Parser::AST::TypeAlias^ getTypeAliases(unsigned int i);
+
+                void addTypeAliases(CppSharp::Parser::AST::TypeAlias^ s);
+
+                void clearTypeAliases();
+
                 CppSharp::Parser::AST::Variable^ getVariables(unsigned int i);
 
                 void addVariables(CppSharp::Parser::AST::Variable^ s);
@@ -1447,7 +1461,26 @@ namespace CppSharp
                 void clearFriends();
             };
 
-            public ref class TypedefDecl : CppSharp::Parser::AST::Declaration
+            public ref class TypedefNameDecl : CppSharp::Parser::AST::Declaration
+            {
+            public:
+
+                TypedefNameDecl(::CppSharp::CppParser::AST::TypedefNameDecl* native);
+                static TypedefNameDecl^ __CreateInstance(::System::IntPtr native);
+                TypedefNameDecl(CppSharp::Parser::AST::DeclarationKind kind);
+
+                TypedefNameDecl(CppSharp::Parser::AST::TypedefNameDecl^ _0);
+
+                ~TypedefNameDecl();
+
+                property CppSharp::Parser::AST::QualifiedType^ QualifiedType
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+            };
+
+            public ref class TypedefDecl : CppSharp::Parser::AST::TypedefNameDecl
             {
             public:
 
@@ -1458,11 +1491,24 @@ namespace CppSharp
                 TypedefDecl(CppSharp::Parser::AST::TypedefDecl^ _0);
 
                 ~TypedefDecl();
+            };
 
-                property CppSharp::Parser::AST::QualifiedType^ QualifiedType
+            public ref class TypeAlias : CppSharp::Parser::AST::TypedefNameDecl
+            {
+            public:
+
+                TypeAlias(::CppSharp::CppParser::AST::TypeAlias* native);
+                static TypeAlias^ __CreateInstance(::System::IntPtr native);
+                TypeAlias();
+
+                TypeAlias(CppSharp::Parser::AST::TypeAlias^ _0);
+
+                ~TypeAlias();
+
+                property CppSharp::Parser::AST::TypeAliasTemplate^ DescribedAliasTemplate
                 {
-                    CppSharp::Parser::AST::QualifiedType^ get();
-                    void set(CppSharp::Parser::AST::QualifiedType^);
+                    CppSharp::Parser::AST::TypeAliasTemplate^ get();
+                    void set(CppSharp::Parser::AST::TypeAliasTemplate^);
                 }
             };
 

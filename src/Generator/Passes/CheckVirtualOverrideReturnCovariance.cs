@@ -198,6 +198,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitTypeAliasDecl(TypeAlias typeAlias)
+        {
+            return false;
+        }
+
         public bool VisitEnumDecl(Enumeration @enum)
         {
             return false;

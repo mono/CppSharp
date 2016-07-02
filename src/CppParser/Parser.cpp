@@ -478,7 +478,7 @@ static std::string GetTagDeclName(const clang::TagDecl* D)
 {
     using namespace clang;
 
-    if (TypedefNameDecl *Typedef = D->getTypedefNameForAnonDecl())
+    if (auto Typedef = D->getTypedefNameForAnonDecl())
     {
         assert(Typedef->getIdentifier() && "Typedef without identifier?");
         return GetDeclName(Typedef);
@@ -1291,14 +1291,11 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
     if (TA != nullptr)
         return TA;
 
-    // TODO: Add this when we add TypeAliasDecl to AST.
-    //auto TemplatedDecl = TD->getTemplatedDecl();
-
     TA = new TypeAliasTemplate();
     HandleDeclaration(TD, TA);
 
     TA->Name = GetDeclName(TD);
-    //TA->TemplatedDecl = TAD;
+    TA->TemplatedDecl = WalkDeclaration(TD->getTemplatedDecl());
     TA->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
     NS->Templates.push_back(TA);
@@ -1941,10 +1938,10 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     case clang::Type::Typedef:
     {
         auto TT = Type->getAs<clang::TypedefType>();
-        TypedefNameDecl* TD = TT->getDecl();
+        auto TD = TT->getDecl();
 
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
-        auto TDD = static_cast<TypedefDecl*>(WalkDeclaration(TD,
+        auto TDD = static_cast<TypedefNameDecl*>(WalkDeclaration(TD,
             /*IgnoreSystemDecls=*/false));
 
         auto Type = new TypedefType();
@@ -2448,7 +2445,7 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
-static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
+bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
 {
     auto FinalType = GetFinalType(Ty);
 
@@ -3231,7 +3228,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         break;
     }
     case Decl::Typedef:
-    case Decl::TypeAlias:
     {
         auto TD = cast<clang::TypedefNameDecl>(D);
 
@@ -3249,14 +3245,38 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         Decl = Typedef;
         break;
     }
+    case Decl::TypeAlias:
+    {
+        auto TD = cast<clang::TypeAliasDecl>(D);
+
+        auto NS = GetNamespace(TD);
+        auto Name = GetDeclName(TD);
+        auto TypeAlias = NS->FindTypeAlias(Name, /*Create=*/false);
+        if (TypeAlias) return TypeAlias;
+
+        TypeAlias = NS->FindTypeAlias(Name, /*Create=*/true);
+        HandleDeclaration(TD, TypeAlias);
+
+        auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
+        TypeAlias->QualifiedType = GetQualifiedType(TD->getUnderlyingType(), &TTL);
+
+        if (auto TAT = TD->getDescribedAliasTemplate())
+            TypeAlias->DescribedAliasTemplate = WalkTypeAliasTemplate(TAT);
+
+        Decl = TypeAlias;
+    }
     case Decl::Namespace:
     {
         auto ND = cast<NamespaceDecl>(D);
 
-        for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
+        // HACK: work around https://llvm.org/bugs/show_bug.cgi?id=28397
+        if (D->getKind() != Decl::Kind::TypeAlias)
         {
-            clang::Decl* D = (*it);
-            Decl = WalkDeclarationDef(D);
+            for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
+            {
+                clang::Decl* D = (*it);
+                Decl = WalkDeclarationDef(D);
+            }
         }
 
         break;

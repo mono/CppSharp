@@ -354,17 +354,36 @@ namespace CppSharp.AST
     }
 
     /// <summary>
-    /// Represents a type definition in C++.
+    /// Base class for declarations which introduce a typedef-name.
     /// </summary>
-    public class TypedefDecl : Declaration, ITypedDecl
+    public abstract class TypedefNameDecl : Declaration, ITypedDecl
     {
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
         public bool IsSynthetized { get; set; }
+    }
 
+    /// <summary>
+    /// Represents a type definition in C++.
+    /// </summary>
+    public class TypedefDecl : TypedefNameDecl
+    {
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitTypedefDecl(this);
+        }
+    }
+
+    /// <summary>
+    /// Represents a type alias in C++.
+    /// </summary>
+    public class TypeAlias : TypedefNameDecl
+    {
+        public TypeAliasTemplate DescribedAliasTemplate { get; set; }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitTypeAliasDecl(this);
         }
     }
 
@@ -377,6 +396,7 @@ namespace CppSharp.AST
         T VisitMethodDecl(Method method);
         T VisitParameterDecl(Parameter parameter);
         T VisitTypedefDecl(TypedefDecl typedef);
+        T VisitTypeAliasDecl(TypeAlias typeAlias);
         T VisitEnumDecl(Enumeration @enum);
         T VisitVariableDecl(Variable variable);
         T VisitClassTemplateDecl(ClassTemplate template);

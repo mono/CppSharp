@@ -1137,3 +1137,5 @@ class DLL_API HasAbstractOperator
 public:
     virtual bool operator==(const HasAbstractOperator& other) = 0;
 };
+
+using data_type = typename std::aligned_storage<16, 8>::type;

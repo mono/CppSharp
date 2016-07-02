@@ -273,6 +273,7 @@ DEF_VECTOR(DeclarationContext, Function*, Functions)
 DEF_VECTOR(DeclarationContext, Class*, Classes)
 DEF_VECTOR(DeclarationContext, Template*, Templates)
 DEF_VECTOR(DeclarationContext, TypedefDecl*, Typedefs)
+DEF_VECTOR(DeclarationContext, TypeAlias*, TypeAliases)
 DEF_VECTOR(DeclarationContext, Variable*, Variables)
 DEF_VECTOR(DeclarationContext, Friend*, Friends)
 
@@ -523,6 +524,25 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
     return tdef;
 }
 
+TypeAlias* DeclarationContext::FindTypeAlias(const std::string& Name, bool Create)
+{
+    auto foundTypeAlias = std::find_if(TypeAliases.begin(), TypeAliases.end(),
+        [&](TypeAlias* talias) { return talias->Name == Name; });
+
+    if (foundTypeAlias != TypeAliases.end())
+        return *foundTypeAlias;
+
+    if (!Create)
+        return nullptr;
+
+    auto talias = new TypeAlias();
+    talias->Name = Name;
+    talias->_Namespace = this;
+    TypeAliases.push_back(talias);
+
+    return talias;
+}
+
 Variable* DeclarationContext::FindVariable(const std::string& USR)
 {
     auto found = std::find_if(Variables.begin(), Variables.end(),
@@ -545,9 +565,17 @@ Friend* DeclarationContext::FindFriend(const std::string& USR)
     return nullptr;
 }
 
-TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
+TypedefNameDecl::TypedefNameDecl(DeclarationKind Kind) : Declaration(Kind) {}
+
+TypedefNameDecl::~TypedefNameDecl() {}
+
+TypedefDecl::TypedefDecl() : TypedefNameDecl(DeclarationKind::Typedef) {}
 
 TypedefDecl::~TypedefDecl() {}
+
+TypeAlias::TypeAlias() : TypedefNameDecl(DeclarationKind::TypeAlias), DescribedAliasTemplate(0) {}
+
+TypeAlias::~TypeAlias() {}
 
 Friend::Friend() : CppSharp::CppParser::AST::Declaration(DeclarationKind::Friend), Declaration(0) {}
 

@@ -113,6 +113,7 @@ private:
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(const clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
+    bool CanCheckCodeGenInfo(clang::Sema & S, const clang::Type * Ty);
     void WalkFunction(const clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(Declaration* Decl);

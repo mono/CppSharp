@@ -393,7 +393,7 @@ namespace CppSharp.AST
     /// </summary>
     public class TypedefType : Type
     {
-        public TypedefDecl Declaration;
+        public TypedefNameDecl Declaration { get; set; }
 
         public TypedefType()
         {
