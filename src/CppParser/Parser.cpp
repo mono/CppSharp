@@ -3264,19 +3264,16 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
             TypeAlias->DescribedAliasTemplate = WalkTypeAliasTemplate(TAT);
 
         Decl = TypeAlias;
+        break;
     }
     case Decl::Namespace:
     {
         auto ND = cast<NamespaceDecl>(D);
 
-        // HACK: work around https://llvm.org/bugs/show_bug.cgi?id=28397
-        if (D->getKind() != Decl::Kind::TypeAlias)
+        for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
         {
-            for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
-            {
-                clang::Decl* D = (*it);
-                Decl = WalkDeclarationDef(D);
-            }
+            clang::Decl* D = (*it);
+            Decl = WalkDeclarationDef(D);
         }
 
         break;
