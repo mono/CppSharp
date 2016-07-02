@@ -2459,6 +2459,15 @@ static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
     if (auto RT = FinalType->getAs<clang::RecordType>())
         return RT->getDecl()->getDefinition() != 0;
 
+    // Lock in the MS inheritance model if we have a member pointer to a class,
+    // else we get an assertion error inside Clang's codegen machinery.
+    if (C->getASTContext().getTargetInfo().getCXXABI().isMicrosoft())
+    {
+        if (auto MPT = Ty->getAs<clang::MemberPointerType>())
+            if (!MPT->isDependentType())
+                S.RequireCompleteType(clang::SourceLocation(), clang::QualType(Ty, 0), 1);
+    }
+
     return true;
 }
 
