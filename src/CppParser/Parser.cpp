@@ -640,35 +640,35 @@ Parser::WalkVTableComponent(const clang::VTableComponent& Component)
     case clang::VTableComponent::CK_RTTI:
     {
         VTC.Kind = VTableComponentKind::RTTI;
-        auto RD = const_cast<CXXRecordDecl*>(Component.getRTTIDecl());
+        auto RD = Component.getRTTIDecl();
         VTC.Declaration = WalkRecordCXX(RD);
         break;
     }
     case clang::VTableComponent::CK_FunctionPointer:
     {
         VTC.Kind = VTableComponentKind::FunctionPointer;
-        auto MD = const_cast<CXXMethodDecl*>(Component.getFunctionDecl());
+        auto MD = Component.getFunctionDecl();
         VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     case clang::VTableComponent::CK_CompleteDtorPointer:
     {
         VTC.Kind = VTableComponentKind::CompleteDtorPointer;
-        auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
+        auto MD = Component.getDestructorDecl();
         VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     case clang::VTableComponent::CK_DeletingDtorPointer:
     {
         VTC.Kind = VTableComponentKind::DeletingDtorPointer;
-        auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
+        auto MD = Component.getDestructorDecl();
         VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     case clang::VTableComponent::CK_UnusedFunctionPointer:
     {
         VTC.Kind = VTableComponentKind::UnusedFunctionPointer;
-        auto MD = const_cast<CXXMethodDecl*>(Component.getUnusedFunctionDecl());
+        auto MD = Component.getUnusedFunctionDecl();
         VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
