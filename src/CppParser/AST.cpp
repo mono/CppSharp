@@ -519,7 +519,6 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
     auto tdef = new TypedefDecl();
     tdef->Name = Name;
     tdef->_Namespace = this;
-    Typedefs.push_back(tdef);
 
     return tdef;
 }
@@ -538,7 +537,6 @@ TypeAlias* DeclarationContext::FindTypeAlias(const std::string& Name, bool Creat
     auto talias = new TypeAlias();
     talias->Name = Name;
     talias->_Namespace = this;
-    TypeAliases.push_back(talias);
 
     return talias;
 }

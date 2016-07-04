@@ -3229,7 +3229,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     }
     case Decl::Typedef:
     {
-        auto TD = cast<clang::TypedefNameDecl>(D);
+        auto TD = cast<clang::TypedefDecl>(D);
 
         auto NS = GetNamespace(TD);
         auto Name = GetDeclName(TD);
@@ -3240,9 +3240,17 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         HandleDeclaration(TD, Typedef);
 
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
+        // resolve the typedef before adding it to the list otherwise it might be found and returned prematurely
+        // see "typedef _Aligned<16, char>::type type;" and the related classes in Common.h in the tests
         Typedef->QualifiedType = GetQualifiedType(TD->getUnderlyingType(), &TTL);
+        AST::TypedefDecl* Existing;
+        // if the typedef was added along the way, the just created one is useless, delete it
+        if (Existing = NS->FindTypedef(Name, /*Create=*/false))
+            delete Typedef;
+        else
+            NS->Typedefs.push_back(Existing = Typedef);
 
-        Decl = Typedef;
+        Decl = Existing;
         break;
     }
     case Decl::TypeAlias:
@@ -3258,12 +3266,18 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         HandleDeclaration(TD, TypeAlias);
 
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
+        // see above the case for "Typedef"
         TypeAlias->QualifiedType = GetQualifiedType(TD->getUnderlyingType(), &TTL);
+        AST::TypeAlias* Existing;
+        if (Existing = NS->FindTypeAlias(Name, /*Create=*/false))
+            delete TypeAlias;
+        else
+            NS->TypeAliases.push_back(Existing = TypeAlias);
 
         if (auto TAT = TD->getDescribedAliasTemplate())
             TypeAlias->DescribedAliasTemplate = WalkTypeAliasTemplate(TAT);
 
-        Decl = TypeAlias;
+        Decl = Existing;
         break;
     }
     case Decl::Namespace:

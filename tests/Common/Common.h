@@ -1138,4 +1138,19 @@ public:
     virtual bool operator==(const HasAbstractOperator& other) = 0;
 };
 
-using data_type = typename std::aligned_storage<16, 8>::type;
+template<size_t _Len, class _Ty>
+struct _Aligned;
+
+template<size_t _Len>
+struct _Aligned<_Len, int>
+{
+    typedef int type;
+};
+
+template<size_t _Len>
+struct _Aligned<_Len, char>
+{
+    typedef typename _Aligned<_Len, int>::type type;
+};
+
+typedef _Aligned<16, char>::type type;
