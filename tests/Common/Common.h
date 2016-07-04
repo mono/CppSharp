@@ -1154,3 +1154,9 @@ struct _Aligned<_Len, char>
 };
 
 typedef _Aligned<16, char>::type type;
+
+template <typename T, template <typename> class InteriorRings = SpecialisesVoid>
+struct polygon
+{
+    InteriorRings<T> interior_rings;
+};

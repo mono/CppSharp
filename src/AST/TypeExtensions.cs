@@ -134,11 +134,19 @@
                         return decl != null;
                     }
 
-                    var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
-                    decl = templatedClass.CompleteDeclaration == null
-                        ? templatedClass as T
-                        : (T) templatedClass.CompleteDeclaration;
-                    return decl != null;
+                    var classTemplate = type.Template as ClassTemplate;
+                    if (classTemplate != null)
+                    {
+                        var templatedClass = classTemplate.TemplatedClass;
+                        decl = templatedClass.CompleteDeclaration == null
+                            ? templatedClass as T
+                            : (T) templatedClass.CompleteDeclaration;
+                        return decl != null;
+                    }
+
+                    var templateTemplateParameter = type.Template as TemplateTemplateParameter;
+                    if (templateTemplateParameter != null)
+                        return (decl = templateTemplateParameter.TemplatedDecl as T) != null;
                 }
                 tagType = (TagType) type.Desugared;
             }
