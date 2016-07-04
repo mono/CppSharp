@@ -194,13 +194,6 @@ namespace CppSharp.Passes
             return false;
         }
 
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            if (decl.Namespace != null && decl.TranslationUnit.IsSystemHeader)
-                return false;
-            return base.VisitDeclaration(decl);
-        }
-
         private static IEnumerable<Field> GetAllFields(Class @class, List<Field> fields = null)
         {
             fields = fields ?? new List<Field>();

@@ -1160,3 +1160,7 @@ struct polygon
 {
     InteriorRings<T> interior_rings;
 };
+
+class HasSystemBase : public std::string
+{
+};

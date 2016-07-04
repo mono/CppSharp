@@ -37,7 +37,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!base.VisitFunctionDecl(function) || function.TranslationUnit.IsSystemHeader)
+            if (!base.VisitFunctionDecl(function) || function.Ignore)
                 return false;
 
             Generator.CurrentOutputNamespace = function.TranslationUnit.Module.OutputNamespace;

@@ -6,7 +6,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitMethodDecl(Method method)
         {
-            if (!base.VisitMethodDecl(method) || method.TranslationUnit.IsSystemHeader)
+            if (!base.VisitMethodDecl(method))
                 return false;
 
             if (method.IsPure && method.IsOperator)

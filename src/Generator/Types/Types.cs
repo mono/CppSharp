@@ -32,8 +32,7 @@ namespace CppSharp
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
-            if (!(decl is TypedefDecl) && (!decl.IsGenerated ||
-                (decl is Class && decl.TranslationUnit.IsSystemHeader)))
+            if (!(decl is TypedefDecl) && !decl.IsGenerated)
             {
                 Ignore();
                 return false;

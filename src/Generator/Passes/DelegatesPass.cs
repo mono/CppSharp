@@ -41,7 +41,7 @@ namespace CppSharp.Passes
                 libsDelegates[library] = new Dictionary<string, DelegateDefinition>();
 
             var unit = context.TranslationUnits.LastOrDefault(u => u.IsValid && u.IsGenerated &&
-                !u.IsSystemHeader && u.HasDeclarations);
+                u.HasDeclarations);
 
             if (unit == null)
                 return false;
@@ -86,8 +86,7 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore
-                || method.TranslationUnit.IsSystemHeader)
+            if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
                 return false;
 
             var @params = method.GatherInternalParams(Driver.Options.IsItaniumLikeAbi, true).ToList();
