@@ -135,46 +135,46 @@ namespace CppSharp.Passes
             private static void GenerateProperty(DeclarationContext context, Method getter, Method setter = null)
             {
                 var type = (Class) context;
-                if (type.Properties.All(p => getter.Name != p.Name ||
-                    p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
+                var name = GetPropertyName(getter.Name);
+                if (type.Properties.Any(p => p.Name == name &&
+                    p.ExplicitInterfaceImpl == getter.ExplicitInterfaceImpl))
+                    return;
+
+                var property = new Property
                 {
-                    var property = new Property
-                    {
-                        Access = getter.Access == AccessSpecifier.Public ||
-                            (setter != null && setter.Access == AccessSpecifier.Public)
-                            ? AccessSpecifier.Public
-                            : AccessSpecifier.Protected,
-                        Name = GetPropertyName(getter.Name),
-                        Namespace = type,
-                        QualifiedType = getter.OriginalReturnType,
-                        OriginalNamespace = getter.OriginalNamespace
-                    };
-                    if (getter.IsOverride || (setter != null && setter.IsOverride))
-                    {
-                        var baseVirtualProperty = type.GetBaseProperty(property, getTopmost: true);
-                        if (baseVirtualProperty == null && type.GetBaseMethod(getter, getTopmost: true).IsGenerated)
-                            throw new Exception(string.Format(
-                                "Property {0} has a base property null but its getter has a generated base method.",
-                                getter.QualifiedOriginalName));
-                        if (baseVirtualProperty != null && baseVirtualProperty.SetMethod == null)
-                            setter = null;
-                    }
-                    property.GetMethod = getter;
-                    property.SetMethod = setter;
-                    property.ExplicitInterfaceImpl = getter.ExplicitInterfaceImpl;
-                    if (property.ExplicitInterfaceImpl == null && setter != null)
-                    {
-                        property.ExplicitInterfaceImpl = setter.ExplicitInterfaceImpl;
-                    }
-                    if (getter.Comment != null)
-                    {
-                        property.Comment = CombineComments(getter, setter);
-                    }
-                    type.Properties.Add(property);
-                    getter.GenerationKind = GenerationKind.Internal;
-                    if (setter != null)
-                        setter.GenerationKind = GenerationKind.Internal;
+                    Access = getter.Access == AccessSpecifier.Public ||
+                        (setter != null && setter.Access == AccessSpecifier.Public) ?
+                            AccessSpecifier.Public : AccessSpecifier.Protected,
+                    Name = name,
+                    Namespace = type,
+                    QualifiedType = getter.OriginalReturnType,
+                    OriginalNamespace = getter.OriginalNamespace
+                };
+                if (getter.IsOverride || (setter != null && setter.IsOverride))
+                {
+                    var baseVirtualProperty = type.GetBaseProperty(property, getTopmost: true);
+                    if (baseVirtualProperty == null && type.GetBaseMethod(getter, getTopmost: true).IsGenerated)
+                        throw new Exception(string.Format(
+                            "Property {0} has a base property null but its getter has a generated base method.",
+                            getter.QualifiedOriginalName));
+                    if (baseVirtualProperty != null && baseVirtualProperty.SetMethod == null)
+                        setter = null;
                 }
+                property.GetMethod = getter;
+                property.SetMethod = setter;
+                property.ExplicitInterfaceImpl = getter.ExplicitInterfaceImpl;
+                if (property.ExplicitInterfaceImpl == null && setter != null)
+                {
+                    property.ExplicitInterfaceImpl = setter.ExplicitInterfaceImpl;
+                }
+                if (getter.Comment != null)
+                {
+                    property.Comment = CombineComments(getter, setter);
+                }
+                type.Properties.Add(property);
+                getter.GenerationKind = GenerationKind.Internal;
+                if (setter != null)
+                    setter.GenerationKind = GenerationKind.Internal;
             }
 
             private static RawComment CombineComments(Declaration getter, Declaration setter)

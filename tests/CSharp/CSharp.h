@@ -913,3 +913,10 @@ protected:
 private:
     virtual int property();
 };
+
+class HasConflictWithProperty
+{
+public:
+    int conflictWithProperty();
+    int getConflictWithProperty();
+};
