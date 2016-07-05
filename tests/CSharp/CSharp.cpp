@@ -45,6 +45,10 @@ void Foo::foo(int i)
 {
 }
 
+void Foo::takesStdVector(const std::vector<int>& vector)
+{
+}
+
 const int Foo::rename;
 
 int Foo::makeFunctionCall()

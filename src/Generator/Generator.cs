@@ -11,8 +11,8 @@ namespace CppSharp.Generators
     /// </summary>
     public enum GeneratorKind
     {
-        CLI,
-        CSharp,
+        CLI = 1,
+        CSharp = 2
     }
 
     /// <summary>

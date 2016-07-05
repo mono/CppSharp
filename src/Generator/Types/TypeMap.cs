@@ -15,9 +15,9 @@ namespace CppSharp.Types
     public class TypeMapAttribute : Attribute
     {
         public string Type { get; private set; }
-        public GeneratorKind? GeneratorKind { get; set; }
+        public GeneratorKind GeneratorKind { get; set; }
         
-        public TypeMapAttribute(string type)
+        public TypeMapAttribute(string type) : this(type, 0)
         {
             Type = type;
         }
@@ -152,7 +152,7 @@ namespace CppSharp.Types
                 var attrs = typeMap.GetCustomAttributes(typeof(TypeMapAttribute), true);
                 foreach (TypeMapAttribute attr in attrs)
                 {
-                    if (attr.GeneratorKind == null || attr.GeneratorKind == generatorKind)
+                    if (attr.GeneratorKind == 0 || attr.GeneratorKind == generatorKind)
                     {
                         TypeMaps[attr.Type] = typeMap;                        
                     }

@@ -98,7 +98,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::vector")]
+    [TypeMap("std::vector", GeneratorKind = GeneratorKind.CLI)]
     public class Vector : TypeMap
     {
         public override bool IsIgnored

@@ -1,5 +1,6 @@
 #include "../Tests.h"
 #include <cstdint>
+#include <vector>
 #include "AnotherUnit.h"
 
 class DLL_API Foo
@@ -17,6 +18,7 @@ public:
     bool isNoParams();
     void setNoParams();
     void foo(int i);
+    void takesStdVector(const std::vector<int>& vector);
 
     static const int rename = 5;
     static int makeFunctionCall();
