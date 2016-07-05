@@ -113,7 +113,7 @@ namespace CppSharp.Passes
             private static string GetReadWritePropertyName(INamedDecl getter, string afterSet)
             {
                 string name = GetPropertyName(getter.Name);
-                if (name != afterSet && name.StartsWith("is"))
+                if (name != afterSet && name.StartsWith("is", StringComparison.Ordinal))
                 {
                     name = char.ToLowerInvariant(name[2]) + name.Substring(3);
                 }
@@ -152,7 +152,11 @@ namespace CppSharp.Passes
                     if (getter.IsOverride || (setter != null && setter.IsOverride))
                     {
                         var baseVirtualProperty = type.GetBaseProperty(property, getTopmost: true);
-                        if (baseVirtualProperty.SetMethod == null)
+                        if (baseVirtualProperty == null && type.GetBaseMethod(getter, getTopmost: true).IsGenerated)
+                            throw new Exception(string.Format(
+                                "Property {0} has a base property null but its getter has a generated base method.",
+                                getter.QualifiedOriginalName));
+                        if (baseVirtualProperty != null && baseVirtualProperty.SetMethod == null)
                             setter = null;
                     }
                     property.GetMethod = getter;

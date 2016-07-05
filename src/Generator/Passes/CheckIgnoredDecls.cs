@@ -12,17 +12,22 @@ namespace CppSharp.Passes
 
             switch (decl.Access)
             {
-            case AccessSpecifier.Public:
-                return true;
-            case AccessSpecifier.Protected:
-                var @class = decl.Namespace as Class;
-                if (@class != null && @class.IsValueType)
-                    return false;
-                return generateNonPublicDecls;
-            case AccessSpecifier.Private:
-                var method = decl as Method;
-                var isOverride = method != null && method.IsOverride;
-                return generateNonPublicDecls && (isOverride || decl.IsExplicitlyGenerated);
+                case AccessSpecifier.Public:
+                    return true;
+                case AccessSpecifier.Protected:
+                    var @class = decl.Namespace as Class;
+                    if (@class != null && @class.IsValueType)
+                        return false;
+                    return generateNonPublicDecls;
+                case AccessSpecifier.Private:
+                    var method = decl as Method;
+                    var isOverride = false;
+                    if (method != null && method.IsOverride)
+                    {
+                        var baseMethod = ((Class) method.Namespace).GetBaseMethod(method);
+                        isOverride = baseMethod.IsGenerated;
+                    }
+                    return generateNonPublicDecls && (isOverride || decl.IsExplicitlyGenerated);
             }
 
             return true;
@@ -177,20 +182,6 @@ namespace CppSharp.Passes
 
                     method.ExplicitlyIgnore();
                     return false;
-                }
-
-                if (method.IsOverride)
-                {
-                    var baseOverride = @class.GetBaseMethod(method);
-                    if (baseOverride != null && !baseOverride.IsDeclared)
-                    {
-                        Log.Debug(
-                            "Virtual method '{0}' was ignored due to ignored override '{1}'",
-                            method.QualifiedOriginalName, baseOverride.Name);
-
-                        method.ExplicitlyIgnore();
-                        return false;
-                    }
                 }
             }
 

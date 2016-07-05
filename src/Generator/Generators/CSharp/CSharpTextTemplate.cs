@@ -2209,7 +2209,7 @@ namespace CppSharp.Generators.CSharp
             Method rootBaseMethod;
             var isOverride = method.IsOverride &&
                 (rootBaseMethod = @class.GetBaseMethod(method, true)) != null &&
-                (rootBaseMethod.IsVirtual || rootBaseMethod.IsPure);
+                rootBaseMethod.IsGenerated && rootBaseMethod.IsVirtual;
 
             if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
                 Write("virtual ");
@@ -2443,18 +2443,21 @@ namespace CppSharp.Generators.CSharp
 
         private static AccessSpecifier GetValidMethodAccess(Method method)
         {
-            return method.IsOverride
-                ? ((Class) method.Namespace).GetBaseMethod(method).Access
-                : method.Access;
+            if (!method.IsOverride)
+                return method.Access;
+            var baseMethod = ((Class) method.Namespace).GetBaseMethod(method);
+            return baseMethod.IsGenerated ? baseMethod.Access : method.Access;
         }
 
         private static AccessSpecifier GetValidPropertyAccess(Property property)
         {
             if (property.Access == AccessSpecifier.Public)
                 return AccessSpecifier.Public;
-            return property.IsOverride
-                ? ((Class) property.Namespace).GetBaseProperty(property).Access
-                : property.Access;
+            if (!property.IsOverride)
+                return property.Access;
+            var baseProperty = ((Class) property.Namespace).GetBaseProperty(property);
+            // access can be changed from private to other while overriding in C++
+            return baseProperty != null ? baseProperty.Access : property.Access;
         }
 
         private void GenerateVirtualPropertyCall(Method method, Class @class,
@@ -2480,7 +2483,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (!forceVirtualCall && method.IsOverride && !method.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                @class.HasNonAbstractBaseMethodInPrimaryBase(method))
+                @class.HasCallableBaseMethodInPrimaryBase(method))
             {
                 GenerateManagedCall(method, true);
             }

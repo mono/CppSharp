@@ -894,3 +894,22 @@ namespace NamespaceB
 		void Function(CS_OUT NamespaceA::A &a);
 	};
 }
+
+class HasPrivateVirtualProperty
+{
+private:
+    virtual int property();
+    virtual void protectedAbstractMethod() = 0;
+    virtual void protectedMethod();
+    virtual int protectedProperty() = 0;
+};
+
+class HasPrivateOverriddenProperty : public HasPrivateVirtualProperty
+{
+protected:
+    virtual void protectedAbstractMethod();
+    virtual void protectedMethod();
+    virtual int protectedProperty();
+private:
+    virtual int property();
+};

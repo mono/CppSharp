@@ -89,10 +89,10 @@ namespace CppSharp.AST
             return null;
         }
 
-        public static bool HasNonAbstractBaseMethodInPrimaryBase(this Class @class, Method method)
+        public static bool HasCallableBaseMethodInPrimaryBase(this Class @class, Method method)
         {
             var baseMethod = @class.GetBaseMethod(method, true, true);
-            return baseMethod != null && !baseMethod.IsPure &&
+            return baseMethod != null && !baseMethod.IsPure && baseMethod.IsGenerated &&
                 !((Class) baseMethod.OriginalNamespace).IsInterface;
         }
 
