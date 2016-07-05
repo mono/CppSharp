@@ -102,6 +102,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     suffix.Append(typePrinter.GetNestedQualifiedName(nestedSpecialization));
                     suffix.Append(GetSuffixForInternal(nestedSpecialization, typePrinter, true));
+                    CSharpTypePrinter.AppendGlobal = false;
                     continue;
                 }
                 Class @class;
@@ -112,6 +113,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         suffix.Append(typePrinter.GetNestedQualifiedName(nestedSpecialization));
                         suffix.Append(GetSuffixForInternal(nestedSpecialization, typePrinter, true));
+                        CSharpTypePrinter.AppendGlobal = false;
                         suffix.Append('_');
                         suffix.Append(@class.Name);
                         continue;

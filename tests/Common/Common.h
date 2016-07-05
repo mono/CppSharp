@@ -5,6 +5,7 @@
 #include <vadefs.h>
 #endif
 #include <string>
+#include <vector>
 
 class DLL_API IgnoredType
 {
@@ -1164,3 +1165,5 @@ struct polygon
 class HasSystemBase : public std::string
 {
 };
+
+typedef SpecialisesVoid<std::vector<std::string>> SpecialisesWithNestedSystemTypes;
