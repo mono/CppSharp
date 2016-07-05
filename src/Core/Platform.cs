@@ -48,6 +48,11 @@ namespace CppSharp
             }
         }
 
+        public static bool IsLinux
+        {
+            get { return Environment.OSVersion.Platform == PlatformID.Unix && !IsMacOS; }
+        }
+
         public static bool IsMono
         {
             get { return Type.GetType("Mono.Runtime") != null; }

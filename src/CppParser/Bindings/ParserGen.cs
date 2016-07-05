@@ -15,17 +15,18 @@ namespace CppSharp
     /// </summary>
     class ParserGen : ILibrary
     {
-        const string LINUX_INCLUDE_BASE_DIR = "../../../../build/headers/x86_64-linux-gnu";
-
         internal readonly GeneratorKind Kind;
         internal readonly string Triple;
         internal readonly CppAbi Abi;
+        internal readonly bool IsGnuCpp11Abi;
 
-        public ParserGen(GeneratorKind kind, string triple, CppAbi abi)
+        public ParserGen(GeneratorKind kind, string triple, CppAbi abi,
+            bool isGnuCpp11Abi = false)
         {
             Kind = kind;
             Triple = triple;
             Abi = abi;
+            IsGnuCpp11Abi = isGnuCpp11Abi;
         }
 
         static string GetSourceDirectory(string dir)
@@ -77,31 +78,47 @@ namespace CppSharp
             options.OutputDir = Path.Combine(GetSourceDirectory("src"), "CppParser",
                 "Bindings", Kind.ToString());
 
+            var extraTriple = IsGnuCpp11Abi ? "-cxx11abi" : string.Empty;
+
             if (Kind == GeneratorKind.CSharp)
-                options.OutputDir = Path.Combine(options.OutputDir, options.TargetTriple);
+                options.OutputDir = Path.Combine(options.OutputDir, options.TargetTriple + extraTriple);
 
             options.GenerateLibraryNamespace = false;
             options.CheckSymbols = false;
         }
 
-        private static void SetupLinuxOptions(DriverOptions options)
+        private void SetupLinuxOptions(DriverOptions options)
         {
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
-            string[] sysincdirs = new[] {
-                "/usr/include/c++/4.8",
-                "/usr/include/x86_64-linux-gnu/c++/4.8",
-                "/usr/include/c++/4.8/backward",
-                "/usr/lib/gcc/x86_64-linux-gnu/4.8/include",
-                "/usr/include/x86_64-linux-gnu",
-                "/usr/include",
+            var headersPath = Platform.IsLinux ? string.Empty :
+                Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
+
+            // Search for the available GCC versions on the provided headers.
+            var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
+                "usr/include/c++"));
+
+            if (versions.Count() == 0)
+                throw new Exception("No valid GCC version found on system include paths");
+
+            string gccVersionPath = versions.First();
+            string gccVersion = gccVersionPath.Substring(
+                gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+            string[] systemIncludeDirs = new[] {
+                Path.Combine("usr", "include", "c++", gccVersion),
+                Path.Combine("usr", "include", "x86_64-linux-gnu", "c++", gccVersion),
+                Path.Combine("usr", "include", "c++", gccVersion, "backward"),
+                Path.Combine("usr", "lib", "gcc", "x86_64-linux-gnu", gccVersion, "include"),
+                Path.Combine("usr", "include", "x86_64-linux-gnu"),
+                Path.Combine("usr", "include")
             };
 
-            foreach (var dir in sysincdirs)
-            {
-                options.addSystemIncludeDirs(LINUX_INCLUDE_BASE_DIR + dir);
-            }
+            foreach (var dir in systemIncludeDirs)
+                options.addSystemIncludeDirs(Path.Combine(headersPath, dir));
+
+            options.addDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
 
         private static void SetupMacOptions(DriverOptions options)
@@ -183,12 +200,17 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-
-            if (Directory.Exists(LINUX_INCLUDE_BASE_DIR))
+            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
+            if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
                      CppAbi.Itanium));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser bindings for Linux (GCC C++11 ABI)...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
+                     CppAbi.Itanium, isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
         }
