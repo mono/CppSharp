@@ -49,6 +49,15 @@ void Foo::takesStdVector(const std::vector<int>& vector)
 {
 }
 
+int Foo::width()
+{
+    return 1;
+}
+
+void Foo::set_width(int value)
+{
+}
+
 const int Foo::rename;
 
 int Foo::makeFunctionCall()

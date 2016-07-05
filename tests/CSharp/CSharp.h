@@ -19,6 +19,8 @@ public:
     void setNoParams();
     void foo(int i);
     void takesStdVector(const std::vector<int>& vector);
+    int width();
+    void set_width(int value);
 
     static const int rename = 5;
     static int makeFunctionCall();

@@ -49,8 +49,9 @@ namespace CppSharp.Passes
             {
                 foreach (var setter in settersToUse)
                 {
-                    Class type = (Class) setter.Namespace;
-                    StringBuilder nameBuilder = new StringBuilder(setter.Name.Substring(3));
+                    var type = (Class) setter.Namespace;
+                    var firstWord = GetFirstWord(setter.Name);
+                    var nameBuilder = new StringBuilder(setter.Name.Substring(firstWord.Length));
                     if (char.IsLower(setter.Name[0]))
                         nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
                     string afterSet = nameBuilder.ToString();
@@ -201,7 +202,8 @@ namespace CppSharp.Passes
 
             private static string GetPropertyName(string name)
             {
-                if (GetFirstWord(name) == "get" && name != "get")
+                var firstWord = GetFirstWord(name);
+                if (Match(firstWord, new[] { "get" }) && name != firstWord)
                 {
                     if (char.IsLower(name[0]))
                     {
@@ -221,7 +223,8 @@ namespace CppSharp.Passes
 
             private void DistributeMethod(Method method)
             {
-                if (GetFirstWord(method.Name) == "set" && method.Name.Length > 3 &&
+                var firstWord = GetFirstWord(method.Name);
+                if (Match(firstWord, new[] { "set" }) && method.Name.Length > firstWord.Length &&
                     method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
                 {
                     if (method.Parameters.Count == 1)
@@ -244,21 +247,37 @@ namespace CppSharp.Passes
                     (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void)) ||
                     method.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType))
                     return false;
-                var result = GetFirstWord(method.Name);
-                return (result.Length < method.Name.Length &&
-                        (result == "get" || result == "is" || result == "has")) ||
-                       (result != "to" && result != "new" && !verbs.Contains(result));
+                var firstWord = GetFirstWord(method.Name);
+                return (firstWord.Length < method.Name.Length &&
+                    Match(firstWord, new[] { "get", "is", "has" })) ||
+                    (!Match(firstWord, new[] { "to", "new" }) && !verbs.Contains(firstWord));
+            }
+
+            private static bool Match(string prefix, IEnumerable<string> prefixes)
+            {
+                return prefixes.Any(p => prefix == p || prefix == p + '_');
             }
 
             private static string GetFirstWord(string name)
             {
-                List<char> firstVerb = new List<char>
-                                    {
-                                        char.ToLowerInvariant(name[0])
-                                    };
-                firstVerb.AddRange(name.Skip(1).TakeWhile(
-                    c => char.IsLower(c) || !char.IsLetterOrDigit(c)));
-                return new string(firstVerb.ToArray());
+                var firstWord = new List<char> { char.ToLowerInvariant(name[0]) };
+                for (int i = 1; i < name.Length; i++)
+                {
+                    var c = name[i];
+                    if (char.IsLower(c))
+                    {
+                        firstWord.Add(c);
+                        continue;
+                    }
+                    if (c == '_')
+                    {
+                        firstWord.Add(c);
+                        break;
+                    }
+                    if (char.IsUpper(c))
+                        break;
+                }
+                return new string(firstWord.ToArray());
             }
         }
 

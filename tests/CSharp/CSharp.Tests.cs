@@ -36,6 +36,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             var isNoParams = foo.IsNoParams;
             foo.SetNoParams();
+            foo.Width = 5;
         }
         using (var hasOverride = new HasOverrideOfHasPropertyWithDerivedType())
             hasOverride.CauseRenamingError();
