@@ -149,7 +149,7 @@ namespace CppSharp.AST
                 // These binary operators can be overloaded
                 case CXXOperatorKind.Star: return "operator *";
                 case CXXOperatorKind.Slash: return "operator /";
-                case CXXOperatorKind.Percent: return "operator +";
+                case CXXOperatorKind.Percent: return "operator %";
                 case CXXOperatorKind.Amp: return "operator &";
                 case CXXOperatorKind.Pipe: return "operator |";
                 case CXXOperatorKind.Caret: return "operator ^";
