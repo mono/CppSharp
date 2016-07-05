@@ -294,8 +294,8 @@ namespace CppSharp.Generators.CSharp
             if (context.HasFunctions)
             {
                 PushBlock(CSharpBlockKind.Functions);
-                WriteLine("public unsafe partial class {0}",
-                    Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension));
+                var parentName = Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+                WriteLine("public unsafe partial class {0}", parentName);
                 WriteStartBraceIndent();
 
                 PushBlock(CSharpBlockKind.InternalsClass);
@@ -317,7 +317,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (!function.IsGenerated) continue;
 
-                    GenerateFunction(function);
+                    GenerateFunction(function, parentName);
                 }
 
                 WriteCloseBraceIndent();
@@ -2184,12 +2184,14 @@ namespace CppSharp.Generators.CSharp
 
         #region Methods / Functions
 
-        public void GenerateFunction(Function function)
+        public void GenerateFunction(Function function, string parentName)
         {
             PushBlock(CSharpBlockKind.Function);
             GenerateDeclarationCommon(function);
 
             var functionName = GetFunctionIdentifier(function);
+            if (functionName == parentName)
+                functionName += '_';
             Write("public static {0} {1}(", function.OriginalReturnType, functionName);
             Write(FormatMethodParameters(function.Parameters));
             WriteLine(")");
