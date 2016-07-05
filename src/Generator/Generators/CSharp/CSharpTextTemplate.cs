@@ -67,9 +67,10 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public static StringBuilder FormatTypesStringForIdentifier(StringBuilder types)
+        public static string FormatTypesStringForIdentifier(StringBuilder types)
         {
-            return types.Replace("global::System.", string.Empty).Replace("*", "Ptr").Replace('.', '_');
+            return types.Replace("global::System.", string.Empty).Replace("*", "Ptr")
+                .Replace('.', '_').Replace(' ', '_').Replace("::", "_").ToString();
         }
 
         public static string GetSuffixForInternal(ClassTemplateSpecialization specialization,
@@ -90,6 +91,7 @@ namespace CppSharp.Generators.CSharp
                 typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
                 typePrinter.PushMarshalKind(CSharpMarshalKind.Unknown);
             }
+            var cppTypePrinter = new CppTypePrinter(false) { PrintScopeKind = CppTypePrintScopeKind.Qualified };
             CSharpTypePrinter.AppendGlobal = false;
             var suffix = new StringBuilder();
             foreach (var argType in from argType in specialization.Arguments
@@ -119,7 +121,7 @@ namespace CppSharp.Generators.CSharp
                         continue;
                     }
                 }
-                suffix.Append(argType);
+                suffix.Append(argType.Visit(cppTypePrinter));
             }
             if (!nested)
             {
@@ -127,8 +129,7 @@ namespace CppSharp.Generators.CSharp
                 typePrinter.PopMarshalKind();
             }
             CSharpTypePrinter.AppendGlobal = true;
-            FormatTypesStringForIdentifier(suffix);
-            return suffix.ToString();
+            return FormatTypesStringForIdentifier(suffix);
         }
     }
 

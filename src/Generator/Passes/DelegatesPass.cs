@@ -179,7 +179,7 @@ namespace CppSharp.Passes
             }
             if (typesBuilder.Length > 0)
                 typesBuilder.Remove(typesBuilder.Length - 1, 1);
-            var delegateName = Helpers.FormatTypesStringForIdentifier(typesBuilder).ToString();
+            var delegateName = Helpers.FormatTypesStringForIdentifier(typesBuilder);
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
                 delegateName = "Action_" + delegateName;
             else

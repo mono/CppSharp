@@ -1131,6 +1131,9 @@ class UsesSpecialisationOfVoid
 private:
     SpecialisesVoid<void>* s;
     SpecialisesVoidInUnion<void>* h;
+    SpecialisesVoid<int> i;
+    SpecialisesVoid<long> l;
+    SpecialisesVoid<unsigned int> u;
 };
 
 class DLL_API HasAbstractOperator
