@@ -231,7 +231,8 @@ namespace CppSharp
                 ULongLong = 13,
                 Float = 14,
                 Double = 15,
-                IntPtr = 16
+                LongDouble = 16,
+                IntPtr = 17
             }
 
             public enum MacroLocation

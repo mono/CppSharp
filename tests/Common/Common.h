@@ -1167,3 +1167,9 @@ class HasSystemBase : public std::string
 };
 
 typedef SpecialisesVoid<std::vector<std::string>> SpecialisesWithNestedSystemTypes;
+
+struct HasLongDoubles
+{
+    long double simple;
+    long double array[4];
+};

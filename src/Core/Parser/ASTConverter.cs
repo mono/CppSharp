@@ -661,6 +661,8 @@ namespace CppSharp
                     return AST.PrimitiveType.Float;
                 case PrimitiveType.Double:
                     return AST.PrimitiveType.Double;
+                case PrimitiveType.LongDouble:
+                    return AST.PrimitiveType.LongDouble;
                 case PrimitiveType.IntPtr:
                     return AST.PrimitiveType.IntPtr;
                 default:

@@ -941,6 +941,7 @@ namespace CppSharp.AST
         ULongLong,
         Float,
         Double,
+        LongDouble,
         IntPtr,
         UIntPtr,
         Char16

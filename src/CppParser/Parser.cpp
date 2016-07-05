@@ -1699,6 +1699,7 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
 
     case clang::BuiltinType::Float: return PrimitiveType::Float;
     case clang::BuiltinType::Double: return PrimitiveType::Double;
+    case clang::BuiltinType::LongDouble: return PrimitiveType::LongDouble;
 
     case clang::BuiltinType::NullPtr: return PrimitiveType::Null;
 

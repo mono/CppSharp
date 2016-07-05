@@ -254,6 +254,7 @@ enum class PrimitiveType
     ULongLong,
     Float,
     Double,
+    LongDouble,
     IntPtr
 };
 

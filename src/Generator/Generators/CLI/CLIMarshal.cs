@@ -222,6 +222,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.ULongLong:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
+                case PrimitiveType.LongDouble:
                 case PrimitiveType.Null:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;

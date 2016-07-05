@@ -24,6 +24,17 @@ namespace CppSharp
             IsIgnored = true;
         }
 
+        public override bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        {
+            // we do not support long double yet because its high-level representation is often problematic
+            if (type == PrimitiveType.LongDouble)
+            {
+                Ignore();
+                return false;
+            }
+            return base.VisitPrimitiveType(type, quals);
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
             if (AlreadyVisited(decl))
@@ -129,7 +140,7 @@ namespace CppSharp
                 return true;
 
             PrimitiveType primitive;
-            if (arrayElemType.IsPrimitiveType(out primitive) ||
+            if ((arrayElemType.IsPrimitiveType(out primitive) && primitive != PrimitiveType.LongDouble) ||
                 arrayElemType.IsPointerToPrimitiveType())
                 return true;
 

@@ -119,6 +119,7 @@ namespace CppSharp.Types
                 case PrimitiveType.ULongLong: return "unsigned long long";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
+                case PrimitiveType.LongDouble: return "long double";
                 case PrimitiveType.IntPtr: return "void*";
                 case PrimitiveType.UIntPtr: return "uintptr_t";
                 case PrimitiveType.Null: return "std::nullptr_t";

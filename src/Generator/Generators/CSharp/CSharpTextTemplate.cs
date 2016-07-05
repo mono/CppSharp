@@ -799,6 +799,13 @@ namespace CppSharp.Generators.CSharp
             if (decl != null && decl.TranslationUnit.IsSystemHeader)
                 return;
 
+            var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
+            // we do not support long double yet because its representation in C# is problematic
+            if ((arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
+                arrayType.Type.IsPrimitiveType(PrimitiveType.LongDouble)) ||
+                field.QualifiedType.Type.IsPrimitiveType(PrimitiveType.LongDouble))
+                return;
+
             var safeIdentifier = Helpers.SafeIdentifier(field.Name);
 
             if(safeIdentifier.All(c => c.Equals('_')))
@@ -836,7 +843,6 @@ namespace CppSharp.Generators.CSharp
 
             // Workaround a bug in Mono when handling fixed arrays in P/Invoke declarations.
             // https://bugzilla.xamarin.com/show_bug.cgi?id=33571
-            var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
             if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
                 arrayType.Size > 0)
             {
