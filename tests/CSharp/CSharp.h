@@ -624,6 +624,8 @@ public:
     int property();
     void setProperty(int value);
     void function(bool* ok = 0);
+    typedef void HasPointerToEnum(Property* pointerToEnum);
+    HasPointerToEnum* hasPointerToEnum;
 protected:
     void protectedFunction();
     int protectedProperty();

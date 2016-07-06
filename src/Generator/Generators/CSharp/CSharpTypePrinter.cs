@@ -298,6 +298,9 @@ namespace CppSharp.Generators.CSharp
             Enumeration @enum;
             if (desugared.TryGetEnum(out @enum))
             {
+                if (MarshalKind == CSharpMarshalKind.GenericDelegate && isManagedContext)
+                    return IntPtrType;
+
                 // Skip one indirection if passed by reference
                 var param = Context.Parameter;
                 if (isManagedContext && param != null && (param.IsOut || param.IsInOut)
