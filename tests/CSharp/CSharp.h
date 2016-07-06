@@ -939,3 +939,15 @@ public:
     int conflictWithProperty();
     virtual int getConflictWithProperty() = 0;
 };
+
+template <typename T>
+class lowerCase
+{
+};
+
+class HasFieldsOfLowerCaseTemplate
+{
+private:
+    lowerCase<int> i;
+    lowerCase<long> l;
+};

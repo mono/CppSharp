@@ -131,6 +131,9 @@ namespace CppSharp.Passes
                                   let pointerType = typedefDecl.Type.Desugar() as PointerType
                                   where pointerType != null && pointerType.Pointee is FunctionType
                                   select typedefDecl);
+            var specialization = decl as ClassTemplateSpecialization;
+            if (specialization != null)
+                declarations.RemoveAll(d => specialization.TemplatedDecl.TemplatedDecl == d);
 
             var result = declarations.Any(d => d != decl && d.Name == newName);
             if (result)
