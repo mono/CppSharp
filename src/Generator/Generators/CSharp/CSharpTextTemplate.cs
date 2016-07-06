@@ -260,7 +260,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             var templateGroups = (from template in context.Templates.OfType<ClassTemplate>()
-                                  where !template.IsIncomplete && template.Specializations.Count > 0
+                                  where !template.IsIncomplete && !template.TemplatedDecl.IsIncomplete &&
+                                        template.Specializations.Count > 0
                                   group template by context.Classes.Contains(template.TemplatedClass)
                                   into @group
                                   select @group).ToList();
