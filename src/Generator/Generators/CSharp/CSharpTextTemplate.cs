@@ -198,7 +198,7 @@ namespace CppSharp.Generators.CSharp
             }
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            if (Options.GenerateLibraryNamespace)
+            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
             {
                 PushBlock(CSharpBlockKind.Namespace);
                 WriteLine("namespace {0}", TranslationUnit.Module.OutputNamespace);
@@ -210,7 +210,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateDeclContext(unit);
             }
 
-            if (Options.GenerateLibraryNamespace)
+            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
             {
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);

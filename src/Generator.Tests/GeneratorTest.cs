@@ -29,7 +29,6 @@ namespace CppSharp.Utils
             options.GeneratorKind = kind;
             options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
             options.SharedLibraryName = name + ".Native";
-            options.GenerateLibraryNamespace = true;
             options.Quiet = true;
             options.IgnoreParseWarnings = true;
 

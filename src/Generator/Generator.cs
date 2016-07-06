@@ -115,7 +115,7 @@ namespace CppSharp.Generators
                 {
                     TranslationUnit = new TranslationUnit
                     {
-                        FilePath = string.Format("{0}.cs", module.OutputNamespace ?? module.LibraryName),
+                        FilePath = string.Format("{0}.cs", module.LibraryName),
                         Module = module
                     },
                     Templates = Generate(module.Units)

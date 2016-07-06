@@ -327,7 +327,7 @@ namespace CppSharp.Generators.CLI
             var names = new List<string>();
 
             string rootNamespace = null;
-            if (Options.GenerateLibraryNamespace)
+            if (!string.IsNullOrEmpty(decl.TranslationUnit.Module.OutputNamespace))
                 names.Add(rootNamespace = decl.TranslationUnit.Module.OutputNamespace);
 
             if (!string.IsNullOrEmpty(decl.Namespace.QualifiedName))

@@ -30,7 +30,6 @@ namespace CppSharp
             Modules = new List<Module>();
 
             GeneratorKind = GeneratorKind.CSharp;
-            GenerateLibraryNamespace = true;
             GeneratePartialClasses = true;
             GenerateClassMarshals = false;
             OutputInteropIncludes = true;
@@ -105,7 +104,6 @@ namespace CppSharp
         }
 
         public bool OutputInteropIncludes;
-        public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
         public bool GenerateInterfacesForMultipleInheritance;

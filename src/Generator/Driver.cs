@@ -72,7 +72,7 @@ namespace CppSharp
                 if (string.IsNullOrWhiteSpace(module.LibraryName))
                     throw new InvalidOptionException("One of your modules has no library name.");
 
-                if (string.IsNullOrWhiteSpace(module.OutputNamespace))
+                if (module.OutputNamespace == null)
                     module.OutputNamespace = module.LibraryName;
             }
 

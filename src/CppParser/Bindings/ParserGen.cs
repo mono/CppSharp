@@ -83,7 +83,7 @@ namespace CppSharp
             if (Kind == GeneratorKind.CSharp)
                 options.OutputDir = Path.Combine(options.OutputDir, options.TargetTriple + extraTriple);
 
-            options.GenerateLibraryNamespace = false;
+            options.OutputNamespace = string.Empty;
             options.CheckSymbols = false;
         }
 

@@ -81,7 +81,7 @@ namespace CppSharp.Generators.CLI
 
         public string QualifiedIdentifier(Declaration decl)
         {
-            if (Options.GenerateLibraryNamespace)
+            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
             {
                 if (string.IsNullOrEmpty(decl.QualifiedName))
                     return string.Format("{0}", decl.TranslationUnit.Module.OutputNamespace);
