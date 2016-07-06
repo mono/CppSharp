@@ -46,7 +46,7 @@ namespace CppSharp.Passes
             {
                 var @base = @class.Bases[i];
                 var baseClass = @base.Class;
-                if (baseClass.IsInterface) continue;
+                if (baseClass == null || baseClass.IsInterface) continue;
 
                 var @interface = GetInterface(baseClass);
                 @class.Bases[i] = new BaseClassSpecifier(@base) { Type = new TagType(@interface) };

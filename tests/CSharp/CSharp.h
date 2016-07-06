@@ -924,3 +924,8 @@ public:
     int conflictWithProperty();
     int getConflictWithProperty();
 };
+
+template <class Category, class Traversal>
+struct iterator_category_with_traversal : Category, Traversal
+{
+};
