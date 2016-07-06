@@ -931,3 +931,11 @@ template <class Category, class Traversal>
 struct iterator_category_with_traversal : Category, Traversal
 {
 };
+
+
+class HasConflictWithAbstractProperty
+{
+public:
+    int conflictWithProperty();
+    virtual int getConflictWithProperty() = 0;
+};

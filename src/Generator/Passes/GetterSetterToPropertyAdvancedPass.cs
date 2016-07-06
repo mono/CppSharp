@@ -158,6 +158,16 @@ namespace CppSharp.Passes
                         throw new Exception(string.Format(
                             "Property {0} has a base property null but its getter has a generated base method.",
                             getter.QualifiedOriginalName));
+                    if (baseVirtualProperty != null && !baseVirtualProperty.IsVirtual)
+                    {
+                        // the only way the above can happen is if we are generating properties in abstract implementations
+                        // in which case we can have less naming conflicts since the abstract base can also contain non-virtual properties
+                        if (getter.SynthKind == FunctionSynthKind.AbstractImplCall)
+                            return;
+                        throw new Exception(string.Format(
+                            "Base of property {0} is not virtual while the getter is.",
+                            getter.QualifiedOriginalName));
+                    }
                     if (baseVirtualProperty != null && baseVirtualProperty.SetMethod == null)
                         setter = null;
                 }
