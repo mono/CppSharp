@@ -27,7 +27,7 @@ namespace CppSharp
 
             OutputDir = Directory.GetCurrentDirectory();
 
-            Modules = new List<Module>();
+            Modules = new List<Module> { Module.SystemModule };
 
             GeneratorKind = GeneratorKind.CSharp;
             GeneratePartialClasses = true;
@@ -62,9 +62,9 @@ namespace CppSharp
         {
             get
             {
-                if (Modules.Count == 0)
+                if (Modules.Count == 1)
                     Modules.Add(new Module());
-                return Modules[0];
+                return Modules[1];
             }
         }
 

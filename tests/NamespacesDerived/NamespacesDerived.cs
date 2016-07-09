@@ -19,7 +19,7 @@ namespace CppSharp.Tests
             driver.Options.GenerateDefaultValuesForArguments = true;
             driver.Options.GeneratePropertiesAdvanced = true;
 
-            driver.Options.Modules[0].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
+            driver.Options.Modules[1].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
             var @base = "NamespacesBase";
             var module = new Module();
             module.IncludeDirs.Add(Path.GetFullPath(GetTestsDirectory(@base)));
@@ -30,7 +30,7 @@ namespace CppSharp.Tests
             if (System.Type.GetType("Mono.Runtime") == null)
                 module.SharedLibraryName += ".dll";
             module.LibraryName = string.Format("{0}.CSharp", @base);
-            driver.Options.Modules.Insert(0, module);
+            driver.Options.Modules.Insert(1, module);
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

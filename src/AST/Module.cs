@@ -4,6 +4,8 @@ namespace CppSharp.AST
 {
     public class Module
     {
+        public static Module SystemModule = new Module { OutputNamespace = string.Empty, LibraryName = "Std" };
+
         public Module()
         {
             IncludeDirs = new List<string>();

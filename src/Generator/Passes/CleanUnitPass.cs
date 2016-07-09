@@ -16,26 +16,24 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (!base.VisitTranslationUnit(unit))
+            if (!unit.IsValid)
                 return false;
 
-            if (unit.IsValid && !unit.IsSystemHeader)
+            if (unit.IsSystemHeader)
+            {
+                unit.Module = Module.SystemModule;
+            }
+            else
             {
                 var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
                 unit.Module = DriverOptions.Modules.FirstOrDefault(
                     m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
                     DriverOptions.MainModule;
-                unit.Module.Units.Add(unit);
             }
-
-            // Try to get an include path that works from the original include
-            // directories paths.
-            if (unit.IsValid)
-            {
-                unit.IncludePath = GetIncludePath(unit.FilePath);
-                return true;
-            }
-            return false;
+            unit.Module.Units.Add(unit);
+            // Try to get an include path that works from the original include directories paths
+            unit.IncludePath = GetIncludePath(unit.FilePath);
+            return true;
         }
 
         string GetIncludePath(string filePath)
@@ -66,21 +64,6 @@ namespace CppSharp.Passes
                 + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
 
             return includePath.Replace('\\', '/');
-        }
-
-
-        bool IsExternalDeclaration(TranslationUnit translationUnit)
-        {
-            if (DriverOptions.NoGenIncludeDirs == null)
-                return false;
-
-            foreach (var path in DriverOptions.NoGenIncludeDirs)
-            {
-                if (translationUnit.FilePath.StartsWith(path, StringComparison.Ordinal))
-                    return true;
-            }
-
-            return false;
         }
     }
 }
