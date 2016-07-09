@@ -112,7 +112,8 @@ namespace CppSharp.AST
                     break;
                 case "ClassTemplate":
                     foreach (var module in TranslationUnits)
-                        yield return module.FindClassTemplate(name) as T;
+                        foreach (var template in module.FindClassTemplate(name))
+                            yield return template as T;
                     break;
                 case "Function":
                     foreach (var module in TranslationUnits)

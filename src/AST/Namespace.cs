@@ -341,10 +341,13 @@ namespace CppSharp.AST
                 .FirstOrDefault(t => t.USR == usr);
         }
 
-        public ClassTemplate FindClassTemplate(string name)
+        public IEnumerable<ClassTemplate> FindClassTemplate(string name)
         {
-            return Templates.OfType<ClassTemplate>()
-                .FirstOrDefault(t => t.Name == name);
+            foreach (var template in Templates.OfType<ClassTemplate>().Where(t => t.Name == name))
+                yield return template;
+            foreach (var @namespace in Namespaces)
+                foreach (var template in @namespace.FindClassTemplate(name))
+                    yield return template;
         }
 
         public ClassTemplate FindClassTemplateByUSR(string usr)
