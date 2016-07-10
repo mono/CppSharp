@@ -81,6 +81,11 @@ namespace CppSharp.Generator.Tests.AST
                 throw new System.NotImplementedException();
             }
 
+            public bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+            {
+                throw new NotImplementedException();
+            }
+
             public bool VisitFieldDecl(Field field)
             {
                 throw new System.NotImplementedException();

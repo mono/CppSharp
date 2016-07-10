@@ -356,6 +356,11 @@ namespace CppSharp.Generators.CLI
                 : string.Empty);
         }
 
+        public string VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            return VisitClassDecl(specialization);
+        }
+
         public string VisitFieldDecl(Field field)
         {
             throw new NotImplementedException();

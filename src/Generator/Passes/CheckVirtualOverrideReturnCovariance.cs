@@ -88,6 +88,11 @@ namespace CppSharp.Passes
 
         #region Dummy implementations
 
+        public bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            return false;
+        }
+
         public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             return false;

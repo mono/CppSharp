@@ -585,6 +585,11 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(@class);
         }
 
+        public CSharpTypePrinterResult VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            return VisitClassDecl(specialization);
+        }
+
         public CSharpTypePrinterResult VisitFieldDecl(Field field)
         {
             throw new NotImplementedException();

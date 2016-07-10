@@ -391,6 +391,7 @@ namespace CppSharp.AST
     {
         T VisitDeclaration(Declaration decl);
         T VisitClassDecl(Class @class);
+        T VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization);
         T VisitFieldDecl(Field field);
         T VisitFunctionDecl(Function function);
         T VisitMethodDecl(Method method);

@@ -151,14 +151,11 @@ namespace CppSharp.Types
 
         public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
-            if (template.Template.TemplatedDecl == null)
+            var specialization = template.GetClassTemplateSpecialization();
+            if (specialization == null)
                 return string.Empty;
 
-            return string.Format("{0}<{1}>", template.Template.TemplatedDecl.Visit(this),
-                string.Join(", ",
-                template.Arguments.Where(
-                    a => a.Type.Type != null &&
-                        !(a.Type.Type is DependentNameType)).Select(a => a.Type.Visit(this))));
+            return VisitClassTemplateSpecializationDecl(specialization);
         }
 
         public string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
@@ -270,6 +267,15 @@ namespace CppSharp.Types
         public string VisitClassDecl(Class @class)
         {
             return VisitDeclaration(@class);
+        }
+
+        public string VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            return string.Format("{0}<{1}>", specialization.TemplatedDecl.Visit(this),
+                string.Join(", ",
+                specialization.Arguments.Where(
+                    a => a.Type.Type != null &&
+                        !(a.Type.Type is DependentNameType)).Select(a => a.Type.Visit(this))));
         }
 
         public string VisitFieldDecl(Field field)

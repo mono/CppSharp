@@ -301,6 +301,11 @@ namespace CppSharp.AST
         {
             Arguments = new List<TemplateArgument>();
         }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitClassTemplateSpecializationDecl(this);
+        }
     }
 
     /// <summary>

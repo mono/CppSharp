@@ -281,6 +281,11 @@ namespace CppSharp.AST
             return true;
         }
 
+        public virtual bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            return VisitClassDecl(specialization);
+        }
+
         public virtual bool VisitFieldDecl(Field field)
         {
             if (!VisitDeclaration(field))
