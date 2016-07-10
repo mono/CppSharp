@@ -414,6 +414,7 @@ MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int b
 }
 
 char* MethodsWithDefaultValues::stringConstant = "test";
+int MethodsWithDefaultValues::intConstant = 5;
 
 MethodsWithDefaultValues::MethodsWithDefaultValues(Foo foo)
 {
@@ -570,7 +571,11 @@ void MethodsWithDefaultValues::defaultWithGetPropertyCall(int f)
 {
 }
 
-void MethodsWithDefaultValues::defaultWithStringConstant(const Foo& arg)
+void MethodsWithDefaultValues::defaultWithIndirectStringConstant(const Foo& arg)
+{
+}
+
+void MethodsWithDefaultValues::defaultWithDirectIntConstant(int arg)
 {
 }
 

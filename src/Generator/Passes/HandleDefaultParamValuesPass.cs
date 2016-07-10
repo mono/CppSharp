@@ -59,7 +59,9 @@ namespace CppSharp.Passes
         {
             var desugared = type.Desugar();
 
-            if ((!Driver.Options.MarshalCharAsManagedChar &&
+            // constants are obtained through dynamic calls at present so they are not compile-time values in target languages
+            if (expression.Declaration is Variable ||
+                (!Driver.Options.MarshalCharAsManagedChar &&
                  desugared.IsPrimitiveType(PrimitiveType.UChar)) ||
                 type.IsPrimitiveTypeConvertibleToRef())
                 return null;

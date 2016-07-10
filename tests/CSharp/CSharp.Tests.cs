@@ -211,7 +211,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultWithFunctionCall();
             methodsWithDefaultValues.DefaultWithPropertyCall();
             methodsWithDefaultValues.DefaultWithGetPropertyCall();
-            methodsWithDefaultValues.DefaultWithStringConstant();
+            methodsWithDefaultValues.DefaultWithIndirectStringConstant();
+            methodsWithDefaultValues.DefaultWithDirectIntConstant();
         }
     }
 

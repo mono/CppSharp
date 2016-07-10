@@ -355,6 +355,7 @@ public:
     };
 
     static char* stringConstant;
+    static int intConstant;
 
     MethodsWithDefaultValues(Foo foo = Foo());
     MethodsWithDefaultValues(int a);
@@ -398,7 +399,8 @@ public:
     void defaultWithFunctionCall(int f = Foo::makeFunctionCall());
     void defaultWithPropertyCall(int f = Foo::propertyCall());
     void defaultWithGetPropertyCall(int f = Foo::getGetPropertyCall());
-    void defaultWithStringConstant(const Foo& arg = Foo(stringConstant));
+    void defaultWithIndirectStringConstant(const Foo& arg = Foo(stringConstant));
+    void defaultWithDirectIntConstant(int arg = intConstant);
     int getA();
 private:
     Foo m_foo;
