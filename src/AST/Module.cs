@@ -4,7 +4,7 @@ namespace CppSharp.AST
 {
     public class Module
     {
-        public static Module SystemModule = new Module { OutputNamespace = string.Empty, LibraryName = "Std" };
+        public static readonly Module SystemModule = new Module { OutputNamespace = string.Empty, LibraryName = "Std" };
 
         public Module()
         {
@@ -46,7 +46,7 @@ namespace CppSharp.AST
             {
                 if (string.IsNullOrEmpty(inlinesLibraryName))
                 {
-                    return string.Format("{0}-inlines", OutputNamespace);
+                    return string.Format("{0}-inlines", LibraryName);
                 }
                 return inlinesLibraryName;
             }
@@ -59,7 +59,7 @@ namespace CppSharp.AST
             {
                 if (string.IsNullOrEmpty(templatesLibraryName))
                 {
-                    return string.Format("{0}-templates", OutputNamespace);
+                    return string.Format("{0}-templates", LibraryName);
                 }
                 return templatesLibraryName;
             }
