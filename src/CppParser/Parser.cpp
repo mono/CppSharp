@@ -740,6 +740,51 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
     }
 }
 
+void Parser::EnsureCompleteRecord(const clang::RecordDecl* Record,
+    DeclarationContext* NS, Class* RC)
+{
+    using namespace clang;
+
+    if (!RC->IsIncomplete || RC->CompleteDeclaration)
+        return;
+
+    auto Complete = NS->FindClass(Record->getName(),
+        /*IsComplete=*/true, /*Create=*/false);
+    if (Complete)
+    {
+        RC->CompleteDeclaration = Complete;
+        return;
+    }
+
+    Decl* Definition = 0;
+    if (auto CXXRecord = dyn_cast<CXXRecordDecl>(Record))
+    {
+        if (CXXRecord->getDefinition())
+        {
+            Complete = NS->FindClass(Record->getName(),
+                /*IsComplete=*/true, /*Create=*/true);
+            WalkRecordCXX(CXXRecord->getDefinition(), Complete);
+            Definition = CXXRecord->getDefinition();
+        }
+    }
+    else
+    {
+        if (Record->getDefinition())
+        {
+            Complete = NS->FindClass(Record->getName(),
+                /*IsComplete=*/true, /*Create=*/true);
+            WalkRecord(Record->getDefinition(), Complete);
+            Definition = Record->getDefinition();
+        }
+    }
+
+    if (Complete)
+    {
+        HandleDeclaration(Definition, Complete);
+        RC->CompleteDeclaration = Complete;
+    }
+}
+
 Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
 {
     using namespace clang;
@@ -774,6 +819,7 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
 
     RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
     HandleDeclaration(Record, RC);
+    EnsureCompleteRecord(Record, NS, RC);
 
     if (HasEmptyName)
     {

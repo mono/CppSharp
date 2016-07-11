@@ -69,6 +69,7 @@ private:
 	Enumeration::Item* WalkEnumItem(clang::EnumConstantDecl* ECD);
     Function* WalkFunction(const clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
+    void EnsureCompleteRecord(const clang::RecordDecl* Record, DeclarationContext* NS, Class* RC);
     Class* GetRecord(const clang::RecordDecl* Record, bool& IsComplete);
     Class* WalkRecord(const clang::RecordDecl* Record);
     void WalkRecord(const clang::RecordDecl* Record, Class* RC);
