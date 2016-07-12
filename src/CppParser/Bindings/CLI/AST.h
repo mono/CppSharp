@@ -910,6 +910,12 @@ namespace CppSharp
                 DependentNameType(CppSharp::Parser::AST::DependentNameType^ _0);
 
                 ~DependentNameType();
+
+                property CppSharp::Parser::AST::Type^ Desugared
+                {
+                    CppSharp::Parser::AST::Type^ get();
+                    void set(CppSharp::Parser::AST::Type^);
+                }
             };
 
             public ref class PackExpansionType : CppSharp::Parser::AST::Type

@@ -461,7 +461,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return dependent.Desugared != null ? dependent.Desugared.Visit(this) : string.Empty;
         }
 
         public CSharpTypePrinterResult VisitPackExpansionType(PackExpansionType type,

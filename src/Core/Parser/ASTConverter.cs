@@ -620,7 +620,7 @@ namespace CppSharp
 
         public override AST.Type VisitTemplateParameterSubstitution(TemplateParameterSubstitutionType type)
         {
-            var _type = new CppSharp.AST.TemplateParameterSubstitutionType();
+            var _type = new AST.TemplateParameterSubstitutionType();
             _type.Replacement = VisitQualified(type.Replacement);
             VisitType(type, _type);
             return _type;
@@ -628,7 +628,7 @@ namespace CppSharp
 
         public override AST.Type VisitInjectedClassName(InjectedClassNameType type)
         {
-            var _type = new CppSharp.AST.InjectedClassNameType();
+            var _type = new AST.InjectedClassNameType();
             _type.Class = declConverter.Visit(type.Class) as AST.Class;
             _type.InjectedSpecializationType = VisitQualified(type.InjectedSpecializationType);
             VisitType(type, _type);
@@ -637,14 +637,16 @@ namespace CppSharp
 
         public override AST.Type VisitDependentName(DependentNameType type)
         {
-            var _type = new CppSharp.AST.DependentNameType();
+            var _type = new AST.DependentNameType();
             VisitType(type, _type);
+            if (type.Desugared != null)
+                _type.Desugared = Visit(type.Desugared);
             return _type;
         }
 
         public override AST.Type VisitBuiltin(BuiltinType type)
         {
-            var _type = new CppSharp.AST.BuiltinType();
+            var _type = new AST.BuiltinType();
             _type.Type = VisitPrimitive(type.Type);
             VisitType(type, _type);
             return _type;

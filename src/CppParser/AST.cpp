@@ -179,7 +179,7 @@ InjectedClassNameType::InjectedClassNameType()
 {
 }
 
-DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
+DependentNameType::DependentNameType() : Type(TypeKind::DependentName), Desugared(0) {}
 
 PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
 

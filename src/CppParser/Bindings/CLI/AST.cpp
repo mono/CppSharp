@@ -1074,6 +1074,16 @@ CppSharp::Parser::AST::DependentNameType::DependentNameType(CppSharp::Parser::AS
     NativePtr = new ::CppSharp::CppParser::AST::DependentNameType(__arg0);
 }
 
+CppSharp::Parser::AST::Type^ CppSharp::Parser::AST::DependentNameType::Desugared::get()
+{
+    return (((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->Desugared == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->Desugared);
+}
+
+void CppSharp::Parser::AST::DependentNameType::Desugared::set(CppSharp::Parser::AST::Type^ value)
+{
+    ((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->Desugared = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::PackExpansionType::PackExpansionType(::CppSharp::CppParser::AST::PackExpansionType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

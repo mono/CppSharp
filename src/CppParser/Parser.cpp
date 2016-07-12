@@ -2357,6 +2357,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     {
         auto DN = Type->getAs<clang::DependentNameType>();
         auto DNT = new DependentNameType();
+        if (DN->isSugared())
+            DNT->Desugared = WalkType(DN->desugar(), TL);
 
         Ty = DNT;
         break;

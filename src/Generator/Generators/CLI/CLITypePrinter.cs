@@ -304,7 +304,7 @@ namespace CppSharp.Generators.CLI
 
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
-            return string.Empty;
+            return dependent.Desugared != null ? dependent.Desugared.Visit(this) : string.Empty;
         }
 
         public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)

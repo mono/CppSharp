@@ -240,6 +240,7 @@ class CS_API DependentNameType : public Type
 {
 public:
     DECLARE_TYPE_KIND(DependentName)
+    Type* Desugared;
 };
 
 class CS_API PackExpansionType : public Type

@@ -2466,7 +2466,7 @@ namespace CppSharp
 
             public unsafe partial class DependentNameType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
+                [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -2474,6 +2474,9 @@ namespace CppSharp
 
                     [FieldOffset(4)]
                     public byte IsDependent;
+
+                    [FieldOffset(8)]
+                    public global::System.IntPtr Desugared;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -2498,7 +2501,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(DependentNameType.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(8);
+                    var ret = Marshal.AllocHGlobal(12);
                     global::CppSharp.Parser.AST.DependentNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2522,7 +2525,7 @@ namespace CppSharp
                 public DependentNameType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2531,13 +2534,31 @@ namespace CppSharp
                 public DependentNameType(global::CppSharp.Parser.AST.DependentNameType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
                     var __arg0 = _0.__Instance;
                     Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public global::CppSharp.Parser.AST.Type Desugared
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Type __result0;
+                        if (((Internal*) __Instance)->Desugared == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Desugared))
+                            __result0 = (global::CppSharp.Parser.AST.Type) global::CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Desugared];
+                        else __result0 = global::CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Desugared);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->Desugared = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
                 }
             }
 
