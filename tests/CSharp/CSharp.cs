@@ -158,7 +158,6 @@ namespace CppSharp.Tests
             driver.TranslationUnitPasses.AddPass(new CheckMacroPass());
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
-            driver.Options.GenerateSingleCSharpFile = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)

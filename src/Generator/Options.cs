@@ -192,10 +192,6 @@ namespace CppSharp
 
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
-        /// <summary>
-        /// Generates a single C# file.
-        /// </summary>
-        public bool GenerateSingleCSharpFile { get; set; }
 
         /// <summary>
         /// Generates default values of arguments in the C# code.

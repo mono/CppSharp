@@ -108,7 +108,7 @@ function LinkNUnit()
   }
 end
 
-function SetupTestProjectsCSharp(name, depends, extraFiles)
+function SetupTestProjectsCSharp(name, depends)
   project(name .. ".CSharp")
     SetupManagedTestProject()
 
@@ -119,11 +119,6 @@ function SetupTestProjectsCSharp(name, depends, extraFiles)
     {
       path.join(gendir, name, name .. ".cs"),
     }
-    if extraFiles ~= nil then
-      for _, file in pairs(extraFiles) do
-        files { path.join(gendir, name, file .. ".cs") }
-      end
-    end
 
     linktable = { "CppSharp.Runtime" }
 

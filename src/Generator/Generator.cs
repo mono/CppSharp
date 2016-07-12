@@ -73,7 +73,7 @@ namespace CppSharp.Generators
 
             var units = Driver.ASTContext.TranslationUnits.Where(
                 u => u.IsGenerated && u.HasDeclarations && !u.IsSystemHeader && u.IsValid).ToList();
-            if (Driver.Options.IsCSharpGenerator && Driver.Options.GenerateSingleCSharpFile)
+            if (Driver.Options.IsCSharpGenerator)
                 GenerateSingleTemplate(outputs);
             else
                 GenerateTemplates(outputs, units);

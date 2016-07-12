@@ -29,7 +29,7 @@ namespace CppSharp.Tests
             // Workaround for CLR which does not check for .dll if the name already has a dot
             if (System.Type.GetType("Mono.Runtime") == null)
                 module.SharedLibraryName += ".dll";
-            module.LibraryName = string.Format("{0}.CSharp", @base);
+            module.LibraryName = @base;
             driver.Options.Modules.Insert(1, module);
         }
 
