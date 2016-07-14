@@ -953,3 +953,5 @@ private:
     lowerCase<int> i;
     lowerCase<long> l;
 };
+
+class ForwardInOtherUnitButSameModule;

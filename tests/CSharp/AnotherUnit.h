@@ -7,3 +7,7 @@ class TemplateInAnotherUnit
 {
     T field;
 };
+
+class ForwardInOtherUnitButSameModule
+{
+};
