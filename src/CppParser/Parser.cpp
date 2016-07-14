@@ -756,33 +756,33 @@ void Parser::EnsureCompleteRecord(const clang::RecordDecl* Record,
         return;
     }
 
-    Decl* Definition = 0;
+    auto Definition = Record->getDefinition();
+    bool isCXX = false;
     if (auto CXXRecord = dyn_cast<CXXRecordDecl>(Record))
     {
-        if (CXXRecord->getDefinition())
-        {
-            Complete = NS->FindClass(Record->getName(),
-                /*IsComplete=*/true, /*Create=*/true);
-            WalkRecordCXX(CXXRecord->getDefinition(), Complete);
-            Definition = CXXRecord->getDefinition();
-        }
-    }
-    else
-    {
-        if (Record->getDefinition())
-        {
-            Complete = NS->FindClass(Record->getName(),
-                /*IsComplete=*/true, /*Create=*/true);
-            WalkRecord(Record->getDefinition(), Complete);
-            Definition = Record->getDefinition();
-        }
+        Definition = CXXRecord->getDefinition();
+        isCXX = true;
     }
 
+    if (!Definition)
+        return;
+
+    auto DC = GetNamespace(Definition);
+    Complete = DC->FindClass(Record->getName(),
+        /*IsComplete=*/true, /*Create=*/false);
     if (Complete)
     {
-        HandleDeclaration(Definition, Complete);
         RC->CompleteDeclaration = Complete;
+        return;
     }
+    Complete = DC->FindClass(Record->getName(),
+        /*IsComplete=*/true, /*Create=*/true);
+    if (isCXX)
+        WalkRecordCXX(cast<CXXRecordDecl>(Definition), Complete);
+    else
+        WalkRecord(Definition, Complete);
+    HandleDeclaration(Definition, Complete);
+    RC->CompleteDeclaration = Complete;
 }
 
 Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
