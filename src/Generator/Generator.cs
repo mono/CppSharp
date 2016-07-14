@@ -118,7 +118,8 @@ namespace CppSharp.Generators
                         FilePath = string.Format("{0}.cs", module.LibraryName),
                         Module = module
                     },
-                    Templates = Generate(module.Units)
+                    Templates = Generate(module.Units.Where(
+                        u => u.IsGenerated && u.HasDeclarations && !u.IsSystemHeader && u.IsValid))
                 };
                 output.Templates[0].Process();
                 outputs.Add(output);

@@ -198,10 +198,11 @@ namespace CppSharp.Generators.CSharp
             }
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
+            var module = TranslationUnits.Count == 0 ? Module.SystemModule : TranslationUnit.Module;
+            if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 PushBlock(CSharpBlockKind.Namespace);
-                WriteLine("namespace {0}", TranslationUnit.Module.OutputNamespace);
+                WriteLine("namespace {0}", module.OutputNamespace);
                 WriteStartBraceIndent();
             }
 
@@ -210,7 +211,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateDeclContext(unit);
             }
 
-            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
+            if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
