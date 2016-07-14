@@ -20,7 +20,7 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateDecl(template))
                 return false;
 
-            if (template.IsIncomplete)
+            if (template.IsIncomplete && template.CompleteDeclaration != null)
             {
                 var completeDeclaration = (ClassTemplate) template.CompleteDeclaration;
                 foreach (var specialization in template.Specializations.Where(
