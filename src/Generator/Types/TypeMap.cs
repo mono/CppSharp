@@ -191,6 +191,14 @@ namespace CppSharp.Types
                 return true;
             }
 
+            var specialization = decl as ClassTemplateSpecialization;
+            if (specialization != null &&
+                FindTypeMap(specialization.TemplatedDecl.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
             return false;
         }
 
