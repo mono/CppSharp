@@ -7,3 +7,8 @@ template class TestTemplateClass<Math::Complex>;
 // Implicit instantiations
 typedef TestTemplateClass<Math::Complex> TestTemplateClassComplex;
 typedef TestTemplateClass<std::vector<Math::Complex>> TestTemplateClassMoreComplex;
+
+template <typename T>
+class ForwardedTemplate
+{
+};

@@ -148,3 +148,9 @@ public:
     //----------------------------------------------------------------------
     const char * GetIOHandlerControlSequence(char ch);
 };
+
+template <typename T>
+class ForwardedTemplate;
+
+typedef ForwardedTemplate<int> i;
+typedef ForwardedTemplate<long> l;

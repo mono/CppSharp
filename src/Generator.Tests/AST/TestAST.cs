@@ -367,5 +367,13 @@ namespace CppSharp.Generator.Tests.AST
 /// <para>no string for this control key.</para>
 /// </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
         }
+
+        [Test]
+        public void TestCompletionOfClassTemplates()
+        {
+            var templates = AstContext.FindDecl<ClassTemplate>("ForwardedTemplate").ToList();
+            Assert.IsFalse(templates.Single(
+                t => t.DebugText == "template <typename T>\r\nclass ForwardedTemplate\r\n{\r\n}").IsIncomplete);
+        }
     }
 }
