@@ -14,6 +14,11 @@ namespace CppSharp.Generator.Tests.AST
         [TestFixtureSetUp]
         public void Init()
         {
+            CppSharp.AST.Type.TypePrinterDelegate = type =>
+            {
+                PrimitiveType primitiveType;
+                return type.IsPrimitiveType(out primitiveType) ? primitiveType.ToString() : string.Empty;
+            };
         }
 
         [SetUp]
@@ -372,8 +377,17 @@ namespace CppSharp.Generator.Tests.AST
         public void TestCompletionOfClassTemplates()
         {
             var templates = AstContext.FindDecl<ClassTemplate>("ForwardedTemplate").ToList();
-            Assert.IsFalse(templates.Single(
-                t => t.DebugText == "template <typename T>\r\nclass ForwardedTemplate\r\n{\r\n}").IsIncomplete);
+            var template = templates.Single(
+                t => t.DebugText == "template <typename T>\r\nclass ForwardedTemplate\r\n{\r\n}");
+            Assert.IsFalse(template.IsIncomplete);
+        }
+
+        [Test]
+        public void TestOriginalNamesOfSpecializations()
+        {
+            var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
+            Assert.That(template.Specializations[0].Constructors.First().QualifiedName,
+                Is.Not.EqualTo(template.Specializations[1].Constructors.First().QualifiedName));
         }
     }
 }

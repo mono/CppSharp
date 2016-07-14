@@ -153,7 +153,7 @@ namespace CppSharp.AST
         {
             get
             {
-                return GetQualifiedName(decl => decl.Name, decl => decl.Namespace);
+                return GetQualifiedName(decl => GetDeclName(decl, decl.Name), decl => decl.Namespace);
             }
         }
 
@@ -162,7 +162,7 @@ namespace CppSharp.AST
             get
             {
                 return GetQualifiedName(
-                    decl => decl.OriginalName, decl => decl.OriginalNamespace);
+                    decl => GetDeclName(decl, decl.OriginalName), decl => decl.OriginalNamespace);
             }
         }
 
@@ -171,7 +171,7 @@ namespace CppSharp.AST
             get
             { 
                 return GetQualifiedName(
-                    decl => decl.LogicalName, decl => decl.Namespace);
+                    decl => GetDeclName(decl, decl.LogicalName), decl => decl.Namespace);
             }
         }
 
@@ -180,8 +180,18 @@ namespace CppSharp.AST
             get
             {
                 return GetQualifiedName(
-                    decl => decl.LogicalOriginalName, decl => decl.OriginalNamespace);
+                    decl => GetDeclName(decl, decl.LogicalOriginalName), decl => decl.OriginalNamespace);
             }
+        }
+
+        private static string GetDeclName(Declaration decl, string name)
+        {
+            var specialization = decl as ClassTemplateSpecialization;
+            if (specialization != null)
+                return string.Format("{0}<{1}>", name,
+                    string.Join(", ", specialization.Arguments.Select(
+                        a => a.Type.Type == null ? string.Empty : a.Type.ToString())));
+            return name;
         }
 
         // Comment associated with declaration.

@@ -191,7 +191,7 @@ namespace CppSharp.Generators.CLI
         public string VisitMemberPointerType(MemberPointerType member,
                                              TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return member.Pointee.Visit(this);
         }
 
         public string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)

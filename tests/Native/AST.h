@@ -118,7 +118,7 @@ public:
     TestSpecializationArguments() {}
 };
 
-void instantiatesTemplate(TestSpecializationArguments<int> t)
+void instantiatesTemplate(TestSpecializationArguments<int> i, TestSpecializationArguments<float> f)
 {
 }
 
