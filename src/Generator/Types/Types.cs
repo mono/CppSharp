@@ -117,7 +117,9 @@ namespace CppSharp
                 return false;
             }
 
-            Ignore();
+            var specialization = template.GetClassTemplateSpecialization();
+            if (specialization == null || !specialization.IsSupportedStdType())
+                Ignore();
             return base.VisitTemplateSpecializationType(template, quals);
         }
 

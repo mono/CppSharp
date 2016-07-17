@@ -30,10 +30,7 @@ namespace CppSharp.Passes
 
         public virtual bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (!unit.IsValid)
-                return false;
-
-            if (unit.IsSystemHeader)
+            if (!unit.IsValid || unit.Ignore)
                 return false;
 
             if (ClearVisitedDeclarations)

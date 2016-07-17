@@ -118,6 +118,7 @@ function SetupTestProjectsCSharp(name, depends)
     files
     {
       path.join(gendir, name, name .. ".cs"),
+      path.join(gendir, name, "Std.cs")
     }
 
     linktable = { "CppSharp.Runtime" }

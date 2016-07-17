@@ -86,7 +86,7 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
             {
-                if (!@class.IsGenerated)
+                if (!@class.IsGenerated || @class.IsDependent)
                     continue;
 
                 if (@class.IsOpaque || @class.IsIncomplete)

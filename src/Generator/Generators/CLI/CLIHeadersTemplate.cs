@@ -166,7 +166,7 @@ namespace CppSharp.Generators.CLI
             // Generate all the struct/class declarations for the module.
             foreach (var @class in decl.Classes)
             {
-                if (!@class.IsGenerated || @class.IsIncomplete)
+                if (!@class.IsGenerated || @class.IsIncomplete || @class.IsDependent)
                     continue;
 
                 if (@class.IsOpaque)
