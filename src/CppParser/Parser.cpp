@@ -1235,7 +1235,7 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
         auto TA = TAL->get(i);
         TemplateArgumentLoc TAL;
         TemplateArgumentLoc *ArgLoc = 0;
-        if (TSTL && i < TSTL->getNumArgs())
+        if (TSTL && TSTL->getTypePtr() && i < TSTL->getNumArgs())
         {
             TAL = TSTL->getArgLoc(i);
             ArgLoc = &TAL;
@@ -1280,7 +1280,7 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
     case clang::TemplateArgument::Type:
     {
         Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Type;
-        if (ArgLoc)
+        if (ArgLoc && ArgLoc->getTypeSourceInfo())
         {
             auto ArgTL = ArgLoc->getTypeSourceInfo()->getTypeLoc();
             Arg.Type = GetQualifiedType(TA.getAsType(), &ArgTL);
@@ -1402,8 +1402,10 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
     auto FTS = new CppSharp::CppParser::FunctionTemplateSpecialization();
     FTS->SpecializationKind = WalkTemplateSpecializationKind(FTSI->getTemplateSpecializationKind());
     FTS->SpecializedFunction = Function;
-    if (auto TALI = FTSI->TemplateArgumentsAsWritten)
-        FTS->Arguments = WalkTemplateArgumentList(FTSI->TemplateArguments, TALI);
+    // HACK: walking template arguments crashes when generating the parser bindings for OS X
+    // so let's disable it for function templates which we do not support yet anyway 
+    //if (auto TALI = FTSI->TemplateArgumentsAsWritten)
+    //    FTS->Arguments = WalkTemplateArgumentList(FTSI->TemplateArguments, TALI);
     FTS->Template = WalkFunctionTemplate(FTSI->getTemplate());
     FTS->Template->Specializations.push_back(FTS);
 
@@ -2150,7 +2152,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         for (unsigned i = 0; i < FP->getNumParams(); ++i)
         {
             auto FA = new Parameter();
-            if (FTL)
+            if (FTL && FTL.getParam(i))
             {
                 auto PVD = FTL.getParam(i);
                 HandleDeclaration(PVD, FA);
@@ -2211,7 +2213,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         
         TemplateName Name = TS->getTemplateName();
         TST->Template = static_cast<Template*>(WalkDeclaration(
-            Name.getAsTemplateDecl(), 0, /*IgnoreSystemDecls=*/false));
+            Name.getAsTemplateDecl(), 0));
         if (TS->isSugared())
             TST->Desugared = WalkType(TS->desugar(), TL);
 
@@ -2313,7 +2315,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto ICN = Type->getAs<clang::InjectedClassNameType>();
         auto ICNT = new InjectedClassNameType();
         ICNT->Class = static_cast<Class*>(WalkDeclaration(
-            ICN->getDecl(), 0, /*IgnoreSystemDecls=*/false));
+            ICN->getDecl(), 0));
         ICNT->InjectedSpecializationType = GetQualifiedType(
             ICN->getInjectedSpecializationType());
 
@@ -3120,21 +3122,13 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
 
 Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
 {
-    return WalkDeclaration(D, /*IgnoreSystemDecls=*/true,
-        /*CanBeDefinition=*/true);
+    return WalkDeclaration(D, /*CanBeDefinition=*/true);
 }
 
 Declaration* Parser::WalkDeclaration(const clang::Decl* D,
-                                           bool IgnoreSystemDecls,
                                            bool CanBeDefinition)
 {
     using namespace clang;
-
-
-    // Ignore declarations that do not come from user-provided
-    // header files.
-    if (IgnoreSystemDecls && !IsValidDeclaration(D->getLocation()))
-        return nullptr;
 
     if (D->hasAttrs())
     {

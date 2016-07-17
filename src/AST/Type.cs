@@ -634,11 +634,16 @@ namespace CppSharp.AST
 
         public ClassTemplateSpecialization GetClassTemplateSpecialization()
         {
+            return GetDeclaration() as ClassTemplateSpecialization;
+        }
+
+        private Declaration GetDeclaration()
+        {
             var finalType = Desugared.GetFinalPointee() ?? Desugared;
 
             var tagType = finalType as TagType;
             if (tagType != null)
-                return (ClassTemplateSpecialization) tagType.Declaration;
+                return tagType.Declaration;
 
             var injectedClassNameType = finalType as InjectedClassNameType;
             if (injectedClassNameType == null)
@@ -646,7 +651,7 @@ namespace CppSharp.AST
 
             var injectedSpecializationType = (TemplateSpecializationType)
                 injectedClassNameType.InjectedSpecializationType.Type;
-            return injectedSpecializationType.GetClassTemplateSpecialization();
+            return injectedSpecializationType.GetDeclaration();
         }
 
         public override T Visit<T>(ITypeVisitor<T> visitor,

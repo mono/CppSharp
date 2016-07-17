@@ -62,8 +62,7 @@ private:
 
     // AST traversers
     void WalkAST();
-    Declaration* WalkDeclaration(const clang::Decl* D,
-        bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
+    Declaration* WalkDeclaration(const clang::Decl* D, bool CanBeDefinition = false);
     Declaration* WalkDeclarationDef(clang::Decl* D);
     Enumeration* WalkEnum(const clang::EnumDecl* ED);
 	Enumeration::Item* WalkEnumItem(clang::EnumConstantDecl* ECD);
