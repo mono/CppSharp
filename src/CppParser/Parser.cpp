@@ -63,6 +63,25 @@ using namespace CppSharp::CppParser;
 // We use this as a placeholder for pointer values that should be ignored.
 void* IgnorePtr = (void*) 0x1;
 
+bool IsNamespaceStd(const clang::DeclContext* Namespace)
+{
+    if (!Namespace)
+        return false;
+    if (Namespace->isInlineNamespace())
+        return IsNamespaceStd(llvm::cast<clang::Decl>(Namespace)->getDeclContext());
+    if (auto NamedDecl = llvm::dyn_cast<clang::NamedDecl>(Namespace))
+        return NamedDecl->getName() == "std";
+    return false;
+}
+
+bool Parser::IsStdTypeSupported(const clang::RecordDecl* Record)
+{
+    auto TU = GetTranslationUnit(Record);
+    return TU->IsSystemHeader &&
+        IsNamespaceStd(Record->getDeclContext()) &&
+        (Record->getName() == "basic_string" || Record->getName() == "allocator");
+}
+
 //-----------------------------------//
 
 Parser::Parser(ParserOptions* Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0)
@@ -93,7 +112,7 @@ LayoutField Parser::WalkVTablePointer(Class* Class,
 }
 
 void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
-    clang::CharUnits Offset, bool IncludeVirtualBases)
+    clang::CharUnits Offset, bool IncludeVirtualBases, bool IsSupportedStdType)
 {
     using namespace clang;
 
@@ -144,7 +163,7 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
         for (const CXXRecordDecl *Base : Bases) {
             CharUnits BaseOffset = Offset + Layout.getBaseClassOffset(Base);
             ReadClassLayout(Class, Base, BaseOffset,
-                /*IncludeVirtualBases=*/false);
+                /*IncludeVirtualBases=*/false, IsSupportedStdType);
         }
 
         // vbptr (for Microsoft C++ ABI)
@@ -167,8 +186,14 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
         // Recursively dump fields of record type.
         if (auto RT = Field->getType()->getAs<RecordType>())
         {
+            if (IsSupportedStdType)
+            {
+                ReadClassLayout(Class, RT->getDecl(), FieldOffset, IncludeVirtualBases, IsSupportedStdType);
+                continue;
+            
+            }
             auto TU = GetTranslationUnit(RT->getDecl());
-            if (TU->IsSystemHeader)
+            if (TU->IsSystemHeader && !IsStdTypeSupported(RT->getDecl()))
                 continue;
         }
 
@@ -199,7 +224,7 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
             }
 
             ReadClassLayout(Class, VBase, VBaseOffset,
-                /*IncludeVirtualBases=*/false);
+                /*IncludeVirtualBases=*/false, IsSupportedStdType);
         }
     }
 }
@@ -887,17 +912,15 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
 
-    // Get the record layout information.
-    const ASTRecordLayout* Layout = 0;
     if (hasLayout)
     {
-        Layout = &C->getASTContext().getASTRecordLayout(Record);
+        const auto& Layout = C->getASTContext().getASTRecordLayout(Record);
         if (!RC->Layout)
             RC->Layout = new ClassLayout();
-        RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
-        RC->Layout->Size = (int)Layout->getSize().getQuantity();
-        RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
-        ReadClassLayout(RC, Record, CharUnits(), true);
+        RC->Layout->Alignment = (int)Layout.getAlignment().getQuantity();
+        RC->Layout->Size = (int)Layout.getSize().getQuantity();
+        RC->Layout->DataSize = (int)Layout.getDataSize().getQuantity();
+        ReadClassLayout(RC, Record, CharUnits(), true, IsStdTypeSupported(Record));
     }
 
     for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)

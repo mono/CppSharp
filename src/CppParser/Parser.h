@@ -59,7 +59,7 @@ public:
     ParserTargetInfo*  GetTargetInfo();
 
 private:
-
+    bool IsStdTypeSupported(const clang::RecordDecl* Decl);
     // AST traversers
     void WalkAST();
     Declaration* WalkDeclaration(const clang::Decl* D, bool CanBeDefinition = false);
@@ -99,7 +99,7 @@ private:
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
     QualifiedType GetQualifiedType(clang::QualType qual, clang::TypeLoc* TL = 0);
-    void ReadClassLayout(Class* Class, const clang::RecordDecl* RD, clang::CharUnits Offset, bool IncludeVirtualBases);
+    void ReadClassLayout(Class* Class, const clang::RecordDecl* RD, clang::CharUnits Offset, bool IncludeVirtualBases, bool IsStdString = false);
     LayoutField WalkVTablePointer(Class* Class, const clang::CharUnits& Offset, const std::string& prefix);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);

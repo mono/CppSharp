@@ -38,6 +38,9 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateDecl(template))
                 return false;
 
+            if (!Driver.Options.IsCLIGenerator && template.IsSupportedStdType())
+                return false;
+
             // templates are not supported yet
             foreach (var specialization in template.Specializations)
                 specialization.ExplicitlyIgnore();

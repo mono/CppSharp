@@ -291,7 +291,7 @@ namespace CppSharp.AST
             if (Options.VisitClassBases)
                 foreach (var baseClass in @class.Bases)
                     if (baseClass.IsClass)
-                        VisitClassDecl(baseClass.Class);
+                        baseClass.Class.Visit(this);
 
             if (Options.VisitClassFields)
                 foreach (var field in @class.Fields)

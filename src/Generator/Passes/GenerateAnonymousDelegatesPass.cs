@@ -44,7 +44,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!base.VisitFunctionDecl(function))
+            if (!base.VisitFunctionDecl(function) || function.Ignore)
                 return false;
 
             function.ReturnType = CheckType(function.Namespace, function.ReturnType);

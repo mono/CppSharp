@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
@@ -264,21 +263,25 @@ namespace CppSharp.Generators.CSharp
             foreach (var @class in context.Classes.Where(c => !c.IsIncomplete))
             {
                 if (@class.IsInterface)
-                    GenerateInterface(@class);
-                else
                 {
-                    if (@class.IsDependent)
-                    {
-                        if (!(@class.Namespace is Class))
-                        {
-                            GenerateClassTemplateSpecializationInternal(@class);
-                        }
-                    }
-                    else
-                    {
-                        GenerateClass(@class);
-                    }
+                    GenerateInterface(@class);
+                    continue;
                 }
+                if (!@class.IsDependent)
+                {
+                    GenerateClass(@class);
+                    continue;
+                }
+                if (@class.IsSupportedStdType())
+                {
+                    var specialization = @class.Specializations.SingleOrDefault(
+                        ClassExtensions.IsSupportedStdSpecialization);
+                    if (specialization != null)
+                        GenerateClass(specialization);
+                }
+                else if ((!@class.Ignore || !@class.TranslationUnit.IsSystemHeader) &&
+                    !(@class.Namespace is Class))
+                    GenerateClassTemplateSpecializationInternal(@class);
             }
 
             if (context.HasFunctions)
@@ -599,7 +602,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Layout.Fields)
                 GenerateClassInternalsField(field);
-            if (@class.IsGenerated && !(@class is ClassTemplateSpecialization))
+            if (@class.IsGenerated && (!(@class is ClassTemplateSpecialization) || @class.IsSupportedStdType()))
             {
                 var functions = GatherClassInternalFunctions(@class);
 
@@ -787,10 +790,9 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassInternalsField(LayoutField field)
         {
-            // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Declaration decl;
             field.QualifiedType.Type.TryGetDeclaration(out decl);
-            if (decl != null && decl.TranslationUnit.IsSystemHeader)
+            if (decl != null && decl.TranslationUnit.IsSystemHeader && !decl.IsSupportedStdType())
                 return;
 
             var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
@@ -869,23 +871,6 @@ namespace CppSharp.Generators.CSharp
         }
 
         #endregion
-
-        private Tuple<string, string> GetDeclarationLibrarySymbol(Variable decl)
-        {
-            var library = decl.TranslationUnit.Module.SharedLibraryName;
-
-            if (!Options.CheckSymbols)
-                goto Out;
-
-            NativeLibrary nativeLib;
-            if (!Driver.Symbols.FindLibraryBySymbol(decl.Mangled, out nativeLib))
-                goto Out;
-
-            library = Path.GetFileNameWithoutExtension(nativeLib.FileName);
-
-            Out:
-            return Tuple.Create(library, decl.Mangled);
-        }
 
         private void GeneratePropertySetter<T>(T decl,
             Class @class, bool isAbstract = false, Property property = null)
@@ -1160,13 +1145,12 @@ namespace CppSharp.Generators.CSharp
             {
                 NewLine();
                 WriteStartBraceIndent();
-                var @var = decl as Variable;
-                var libSymbol = GetDeclarationLibrarySymbol(@var);
+                var var = decl as Variable;
 
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
-                    libSymbol.Item1, libSymbol.Item2);
+                    GetLibraryOf(decl), var.Mangled);
 
                 var arrayType = decl.Type as ArrayType;
                 var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
@@ -2613,7 +2597,8 @@ namespace CppSharp.Generators.CSharp
 
             var templateSpecialization = function.Namespace as ClassTemplateSpecialization;
 
-            string @namespace = templateSpecialization != null ?
+            string @namespace = templateSpecialization != null &&
+                !templateSpecialization.IsSupportedStdType() ?
                 (templateSpecialization.Namespace.OriginalName + '.') : string.Empty;
 
             CheckArgumentRange(function);
@@ -3120,13 +3105,37 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.InternalsClassMethod);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
+            Write("[DllImport(\"{0}\", ", GetLibraryOf(function));
 
-            string libName = function.TranslationUnit.Module.SharedLibraryName;
+            var callConv = function.CallingConvention.ToInteropCallConv();
+            WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},",
+                callConv);
+
+            WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
+
+            if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
+                WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
+
+            CSharpTypePrinterResult retType;
+            var @params = GatherInternalParams(function, out retType);
+
+            WriteLine("internal static extern {0} {1}({2});", retType,
+                      GetFunctionNativeIdentifier(function),
+                      string.Join(", ", @params));
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private string GetLibraryOf(Declaration declaration)
+        {
+            if (declaration.TranslationUnit.IsSystemHeader)
+                return Module.SystemModule.TemplatesLibraryName;
+
+            string libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
             if (Options.CheckSymbols)
             {
                 NativeLibrary library;
-                Driver.Symbols.FindLibraryBySymbol(function.Mangled, out library);
+                Driver.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
 
                 if (library != null)
                     libName = Path.GetFileNameWithoutExtension(library.FileName);
@@ -3137,7 +3146,7 @@ namespace CppSharp.Generators.CSharp
                 libName = libName.Substring(3);
             }
             if (libName == null)
-                libName = function.TranslationUnit.Module.SharedLibraryName;
+                libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
@@ -3156,24 +3165,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            Write("[DllImport(\"{0}\", ", libName);
-
-            var callConv = function.CallingConvention.ToInteropCallConv();
-            WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},",
-                callConv);
-
-            WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
-
-            if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
-                WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
-
-            CSharpTypePrinterResult retType;
-            var @params = GatherInternalParams(function, out retType);
-
-            WriteLine("internal static extern {0} {1}({2});", retType,
-                      GetFunctionNativeIdentifier(function),
-                      string.Join(", ", @params));
-            PopBlock(NewLineKind.BeforeNextBlock);
+            return libName;
         }
     }
 

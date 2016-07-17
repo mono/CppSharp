@@ -1,3 +1,4 @@
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
@@ -26,7 +27,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::string", GeneratorKind.CLI)]
+    [TypeMap("std::string")]
     public class String : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)
@@ -48,21 +49,47 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            return "Std.String";
+            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Managed)
+                return "string";
+            ClassTemplateSpecialization basicString = GetBasicString(ctx.Type);
+            var typePrinter = new CSharpTypePrinter(null);
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            return basicString.Visit(typePrinter).Type;
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("new Std.String()");
+            ClassTemplateSpecialization basicString = GetBasicString(ctx.Parameter.Type);
+            var typePrinter = new CSharpTypePrinter(ctx.Driver);
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            if (!ctx.Parameter.Type.Desugar().IsAddress())
+                ctx.Return.Write("*({0}*) ", basicString.Visit(typePrinter));
+            typePrinter.PopContext();
+            var allocator = ctx.Driver.ASTContext.FindClass("allocator", false, true).First(
+                a => a.IsSupportedStdType());
+            ctx.Return.Write("new {0}({1}, new {2}()).{3}",
+                basicString.Visit(typePrinter), ctx.Parameter.Name,
+                allocator.Visit(typePrinter), Helpers.InstanceIdentifier);
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write(ctx.ReturnVarName);
+            ClassTemplateSpecialization basicString = GetBasicString(ctx.ReturnType.Type);
+            var c_str = basicString.Methods.First(m => m.OriginalName == "c_str");
+            var typePrinter = new CSharpTypePrinter(ctx.Driver);
+            ctx.Return.Write("{0}.{1}({2}).{3}()",
+                basicString.Visit(typePrinter), Helpers.CreateInstanceIdentifier,
+                ctx.ReturnVarName, c_str.Name);
+        }
+
+        private static ClassTemplateSpecialization GetBasicString(Type type)
+        {
+            var template = (type.GetFinalPointee() ?? type).Desugar();
+            return ((TemplateSpecializationType) template).GetClassTemplateSpecialization();
         }
     }
 
-    [TypeMap("std::wstring")]
+    [TypeMap("std::wstring", GeneratorKind = GeneratorKind.CLI)]
     public class WString : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)
@@ -245,7 +272,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::map")]
+    [TypeMap("std::map", GeneratorKind = GeneratorKind.CLI)]
     public class Map : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
@@ -286,7 +313,7 @@ namespace CppSharp.Types.Std
         public override bool IsIgnored { get { return true; } }
     }
 
-    [TypeMap("std::shared_ptr")]
+    [TypeMap("std::shared_ptr", GeneratorKind = GeneratorKind.CLI)]
     public class SharedPtr : TypeMap
     {
         public override bool IsIgnored { get { return true; } }

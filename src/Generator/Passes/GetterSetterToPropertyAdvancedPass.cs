@@ -330,7 +330,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (VisitDeclarationContext(@class))
+            if (VisitDeclarationContext(@class) && !@class.IsSupportedStdType())
             {
                 if (Options.VisitClassBases)
                     foreach (var baseClass in @class.Bases)

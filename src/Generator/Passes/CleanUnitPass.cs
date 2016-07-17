@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
@@ -16,7 +15,7 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (!unit.IsValid)
+            if (!base.VisitTranslationUnit(unit))
                 return false;
 
             if (unit.IsSystemHeader)
@@ -34,6 +33,11 @@ namespace CppSharp.Passes
             // Try to get an include path that works from the original include directories paths
             unit.IncludePath = GetIncludePath(unit.FilePath);
             return true;
+        }
+
+        public override bool VisitDeclarationContext(DeclarationContext context)
+        {
+            return false;
         }
 
         string GetIncludePath(string filePath)

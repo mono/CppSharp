@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 
 namespace CppSharp.Passes
@@ -18,22 +19,36 @@ namespace CppSharp.Passes
 
         public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
         {
-            if (!specialization.IsDependent)
+            if (!specialization.IsDependent &&
+                (!specialization.TranslationUnit.IsSystemHeader ||
+                specialization.IsSupportedStdSpecialization()))
             {
-                var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
-                templateInstantiations.Add(specialization.Visit(cppTypePrinter));
+                var cppTypePrinter = new CppTypePrinter
+                {
+                    PrintScopeKind = CppTypePrintScopeKind.Qualified,
+                    PrintLogicalNames = true
+                };
+                var cppCode = specialization.Visit(cppTypePrinter);
+                var module = specialization.TranslationUnit.Module;
+                if (templateInstantiations.ContainsKey(module))
+                    templateInstantiations[module].Add(cppCode);
+                else
+                    templateInstantiations.Add(module, new HashSet<string> { cppCode });
             }
             return true;
         }
 
         private void WriteTemplateInstantiations()
         {
-            foreach (var module in Driver.Options.Modules)
+            foreach (var module in Driver.Options.Modules.Where(m => templateInstantiations.ContainsKey(m)))
             {
                 var cppBuilder = new StringBuilder();
-                foreach (var header in module.Headers)
-                    cppBuilder.AppendFormat("#include <{0}>\n", header);
-                foreach (var templateInstantiation in templateInstantiations)
+                if (module == Module.SystemModule)
+                    cppBuilder.Append("#include <string>\n");
+                else
+                    foreach (var header in module.Headers)
+                        cppBuilder.AppendFormat("#include <{0}>\n", header);
+                foreach (var templateInstantiation in templateInstantiations[module])
                     cppBuilder.AppendFormat("\ntemplate class {0}{1};",
                         Platform.IsWindows ? "__declspec(dllexport) " : string.Empty, templateInstantiation);
                 var cpp = string.Format("{0}.cpp", module.TemplatesLibraryName);
@@ -43,6 +58,6 @@ namespace CppSharp.Passes
             }
         }
 
-        private HashSet<string> templateInstantiations = new HashSet<string>();
+        private Dictionary<Module, HashSet<string>> templateInstantiations = new Dictionary<Module, HashSet<string>>();
     }
 }
