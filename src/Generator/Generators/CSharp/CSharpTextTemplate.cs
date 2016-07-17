@@ -260,19 +260,6 @@ namespace CppSharp.Generators.CSharp
                 GenerateTypedef(typedef);
             }
 
-            var templateGroups = (from template in context.Templates.OfType<ClassTemplate>()
-                                  where !template.IsIncomplete && !template.TemplatedDecl.IsIncomplete &&
-                                        template.Specializations.Count > 0
-                                  group template by context.Classes.Contains(template.TemplatedClass)
-                                  into @group
-                                  select @group).ToList();
-
-            if (templateGroups.Count > 0 && !templateGroups[0].Key)
-                foreach (var classTemplate in templateGroups[0])
-                    GenerateClassTemplateSpecializationInternal(classTemplate);
-
-            var classTemplates = templateGroups.Where(g => g.Key).SelectMany(g => g).ToList();
-
             // Generate all the struct/class declarations.
             foreach (var @class in context.Classes.Where(c => !c.IsIncomplete))
             {
@@ -280,13 +267,14 @@ namespace CppSharp.Generators.CSharp
                     GenerateInterface(@class);
                 else
                 {
-                    var classTemplate = classTemplates.FirstOrDefault(t => t.TemplatedDecl == @class);
-                    if (classTemplate != null)
+                    if (@class.IsDependent)
                     {
-                        GenerateClassTemplateSpecializationInternal(classTemplate);
-                        classTemplates.Remove(classTemplate);
+                        if (!(@class.Namespace is Class))
+                        {
+                            GenerateClassTemplateSpecializationInternal(@class);
+                        }
                     }
-                    else if (!@class.IsDependent)
+                    else
                     {
                         GenerateClass(@class);
                     }
@@ -343,17 +331,17 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateClassTemplateSpecializationInternal(ClassTemplate classTemplate)
+        private void GenerateClassTemplateSpecializationInternal(Class classTemplate)
         {
+            if (classTemplate.Specializations.Count == 0)
+                return;
+
             IList<ClassTemplateSpecialization> specializations;
-            if (classTemplate.TemplatedClass.Fields.Any(
+            if (classTemplate.Fields.Any(
                 f => f.Type.Desugar() is TemplateParameterType))
                 specializations = classTemplate.Specializations;
             else
                 specializations = new[] { classTemplate.Specializations[0] };
-
-            if (classTemplate.TemplatedClass.Classes.Count == 0 && specializations.Count == 0)
-                return;
 
             PushBlock(CSharpBlockKind.Namespace);
             WriteLine("namespace {0}{1}",
@@ -365,7 +353,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var specialization in specializations)
                 GenerateClassInternals(specialization);
 
-            foreach (var nestedClass in classTemplate.TemplatedClass.Classes)
+            foreach (var nestedClass in classTemplate.Classes)
             {
                 NewLine();
                 GenerateClassProlog(nestedClass);
@@ -448,6 +436,9 @@ namespace CppSharp.Generators.CSharp
         {
             if (@class.IsIncomplete)
                 return;
+
+            foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
+                GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
             System.Type typeMap = null;
             if (Driver.TypeDatabase.TypeMaps.ContainsKey(@class.Name))

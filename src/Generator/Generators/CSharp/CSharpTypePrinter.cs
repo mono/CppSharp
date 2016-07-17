@@ -642,7 +642,7 @@ namespace CppSharp.Generators.CSharp
             var specialization = decl as ClassTemplateSpecialization;
             if (specialization != null)
             {
-                ctx = specialization.TemplatedDecl.Namespace;
+                ctx = specialization.TemplatedDecl.TemplatedClass.Namespace;
                 if (specialization.OriginalNamespace is Class)
                 {
                     names.Add(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));

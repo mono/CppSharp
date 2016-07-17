@@ -1148,12 +1148,6 @@ ClassTemplate* Parser::WalkClassTemplate(const clang::ClassTemplateDecl* TD)
         return CT;
 
     CT = new ClassTemplate();
-    if (!TD->isThisDeclarationADefinition())
-    {
-        CT->IsIncomplete = true;
-        if (TD->getCanonicalDecl()->isThisDeclarationADefinition())
-            CT->CompleteDeclaration = WalkClassTemplate(TD->getCanonicalDecl());
-    }
     HandleDeclaration(TD, CT);
 
     CT->Name = GetDeclName(TD);
@@ -1374,12 +1368,6 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
                                             /*AddToNamespace=*/false);
 
     FT = new FunctionTemplate();
-    if (!TD->isThisDeclarationADefinition())
-    {
-        FT->IsIncomplete = true;
-        if (TD->getCanonicalDecl()->isThisDeclarationADefinition())
-            FT->CompleteDeclaration = WalkFunctionTemplate(TD->getCanonicalDecl());
-    }
     HandleDeclaration(TD, FT);
 
     FT->Name = GetDeclName(TD);

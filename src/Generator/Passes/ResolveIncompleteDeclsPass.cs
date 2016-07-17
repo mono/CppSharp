@@ -20,20 +20,13 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateDecl(template))
                 return false;
 
-            if (template.IsIncomplete && template.CompleteDeclaration != null)
-            {
-                var completeDeclaration = (ClassTemplate) template.CompleteDeclaration;
-                foreach (var specialization in template.Specializations.Where(
-                    spec => completeDeclaration.Specializations.All(s => s.USR != spec.USR)))
-                {
-                    specialization.TemplatedDecl = completeDeclaration;
-                    completeDeclaration.Specializations.Add(specialization);
-                }
-            }
-
             EnsureCompleteDeclaration(template.TemplatedDecl);
 
             template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
+            // store all spesializations in the real template class because ClassTemplateDecl only forwards
+            foreach (var specialization in template.Specializations.Where(
+                s => !template.TemplatedClass.Specializations.Contains(s)))
+                template.TemplatedClass.Specializations.Add(specialization);
 
             return true;
         }
