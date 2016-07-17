@@ -2240,6 +2240,49 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Ty = TST;
         break;
     }
+    case clang::Type::DependentTemplateSpecialization:
+    {
+        auto TS = Type->getAs<clang::DependentTemplateSpecializationType>();
+        auto TST = new DependentTemplateSpecializationType();
+
+        if (TS->isSugared())
+            TST->Desugared = WalkType(TS->desugar(), TL);
+
+        TypeLoc UTL, ETL, ITL;
+
+        if (LocValid)
+        {
+            auto TypeLocClass = TL->getTypeLocClass();
+            if (TypeLocClass == TypeLoc::Qualified)
+            {
+                UTL = TL->getUnqualifiedLoc();
+                TL = &UTL;
+            }
+            else if (TypeLocClass == TypeLoc::Elaborated)
+            {
+                ETL = TL->getAs<ElaboratedTypeLoc>();
+                ITL = ETL.getNextTypeLoc();
+                TL = &ITL;
+            }
+
+            assert(TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization);
+        }
+
+        TemplateSpecializationTypeLoc TSpecTL;
+        TemplateSpecializationTypeLoc *TSTL = 0;
+        if (LocValid)
+        {
+            TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+            TSTL = &TSpecTL;
+        }
+
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
+            TS->getNumArgs());
+        TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
+
+        Ty = TST;
+        break;
+    }
     case clang::Type::TemplateTypeParm:
     {
         auto TP = Type->getAs<TemplateTypeParmType>();

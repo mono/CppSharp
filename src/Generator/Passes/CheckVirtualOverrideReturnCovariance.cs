@@ -128,6 +128,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitDependentTemplateSpecializationType(DependentTemplateSpecializationType template, TypeQualifiers quals)
+        {
+            return false;
+        }
+
         public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return false;

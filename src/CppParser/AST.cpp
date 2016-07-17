@@ -146,6 +146,7 @@ TemplateArgument::TemplateArgument() : Declaration(0), Integral(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
     : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+
 TemplateSpecializationType::TemplateSpecializationType(
     const TemplateSpecializationType& rhs) : Type(rhs),
     Arguments(rhs.Arguments), Template(rhs.Template), Desugared(rhs.Desugared) {}
@@ -153,6 +154,17 @@ TemplateSpecializationType::TemplateSpecializationType(
 TemplateSpecializationType::~TemplateSpecializationType() {}
 
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
+
+DependentTemplateSpecializationType::DependentTemplateSpecializationType()
+    : Type(TypeKind::DependentTemplateSpecialization), Desugared(0) {}
+
+DependentTemplateSpecializationType::DependentTemplateSpecializationType(
+    const DependentTemplateSpecializationType& rhs) : Type(rhs),
+    Arguments(rhs.Arguments), Desugared(rhs.Desugared) {}
+
+DependentTemplateSpecializationType::~DependentTemplateSpecializationType() {}
+
+DEF_VECTOR(DependentTemplateSpecializationType, TemplateArgument, Arguments)
 
 TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter), Parameter(0) {}
 

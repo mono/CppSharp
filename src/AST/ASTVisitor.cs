@@ -188,6 +188,36 @@ namespace CppSharp.AST
             return specialization != null && specialization.Visit(this);
         }
 
+        public bool VisitDependentTemplateSpecializationType(
+            DependentTemplateSpecializationType template, TypeQualifiers quals)
+        {
+            if (!VisitType(template, quals))
+                return false;
+
+            if (Options.VisitTemplateArguments)
+            {
+                foreach (var arg in template.Arguments)
+                {
+                    switch (arg.Kind)
+                    {
+                        case TemplateArgument.ArgumentKind.Type:
+                            var type = arg.Type.Type;
+                            if (type != null)
+                                type.Visit(this, arg.Type.Qualifiers);
+                            break;
+                        case TemplateArgument.ArgumentKind.Declaration:
+                            arg.Declaration.Visit(this);
+                            break;
+                    }
+                }
+            }
+
+            if (template.Desugared != null)
+                return template.Desugared.Visit(this);
+
+            return false;
+        }
+
         public virtual bool VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals)
         {

@@ -20,6 +20,7 @@ namespace CppSharp
         public abstract TRet VisitAttributed(AttributedType type);
         public abstract TRet VisitDecayed(DecayedType type);
         public abstract TRet VisitTemplateSpecialization(TemplateSpecializationType type);
+        public abstract TRet VisitDependentTemplateSpecialization(DependentTemplateSpecializationType type);
         public abstract TRet VisitTemplateParameter(TemplateParameterType type);
         public abstract TRet VisitTemplateParameterSubstitution(TemplateParameterSubstitutionType type);
         public abstract TRet VisitInjectedClassName(InjectedClassNameType type);
@@ -78,6 +79,11 @@ namespace CppSharp
                 {
                     var _type = TemplateSpecializationType.__CreateInstance(type.__Instance);
                     return VisitTemplateSpecialization(_type);
+                }
+                case TypeKind.DependentTemplateSpecialization:
+                {
+                    var _type = DependentTemplateSpecializationType.__CreateInstance(type.__Instance);
+                    return VisitDependentTemplateSpecialization(_type);
                 }
                 case TypeKind.TemplateParameter:
                 {
@@ -564,7 +570,7 @@ namespace CppSharp
 
         public override AST.Type VisitTemplateSpecialization(TemplateSpecializationType type)
         {
-            var _type = new CppSharp.AST.TemplateSpecializationType();
+            var _type = new AST.TemplateSpecializationType();
 
             for (uint i = 0; i < type.ArgumentsCount; ++i)
             {
@@ -574,6 +580,25 @@ namespace CppSharp
             }
 
             _type.Template = declConverter.Visit(type.Template) as AST.Template;
+            _type.Desugared = Visit(type.Desugared);
+
+            VisitType(type, _type);
+
+            return _type;
+        }
+
+        public override AST.Type VisitDependentTemplateSpecialization(
+            DependentTemplateSpecializationType type)
+        {
+            var _type = new AST.DependentTemplateSpecializationType();
+
+            for (uint i = 0; i < type.ArgumentsCount; ++i)
+            {
+                var arg = type.getArguments(i);
+                var _arg = VisitTemplateArgument(arg);
+                _type.Arguments.Add(_arg);
+            }
+
             _type.Desugared = Visit(type.Desugared);
 
             VisitType(type, _type);

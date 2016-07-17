@@ -424,6 +424,14 @@ namespace CppSharp.Generators.CSharp
                     ".Internal" : string.Empty);
         }
 
+        public CSharpTypePrinterResult VisitDependentTemplateSpecializationType(
+            DependentTemplateSpecializationType template, TypeQualifiers quals)
+        {
+            if (template.Desugared != null)
+                return template.Desugared.Visit(this);
+            return string.Empty;
+        }
+
         private string GetCSharpSignature(TypeMap typeMap)
         {
             Context.CSharpKind = ContextKind;

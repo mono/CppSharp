@@ -277,6 +277,14 @@ namespace CppSharp.Generators.CLI
             return decl.Name;
         }
 
+        public string VisitDependentTemplateSpecializationType(
+            DependentTemplateSpecializationType template, TypeQualifiers quals)
+        {
+            if (template.Desugared != null)
+                return template.Desugared.Visit(this);
+            return string.Empty;
+        }
+
         public string VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals)
         {

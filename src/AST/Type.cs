@@ -682,6 +682,60 @@ namespace CppSharp.AST
     }
 
     /// <summary>
+    /// Represents a C++ dependent template specialization type.
+    /// </summary>
+    public class DependentTemplateSpecializationType : Type
+    {
+        public DependentTemplateSpecializationType()
+        {
+            Arguments = new List<TemplateArgument>();
+        }
+
+        public DependentTemplateSpecializationType(DependentTemplateSpecializationType type)
+            : base(type)
+        {
+            Arguments = type.Arguments.Select(
+                t => new TemplateArgument
+                {
+                    Declaration = t.Declaration,
+                    Integral = t.Integral,
+                    Kind = t.Kind,
+                    Type = new QualifiedType((Type) t.Type.Type.Clone(), t.Type.Qualifiers)
+                }).ToList();
+            Desugared = (Type) type.Desugared.Clone();
+        }
+
+        public List<TemplateArgument> Arguments;
+
+        public Type Desugared;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor,
+                                   TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitDependentTemplateSpecializationType(this, quals);
+        }
+
+        public override object Clone()
+        {
+            return new DependentTemplateSpecializationType(this);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as TemplateSpecializationType;
+            if (type == null) return false;
+
+            return Arguments.SequenceEqual(type.Arguments) &&
+                Desugared == type.Desugared;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    /// <summary>
     /// Represents a C++ template parameter type.
     /// </summary>
     public class TemplateParameterType : Type
@@ -1033,6 +1087,8 @@ namespace CppSharp.AST
         T VisitDecayedType(DecayedType decayed, TypeQualifiers quals);
         T VisitTemplateSpecializationType(TemplateSpecializationType template,
                                           TypeQualifiers quals);
+        T VisitDependentTemplateSpecializationType(
+            DependentTemplateSpecializationType template, TypeQualifiers quals);
         T VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);
         T VisitDeclaration(Declaration decl, TypeQualifiers quals);
         T VisitTemplateParameterType(TemplateParameterType param,

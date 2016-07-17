@@ -801,6 +801,79 @@ void CppSharp::Parser::AST::TemplateSpecializationType::Desugared::set(CppSharp:
     ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Desugared = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::DependentTemplateSpecializationType::DependentTemplateSpecializationType(::CppSharp::CppParser::AST::DependentTemplateSpecializationType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::DependentTemplateSpecializationType^ CppSharp::Parser::AST::DependentTemplateSpecializationType::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::DependentTemplateSpecializationType((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::DependentTemplateSpecializationType::~DependentTemplateSpecializationType()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::DependentTemplateSpecializationType*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::DependentTemplateSpecializationType::DependentTemplateSpecializationType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::DependentTemplateSpecializationType();
+}
+
+CppSharp::Parser::AST::DependentTemplateSpecializationType::DependentTemplateSpecializationType(CppSharp::Parser::AST::DependentTemplateSpecializationType^ _0)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::DependentTemplateSpecializationType(__arg0);
+}
+
+CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::DependentTemplateSpecializationType::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->getArguments(i);
+    auto ____ret = new ::CppSharp::CppParser::AST::TemplateArgument(__ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateArgument((::CppSharp::CppParser::AST::TemplateArgument*)____ret);
+}
+
+void CppSharp::Parser::AST::DependentTemplateSpecializationType::addArguments(CppSharp::Parser::AST::TemplateArgument^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->addArguments(__arg0);
+}
+
+void CppSharp::Parser::AST::DependentTemplateSpecializationType::clearArguments()
+{
+    ((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->clearArguments();
+}
+
+unsigned int CppSharp::Parser::AST::DependentTemplateSpecializationType::ArgumentsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->getArgumentsCount();
+    return __ret;
+}
+
+CppSharp::Parser::AST::Type^ CppSharp::Parser::AST::DependentTemplateSpecializationType::Desugared::get()
+{
+    return (((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->Desugared == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->Desugared);
+}
+
+void CppSharp::Parser::AST::DependentTemplateSpecializationType::Desugared::set(CppSharp::Parser::AST::Type^ value)
+{
+    ((::CppSharp::CppParser::AST::DependentTemplateSpecializationType*)NativePtr)->Desugared = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType(::CppSharp::CppParser::AST::TemplateParameterType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

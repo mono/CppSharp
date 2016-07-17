@@ -46,6 +46,7 @@ namespace CppSharp
             ref class Declaration;
             ref class DeclarationContext;
             ref class DependentNameType;
+            ref class DependentTemplateSpecializationType;
             ref class Enumeration;
             ref class Expression;
             ref class Field;
@@ -126,12 +127,13 @@ namespace CppSharp
                 Attributed = 6,
                 Decayed = 7,
                 TemplateSpecialization = 8,
-                TemplateParameter = 9,
-                TemplateParameterSubstitution = 10,
-                InjectedClassName = 11,
-                DependentName = 12,
-                PackExpansion = 13,
-                Builtin = 14
+                DependentTemplateSpecialization = 9,
+                TemplateParameter = 10,
+                TemplateParameterSubstitution = 11,
+                InjectedClassName = 12,
+                DependentName = 13,
+                PackExpansion = 14,
+                Builtin = 15
             };
 
             public enum struct DeclarationKind
@@ -771,6 +773,36 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Template^ get();
                     void set(CppSharp::Parser::AST::Template^);
+                }
+
+                property CppSharp::Parser::AST::Type^ Desugared
+                {
+                    CppSharp::Parser::AST::Type^ get();
+                    void set(CppSharp::Parser::AST::Type^);
+                }
+
+                CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::TemplateArgument^ s);
+
+                void clearArguments();
+            };
+
+            public ref class DependentTemplateSpecializationType : CppSharp::Parser::AST::Type
+            {
+            public:
+
+                DependentTemplateSpecializationType(::CppSharp::CppParser::AST::DependentTemplateSpecializationType* native);
+                static DependentTemplateSpecializationType^ __CreateInstance(::System::IntPtr native);
+                DependentTemplateSpecializationType();
+
+                DependentTemplateSpecializationType(CppSharp::Parser::AST::DependentTemplateSpecializationType^ _0);
+
+                ~DependentTemplateSpecializationType();
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
                 }
 
                 property CppSharp::Parser::AST::Type^ Desugared

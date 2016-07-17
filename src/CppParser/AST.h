@@ -25,6 +25,7 @@ enum class TypeKind
     Attributed,
     Decayed,
     TemplateSpecialization,
+    DependentTemplateSpecialization,
     TemplateParameter,
     TemplateParameterSubstitution,
     InjectedClassName,
@@ -191,6 +192,17 @@ public:
 
     VECTOR(TemplateArgument, Arguments)
     CppSharp::CppParser::AST::Template* Template;
+    Type* Desugared;
+};
+
+class CS_API DependentTemplateSpecializationType : public Type
+{
+public:
+    DependentTemplateSpecializationType();
+    DependentTemplateSpecializationType(const DependentTemplateSpecializationType&);
+    ~DependentTemplateSpecializationType();
+
+    VECTOR(TemplateArgument, Arguments)
     Type* Desugared;
 };
 
