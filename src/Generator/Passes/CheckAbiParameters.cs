@@ -28,7 +28,7 @@ namespace CppSharp.Passes
             if (!base.VisitClassDecl(@class))
                 return false;
 
-            if (@class.IsDependent || @class.Layout.Fields.Count > 0)
+            if (@class.IsDependent || @class.Layout.Fields.Count > 0 || @class.Fields.Count > 0)
                 return false;
 
             @class.Layout.Size = @class.Layout.DataSize = 0;

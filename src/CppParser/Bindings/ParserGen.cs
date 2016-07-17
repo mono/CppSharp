@@ -52,7 +52,8 @@ namespace CppSharp
             var options = driver.Options;
             options.TargetTriple = Triple;
             options.Abi = Abi;
-            options.LibraryName = "CppSharp.CppParser.dll";
+            options.LibraryName = "CppSharp.CppParser";
+            options.SharedLibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
             options.Headers.AddRange(new[]
             {
