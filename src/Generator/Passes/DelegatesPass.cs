@@ -40,8 +40,7 @@ namespace CppSharp.Passes
             foreach (var library in Driver.Options.Modules.SelectMany(m => m.Libraries))
                 libsDelegates[library] = new Dictionary<string, DelegateDefinition>();
 
-            var unit = context.TranslationUnits.LastOrDefault(u => u.IsValid && u.IsGenerated &&
-                u.HasDeclarations);
+            var unit = context.TranslationUnits.GetGenerated().LastOrDefault();
 
             if (unit == null)
                 return false;

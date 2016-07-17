@@ -71,8 +71,7 @@ namespace CppSharp.Generators
         {
             var outputs = new List<GeneratorOutput>();
 
-            var units = Driver.ASTContext.TranslationUnits.Where(
-                u => u.IsGenerated && u.HasDeclarations && !u.IsSystemHeader && u.IsValid).ToList();
+            var units = Driver.ASTContext.TranslationUnits.GetGenerated().ToList();
             if (Driver.Options.IsCSharpGenerator)
                 GenerateSingleTemplate(outputs);
             else
@@ -118,8 +117,7 @@ namespace CppSharp.Generators
                         FilePath = string.Format("{0}.cs", module.LibraryName),
                         Module = module
                     },
-                    Templates = Generate(module.Units.Where(
-                        u => u.IsGenerated && u.HasDeclarations && !u.IsSystemHeader && u.IsValid))
+                    Templates = Generate(module.Units.GetGenerated())
                 };
                 output.Templates[0].Process();
                 outputs.Add(output);

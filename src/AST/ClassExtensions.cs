@@ -198,5 +198,11 @@ namespace CppSharp.AST
 
             return hasRefBase;
         }
+
+        public static IEnumerable<TranslationUnit> GetGenerated(this IEnumerable<TranslationUnit> units)
+        {
+            return units.Where(u => u.IsValid && !u.IsSystemHeader &&
+                u.IsGenerated && u.HasDeclarations);
+        }
     }
 }
