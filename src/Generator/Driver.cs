@@ -437,6 +437,9 @@ namespace CppSharp
             compilerParameters.ReferencedAssemblies.Add(
                 string.Format("{0}.dll", AST.Module.SystemModule.LibraryName));
             // add a reference to System.Core
+            if (AST.Module.SystemModule.Units.GetGenerated().Any())
+                compilerParameters.ReferencedAssemblies.Add(
+                    string.Format("{0}.dll", AST.Module.SystemModule.LibraryName));
             compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
 
             var location = Assembly.GetExecutingAssembly().Location;
