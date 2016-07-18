@@ -404,6 +404,12 @@ namespace CppSharp.Generators.CLI
             return @enum.Name;
         }
 
+        public string VisitEnumItemDecl(Enumeration.Item item)
+        {
+            return string.Format("{0}::{1}",
+                VisitEnumDecl((Enumeration) item.Namespace), VisitDeclaration(item));
+        }
+
         public string VisitVariableDecl(Variable variable)
         {
             throw new NotImplementedException();

@@ -245,10 +245,19 @@ namespace CppSharp.Passes
             var enumItem = statement.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
-                result = string.Format("{0}{1}.{2}",
-                    desugared.IsPrimitiveType() ? "(int) " : string.Empty,
-                    new CSharpTypePrinter(Driver).VisitEnumDecl(
-                        (Enumeration) enumItem.Namespace), enumItem.Name);
+                if (desugared.IsPrimitiveType())
+                {
+                    statement.Declaration = null;
+                    result = string.Format("(int) {0}.{1}",
+                        new CSharpTypePrinter(Driver).VisitEnumDecl(
+                            (Enumeration) enumItem.Namespace), enumItem.Name);
+                }
+                else
+                {
+                    result = string.Format("{0}.{1}",
+                        new CSharpTypePrinter(Driver).VisitEnumDecl(
+                            (Enumeration) enumItem.Namespace), enumItem.Name);
+                }
                 return true;
             }
 

@@ -400,7 +400,7 @@ namespace CppSharp.AST
                 return false;
 
             foreach (var item in @enum.Items)
-                VisitEnumItem(item);
+                VisitEnumItemDecl(item);
 
             return true;
         }
@@ -413,7 +413,7 @@ namespace CppSharp.AST
             return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
         }
 
-        public virtual bool VisitEnumItem(Enumeration.Item item)
+        public virtual bool VisitEnumItemDecl(Enumeration.Item item)
         {
             return true;
         }

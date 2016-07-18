@@ -39,7 +39,7 @@ namespace CppSharp.AST
 
             public override T Visit<T>(IDeclVisitor<T> visitor)
             {
-                throw new NotImplementedException();
+                return visitor.VisitEnumItemDecl(this);
             }
         }
 

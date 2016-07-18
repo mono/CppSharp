@@ -2242,7 +2242,7 @@ namespace CppSharp.Generators.CSharp
                     string.Join(", ",
                         method.Parameters.Where(
                             p => p.Kind == ParameterKind.Regular).Select(
-                                p => p.Ignore ? ExpressionPrinter.VisitExpression(p.DefaultArgument).Value : p.Name)));
+                                p => p.Ignore ? ExpressionPrinter.VisitExpression(p.DefaultArgument) : p.Name)));
             }
 
             if (method.IsPure)
@@ -2328,7 +2328,7 @@ namespace CppSharp.Generators.CSharp
             return p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue
                 ? "ref param" + index++
                 : (( p.Type.TryGetClass(out @class) && @class.IsInterface) ? "param" + index++ 
-                     : ExpressionPrinter.VisitExpression(p.DefaultArgument).Value);
+                     : ExpressionPrinter.VisitExpression(p.DefaultArgument));
         }
 
         private void GenerateOverloadCall(Function function)
@@ -2351,7 +2351,7 @@ namespace CppSharp.Generators.CSharp
                     parameter.HasDefaultValue)
                 {
                     WriteLine("var param{0} = ({1}) {2};",  j++, @class.OriginalClass.OriginalName,
-                        ExpressionPrinter.VisitExpression(parameter.DefaultArgument).Value);
+                        ExpressionPrinter.VisitExpression(parameter.DefaultArgument));
                 }
             }
 

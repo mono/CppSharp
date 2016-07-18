@@ -642,6 +642,11 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(@enum);
         }
 
+        public CSharpTypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
+        {
+            return VisitDeclaration(item);
+        }
+
         public string GetNestedQualifiedName(Declaration decl)
         {
             var names = new List<string>();
@@ -688,7 +693,7 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitVariableDecl(Variable variable)
         {
-            throw new NotImplementedException();
+            return variable.Name;
         }
 
         public CSharpTypePrinterResult VisitClassTemplateDecl(ClassTemplate template)

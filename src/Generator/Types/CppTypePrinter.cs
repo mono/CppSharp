@@ -321,6 +321,11 @@ namespace CppSharp.Types
             return VisitDeclaration(@enum);
         }
 
+        public string VisitEnumItemDecl(Enumeration.Item item)
+        {
+            return VisitDeclaration(item);
+        }
+
         public string VisitVariableDecl(Variable variable)
         {
             return VisitDeclaration(variable);

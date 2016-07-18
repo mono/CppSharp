@@ -345,6 +345,15 @@ public:
     QRect(QPoint p, QSize s);
 };
 
+namespace lowerCaseNameSpace
+{
+    enum class Enum
+    {
+        Item1,
+        Item2
+    };
+}
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -401,6 +410,7 @@ public:
     void defaultWithGetPropertyCall(int f = Foo::getGetPropertyCall());
     void defaultWithIndirectStringConstant(const Foo& arg = Foo(stringConstant));
     void defaultWithDirectIntConstant(int arg = intConstant);
+    void defaultWithEnumInLowerCasedNameSpace(lowerCaseNameSpace::Enum e = lowerCaseNameSpace::Enum::Item2);
     int getA();
 private:
     Foo m_foo;

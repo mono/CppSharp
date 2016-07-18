@@ -218,6 +218,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitEnumItemDecl(Enumeration.Item item)
+        {
+            return false;
+        }
+
         public bool VisitVariableDecl(Variable variable)
         {
             return false;

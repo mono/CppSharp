@@ -158,7 +158,7 @@ namespace CppSharp.Passes
                 f => !f.Ignore && f.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
         }
 
-        public override bool VisitEnumItem(Enumeration.Item item)
+        public override bool VisitEnumItemDecl(Enumeration.Item item)
         {
             if (!Targets.HasFlag(RenameTargets.EnumItem))
                 return false;

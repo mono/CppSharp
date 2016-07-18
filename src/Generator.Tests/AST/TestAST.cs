@@ -126,6 +126,11 @@ namespace CppSharp.Generator.Tests.AST
                 throw new System.NotImplementedException();
             }
 
+            public bool VisitEnumItemDecl(Enumeration.Item item)
+            {
+                throw new NotImplementedException();
+            }
+
             public bool VisitVariableDecl(Variable variable)
             {
                 throw new System.NotImplementedException();

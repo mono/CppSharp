@@ -409,6 +409,7 @@ namespace CppSharp.AST
         T VisitTypedefDecl(TypedefDecl typedef);
         T VisitTypeAliasDecl(TypeAlias typeAlias);
         T VisitEnumDecl(Enumeration @enum);
+        T VisitEnumItemDecl(Enumeration.Item item);
         T VisitVariableDecl(Variable variable);
         T VisitClassTemplateDecl(ClassTemplate template);
         T VisitFunctionTemplateDecl(FunctionTemplate template);

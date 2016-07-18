@@ -150,9 +150,9 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public override bool VisitEnumItem(Enumeration.Item item)
+        public override bool VisitEnumItemDecl(Enumeration.Item item)
         {
-            if (!base.VisitEnumItem(item))
+            if (!base.VisitEnumItemDecl(item))
                 return false;
 
             item.Name = CheckName(item.Name);

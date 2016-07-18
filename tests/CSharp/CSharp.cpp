@@ -579,6 +579,10 @@ void MethodsWithDefaultValues::defaultWithDirectIntConstant(int arg)
 {
 }
 
+void MethodsWithDefaultValues::defaultWithEnumInLowerCasedNameSpace(lowerCaseNameSpace::Enum e)
+{
+}
+
 int MethodsWithDefaultValues::getA()
 {
     return m_foo.A;
