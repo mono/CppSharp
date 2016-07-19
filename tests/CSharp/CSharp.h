@@ -411,6 +411,7 @@ public:
     void defaultWithIndirectStringConstant(const Foo& arg = Foo(stringConstant));
     void defaultWithDirectIntConstant(int arg = intConstant);
     void defaultWithEnumInLowerCasedNameSpace(lowerCaseNameSpace::Enum e = lowerCaseNameSpace::Enum::Item2);
+    void defaultWithCharFromInt(char c = 32);
     int getA();
 private:
     Foo m_foo;

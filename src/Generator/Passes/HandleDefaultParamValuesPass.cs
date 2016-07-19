@@ -84,7 +84,7 @@ namespace CppSharp.Passes
             return CheckFloatSyntax(desugared, expression, ref result) ||
                 CheckForBinaryOperator(desugared, expression, ref result) ||
                 CheckForEnumValue(desugared, expression, ref result) ||
-                CheckForDefaultEmptyChar(desugared, expression, ref result);
+                CheckForDefaultChar(desugared, ref result);
         }
 
         private bool CheckForDefaultPointer(Type desugared, ref string result)
@@ -306,14 +306,15 @@ namespace CppSharp.Passes
                 ((BuiltinTypeExpression) defaultArgument).Value == 0;
         }
 
-        private bool CheckForDefaultEmptyChar(Type desugared, Statement statement,
-            ref string result)
+        private bool CheckForDefaultChar(Type desugared, ref string result)
         {
-            if (statement.String == "0" &&
-                Driver.Options.MarshalCharAsManagedChar &&
-                desugared.IsPrimitiveType(PrimitiveType.Char))
+            int value;
+            if (int.TryParse(result, out value) &&
+                ((Driver.Options.MarshalCharAsManagedChar &&
+                 desugared.IsPrimitiveType(PrimitiveType.Char)) ||
+                 desugared.IsPrimitiveType(PrimitiveType.WideChar)))
             {
-                result = "'\\0'";
+                result = value == 0 ? "'\\0'" : ("(char) " + result);
                 return true;
             }
 

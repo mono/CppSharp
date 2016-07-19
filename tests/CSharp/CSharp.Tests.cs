@@ -213,6 +213,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultWithGetPropertyCall();
             methodsWithDefaultValues.DefaultWithIndirectStringConstant();
             methodsWithDefaultValues.DefaultWithDirectIntConstant();
+            methodsWithDefaultValues.DefaultWithEnumInLowerCasedNameSpace();
+            methodsWithDefaultValues.DefaultWithCharFromInt();
         }
     }
 
