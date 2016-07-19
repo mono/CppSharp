@@ -993,8 +993,7 @@ namespace CppSharp.Generators.CSharp
         private string HandleValueArray(ArrayType arrayType, Field field)
         {
             var originalType = new PointerType(new QualifiedType(arrayType.Type));
-            var arrPtrIden = Generator.GeneratedIdentifier("arrPtr");
-            var arrPtr = arrPtrIden;
+            var arrPtr = Generator.GeneratedIdentifier("arrPtr");
             var finalElementType = (arrayType.Type.GetFinalPointee() ?? arrayType.Type);
             var isChar = finalElementType.IsPrimitiveType(PrimitiveType.Char);
 
@@ -1004,7 +1003,6 @@ namespace CppSharp.Generators.CSharp
                 var typePrinter = new CSharpTypePrinter(Driver);
                 typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 type = originalType.Visit(typePrinter).Type;
-                arrPtrIden = Generator.GeneratedIdentifier(arrPtrIden);
             }
             else
             {
@@ -1014,10 +1012,8 @@ namespace CppSharp.Generators.CSharp
             var name = ((Class) field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
-                type, arrPtrIden, Helpers.InstanceField, Helpers.SafeIdentifier(name)));
+                type, arrPtr, Helpers.InstanceField, Helpers.SafeIdentifier(name)));
             WriteStartBraceIndent();
-            if (Driver.Options.MarshalCharAsManagedChar && isChar)
-                WriteLine("var {0} = ({1}) {2};", arrPtr, originalType, arrPtrIden);
             return arrPtr;
         }
 
@@ -2414,21 +2410,6 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void CheckArgumentRange(Function method)
-        {
-            if (Driver.Options.MarshalCharAsManagedChar)
-            {
-                foreach (var param in method.Parameters.Where(
-                    p => p.Type.IsPrimitiveType(PrimitiveType.Char)))
-                {
-                    WriteLine("if ({0} < char.MinValue || {0} > sbyte.MaxValue)", param.Name);
-                    WriteLineIndent(
-                        "throw new global::System.ArgumentException(\"{0} must be in the range {1} - {2}.\");",
-                        param.Name, (int) char.MinValue, sbyte.MaxValue);
-                }
-            }
-        }
-
         private static AccessSpecifier GetValidMethodAccess(Method method)
         {
             if (!method.IsOverride)
@@ -2601,7 +2582,6 @@ namespace CppSharp.Generators.CSharp
                 !templateSpecialization.IsSupportedStdType() ?
                 (templateSpecialization.Namespace.OriginalName + '.') : string.Empty;
 
-            CheckArgumentRange(function);
             var functionName = string.Format("{0}Internal.{1}", @namespace,
                 GetFunctionNativeIdentifier(function.OriginalFunction ?? function));
             GenerateFunctionCall(functionName, parameters, function, returnType);

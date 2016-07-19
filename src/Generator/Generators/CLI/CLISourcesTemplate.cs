@@ -1101,8 +1101,9 @@ namespace CppSharp.Generators.CLI
                     p => p.Type.IsPrimitiveType(PrimitiveType.Char)))
                 {
                     WriteLine("if ({0} < System::Char::MinValue || {0} > System::SByte::MaxValue)", param.Name);
+                    // C++/CLI can actually handle char -> sbyte in all case, this is for compatibility with the C# generator
                     WriteLineIndent(
-                        "throw gcnew System::ArgumentException(\"{0} must be in the range {1} - {2}.\");",
+                        "throw gcnew System::OverflowException(\"{0} must be in the range {1} - {2}.\");",
                         param.Name, (int) char.MinValue, sbyte.MaxValue);
                 }
             }

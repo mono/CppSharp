@@ -337,7 +337,7 @@ public class CommonTests : GeneratorTestFixture
         Foo2 foo2 = new Foo2();
         for (char c = char.MinValue; c <= sbyte.MaxValue; c++)
             Assert.That(foo2.testCharMarshalling(c), Is.EqualTo(c));
-        Assert.Catch<ArgumentException>(() => foo2.testCharMarshalling('ж'));
+        Assert.Catch<OverflowException>(() => foo2.testCharMarshalling('ж'));
     }
 
     [Test]
@@ -621,6 +621,18 @@ public class CommonTests : GeneratorTestFixture
         {
         }
         Assert.IsTrue(NonTrivialDtor.DtorCalled);
+    }
+
+    [Test]
+    public void TestFixedCharArray()
+    {
+        using (var foo = new Foo())
+        {
+            foo.fixedCharArray = new char[] { 'a', 'b', 'c' };
+            Assert.That(foo.fixedCharArray[0], Is.EqualTo('a'));
+            Assert.That(foo.fixedCharArray[1], Is.EqualTo('b'));
+            Assert.That(foo.fixedCharArray[2], Is.EqualTo('c'));
+        }
     }
 
     private class CustomDerivedFromVirtual : AbstractWithVirtualDtor

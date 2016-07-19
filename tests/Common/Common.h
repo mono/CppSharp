@@ -45,6 +45,7 @@ public:
     float B;
     IgnoredType ignoredType;
     int fixedArray[3];
+    char fixedCharArray[3];
     void* ptr;
     static const int unsafe;
     static const char charArray[];

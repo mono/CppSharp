@@ -106,12 +106,27 @@ namespace CppSharp.Generators.CSharp
                             value, Context.ReturnVarName);
                     else
                     {
+                        var arrayType = array.Type.Desugar();
                         Class @class;
-                        if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
-                            supportBefore.WriteLineIndent("{0}[i] = {1}.{2}(*(({1}.Internal*)&({3}[i * sizeof({1}.Internal)])));",
+                        if (arrayType.TryGetClass(out @class) && @class.IsRefType)
+                            supportBefore.WriteLineIndent(
+                                "{0}[i] = {1}.{2}(*(({1}.Internal*)&({3}[i * sizeof({1}.Internal)])));",
                                 value, array.Type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                         else
-                            supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
+                        {
+                            if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
+                                Context.Driver.Options.MarshalCharAsManagedChar)
+                            {
+                                supportBefore.WriteLineIndent(
+                                    "{0}[i] = global::System.Convert.ToChar({1}[i]);",
+                                    value, Context.ReturnVarName);
+                            }
+                            else
+                            {
+                                supportBefore.WriteLineIndent("{0}[i] = {1}[i];",
+                                    value, Context.ReturnVarName);
+                            }
+                        }
                     }
                     supportBefore.WriteCloseBraceIndent();
                     Context.Return.Write(value);
@@ -203,7 +218,11 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
                     if (Context.Driver.Options.MarshalCharAsManagedChar)
-                        Context.Return.Write("(char) ");
+                    {
+                        Context.Return.Write("global::System.Convert.ToChar({0})",
+                            Context.ReturnVarName);
+                        return true;
+                    }
                     goto default;
                 case PrimitiveType.Char16:
                     return false;
@@ -393,10 +412,12 @@ namespace CppSharp.Generators.CSharp
                 case ArrayType.ArraySize.Constant:
                     if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
-                        Context.SupportBefore.WriteLine("if ({0} == null || {0}.Length != {1})", Context.Parameter.Name, array.Size);
+                        Context.SupportBefore.WriteLine("if ({0} == null || {0}.Length != {1})",
+                            Context.Parameter.Name, array.Size);
                         ThrowArgumentOutOfRangeException();
                         const string ptr = "__ptr";
-                        Context.SupportBefore.WriteLine("fixed ({0}* {1} = {2})", array.Type, ptr, Context.Parameter.Name);
+                        Context.SupportBefore.WriteLine("fixed ({0}* {1} = {2})",
+                            array.Type, ptr, Context.Parameter.Name);
                         Context.SupportBefore.WriteStartBraceIndent();
                         Context.Return.Write("new global::System.IntPtr({0})", ptr);
                         Context.HasFixedBlock = true;
@@ -407,6 +428,7 @@ namespace CppSharp.Generators.CSharp
                         supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
                         supportBefore.WriteStartBraceIndent();
                         Class @class;
+                        var arrayType = array.Type.Desugar();
                         if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
                         {
                             supportBefore.WriteLine("if (value.Length != {0})", array.Size);
@@ -414,15 +436,30 @@ namespace CppSharp.Generators.CSharp
                         }
                         supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
                         if (@class != null && @class.IsRefType)
+                        {
                             supportBefore.WriteLineIndent(
                                 "{0}[i * sizeof({2}.Internal)] = *((byte*)({2}.Internal*){1}[i].__Instance);",
                                 Context.ReturnVarName, Context.ArgName, array.Type);
+                        }
                         else
-                            supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
-                                Context.ReturnVarName, Context.ArgName,
-                                array.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
-                                    ? ".ToPointer()"
-                                    : string.Empty);
+                        {
+                            if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
+                                Context.Driver.Options.MarshalCharAsManagedChar)
+                            {
+                                supportBefore.WriteLineIndent(
+                                    "{0}[i] = global::System.Convert.ToSByte({1}[i]);",
+                                    Context.ReturnVarName, Context.ArgName);
+                            }
+                            else
+                            {
+                                supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
+                                    Context.ReturnVarName,
+                                    Context.ArgName,
+                                    array.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
+                                        ? ".ToPointer()"
+                                        : string.Empty);
+                            }
+                        }
                         supportBefore.WriteCloseBraceIndent();
                     }
                     break;
@@ -578,7 +615,11 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
                     if (Context.Driver.Options.MarshalCharAsManagedChar)
-                        Context.Return.Write("(sbyte) ");
+                    {
+                        Context.Return.Write("global::System.Convert.ToSByte({0})",
+                            Context.Parameter.Name);
+                        return true;
+                    }
                     goto default;
                 case PrimitiveType.Char16:
                     return false;
