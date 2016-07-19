@@ -119,9 +119,19 @@ namespace CppSharp.AST
                     foreach (var module in TranslationUnits)
                         yield return module.FindFunction(name) as T;
                     break;
+                case "Variable":
+                    foreach (var variable in from unit in TranslationUnits
+                                             from variable in unit.Variables
+                                             where variable.Name == name
+                                             select variable)
+                        yield return variable as T;
+                    break;
                 default:
-                    foreach (var module in TranslationUnits)
-                        yield return module.Declarations.FirstOrDefault(d => d.Name == name) as T;
+                    foreach (var decl in from unit in TranslationUnits
+                                         from decl in unit.Declarations
+                                         where decl.Name == name
+                                         select decl)
+                        yield return decl as T;
                     break;
             }
         }
