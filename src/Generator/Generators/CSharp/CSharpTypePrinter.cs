@@ -671,6 +671,8 @@ namespace CppSharp.Generators.CSharp
                 names.Add(decl.Name);
                 ctx = decl.Namespace;
             }
+            if (decl is Variable && !(decl.Namespace is Class))
+                names.Add(decl.TranslationUnit.FileNameWithoutExtension);
             while (!(ctx is TranslationUnit))
             {
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
@@ -693,7 +695,7 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitVariableDecl(Variable variable)
         {
-            return variable.Name;
+            return GetNestedQualifiedName(variable);
         }
 
         public CSharpTypePrinterResult VisitClassTemplateDecl(ClassTemplate template)

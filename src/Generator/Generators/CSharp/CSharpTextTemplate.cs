@@ -284,7 +284,8 @@ namespace CppSharp.Generators.CSharp
                     GenerateClassTemplateSpecializationInternal(@class);
             }
 
-            if (context.HasFunctions)
+            if (context.HasFunctions || (!(context is Class) && context.Variables.Any(
+                v => v.IsGenerated && v.Access == AccessSpecifier.Public)))
             {
                 PushBlock(CSharpBlockKind.Functions);
                 var parentName = Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
@@ -312,6 +313,10 @@ namespace CppSharp.Generators.CSharp
 
                     GenerateFunction(function, parentName);
                 }
+
+                foreach (var variable in context.Variables.Where(
+                    v => v.IsGenerated && v.Access == AccessSpecifier.Public))
+                    GenerateVariable(null, variable);
 
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -1250,9 +1255,7 @@ namespace CppSharp.Generators.CSharp
                 if (variable.Access != AccessSpecifier.Public)
                     continue;
 
-                var type = variable.Type;
-
-                GenerateVariable(@class, type, variable);
+                GenerateVariable(@class, variable);
             }
         }
 
@@ -1354,12 +1357,12 @@ namespace CppSharp.Generators.CSharp
             return string.Format("this[{0}]", FormatMethodParameters(@params));
         }
 
-        private void GenerateVariable(Class @class, Type type, Variable variable)
+        private void GenerateVariable(Class @class, Variable variable)
         {
             PushBlock(CSharpBlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
-            WriteLine("public static {0} {1}", type, variable.Name);
+            WriteLine("public static {0} {1}", variable.Type, variable.Name);
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
