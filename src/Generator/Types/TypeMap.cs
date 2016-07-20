@@ -67,12 +67,12 @@ namespace CppSharp.Types
             throw new NotImplementedException();
         }
 
-        public virtual void CSharpMarshalToNative(MarshalContext ctx)
+        public virtual void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void CSharpMarshalToManaged(MarshalContext ctx)
+        public virtual void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
             throw new NotImplementedException();
         }

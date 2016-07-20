@@ -955,6 +955,7 @@ namespace CppSharp.Generators.CSharp
 
                 ctx.Kind = CSharpMarshalKind.NativeField;
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+                ctx.Declaration = field;
 
                 var arrayType = field.Type as ArrayType;
 
@@ -977,6 +978,9 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
+                if (ctx.HasCodeBlock)
+                    PushIndent();
+
                 if (marshal.Context.Return.StringBuilder.Length > 0)
                 {
                     WriteLine("{0} = {1}{2};", ctx.ReturnVarName,
@@ -986,7 +990,7 @@ namespace CppSharp.Generators.CSharp
                         marshal.Context.Return);
                 }
 
-                if (arrayType != null && @class.IsValueType)
+                if ((arrayType != null && @class.IsValueType) || ctx.HasCodeBlock)
                     WriteCloseBraceIndent();
 
                 WriteCloseBraceIndent();
@@ -1109,6 +1113,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = decl.Name,
+                    Declaration = decl,
                     ReturnVarName = string.Format("{0}{1}{2}",
                         @class.IsValueType
                             ? Helpers.InstanceField
@@ -1129,6 +1134,9 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
+                if (ctx.HasCodeBlock)
+                    PushIndent();
+
                 var @return = marshal.Context.Return.ToString();
                 if (field.Type.IsPointer())
                 {
@@ -1139,7 +1147,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 WriteLine("return {0};", @return);
 
-                if (arrayType != null && @class.IsValueType)
+                if ((arrayType != null && @class.IsValueType) || ctx.HasCodeBlock)
                     WriteCloseBraceIndent();
             }
             else if (decl is Variable)
@@ -2744,6 +2752,9 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
+                if (ctx.HasCodeBlock)
+                    PushIndent();
+
                 // Special case for indexer - needs to dereference if the internal
                 // function is a pointer type and the property is not.
                 if (retType.Type.IsAddress() &&
@@ -2752,12 +2763,15 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("return *{0};", marshal.Context.Return);
                 else
                     WriteLine("return {0};", marshal.Context.Return);
+
+                if (ctx.HasCodeBlock)
+                    WriteCloseBraceIndent();
             }
 
             if (needsFixedThis && operatorParam == null)
                 WriteCloseBraceIndent();
             
-            var numFixedBlocks = @params.Count(param => param.HasFixedBlock);
+            var numFixedBlocks = @params.Count(param => param.HasUsingBlock);
             for(var i = 0; i < numFixedBlocks; ++i)
                 WriteCloseBraceIndent();
         }
@@ -2838,7 +2852,7 @@ namespace CppSharp.Generators.CSharp
             public string Name;
             public Parameter Param;
             public CSharpMarshalContext Context;
-            public bool HasFixedBlock;
+            public bool HasUsingBlock;
         }
 
         public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
@@ -2896,7 +2910,7 @@ namespace CppSharp.Generators.CSharp
             paramMarshal.Context = ctx;
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             param.CSharpMarshalToNative(marshal);
-            paramMarshal.HasFixedBlock = ctx.HasFixedBlock;
+            paramMarshal.HasUsingBlock = ctx.HasCodeBlock;
 
             if (string.IsNullOrEmpty(marshal.Context.Return))
                 throw new Exception("Cannot marshal argument of function");
@@ -2904,7 +2918,7 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Write(marshal.Context.SupportBefore);
 
-            if (paramMarshal.HasFixedBlock)
+            if (paramMarshal.HasUsingBlock)
                 PushIndent();
 
             WriteLine("var {0} = {1};", argName, marshal.Context.Return);

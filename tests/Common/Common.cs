@@ -32,12 +32,12 @@ namespace CppSharp.Tests
             return "ushort";
         }
 
-        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
             ctx.Return.Write(ctx.ReturnVarName);
         }
 
-        public override void CSharpMarshalToNative(MarshalContext ctx)
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             ctx.Return.Write("IntPtr.Zero");
         }

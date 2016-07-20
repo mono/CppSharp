@@ -31,7 +31,7 @@ namespace CppSharp.Generators.CSharp
 
         public TextGenerator ArgumentPrefix { get; private set; }
         public TextGenerator Cleanup { get; private set; }
-        public bool HasFixedBlock { get; set; }
+        public bool HasCodeBlock { get; set; }
     }
 
     public abstract class CSharpMarshalPrinter : MarshalPrinter<CSharpMarshalContext>
@@ -420,7 +420,7 @@ namespace CppSharp.Generators.CSharp
                             array.Type, ptr, Context.Parameter.Name);
                         Context.SupportBefore.WriteStartBraceIndent();
                         Context.Return.Write("new global::System.IntPtr({0})", ptr);
-                        Context.HasFixedBlock = true;
+                        Context.HasCodeBlock = true;
                     }
                     else
                     {
@@ -495,7 +495,7 @@ namespace CppSharp.Generators.CSharp
                 var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
                 Context.SupportBefore.WriteLine("fixed ({0} {1} = &{2})",
                     pointer, refParamPtr, Context.Parameter.Name);
-                Context.HasFixedBlock = true;
+                Context.HasCodeBlock = true;
                 Context.SupportBefore.WriteStartBraceIndent();
                 Context.Return.Write(refParamPtr);
                 return true;
