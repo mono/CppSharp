@@ -145,7 +145,9 @@ end
 function cmake(gen, conf, builddir, options)
 	local cwd = os.getcwd()
 	os.chdir(builddir)
-	local cmd = "cmake -G " .. '"' .. gen .. '"'
+	local cmake = os.is_osx() and "/Applications/CMake.app/Contents/bin/cmake"
+		or "cmake"
+	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
  		.. ' -DLLVM_BUILD_TOOLS=false '
  		.. ' -DLLVM_INCLUDE_EXAMPLES=false '
  		.. ' -DLLVM_INCLUDE_DOCS=false '
