@@ -37,8 +37,8 @@ function download_cmake()
 		error("Error downloading CMake for unknown system")
 	end
 
-	local url = "https://cmake.org/files/v3.4/cmake-3.4.0-" .. system
-	local file = "cmake.zip"
+	local url = "https://cmake.org/files/v3.6/cmake-3.6.0-" .. system
+	local file = "cmake" .. path.getextension(system)
 
 	if not os.isfile(file) then
 		download(url, file)
@@ -93,6 +93,7 @@ function provision_osx()
 	if compile_llvm then
 		execute("brew cask install virtualbox vagrant")
 	end
+  	download_cmake()
 end
 
 if _ACTION == "provision" then
