@@ -520,6 +520,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test, Ignore("We need symbols for std::string to invoke and auto-compilation of exported templates is not added yet.")]
+    public void TestStdStringConstant()
+    {
+        //Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
+        // check a second time to ensure it hasn't been improperly freed
+        //Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
+    }
+
     // HACK: the completion of types is temporarily suspended because of problems with QtWidgets
     [Test, Ignore]
     public void TestTemplateInternals()

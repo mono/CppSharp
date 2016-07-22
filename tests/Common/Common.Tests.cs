@@ -633,8 +633,7 @@ public class CommonTests : GeneratorTestFixture
         }
     }
 
-    // ignored until we add automatic compilation for templates
-    [Test, Ignore]
+    [Test, Ignore("We need symbols for std::string to invoke and auto-compilation of exported templates is not added yet.")]
     public void TestStdString()
     {
         using (var hasStdString = new HasStdString())

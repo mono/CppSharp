@@ -1188,7 +1188,13 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
+                if (ctx.HasCodeBlock)
+                    PushIndent();
+
                 WriteLine("return {0};", marshal.Context.Return);
+
+                if (ctx.HasCodeBlock)
+                    WriteCloseBraceIndent();
             }
 
             WriteCloseBraceIndent();
