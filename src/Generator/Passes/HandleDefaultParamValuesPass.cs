@@ -48,7 +48,11 @@ namespace CppSharp.Passes
                 if (PrintExpression(parameter.Type, parameter.DefaultArgument, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                 if (string.IsNullOrEmpty(result))
+                {
                     parameter.DefaultArgument = null;
+                    foreach (var p in function.Parameters.TakeWhile(p => p != parameter))
+                        p.DefaultArgument = null;
+                }
                 else
                     parameter.DefaultArgument.String = result;
             }

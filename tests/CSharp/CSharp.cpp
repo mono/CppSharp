@@ -591,7 +591,7 @@ void MethodsWithDefaultValues::defaultWithFreeConstantInNameSpace(int c)
 {
 }
 
-void MethodsWithDefaultValues::defaultWithStdNumericLimits(int i)
+void MethodsWithDefaultValues::defaultWithStdNumericLimits(double d, int i)
 {
 }
 
