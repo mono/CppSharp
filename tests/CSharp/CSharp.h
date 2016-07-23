@@ -413,6 +413,7 @@ public:
     void defaultWithEnumInLowerCasedNameSpace(lowerCaseNameSpace::Enum e = lowerCaseNameSpace::Enum::Item2);
     void defaultWithCharFromInt(char c = 32);
     void defaultWithFreeConstantInNameSpace(int c = HasFreeConstant::FREE_CONSTANT_IN_NAMESPACE);
+    void defaultWithStdNumericLimits(int i = std::numeric_limits<double>::infinity());
     int getA();
 private:
     Foo m_foo;

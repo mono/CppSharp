@@ -47,7 +47,10 @@ namespace CppSharp.Passes
                 var result = parameter.DefaultArgument.String;
                 if (PrintExpression(parameter.Type, parameter.DefaultArgument, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
-                parameter.DefaultArgument.String = result;
+                if (string.IsNullOrEmpty(result))
+                    parameter.DefaultArgument = null;
+                else
+                    parameter.DefaultArgument.String = result;
             }
 
             GenerateOverloads(function, overloadIndices);
@@ -70,7 +73,14 @@ namespace CppSharp.Passes
                 return true;
 
             if (expression.Class == StatementClass.Call)
-                return expression.Declaration.Ignore ? false : (bool?) null;
+            {
+                if (expression.Declaration.Ignore)
+                {
+                    result = null;
+                    return false;
+                }
+                return null;
+            }
 
             var defaultConstruct = CheckForDefaultConstruct(desugared, expression, ref result);
             if (defaultConstruct != false)

@@ -591,6 +591,10 @@ void MethodsWithDefaultValues::defaultWithFreeConstantInNameSpace(int c)
 {
 }
 
+void MethodsWithDefaultValues::defaultWithStdNumericLimits(int i)
+{
+}
+
 int MethodsWithDefaultValues::getA()
 {
     return m_foo.A;
