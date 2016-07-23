@@ -27,7 +27,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::string")]
+    [TypeMap("std::basic_string<char, std::char_traits<char>, std::allocator<char>>")]
     public class String : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)
@@ -112,8 +112,12 @@ namespace CppSharp.Types.Std
 
         private static ClassTemplateSpecialization GetBasicString(Type type)
         {
-            var template = (type.GetFinalPointee() ?? type).Desugar();
-            return ((TemplateSpecializationType) template).GetClassTemplateSpecialization();
+            var desugared = type.Desugar();
+            var template = (desugared.GetFinalPointee() ?? desugared).Desugar();
+            var templateSpecializationType = template as TemplateSpecializationType;
+            if (templateSpecializationType != null)
+                return templateSpecializationType.GetClassTemplateSpecialization();
+            return (ClassTemplateSpecialization) ((TagType) template).Declaration;
         }
     }
 
@@ -382,7 +386,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::nullptr_t")]
+    [TypeMap("std::nullptr_t", GeneratorKind = GeneratorKind.CLI)]
     public class NullPtr : TypeMap
     {
         public override bool DoesMarshalling { get { return false; } }

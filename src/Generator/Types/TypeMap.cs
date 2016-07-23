@@ -195,6 +195,10 @@ namespace CppSharp.Types
                 return true;
             }
 
+            var typedef = decl as TypedefDecl;
+            if (typedef != null)
+                return FindTypeMap(typedef.Type, out typeMap);
+
             return false;
         }
 
@@ -203,9 +207,15 @@ namespace CppSharp.Types
             var typePrinter = new CppTypePrinter { PrintLogicalNames = true };
 
             var template = type as TemplateSpecializationType;
-            if (template != null && template.Template.TemplatedDecl != null)
-                return FindTypeMap(template.Template.TemplatedDecl, type,
-                    out typeMap);
+            if (template != null)
+            {
+                var specialization = template.GetClassTemplateSpecialization();
+                if (specialization != null && FindTypeMap(specialization, type, out typeMap))
+                    return true;
+                if (template.Template.TemplatedDecl != null)
+                    return FindTypeMap(template.Template.TemplatedDecl, type,
+                        out typeMap);
+            }
 
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
