@@ -1,6 +1,7 @@
 #include "../Tests.h"
 #include <cstdint>
 #include <vector>
+#include <limits>
 #include "AnotherUnit.h"
 
 class DLL_API Foo
