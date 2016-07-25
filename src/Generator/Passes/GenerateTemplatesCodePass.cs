@@ -43,7 +43,7 @@ namespace CppSharp.Passes
             foreach (var module in Driver.Options.Modules.Where(m => templateInstantiations.ContainsKey(m)))
             {
                 var cppBuilder = new StringBuilder();
-                if (module == Module.SystemModule)
+                if (module == Driver.Options.SystemModule)
                     cppBuilder.Append("#include <string>\n");
                 else
                     foreach (var header in module.Headers)

@@ -434,9 +434,9 @@ namespace CppSharp
                     CompilerOptions = compilerOptions.ToString()
                 };
 
-            if (module != AST.Module.SystemModule)
+            if (module != Options.SystemModule)
                 compilerParameters.ReferencedAssemblies.Add(
-                    string.Format("{0}.dll", AST.Module.SystemModule.LibraryName));
+                    string.Format("{0}.dll", Options.SystemModule.LibraryName));
             // add a reference to System.Core
             compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
 
@@ -529,7 +529,7 @@ namespace CppSharp
             }
 
             new CleanUnitPass(options).VisitLibrary(driver.ASTContext);
-            options.Modules.RemoveAll(m => m != AST.Module.SystemModule && !m.Units.GetGenerated().Any());
+            options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
 
             if (!options.Quiet)
                 Log.Message("Processing code...");

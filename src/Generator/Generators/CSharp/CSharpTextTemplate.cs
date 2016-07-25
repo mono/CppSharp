@@ -197,7 +197,8 @@ namespace CppSharp.Generators.CSharp
             }
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            var module = TranslationUnits.Count == 0 ? Module.SystemModule : TranslationUnit.Module;
+            var module = TranslationUnits.Count == 0 ?
+                Driver.Options.SystemModule : TranslationUnit.Module;
             if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 PushBlock(CSharpBlockKind.Namespace);
@@ -3131,7 +3132,7 @@ namespace CppSharp.Generators.CSharp
         private string GetLibraryOf(Declaration declaration)
         {
             if (declaration.TranslationUnit.IsSystemHeader)
-                return Module.SystemModule.TemplatesLibraryName;
+                return Driver.Options.SystemModule.TemplatesLibraryName;
 
             string libName = declaration.TranslationUnit.Module.SharedLibraryName;
 

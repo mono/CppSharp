@@ -20,7 +20,7 @@ namespace CppSharp.Passes
 
             if (unit.IsSystemHeader)
             {
-                unit.Module = Module.SystemModule;
+                unit.Module = DriverOptions.SystemModule;
             }
             else
             {
