@@ -74,6 +74,9 @@ function SetupLLVMLibs()
 
   configuration "macosx"
     links { "c++", "curses", "pthread", "z" }
+    
+  configuration "vs*"
+    links { "version" }
 
   configuration {}
 
