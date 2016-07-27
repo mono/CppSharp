@@ -986,6 +986,9 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
 {
     using namespace clang;
 
+    if (Record->isImplicit())
+        return;
+
     auto& Sema = C->getSema();
     Sema.ForceDeclarationOfImplicitMembers(const_cast<clang::CXXRecordDecl*>(Record));
 
