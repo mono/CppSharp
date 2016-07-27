@@ -16,12 +16,6 @@ project "CppSharp.CppParser"
   flags { common_flags }
   rtti "Off"
 
-  local copy = os.is_windows() and "xcopy /Q /E /Y /I" or "cp -rf";
-  local headers = path.getabsolute(path.join(LLVMRootDir, "lib/"))
-  if os.isdir(path.join(headers, "clang")) then
-    postbuildcommands { copy .. " " .. headers .. " %{cfg.targetdir}" }
-  end
-
   configuration "vs*"
     buildoptions { clang_msvc_flags }
 

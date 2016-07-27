@@ -67,23 +67,23 @@ function SetupLLVMIncludes()
 end
 
 function CopyClangIncludes()
-  local clangBuiltinIncludeDir = path.join(LLVMRootDir, "lib", "clang")
+  local clangBuiltinIncludeDir = path.join(LLVMRootDir, "lib")
 
   if LLVMDirPerConfiguration then
-    local clangBuiltinDebug = path.join(LLVMRootDirDebug, "lib", "clang")
-    local clangBuiltinRelease = path.join(LLVMRootDirRelease, "lib", "clang")
+    local clangBuiltinDebug = path.join(LLVMRootDirDebug, "lib")
+    local clangBuiltinRelease = path.join(LLVMRootDirRelease, "lib")
 
-    if os.isdir(clangBuiltinDebug) then
+    if os.isdir(path.join(clangBuiltinDebug, "clang")) then
       clangBuiltinIncludeDir = clangBuiltinDebug
     end
 
-    if os.isdir(clangBuiltinRelease) then
+    if os.isdir(path.join(clangBuiltinRelease, "clang")) then
       clangBuiltinIncludeDir = clangBuiltinRelease
     end    
   end
 
   if os.isdir(clangBuiltinIncludeDir) then
-    prebuildcommands { string.format("{COPY} %s %%{cfg.buildtarget.directory}", clangBuiltinIncludeDir) }
+    postbuildcommands { string.format("{COPY} %s %%{cfg.buildtarget.directory}", clangBuiltinIncludeDir) }
   end
 end
 
