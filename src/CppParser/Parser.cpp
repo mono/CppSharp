@@ -2256,8 +2256,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             TSTL = &TSpecTL;
         }
 
-        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
-            TS->getNumArgs());
+        ArrayRef<clang::TemplateArgument> TSArgs(TS->getArgs(), TS->getNumArgs());
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TSArgs);
         TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
@@ -2299,8 +2299,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             TSTL = &TSpecTL;
         }
 
-        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
-            TS->getNumArgs());
+        ArrayRef<clang::TemplateArgument> TSArgs(TS->getArgs(), TS->getNumArgs());
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TSArgs);
         TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
@@ -3638,7 +3638,7 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, P
     std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
     M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST->getTargetInfo().getDataLayoutString());
+    M->setDataLayout(AST->getTargetInfo().getDataLayout());
 
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
         new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getHeaderSearchOpts(),
@@ -3832,7 +3832,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
     }
 
     auto BinaryOrErr = llvm::object::createBinary(FileEntry);
-    if (BinaryOrErr.getError())
+    if (!BinaryOrErr)
     {
         res->Kind = ParserResultKind::Error;
         return res;
@@ -3904,7 +3904,7 @@ ParserTargetInfo* Parser::GetTargetInfo()
     std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
     M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST->getTargetInfo().getDataLayoutString());
+    M->setDataLayout(AST->getTargetInfo().getDataLayout());
 
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
         new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getHeaderSearchOpts(),
