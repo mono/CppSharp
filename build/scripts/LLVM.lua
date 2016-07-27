@@ -320,7 +320,7 @@ function archive_llvm(dir)
 	local cwd = os.getcwd()
 	os.chdir(dir)
 	if use_7zip then
-		execute_or_die(string.format("%s a %s *", get_7z_path(),
+		execute_or_die(string.format("%s a -mx9 %s *", get_7z_path(),
 			path.join("..", archive)))
 	else
 		execute_or_die("tar cJf " .. path.join("..", archive) .. " *")
