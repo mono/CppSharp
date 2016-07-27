@@ -136,6 +136,7 @@ function SetupLLVMLibs()
       "LLVMAnalysis",
       "LLVMTarget",
       "LLVMMC",
+      "LLVMCoverage",
       "LLVMCore",
       "LLVMSupport",
     }
