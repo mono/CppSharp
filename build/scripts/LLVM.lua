@@ -30,7 +30,7 @@ function clone_llvm()
   end
 
   if not os.isdir(llvm) then
-    git.clone(llvm, "http://llvm.org/git/llvm.git")
+    git.clone(llvm, "https://github.com/llvm-mirror/llvm.git")
   else
     git.reset_hard(llvm, "HEAD")
     git.pull_rebase(llvm)
@@ -38,7 +38,7 @@ function clone_llvm()
 
   local clang = llvm .. "/tools/clang"
   if not os.isdir(clang) then
-    git.clone(clang, "http://llvm.org/git/clang.git")
+    git.clone(clang, "https://github.com/llvm-mirror/clang.git")
   else
     git.reset_hard(clang, "HEAD")
     git.pull_rebase(clang)
