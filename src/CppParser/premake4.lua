@@ -41,6 +41,7 @@ project "CppSharp.CppParser"
   SearchLLVM()
   SetupLLVMIncludes()
   SetupLLVMLibs()
+  CopyClangIncludes()
   
   configuration "*"
 
