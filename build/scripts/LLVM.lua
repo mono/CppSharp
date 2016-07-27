@@ -106,8 +106,17 @@ function get_llvm_configuration_name(debug)
 	return os.is("windows") and "RelWithDebInfo" or "Release"
 end
 
+function get_7z_path()
+	local path = "C:\\Program Files\\7-Zip\\7z.exe"
+	if os.isfile(path) then
+		return string.format('"%s"', path)
+	end
+	return "7z.exe"
+end
+
 function extract_7z(archive, dest_dir)
-	return execute_or_die(string.format("7z x %s -o%s -y", archive, dest_dir), true)
+	return execute_or_die(string.format("%s x %s -o%s -y", get_7z_path(),
+		archive, dest_dir), true)
 end
 
 function extract_tar_xz(archive, dest_dir)
@@ -311,7 +320,8 @@ function archive_llvm(dir)
 	local cwd = os.getcwd()
 	os.chdir(dir)
 	if use_7zip then
-		execute_or_die("7z a " .. path.join("..", archive) .. " *")
+		execute_or_die(string.format("%s a %s *", get_7z_path(),
+			path.join("..", archive)))
 	else
 		execute_or_die("tar cJf " .. path.join("..", archive) .. " *")
 	end
