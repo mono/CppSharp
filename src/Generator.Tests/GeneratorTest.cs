@@ -47,30 +47,6 @@ namespace CppSharp.Utils
             var path = Path.GetFullPath(GetTestsDirectory(name));
             options.addIncludeDirs(path);
 
-            // Remove this hardcoded path once we update our LLVM binary packages to bundle
-            // the built-in Clang includes.
-            if (Environment.GetEnvironmentVariable("TRAVIS_OS_NAME") == "linux")
-                options.addSystemIncludeDirs("/usr/lib/gcc/x86_64-linux-gnu/4.8/include");
-
-#if BROKEN
-            var foundClangResourceDir = false;
-            for (uint i = 0; i < options.SystemIncludeDirsCount; ++i)
-            {
-                var dir = options.getSystemIncludeDirs(i);
-                if (dir.Contains(Path.Combine("lib", "clang")))
-                {
-                    foundClangResourceDir = true;
-                    break;
-                }
-            }
-
-            if (!foundClangResourceDir)
-            {
-                var dir = Path.GetFullPath(Path.Combine(path, "../../deps/llvm/tools/clang/lib/Headers"));
-                options.addSystemIncludeDirs(dir);
-            }
-#endif
-
             driver.Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
             foreach (var file in files)
