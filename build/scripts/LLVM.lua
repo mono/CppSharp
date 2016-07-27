@@ -280,6 +280,7 @@ function package_llvm(conf, llvm, llvm_build)
 
 	os.copydir(llvm .. "/tools/clang/include", out .. "/tools/clang/include")
 	os.copydir(llvm_build .. "/tools/clang/include", out .. "/build/tools/clang/include")
+	os.copydir(llvm_build .. "/lib/clang", out .. "/lib/clang")
 
 	os.copydir(llvm .. "/tools/clang/lib/CodeGen", out .. "/tools/clang/lib/CodeGen", "*.h")
 	os.copydir(llvm .. "/tools/clang/lib/Driver", out .. "/tools/clang/lib/Driver", "*.h")
