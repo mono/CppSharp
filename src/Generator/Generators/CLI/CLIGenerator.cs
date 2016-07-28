@@ -20,10 +20,10 @@ namespace CppSharp.Generators.CLI
         {
             var outputs = new List<Template>();
 
-            var header = new CLIHeadersTemplate(Driver, units);
+            var header = new CLIHeaders(Driver, units);
             outputs.Add(header);
 
-            var source = new CLISourcesTemplate(Driver, units);
+            var source = new CLISources(Driver, units);
             outputs.Add(source);
 
             return outputs;

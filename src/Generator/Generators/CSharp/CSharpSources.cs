@@ -156,7 +156,7 @@ namespace CppSharp.Generators.CSharp
         public const int Finalizer = FIRST + 19;
     }
 
-    public class CSharpTextTemplate : Template
+    public class CSharpSources : Template
     {
         public CSharpTypePrinter TypePrinter { get; private set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; private set; }
@@ -166,7 +166,7 @@ namespace CppSharp.Generators.CSharp
             get { return "cs"; }
         }
 
-        public CSharpTextTemplate(Driver driver, IEnumerable<TranslationUnit> units,
+        public CSharpSources(Driver driver, IEnumerable<TranslationUnit> units,
             CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
             : base(driver, units)
         {

@@ -14,9 +14,9 @@ namespace CppSharp.Generators.CLI
     /// <summary>
     /// Generates C++/CLI source files.
     /// </summary>
-    public class CLISourcesTemplate : CLITextTemplate
+    public class CLISources : CLITextTemplate
     {
-        public CLISourcesTemplate(Driver driver, IEnumerable<TranslationUnit> units)
+        public CLISources(Driver driver, IEnumerable<TranslationUnit> units)
             : base(driver, units)
         {
             

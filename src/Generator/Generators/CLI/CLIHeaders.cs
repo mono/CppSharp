@@ -11,11 +11,11 @@ namespace CppSharp.Generators.CLI
     /// <summary>
     /// Generates C++/CLI header files.
     /// </summary>
-    public class CLIHeadersTemplate : CLITextTemplate
+    public class CLIHeaders : CLITextTemplate
     {
         public override string FileExtension { get { return "h"; } }
 
-        public CLIHeadersTemplate(Driver driver, IEnumerable<TranslationUnit> units)
+        public CLIHeaders(Driver driver, IEnumerable<TranslationUnit> units)
             : base(driver, units)
         {
         }

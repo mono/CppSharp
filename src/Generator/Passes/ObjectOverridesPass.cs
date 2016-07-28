@@ -28,7 +28,7 @@ namespace CppSharp
                 }
                 if (needsStreamInclude)
                 {
-                    var sourcesTemplate = template as CLISourcesTemplate;
+                    var sourcesTemplate = template as CLISources;
                     if (sourcesTemplate != null)
                     {
                         foreach (var block in sourcesTemplate.FindBlocks(CLIBlockKind.Includes))

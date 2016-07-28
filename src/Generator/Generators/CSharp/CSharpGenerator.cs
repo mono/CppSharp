@@ -19,7 +19,7 @@ namespace CppSharp.Generators.CSharp
         {
             var outputs = new List<Template>();
 
-            var template = new CSharpTextTemplate(Driver, units, typePrinter, expressionPrinter);
+            var template = new CSharpSources(Driver, units, typePrinter, expressionPrinter);
             outputs.Add(template);
 
             return outputs;
