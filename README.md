@@ -36,7 +36,7 @@ code or add scripting support to a native codebase.
  * Virtual table overriding support
  * Multiple inheritance support
  * Easily extensible semantics via user passes 
- * Work-in-progress support for STL (C++/CLI only)
+ * Support for C++ standard library types (work-in-progress)
  * Strongly-typed customization APIs and type maps
  * Default values of parameters (for target languages which support them)
 
