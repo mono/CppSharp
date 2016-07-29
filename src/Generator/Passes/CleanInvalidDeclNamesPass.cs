@@ -21,7 +21,7 @@ namespace CppSharp.Passes
                 return '_' + name;
 
             if (Driver.Options.IsCLIGenerator)
-                return CLITextTemplate.SafeIdentifier(name);
+                return CLITemplate.SafeIdentifier(name);
             return Helpers.SafeIdentifier(name);
         }
 

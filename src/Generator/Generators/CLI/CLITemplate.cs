@@ -52,16 +52,16 @@ namespace CppSharp.Generators.CLI
 
     /// <summary>
     /// There are two implementation
-    /// for source (CLISourcesTemplate) and header (CLIHeadersTemplate)
+    /// for source (CLISources) and header (CLIHeaders)
     /// files.
     /// </summary>
-    public abstract class CLITextTemplate : Template
+    public abstract class CLITemplate : Template
     {
         public CLITypePrinter TypePrinter { get; set; }
 
         public ISet<Include> Includes;
 
-        protected CLITextTemplate(Driver driver, IEnumerable<TranslationUnit> units)
+        protected CLITemplate(Driver driver, IEnumerable<TranslationUnit> units)
             : base(driver, units)
         {
             TypePrinter = new CLITypePrinter(driver);

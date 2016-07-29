@@ -11,7 +11,7 @@ namespace CppSharp.Generators.CLI
     /// <summary>
     /// Generates C++/CLI header files.
     /// </summary>
-    public class CLIHeaders : CLITextTemplate
+    public class CLIHeaders : CLITemplate
     {
         public override string FileExtension { get { return "h"; } }
 
