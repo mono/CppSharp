@@ -33,6 +33,7 @@
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
 #include <clang/Lex/Preprocessor.h>
+#include <clang/Lex/PreprocessorOptions.h>
 #include <clang/Lex/PreprocessingRecord.h>
 #include <clang/Parse/ParseAST.h>
 #include <clang/Sema/Sema.h>
