@@ -4484,6 +4484,189 @@ void CppSharp::Parser::AST::FunctionTemplateSpecialization::SpecializationKind::
     ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->SpecializationKind = (::CppSharp::CppParser::AST::TemplateSpecializationKind)value;
 }
 
+CppSharp::Parser::AST::VarTemplate::VarTemplate(::CppSharp::CppParser::AST::VarTemplate* native)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)native)
+{
+}
+
+CppSharp::Parser::AST::VarTemplate^ CppSharp::Parser::AST::VarTemplate::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::VarTemplate((::CppSharp::CppParser::AST::VarTemplate*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::VarTemplate::~VarTemplate()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::VarTemplate*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::VarTemplate::VarTemplate()
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::VarTemplate();
+}
+
+CppSharp::Parser::AST::VarTemplateSpecialization^ CppSharp::Parser::AST::VarTemplate::getSpecializations(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::VarTemplate*)NativePtr)->getSpecializations(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::VarTemplateSpecialization((::CppSharp::CppParser::AST::VarTemplateSpecialization*)__ret);
+}
+
+void CppSharp::Parser::AST::VarTemplate::addSpecializations(CppSharp::Parser::AST::VarTemplateSpecialization^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (::CppSharp::CppParser::AST::VarTemplateSpecialization*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::VarTemplate*)NativePtr)->addSpecializations(__arg0);
+}
+
+void CppSharp::Parser::AST::VarTemplate::clearSpecializations()
+{
+    ((::CppSharp::CppParser::AST::VarTemplate*)NativePtr)->clearSpecializations();
+}
+
+CppSharp::Parser::AST::VarTemplate::VarTemplate(CppSharp::Parser::AST::VarTemplate^ _0)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::VarTemplate*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::VarTemplate(__arg0);
+}
+
+unsigned int CppSharp::Parser::AST::VarTemplate::SpecializationsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::VarTemplate*)NativePtr)->getSpecializationsCount();
+    return __ret;
+}
+
+CppSharp::Parser::AST::VarTemplateSpecialization::VarTemplateSpecialization(::CppSharp::CppParser::AST::VarTemplateSpecialization* native)
+    : CppSharp::Parser::AST::Variable((::CppSharp::CppParser::AST::Variable*)native)
+{
+}
+
+CppSharp::Parser::AST::VarTemplateSpecialization^ CppSharp::Parser::AST::VarTemplateSpecialization::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::VarTemplateSpecialization((::CppSharp::CppParser::AST::VarTemplateSpecialization*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::VarTemplateSpecialization::~VarTemplateSpecialization()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::VarTemplateSpecialization*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::VarTemplateSpecialization::VarTemplateSpecialization()
+    : CppSharp::Parser::AST::Variable((::CppSharp::CppParser::AST::Variable*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::VarTemplateSpecialization();
+}
+
+CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::VarTemplateSpecialization::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->getArguments(i);
+    auto ____ret = new ::CppSharp::CppParser::AST::TemplateArgument(__ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateArgument((::CppSharp::CppParser::AST::TemplateArgument*)____ret);
+}
+
+void CppSharp::Parser::AST::VarTemplateSpecialization::addArguments(CppSharp::Parser::AST::TemplateArgument^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->addArguments(__arg0);
+}
+
+void CppSharp::Parser::AST::VarTemplateSpecialization::clearArguments()
+{
+    ((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->clearArguments();
+}
+
+CppSharp::Parser::AST::VarTemplateSpecialization::VarTemplateSpecialization(CppSharp::Parser::AST::VarTemplateSpecialization^ _0)
+    : CppSharp::Parser::AST::Variable((::CppSharp::CppParser::AST::Variable*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::VarTemplateSpecialization*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::VarTemplateSpecialization(__arg0);
+}
+
+unsigned int CppSharp::Parser::AST::VarTemplateSpecialization::ArgumentsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->getArgumentsCount();
+    return __ret;
+}
+
+CppSharp::Parser::AST::VarTemplate^ CppSharp::Parser::AST::VarTemplateSpecialization::TemplatedDecl::get()
+{
+    return (((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->TemplatedDecl == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::VarTemplate((::CppSharp::CppParser::AST::VarTemplate*)((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->TemplatedDecl);
+}
+
+void CppSharp::Parser::AST::VarTemplateSpecialization::TemplatedDecl::set(CppSharp::Parser::AST::VarTemplate^ value)
+{
+    ((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->TemplatedDecl = (::CppSharp::CppParser::AST::VarTemplate*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::TemplateSpecializationKind CppSharp::Parser::AST::VarTemplateSpecialization::SpecializationKind::get()
+{
+    return (CppSharp::Parser::AST::TemplateSpecializationKind)((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->SpecializationKind;
+}
+
+void CppSharp::Parser::AST::VarTemplateSpecialization::SpecializationKind::set(CppSharp::Parser::AST::TemplateSpecializationKind value)
+{
+    ((::CppSharp::CppParser::AST::VarTemplateSpecialization*)NativePtr)->SpecializationKind = (::CppSharp::CppParser::AST::TemplateSpecializationKind)value;
+}
+
+CppSharp::Parser::AST::VarTemplatePartialSpecialization::VarTemplatePartialSpecialization(::CppSharp::CppParser::AST::VarTemplatePartialSpecialization* native)
+    : CppSharp::Parser::AST::VarTemplateSpecialization((::CppSharp::CppParser::AST::VarTemplateSpecialization*)native)
+{
+}
+
+CppSharp::Parser::AST::VarTemplatePartialSpecialization^ CppSharp::Parser::AST::VarTemplatePartialSpecialization::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::VarTemplatePartialSpecialization((::CppSharp::CppParser::AST::VarTemplatePartialSpecialization*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::VarTemplatePartialSpecialization::~VarTemplatePartialSpecialization()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::VarTemplatePartialSpecialization*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::VarTemplatePartialSpecialization::VarTemplatePartialSpecialization()
+    : CppSharp::Parser::AST::VarTemplateSpecialization((::CppSharp::CppParser::AST::VarTemplateSpecialization*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::VarTemplatePartialSpecialization();
+}
+
+CppSharp::Parser::AST::VarTemplatePartialSpecialization::VarTemplatePartialSpecialization(CppSharp::Parser::AST::VarTemplatePartialSpecialization^ _0)
+    : CppSharp::Parser::AST::VarTemplateSpecialization((::CppSharp::CppParser::AST::VarTemplateSpecialization*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::VarTemplatePartialSpecialization*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::VarTemplatePartialSpecialization(__arg0);
+}
+
 CppSharp::Parser::AST::Namespace::Namespace(::CppSharp::CppParser::AST::Namespace* native)
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {

@@ -86,6 +86,7 @@ namespace CppSharp
 
             options.OutputNamespace = string.Empty;
             options.CheckSymbols = false;
+            options.Verbose = true;
         }
 
         private void SetupLinuxOptions(DriverOptions options)

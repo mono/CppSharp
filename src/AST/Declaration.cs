@@ -419,6 +419,8 @@ namespace CppSharp.AST
         T VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization);
         T VisitFunctionTemplateDecl(FunctionTemplate template);
         T VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization);
+        T VisitVarTemplateDecl(VarTemplate template);
+        T VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template);
         T VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter);
         T VisitTemplateParameterDecl(TypeTemplateParameter templateParameter);
         T VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter);
