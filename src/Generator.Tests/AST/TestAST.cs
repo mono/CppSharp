@@ -190,6 +190,11 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new NotImplementedException();
             }
+
+            public bool VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 

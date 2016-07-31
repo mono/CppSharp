@@ -398,5 +398,10 @@ namespace CppSharp.Types
         {
             throw new NotImplementedException();
         }
+
+        public string VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

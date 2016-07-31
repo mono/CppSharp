@@ -283,6 +283,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 
