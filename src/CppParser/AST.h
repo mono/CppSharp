@@ -472,9 +472,7 @@ public:
     CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create);
 
-    CS_IGNORE TypeAliasTemplate* FindTypeAliasTemplate(const std::string& USR);
-    CS_IGNORE ClassTemplate* FindClassTemplate(const std::string& USR);
-    CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& USR);
+    CS_IGNORE template<typename T> T* FindTemplate(const std::string& USR);
 
     CS_IGNORE Enumeration* FindEnum(const void* OriginalPtr);
     CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
@@ -504,6 +502,18 @@ public:
 
     bool IsAnonymous;
 };
+
+template<typename T>
+T* DeclarationContext::FindTemplate(const std::string& USR)
+{
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->USR == USR; });
+
+    if (foundTemplate != Templates.end())
+        return static_cast<T*>(*foundTemplate);
+
+    return nullptr;
+}
 
 class CS_API TypedefNameDecl : public Declaration
 {

@@ -479,44 +479,6 @@ Function* DeclarationContext::FindFunction(const std::string& USR)
     return nullptr;
 }
 
-ClassTemplate*
-DeclarationContext::FindClassTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; });
-
-    if (foundTemplate != Templates.end())
-        return static_cast<ClassTemplate*>(*foundTemplate);
-
-    return nullptr;
-}
-
-TypeAliasTemplate*
-DeclarationContext::FindTypeAliasTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; }
-    );
-
-    if (foundTemplate != Templates.end())
-        return static_cast<TypeAliasTemplate*>(*foundTemplate);
-
-    return nullptr;
-}
-
-FunctionTemplate*
-DeclarationContext::FindFunctionTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; }
-    );
-
-    if (foundTemplate != Templates.end())
-        return static_cast<FunctionTemplate*>(*foundTemplate);
-
-    return nullptr;
-}
-
 TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Create)
 {
     auto foundTypedef = std::find_if(Typedefs.begin(), Typedefs.end(),

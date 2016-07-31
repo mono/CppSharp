@@ -1194,7 +1194,7 @@ ClassTemplate* Parser::WalkClassTemplate(const clang::ClassTemplateDecl* TD)
     assert(NS && "Expected a valid namespace");
 
     auto USR = GetDeclUSR(TD);
-    auto CT = NS->FindClassTemplate(USR);
+    auto CT = NS->FindTemplate<ClassTemplate>(USR);
     if (CT != nullptr)
         return CT;
 
@@ -1379,7 +1379,7 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
     assert(NS && "Expected a valid namespace");
 
     auto USR = GetDeclUSR(TD);
-    auto TA = NS->FindTypeAliasTemplate(USR);
+    auto TA = NS->FindTemplate<TypeAliasTemplate>(USR);
     if (TA != nullptr)
         return TA;
 
@@ -1405,7 +1405,7 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     assert(NS && "Expected a valid namespace");
 
     auto USR = GetDeclUSR(TD);
-    auto FT = NS->FindFunctionTemplate(USR);
+    auto FT = NS->FindTemplate<FunctionTemplate>(USR);
     if (FT != nullptr)
         return FT;
 
