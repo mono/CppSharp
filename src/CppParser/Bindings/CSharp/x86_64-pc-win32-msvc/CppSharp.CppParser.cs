@@ -3179,6 +3179,9 @@ namespace CppSharp
                     [FieldOffset(0)]
                     public uint Offset;
 
+                    [FieldOffset(8)]
+                    public global::std.basic_string.Internal Name;
+
                     [FieldOffset(40)]
                     public global::CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
@@ -3846,6 +3849,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -4294,6 +4306,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -4913,6 +4934,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -5054,6 +5084,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -5180,6 +5219,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -5329,6 +5377,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -5461,6 +5518,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     public global::System.IntPtr Decl;
+
+                    [FieldOffset(16)]
+                    public global::std.basic_string.Internal String;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -5606,6 +5666,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr Decl;
 
+                    [FieldOffset(16)]
+                    public global::std.basic_string.Internal String;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0Expression@AST@CppParser@CppSharp@@QEAA@AEBV0123@@Z")]
@@ -5683,11 +5746,17 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr Decl;
 
+                    [FieldOffset(16)]
+                    public global::std.basic_string.Internal String;
+
                     [FieldOffset(48)]
                     public global::System.IntPtr LHS;
 
                     [FieldOffset(56)]
                     public global::System.IntPtr RHS;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal OpcodeStr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -5828,6 +5897,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr Decl;
 
+                    [FieldOffset(16)]
+                    public global::std.basic_string.Internal String;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0CallExpr@AST@CppParser@CppSharp@@QEAA@AEBV0123@@Z")]
@@ -5957,6 +6029,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     public global::System.IntPtr Decl;
+
+                    [FieldOffset(16)]
+                    public global::std.basic_string.Internal String;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -6099,6 +6174,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -6309,6 +6393,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -6353,6 +6446,12 @@ namespace CppSharp
 
                     [FieldOffset(216)]
                     public global::CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
+
+                    [FieldOffset(224)]
+                    public global::std.basic_string.Internal Mangled;
+
+                    [FieldOffset(256)]
+                    public global::std.basic_string.Internal Signature;
 
                     [FieldOffset(288)]
                     public global::CppSharp.Parser.AST.CallingConvention CallingConvention;
@@ -6724,6 +6823,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -6768,6 +6876,12 @@ namespace CppSharp
 
                     [FieldOffset(216)]
                     public global::CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
+
+                    [FieldOffset(224)]
+                    public global::std.basic_string.Internal Mangled;
+
+                    [FieldOffset(256)]
+                    public global::std.basic_string.Internal Signature;
 
                     [FieldOffset(288)]
                     public global::CppSharp.Parser.AST.CallingConvention CallingConvention;
@@ -7041,6 +7155,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -7141,6 +7264,15 @@ namespace CppSharp
                         [FieldOffset(24)]
                         public int LineNumberEnd;
 
+                        [FieldOffset(32)]
+                        public global::std.basic_string.Internal Name;
+
+                        [FieldOffset(64)]
+                        public global::std.basic_string.Internal USR;
+
+                        [FieldOffset(96)]
+                        public global::std.basic_string.Internal DebugText;
+
                         [FieldOffset(128)]
                         public byte IsIncomplete;
 
@@ -7161,6 +7293,9 @@ namespace CppSharp
 
                         [FieldOffset(184)]
                         public global::System.IntPtr Comment;
+
+                        [FieldOffset(192)]
+                        public global::std.basic_string.Internal Expression;
 
                         [FieldOffset(224)]
                         public ulong Value;
@@ -7453,6 +7588,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -7473,6 +7617,9 @@ namespace CppSharp
 
                     [FieldOffset(184)]
                     public global::System.IntPtr Comment;
+
+                    [FieldOffset(192)]
+                    public global::std.basic_string.Internal Mangled;
 
                     [FieldOffset(224)]
                     public global::CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -7773,6 +7920,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -7966,6 +8122,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -8089,6 +8254,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -8594,6 +8768,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -8807,6 +8990,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -8933,6 +9125,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -9106,6 +9307,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -9282,6 +9492,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -9430,6 +9649,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -9633,6 +9861,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -9812,6 +10049,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -10056,6 +10302,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -10218,6 +10473,15 @@ namespace CppSharp
 
                     [FieldOffset(24)]
                     public int LineNumberEnd;
+
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
 
                     [FieldOffset(128)]
                     public byte IsIncomplete;
@@ -10600,6 +10864,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -10867,6 +11140,12 @@ namespace CppSharp
                     [FieldOffset(16)]
                     public global::CppSharp.Parser.AST.DeclarationKind Kind;
 
+                    [FieldOffset(24)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(56)]
+                    public global::std.basic_string.Internal Expression;
+
                     [FieldOffset(88)]
                     public int LineNumberStart;
 
@@ -11045,6 +11324,12 @@ namespace CppSharp
                     [FieldOffset(16)]
                     public global::CppSharp.Parser.AST.DeclarationKind Kind;
 
+                    [FieldOffset(24)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(56)]
+                    public global::std.basic_string.Internal Text;
+
                     [FieldOffset(88)]
                     public global::System.IntPtr Definition;
 
@@ -11221,6 +11506,15 @@ namespace CppSharp
                     [FieldOffset(24)]
                     public int LineNumberEnd;
 
+                    [FieldOffset(32)]
+                    public global::std.basic_string.Internal Name;
+
+                    [FieldOffset(64)]
+                    public global::std.basic_string.Internal USR;
+
+                    [FieldOffset(96)]
+                    public global::std.basic_string.Internal DebugText;
+
                     [FieldOffset(128)]
                     public byte IsIncomplete;
 
@@ -11247,6 +11541,9 @@ namespace CppSharp
 
                     [FieldOffset(432)]
                     public byte IsInline;
+
+                    [FieldOffset(440)]
+                    public global::std.basic_string.Internal FileName;
 
                     [FieldOffset(472)]
                     public byte IsSystemHeader;
@@ -11428,6 +11725,9 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public partial struct Internal
                 {
+                    [FieldOffset(0)]
+                    public global::std.basic_string.Internal FileName;
+
                     [FieldOffset(32)]
                     public global::CppSharp.Parser.AST.ArchType ArchType;
 
@@ -12448,6 +12748,9 @@ namespace CppSharp
                     [StructLayout(LayoutKind.Explicit, Size = 32)]
                     public partial struct Internal
                     {
+                        [FieldOffset(0)]
+                        public global::std.basic_string.Internal Text;
+
                         [SuppressUnmanagedCodeSecurity]
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                             EntryPoint="??0Argument@BlockCommandComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -12981,6 +13284,9 @@ namespace CppSharp
                     [FieldOffset(0)]
                     public global::CppSharp.Parser.AST.CommentKind Kind;
 
+                    [FieldOffset(8)]
+                    public global::std.basic_string.Internal Text;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0VerbatimBlockLineComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -13248,6 +13554,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr ParagraphComment;
 
+                    [FieldOffset(40)]
+                    public global::std.basic_string.Internal Text;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0VerbatimLineComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -13420,6 +13729,9 @@ namespace CppSharp
                     [StructLayout(LayoutKind.Explicit, Size = 32)]
                     public partial struct Internal
                     {
+                        [FieldOffset(0)]
+                        public global::std.basic_string.Internal Text;
+
                         [SuppressUnmanagedCodeSecurity]
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                             EntryPoint="??0Argument@InlineCommandComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -13754,6 +14066,9 @@ namespace CppSharp
                     [FieldOffset(4)]
                     public byte HasTrailingNewline;
 
+                    [FieldOffset(8)]
+                    public global::std.basic_string.Internal TagName;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0HTMLStartTagComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -13805,6 +14120,12 @@ namespace CppSharp
                     [StructLayout(LayoutKind.Explicit, Size = 64)]
                     public partial struct Internal
                     {
+                        [FieldOffset(0)]
+                        public global::std.basic_string.Internal Name;
+
+                        [FieldOffset(32)]
+                        public global::std.basic_string.Internal Value;
+
                         [SuppressUnmanagedCodeSecurity]
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                             EntryPoint="??0Attribute@HTMLStartTagComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -14066,6 +14387,9 @@ namespace CppSharp
                     [FieldOffset(4)]
                     public byte HasTrailingNewline;
 
+                    [FieldOffset(8)]
+                    public global::std.basic_string.Internal TagName;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0HTMLEndTagComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -14183,6 +14507,9 @@ namespace CppSharp
                     [FieldOffset(4)]
                     public byte HasTrailingNewline;
 
+                    [FieldOffset(8)]
+                    public global::std.basic_string.Internal Text;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0TextComment@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -14296,6 +14623,12 @@ namespace CppSharp
                 {
                     [FieldOffset(0)]
                     public global::CppSharp.Parser.AST.RawCommentKind Kind;
+
+                    [FieldOffset(8)]
+                    public global::std.basic_string.Internal Text;
+
+                    [FieldOffset(40)]
+                    public global::std.basic_string.Internal BriefText;
 
                     [FieldOffset(72)]
                     public global::System.IntPtr FullCommentBlock;
@@ -14607,11 +14940,17 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 272)]
             public partial struct Internal
             {
+                [FieldOffset(24)]
+                public global::std.basic_string.Internal LibraryFile;
+
                 [FieldOffset(200)]
                 public global::System.IntPtr ASTContext;
 
                 [FieldOffset(208)]
                 public int ToolSetToUse;
+
+                [FieldOffset(216)]
+                public global::std.basic_string.Internal TargetTriple;
 
                 [FieldOffset(248)]
                 public global::CppSharp.Parser.AST.CppAbi Abi;
@@ -15236,6 +15575,12 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 80)]
             public partial struct Internal
             {
+                [FieldOffset(0)]
+                public global::std.basic_string.Internal FileName;
+
+                [FieldOffset(32)]
+                public global::std.basic_string.Internal Message;
+
                 [FieldOffset(64)]
                 public global::CppSharp.Parser.ParserDiagnosticLevel Level;
 
@@ -15785,6 +16130,9 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 184)]
             public partial struct Internal
             {
+                [FieldOffset(0)]
+                public global::std.basic_string.Internal ABI;
+
                 [FieldOffset(32)]
                 public global::CppSharp.Parser.ParserIntType Char16Type;
 
