@@ -147,6 +147,11 @@ namespace CppSharp
         public abstract TRet VisitClassTemplatePartialSpecialization(
             ClassTemplatePartialSpecialization decl);
         public abstract TRet VisitFunctionTemplate(FunctionTemplate decl);
+        public abstract TRet VisitVarTemplate(VarTemplate decl);
+        public abstract TRet VisitVarTemplateSpecialization(
+            VarTemplateSpecialization decl);
+        public abstract TRet VisitVarTemplatePartialSpecialization(
+            VarTemplatePartialSpecialization decl);
         public abstract TRet VisitTemplateTemplateParameter(TemplateTemplateParameter decl);
         public abstract TRet VisitTypeTemplateParameter(TypeTemplateParameter decl);
         public abstract TRet VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl);
@@ -1278,13 +1283,18 @@ namespace CppSharp
             return _item;
         }
 
-        public override AST.Declaration VisitVariable(Variable decl)
+        public void VisitVariable(Variable decl, AST.Variable _variable)
         {
-            var _variable = new AST.Variable();
             VisitDeclaration(decl, _variable);
             _variable.Mangled = decl.Mangled;
             _variable.QualifiedType = typeConverter.VisitQualified(
                 decl.QualifiedType);
+        }
+
+        public override AST.Declaration VisitVariable(Variable decl)
+        {
+            var _variable = new AST.Variable();
+            VisitVariable(decl, _variable);
 
             return _variable;
         }
@@ -1654,6 +1664,48 @@ namespace CppSharp
             FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
             NativeObjects.Add(spec);
             return _spec;
+        }
+
+        public override AST.Declaration VisitVarTemplate(VarTemplate decl)
+        {
+            var _decl = new AST.VarTemplate();
+            VisitTemplate(decl, _decl);
+            for (uint i = 0; i < decl.SpecializationsCount; ++i)
+            {
+                var spec = decl.getSpecializations(i);
+                var _spec = (AST.VarTemplateSpecialization)Visit(spec);
+                _decl.Specializations.Add(_spec);
+            }
+            return _decl;
+        }
+
+        public override AST.Declaration VisitVarTemplateSpecialization(
+            VarTemplateSpecialization decl)
+        {
+            var _decl = new AST.VarTemplateSpecialization();
+            VisitVarTemplateSpecialization(decl, _decl);
+            return _decl;
+        }
+
+        private void VisitVarTemplateSpecialization(VarTemplateSpecialization decl, AST.VarTemplateSpecialization _decl)
+        {
+            VisitVariable(decl, _decl);
+            _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
+            _decl.TemplatedDecl = (AST.VarTemplate)Visit(decl.TemplatedDecl);
+            for (uint i = 0; i < decl.ArgumentsCount; ++i)
+            {
+                var arg = decl.getArguments(i);
+                var _arg = VisitTemplateArgument(arg);
+                _decl.Arguments.Add(_arg);
+            }
+        }
+
+        public override AST.Declaration VisitVarTemplatePartialSpecialization(
+            VarTemplatePartialSpecialization decl)
+        {
+            var _decl = new AST.VarTemplatePartialSpecialization();
+            VisitVarTemplateSpecialization(decl, _decl);
+            return _decl;
         }
 
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)

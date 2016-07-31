@@ -195,6 +195,16 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new NotImplementedException();
             }
+
+            public bool VisitVarTemplateDecl(VarTemplate template)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 

@@ -466,6 +466,27 @@ namespace CppSharp.AST
             return specialization.SpecializedFunction.Visit(this);
         }
 
+        public bool VisitVarTemplateDecl(VarTemplate template)
+        {
+            if (!VisitDeclaration(template))
+                return false;
+
+            foreach (var templateParameter in template.Parameters)
+                templateParameter.Visit(this);
+
+            foreach (var specialization in template.Specializations)
+                specialization.Visit(this);
+
+            template.TemplatedVariable.Visit(this);
+
+            return true; 
+        }
+
+        public bool VisitVarTemplateSpecializationDecl(VarTemplateSpecialization specialization)
+        {
+            return VisitVariableDecl(specialization);
+        }
+
         public virtual bool VisitMacroDefinition(MacroDefinition macro)
         {
             return false;
