@@ -401,7 +401,6 @@ namespace CppSharp.AST
     {
         T VisitDeclaration(Declaration decl);
         T VisitClassDecl(Class @class);
-        T VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization);
         T VisitFieldDecl(Field field);
         T VisitFunctionDecl(Function function);
         T VisitMethodDecl(Method method);
@@ -411,13 +410,15 @@ namespace CppSharp.AST
         T VisitEnumDecl(Enumeration @enum);
         T VisitEnumItemDecl(Enumeration.Item item);
         T VisitVariableDecl(Variable variable);
-        T VisitClassTemplateDecl(ClassTemplate template);
-        T VisitFunctionTemplateDecl(FunctionTemplate template);
         T VisitMacroDefinition(MacroDefinition macro);
         T VisitNamespace(Namespace @namespace);
         T VisitEvent(Event @event);
         T VisitProperty(Property @property);
         T VisitFriend(Friend friend);
+        T VisitClassTemplateDecl(ClassTemplate template);
+        T VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization);
+        T VisitFunctionTemplateDecl(FunctionTemplate template);
+        T VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization);
         T VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter);
         T VisitTemplateParameterDecl(TypeTemplateParameter templateParameter);
         T VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter);
