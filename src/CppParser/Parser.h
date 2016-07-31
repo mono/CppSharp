@@ -82,6 +82,7 @@ private:
     Field* WalkFieldCXX(const clang::FieldDecl* FD, Class* Class);
     FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
     Variable* WalkVariable(const clang::VarDecl* VD);
+    void WalkVariable(const clang::VarDecl* VD, Variable* Var);
     Friend* WalkFriend(const clang::FriendDecl* FD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     bool ShouldCompleteType(const clang::QualType& QualType, bool LocValid);
@@ -95,6 +96,11 @@ private:
     TypeAliasTemplate* WalkTypeAliasTemplate(const clang::TypeAliasTemplateDecl* TD);
     ClassTemplate* WalkClassTemplate(const clang::ClassTemplateDecl* TD);
     FunctionTemplate* WalkFunctionTemplate(const clang::FunctionTemplateDecl* TD);
+    VarTemplate* WalkVarTemplate(const clang::VarTemplateDecl* VT);
+    VarTemplateSpecialization*
+    WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl* VTS);
+    VarTemplatePartialSpecialization*
+    WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpecializationDecl* VTS);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);

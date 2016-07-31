@@ -1425,6 +1425,108 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
 
     return FTS;
 }
+
+//-----------------------------------//
+
+VarTemplate* Parser::WalkVarTemplate(const clang::VarTemplateDecl* TD)
+{
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto USR = GetDeclUSR(TD);
+    auto VT = NS->FindTemplate<VarTemplate>(USR);
+    if (VT != nullptr)
+        return VT;
+
+    VT = new VarTemplate();
+    HandleDeclaration(TD, VT);
+
+    VT->Name = GetDeclName(TD);
+    VT->_Namespace = NS;
+    NS->Templates.push_back(VT);
+
+    auto RC = WalkVariable(TD->getTemplatedDecl());
+    VT->TemplatedDecl = RC;
+    VT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
+
+    return VT;
+}
+
+VarTemplateSpecialization*
+Parser::WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl* VTS)
+{
+    using namespace clang;
+
+    auto VT = WalkVarTemplate(VTS->getSpecializedTemplate());
+    auto USR = GetDeclUSR(VTS);
+    auto TS = VT->FindSpecialization(USR);
+    if (TS != nullptr)
+        return TS;
+
+    TS = new VarTemplateSpecialization();
+    HandleDeclaration(VTS, TS);
+
+    auto NS = GetNamespace(VTS);
+    assert(NS && "Expected a valid namespace");
+    TS->_Namespace = NS;
+    TS->Name = VTS->getName();
+    TS->TemplatedDecl = VT;
+    TS->SpecializationKind = WalkTemplateSpecializationKind(VTS->getSpecializationKind());
+    VT->Specializations.push_back(TS);
+
+    auto& TAL = VTS->getTemplateArgs();
+    auto TSI = VTS->getTypeAsWritten();
+    if (TSI)
+    {
+        auto TL = TSI->getTypeLoc();
+        auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
+        TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+    }
+    else
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, (clang::TemplateSpecializationTypeLoc*) 0);
+    }
+
+    WalkVariable(VTS, TS);
+
+    return TS;
+}
+
+VarTemplatePartialSpecialization*
+Parser::WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpecializationDecl* VTS)
+{
+    using namespace clang;
+
+    auto VT = WalkVarTemplate(VTS->getSpecializedTemplate());
+    auto USR = GetDeclUSR(VTS);
+    auto TS = VT->FindPartialSpecialization(USR);
+    if (TS != nullptr)
+        return TS;
+
+    TS = new VarTemplatePartialSpecialization();
+    HandleDeclaration(VTS, TS);
+
+    auto NS = GetNamespace(VTS);
+    assert(NS && "Expected a valid namespace");
+    TS->_Namespace = NS;
+    TS->Name = VTS->getName();
+    TS->TemplatedDecl = VT;
+    TS->SpecializationKind = WalkTemplateSpecializationKind(VTS->getSpecializationKind());
+    VT->Specializations.push_back(TS);
+
+    auto& TAL = VTS->getTemplateArgs();
+    if (auto TSI = VTS->getTypeAsWritten())
+    {
+        auto TL = TSI->getTypeLoc();
+        auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
+        TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+    }
+
+    WalkVariable(VTS, TS);
+
+    return TS;
+}
+
 //-----------------------------------//
 
 static CXXMethodKind GetMethodKindFromDecl(clang::DeclarationName Name)
@@ -2803,22 +2905,11 @@ void Parser::WalkAST()
 
 //-----------------------------------//
 
-Variable* Parser::WalkVariable(const clang::VarDecl *VD)
+void Parser::WalkVariable(const clang::VarDecl* VD, Variable* Var)
 {
-    using namespace clang;
-
-    auto NS = GetNamespace(VD);
-    assert(NS && "Expected a valid namespace");
-
-    auto USR = GetDeclUSR(VD);
-    if (auto Var = NS->FindVariable(USR))
-       return Var;
-
-    auto Var = new Variable();
     HandleDeclaration(VD, Var);
 
     Var->Name = VD->getName();
-    Var->_Namespace = NS;
     Var->Access = ConvertToAccess(VD->getAccess());
 
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
@@ -2826,6 +2917,19 @@ Variable* Parser::WalkVariable(const clang::VarDecl *VD)
 
     auto Mangled = GetDeclMangledName(VD);
     Var->Mangled = Mangled;
+}
+
+Variable* Parser::WalkVariable(const clang::VarDecl *VD)
+{
+    using namespace clang;
+
+    auto NS = GetNamespace(VD);
+    assert(NS && "Expected a valid namespace");
+
+    auto Var = new Variable();
+    Var->_Namespace = NS;
+
+    WalkVariable(VD, Var);
 
     NS->Variables.push_back(Var);
 
@@ -3284,6 +3388,30 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         Decl = FT;
         break;
     }
+    case Decl::VarTemplate:
+    {
+        auto TD = cast<VarTemplateDecl>(D);
+        auto Template = WalkVarTemplate(TD);
+
+        Decl = Template;
+        break;
+    }
+    case Decl::VarTemplateSpecialization:
+    {
+        auto TS = cast<VarTemplateSpecializationDecl>(D);
+        auto CT = WalkVarTemplateSpecialization(TS);
+
+        Decl = CT;
+        break;
+    }
+    case Decl::VarTemplatePartialSpecialization:
+    {
+        auto TS = cast<VarTemplatePartialSpecializationDecl>(D);
+        auto CT = WalkVarTemplatePartialSpecialization(TS);
+
+        Decl = CT;
+        break;
+    }
     case Decl::TypeAliasTemplate:
     {
         auto TD = cast<TypeAliasTemplateDecl>(D);
@@ -3439,11 +3567,14 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
         break;
+    case Decl::PragmaComment:
+    case Decl::PragmaDetectMismatch:
     case Decl::Empty:
     case Decl::AccessSpec:
     case Decl::Using:
     case Decl::UsingDirective:
     case Decl::UsingShadow:
+    case Decl::ConstructorUsingShadow:
     case Decl::UnresolvedUsingTypename:
     case Decl::UnresolvedUsingValue:
     case Decl::IndirectField:

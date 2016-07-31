@@ -400,7 +400,10 @@ enum class DeclarationKind
     Friend,
     TemplateTemplateParm,
     TemplateTypeParm,
-    NonTypeTemplateParm
+    NonTypeTemplateParm,
+    VarTemplate,
+    VarTemplateSpecialization,
+    VarTemplatePartialSpecialization,
 };
 
 #define DECLARE_DECL_KIND(klass, kind) \
@@ -502,18 +505,6 @@ public:
 
     bool IsAnonymous;
 };
-
-template<typename T>
-T* DeclarationContext::FindTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; });
-
-    if (foundTemplate != Templates.end())
-        return static_cast<T*>(*foundTemplate);
-
-    return nullptr;
-}
 
 class CS_API TypedefNameDecl : public Declaration
 {
@@ -824,6 +815,18 @@ public:
     VECTOR(Declaration*, Parameters)
 };
 
+template<typename T>
+T* DeclarationContext::FindTemplate(const std::string& USR)
+{
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->USR == USR; });
+
+    if (foundTemplate != Templates.end())
+        return static_cast<T*>(*foundTemplate);
+
+    return nullptr;
+}
+
 class CS_API TypeAliasTemplate : public Template
 {
 public:
@@ -932,6 +935,36 @@ public:
     VECTOR(TemplateArgument, Arguments)
     Function* SpecializedFunction;
     TemplateSpecializationKind SpecializationKind;
+};
+
+class VarTemplateSpecialization;
+class VarTemplatePartialSpecialization;
+
+class CS_API VarTemplate : public Template
+{
+public:
+    VarTemplate();
+    ~VarTemplate();
+    VECTOR(VarTemplateSpecialization*, Specializations)
+    VarTemplateSpecialization* FindSpecialization(const std::string& usr);
+    VarTemplatePartialSpecialization* FindPartialSpecialization(const std::string& usr);
+};
+
+class CS_API VarTemplateSpecialization : public Variable
+{
+public:
+    VarTemplateSpecialization();
+    ~VarTemplateSpecialization();
+    VarTemplate* TemplatedDecl;
+    VECTOR(TemplateArgument, Arguments)
+    TemplateSpecializationKind SpecializationKind;
+};
+
+class CS_API VarTemplatePartialSpecialization : public VarTemplateSpecialization
+{
+public:
+    VarTemplatePartialSpecialization();
+    ~VarTemplatePartialSpecialization();
 };
 
 class CS_API Namespace : public DeclarationContext

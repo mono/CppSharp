@@ -785,6 +785,52 @@ FunctionTemplateSpecialization::~FunctionTemplateSpecialization()
 
 DEF_VECTOR(FunctionTemplateSpecialization, TemplateArgument, Arguments)
 
+VarTemplate::VarTemplate() : Template(DeclarationKind::VarTemplate) {}
+
+VarTemplate::~VarTemplate() {}
+
+DEF_VECTOR(VarTemplate, VarTemplateSpecialization*, Specializations)
+
+VarTemplateSpecialization* VarTemplate::FindSpecialization(const std::string& usr)
+{
+    auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
+        [&](VarTemplateSpecialization* cts) { return cts->USR == usr; });
+
+    if (foundSpec != Specializations.end())
+        return static_cast<VarTemplateSpecialization*>(*foundSpec);
+
+    return nullptr;
+}
+
+VarTemplatePartialSpecialization* VarTemplate::FindPartialSpecialization(const std::string& usr)
+{
+    auto foundSpec = FindSpecialization(usr);
+    if (foundSpec != nullptr)
+        return static_cast<VarTemplatePartialSpecialization*>(foundSpec);
+    return nullptr;
+}
+
+VarTemplateSpecialization::VarTemplateSpecialization()
+    : Variable()
+    , TemplatedDecl(0)
+{
+    Kind = DeclarationKind::VarTemplateSpecialization;
+}
+
+VarTemplateSpecialization::~VarTemplateSpecialization() {}
+
+DEF_VECTOR(VarTemplateSpecialization, TemplateArgument, Arguments)
+
+VarTemplatePartialSpecialization::VarTemplatePartialSpecialization()
+    : VarTemplateSpecialization()
+{
+    Kind = DeclarationKind::VarTemplatePartialSpecialization;
+}
+
+VarTemplatePartialSpecialization::~VarTemplatePartialSpecialization()
+{
+}
+
 Namespace::Namespace() 
     : DeclarationContext(DeclarationKind::Namespace)
     , IsInline(false) 

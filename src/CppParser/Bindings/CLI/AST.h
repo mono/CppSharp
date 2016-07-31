@@ -102,6 +102,9 @@ namespace CppSharp
             ref class VFTableInfo;
             ref class VTableComponent;
             ref class VTableLayout;
+            ref class VarTemplate;
+            ref class VarTemplatePartialSpecialization;
+            ref class VarTemplateSpecialization;
             ref class Variable;
             ref class VerbatimBlockComment;
             ref class VerbatimBlockLineComment;
@@ -164,7 +167,10 @@ namespace CppSharp
                 Friend = 23,
                 TemplateTemplateParm = 24,
                 TemplateTypeParm = 25,
-                NonTypeTemplateParm = 26
+                NonTypeTemplateParm = 26,
+                VarTemplate = 27,
+                VarTemplateSpecialization = 28,
+                VarTemplatePartialSpecialization = 29
             };
 
             public enum struct AccessSpecifier
@@ -2535,6 +2541,79 @@ namespace CppSharp
 
                 protected:
                 bool __ownsNativeInstance;
+            };
+
+            public ref class VarTemplate : CppSharp::Parser::AST::Template
+            {
+            public:
+
+                VarTemplate(::CppSharp::CppParser::AST::VarTemplate* native);
+                static VarTemplate^ __CreateInstance(::System::IntPtr native);
+                VarTemplate();
+
+                VarTemplate(CppSharp::Parser::AST::VarTemplate^ _0);
+
+                ~VarTemplate();
+
+                property unsigned int SpecializationsCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::VarTemplateSpecialization^ getSpecializations(unsigned int i);
+
+                void addSpecializations(CppSharp::Parser::AST::VarTemplateSpecialization^ s);
+
+                void clearSpecializations();
+            };
+
+            public ref class VarTemplateSpecialization : CppSharp::Parser::AST::Variable
+            {
+            public:
+
+                VarTemplateSpecialization(::CppSharp::CppParser::AST::VarTemplateSpecialization* native);
+                static VarTemplateSpecialization^ __CreateInstance(::System::IntPtr native);
+                VarTemplateSpecialization();
+
+                VarTemplateSpecialization(CppSharp::Parser::AST::VarTemplateSpecialization^ _0);
+
+                ~VarTemplateSpecialization();
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                property CppSharp::Parser::AST::VarTemplate^ TemplatedDecl
+                {
+                    CppSharp::Parser::AST::VarTemplate^ get();
+                    void set(CppSharp::Parser::AST::VarTemplate^);
+                }
+
+                property CppSharp::Parser::AST::TemplateSpecializationKind SpecializationKind
+                {
+                    CppSharp::Parser::AST::TemplateSpecializationKind get();
+                    void set(CppSharp::Parser::AST::TemplateSpecializationKind);
+                }
+
+                CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::TemplateArgument^ s);
+
+                void clearArguments();
+            };
+
+            public ref class VarTemplatePartialSpecialization : CppSharp::Parser::AST::VarTemplateSpecialization
+            {
+            public:
+
+                VarTemplatePartialSpecialization(::CppSharp::CppParser::AST::VarTemplatePartialSpecialization* native);
+                static VarTemplatePartialSpecialization^ __CreateInstance(::System::IntPtr native);
+                VarTemplatePartialSpecialization();
+
+                VarTemplatePartialSpecialization(CppSharp::Parser::AST::VarTemplatePartialSpecialization^ _0);
+
+                ~VarTemplatePartialSpecialization();
             };
 
             public ref class Namespace : CppSharp::Parser::AST::DeclarationContext
