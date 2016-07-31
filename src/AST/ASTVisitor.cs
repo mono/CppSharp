@@ -311,11 +311,6 @@ namespace CppSharp.AST
             return true;
         }
 
-        public virtual bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
-        {
-            return VisitClassDecl(specialization);
-        }
-
         public virtual bool VisitFieldDecl(Field field)
         {
             if (!VisitDeclaration(field))
@@ -440,7 +435,14 @@ namespace CppSharp.AST
             foreach (var specialization in template.Specializations)
                 specialization.Visit(this);
 
+            template.TemplatedClass.Visit(this);
+
             return true;
+        }
+
+        public virtual bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            return VisitClassDecl(specialization);
         }
 
         public virtual bool VisitFunctionTemplateDecl(FunctionTemplate template)
@@ -451,7 +453,17 @@ namespace CppSharp.AST
             foreach (var templateParameter in template.Parameters)
                 templateParameter.Visit(this);
 
-            return template.TemplatedFunction.Visit(this);
+            foreach (var specialization in template.Specializations)
+                specialization.Visit(this);
+
+            template.TemplatedFunction.Visit(this);
+
+            return true;
+        }
+
+        public virtual bool VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
+        {
+            return specialization.SpecializedFunction.Visit(this);
         }
 
         public virtual bool VisitMacroDefinition(MacroDefinition macro)

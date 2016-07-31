@@ -372,5 +372,10 @@ namespace CppSharp.AST
             SpecializedFunction = fts.SpecializedFunction;
             SpecializationKind = fts.SpecializationKind;
         }
+
+        public T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitFunctionTemplateSpecializationDecl(this);
+        }
     }
 }
