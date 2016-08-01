@@ -1143,7 +1143,9 @@ namespace CppSharp.Generators.CSharp
                 {
                     var final = field.Type.GetFinalPointee().Desugar();
                     if (final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
-                        !final.IsPrimitiveType(PrimitiveType.Char))
+                        (!final.IsPrimitiveType(PrimitiveType.Char) ||
+                         (!Driver.Options.MarshalCharAsManagedChar &&
+                          !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)))
                         @return = string.Format("({0}*) {1}", field.Type.GetPointee().Desugar(), @return);
                 }
                 WriteLine("return {0};", @return);

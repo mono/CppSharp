@@ -90,7 +90,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Alloc_construct
+    public unsafe partial class _Has_no_alloc_construct_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct Internal
@@ -98,7 +98,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Alloc_destroy
+    public unsafe partial class _Has_no_alloc_destroy_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct Internal

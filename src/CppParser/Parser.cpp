@@ -3172,8 +3172,11 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     case Stmt::ImplicitCastExprClass:
         return WalkExpression(cast<CastExpr>(Expr)->getSubExprAsWritten());
     case Stmt::CXXOperatorCallExprClass:
+    {
+        auto OperatorCallExpr = cast<CXXOperatorCallExpr>(Expr);
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
-            WalkDeclaration(cast<CXXOperatorCallExpr>(Expr)->getCalleeDecl()));
+            OperatorCallExpr->getCalleeDecl() ? WalkDeclaration(OperatorCallExpr->getCalleeDecl()) : 0);
+    }
     case Stmt::CXXConstructExprClass:
     case Stmt::CXXTemporaryObjectExprClass:
     {

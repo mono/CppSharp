@@ -170,7 +170,7 @@ namespace std
             {
                 get
                 {
-                    return ((Internal*) __Instance)->_M_p;
+                    return (sbyte*) ((Internal*) __Instance)->_M_p;
                 }
 
                 set
