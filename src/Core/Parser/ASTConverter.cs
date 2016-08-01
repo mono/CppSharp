@@ -210,6 +210,21 @@ namespace CppSharp
                         var _decl = Variable.__CreateInstance(decl.__Instance);
                         return VisitVariable(_decl);
                     }
+                case DeclarationKind.VarTemplate:
+                    {
+                        var _decl = VarTemplate.__CreateInstance(decl.__Instance);
+                        return VisitVarTemplate(_decl);
+                    }
+                case DeclarationKind.VarTemplateSpecialization:
+                    {
+                        var _decl = VarTemplateSpecialization.__CreateInstance(decl.__Instance);
+                        return VisitVarTemplateSpecialization(_decl);
+                    }
+                case DeclarationKind.VarTemplatePartialSpecialization:
+                    {
+                        var _decl = VarTemplatePartialSpecialization.__CreateInstance(decl.__Instance);
+                        return VisitVarTemplatePartialSpecialization(_decl);
+                    }
                 case DeclarationKind.Friend:
                     {
                         var _decl = Friend.__CreateInstance(decl.__Instance);
