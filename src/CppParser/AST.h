@@ -258,6 +258,8 @@ enum class PrimitiveType
     WideChar,
     Char,
     UChar,
+    Char16,
+    Char32,
     Short,
     UShort,
     Int,
@@ -266,9 +268,13 @@ enum class PrimitiveType
     ULong,
     LongLong,
     ULongLong,
+    Int128,
+    UInt128,
+    Half,
     Float,
     Double,
     LongDouble,
+    Float128,
     IntPtr
 };
 

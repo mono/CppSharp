@@ -1015,6 +1015,8 @@ namespace CppSharp.AST
         WideChar,
         Char,
         UChar,
+        Char16,
+        Char32,
         Short,
         UShort,
         Int,
@@ -1023,12 +1025,15 @@ namespace CppSharp.AST
         ULong,
         LongLong,
         ULongLong,
+        Int128,
+        UInt128,
+        Half,
         Float,
         Double,
         LongDouble,
+        Float128,
         IntPtr,
         UIntPtr,
-        Char16
     }
 
     /// <summary>

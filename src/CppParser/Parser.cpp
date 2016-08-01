@@ -1876,6 +1876,9 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
     case clang::BuiltinType::WChar_S:
     case clang::BuiltinType::WChar_U: return PrimitiveType::WideChar;
 
+    case clang::BuiltinType::Char16: return PrimitiveType::Char16;
+    case clang::BuiltinType::Char32: return PrimitiveType::Char32;
+
     case clang::BuiltinType::Short: return PrimitiveType::Short;
     case clang::BuiltinType::UShort: return PrimitiveType::UShort;
 
@@ -1888,9 +1891,14 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
     case clang::BuiltinType::LongLong: return PrimitiveType::LongLong;
     case clang::BuiltinType::ULongLong: return PrimitiveType::ULongLong;
 
+    case clang::BuiltinType::Int128: return PrimitiveType::Int128;
+    case clang::BuiltinType::UInt128: return PrimitiveType::UInt128;
+
+    case clang::BuiltinType::Half: return PrimitiveType::Half;
     case clang::BuiltinType::Float: return PrimitiveType::Float;
     case clang::BuiltinType::Double: return PrimitiveType::Double;
     case clang::BuiltinType::LongDouble: return PrimitiveType::LongDouble;
+    case clang::BuiltinType::Float128: return PrimitiveType::Half;
 
     case clang::BuiltinType::NullPtr: return PrimitiveType::Null;
 

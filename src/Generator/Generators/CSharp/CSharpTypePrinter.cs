@@ -544,6 +544,7 @@ namespace CppSharp.Generators.CSharp
                         "byte" : "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
+                case PrimitiveType.Char32:
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't

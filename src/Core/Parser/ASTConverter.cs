@@ -673,6 +673,10 @@ namespace CppSharp
                     return AST.PrimitiveType.Char;
                 case PrimitiveType.UChar:
                     return AST.PrimitiveType.UChar;
+                case PrimitiveType.Char16:
+                    return AST.PrimitiveType.Char16;
+                case PrimitiveType.Char32:
+                    return AST.PrimitiveType.Char32;
                 case PrimitiveType.Short:
                     return AST.PrimitiveType.Short;
                 case PrimitiveType.UShort:
@@ -689,12 +693,20 @@ namespace CppSharp
                     return AST.PrimitiveType.LongLong;
                 case PrimitiveType.ULongLong:
                     return AST.PrimitiveType.ULongLong;
+                case PrimitiveType.Int128:
+                    return AST.PrimitiveType.Int128;
+                case PrimitiveType.UInt128:
+                    return AST.PrimitiveType.UInt128;
+                case PrimitiveType.Half:
+                    return AST.PrimitiveType.Half;
                 case PrimitiveType.Float:
                     return AST.PrimitiveType.Float;
                 case PrimitiveType.Double:
                     return AST.PrimitiveType.Double;
                 case PrimitiveType.LongDouble:
                     return AST.PrimitiveType.LongDouble;
+                case PrimitiveType.Float128:
+                    return AST.PrimitiveType.Float128;
                 case PrimitiveType.IntPtr:
                     return AST.PrimitiveType.IntPtr;
                 default:

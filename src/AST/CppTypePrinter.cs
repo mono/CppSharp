@@ -103,7 +103,8 @@ namespace CppSharp.AST
             {
                 case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
-                case PrimitiveType.Char16:
+                case PrimitiveType.Char16: return "char16_t";
+                case PrimitiveType.Char32: return "char32_t";
                 case PrimitiveType.WideChar: return "wchar_t";
                 case PrimitiveType.Char: return "char";
                 case PrimitiveType.UChar: return "unsigned char";
@@ -115,9 +116,13 @@ namespace CppSharp.AST
                 case PrimitiveType.ULong: return "unsigned long";
                 case PrimitiveType.LongLong: return "long long";
                 case PrimitiveType.ULongLong: return "unsigned long long";
+                case PrimitiveType.Int128: return "__int128_t";
+                case PrimitiveType.UInt128: return "__uint128_t";
+                case PrimitiveType.Half: return "__fp16";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.LongDouble: return "long double";
+                case PrimitiveType.Float128: return "__float128";
                 case PrimitiveType.IntPtr: return "void*";
                 case PrimitiveType.UIntPtr: return "uintptr_t";
                 case PrimitiveType.Null: return "std::nullptr_t";
