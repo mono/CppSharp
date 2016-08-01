@@ -1,6 +1,4 @@
-﻿using CppSharp.AST;
-
-namespace CppSharp.Types
+﻿namespace CppSharp.AST
 {
     public interface IExpressionPrinter
     {
