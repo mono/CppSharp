@@ -25,7 +25,7 @@ namespace CppSharp.Passes
             template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
             // store all spesializations in the real template class because ClassTemplateDecl only forwards
             foreach (var specialization in template.Specializations.Where(
-                s => !template.TemplatedClass.Specializations.Contains(s)))
+                s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
                 template.TemplatedClass.Specializations.Add(specialization);
 
             return true;

@@ -1103,7 +1103,19 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
     }
 
     if (CTS->isCompleteDefinition())
+    {
         WalkRecordCXX(CTS, TS);
+    }
+    else
+    {
+        TS->IsIncomplete = true;
+        if (CTS->getDefinition())
+        {
+            auto Complete = WalkDeclaration(CTS->getDefinition(), /*CanBeDefinition=*/true);
+            if (!Complete->IsIncomplete)
+                TS->CompleteDeclaration = Complete;
+        }
+    }
 
     return TS;
 }
@@ -1141,7 +1153,19 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
     }
 
     if (CTS->isCompleteDefinition())
+    {
         WalkRecordCXX(CTS, TS);
+    }
+    else
+    {
+        TS->IsIncomplete = true;
+        if (CTS->getDefinition())
+        {
+            auto Complete = WalkDeclaration(CTS->getDefinition(), /*CanBeDefinition=*/true);
+            if (!Complete->IsIncomplete)
+                TS->CompleteDeclaration = Complete;
+        }
+    }
 
     return TS;
 }

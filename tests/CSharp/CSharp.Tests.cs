@@ -537,9 +537,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
             {
                 typeof(CSharp.IndependentFields.Internal),
                 typeof(CSharp.DependentValueFields.Internal_bool),
-                typeof(CSharp.DependentValueFields.Internal_float),
+                //typeof(CSharp.DependentValueFields.Internal_float),
                 typeof(CSharp.DependentPointerFields.Internal),
-                typeof(CSharp.DependentValueFields.Internal_Ptr),
+                //typeof(CSharp.DependentValueFields.Internal_Ptr),
                 typeof(CSharp.HasDefaultTemplateArgument.Internal_int_IndependentFields_int)
             })
         {
@@ -548,11 +548,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
             var fieldOffset = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
             Assert.That(fieldOffset.Value, Is.EqualTo(0));
         }
-        foreach (var internalType in new[]
+        foreach (var internalType in new Type[]
             {
-                typeof(CSharp.TwoTemplateArgs.Internal_Ptr),
-                typeof(CSharp.TwoTemplateArgs.Internal_intPtr_int),
-                typeof(CSharp.TwoTemplateArgs.Internal_intPtr_float)
+                //typeof(CSharp.TwoTemplateArgs.Internal_Ptr),
+                //typeof(CSharp.TwoTemplateArgs.Internal_intPtr_int),
+                //typeof(CSharp.TwoTemplateArgs.Internal_intPtr_float)
             })
         {
             var independentFields = internalType.GetFields();
