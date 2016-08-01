@@ -84,7 +84,7 @@ function http.progress (total, curr)
   ratio = math.min(math.max(ratio, 0), 1);
 
   local percent = math.floor(ratio * 100);
-  print("Download progress (" .. percent .. "%/100%)")
+  io.write("Download progress (" .. percent .. "%/100%)\r")
 end
 
 function download(url, file)
