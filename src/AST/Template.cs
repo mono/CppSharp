@@ -306,6 +306,12 @@ namespace CppSharp.AST
         {
             return visitor.VisitClassTemplateSpecializationDecl(this);
         }
+
+        public override string ToString()
+        {
+            var args = string.Join(", ", Arguments.Select(a => a.ToString()));
+            return string.Format("{0}<{1}> [{2}]", OriginalName, args, SpecializationKind);
+        }
     }
 
     /// <summary>

@@ -26,6 +26,12 @@ namespace CppSharp.AST
         public abstract T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals
             = new TypeQualifiers());
 
+        public string ToNativeString()
+        {
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            return Visit(cppTypePrinter);
+        }
+
         public override string ToString()
         {
             return TypePrinterDelegate(this);
@@ -591,13 +597,30 @@ namespace CppSharp.AST
             case ArgumentKind.Expression:
                 return true;
             default:
-                throw new Exception("Unknowed TemplateArgument Kind");
+                throw new Exception("Unknown TemplateArgument Kind");
             }
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            switch (Kind)
+            {
+                case ArgumentKind.Type:
+                    return Type.ToString();
+                case ArgumentKind.Declaration:
+                    return Declaration.ToString();
+                case ArgumentKind.Integral:
+                    return Integral.ToString();
+                case ArgumentKind.Expression:
+                    return string.Empty;
+                default:
+                    throw new Exception("Unknown TemplateArgument Kind");
+            }
         }
     }
 
