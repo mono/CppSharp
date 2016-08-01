@@ -6,7 +6,6 @@
 ************************************************************************/
 
 #include "AST.h"
-#include <algorithm>
 #include <string>
 #include <vector>
 #include <llvm/ADT/SmallString.h>
@@ -479,44 +478,6 @@ Function* DeclarationContext::FindFunction(const std::string& USR)
     return nullptr;
 }
 
-ClassTemplate*
-DeclarationContext::FindClassTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; });
-
-    if (foundTemplate != Templates.end())
-        return static_cast<ClassTemplate*>(*foundTemplate);
-
-    return nullptr;
-}
-
-TypeAliasTemplate*
-DeclarationContext::FindTypeAliasTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; }
-    );
-
-    if (foundTemplate != Templates.end())
-        return static_cast<TypeAliasTemplate*>(*foundTemplate);
-
-    return nullptr;
-}
-
-FunctionTemplate*
-DeclarationContext::FindFunctionTemplate(const std::string& USR)
-{
-    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->USR == USR; }
-    );
-
-    if (foundTemplate != Templates.end())
-        return static_cast<FunctionTemplate*>(*foundTemplate);
-
-    return nullptr;
-}
-
 TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Create)
 {
     auto foundTypedef = std::find_if(Typedefs.begin(), Typedefs.end(),
@@ -822,6 +783,52 @@ FunctionTemplateSpecialization::~FunctionTemplateSpecialization()
 }
 
 DEF_VECTOR(FunctionTemplateSpecialization, TemplateArgument, Arguments)
+
+VarTemplate::VarTemplate() : Template(DeclarationKind::VarTemplate) {}
+
+VarTemplate::~VarTemplate() {}
+
+DEF_VECTOR(VarTemplate, VarTemplateSpecialization*, Specializations)
+
+VarTemplateSpecialization* VarTemplate::FindSpecialization(const std::string& usr)
+{
+    auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
+        [&](VarTemplateSpecialization* cts) { return cts->USR == usr; });
+
+    if (foundSpec != Specializations.end())
+        return static_cast<VarTemplateSpecialization*>(*foundSpec);
+
+    return nullptr;
+}
+
+VarTemplatePartialSpecialization* VarTemplate::FindPartialSpecialization(const std::string& usr)
+{
+    auto foundSpec = FindSpecialization(usr);
+    if (foundSpec != nullptr)
+        return static_cast<VarTemplatePartialSpecialization*>(foundSpec);
+    return nullptr;
+}
+
+VarTemplateSpecialization::VarTemplateSpecialization()
+    : Variable()
+    , TemplatedDecl(0)
+{
+    Kind = DeclarationKind::VarTemplateSpecialization;
+}
+
+VarTemplateSpecialization::~VarTemplateSpecialization() {}
+
+DEF_VECTOR(VarTemplateSpecialization, TemplateArgument, Arguments)
+
+VarTemplatePartialSpecialization::VarTemplatePartialSpecialization()
+    : VarTemplateSpecialization()
+{
+    Kind = DeclarationKind::VarTemplatePartialSpecialization;
+}
+
+VarTemplatePartialSpecialization::~VarTemplatePartialSpecialization()
+{
+}
 
 Namespace::Namespace() 
     : DeclarationContext(DeclarationKind::Namespace)

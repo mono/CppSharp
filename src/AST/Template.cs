@@ -372,5 +372,64 @@ namespace CppSharp.AST
             SpecializedFunction = fts.SpecializedFunction;
             SpecializationKind = fts.SpecializationKind;
         }
+
+        public T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitFunctionTemplateSpecializationDecl(this);
+        }
+    }
+
+    /// <summary>
+    /// Represents a declaration of a variable template.
+    /// </summary>
+    public class VarTemplate : Template
+    {
+        public List<VarTemplateSpecialization> Specializations;
+
+        public Variable TemplatedVariable
+        {
+            get { return TemplatedDecl as Variable; }
+        }
+
+        public VarTemplate()
+        {
+            Specializations = new List<VarTemplateSpecialization>();
+        }
+
+        public VarTemplate(Variable var) : base(var)
+        {
+            Specializations = new List<VarTemplateSpecialization>();
+        }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitVarTemplateDecl(this);
+        }
+    }
+
+    /// <summary>
+    /// Represents a var template specialization, which refers to a var
+    /// template with a given set of template arguments.
+    /// </summary>
+    public class VarTemplateSpecialization : Variable
+    {
+        public VarTemplate TemplatedDecl;
+
+        public List<TemplateArgument> Arguments;
+
+        public TemplateSpecializationKind SpecializationKind;
+
+        public VarTemplateSpecialization()
+        {
+            Arguments = new List<TemplateArgument>();
+        }
+    }
+
+    /// <summary>
+    /// Represents a variable template partial specialization, which refers to
+    /// a variable template with a given partial set of template arguments.
+    /// </summary>
+    public class VarTemplatePartialSpecialization : VarTemplateSpecialization
+    {
     }
 }

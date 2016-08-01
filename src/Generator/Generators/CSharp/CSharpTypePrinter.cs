@@ -790,6 +790,21 @@ namespace CppSharp.Generators.CSharp
         {
             throw new NotImplementedException();
         }
+
+        public CSharpTypePrinterResult VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CSharpTypePrinterResult VisitVarTemplateDecl(VarTemplate template)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CSharpTypePrinterResult VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public static class CSharpTypePrinterExtensions

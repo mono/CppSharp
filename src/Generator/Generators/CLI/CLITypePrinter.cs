@@ -474,5 +474,20 @@ namespace CppSharp.Generators.CLI
         {
             throw new NotImplementedException();
         }
+
+        public string VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string VisitVarTemplateDecl(VarTemplate template)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
