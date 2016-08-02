@@ -164,11 +164,15 @@ namespace CppSharp.Types.Std
         {
             get
             {
-                var type = Type as TemplateSpecializationType;
-                var pointeeType = type.Arguments[0].Type;
-
+                var finalType = Type.GetFinalPointee() ?? Type;
+                var type = finalType as TemplateSpecializationType;
+                if (type == null)
+                {
+                    var injectedClassNameType = (InjectedClassNameType) finalType;
+                    type = (TemplateSpecializationType) injectedClassNameType.InjectedSpecializationType.Type;
+                }
                 var checker = new TypeIgnoreChecker(TypeMapDatabase);
-                pointeeType.Visit(checker);
+                type.Arguments[0].Type.Visit(checker);
 
                 return checker.IsIgnored;
             }

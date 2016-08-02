@@ -2562,16 +2562,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         auto UTT = new UnaryTransformType();
         auto Loc = TL->getAs<UnaryTransformTypeLoc>().getUnderlyingTInfo()->getTypeLoc();
-        if (UT->isSugared())
-        {
-            UTT->Desugared = GetQualifiedType(UT->desugar(), &Loc);
-            UTT->BaseType = GetQualifiedType(UT->getBaseType(), &Loc);
-        }
-        else
-        {
-            UTT->Desugared = GetQualifiedType(UT->getBaseType(), &Loc);
-            UTT->BaseType = GetQualifiedType(UT->getBaseType(), &Loc);
-        }
+        UTT->Desugared = GetQualifiedType(UT->isSugared() ? UT->desugar() : UT->getBaseType(), &Loc);
+        UTT->BaseType = GetQualifiedType(UT->getBaseType(), &Loc);
 
         Ty = UTT;
         break;
@@ -2733,6 +2725,27 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
     return true;
 }
 
+static clang::TypeLoc DesugarTypeLoc(const clang::TypeLoc& Loc)
+{
+    using namespace clang;
+
+    switch (Loc.getTypeLocClass())
+    {
+    case TypeLoc::TypeLocClass::Attributed:
+    {
+        auto ATL = Loc.getAs<AttributedTypeLoc>();
+        return ATL.getModifiedLoc();
+    }
+    case TypeLoc::TypeLocClass::Paren:
+    {
+        auto PTL = Loc.getAs<ParenTypeLoc>();
+        return PTL.getInnerLoc();
+    }
+    }
+
+    return Loc;
+}
+
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
                           bool IsDependent)
 {
@@ -2762,22 +2775,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())
     {
-        auto Loc = TSI->getTypeLoc();
-        switch (Loc.getTypeLocClass())
-        {
-        case TypeLoc::TypeLocClass::Attributed:
-        {
-            auto ATL = Loc.getAs<AttributedTypeLoc>();
-            Loc = ATL.getModifiedLoc();
-            break;
-        }
-        case TypeLoc::TypeLocClass::Paren:
-        {
-            auto PTL = Loc.getAs<ParenTypeLoc>();
-            Loc = PTL.getInnerLoc();
-            break;
-        }
-        }
+        auto Loc = DesugarTypeLoc(TSI->getTypeLoc());
         auto FTL = Loc.getAs<FunctionTypeLoc>();
         if (FTL)
         {

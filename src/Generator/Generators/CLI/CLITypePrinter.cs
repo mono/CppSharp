@@ -224,6 +224,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.IntPtr: return "IntPtr";
                 case PrimitiveType.UIntPtr: return "UIntPtr";
                 case PrimitiveType.Null: return "void*";
+                case PrimitiveType.Int128: return "__int128";
             }
 
             throw new NotSupportedException();
@@ -269,7 +270,7 @@ namespace CppSharp.Generators.CLI
                 return string.Empty;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(template, out typeMap) && !typeMap.IsIgnored)
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
