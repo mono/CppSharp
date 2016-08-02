@@ -27,7 +27,7 @@ namespace CppSharp.Passes
             if (!unit.IsValid)
                 return false;
 
-            if (unit.IsSystemHeader)
+            if (!Driver.Options.IsCLIGenerator && unit.IsSystemHeader)
                 unit.ExplicitlyIgnore();
 
             if (ClearVisitedDeclarations)
@@ -40,7 +40,8 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            if (decl.Namespace != null && decl.TranslationUnit.IsSystemHeader)
+            if (!Driver.Options.IsCLIGenerator &&
+                decl.Namespace != null && decl.TranslationUnit.IsSystemHeader)
                 decl.ExplicitlyIgnore();
             return base.VisitDeclaration(decl);
         }

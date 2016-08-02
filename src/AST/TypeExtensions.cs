@@ -129,7 +129,7 @@
                     if (type.Template is TypeAliasTemplate)
                     {
                         Class @class;
-                        type.Desugared.TryGetClass(out @class);
+                        type.Desugared.Type.TryGetClass(out @class);
                         decl = @class as T;
                         return decl != null;
                     }
@@ -148,7 +148,7 @@
                     if (templateTemplateParameter != null)
                         return (decl = templateTemplateParameter.TemplatedDecl as T) != null;
                 }
-                tagType = (TagType) type.Desugared;
+                tagType = (TagType) type.Desugared.Type;
             }
             else
             {

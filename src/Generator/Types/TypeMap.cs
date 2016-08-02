@@ -196,15 +196,12 @@ namespace CppSharp.Types
             }
 
             var typedef = decl as TypedefDecl;
-            if (typedef != null)
-                return FindTypeMap(typedef.Type, out typeMap);
-
-            return false;
+            return typedef != null && FindTypeMap(typedef.Type, out typeMap);
         }
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
-            var typePrinter = new CppTypePrinter { PrintLogicalNames = true };
+            var typePrinter = new CppTypePrinter(false, false) { PrintLogicalNames = true };
 
             var template = type as TemplateSpecializationType;
             if (template != null)
@@ -223,6 +220,12 @@ namespace CppSharp.Types
                 return true;
             }
 
+            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
             typePrinter.PrintScopeKind = CppTypePrintScopeKind.Qualified;
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
@@ -230,7 +233,8 @@ namespace CppSharp.Types
                 return true;
             }
 
-            return false;
+            var typedef = type as TypedefType;
+            return typedef != null && FindTypeMap(typedef.Declaration, type, out typeMap);
         }
 
         public bool FindTypeMap(Declaration decl, out TypeMap typeMap)

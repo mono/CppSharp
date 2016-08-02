@@ -144,7 +144,7 @@ NonTypeTemplateParameter::~NonTypeTemplateParameter() {}
 TemplateArgument::TemplateArgument() : Declaration(0), Integral(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
-    : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+    : Type(TypeKind::TemplateSpecialization), Template(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType(
     const TemplateSpecializationType& rhs) : Type(rhs),
@@ -155,7 +155,7 @@ TemplateSpecializationType::~TemplateSpecializationType() {}
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
 DependentTemplateSpecializationType::DependentTemplateSpecializationType()
-    : Type(TypeKind::DependentTemplateSpecialization), Desugared(0) {}
+    : Type(TypeKind::DependentTemplateSpecialization) {}
 
 DependentTemplateSpecializationType::DependentTemplateSpecializationType(
     const DependentTemplateSpecializationType& rhs) : Type(rhs),
@@ -178,9 +178,11 @@ InjectedClassNameType::InjectedClassNameType()
 {
 }
 
-DependentNameType::DependentNameType() : Type(TypeKind::DependentName), Desugared(0) {}
+DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
 PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
+
+UnaryTransformType::UnaryTransformType() : Type(TypeKind::UnaryTransform) {}
 
 BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
 

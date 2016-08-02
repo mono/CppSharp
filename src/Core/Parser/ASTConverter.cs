@@ -27,6 +27,7 @@ namespace CppSharp
         public abstract TRet VisitDependentName(DependentNameType type);
         public abstract TRet VisitBuiltin(BuiltinType type);
         public abstract TRet VisitPackExpansion(PackExpansionType type);
+        public abstract TRet VisitUnaryTransform(UnaryTransformType type);
 
         public TRet Visit(Parser.AST.Type type)
         {
@@ -114,6 +115,11 @@ namespace CppSharp
                 {
                     var _type = PackExpansionType.__CreateInstance(type.__Instance);
                     return VisitPackExpansion(_type);
+                }
+                case TypeKind.UnaryTransform:
+                {
+                    var _type = UnaryTransformType.__CreateInstance(type.__Instance);
+                    return VisitUnaryTransform(_type);
                 }
             }
 
@@ -600,7 +606,7 @@ namespace CppSharp
             }
 
             _type.Template = declConverter.Visit(type.Template) as AST.Template;
-            _type.Desugared = Visit(type.Desugared);
+            _type.Desugared = VisitQualified(type.Desugared);
 
             VisitType(type, _type);
 
@@ -619,7 +625,7 @@ namespace CppSharp
                 _type.Arguments.Add(_arg);
             }
 
-            _type.Desugared = Visit(type.Desugared);
+            _type.Desugared = VisitQualified(type.Desugared);
 
             VisitType(type, _type);
 
@@ -659,8 +665,7 @@ namespace CppSharp
         {
             var _type = new AST.DependentNameType();
             VisitType(type, _type);
-            if (type.Desugared != null)
-                _type.Desugared = Visit(type.Desugared);
+            _type.Desugared = VisitQualified(type.Desugared);
             return _type;
         }
 
@@ -731,9 +736,17 @@ namespace CppSharp
 
         public override AST.Type VisitPackExpansion(PackExpansionType type)
         {
-            var _type = new CppSharp.AST.PackExpansionType();
-            _type.IsDependent = type.IsDependent;
+            var _type = new AST.PackExpansionType();
             VisitType(type, _type);
+            return _type;
+        }
+
+        public override AST.Type VisitUnaryTransform(UnaryTransformType type)
+        {
+            var _type = new AST.UnaryTransformType();
+            VisitType(type, _type);
+            _type.Desugared = VisitQualified(type.Desugared);
+            _type.BaseType = VisitQualified(type.BaseType);
             return _type;
         }
     }

@@ -406,7 +406,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("FILE")]
+    [TypeMap("FILE", GeneratorKind = GeneratorKind.CSharp)]
     public class FILE : TypeMap
     {
         public override string CSharpSignature(CSharpTypePrinterContext ctx)

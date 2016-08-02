@@ -212,7 +212,7 @@ namespace CppSharp.AST
                 }
             }
 
-            if (template.Desugared != null)
+            if (template.Desugared.Type != null)
                 return template.Desugared.Visit(this);
 
             return false;
@@ -252,6 +252,11 @@ namespace CppSharp.AST
         }
 
         public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return true;
+        }
+
+        public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
         {
             return true;
         }

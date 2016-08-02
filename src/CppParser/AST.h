@@ -32,7 +32,8 @@ enum class TypeKind
     InjectedClassName,
     DependentName,
     PackExpansion,
-    Builtin
+    Builtin,
+    UnaryTransform
 };
 
 #define DECLARE_TYPE_KIND(kind) \
@@ -193,7 +194,7 @@ public:
 
     VECTOR(TemplateArgument, Arguments)
     CppSharp::CppParser::AST::Template* Template;
-    Type* Desugared;
+    QualifiedType Desugared;
 };
 
 class CS_API DependentTemplateSpecializationType : public Type
@@ -204,7 +205,7 @@ public:
     ~DependentTemplateSpecializationType();
 
     VECTOR(TemplateArgument, Arguments)
-    Type* Desugared;
+    QualifiedType Desugared;
 };
 
 class TypeTemplateParameter;
@@ -241,13 +242,21 @@ class CS_API DependentNameType : public Type
 {
 public:
     DECLARE_TYPE_KIND(DependentName)
-    Type* Desugared;
+    QualifiedType Desugared;
 };
 
 class CS_API PackExpansionType : public Type
 {
 public:
     DECLARE_TYPE_KIND(PackExpansion)
+};
+
+class CS_API UnaryTransformType : public Type
+{
+public:
+    DECLARE_TYPE_KIND(UnaryTransform)
+    QualifiedType Desugared;
+    QualifiedType BaseType;
 };
 
 enum class PrimitiveType

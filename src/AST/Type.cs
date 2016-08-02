@@ -646,14 +646,14 @@ namespace CppSharp.AST
                     Type = new QualifiedType((Type) t.Type.Type.Clone(), t.Type.Qualifiers)
                 }).ToList();
             Template = type.Template;
-            Desugared = (Type) type.Desugared.Clone();
+            Desugared = new QualifiedType((Type) type.Desugared.Type.Clone(), type.Desugared.Qualifiers);
         }
 
         public List<TemplateArgument> Arguments;
 
         public Template Template;
 
-        public Type Desugared;
+        public QualifiedType Desugared;
 
         public ClassTemplateSpecialization GetClassTemplateSpecialization()
         {
@@ -662,7 +662,7 @@ namespace CppSharp.AST
 
         private Declaration GetDeclaration()
         {
-            var finalType = Desugared.GetFinalPointee() ?? Desugared;
+            var finalType = Desugared.Type.GetFinalPointee() ?? Desugared.Type;
 
             var tagType = finalType as TagType;
             if (tagType != null)
@@ -725,12 +725,12 @@ namespace CppSharp.AST
                     Kind = t.Kind,
                     Type = new QualifiedType((Type) t.Type.Type.Clone(), t.Type.Qualifiers)
                 }).ToList();
-            Desugared = (Type) type.Desugared.Clone();
+            Desugared = new QualifiedType((Type) type.Desugared.Type.Clone(), type.Desugared.Qualifiers);
         }
 
         public List<TemplateArgument> Arguments;
 
-        public Type Desugared;
+        public QualifiedType Desugared;
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
@@ -919,7 +919,7 @@ namespace CppSharp.AST
         {
         }
 
-        public Type Desugared { get; set; }
+        public QualifiedType Desugared { get; set; }
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
@@ -999,6 +999,31 @@ namespace CppSharp.AST
         public override object Clone()
         {
             return new PackExpansionType(this);
+        }
+    }
+
+    public class UnaryTransformType : Type
+    {
+        public UnaryTransformType()
+        {
+        }
+
+        public UnaryTransformType(UnaryTransformType type)
+            : base(type)
+        {
+        }
+
+        public QualifiedType Desugared { get; set; }
+        public QualifiedType BaseType { get; set; }
+
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitUnaryTransformType(this, quals);
+        }
+
+        public override object Clone()
+        {
+            return new UnaryTransformType(this);
         }
     }
 
@@ -1130,6 +1155,7 @@ namespace CppSharp.AST
         T VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals);
         T VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals);
+        T VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
     }
 }

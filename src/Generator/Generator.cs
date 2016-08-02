@@ -75,11 +75,11 @@ namespace CppSharp.Generators
             if (Driver.Options.IsCSharpGenerator)
                 GenerateSingleTemplate(outputs);
             else
-                GenerateTemplates(outputs, units);
+                GenerateTemplates(outputs, units.Where(u => !u.IsSystemHeader));
             return outputs;
         }
 
-        private void GenerateTemplates(List<GeneratorOutput> outputs, List<TranslationUnit> units)
+        private void GenerateTemplates(List<GeneratorOutput> outputs, IEnumerable<TranslationUnit> units)
         {
             foreach (var unit in units)
             {

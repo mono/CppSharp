@@ -427,7 +427,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitDependentTemplateSpecializationType(
             DependentTemplateSpecializationType template, TypeQualifiers quals)
         {
-            if (template.Desugared != null)
+            if (template.Desugared.Type != null)
                 return template.Desugared.Visit(this);
             return string.Empty;
         }
@@ -461,7 +461,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals)
         {
-            return dependent.Desugared != null ? dependent.Desugared.Visit(this) : string.Empty;
+            return dependent.Desugared.Type != null ? dependent.Desugared.Visit(this) : string.Empty;
         }
 
         public CSharpTypePrinterResult VisitPackExpansionType(PackExpansionType type,
@@ -790,6 +790,13 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
         {
             throw new NotImplementedException();
+        }
+
+        public CSharpTypePrinterResult VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        {
+            if (unaryTransformType.Desugared.Type != null)
+                return unaryTransformType.Desugared.Visit(this);
+            return unaryTransformType.BaseType.Visit(this);
         }
 
         public CSharpTypePrinterResult VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)

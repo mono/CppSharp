@@ -18,10 +18,13 @@ namespace CppSharp.AST
         public bool PrintLogicalNames;
         public bool PrintTypeQualifiers;
 
-        public CppTypePrinter(bool printTypeQualifiers = true)
+        public bool PrintTypeModifiers { get; set; }
+
+        public CppTypePrinter(bool printTypeQualifiers = true, bool printTypeModifiers = true)
         {
             PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = printTypeQualifiers;
+            PrintTypeModifiers = printTypeModifiers;
         }
 
         public bool ResolveTypedefs { get; set; }
@@ -78,13 +81,10 @@ namespace CppSharp.AST
                 return string.Format("{0} (*)({1})", returnType.Visit(this), args);
             }
 
+            var qual = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
             var pointeeType = pointer.Pointee.Visit(this, quals);
-            var mod = ConvertModifierToString(pointer.Modifier);
-
-            var s = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
-            s += string.Format("{0}{1}", pointeeType, mod);
-
-            return s;
+            var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
+            return string.Format("{0}{1}{2}", qual, pointeeType, mod);
         }
 
         public string VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
@@ -164,7 +164,7 @@ namespace CppSharp.AST
         public string VisitDependentTemplateSpecializationType(
             DependentTemplateSpecializationType template, TypeQualifiers quals)
         {
-            if (template.Desugared != null)
+            if (template.Desugared.Type != null)
                 return template.Desugared.Visit(this);
             return string.Empty;
         }
@@ -190,12 +190,19 @@ namespace CppSharp.AST
 
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
-            return dependent.Desugared != null ? dependent.Desugared.Visit(this) : string.Empty;
+            return dependent.Desugared.Type != null ? dependent.Desugared.Visit(this) : string.Empty;
         }
 
         public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
         {
             return string.Empty;
+        }
+
+        public string VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        {
+            if (unaryTransformType.Desugared.Type != null)
+                return unaryTransformType.Desugared.Visit(this);
+            return unaryTransformType.BaseType.Visit(this);
         }
 
         public string VisitCILType(CILType type, TypeQualifiers quals)
@@ -409,7 +416,7 @@ namespace CppSharp.AST
 
         public string VisitVarTemplateDecl(VarTemplate template)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(template);
         }
 
         public string VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template)

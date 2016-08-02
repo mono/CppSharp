@@ -2364,7 +2364,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TST->Template = static_cast<Template*>(WalkDeclaration(
             Name.getAsTemplateDecl(), 0));
         if (TS->isSugared())
-            TST->Desugared = WalkType(TS->desugar(), TL);
+            TST->Desugared = GetQualifiedType(TS->desugar(), TL);
 
         TypeLoc UTL, ETL, ITL;
 
@@ -2407,7 +2407,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TST = new DependentTemplateSpecializationType();
 
         if (TS->isSugared())
-            TST->Desugared = WalkType(TS->desugar(), TL);
+            TST->Desugared = GetQualifiedType(TS->desugar(), TL);
 
         TypeLoc UTL, ETL, ITL;
 
@@ -2519,7 +2519,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto DN = Type->getAs<clang::DependentNameType>();
         auto DNT = new DependentNameType();
         if (DN->isSugared())
-            DNT->Desugared = WalkType(DN->desugar(), TL);
+            DNT->Desugared = GetQualifiedType(DN->desugar(), TL);
 
         Ty = DNT;
         break;
@@ -2554,6 +2554,26 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->QualifiedPointee = GetQualifiedType(Pointee, &Next);
 
         Ty = P;
+        break;
+    }
+    case clang::Type::UnaryTransform:
+    {
+        auto UT = Type->getAs<clang::UnaryTransformType>();
+
+        auto UTT = new UnaryTransformType();
+        auto Loc = TL->getAs<UnaryTransformTypeLoc>().getUnderlyingTInfo()->getTypeLoc();
+        if (UT->isSugared())
+        {
+            UTT->Desugared = GetQualifiedType(UT->desugar(), &Loc);
+            UTT->BaseType = GetQualifiedType(UT->getBaseType(), &Loc);
+        }
+        else
+        {
+            UTT->Desugared = GetQualifiedType(UT->getBaseType(), &Loc);
+            UTT->BaseType = GetQualifiedType(UT->getBaseType(), &Loc);
+        }
+
+        Ty = UTT;
         break;
     }
     case clang::Type::Vector:
@@ -2742,7 +2762,23 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())
     {
-        FunctionTypeLoc FTL = TSI->getTypeLoc().getAs<FunctionTypeLoc>();
+        auto Loc = TSI->getTypeLoc();
+        switch (Loc.getTypeLocClass())
+        {
+        case TypeLoc::TypeLocClass::Attributed:
+        {
+            auto ATL = Loc.getAs<AttributedTypeLoc>();
+            Loc = ATL.getModifiedLoc();
+            break;
+        }
+        case TypeLoc::TypeLocClass::Paren:
+        {
+            auto PTL = Loc.getAs<ParenTypeLoc>();
+            Loc = PTL.getInnerLoc();
+            break;
+        }
+        }
+        auto FTL = Loc.getAs<FunctionTypeLoc>();
         if (FTL)
         {
             RTL = FTL.getReturnLoc();

@@ -168,6 +168,11 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        {
+            return false;
+        }
+
         public bool VisitCILType(CILType type, TypeQualifiers quals)
         {
             return false;

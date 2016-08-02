@@ -99,6 +99,7 @@ namespace CppSharp
             ref class TypedefDecl;
             ref class TypedefNameDecl;
             ref class TypedefType;
+            ref class UnaryTransformType;
             ref class VFTableInfo;
             ref class VTableComponent;
             ref class VTableLayout;
@@ -136,7 +137,8 @@ namespace CppSharp
                 InjectedClassName = 12,
                 DependentName = 13,
                 PackExpansion = 14,
-                Builtin = 15
+                Builtin = 15,
+                UnaryTransform = 16
             };
 
             public enum struct DeclarationKind
@@ -787,10 +789,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Template^);
                 }
 
-                property CppSharp::Parser::AST::Type^ Desugared
+                property CppSharp::Parser::AST::QualifiedType^ Desugared
                 {
-                    CppSharp::Parser::AST::Type^ get();
-                    void set(CppSharp::Parser::AST::Type^);
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
                 CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
@@ -817,10 +819,10 @@ namespace CppSharp
                     unsigned int get();
                 }
 
-                property CppSharp::Parser::AST::Type^ Desugared
+                property CppSharp::Parser::AST::QualifiedType^ Desugared
                 {
-                    CppSharp::Parser::AST::Type^ get();
-                    void set(CppSharp::Parser::AST::Type^);
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
                 CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
@@ -923,10 +925,10 @@ namespace CppSharp
 
                 ~DependentNameType();
 
-                property CppSharp::Parser::AST::Type^ Desugared
+                property CppSharp::Parser::AST::QualifiedType^ Desugared
                 {
-                    CppSharp::Parser::AST::Type^ get();
-                    void set(CppSharp::Parser::AST::Type^);
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
                 }
             };
 
@@ -941,6 +943,31 @@ namespace CppSharp
                 PackExpansionType(CppSharp::Parser::AST::PackExpansionType^ _0);
 
                 ~PackExpansionType();
+            };
+
+            public ref class UnaryTransformType : CppSharp::Parser::AST::Type
+            {
+            public:
+
+                UnaryTransformType(::CppSharp::CppParser::AST::UnaryTransformType* native);
+                static UnaryTransformType^ __CreateInstance(::System::IntPtr native);
+                UnaryTransformType();
+
+                UnaryTransformType(CppSharp::Parser::AST::UnaryTransformType^ _0);
+
+                ~UnaryTransformType();
+
+                property CppSharp::Parser::AST::QualifiedType^ Desugared
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
+                property CppSharp::Parser::AST::QualifiedType^ BaseType
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
             };
 
             public ref class BuiltinType : CppSharp::Parser::AST::Type

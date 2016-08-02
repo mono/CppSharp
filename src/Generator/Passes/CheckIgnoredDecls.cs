@@ -375,14 +375,18 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private static bool IsTypeComplete(Type type)
+        private bool IsTypeComplete(Type type)
         {
+            TypeMap typeMap;
+            if (Driver.TypeDatabase.FindTypeMap(type, out typeMap) && !typeMap.IsIgnored)
+                return true;
+
             var desugared = type.Desugar();
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
 
             var templateSpecializationType = finalType as TemplateSpecializationType;
             if (templateSpecializationType != null)
-                finalType = templateSpecializationType.Desugared;
+                finalType = templateSpecializationType.Desugared.Type;
 
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
