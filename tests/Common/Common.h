@@ -1177,3 +1177,28 @@ struct HasLongDoubles
     long double simple;
     long double array[4];
 };
+
+enum
+{
+    EmptyEnumsWithSameMemberPrefix1,
+    EmptyEnumsWithSameMemberPrefix2
+};
+
+enum
+{
+    EmptyEnumsWithSameMemberPrefix3,
+    EmptyEnumsWithSameMemberPrefix4
+};
+
+enum
+{
+    EmptyEnumsWithSameMemberPrefixAndUnderscore_1,
+    EmptyEnumsWithSameMemberPrefixAndUnderscore_2
+};
+
+enum
+{
+    EmptyEnumsWithSameMemberPrefixAndUnderscore_3,
+    EmptyEnumsWithSameMemberPrefixAndUnderscore_4
+};
+

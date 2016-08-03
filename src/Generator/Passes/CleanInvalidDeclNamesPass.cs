@@ -137,8 +137,12 @@ namespace CppSharp.Passes
                 return;
             }
 
-            prefix = prefix.Trim().Trim('_');
-            @enum.Name = prefix;
+            var prefixBuilder = new StringBuilder(prefix);
+            prefixBuilder.Trim();
+            while (@enum.Namespace.Enums.Any(e => e != @enum &&
+                e.Name == prefixBuilder.ToString()))
+                prefixBuilder.Append('_');
+            @enum.Name = prefixBuilder.ToString();
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
