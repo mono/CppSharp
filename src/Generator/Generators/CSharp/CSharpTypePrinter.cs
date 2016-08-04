@@ -398,9 +398,7 @@ namespace CppSharp.Generators.CSharp
                 if (ContextKind != CSharpTypePrinterContextKind.Native)
                     return GetNestedQualifiedName(decl);
                 var specialization = template.GetClassTemplateSpecialization();
-                return string.Format("{0}.Internal{1}",
-                    GetNestedQualifiedName(specialization),
-                    Helpers.GetSuffixForInternal(specialization, this));
+                return specialization.Visit(this);
             }
 
             typeMap.Declaration = decl;
@@ -596,6 +594,9 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
         {
+            if (ContextKind == CSharpTypePrinterContextKind.Native)
+                return string.Format("{0}{1}", VisitClassDecl(specialization),
+                    Helpers.GetSuffixForInternal(specialization, this));
             return VisitClassDecl(specialization);
         }
 
