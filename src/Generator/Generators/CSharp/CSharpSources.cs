@@ -80,7 +80,8 @@ namespace CppSharp.Generators.CSharp
                     f => !(f.Type.Desugar() is TemplateParameterType)))
                 return string.Empty;
 
-            if (specialization.Arguments.All(
+            if (!nested &&
+                specialization.Arguments.All(
                 a => a.Type.Type != null && a.Type.Type.IsAddress()))
                 return "_Ptr";
 

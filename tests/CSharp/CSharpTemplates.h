@@ -69,6 +69,8 @@ private:
     DependentValueFields<IndependentFields<int>> specializeWithSpecialization;
     DependentValueFields<IndependentFields<bool>> specializeWithSameSpecialization;
     NestedTemplate<int> nestedTemplate;
+    DependentValueFields<DependentValueFields<int*>> nestedDependentPointer1;
+    DependentValueFields<DependentValueFields<char*>> nestedDependentPointer2;
     void completeSpecializationInParameter(DependentValueFields<float> p1,
                                            DependentValueFields<int*> p2,
                                            DependentValueFields<float*> p3);
