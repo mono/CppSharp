@@ -397,6 +397,8 @@ namespace CppSharp.Generators.CSharp
             {
                 if (ContextKind != CSharpTypePrinterContextKind.Native)
                     return GetNestedQualifiedName(decl);
+                if (template.Desugared.Type.IsAddress())
+                    return template.Desugared.Type.ToString();
                 var specialization = template.GetClassTemplateSpecialization();
                 return specialization.Visit(this);
             }
@@ -661,7 +663,8 @@ namespace CppSharp.Generators.CSharp
             if (specialization != null)
             {
                 ctx = specialization.TemplatedDecl.TemplatedClass.Namespace;
-                if (specialization.OriginalNamespace is Class)
+                if (specialization.OriginalNamespace is Class &&
+                    !(specialization.OriginalNamespace is ClassTemplateSpecialization))
                 {
                     names.Add(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
                     ctx = ctx.Namespace ?? ctx;

@@ -100,7 +100,7 @@ namespace CppSharp
             return source.Substring(start, end - start);
         }
 
-        public static void Trim(this StringBuilder stringBuilder)
+        public static void TrimUnderscores(this StringBuilder stringBuilder)
         {
             while (stringBuilder.Length > 0 && stringBuilder[0] == '_')
                 stringBuilder.Remove(0, 1);

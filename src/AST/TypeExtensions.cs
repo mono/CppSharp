@@ -148,7 +148,7 @@
                     if (templateTemplateParameter != null)
                         return (decl = templateTemplateParameter.TemplatedDecl as T) != null;
                 }
-                tagType = (TagType) type.Desugared.Type;
+                tagType = (TagType) (type.Desugared.Type.GetFinalPointee() ?? type.Desugared.Type);
             }
             else
             {

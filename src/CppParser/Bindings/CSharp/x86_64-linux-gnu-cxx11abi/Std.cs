@@ -8,6 +8,577 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
+namespace __gnu_cxx
+{
+}
+
+namespace std
+{
+    public unsafe partial class __true_type
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    namespace __truth_type
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_void
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_integer
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_floating
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_char
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_byte
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __false_type
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace __gnu_cxx
+{
+    namespace __add_unsigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __remove_unsigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __promote
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace __gnu_cxx
+{
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace integral_constant
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_void_helper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_integral_helper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_floating_point_helper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_null_pointer_helper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __make_unsigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __make_signed
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __failure_type
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_is_destructible_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_is_nt_destructible_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_is_default_constructible_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_is_static_castable_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_is_direct_constructible_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_is_nary_constructible_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_common_type_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __do_member_type_wrapper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __result_of_memfun_ref_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __result_of_memfun_deref_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __result_of_memobj_ref_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __result_of_memobj_deref_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __result_of_other_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace pair
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public unsafe partial struct Internal_Ptr
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr first;
+
+            [FieldOffset(8)]
+            public global::System.IntPtr second;
+        }
+    }
+
+    public unsafe partial class piecewise_construct_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace iterator
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class input_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class output_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class forward_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class bidirectional_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class random_access_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+}
+
+namespace __gnu_cxx
+{
+}
+
+namespace std
+{
+}
+
+namespace __gnu_cxx
+{
+    namespace __ops
+    {
+        public unsafe partial class _Iter_less_iter
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+
+        public unsafe partial class _Iter_less_val
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+
+        public unsafe partial class _Val_less_iter
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+
+        public unsafe partial class _Iter_equal_to_iter
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+
+        public unsafe partial class _Iter_equal_to_val
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+    namespace __copy_move
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __copy_move_backward
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __equal
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __lc_rai
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __lexicographical_compare
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class exception
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+        }
+    }
+
+    public unsafe partial class bad_exception
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+        }
+    }
+}
+
+namespace std
+{
+    namespace __exception_ptr
+    {
+        public unsafe partial class exception_ptr
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr _M_exception_object;
+            }
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class nested_exception
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_nested_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__exception_ptr.exception_ptr.Internal _M_ptr;
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class bad_alloc
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+        }
+    }
+
+    public unsafe partial class bad_array_new_length
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+        }
+    }
+
+    public unsafe partial class nothrow_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace __gnu_cxx
+{
+    namespace new_allocator
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+
+
+        public unsafe partial class rebind
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+}
+
 namespace std
 {
     public unsafe partial class allocator : IDisposable
@@ -89,6 +660,2353 @@ namespace std
     }
 }
 
+namespace __gnu_cxx
+{
+    namespace __alloc_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+
+
+        public unsafe static partial class rebind
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+    namespace allocator_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+
+
+        public unsafe static partial class __allocate_helper
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe static partial class __construct_helper
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe static partial class __destroy_helper
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe static partial class __maxsize_helper
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe static partial class __select_helper
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+    namespace _Destroy_aux
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace __uninitialized_copy
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __uninitialized_fill
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __uninitialized_fill_n
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __uninitialized_default_1
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __uninitialized_default_n_1
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace _Vector_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_base._Vector_impl.Internal _M_impl;
+        }
+
+
+        public unsafe partial class _Vector_impl
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+
+    namespace vector
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_base._Vector_impl.Internal _M_impl;
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    [Flags]
+    public enum S_word_bit : uint
+    {
+        _S_word_bit = 64
+    }
+
+    public unsafe partial class _Bit_reference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _M_p;
+
+            [FieldOffset(8)]
+            public ulong _M_mask;
+        }
+    }
+
+    public unsafe partial class _Bit_iterator_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _M_p;
+
+            [FieldOffset(8)]
+            public uint _M_offset;
+        }
+    }
+
+    public unsafe partial class _Bit_iterator
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _M_p;
+
+            [FieldOffset(8)]
+            public uint _M_offset;
+        }
+    }
+
+    public unsafe partial class _Bit_const_iterator
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _M_p;
+
+            [FieldOffset(8)]
+            public uint _M_offset;
+        }
+    }
+}
+
+namespace std
+{
+    namespace __hash_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace __is_fast_hash
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Hash_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Fnv_hash_impl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace binary_function
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace less
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    public enum _Rb_tree_color : uint
+    {
+        _S_red = 0,
+        _S_black = 1
+    }
+
+    namespace _Rb_tree
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Rb_tree._Rb_tree_impl.Internal _M_impl;
+        }
+
+
+        public unsafe partial class _Reuse_or_alloc_node
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial class _Alloc_node
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial class _Rb_tree_impl
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+
+    public unsafe partial class _Rb_tree_node_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 32)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::std._Rb_tree_color _M_color;
+
+            [FieldOffset(8)]
+            public global::System.IntPtr _M_parent;
+
+            [FieldOffset(16)]
+            public global::System.IntPtr _M_left;
+
+            [FieldOffset(24)]
+            public global::System.IntPtr _M_right;
+        }
+    }
+}
+
+namespace __gnu_cxx
+{
+}
+
+namespace std
+{
+    namespace map
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Rb_tree.Internal _M_t;
+        }
+
+
+        public unsafe partial class value_compare
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+    namespace tuple
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Swallow_assign
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace rel_ops
+    {
+    }
+}
+
+namespace std
+{
+    namespace _Build_index_tuple
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace __cxx11
+    {
+    }
+}
+
+public unsafe partial class __mbstate_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int __count;
+
+        [FieldOffset(4)]
+        internal global::__mbstate_t._.Internal __value;
+    }
+
+    public unsafe partial struct _
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public uint __wch;
+
+            [FieldOffset(0)]
+            public fixed sbyte __wchb[4];
+
+            [FieldOffset(1)]
+            public sbyte __dummy___wchb_1;
+
+            [FieldOffset(2)]
+            public sbyte __dummy___wchb_2;
+
+            [FieldOffset(3)]
+            public sbyte __dummy___wchb_3;
+        }
+    }
+}
+
+public unsafe partial class __locale_struct
+{
+    [StructLayout(LayoutKind.Explicit, Size = 232)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed long __locales[13];
+
+        [FieldOffset(8)]
+        public global::System.IntPtr __dummy___locales_1;
+
+        [FieldOffset(16)]
+        public global::System.IntPtr __dummy___locales_2;
+
+        [FieldOffset(24)]
+        public global::System.IntPtr __dummy___locales_3;
+
+        [FieldOffset(32)]
+        public global::System.IntPtr __dummy___locales_4;
+
+        [FieldOffset(40)]
+        public global::System.IntPtr __dummy___locales_5;
+
+        [FieldOffset(48)]
+        public global::System.IntPtr __dummy___locales_6;
+
+        [FieldOffset(56)]
+        public global::System.IntPtr __dummy___locales_7;
+
+        [FieldOffset(64)]
+        public global::System.IntPtr __dummy___locales_8;
+
+        [FieldOffset(72)]
+        public global::System.IntPtr __dummy___locales_9;
+
+        [FieldOffset(80)]
+        public global::System.IntPtr __dummy___locales_10;
+
+        [FieldOffset(88)]
+        public global::System.IntPtr __dummy___locales_11;
+
+        [FieldOffset(96)]
+        public global::System.IntPtr __dummy___locales_12;
+
+        [FieldOffset(104)]
+        public global::System.IntPtr __ctype_b;
+
+        [FieldOffset(112)]
+        public global::System.IntPtr __ctype_tolower;
+
+        [FieldOffset(120)]
+        public global::System.IntPtr __ctype_toupper;
+
+        [FieldOffset(128)]
+        public global::System.IntPtr* __names;
+
+        [FieldOffset(136)]
+        public global::System.IntPtr __dummy___names_1;
+
+        [FieldOffset(144)]
+        public global::System.IntPtr __dummy___names_2;
+
+        [FieldOffset(152)]
+        public global::System.IntPtr __dummy___names_3;
+
+        [FieldOffset(160)]
+        public global::System.IntPtr __dummy___names_4;
+
+        [FieldOffset(168)]
+        public global::System.IntPtr __dummy___names_5;
+
+        [FieldOffset(176)]
+        public global::System.IntPtr __dummy___names_6;
+
+        [FieldOffset(184)]
+        public global::System.IntPtr __dummy___names_7;
+
+        [FieldOffset(192)]
+        public global::System.IntPtr __dummy___names_8;
+
+        [FieldOffset(200)]
+        public global::System.IntPtr __dummy___names_9;
+
+        [FieldOffset(208)]
+        public global::System.IntPtr __dummy___names_10;
+
+        [FieldOffset(216)]
+        public global::System.IntPtr __dummy___names_11;
+
+        [FieldOffset(224)]
+        public global::System.IntPtr __dummy___names_12;
+    }
+}
+
+public enum __codecvt_result : uint
+{
+    __codecvt_ok = 0,
+    __codecvt_partial = 1,
+    __codecvt_error = 2,
+    __codecvt_noconv = 3
+}
+
+public unsafe partial class _G_fpos_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long __pos;
+
+        [FieldOffset(8)]
+        internal global::__mbstate_t.Internal __state;
+    }
+}
+
+public unsafe partial class _G_fpos64_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long __pos;
+
+        [FieldOffset(8)]
+        internal global::__mbstate_t.Internal __state;
+    }
+}
+
+public unsafe partial class _IO_marker
+{
+    [StructLayout(LayoutKind.Explicit, Size = 24)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr _next;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr _sbuf;
+
+        [FieldOffset(16)]
+        public int _pos;
+    }
+}
+
+public unsafe partial class _IO_FILE
+{
+    [StructLayout(LayoutKind.Explicit, Size = 216)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int _flags;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr _IO_read_ptr;
+
+        [FieldOffset(16)]
+        public global::System.IntPtr _IO_read_end;
+
+        [FieldOffset(24)]
+        public global::System.IntPtr _IO_read_base;
+
+        [FieldOffset(32)]
+        public global::System.IntPtr _IO_write_base;
+
+        [FieldOffset(40)]
+        public global::System.IntPtr _IO_write_ptr;
+
+        [FieldOffset(48)]
+        public global::System.IntPtr _IO_write_end;
+
+        [FieldOffset(56)]
+        public global::System.IntPtr _IO_buf_base;
+
+        [FieldOffset(64)]
+        public global::System.IntPtr _IO_buf_end;
+
+        [FieldOffset(72)]
+        public global::System.IntPtr _IO_save_base;
+
+        [FieldOffset(80)]
+        public global::System.IntPtr _IO_backup_base;
+
+        [FieldOffset(88)]
+        public global::System.IntPtr _IO_save_end;
+
+        [FieldOffset(96)]
+        public global::System.IntPtr _markers;
+
+        [FieldOffset(104)]
+        public global::System.IntPtr _chain;
+
+        [FieldOffset(112)]
+        public int _fileno;
+
+        [FieldOffset(116)]
+        public int _flags2;
+
+        [FieldOffset(120)]
+        public long _old_offset;
+
+        [FieldOffset(128)]
+        public ushort _cur_column;
+
+        [FieldOffset(130)]
+        public sbyte _vtable_offset;
+
+        [FieldOffset(131)]
+        public fixed sbyte _shortbuf[1];
+
+        [FieldOffset(136)]
+        public global::System.IntPtr _lock;
+
+        [FieldOffset(144)]
+        public long _offset;
+
+        [FieldOffset(152)]
+        public global::System.IntPtr __pad1;
+
+        [FieldOffset(160)]
+        public global::System.IntPtr __pad2;
+
+        [FieldOffset(168)]
+        public global::System.IntPtr __pad3;
+
+        [FieldOffset(176)]
+        public global::System.IntPtr __pad4;
+
+        [FieldOffset(184)]
+        public ulong __pad5;
+
+        [FieldOffset(192)]
+        public int _mode;
+
+        [FieldOffset(196)]
+        public fixed sbyte _unused2[20];
+
+        [FieldOffset(197)]
+        public sbyte __dummy__unused2_1;
+
+        [FieldOffset(198)]
+        public sbyte __dummy__unused2_2;
+
+        [FieldOffset(199)]
+        public sbyte __dummy__unused2_3;
+
+        [FieldOffset(200)]
+        public sbyte __dummy__unused2_4;
+
+        [FieldOffset(201)]
+        public sbyte __dummy__unused2_5;
+
+        [FieldOffset(202)]
+        public sbyte __dummy__unused2_6;
+
+        [FieldOffset(203)]
+        public sbyte __dummy__unused2_7;
+
+        [FieldOffset(204)]
+        public sbyte __dummy__unused2_8;
+
+        [FieldOffset(205)]
+        public sbyte __dummy__unused2_9;
+
+        [FieldOffset(206)]
+        public sbyte __dummy__unused2_10;
+
+        [FieldOffset(207)]
+        public sbyte __dummy__unused2_11;
+
+        [FieldOffset(208)]
+        public sbyte __dummy__unused2_12;
+
+        [FieldOffset(209)]
+        public sbyte __dummy__unused2_13;
+
+        [FieldOffset(210)]
+        public sbyte __dummy__unused2_14;
+
+        [FieldOffset(211)]
+        public sbyte __dummy__unused2_15;
+
+        [FieldOffset(212)]
+        public sbyte __dummy__unused2_16;
+
+        [FieldOffset(213)]
+        public sbyte __dummy__unused2_17;
+
+        [FieldOffset(214)]
+        public sbyte __dummy__unused2_18;
+
+        [FieldOffset(215)]
+        public sbyte __dummy__unused2_19;
+    }
+}
+
+public unsafe partial class _IO_cookie_io_functions_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr read;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr write;
+
+        [FieldOffset(16)]
+        public global::System.IntPtr seek;
+
+        [FieldOffset(24)]
+        public global::System.IntPtr close;
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace char_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace __gnu_cxx
+{
+}
+
+public unsafe partial class lconv
+{
+    [StructLayout(LayoutKind.Explicit, Size = 96)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr decimal_point;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr thousands_sep;
+
+        [FieldOffset(16)]
+        public global::System.IntPtr grouping;
+
+        [FieldOffset(24)]
+        public global::System.IntPtr int_curr_symbol;
+
+        [FieldOffset(32)]
+        public global::System.IntPtr currency_symbol;
+
+        [FieldOffset(40)]
+        public global::System.IntPtr mon_decimal_point;
+
+        [FieldOffset(48)]
+        public global::System.IntPtr mon_thousands_sep;
+
+        [FieldOffset(56)]
+        public global::System.IntPtr mon_grouping;
+
+        [FieldOffset(64)]
+        public global::System.IntPtr positive_sign;
+
+        [FieldOffset(72)]
+        public global::System.IntPtr negative_sign;
+
+        [FieldOffset(80)]
+        public sbyte int_frac_digits;
+
+        [FieldOffset(81)]
+        public sbyte frac_digits;
+
+        [FieldOffset(82)]
+        public sbyte p_cs_precedes;
+
+        [FieldOffset(83)]
+        public sbyte p_sep_by_space;
+
+        [FieldOffset(84)]
+        public sbyte n_cs_precedes;
+
+        [FieldOffset(85)]
+        public sbyte n_sep_by_space;
+
+        [FieldOffset(86)]
+        public sbyte p_sign_posn;
+
+        [FieldOffset(87)]
+        public sbyte n_sign_posn;
+
+        [FieldOffset(88)]
+        public sbyte int_p_cs_precedes;
+
+        [FieldOffset(89)]
+        public sbyte int_p_sep_by_space;
+
+        [FieldOffset(90)]
+        public sbyte int_n_cs_precedes;
+
+        [FieldOffset(91)]
+        public sbyte int_n_sep_by_space;
+
+        [FieldOffset(92)]
+        public sbyte int_p_sign_posn;
+
+        [FieldOffset(93)]
+        public sbyte int_n_sign_posn;
+    }
+}
+
+namespace std
+{
+    namespace __cxx11
+    {
+    }
+}
+
+public unsafe partial class __fsid_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed int __val[2];
+
+        [FieldOffset(4)]
+        public int __dummy___val_1;
+    }
+}
+
+[Flags]
+public enum IS : uint
+{
+    _ISupper = 256,
+    _ISlower = 512,
+    _ISalpha = 1024,
+    _ISdigit = 2048,
+    _ISxdigit = 4096,
+    _ISspace = 8192,
+    _ISprint = 16384,
+    _ISgraph = 32768,
+    _ISblank = 1,
+    _IScntrl = 2,
+    _ISpunct = 4,
+    _ISalnum = 8
+}
+
+namespace std
+{
+    namespace __cxx11
+    {
+    }
+}
+
+namespace __cxxabiv1
+{
+    public unsafe abstract partial class __forced_unwind
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr___forced_unwind;
+        }
+    }
+}
+
+namespace std
+{
+}
+
+public unsafe partial class timespec
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long tv_sec;
+
+        [FieldOffset(8)]
+        public long tv_nsec;
+    }
+}
+
+public unsafe partial class timeval
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long tv_sec;
+
+        [FieldOffset(8)]
+        public long tv_usec;
+    }
+}
+
+public unsafe partial class timex
+{
+    [StructLayout(LayoutKind.Explicit, Size = 208)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint modes;
+
+        [FieldOffset(8)]
+        public long offset;
+
+        [FieldOffset(16)]
+        public long freq;
+
+        [FieldOffset(24)]
+        public long maxerror;
+
+        [FieldOffset(32)]
+        public long esterror;
+
+        [FieldOffset(40)]
+        public int status;
+
+        [FieldOffset(48)]
+        public long constant;
+
+        [FieldOffset(56)]
+        public long precision;
+
+        [FieldOffset(64)]
+        public long tolerance;
+
+        [FieldOffset(72)]
+        internal global::timeval.Internal time;
+
+        [FieldOffset(88)]
+        public long tick;
+
+        [FieldOffset(96)]
+        public long ppsfreq;
+
+        [FieldOffset(104)]
+        public long jitter;
+
+        [FieldOffset(112)]
+        public int shift;
+
+        [FieldOffset(120)]
+        public long stabil;
+
+        [FieldOffset(128)]
+        public long jitcnt;
+
+        [FieldOffset(136)]
+        public long calcnt;
+
+        [FieldOffset(144)]
+        public long errcnt;
+
+        [FieldOffset(152)]
+        public long stbcnt;
+
+        [FieldOffset(160)]
+        public int tai;
+
+        [FieldOffset(164)]
+        public int _;
+
+        [FieldOffset(168)]
+        public int _1;
+
+        [FieldOffset(172)]
+        public int _2;
+
+        [FieldOffset(176)]
+        public int _3;
+
+        [FieldOffset(180)]
+        public int _4;
+
+        [FieldOffset(184)]
+        public int _5;
+
+        [FieldOffset(188)]
+        public int _6;
+
+        [FieldOffset(192)]
+        public int _7;
+
+        [FieldOffset(196)]
+        public int _8;
+
+        [FieldOffset(200)]
+        public int _9;
+
+        [FieldOffset(204)]
+        public int _10;
+    }
+}
+
+public unsafe partial class tm
+{
+    [StructLayout(LayoutKind.Explicit, Size = 56)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int tm_sec;
+
+        [FieldOffset(4)]
+        public int tm_min;
+
+        [FieldOffset(8)]
+        public int tm_hour;
+
+        [FieldOffset(12)]
+        public int tm_mday;
+
+        [FieldOffset(16)]
+        public int tm_mon;
+
+        [FieldOffset(20)]
+        public int tm_year;
+
+        [FieldOffset(24)]
+        public int tm_wday;
+
+        [FieldOffset(28)]
+        public int tm_yday;
+
+        [FieldOffset(32)]
+        public int tm_isdst;
+
+        [FieldOffset(40)]
+        public long tm_gmtoff;
+
+        [FieldOffset(48)]
+        public global::System.IntPtr tm_zone;
+    }
+}
+
+public unsafe partial class itimerspec
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        internal global::timespec.Internal it_interval;
+
+        [FieldOffset(16)]
+        internal global::timespec.Internal it_value;
+    }
+}
+
+public unsafe partial class sched_param
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int __sched_priority;
+    }
+}
+
+public unsafe partial class __sched_param
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int __sched_priority;
+    }
+}
+
+public unsafe partial class cpu_set_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 128)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ulong __bits[16];
+
+        [FieldOffset(8)]
+        public ulong __dummy___bits_1;
+
+        [FieldOffset(16)]
+        public ulong __dummy___bits_2;
+
+        [FieldOffset(24)]
+        public ulong __dummy___bits_3;
+
+        [FieldOffset(32)]
+        public ulong __dummy___bits_4;
+
+        [FieldOffset(40)]
+        public ulong __dummy___bits_5;
+
+        [FieldOffset(48)]
+        public ulong __dummy___bits_6;
+
+        [FieldOffset(56)]
+        public ulong __dummy___bits_7;
+
+        [FieldOffset(64)]
+        public ulong __dummy___bits_8;
+
+        [FieldOffset(72)]
+        public ulong __dummy___bits_9;
+
+        [FieldOffset(80)]
+        public ulong __dummy___bits_10;
+
+        [FieldOffset(88)]
+        public ulong __dummy___bits_11;
+
+        [FieldOffset(96)]
+        public ulong __dummy___bits_12;
+
+        [FieldOffset(104)]
+        public ulong __dummy___bits_13;
+
+        [FieldOffset(112)]
+        public ulong __dummy___bits_14;
+
+        [FieldOffset(120)]
+        public ulong __dummy___bits_15;
+    }
+}
+
+public unsafe partial struct pthread_attr_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 56)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte __size[56];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy___size_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy___size_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy___size_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy___size_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy___size_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy___size_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy___size_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy___size_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy___size_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy___size_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy___size_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy___size_15;
+
+        [FieldOffset(16)]
+        public sbyte __dummy___size_16;
+
+        [FieldOffset(17)]
+        public sbyte __dummy___size_17;
+
+        [FieldOffset(18)]
+        public sbyte __dummy___size_18;
+
+        [FieldOffset(19)]
+        public sbyte __dummy___size_19;
+
+        [FieldOffset(20)]
+        public sbyte __dummy___size_20;
+
+        [FieldOffset(21)]
+        public sbyte __dummy___size_21;
+
+        [FieldOffset(22)]
+        public sbyte __dummy___size_22;
+
+        [FieldOffset(23)]
+        public sbyte __dummy___size_23;
+
+        [FieldOffset(24)]
+        public sbyte __dummy___size_24;
+
+        [FieldOffset(25)]
+        public sbyte __dummy___size_25;
+
+        [FieldOffset(26)]
+        public sbyte __dummy___size_26;
+
+        [FieldOffset(27)]
+        public sbyte __dummy___size_27;
+
+        [FieldOffset(28)]
+        public sbyte __dummy___size_28;
+
+        [FieldOffset(29)]
+        public sbyte __dummy___size_29;
+
+        [FieldOffset(30)]
+        public sbyte __dummy___size_30;
+
+        [FieldOffset(31)]
+        public sbyte __dummy___size_31;
+
+        [FieldOffset(32)]
+        public sbyte __dummy___size_32;
+
+        [FieldOffset(33)]
+        public sbyte __dummy___size_33;
+
+        [FieldOffset(34)]
+        public sbyte __dummy___size_34;
+
+        [FieldOffset(35)]
+        public sbyte __dummy___size_35;
+
+        [FieldOffset(36)]
+        public sbyte __dummy___size_36;
+
+        [FieldOffset(37)]
+        public sbyte __dummy___size_37;
+
+        [FieldOffset(38)]
+        public sbyte __dummy___size_38;
+
+        [FieldOffset(39)]
+        public sbyte __dummy___size_39;
+
+        [FieldOffset(40)]
+        public sbyte __dummy___size_40;
+
+        [FieldOffset(41)]
+        public sbyte __dummy___size_41;
+
+        [FieldOffset(42)]
+        public sbyte __dummy___size_42;
+
+        [FieldOffset(43)]
+        public sbyte __dummy___size_43;
+
+        [FieldOffset(44)]
+        public sbyte __dummy___size_44;
+
+        [FieldOffset(45)]
+        public sbyte __dummy___size_45;
+
+        [FieldOffset(46)]
+        public sbyte __dummy___size_46;
+
+        [FieldOffset(47)]
+        public sbyte __dummy___size_47;
+
+        [FieldOffset(48)]
+        public sbyte __dummy___size_48;
+
+        [FieldOffset(49)]
+        public sbyte __dummy___size_49;
+
+        [FieldOffset(50)]
+        public sbyte __dummy___size_50;
+
+        [FieldOffset(51)]
+        public sbyte __dummy___size_51;
+
+        [FieldOffset(52)]
+        public sbyte __dummy___size_52;
+
+        [FieldOffset(53)]
+        public sbyte __dummy___size_53;
+
+        [FieldOffset(54)]
+        public sbyte __dummy___size_54;
+
+        [FieldOffset(55)]
+        public sbyte __dummy___size_55;
+
+        [FieldOffset(0)]
+        public long __align;
+    }
+}
+
+public unsafe partial class __pthread_internal_list
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr __prev;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr __next;
+    }
+}
+
+public unsafe partial struct pthread_mutex_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 40)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        internal global::pthread_mutex_t.__pthread_mutex_s.Internal __data;
+
+        [FieldOffset(0)]
+        public fixed sbyte __size[40];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy___size_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy___size_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy___size_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy___size_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy___size_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy___size_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy___size_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy___size_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy___size_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy___size_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy___size_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy___size_15;
+
+        [FieldOffset(16)]
+        public sbyte __dummy___size_16;
+
+        [FieldOffset(17)]
+        public sbyte __dummy___size_17;
+
+        [FieldOffset(18)]
+        public sbyte __dummy___size_18;
+
+        [FieldOffset(19)]
+        public sbyte __dummy___size_19;
+
+        [FieldOffset(20)]
+        public sbyte __dummy___size_20;
+
+        [FieldOffset(21)]
+        public sbyte __dummy___size_21;
+
+        [FieldOffset(22)]
+        public sbyte __dummy___size_22;
+
+        [FieldOffset(23)]
+        public sbyte __dummy___size_23;
+
+        [FieldOffset(24)]
+        public sbyte __dummy___size_24;
+
+        [FieldOffset(25)]
+        public sbyte __dummy___size_25;
+
+        [FieldOffset(26)]
+        public sbyte __dummy___size_26;
+
+        [FieldOffset(27)]
+        public sbyte __dummy___size_27;
+
+        [FieldOffset(28)]
+        public sbyte __dummy___size_28;
+
+        [FieldOffset(29)]
+        public sbyte __dummy___size_29;
+
+        [FieldOffset(30)]
+        public sbyte __dummy___size_30;
+
+        [FieldOffset(31)]
+        public sbyte __dummy___size_31;
+
+        [FieldOffset(32)]
+        public sbyte __dummy___size_32;
+
+        [FieldOffset(33)]
+        public sbyte __dummy___size_33;
+
+        [FieldOffset(34)]
+        public sbyte __dummy___size_34;
+
+        [FieldOffset(35)]
+        public sbyte __dummy___size_35;
+
+        [FieldOffset(36)]
+        public sbyte __dummy___size_36;
+
+        [FieldOffset(37)]
+        public sbyte __dummy___size_37;
+
+        [FieldOffset(38)]
+        public sbyte __dummy___size_38;
+
+        [FieldOffset(39)]
+        public sbyte __dummy___size_39;
+
+        [FieldOffset(0)]
+        public long __align;
+    }
+
+    public unsafe partial class __pthread_mutex_s
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 40)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public int __lock;
+
+            [FieldOffset(4)]
+            public uint __count;
+
+            [FieldOffset(8)]
+            public int __owner;
+
+            [FieldOffset(12)]
+            public uint __nusers;
+
+            [FieldOffset(16)]
+            public int __kind;
+
+            [FieldOffset(20)]
+            public short __spins;
+
+            [FieldOffset(22)]
+            public short __elision;
+
+            [FieldOffset(24)]
+            internal global::__pthread_internal_list.Internal __list;
+        }
+    }
+}
+
+public unsafe partial struct pthread_mutexattr_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte __size[4];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(0)]
+        public int __align;
+    }
+}
+
+public unsafe partial struct pthread_cond_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        internal global::pthread_cond_t._.Internal __data;
+
+        [FieldOffset(0)]
+        public fixed sbyte __size[48];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy___size_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy___size_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy___size_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy___size_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy___size_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy___size_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy___size_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy___size_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy___size_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy___size_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy___size_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy___size_15;
+
+        [FieldOffset(16)]
+        public sbyte __dummy___size_16;
+
+        [FieldOffset(17)]
+        public sbyte __dummy___size_17;
+
+        [FieldOffset(18)]
+        public sbyte __dummy___size_18;
+
+        [FieldOffset(19)]
+        public sbyte __dummy___size_19;
+
+        [FieldOffset(20)]
+        public sbyte __dummy___size_20;
+
+        [FieldOffset(21)]
+        public sbyte __dummy___size_21;
+
+        [FieldOffset(22)]
+        public sbyte __dummy___size_22;
+
+        [FieldOffset(23)]
+        public sbyte __dummy___size_23;
+
+        [FieldOffset(24)]
+        public sbyte __dummy___size_24;
+
+        [FieldOffset(25)]
+        public sbyte __dummy___size_25;
+
+        [FieldOffset(26)]
+        public sbyte __dummy___size_26;
+
+        [FieldOffset(27)]
+        public sbyte __dummy___size_27;
+
+        [FieldOffset(28)]
+        public sbyte __dummy___size_28;
+
+        [FieldOffset(29)]
+        public sbyte __dummy___size_29;
+
+        [FieldOffset(30)]
+        public sbyte __dummy___size_30;
+
+        [FieldOffset(31)]
+        public sbyte __dummy___size_31;
+
+        [FieldOffset(32)]
+        public sbyte __dummy___size_32;
+
+        [FieldOffset(33)]
+        public sbyte __dummy___size_33;
+
+        [FieldOffset(34)]
+        public sbyte __dummy___size_34;
+
+        [FieldOffset(35)]
+        public sbyte __dummy___size_35;
+
+        [FieldOffset(36)]
+        public sbyte __dummy___size_36;
+
+        [FieldOffset(37)]
+        public sbyte __dummy___size_37;
+
+        [FieldOffset(38)]
+        public sbyte __dummy___size_38;
+
+        [FieldOffset(39)]
+        public sbyte __dummy___size_39;
+
+        [FieldOffset(40)]
+        public sbyte __dummy___size_40;
+
+        [FieldOffset(41)]
+        public sbyte __dummy___size_41;
+
+        [FieldOffset(42)]
+        public sbyte __dummy___size_42;
+
+        [FieldOffset(43)]
+        public sbyte __dummy___size_43;
+
+        [FieldOffset(44)]
+        public sbyte __dummy___size_44;
+
+        [FieldOffset(45)]
+        public sbyte __dummy___size_45;
+
+        [FieldOffset(46)]
+        public sbyte __dummy___size_46;
+
+        [FieldOffset(47)]
+        public sbyte __dummy___size_47;
+
+        [FieldOffset(0)]
+        public long __align;
+    }
+
+    public unsafe partial class _
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public int __lock;
+
+            [FieldOffset(4)]
+            public uint __futex;
+
+            [FieldOffset(8)]
+            public ulong __total_seq;
+
+            [FieldOffset(16)]
+            public ulong __wakeup_seq;
+
+            [FieldOffset(24)]
+            public ulong __woken_seq;
+
+            [FieldOffset(32)]
+            public global::System.IntPtr __mutex;
+
+            [FieldOffset(40)]
+            public uint __nwaiters;
+
+            [FieldOffset(44)]
+            public uint __broadcast_seq;
+        }
+    }
+}
+
+public unsafe partial struct pthread_condattr_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte __size[4];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(0)]
+        public int __align;
+    }
+}
+
+public unsafe partial struct pthread_rwlock_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 56)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        internal global::pthread_rwlock_t._.Internal __data;
+
+        [FieldOffset(0)]
+        public fixed sbyte __size[56];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy___size_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy___size_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy___size_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy___size_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy___size_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy___size_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy___size_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy___size_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy___size_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy___size_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy___size_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy___size_15;
+
+        [FieldOffset(16)]
+        public sbyte __dummy___size_16;
+
+        [FieldOffset(17)]
+        public sbyte __dummy___size_17;
+
+        [FieldOffset(18)]
+        public sbyte __dummy___size_18;
+
+        [FieldOffset(19)]
+        public sbyte __dummy___size_19;
+
+        [FieldOffset(20)]
+        public sbyte __dummy___size_20;
+
+        [FieldOffset(21)]
+        public sbyte __dummy___size_21;
+
+        [FieldOffset(22)]
+        public sbyte __dummy___size_22;
+
+        [FieldOffset(23)]
+        public sbyte __dummy___size_23;
+
+        [FieldOffset(24)]
+        public sbyte __dummy___size_24;
+
+        [FieldOffset(25)]
+        public sbyte __dummy___size_25;
+
+        [FieldOffset(26)]
+        public sbyte __dummy___size_26;
+
+        [FieldOffset(27)]
+        public sbyte __dummy___size_27;
+
+        [FieldOffset(28)]
+        public sbyte __dummy___size_28;
+
+        [FieldOffset(29)]
+        public sbyte __dummy___size_29;
+
+        [FieldOffset(30)]
+        public sbyte __dummy___size_30;
+
+        [FieldOffset(31)]
+        public sbyte __dummy___size_31;
+
+        [FieldOffset(32)]
+        public sbyte __dummy___size_32;
+
+        [FieldOffset(33)]
+        public sbyte __dummy___size_33;
+
+        [FieldOffset(34)]
+        public sbyte __dummy___size_34;
+
+        [FieldOffset(35)]
+        public sbyte __dummy___size_35;
+
+        [FieldOffset(36)]
+        public sbyte __dummy___size_36;
+
+        [FieldOffset(37)]
+        public sbyte __dummy___size_37;
+
+        [FieldOffset(38)]
+        public sbyte __dummy___size_38;
+
+        [FieldOffset(39)]
+        public sbyte __dummy___size_39;
+
+        [FieldOffset(40)]
+        public sbyte __dummy___size_40;
+
+        [FieldOffset(41)]
+        public sbyte __dummy___size_41;
+
+        [FieldOffset(42)]
+        public sbyte __dummy___size_42;
+
+        [FieldOffset(43)]
+        public sbyte __dummy___size_43;
+
+        [FieldOffset(44)]
+        public sbyte __dummy___size_44;
+
+        [FieldOffset(45)]
+        public sbyte __dummy___size_45;
+
+        [FieldOffset(46)]
+        public sbyte __dummy___size_46;
+
+        [FieldOffset(47)]
+        public sbyte __dummy___size_47;
+
+        [FieldOffset(48)]
+        public sbyte __dummy___size_48;
+
+        [FieldOffset(49)]
+        public sbyte __dummy___size_49;
+
+        [FieldOffset(50)]
+        public sbyte __dummy___size_50;
+
+        [FieldOffset(51)]
+        public sbyte __dummy___size_51;
+
+        [FieldOffset(52)]
+        public sbyte __dummy___size_52;
+
+        [FieldOffset(53)]
+        public sbyte __dummy___size_53;
+
+        [FieldOffset(54)]
+        public sbyte __dummy___size_54;
+
+        [FieldOffset(55)]
+        public sbyte __dummy___size_55;
+
+        [FieldOffset(0)]
+        public long __align;
+    }
+
+    public unsafe partial class _
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 56)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public int __lock;
+
+            [FieldOffset(4)]
+            public uint __nr_readers;
+
+            [FieldOffset(8)]
+            public uint __readers_wakeup;
+
+            [FieldOffset(12)]
+            public uint __writer_wakeup;
+
+            [FieldOffset(16)]
+            public uint __nr_readers_queued;
+
+            [FieldOffset(20)]
+            public uint __nr_writers_queued;
+
+            [FieldOffset(24)]
+            public int __writer;
+
+            [FieldOffset(28)]
+            public int __shared;
+
+            [FieldOffset(32)]
+            public sbyte __rwelision;
+
+            [FieldOffset(33)]
+            public fixed byte __pad1[7];
+
+            [FieldOffset(34)]
+            public byte __dummy___pad1_1;
+
+            [FieldOffset(35)]
+            public byte __dummy___pad1_2;
+
+            [FieldOffset(36)]
+            public byte __dummy___pad1_3;
+
+            [FieldOffset(37)]
+            public byte __dummy___pad1_4;
+
+            [FieldOffset(38)]
+            public byte __dummy___pad1_5;
+
+            [FieldOffset(39)]
+            public byte __dummy___pad1_6;
+
+            [FieldOffset(40)]
+            public ulong __pad2;
+
+            [FieldOffset(48)]
+            public uint __flags;
+        }
+    }
+}
+
+public unsafe partial struct pthread_rwlockattr_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte __size[8];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy___size_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy___size_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy___size_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy___size_7;
+
+        [FieldOffset(0)]
+        public long __align;
+    }
+}
+
+public unsafe partial struct pthread_barrier_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte __size[32];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy___size_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy___size_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy___size_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy___size_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy___size_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy___size_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy___size_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy___size_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy___size_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy___size_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy___size_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy___size_15;
+
+        [FieldOffset(16)]
+        public sbyte __dummy___size_16;
+
+        [FieldOffset(17)]
+        public sbyte __dummy___size_17;
+
+        [FieldOffset(18)]
+        public sbyte __dummy___size_18;
+
+        [FieldOffset(19)]
+        public sbyte __dummy___size_19;
+
+        [FieldOffset(20)]
+        public sbyte __dummy___size_20;
+
+        [FieldOffset(21)]
+        public sbyte __dummy___size_21;
+
+        [FieldOffset(22)]
+        public sbyte __dummy___size_22;
+
+        [FieldOffset(23)]
+        public sbyte __dummy___size_23;
+
+        [FieldOffset(24)]
+        public sbyte __dummy___size_24;
+
+        [FieldOffset(25)]
+        public sbyte __dummy___size_25;
+
+        [FieldOffset(26)]
+        public sbyte __dummy___size_26;
+
+        [FieldOffset(27)]
+        public sbyte __dummy___size_27;
+
+        [FieldOffset(28)]
+        public sbyte __dummy___size_28;
+
+        [FieldOffset(29)]
+        public sbyte __dummy___size_29;
+
+        [FieldOffset(30)]
+        public sbyte __dummy___size_30;
+
+        [FieldOffset(31)]
+        public sbyte __dummy___size_31;
+
+        [FieldOffset(0)]
+        public long __align;
+    }
+}
+
+public unsafe partial struct pthread_barrierattr_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte __size[4];
+
+        [FieldOffset(1)]
+        public sbyte __dummy___size_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy___size_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy___size_3;
+
+        [FieldOffset(0)]
+        public int __align;
+    }
+}
+
+public enum PTHREAD_CREATE : uint
+{
+    PTHREAD_CREATE_JOINABLE = 0,
+    PTHREAD_CREATE_DETACHED = 1
+}
+
+public enum PTHREAD_MUTEX : uint
+{
+    PTHREAD_MUTEX_TIMED_NP = 0,
+    PTHREAD_MUTEX_RECURSIVE_NP = 1,
+    PTHREAD_MUTEX_ERRORCHECK_NP = 2,
+    PTHREAD_MUTEX_ADAPTIVE_NP = 3,
+    PTHREAD_MUTEX_NORMAL = 0,
+    PTHREAD_MUTEX_RECURSIVE = 1,
+    PTHREAD_MUTEX_ERRORCHECK = 2,
+    PTHREAD_MUTEX_DEFAULT = 0,
+    PTHREAD_MUTEX_FAST_NP = 0
+}
+
+public enum PTHREAD_MUTEX_ : uint
+{
+    PTHREAD_MUTEX_STALLED = 0,
+    PTHREAD_MUTEX_STALLED_NP = 0,
+    PTHREAD_MUTEX_ROBUST = 1,
+    PTHREAD_MUTEX_ROBUST_NP = 1
+}
+
+public enum PTHREAD_PRIO : uint
+{
+    PTHREAD_PRIO_NONE = 0,
+    PTHREAD_PRIO_INHERIT = 1,
+    PTHREAD_PRIO_PROTECT = 2
+}
+
+public enum PTHREAD_RWLOCK : uint
+{
+    PTHREAD_RWLOCK_PREFER_READER_NP = 0,
+    PTHREAD_RWLOCK_PREFER_WRITER_NP = 1,
+    PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP = 2,
+    PTHREAD_RWLOCK_DEFAULT_NP = 0
+}
+
+public enum PTHREAD : uint
+{
+    PTHREAD_INHERIT_SCHED = 0,
+    PTHREAD_EXPLICIT_SCHED = 1
+}
+
+public enum PTHREAD_SCOPE : uint
+{
+    PTHREAD_SCOPE_SYSTEM = 0,
+    PTHREAD_SCOPE_PROCESS = 1
+}
+
+public enum PTHREAD_PROCESS : uint
+{
+    PTHREAD_PROCESS_PRIVATE = 0,
+    PTHREAD_PROCESS_SHARED = 1
+}
+
+public enum PTHREAD_CANCEL : uint
+{
+    PTHREAD_CANCEL_ENABLE = 0,
+    PTHREAD_CANCEL_DISABLE = 1
+}
+
+public enum PTHREAD_CANCEL_ : uint
+{
+    PTHREAD_CANCEL_DEFERRED = 0,
+    PTHREAD_CANCEL_ASYNCHRONOUS = 1
+}
+
+public unsafe partial class _pthread_cleanup_buffer
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr __routine;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr __arg;
+
+        [FieldOffset(16)]
+        public int __canceltype;
+
+        [FieldOffset(24)]
+        public global::System.IntPtr __prev;
+    }
+}
+
+public unsafe partial class __pthread_unwind_buf_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 104)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed byte __cancel_jmp_buf[72];
+
+        [FieldOffset(72)]
+        public void** __pad;
+
+        [FieldOffset(80)]
+        public global::System.IntPtr __dummy___pad_1;
+
+        [FieldOffset(88)]
+        public global::System.IntPtr __dummy___pad_2;
+
+        [FieldOffset(96)]
+        public global::System.IntPtr __dummy___pad_3;
+    }
+
+    public unsafe partial class _
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 72)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public fixed long __cancel_jmp_buf[8];
+
+            [FieldOffset(8)]
+            public long __dummy___cancel_jmp_buf_1;
+
+            [FieldOffset(16)]
+            public long __dummy___cancel_jmp_buf_2;
+
+            [FieldOffset(24)]
+            public long __dummy___cancel_jmp_buf_3;
+
+            [FieldOffset(32)]
+            public long __dummy___cancel_jmp_buf_4;
+
+            [FieldOffset(40)]
+            public long __dummy___cancel_jmp_buf_5;
+
+            [FieldOffset(48)]
+            public long __dummy___cancel_jmp_buf_6;
+
+            [FieldOffset(56)]
+            public long __dummy___cancel_jmp_buf_7;
+
+            [FieldOffset(64)]
+            public int __mask_was_saved;
+        }
+    }
+}
+
+public unsafe partial class __pthread_cleanup_frame
+{
+    [StructLayout(LayoutKind.Explicit, Size = 24)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr __cancel_routine;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr __cancel_arg;
+
+        [FieldOffset(16)]
+        public int __do_it;
+
+        [FieldOffset(20)]
+        public int __cancel_type;
+    }
+}
+
 namespace std
 {
     namespace __cxx11
@@ -99,61 +3017,13 @@ namespace std
             public unsafe partial struct Internal
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr _M_p;
+                internal global::std.__cxx11.basic_string._Alloc_hider.Internal _M_dataplus;
 
                 [FieldOffset(8)]
                 public ulong _M_string_length;
 
                 [FieldOffset(16)]
-                public fixed sbyte _M_local_buf[16];
-
-                [FieldOffset(17)]
-                public sbyte __dummy__M_local_buf_1;
-
-                [FieldOffset(18)]
-                public sbyte __dummy__M_local_buf_2;
-
-                [FieldOffset(19)]
-                public sbyte __dummy__M_local_buf_3;
-
-                [FieldOffset(20)]
-                public sbyte __dummy__M_local_buf_4;
-
-                [FieldOffset(21)]
-                public sbyte __dummy__M_local_buf_5;
-
-                [FieldOffset(22)]
-                public sbyte __dummy__M_local_buf_6;
-
-                [FieldOffset(23)]
-                public sbyte __dummy__M_local_buf_7;
-
-                [FieldOffset(24)]
-                public sbyte __dummy__M_local_buf_8;
-
-                [FieldOffset(25)]
-                public sbyte __dummy__M_local_buf_9;
-
-                [FieldOffset(26)]
-                public sbyte __dummy__M_local_buf_10;
-
-                [FieldOffset(27)]
-                public sbyte __dummy__M_local_buf_11;
-
-                [FieldOffset(28)]
-                public sbyte __dummy__M_local_buf_12;
-
-                [FieldOffset(29)]
-                public sbyte __dummy__M_local_buf_13;
-
-                [FieldOffset(30)]
-                public sbyte __dummy__M_local_buf_14;
-
-                [FieldOffset(31)]
-                public sbyte __dummy__M_local_buf_15;
-
-                [FieldOffset(16)]
-                public ulong _M_allocated_capacity;
+                internal global::std.__cxx11.basic_string._.Internal _;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -171,60 +3041,13 @@ namespace std
                 _S_local_capacity = 15
             }
 
-            public unsafe partial class _Alloc_hider : global::std.allocator, IDisposable
+            public unsafe partial class _Alloc_hider
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public new partial struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public global::System.IntPtr _M_p;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_Alloc_hiderD2Ev")]
-                    internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                public static new _Alloc_hider __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new _Alloc_hider(native.ToPointer(), skipVTables);
-                }
-
-                public static _Alloc_hider __CreateInstance(_Alloc_hider.Internal native, bool skipVTables = false)
-                {
-                    return new _Alloc_hider(native, skipVTables);
-                }
-
-                private static void* __CopyValue(_Alloc_hider.Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(8);
-                    *(_Alloc_hider.Internal*) ret = native;
-                    return ret.ToPointer();
-                }
-
-                private _Alloc_hider(_Alloc_hider.Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected _Alloc_hider(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                protected override void Dispose(bool disposing)
-                {
-                    global::std.allocator __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -344,15 +3167,573 @@ namespace std
                 var __ret = Internal.c_str_0((__Instance + __PointerAdjustment));
                 return Marshal.PtrToStringAnsi(__ret);
             }
+        }
+    }
+}
 
-            public static ulong npos
+namespace __gnu_cxx
+{
+}
+
+public enum idtype_t : uint
+{
+    P_ALL = 0,
+    P_PID = 1,
+    P_PGID = 2
+}
+
+public unsafe partial struct wait
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int w_status;
+
+        [FieldOffset(0)]
+        internal global::wait._.Internal __wait_terminated;
+
+        [FieldOffset(0)]
+        internal global::wait.__.Internal __wait_stopped;
+    }
+
+    public unsafe partial class _
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public uint __w_termsig;
+
+            [FieldOffset(0)]
+            public uint __w_coredump;
+
+            [FieldOffset(1)]
+            public uint __w_retcode;
+
+            [FieldOffset(2)]
+            public uint __;
+        }
+    }
+
+    public unsafe partial class __
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public uint __w_stopval;
+
+            [FieldOffset(1)]
+            public uint __w_stopsig;
+
+            [FieldOffset(2)]
+            public uint __;
+        }
+    }
+}
+
+public unsafe partial class div_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int quot;
+
+        [FieldOffset(4)]
+        public int rem;
+    }
+}
+
+public unsafe partial class ldiv_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long quot;
+
+        [FieldOffset(8)]
+        public long rem;
+    }
+}
+
+public unsafe partial class lldiv_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long quot;
+
+        [FieldOffset(8)]
+        public long rem;
+    }
+}
+
+public unsafe partial class random_data
+{
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr fptr;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr rptr;
+
+        [FieldOffset(16)]
+        public global::System.IntPtr state;
+
+        [FieldOffset(24)]
+        public int rand_type;
+
+        [FieldOffset(28)]
+        public int rand_deg;
+
+        [FieldOffset(32)]
+        public int rand_sep;
+
+        [FieldOffset(40)]
+        public global::System.IntPtr end_ptr;
+    }
+}
+
+public unsafe partial class drand48_data
+{
+    [StructLayout(LayoutKind.Explicit, Size = 24)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ushort __x[3];
+
+        [FieldOffset(2)]
+        public ushort __dummy___x_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy___x_2;
+
+        [FieldOffset(6)]
+        public fixed ushort __old_x[3];
+
+        [FieldOffset(8)]
+        public ushort __dummy___old_x_1;
+
+        [FieldOffset(10)]
+        public ushort __dummy___old_x_2;
+
+        [FieldOffset(12)]
+        public ushort __c;
+
+        [FieldOffset(14)]
+        public ushort __init;
+
+        [FieldOffset(16)]
+        public ulong __a;
+    }
+}
+
+public unsafe partial class __sigset_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 128)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ulong __val[16];
+
+        [FieldOffset(8)]
+        public ulong __dummy___val_1;
+
+        [FieldOffset(16)]
+        public ulong __dummy___val_2;
+
+        [FieldOffset(24)]
+        public ulong __dummy___val_3;
+
+        [FieldOffset(32)]
+        public ulong __dummy___val_4;
+
+        [FieldOffset(40)]
+        public ulong __dummy___val_5;
+
+        [FieldOffset(48)]
+        public ulong __dummy___val_6;
+
+        [FieldOffset(56)]
+        public ulong __dummy___val_7;
+
+        [FieldOffset(64)]
+        public ulong __dummy___val_8;
+
+        [FieldOffset(72)]
+        public ulong __dummy___val_9;
+
+        [FieldOffset(80)]
+        public ulong __dummy___val_10;
+
+        [FieldOffset(88)]
+        public ulong __dummy___val_11;
+
+        [FieldOffset(96)]
+        public ulong __dummy___val_12;
+
+        [FieldOffset(104)]
+        public ulong __dummy___val_13;
+
+        [FieldOffset(112)]
+        public ulong __dummy___val_14;
+
+        [FieldOffset(120)]
+        public ulong __dummy___val_15;
+    }
+}
+
+public unsafe partial class fd_set
+{
+    [StructLayout(LayoutKind.Explicit, Size = 128)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed long fds_bits[16];
+
+        [FieldOffset(8)]
+        public long __dummy_fds_bits_1;
+
+        [FieldOffset(16)]
+        public long __dummy_fds_bits_2;
+
+        [FieldOffset(24)]
+        public long __dummy_fds_bits_3;
+
+        [FieldOffset(32)]
+        public long __dummy_fds_bits_4;
+
+        [FieldOffset(40)]
+        public long __dummy_fds_bits_5;
+
+        [FieldOffset(48)]
+        public long __dummy_fds_bits_6;
+
+        [FieldOffset(56)]
+        public long __dummy_fds_bits_7;
+
+        [FieldOffset(64)]
+        public long __dummy_fds_bits_8;
+
+        [FieldOffset(72)]
+        public long __dummy_fds_bits_9;
+
+        [FieldOffset(80)]
+        public long __dummy_fds_bits_10;
+
+        [FieldOffset(88)]
+        public long __dummy_fds_bits_11;
+
+        [FieldOffset(96)]
+        public long __dummy_fds_bits_12;
+
+        [FieldOffset(104)]
+        public long __dummy_fds_bits_13;
+
+        [FieldOffset(112)]
+        public long __dummy_fds_bits_14;
+
+        [FieldOffset(120)]
+        public long __dummy_fds_bits_15;
+    }
+}
+
+namespace std
+{
+    namespace __cxx11
+    {
+    }
+}
+
+namespace std
+{
+    public unsafe partial class __cow_string
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std.__cow_string._.Internal _;
+        }
+
+        public unsafe partial struct _
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
+            public partial struct Internal
             {
-                get
-                {
-                    var __ptr = (ulong*)CppSharp.SymbolResolver.ResolveSymbol("Std-templates", "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4nposE");
-                    return *__ptr;
-                }
+                [FieldOffset(0)]
+                public global::System.IntPtr _M_p;
+
+                [FieldOffset(0)]
+                public fixed sbyte _M_bytes[8];
+
+                [FieldOffset(1)]
+                public sbyte __dummy__M_bytes_1;
+
+                [FieldOffset(2)]
+                public sbyte __dummy__M_bytes_2;
+
+                [FieldOffset(3)]
+                public sbyte __dummy__M_bytes_3;
+
+                [FieldOffset(4)]
+                public sbyte __dummy__M_bytes_4;
+
+                [FieldOffset(5)]
+                public sbyte __dummy__M_bytes_5;
+
+                [FieldOffset(6)]
+                public sbyte __dummy__M_bytes_6;
+
+                [FieldOffset(7)]
+                public sbyte __dummy__M_bytes_7;
             }
         }
+    }
+
+    public unsafe partial class logic_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class domain_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class invalid_argument
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class length_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class out_of_range
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class runtime_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class range_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class overflow_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+
+    public unsafe partial class underflow_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vptr_exception;
+
+            [FieldOffset(8)]
+            internal global::std.__cow_string.Internal _M_msg;
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class allocator_arg_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __uses_alloc_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __uses_alloc0
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std.__uses_alloc0._Sink.Internal _M_a;
+        }
+
+        public unsafe partial class _Sink
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace _V2
+    {
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace __uninitialized_construct_buf_dispatch
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    [Flags]
+    public enum S_threshold : uint
+    {
+        _S_threshold = 16
+    }
+
+    public enum S_chunk_size : uint
+    {
+        _S_chunk_size = 7
+    }
+
+    namespace _V2
+    {
+    }
+}
+
+namespace std
+{
+    public enum float_round_style
+    {
+        round_indeterminate = -1,
+        round_toward_zero = 0,
+        round_to_nearest = 1,
+        round_toward_infinity = 2,
+        round_toward_neg_infinity = 3
+    }
+
+    public enum float_denorm_style
+    {
+        denorm_indeterminate = -1,
+        denorm_absent = 0,
+        denorm_present = 1
+    }
+
+    namespace numeric_limits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class __numeric_limits_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace __detail
+    {
     }
 }

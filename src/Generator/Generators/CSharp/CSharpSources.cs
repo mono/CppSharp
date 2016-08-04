@@ -249,7 +249,7 @@ namespace CppSharp.Generators.CSharp
             // Generate all the enum declarations.
             foreach (var @enum in context.Enums)
             {
-                if (!@enum.IsGenerated || @enum.IsIncomplete)
+                if (@enum.IsIncomplete)
                     continue;
 
                 GenerateEnum(@enum);
@@ -281,8 +281,7 @@ namespace CppSharp.Generators.CSharp
                     if (specialization != null)
                         GenerateClass(specialization);
                 }
-                else if ((!@class.Ignore || !@class.TranslationUnit.IsSystemHeader) &&
-                    !(@class.Namespace is Class))
+                else if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
             }
 
@@ -609,7 +608,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Layout.Fields)
                 GenerateClassInternalsField(field);
-            if (@class.IsGenerated && (!(@class is ClassTemplateSpecialization) || @class.IsSupportedStdType()))
+            if (@class.IsGenerated)
             {
                 var functions = GatherClassInternalFunctions(@class);
 
@@ -799,8 +798,6 @@ namespace CppSharp.Generators.CSharp
         {
             Declaration decl;
             field.QualifiedType.Type.TryGetDeclaration(out decl);
-            if (decl != null && decl.TranslationUnit.IsSystemHeader && !decl.IsSupportedStdType())
-                return;
 
             var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
             var coreType = field.QualifiedType.Type.Desugar();
@@ -3013,8 +3010,6 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateEnum(Enumeration @enum)
         {
-            if (!@enum.IsGenerated) return;
-
             PushBlock(CSharpBlockKind.Enum);
             GenerateDeclarationCommon(@enum);
 
@@ -3025,7 +3020,7 @@ namespace CppSharp.Generators.CSharp
             // internal P/Invoke declarations must see protected enums
             if (@enum.Access == AccessSpecifier.Protected)
                 Write("internal ");
-            Write("enum {0}", @enum.Name);
+            Write("enum {0}", Helpers.SafeIdentifier(@enum.Name));
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());

@@ -182,6 +182,16 @@ namespace CppSharp
                 Public = 2
             };
 
+            public enum struct MacroLocation
+            {
+                Unknown = 0,
+                ClassHead = 1,
+                ClassBody = 2,
+                FunctionHead = 3,
+                FunctionParameters = 4,
+                FunctionBody = 5
+            };
+
             public enum struct RawCommentKind
             {
                 Invalid = 0,
@@ -211,27 +221,6 @@ namespace CppSharp
                 InlineContentComment = 12,
                 InlineCommandComment = 13,
                 VerbatimBlockLineComment = 14
-            };
-
-            public enum struct CppAbi
-            {
-                Itanium = 0,
-                Microsoft = 1,
-                ARM = 2,
-                iOS = 3,
-                iOS64 = 4
-            };
-
-            public enum struct VTableComponentKind
-            {
-                VCallOffset = 0,
-                VBaseOffset = 1,
-                OffsetToTop = 2,
-                RTTI = 3,
-                FunctionPointer = 4,
-                CompleteDtorPointer = 5,
-                DeletingDtorPointer = 6,
-                UnusedFunctionPointer = 7
             };
 
             public enum struct CXXOperatorKind
@@ -293,15 +282,6 @@ namespace CppSharp
                 Unknown = 5
             };
 
-            public enum struct TemplateSpecializationKind
-            {
-                Undeclared = 0,
-                ImplicitInstantiation = 1,
-                ExplicitSpecialization = 2,
-                ExplicitInstantiationDeclaration = 3,
-                ExplicitInstantiationDefinition = 4
-            };
-
             public enum struct StatementClass
             {
                 Any = 0,
@@ -314,6 +294,15 @@ namespace CppSharp
                 ExplicitCastExpr = 7
             };
 
+            public enum struct TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
+            };
+
             public enum struct CXXMethodKind
             {
                 Normal = 0,
@@ -322,6 +311,27 @@ namespace CppSharp
                 Conversion = 3,
                 Operator = 4,
                 UsingDirective = 5
+            };
+
+            public enum struct CppAbi
+            {
+                Itanium = 0,
+                Microsoft = 1,
+                ARM = 2,
+                iOS = 3,
+                iOS64 = 4
+            };
+
+            public enum struct VTableComponentKind
+            {
+                VCallOffset = 0,
+                VBaseOffset = 1,
+                OffsetToTop = 2,
+                RTTI = 3,
+                FunctionPointer = 4,
+                CompleteDtorPointer = 5,
+                DeletingDtorPointer = 6,
+                UnusedFunctionPointer = 7
             };
 
             public enum struct PrimitiveType
@@ -350,16 +360,6 @@ namespace CppSharp
                 LongDouble = 21,
                 Float128 = 22,
                 IntPtr = 23
-            };
-
-            public enum struct MacroLocation
-            {
-                Unknown = 0,
-                ClassHead = 1,
-                ClassBody = 2,
-                FunctionHead = 3,
-                FunctionParameters = 4,
-                FunctionBody = 5
             };
 
             public enum struct ArchType

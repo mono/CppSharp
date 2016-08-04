@@ -8,6 +8,4812 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
+public unsafe partial class __crt_locale_data_public
+{
+    [StructLayout(LayoutKind.Explicit, Size = 12)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr _locale_pctype;
+
+        [FieldOffset(4)]
+        public int _locale_mb_cur_max;
+
+        [FieldOffset(8)]
+        public uint _locale_lc_codepage;
+    }
+}
+
+public unsafe partial class __crt_locale_pointers
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr locinfo;
+
+        [FieldOffset(4)]
+        public global::System.IntPtr mbcinfo;
+    }
+}
+
+public unsafe partial class _Mbstatet
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint _Wchar;
+
+        [FieldOffset(4)]
+        public ushort _Byte;
+
+        [FieldOffset(6)]
+        public ushort _State;
+    }
+}
+
+namespace std
+{
+    public enum _Uninitialized
+    {
+        _Noinit = 0
+    }
+
+    public unsafe partial class _Lockit
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public int _Locktype;
+        }
+    }
+
+    public unsafe partial class _Init_locks
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+public unsafe partial class _div_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int quot;
+
+        [FieldOffset(4)]
+        public int rem;
+    }
+}
+
+public unsafe partial class _ldiv_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int quot;
+
+        [FieldOffset(4)]
+        public int rem;
+    }
+}
+
+public unsafe partial class _lldiv_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public long quot;
+
+        [FieldOffset(8)]
+        public long rem;
+    }
+}
+
+public unsafe partial class _LDOUBLE
+{
+    [StructLayout(LayoutKind.Explicit, Size = 10)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed byte ld[10];
+
+        [FieldOffset(1)]
+        public byte __dummy_ld_1;
+
+        [FieldOffset(2)]
+        public byte __dummy_ld_2;
+
+        [FieldOffset(3)]
+        public byte __dummy_ld_3;
+
+        [FieldOffset(4)]
+        public byte __dummy_ld_4;
+
+        [FieldOffset(5)]
+        public byte __dummy_ld_5;
+
+        [FieldOffset(6)]
+        public byte __dummy_ld_6;
+
+        [FieldOffset(7)]
+        public byte __dummy_ld_7;
+
+        [FieldOffset(8)]
+        public byte __dummy_ld_8;
+
+        [FieldOffset(9)]
+        public byte __dummy_ld_9;
+    }
+}
+
+public unsafe partial class _CRT_DOUBLE
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public double x;
+    }
+}
+
+public unsafe partial class _CRT_FLOAT
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public float f;
+    }
+}
+
+public unsafe partial class _LONGDOUBLE
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+    }
+}
+
+public unsafe partial class _LDBL12
+{
+    [StructLayout(LayoutKind.Explicit, Size = 12)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed byte ld12[12];
+
+        [FieldOffset(1)]
+        public byte __dummy_ld12_1;
+
+        [FieldOffset(2)]
+        public byte __dummy_ld12_2;
+
+        [FieldOffset(3)]
+        public byte __dummy_ld12_3;
+
+        [FieldOffset(4)]
+        public byte __dummy_ld12_4;
+
+        [FieldOffset(5)]
+        public byte __dummy_ld12_5;
+
+        [FieldOffset(6)]
+        public byte __dummy_ld12_6;
+
+        [FieldOffset(7)]
+        public byte __dummy_ld12_7;
+
+        [FieldOffset(8)]
+        public byte __dummy_ld12_8;
+
+        [FieldOffset(9)]
+        public byte __dummy_ld12_9;
+
+        [FieldOffset(10)]
+        public byte __dummy_ld12_10;
+
+        [FieldOffset(11)]
+        public byte __dummy_ld12_11;
+    }
+}
+
+public unsafe partial struct _Dconst
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ushort _Word[8];
+
+        [FieldOffset(2)]
+        public ushort __dummy__Word_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy__Word_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy__Word_3;
+
+        [FieldOffset(8)]
+        public ushort __dummy__Word_4;
+
+        [FieldOffset(10)]
+        public ushort __dummy__Word_5;
+
+        [FieldOffset(12)]
+        public ushort __dummy__Word_6;
+
+        [FieldOffset(14)]
+        public ushort __dummy__Word_7;
+
+        [FieldOffset(0)]
+        public float _Float;
+
+        [FieldOffset(0)]
+        public double _Double;
+    }
+}
+
+namespace _Combined_type
+{
+    [StructLayout(LayoutKind.Explicit, Size = 0)]
+    public unsafe partial struct Internal
+    {
+    }
+}
+
+namespace _Real_widened
+{
+    [StructLayout(LayoutKind.Explicit, Size = 0)]
+    public unsafe partial struct Internal
+    {
+    }
+}
+
+namespace _Real_type
+{
+    [StructLayout(LayoutKind.Explicit, Size = 0)]
+    public unsafe partial struct Internal
+    {
+    }
+}
+
+public unsafe partial class _exception
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int type;
+
+        [FieldOffset(4)]
+        public global::System.IntPtr name;
+
+        [FieldOffset(8)]
+        public double arg1;
+
+        [FieldOffset(16)]
+        public double arg2;
+
+        [FieldOffset(24)]
+        public double retval;
+    }
+}
+
+public unsafe partial class _complex
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public double x;
+
+        [FieldOffset(8)]
+        public double y;
+    }
+}
+
+public unsafe partial struct _double_val
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ushort _Sh[4];
+
+        [FieldOffset(2)]
+        public ushort __dummy__Sh_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy__Sh_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy__Sh_3;
+
+        [FieldOffset(0)]
+        public double _Val;
+    }
+}
+
+public unsafe partial struct _float_val
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ushort _Sh[2];
+
+        [FieldOffset(2)]
+        public ushort __dummy__Sh_1;
+
+        [FieldOffset(0)]
+        public float _Val;
+    }
+}
+
+public unsafe partial struct _ldouble_val
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ushort _Sh[4];
+
+        [FieldOffset(2)]
+        public ushort __dummy__Sh_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy__Sh_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy__Sh_3;
+    }
+}
+
+public unsafe partial struct _float_const
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed ushort _Word[4];
+
+        [FieldOffset(2)]
+        public ushort __dummy__Word_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy__Word_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy__Word_3;
+
+        [FieldOffset(0)]
+        public float _Float;
+
+        [FieldOffset(0)]
+        public double _Double;
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace integral_constant
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Is_integral
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Is_floating_point
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Nil
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Wrap_int
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+public unsafe partial class _wfinddata32_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 540)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint attrib;
+
+        [FieldOffset(4)]
+        public int time_create;
+
+        [FieldOffset(8)]
+        public int time_access;
+
+        [FieldOffset(12)]
+        public int time_write;
+
+        [FieldOffset(16)]
+        public uint size;
+
+        [FieldOffset(20)]
+        public fixed char name[260];
+
+        [FieldOffset(22)]
+        public char __dummy_name_1;
+
+        [FieldOffset(24)]
+        public char __dummy_name_2;
+
+        [FieldOffset(26)]
+        public char __dummy_name_3;
+
+        [FieldOffset(28)]
+        public char __dummy_name_4;
+
+        [FieldOffset(30)]
+        public char __dummy_name_5;
+
+        [FieldOffset(32)]
+        public char __dummy_name_6;
+
+        [FieldOffset(34)]
+        public char __dummy_name_7;
+
+        [FieldOffset(36)]
+        public char __dummy_name_8;
+
+        [FieldOffset(38)]
+        public char __dummy_name_9;
+
+        [FieldOffset(40)]
+        public char __dummy_name_10;
+
+        [FieldOffset(42)]
+        public char __dummy_name_11;
+
+        [FieldOffset(44)]
+        public char __dummy_name_12;
+
+        [FieldOffset(46)]
+        public char __dummy_name_13;
+
+        [FieldOffset(48)]
+        public char __dummy_name_14;
+
+        [FieldOffset(50)]
+        public char __dummy_name_15;
+
+        [FieldOffset(52)]
+        public char __dummy_name_16;
+
+        [FieldOffset(54)]
+        public char __dummy_name_17;
+
+        [FieldOffset(56)]
+        public char __dummy_name_18;
+
+        [FieldOffset(58)]
+        public char __dummy_name_19;
+
+        [FieldOffset(60)]
+        public char __dummy_name_20;
+
+        [FieldOffset(62)]
+        public char __dummy_name_21;
+
+        [FieldOffset(64)]
+        public char __dummy_name_22;
+
+        [FieldOffset(66)]
+        public char __dummy_name_23;
+
+        [FieldOffset(68)]
+        public char __dummy_name_24;
+
+        [FieldOffset(70)]
+        public char __dummy_name_25;
+
+        [FieldOffset(72)]
+        public char __dummy_name_26;
+
+        [FieldOffset(74)]
+        public char __dummy_name_27;
+
+        [FieldOffset(76)]
+        public char __dummy_name_28;
+
+        [FieldOffset(78)]
+        public char __dummy_name_29;
+
+        [FieldOffset(80)]
+        public char __dummy_name_30;
+
+        [FieldOffset(82)]
+        public char __dummy_name_31;
+
+        [FieldOffset(84)]
+        public char __dummy_name_32;
+
+        [FieldOffset(86)]
+        public char __dummy_name_33;
+
+        [FieldOffset(88)]
+        public char __dummy_name_34;
+
+        [FieldOffset(90)]
+        public char __dummy_name_35;
+
+        [FieldOffset(92)]
+        public char __dummy_name_36;
+
+        [FieldOffset(94)]
+        public char __dummy_name_37;
+
+        [FieldOffset(96)]
+        public char __dummy_name_38;
+
+        [FieldOffset(98)]
+        public char __dummy_name_39;
+
+        [FieldOffset(100)]
+        public char __dummy_name_40;
+
+        [FieldOffset(102)]
+        public char __dummy_name_41;
+
+        [FieldOffset(104)]
+        public char __dummy_name_42;
+
+        [FieldOffset(106)]
+        public char __dummy_name_43;
+
+        [FieldOffset(108)]
+        public char __dummy_name_44;
+
+        [FieldOffset(110)]
+        public char __dummy_name_45;
+
+        [FieldOffset(112)]
+        public char __dummy_name_46;
+
+        [FieldOffset(114)]
+        public char __dummy_name_47;
+
+        [FieldOffset(116)]
+        public char __dummy_name_48;
+
+        [FieldOffset(118)]
+        public char __dummy_name_49;
+
+        [FieldOffset(120)]
+        public char __dummy_name_50;
+
+        [FieldOffset(122)]
+        public char __dummy_name_51;
+
+        [FieldOffset(124)]
+        public char __dummy_name_52;
+
+        [FieldOffset(126)]
+        public char __dummy_name_53;
+
+        [FieldOffset(128)]
+        public char __dummy_name_54;
+
+        [FieldOffset(130)]
+        public char __dummy_name_55;
+
+        [FieldOffset(132)]
+        public char __dummy_name_56;
+
+        [FieldOffset(134)]
+        public char __dummy_name_57;
+
+        [FieldOffset(136)]
+        public char __dummy_name_58;
+
+        [FieldOffset(138)]
+        public char __dummy_name_59;
+
+        [FieldOffset(140)]
+        public char __dummy_name_60;
+
+        [FieldOffset(142)]
+        public char __dummy_name_61;
+
+        [FieldOffset(144)]
+        public char __dummy_name_62;
+
+        [FieldOffset(146)]
+        public char __dummy_name_63;
+
+        [FieldOffset(148)]
+        public char __dummy_name_64;
+
+        [FieldOffset(150)]
+        public char __dummy_name_65;
+
+        [FieldOffset(152)]
+        public char __dummy_name_66;
+
+        [FieldOffset(154)]
+        public char __dummy_name_67;
+
+        [FieldOffset(156)]
+        public char __dummy_name_68;
+
+        [FieldOffset(158)]
+        public char __dummy_name_69;
+
+        [FieldOffset(160)]
+        public char __dummy_name_70;
+
+        [FieldOffset(162)]
+        public char __dummy_name_71;
+
+        [FieldOffset(164)]
+        public char __dummy_name_72;
+
+        [FieldOffset(166)]
+        public char __dummy_name_73;
+
+        [FieldOffset(168)]
+        public char __dummy_name_74;
+
+        [FieldOffset(170)]
+        public char __dummy_name_75;
+
+        [FieldOffset(172)]
+        public char __dummy_name_76;
+
+        [FieldOffset(174)]
+        public char __dummy_name_77;
+
+        [FieldOffset(176)]
+        public char __dummy_name_78;
+
+        [FieldOffset(178)]
+        public char __dummy_name_79;
+
+        [FieldOffset(180)]
+        public char __dummy_name_80;
+
+        [FieldOffset(182)]
+        public char __dummy_name_81;
+
+        [FieldOffset(184)]
+        public char __dummy_name_82;
+
+        [FieldOffset(186)]
+        public char __dummy_name_83;
+
+        [FieldOffset(188)]
+        public char __dummy_name_84;
+
+        [FieldOffset(190)]
+        public char __dummy_name_85;
+
+        [FieldOffset(192)]
+        public char __dummy_name_86;
+
+        [FieldOffset(194)]
+        public char __dummy_name_87;
+
+        [FieldOffset(196)]
+        public char __dummy_name_88;
+
+        [FieldOffset(198)]
+        public char __dummy_name_89;
+
+        [FieldOffset(200)]
+        public char __dummy_name_90;
+
+        [FieldOffset(202)]
+        public char __dummy_name_91;
+
+        [FieldOffset(204)]
+        public char __dummy_name_92;
+
+        [FieldOffset(206)]
+        public char __dummy_name_93;
+
+        [FieldOffset(208)]
+        public char __dummy_name_94;
+
+        [FieldOffset(210)]
+        public char __dummy_name_95;
+
+        [FieldOffset(212)]
+        public char __dummy_name_96;
+
+        [FieldOffset(214)]
+        public char __dummy_name_97;
+
+        [FieldOffset(216)]
+        public char __dummy_name_98;
+
+        [FieldOffset(218)]
+        public char __dummy_name_99;
+
+        [FieldOffset(220)]
+        public char __dummy_name_100;
+
+        [FieldOffset(222)]
+        public char __dummy_name_101;
+
+        [FieldOffset(224)]
+        public char __dummy_name_102;
+
+        [FieldOffset(226)]
+        public char __dummy_name_103;
+
+        [FieldOffset(228)]
+        public char __dummy_name_104;
+
+        [FieldOffset(230)]
+        public char __dummy_name_105;
+
+        [FieldOffset(232)]
+        public char __dummy_name_106;
+
+        [FieldOffset(234)]
+        public char __dummy_name_107;
+
+        [FieldOffset(236)]
+        public char __dummy_name_108;
+
+        [FieldOffset(238)]
+        public char __dummy_name_109;
+
+        [FieldOffset(240)]
+        public char __dummy_name_110;
+
+        [FieldOffset(242)]
+        public char __dummy_name_111;
+
+        [FieldOffset(244)]
+        public char __dummy_name_112;
+
+        [FieldOffset(246)]
+        public char __dummy_name_113;
+
+        [FieldOffset(248)]
+        public char __dummy_name_114;
+
+        [FieldOffset(250)]
+        public char __dummy_name_115;
+
+        [FieldOffset(252)]
+        public char __dummy_name_116;
+
+        [FieldOffset(254)]
+        public char __dummy_name_117;
+
+        [FieldOffset(256)]
+        public char __dummy_name_118;
+
+        [FieldOffset(258)]
+        public char __dummy_name_119;
+
+        [FieldOffset(260)]
+        public char __dummy_name_120;
+
+        [FieldOffset(262)]
+        public char __dummy_name_121;
+
+        [FieldOffset(264)]
+        public char __dummy_name_122;
+
+        [FieldOffset(266)]
+        public char __dummy_name_123;
+
+        [FieldOffset(268)]
+        public char __dummy_name_124;
+
+        [FieldOffset(270)]
+        public char __dummy_name_125;
+
+        [FieldOffset(272)]
+        public char __dummy_name_126;
+
+        [FieldOffset(274)]
+        public char __dummy_name_127;
+
+        [FieldOffset(276)]
+        public char __dummy_name_128;
+
+        [FieldOffset(278)]
+        public char __dummy_name_129;
+
+        [FieldOffset(280)]
+        public char __dummy_name_130;
+
+        [FieldOffset(282)]
+        public char __dummy_name_131;
+
+        [FieldOffset(284)]
+        public char __dummy_name_132;
+
+        [FieldOffset(286)]
+        public char __dummy_name_133;
+
+        [FieldOffset(288)]
+        public char __dummy_name_134;
+
+        [FieldOffset(290)]
+        public char __dummy_name_135;
+
+        [FieldOffset(292)]
+        public char __dummy_name_136;
+
+        [FieldOffset(294)]
+        public char __dummy_name_137;
+
+        [FieldOffset(296)]
+        public char __dummy_name_138;
+
+        [FieldOffset(298)]
+        public char __dummy_name_139;
+
+        [FieldOffset(300)]
+        public char __dummy_name_140;
+
+        [FieldOffset(302)]
+        public char __dummy_name_141;
+
+        [FieldOffset(304)]
+        public char __dummy_name_142;
+
+        [FieldOffset(306)]
+        public char __dummy_name_143;
+
+        [FieldOffset(308)]
+        public char __dummy_name_144;
+
+        [FieldOffset(310)]
+        public char __dummy_name_145;
+
+        [FieldOffset(312)]
+        public char __dummy_name_146;
+
+        [FieldOffset(314)]
+        public char __dummy_name_147;
+
+        [FieldOffset(316)]
+        public char __dummy_name_148;
+
+        [FieldOffset(318)]
+        public char __dummy_name_149;
+
+        [FieldOffset(320)]
+        public char __dummy_name_150;
+
+        [FieldOffset(322)]
+        public char __dummy_name_151;
+
+        [FieldOffset(324)]
+        public char __dummy_name_152;
+
+        [FieldOffset(326)]
+        public char __dummy_name_153;
+
+        [FieldOffset(328)]
+        public char __dummy_name_154;
+
+        [FieldOffset(330)]
+        public char __dummy_name_155;
+
+        [FieldOffset(332)]
+        public char __dummy_name_156;
+
+        [FieldOffset(334)]
+        public char __dummy_name_157;
+
+        [FieldOffset(336)]
+        public char __dummy_name_158;
+
+        [FieldOffset(338)]
+        public char __dummy_name_159;
+
+        [FieldOffset(340)]
+        public char __dummy_name_160;
+
+        [FieldOffset(342)]
+        public char __dummy_name_161;
+
+        [FieldOffset(344)]
+        public char __dummy_name_162;
+
+        [FieldOffset(346)]
+        public char __dummy_name_163;
+
+        [FieldOffset(348)]
+        public char __dummy_name_164;
+
+        [FieldOffset(350)]
+        public char __dummy_name_165;
+
+        [FieldOffset(352)]
+        public char __dummy_name_166;
+
+        [FieldOffset(354)]
+        public char __dummy_name_167;
+
+        [FieldOffset(356)]
+        public char __dummy_name_168;
+
+        [FieldOffset(358)]
+        public char __dummy_name_169;
+
+        [FieldOffset(360)]
+        public char __dummy_name_170;
+
+        [FieldOffset(362)]
+        public char __dummy_name_171;
+
+        [FieldOffset(364)]
+        public char __dummy_name_172;
+
+        [FieldOffset(366)]
+        public char __dummy_name_173;
+
+        [FieldOffset(368)]
+        public char __dummy_name_174;
+
+        [FieldOffset(370)]
+        public char __dummy_name_175;
+
+        [FieldOffset(372)]
+        public char __dummy_name_176;
+
+        [FieldOffset(374)]
+        public char __dummy_name_177;
+
+        [FieldOffset(376)]
+        public char __dummy_name_178;
+
+        [FieldOffset(378)]
+        public char __dummy_name_179;
+
+        [FieldOffset(380)]
+        public char __dummy_name_180;
+
+        [FieldOffset(382)]
+        public char __dummy_name_181;
+
+        [FieldOffset(384)]
+        public char __dummy_name_182;
+
+        [FieldOffset(386)]
+        public char __dummy_name_183;
+
+        [FieldOffset(388)]
+        public char __dummy_name_184;
+
+        [FieldOffset(390)]
+        public char __dummy_name_185;
+
+        [FieldOffset(392)]
+        public char __dummy_name_186;
+
+        [FieldOffset(394)]
+        public char __dummy_name_187;
+
+        [FieldOffset(396)]
+        public char __dummy_name_188;
+
+        [FieldOffset(398)]
+        public char __dummy_name_189;
+
+        [FieldOffset(400)]
+        public char __dummy_name_190;
+
+        [FieldOffset(402)]
+        public char __dummy_name_191;
+
+        [FieldOffset(404)]
+        public char __dummy_name_192;
+
+        [FieldOffset(406)]
+        public char __dummy_name_193;
+
+        [FieldOffset(408)]
+        public char __dummy_name_194;
+
+        [FieldOffset(410)]
+        public char __dummy_name_195;
+
+        [FieldOffset(412)]
+        public char __dummy_name_196;
+
+        [FieldOffset(414)]
+        public char __dummy_name_197;
+
+        [FieldOffset(416)]
+        public char __dummy_name_198;
+
+        [FieldOffset(418)]
+        public char __dummy_name_199;
+
+        [FieldOffset(420)]
+        public char __dummy_name_200;
+
+        [FieldOffset(422)]
+        public char __dummy_name_201;
+
+        [FieldOffset(424)]
+        public char __dummy_name_202;
+
+        [FieldOffset(426)]
+        public char __dummy_name_203;
+
+        [FieldOffset(428)]
+        public char __dummy_name_204;
+
+        [FieldOffset(430)]
+        public char __dummy_name_205;
+
+        [FieldOffset(432)]
+        public char __dummy_name_206;
+
+        [FieldOffset(434)]
+        public char __dummy_name_207;
+
+        [FieldOffset(436)]
+        public char __dummy_name_208;
+
+        [FieldOffset(438)]
+        public char __dummy_name_209;
+
+        [FieldOffset(440)]
+        public char __dummy_name_210;
+
+        [FieldOffset(442)]
+        public char __dummy_name_211;
+
+        [FieldOffset(444)]
+        public char __dummy_name_212;
+
+        [FieldOffset(446)]
+        public char __dummy_name_213;
+
+        [FieldOffset(448)]
+        public char __dummy_name_214;
+
+        [FieldOffset(450)]
+        public char __dummy_name_215;
+
+        [FieldOffset(452)]
+        public char __dummy_name_216;
+
+        [FieldOffset(454)]
+        public char __dummy_name_217;
+
+        [FieldOffset(456)]
+        public char __dummy_name_218;
+
+        [FieldOffset(458)]
+        public char __dummy_name_219;
+
+        [FieldOffset(460)]
+        public char __dummy_name_220;
+
+        [FieldOffset(462)]
+        public char __dummy_name_221;
+
+        [FieldOffset(464)]
+        public char __dummy_name_222;
+
+        [FieldOffset(466)]
+        public char __dummy_name_223;
+
+        [FieldOffset(468)]
+        public char __dummy_name_224;
+
+        [FieldOffset(470)]
+        public char __dummy_name_225;
+
+        [FieldOffset(472)]
+        public char __dummy_name_226;
+
+        [FieldOffset(474)]
+        public char __dummy_name_227;
+
+        [FieldOffset(476)]
+        public char __dummy_name_228;
+
+        [FieldOffset(478)]
+        public char __dummy_name_229;
+
+        [FieldOffset(480)]
+        public char __dummy_name_230;
+
+        [FieldOffset(482)]
+        public char __dummy_name_231;
+
+        [FieldOffset(484)]
+        public char __dummy_name_232;
+
+        [FieldOffset(486)]
+        public char __dummy_name_233;
+
+        [FieldOffset(488)]
+        public char __dummy_name_234;
+
+        [FieldOffset(490)]
+        public char __dummy_name_235;
+
+        [FieldOffset(492)]
+        public char __dummy_name_236;
+
+        [FieldOffset(494)]
+        public char __dummy_name_237;
+
+        [FieldOffset(496)]
+        public char __dummy_name_238;
+
+        [FieldOffset(498)]
+        public char __dummy_name_239;
+
+        [FieldOffset(500)]
+        public char __dummy_name_240;
+
+        [FieldOffset(502)]
+        public char __dummy_name_241;
+
+        [FieldOffset(504)]
+        public char __dummy_name_242;
+
+        [FieldOffset(506)]
+        public char __dummy_name_243;
+
+        [FieldOffset(508)]
+        public char __dummy_name_244;
+
+        [FieldOffset(510)]
+        public char __dummy_name_245;
+
+        [FieldOffset(512)]
+        public char __dummy_name_246;
+
+        [FieldOffset(514)]
+        public char __dummy_name_247;
+
+        [FieldOffset(516)]
+        public char __dummy_name_248;
+
+        [FieldOffset(518)]
+        public char __dummy_name_249;
+
+        [FieldOffset(520)]
+        public char __dummy_name_250;
+
+        [FieldOffset(522)]
+        public char __dummy_name_251;
+
+        [FieldOffset(524)]
+        public char __dummy_name_252;
+
+        [FieldOffset(526)]
+        public char __dummy_name_253;
+
+        [FieldOffset(528)]
+        public char __dummy_name_254;
+
+        [FieldOffset(530)]
+        public char __dummy_name_255;
+
+        [FieldOffset(532)]
+        public char __dummy_name_256;
+
+        [FieldOffset(534)]
+        public char __dummy_name_257;
+
+        [FieldOffset(536)]
+        public char __dummy_name_258;
+
+        [FieldOffset(538)]
+        public char __dummy_name_259;
+    }
+}
+
+public unsafe partial class _wfinddata32i64_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 544)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint attrib;
+
+        [FieldOffset(4)]
+        public int time_create;
+
+        [FieldOffset(8)]
+        public int time_access;
+
+        [FieldOffset(12)]
+        public int time_write;
+
+        [FieldOffset(16)]
+        public long size;
+
+        [FieldOffset(24)]
+        public fixed char name[260];
+
+        [FieldOffset(26)]
+        public char __dummy_name_1;
+
+        [FieldOffset(28)]
+        public char __dummy_name_2;
+
+        [FieldOffset(30)]
+        public char __dummy_name_3;
+
+        [FieldOffset(32)]
+        public char __dummy_name_4;
+
+        [FieldOffset(34)]
+        public char __dummy_name_5;
+
+        [FieldOffset(36)]
+        public char __dummy_name_6;
+
+        [FieldOffset(38)]
+        public char __dummy_name_7;
+
+        [FieldOffset(40)]
+        public char __dummy_name_8;
+
+        [FieldOffset(42)]
+        public char __dummy_name_9;
+
+        [FieldOffset(44)]
+        public char __dummy_name_10;
+
+        [FieldOffset(46)]
+        public char __dummy_name_11;
+
+        [FieldOffset(48)]
+        public char __dummy_name_12;
+
+        [FieldOffset(50)]
+        public char __dummy_name_13;
+
+        [FieldOffset(52)]
+        public char __dummy_name_14;
+
+        [FieldOffset(54)]
+        public char __dummy_name_15;
+
+        [FieldOffset(56)]
+        public char __dummy_name_16;
+
+        [FieldOffset(58)]
+        public char __dummy_name_17;
+
+        [FieldOffset(60)]
+        public char __dummy_name_18;
+
+        [FieldOffset(62)]
+        public char __dummy_name_19;
+
+        [FieldOffset(64)]
+        public char __dummy_name_20;
+
+        [FieldOffset(66)]
+        public char __dummy_name_21;
+
+        [FieldOffset(68)]
+        public char __dummy_name_22;
+
+        [FieldOffset(70)]
+        public char __dummy_name_23;
+
+        [FieldOffset(72)]
+        public char __dummy_name_24;
+
+        [FieldOffset(74)]
+        public char __dummy_name_25;
+
+        [FieldOffset(76)]
+        public char __dummy_name_26;
+
+        [FieldOffset(78)]
+        public char __dummy_name_27;
+
+        [FieldOffset(80)]
+        public char __dummy_name_28;
+
+        [FieldOffset(82)]
+        public char __dummy_name_29;
+
+        [FieldOffset(84)]
+        public char __dummy_name_30;
+
+        [FieldOffset(86)]
+        public char __dummy_name_31;
+
+        [FieldOffset(88)]
+        public char __dummy_name_32;
+
+        [FieldOffset(90)]
+        public char __dummy_name_33;
+
+        [FieldOffset(92)]
+        public char __dummy_name_34;
+
+        [FieldOffset(94)]
+        public char __dummy_name_35;
+
+        [FieldOffset(96)]
+        public char __dummy_name_36;
+
+        [FieldOffset(98)]
+        public char __dummy_name_37;
+
+        [FieldOffset(100)]
+        public char __dummy_name_38;
+
+        [FieldOffset(102)]
+        public char __dummy_name_39;
+
+        [FieldOffset(104)]
+        public char __dummy_name_40;
+
+        [FieldOffset(106)]
+        public char __dummy_name_41;
+
+        [FieldOffset(108)]
+        public char __dummy_name_42;
+
+        [FieldOffset(110)]
+        public char __dummy_name_43;
+
+        [FieldOffset(112)]
+        public char __dummy_name_44;
+
+        [FieldOffset(114)]
+        public char __dummy_name_45;
+
+        [FieldOffset(116)]
+        public char __dummy_name_46;
+
+        [FieldOffset(118)]
+        public char __dummy_name_47;
+
+        [FieldOffset(120)]
+        public char __dummy_name_48;
+
+        [FieldOffset(122)]
+        public char __dummy_name_49;
+
+        [FieldOffset(124)]
+        public char __dummy_name_50;
+
+        [FieldOffset(126)]
+        public char __dummy_name_51;
+
+        [FieldOffset(128)]
+        public char __dummy_name_52;
+
+        [FieldOffset(130)]
+        public char __dummy_name_53;
+
+        [FieldOffset(132)]
+        public char __dummy_name_54;
+
+        [FieldOffset(134)]
+        public char __dummy_name_55;
+
+        [FieldOffset(136)]
+        public char __dummy_name_56;
+
+        [FieldOffset(138)]
+        public char __dummy_name_57;
+
+        [FieldOffset(140)]
+        public char __dummy_name_58;
+
+        [FieldOffset(142)]
+        public char __dummy_name_59;
+
+        [FieldOffset(144)]
+        public char __dummy_name_60;
+
+        [FieldOffset(146)]
+        public char __dummy_name_61;
+
+        [FieldOffset(148)]
+        public char __dummy_name_62;
+
+        [FieldOffset(150)]
+        public char __dummy_name_63;
+
+        [FieldOffset(152)]
+        public char __dummy_name_64;
+
+        [FieldOffset(154)]
+        public char __dummy_name_65;
+
+        [FieldOffset(156)]
+        public char __dummy_name_66;
+
+        [FieldOffset(158)]
+        public char __dummy_name_67;
+
+        [FieldOffset(160)]
+        public char __dummy_name_68;
+
+        [FieldOffset(162)]
+        public char __dummy_name_69;
+
+        [FieldOffset(164)]
+        public char __dummy_name_70;
+
+        [FieldOffset(166)]
+        public char __dummy_name_71;
+
+        [FieldOffset(168)]
+        public char __dummy_name_72;
+
+        [FieldOffset(170)]
+        public char __dummy_name_73;
+
+        [FieldOffset(172)]
+        public char __dummy_name_74;
+
+        [FieldOffset(174)]
+        public char __dummy_name_75;
+
+        [FieldOffset(176)]
+        public char __dummy_name_76;
+
+        [FieldOffset(178)]
+        public char __dummy_name_77;
+
+        [FieldOffset(180)]
+        public char __dummy_name_78;
+
+        [FieldOffset(182)]
+        public char __dummy_name_79;
+
+        [FieldOffset(184)]
+        public char __dummy_name_80;
+
+        [FieldOffset(186)]
+        public char __dummy_name_81;
+
+        [FieldOffset(188)]
+        public char __dummy_name_82;
+
+        [FieldOffset(190)]
+        public char __dummy_name_83;
+
+        [FieldOffset(192)]
+        public char __dummy_name_84;
+
+        [FieldOffset(194)]
+        public char __dummy_name_85;
+
+        [FieldOffset(196)]
+        public char __dummy_name_86;
+
+        [FieldOffset(198)]
+        public char __dummy_name_87;
+
+        [FieldOffset(200)]
+        public char __dummy_name_88;
+
+        [FieldOffset(202)]
+        public char __dummy_name_89;
+
+        [FieldOffset(204)]
+        public char __dummy_name_90;
+
+        [FieldOffset(206)]
+        public char __dummy_name_91;
+
+        [FieldOffset(208)]
+        public char __dummy_name_92;
+
+        [FieldOffset(210)]
+        public char __dummy_name_93;
+
+        [FieldOffset(212)]
+        public char __dummy_name_94;
+
+        [FieldOffset(214)]
+        public char __dummy_name_95;
+
+        [FieldOffset(216)]
+        public char __dummy_name_96;
+
+        [FieldOffset(218)]
+        public char __dummy_name_97;
+
+        [FieldOffset(220)]
+        public char __dummy_name_98;
+
+        [FieldOffset(222)]
+        public char __dummy_name_99;
+
+        [FieldOffset(224)]
+        public char __dummy_name_100;
+
+        [FieldOffset(226)]
+        public char __dummy_name_101;
+
+        [FieldOffset(228)]
+        public char __dummy_name_102;
+
+        [FieldOffset(230)]
+        public char __dummy_name_103;
+
+        [FieldOffset(232)]
+        public char __dummy_name_104;
+
+        [FieldOffset(234)]
+        public char __dummy_name_105;
+
+        [FieldOffset(236)]
+        public char __dummy_name_106;
+
+        [FieldOffset(238)]
+        public char __dummy_name_107;
+
+        [FieldOffset(240)]
+        public char __dummy_name_108;
+
+        [FieldOffset(242)]
+        public char __dummy_name_109;
+
+        [FieldOffset(244)]
+        public char __dummy_name_110;
+
+        [FieldOffset(246)]
+        public char __dummy_name_111;
+
+        [FieldOffset(248)]
+        public char __dummy_name_112;
+
+        [FieldOffset(250)]
+        public char __dummy_name_113;
+
+        [FieldOffset(252)]
+        public char __dummy_name_114;
+
+        [FieldOffset(254)]
+        public char __dummy_name_115;
+
+        [FieldOffset(256)]
+        public char __dummy_name_116;
+
+        [FieldOffset(258)]
+        public char __dummy_name_117;
+
+        [FieldOffset(260)]
+        public char __dummy_name_118;
+
+        [FieldOffset(262)]
+        public char __dummy_name_119;
+
+        [FieldOffset(264)]
+        public char __dummy_name_120;
+
+        [FieldOffset(266)]
+        public char __dummy_name_121;
+
+        [FieldOffset(268)]
+        public char __dummy_name_122;
+
+        [FieldOffset(270)]
+        public char __dummy_name_123;
+
+        [FieldOffset(272)]
+        public char __dummy_name_124;
+
+        [FieldOffset(274)]
+        public char __dummy_name_125;
+
+        [FieldOffset(276)]
+        public char __dummy_name_126;
+
+        [FieldOffset(278)]
+        public char __dummy_name_127;
+
+        [FieldOffset(280)]
+        public char __dummy_name_128;
+
+        [FieldOffset(282)]
+        public char __dummy_name_129;
+
+        [FieldOffset(284)]
+        public char __dummy_name_130;
+
+        [FieldOffset(286)]
+        public char __dummy_name_131;
+
+        [FieldOffset(288)]
+        public char __dummy_name_132;
+
+        [FieldOffset(290)]
+        public char __dummy_name_133;
+
+        [FieldOffset(292)]
+        public char __dummy_name_134;
+
+        [FieldOffset(294)]
+        public char __dummy_name_135;
+
+        [FieldOffset(296)]
+        public char __dummy_name_136;
+
+        [FieldOffset(298)]
+        public char __dummy_name_137;
+
+        [FieldOffset(300)]
+        public char __dummy_name_138;
+
+        [FieldOffset(302)]
+        public char __dummy_name_139;
+
+        [FieldOffset(304)]
+        public char __dummy_name_140;
+
+        [FieldOffset(306)]
+        public char __dummy_name_141;
+
+        [FieldOffset(308)]
+        public char __dummy_name_142;
+
+        [FieldOffset(310)]
+        public char __dummy_name_143;
+
+        [FieldOffset(312)]
+        public char __dummy_name_144;
+
+        [FieldOffset(314)]
+        public char __dummy_name_145;
+
+        [FieldOffset(316)]
+        public char __dummy_name_146;
+
+        [FieldOffset(318)]
+        public char __dummy_name_147;
+
+        [FieldOffset(320)]
+        public char __dummy_name_148;
+
+        [FieldOffset(322)]
+        public char __dummy_name_149;
+
+        [FieldOffset(324)]
+        public char __dummy_name_150;
+
+        [FieldOffset(326)]
+        public char __dummy_name_151;
+
+        [FieldOffset(328)]
+        public char __dummy_name_152;
+
+        [FieldOffset(330)]
+        public char __dummy_name_153;
+
+        [FieldOffset(332)]
+        public char __dummy_name_154;
+
+        [FieldOffset(334)]
+        public char __dummy_name_155;
+
+        [FieldOffset(336)]
+        public char __dummy_name_156;
+
+        [FieldOffset(338)]
+        public char __dummy_name_157;
+
+        [FieldOffset(340)]
+        public char __dummy_name_158;
+
+        [FieldOffset(342)]
+        public char __dummy_name_159;
+
+        [FieldOffset(344)]
+        public char __dummy_name_160;
+
+        [FieldOffset(346)]
+        public char __dummy_name_161;
+
+        [FieldOffset(348)]
+        public char __dummy_name_162;
+
+        [FieldOffset(350)]
+        public char __dummy_name_163;
+
+        [FieldOffset(352)]
+        public char __dummy_name_164;
+
+        [FieldOffset(354)]
+        public char __dummy_name_165;
+
+        [FieldOffset(356)]
+        public char __dummy_name_166;
+
+        [FieldOffset(358)]
+        public char __dummy_name_167;
+
+        [FieldOffset(360)]
+        public char __dummy_name_168;
+
+        [FieldOffset(362)]
+        public char __dummy_name_169;
+
+        [FieldOffset(364)]
+        public char __dummy_name_170;
+
+        [FieldOffset(366)]
+        public char __dummy_name_171;
+
+        [FieldOffset(368)]
+        public char __dummy_name_172;
+
+        [FieldOffset(370)]
+        public char __dummy_name_173;
+
+        [FieldOffset(372)]
+        public char __dummy_name_174;
+
+        [FieldOffset(374)]
+        public char __dummy_name_175;
+
+        [FieldOffset(376)]
+        public char __dummy_name_176;
+
+        [FieldOffset(378)]
+        public char __dummy_name_177;
+
+        [FieldOffset(380)]
+        public char __dummy_name_178;
+
+        [FieldOffset(382)]
+        public char __dummy_name_179;
+
+        [FieldOffset(384)]
+        public char __dummy_name_180;
+
+        [FieldOffset(386)]
+        public char __dummy_name_181;
+
+        [FieldOffset(388)]
+        public char __dummy_name_182;
+
+        [FieldOffset(390)]
+        public char __dummy_name_183;
+
+        [FieldOffset(392)]
+        public char __dummy_name_184;
+
+        [FieldOffset(394)]
+        public char __dummy_name_185;
+
+        [FieldOffset(396)]
+        public char __dummy_name_186;
+
+        [FieldOffset(398)]
+        public char __dummy_name_187;
+
+        [FieldOffset(400)]
+        public char __dummy_name_188;
+
+        [FieldOffset(402)]
+        public char __dummy_name_189;
+
+        [FieldOffset(404)]
+        public char __dummy_name_190;
+
+        [FieldOffset(406)]
+        public char __dummy_name_191;
+
+        [FieldOffset(408)]
+        public char __dummy_name_192;
+
+        [FieldOffset(410)]
+        public char __dummy_name_193;
+
+        [FieldOffset(412)]
+        public char __dummy_name_194;
+
+        [FieldOffset(414)]
+        public char __dummy_name_195;
+
+        [FieldOffset(416)]
+        public char __dummy_name_196;
+
+        [FieldOffset(418)]
+        public char __dummy_name_197;
+
+        [FieldOffset(420)]
+        public char __dummy_name_198;
+
+        [FieldOffset(422)]
+        public char __dummy_name_199;
+
+        [FieldOffset(424)]
+        public char __dummy_name_200;
+
+        [FieldOffset(426)]
+        public char __dummy_name_201;
+
+        [FieldOffset(428)]
+        public char __dummy_name_202;
+
+        [FieldOffset(430)]
+        public char __dummy_name_203;
+
+        [FieldOffset(432)]
+        public char __dummy_name_204;
+
+        [FieldOffset(434)]
+        public char __dummy_name_205;
+
+        [FieldOffset(436)]
+        public char __dummy_name_206;
+
+        [FieldOffset(438)]
+        public char __dummy_name_207;
+
+        [FieldOffset(440)]
+        public char __dummy_name_208;
+
+        [FieldOffset(442)]
+        public char __dummy_name_209;
+
+        [FieldOffset(444)]
+        public char __dummy_name_210;
+
+        [FieldOffset(446)]
+        public char __dummy_name_211;
+
+        [FieldOffset(448)]
+        public char __dummy_name_212;
+
+        [FieldOffset(450)]
+        public char __dummy_name_213;
+
+        [FieldOffset(452)]
+        public char __dummy_name_214;
+
+        [FieldOffset(454)]
+        public char __dummy_name_215;
+
+        [FieldOffset(456)]
+        public char __dummy_name_216;
+
+        [FieldOffset(458)]
+        public char __dummy_name_217;
+
+        [FieldOffset(460)]
+        public char __dummy_name_218;
+
+        [FieldOffset(462)]
+        public char __dummy_name_219;
+
+        [FieldOffset(464)]
+        public char __dummy_name_220;
+
+        [FieldOffset(466)]
+        public char __dummy_name_221;
+
+        [FieldOffset(468)]
+        public char __dummy_name_222;
+
+        [FieldOffset(470)]
+        public char __dummy_name_223;
+
+        [FieldOffset(472)]
+        public char __dummy_name_224;
+
+        [FieldOffset(474)]
+        public char __dummy_name_225;
+
+        [FieldOffset(476)]
+        public char __dummy_name_226;
+
+        [FieldOffset(478)]
+        public char __dummy_name_227;
+
+        [FieldOffset(480)]
+        public char __dummy_name_228;
+
+        [FieldOffset(482)]
+        public char __dummy_name_229;
+
+        [FieldOffset(484)]
+        public char __dummy_name_230;
+
+        [FieldOffset(486)]
+        public char __dummy_name_231;
+
+        [FieldOffset(488)]
+        public char __dummy_name_232;
+
+        [FieldOffset(490)]
+        public char __dummy_name_233;
+
+        [FieldOffset(492)]
+        public char __dummy_name_234;
+
+        [FieldOffset(494)]
+        public char __dummy_name_235;
+
+        [FieldOffset(496)]
+        public char __dummy_name_236;
+
+        [FieldOffset(498)]
+        public char __dummy_name_237;
+
+        [FieldOffset(500)]
+        public char __dummy_name_238;
+
+        [FieldOffset(502)]
+        public char __dummy_name_239;
+
+        [FieldOffset(504)]
+        public char __dummy_name_240;
+
+        [FieldOffset(506)]
+        public char __dummy_name_241;
+
+        [FieldOffset(508)]
+        public char __dummy_name_242;
+
+        [FieldOffset(510)]
+        public char __dummy_name_243;
+
+        [FieldOffset(512)]
+        public char __dummy_name_244;
+
+        [FieldOffset(514)]
+        public char __dummy_name_245;
+
+        [FieldOffset(516)]
+        public char __dummy_name_246;
+
+        [FieldOffset(518)]
+        public char __dummy_name_247;
+
+        [FieldOffset(520)]
+        public char __dummy_name_248;
+
+        [FieldOffset(522)]
+        public char __dummy_name_249;
+
+        [FieldOffset(524)]
+        public char __dummy_name_250;
+
+        [FieldOffset(526)]
+        public char __dummy_name_251;
+
+        [FieldOffset(528)]
+        public char __dummy_name_252;
+
+        [FieldOffset(530)]
+        public char __dummy_name_253;
+
+        [FieldOffset(532)]
+        public char __dummy_name_254;
+
+        [FieldOffset(534)]
+        public char __dummy_name_255;
+
+        [FieldOffset(536)]
+        public char __dummy_name_256;
+
+        [FieldOffset(538)]
+        public char __dummy_name_257;
+
+        [FieldOffset(540)]
+        public char __dummy_name_258;
+
+        [FieldOffset(542)]
+        public char __dummy_name_259;
+    }
+}
+
+public unsafe partial class _wfinddata64i32_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 560)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint attrib;
+
+        [FieldOffset(8)]
+        public long time_create;
+
+        [FieldOffset(16)]
+        public long time_access;
+
+        [FieldOffset(24)]
+        public long time_write;
+
+        [FieldOffset(32)]
+        public uint size;
+
+        [FieldOffset(36)]
+        public fixed char name[260];
+
+        [FieldOffset(38)]
+        public char __dummy_name_1;
+
+        [FieldOffset(40)]
+        public char __dummy_name_2;
+
+        [FieldOffset(42)]
+        public char __dummy_name_3;
+
+        [FieldOffset(44)]
+        public char __dummy_name_4;
+
+        [FieldOffset(46)]
+        public char __dummy_name_5;
+
+        [FieldOffset(48)]
+        public char __dummy_name_6;
+
+        [FieldOffset(50)]
+        public char __dummy_name_7;
+
+        [FieldOffset(52)]
+        public char __dummy_name_8;
+
+        [FieldOffset(54)]
+        public char __dummy_name_9;
+
+        [FieldOffset(56)]
+        public char __dummy_name_10;
+
+        [FieldOffset(58)]
+        public char __dummy_name_11;
+
+        [FieldOffset(60)]
+        public char __dummy_name_12;
+
+        [FieldOffset(62)]
+        public char __dummy_name_13;
+
+        [FieldOffset(64)]
+        public char __dummy_name_14;
+
+        [FieldOffset(66)]
+        public char __dummy_name_15;
+
+        [FieldOffset(68)]
+        public char __dummy_name_16;
+
+        [FieldOffset(70)]
+        public char __dummy_name_17;
+
+        [FieldOffset(72)]
+        public char __dummy_name_18;
+
+        [FieldOffset(74)]
+        public char __dummy_name_19;
+
+        [FieldOffset(76)]
+        public char __dummy_name_20;
+
+        [FieldOffset(78)]
+        public char __dummy_name_21;
+
+        [FieldOffset(80)]
+        public char __dummy_name_22;
+
+        [FieldOffset(82)]
+        public char __dummy_name_23;
+
+        [FieldOffset(84)]
+        public char __dummy_name_24;
+
+        [FieldOffset(86)]
+        public char __dummy_name_25;
+
+        [FieldOffset(88)]
+        public char __dummy_name_26;
+
+        [FieldOffset(90)]
+        public char __dummy_name_27;
+
+        [FieldOffset(92)]
+        public char __dummy_name_28;
+
+        [FieldOffset(94)]
+        public char __dummy_name_29;
+
+        [FieldOffset(96)]
+        public char __dummy_name_30;
+
+        [FieldOffset(98)]
+        public char __dummy_name_31;
+
+        [FieldOffset(100)]
+        public char __dummy_name_32;
+
+        [FieldOffset(102)]
+        public char __dummy_name_33;
+
+        [FieldOffset(104)]
+        public char __dummy_name_34;
+
+        [FieldOffset(106)]
+        public char __dummy_name_35;
+
+        [FieldOffset(108)]
+        public char __dummy_name_36;
+
+        [FieldOffset(110)]
+        public char __dummy_name_37;
+
+        [FieldOffset(112)]
+        public char __dummy_name_38;
+
+        [FieldOffset(114)]
+        public char __dummy_name_39;
+
+        [FieldOffset(116)]
+        public char __dummy_name_40;
+
+        [FieldOffset(118)]
+        public char __dummy_name_41;
+
+        [FieldOffset(120)]
+        public char __dummy_name_42;
+
+        [FieldOffset(122)]
+        public char __dummy_name_43;
+
+        [FieldOffset(124)]
+        public char __dummy_name_44;
+
+        [FieldOffset(126)]
+        public char __dummy_name_45;
+
+        [FieldOffset(128)]
+        public char __dummy_name_46;
+
+        [FieldOffset(130)]
+        public char __dummy_name_47;
+
+        [FieldOffset(132)]
+        public char __dummy_name_48;
+
+        [FieldOffset(134)]
+        public char __dummy_name_49;
+
+        [FieldOffset(136)]
+        public char __dummy_name_50;
+
+        [FieldOffset(138)]
+        public char __dummy_name_51;
+
+        [FieldOffset(140)]
+        public char __dummy_name_52;
+
+        [FieldOffset(142)]
+        public char __dummy_name_53;
+
+        [FieldOffset(144)]
+        public char __dummy_name_54;
+
+        [FieldOffset(146)]
+        public char __dummy_name_55;
+
+        [FieldOffset(148)]
+        public char __dummy_name_56;
+
+        [FieldOffset(150)]
+        public char __dummy_name_57;
+
+        [FieldOffset(152)]
+        public char __dummy_name_58;
+
+        [FieldOffset(154)]
+        public char __dummy_name_59;
+
+        [FieldOffset(156)]
+        public char __dummy_name_60;
+
+        [FieldOffset(158)]
+        public char __dummy_name_61;
+
+        [FieldOffset(160)]
+        public char __dummy_name_62;
+
+        [FieldOffset(162)]
+        public char __dummy_name_63;
+
+        [FieldOffset(164)]
+        public char __dummy_name_64;
+
+        [FieldOffset(166)]
+        public char __dummy_name_65;
+
+        [FieldOffset(168)]
+        public char __dummy_name_66;
+
+        [FieldOffset(170)]
+        public char __dummy_name_67;
+
+        [FieldOffset(172)]
+        public char __dummy_name_68;
+
+        [FieldOffset(174)]
+        public char __dummy_name_69;
+
+        [FieldOffset(176)]
+        public char __dummy_name_70;
+
+        [FieldOffset(178)]
+        public char __dummy_name_71;
+
+        [FieldOffset(180)]
+        public char __dummy_name_72;
+
+        [FieldOffset(182)]
+        public char __dummy_name_73;
+
+        [FieldOffset(184)]
+        public char __dummy_name_74;
+
+        [FieldOffset(186)]
+        public char __dummy_name_75;
+
+        [FieldOffset(188)]
+        public char __dummy_name_76;
+
+        [FieldOffset(190)]
+        public char __dummy_name_77;
+
+        [FieldOffset(192)]
+        public char __dummy_name_78;
+
+        [FieldOffset(194)]
+        public char __dummy_name_79;
+
+        [FieldOffset(196)]
+        public char __dummy_name_80;
+
+        [FieldOffset(198)]
+        public char __dummy_name_81;
+
+        [FieldOffset(200)]
+        public char __dummy_name_82;
+
+        [FieldOffset(202)]
+        public char __dummy_name_83;
+
+        [FieldOffset(204)]
+        public char __dummy_name_84;
+
+        [FieldOffset(206)]
+        public char __dummy_name_85;
+
+        [FieldOffset(208)]
+        public char __dummy_name_86;
+
+        [FieldOffset(210)]
+        public char __dummy_name_87;
+
+        [FieldOffset(212)]
+        public char __dummy_name_88;
+
+        [FieldOffset(214)]
+        public char __dummy_name_89;
+
+        [FieldOffset(216)]
+        public char __dummy_name_90;
+
+        [FieldOffset(218)]
+        public char __dummy_name_91;
+
+        [FieldOffset(220)]
+        public char __dummy_name_92;
+
+        [FieldOffset(222)]
+        public char __dummy_name_93;
+
+        [FieldOffset(224)]
+        public char __dummy_name_94;
+
+        [FieldOffset(226)]
+        public char __dummy_name_95;
+
+        [FieldOffset(228)]
+        public char __dummy_name_96;
+
+        [FieldOffset(230)]
+        public char __dummy_name_97;
+
+        [FieldOffset(232)]
+        public char __dummy_name_98;
+
+        [FieldOffset(234)]
+        public char __dummy_name_99;
+
+        [FieldOffset(236)]
+        public char __dummy_name_100;
+
+        [FieldOffset(238)]
+        public char __dummy_name_101;
+
+        [FieldOffset(240)]
+        public char __dummy_name_102;
+
+        [FieldOffset(242)]
+        public char __dummy_name_103;
+
+        [FieldOffset(244)]
+        public char __dummy_name_104;
+
+        [FieldOffset(246)]
+        public char __dummy_name_105;
+
+        [FieldOffset(248)]
+        public char __dummy_name_106;
+
+        [FieldOffset(250)]
+        public char __dummy_name_107;
+
+        [FieldOffset(252)]
+        public char __dummy_name_108;
+
+        [FieldOffset(254)]
+        public char __dummy_name_109;
+
+        [FieldOffset(256)]
+        public char __dummy_name_110;
+
+        [FieldOffset(258)]
+        public char __dummy_name_111;
+
+        [FieldOffset(260)]
+        public char __dummy_name_112;
+
+        [FieldOffset(262)]
+        public char __dummy_name_113;
+
+        [FieldOffset(264)]
+        public char __dummy_name_114;
+
+        [FieldOffset(266)]
+        public char __dummy_name_115;
+
+        [FieldOffset(268)]
+        public char __dummy_name_116;
+
+        [FieldOffset(270)]
+        public char __dummy_name_117;
+
+        [FieldOffset(272)]
+        public char __dummy_name_118;
+
+        [FieldOffset(274)]
+        public char __dummy_name_119;
+
+        [FieldOffset(276)]
+        public char __dummy_name_120;
+
+        [FieldOffset(278)]
+        public char __dummy_name_121;
+
+        [FieldOffset(280)]
+        public char __dummy_name_122;
+
+        [FieldOffset(282)]
+        public char __dummy_name_123;
+
+        [FieldOffset(284)]
+        public char __dummy_name_124;
+
+        [FieldOffset(286)]
+        public char __dummy_name_125;
+
+        [FieldOffset(288)]
+        public char __dummy_name_126;
+
+        [FieldOffset(290)]
+        public char __dummy_name_127;
+
+        [FieldOffset(292)]
+        public char __dummy_name_128;
+
+        [FieldOffset(294)]
+        public char __dummy_name_129;
+
+        [FieldOffset(296)]
+        public char __dummy_name_130;
+
+        [FieldOffset(298)]
+        public char __dummy_name_131;
+
+        [FieldOffset(300)]
+        public char __dummy_name_132;
+
+        [FieldOffset(302)]
+        public char __dummy_name_133;
+
+        [FieldOffset(304)]
+        public char __dummy_name_134;
+
+        [FieldOffset(306)]
+        public char __dummy_name_135;
+
+        [FieldOffset(308)]
+        public char __dummy_name_136;
+
+        [FieldOffset(310)]
+        public char __dummy_name_137;
+
+        [FieldOffset(312)]
+        public char __dummy_name_138;
+
+        [FieldOffset(314)]
+        public char __dummy_name_139;
+
+        [FieldOffset(316)]
+        public char __dummy_name_140;
+
+        [FieldOffset(318)]
+        public char __dummy_name_141;
+
+        [FieldOffset(320)]
+        public char __dummy_name_142;
+
+        [FieldOffset(322)]
+        public char __dummy_name_143;
+
+        [FieldOffset(324)]
+        public char __dummy_name_144;
+
+        [FieldOffset(326)]
+        public char __dummy_name_145;
+
+        [FieldOffset(328)]
+        public char __dummy_name_146;
+
+        [FieldOffset(330)]
+        public char __dummy_name_147;
+
+        [FieldOffset(332)]
+        public char __dummy_name_148;
+
+        [FieldOffset(334)]
+        public char __dummy_name_149;
+
+        [FieldOffset(336)]
+        public char __dummy_name_150;
+
+        [FieldOffset(338)]
+        public char __dummy_name_151;
+
+        [FieldOffset(340)]
+        public char __dummy_name_152;
+
+        [FieldOffset(342)]
+        public char __dummy_name_153;
+
+        [FieldOffset(344)]
+        public char __dummy_name_154;
+
+        [FieldOffset(346)]
+        public char __dummy_name_155;
+
+        [FieldOffset(348)]
+        public char __dummy_name_156;
+
+        [FieldOffset(350)]
+        public char __dummy_name_157;
+
+        [FieldOffset(352)]
+        public char __dummy_name_158;
+
+        [FieldOffset(354)]
+        public char __dummy_name_159;
+
+        [FieldOffset(356)]
+        public char __dummy_name_160;
+
+        [FieldOffset(358)]
+        public char __dummy_name_161;
+
+        [FieldOffset(360)]
+        public char __dummy_name_162;
+
+        [FieldOffset(362)]
+        public char __dummy_name_163;
+
+        [FieldOffset(364)]
+        public char __dummy_name_164;
+
+        [FieldOffset(366)]
+        public char __dummy_name_165;
+
+        [FieldOffset(368)]
+        public char __dummy_name_166;
+
+        [FieldOffset(370)]
+        public char __dummy_name_167;
+
+        [FieldOffset(372)]
+        public char __dummy_name_168;
+
+        [FieldOffset(374)]
+        public char __dummy_name_169;
+
+        [FieldOffset(376)]
+        public char __dummy_name_170;
+
+        [FieldOffset(378)]
+        public char __dummy_name_171;
+
+        [FieldOffset(380)]
+        public char __dummy_name_172;
+
+        [FieldOffset(382)]
+        public char __dummy_name_173;
+
+        [FieldOffset(384)]
+        public char __dummy_name_174;
+
+        [FieldOffset(386)]
+        public char __dummy_name_175;
+
+        [FieldOffset(388)]
+        public char __dummy_name_176;
+
+        [FieldOffset(390)]
+        public char __dummy_name_177;
+
+        [FieldOffset(392)]
+        public char __dummy_name_178;
+
+        [FieldOffset(394)]
+        public char __dummy_name_179;
+
+        [FieldOffset(396)]
+        public char __dummy_name_180;
+
+        [FieldOffset(398)]
+        public char __dummy_name_181;
+
+        [FieldOffset(400)]
+        public char __dummy_name_182;
+
+        [FieldOffset(402)]
+        public char __dummy_name_183;
+
+        [FieldOffset(404)]
+        public char __dummy_name_184;
+
+        [FieldOffset(406)]
+        public char __dummy_name_185;
+
+        [FieldOffset(408)]
+        public char __dummy_name_186;
+
+        [FieldOffset(410)]
+        public char __dummy_name_187;
+
+        [FieldOffset(412)]
+        public char __dummy_name_188;
+
+        [FieldOffset(414)]
+        public char __dummy_name_189;
+
+        [FieldOffset(416)]
+        public char __dummy_name_190;
+
+        [FieldOffset(418)]
+        public char __dummy_name_191;
+
+        [FieldOffset(420)]
+        public char __dummy_name_192;
+
+        [FieldOffset(422)]
+        public char __dummy_name_193;
+
+        [FieldOffset(424)]
+        public char __dummy_name_194;
+
+        [FieldOffset(426)]
+        public char __dummy_name_195;
+
+        [FieldOffset(428)]
+        public char __dummy_name_196;
+
+        [FieldOffset(430)]
+        public char __dummy_name_197;
+
+        [FieldOffset(432)]
+        public char __dummy_name_198;
+
+        [FieldOffset(434)]
+        public char __dummy_name_199;
+
+        [FieldOffset(436)]
+        public char __dummy_name_200;
+
+        [FieldOffset(438)]
+        public char __dummy_name_201;
+
+        [FieldOffset(440)]
+        public char __dummy_name_202;
+
+        [FieldOffset(442)]
+        public char __dummy_name_203;
+
+        [FieldOffset(444)]
+        public char __dummy_name_204;
+
+        [FieldOffset(446)]
+        public char __dummy_name_205;
+
+        [FieldOffset(448)]
+        public char __dummy_name_206;
+
+        [FieldOffset(450)]
+        public char __dummy_name_207;
+
+        [FieldOffset(452)]
+        public char __dummy_name_208;
+
+        [FieldOffset(454)]
+        public char __dummy_name_209;
+
+        [FieldOffset(456)]
+        public char __dummy_name_210;
+
+        [FieldOffset(458)]
+        public char __dummy_name_211;
+
+        [FieldOffset(460)]
+        public char __dummy_name_212;
+
+        [FieldOffset(462)]
+        public char __dummy_name_213;
+
+        [FieldOffset(464)]
+        public char __dummy_name_214;
+
+        [FieldOffset(466)]
+        public char __dummy_name_215;
+
+        [FieldOffset(468)]
+        public char __dummy_name_216;
+
+        [FieldOffset(470)]
+        public char __dummy_name_217;
+
+        [FieldOffset(472)]
+        public char __dummy_name_218;
+
+        [FieldOffset(474)]
+        public char __dummy_name_219;
+
+        [FieldOffset(476)]
+        public char __dummy_name_220;
+
+        [FieldOffset(478)]
+        public char __dummy_name_221;
+
+        [FieldOffset(480)]
+        public char __dummy_name_222;
+
+        [FieldOffset(482)]
+        public char __dummy_name_223;
+
+        [FieldOffset(484)]
+        public char __dummy_name_224;
+
+        [FieldOffset(486)]
+        public char __dummy_name_225;
+
+        [FieldOffset(488)]
+        public char __dummy_name_226;
+
+        [FieldOffset(490)]
+        public char __dummy_name_227;
+
+        [FieldOffset(492)]
+        public char __dummy_name_228;
+
+        [FieldOffset(494)]
+        public char __dummy_name_229;
+
+        [FieldOffset(496)]
+        public char __dummy_name_230;
+
+        [FieldOffset(498)]
+        public char __dummy_name_231;
+
+        [FieldOffset(500)]
+        public char __dummy_name_232;
+
+        [FieldOffset(502)]
+        public char __dummy_name_233;
+
+        [FieldOffset(504)]
+        public char __dummy_name_234;
+
+        [FieldOffset(506)]
+        public char __dummy_name_235;
+
+        [FieldOffset(508)]
+        public char __dummy_name_236;
+
+        [FieldOffset(510)]
+        public char __dummy_name_237;
+
+        [FieldOffset(512)]
+        public char __dummy_name_238;
+
+        [FieldOffset(514)]
+        public char __dummy_name_239;
+
+        [FieldOffset(516)]
+        public char __dummy_name_240;
+
+        [FieldOffset(518)]
+        public char __dummy_name_241;
+
+        [FieldOffset(520)]
+        public char __dummy_name_242;
+
+        [FieldOffset(522)]
+        public char __dummy_name_243;
+
+        [FieldOffset(524)]
+        public char __dummy_name_244;
+
+        [FieldOffset(526)]
+        public char __dummy_name_245;
+
+        [FieldOffset(528)]
+        public char __dummy_name_246;
+
+        [FieldOffset(530)]
+        public char __dummy_name_247;
+
+        [FieldOffset(532)]
+        public char __dummy_name_248;
+
+        [FieldOffset(534)]
+        public char __dummy_name_249;
+
+        [FieldOffset(536)]
+        public char __dummy_name_250;
+
+        [FieldOffset(538)]
+        public char __dummy_name_251;
+
+        [FieldOffset(540)]
+        public char __dummy_name_252;
+
+        [FieldOffset(542)]
+        public char __dummy_name_253;
+
+        [FieldOffset(544)]
+        public char __dummy_name_254;
+
+        [FieldOffset(546)]
+        public char __dummy_name_255;
+
+        [FieldOffset(548)]
+        public char __dummy_name_256;
+
+        [FieldOffset(550)]
+        public char __dummy_name_257;
+
+        [FieldOffset(552)]
+        public char __dummy_name_258;
+
+        [FieldOffset(554)]
+        public char __dummy_name_259;
+    }
+}
+
+public unsafe partial class _wfinddata64_t
+{
+    [StructLayout(LayoutKind.Explicit, Size = 560)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint attrib;
+
+        [FieldOffset(8)]
+        public long time_create;
+
+        [FieldOffset(16)]
+        public long time_access;
+
+        [FieldOffset(24)]
+        public long time_write;
+
+        [FieldOffset(32)]
+        public long size;
+
+        [FieldOffset(40)]
+        public fixed char name[260];
+
+        [FieldOffset(42)]
+        public char __dummy_name_1;
+
+        [FieldOffset(44)]
+        public char __dummy_name_2;
+
+        [FieldOffset(46)]
+        public char __dummy_name_3;
+
+        [FieldOffset(48)]
+        public char __dummy_name_4;
+
+        [FieldOffset(50)]
+        public char __dummy_name_5;
+
+        [FieldOffset(52)]
+        public char __dummy_name_6;
+
+        [FieldOffset(54)]
+        public char __dummy_name_7;
+
+        [FieldOffset(56)]
+        public char __dummy_name_8;
+
+        [FieldOffset(58)]
+        public char __dummy_name_9;
+
+        [FieldOffset(60)]
+        public char __dummy_name_10;
+
+        [FieldOffset(62)]
+        public char __dummy_name_11;
+
+        [FieldOffset(64)]
+        public char __dummy_name_12;
+
+        [FieldOffset(66)]
+        public char __dummy_name_13;
+
+        [FieldOffset(68)]
+        public char __dummy_name_14;
+
+        [FieldOffset(70)]
+        public char __dummy_name_15;
+
+        [FieldOffset(72)]
+        public char __dummy_name_16;
+
+        [FieldOffset(74)]
+        public char __dummy_name_17;
+
+        [FieldOffset(76)]
+        public char __dummy_name_18;
+
+        [FieldOffset(78)]
+        public char __dummy_name_19;
+
+        [FieldOffset(80)]
+        public char __dummy_name_20;
+
+        [FieldOffset(82)]
+        public char __dummy_name_21;
+
+        [FieldOffset(84)]
+        public char __dummy_name_22;
+
+        [FieldOffset(86)]
+        public char __dummy_name_23;
+
+        [FieldOffset(88)]
+        public char __dummy_name_24;
+
+        [FieldOffset(90)]
+        public char __dummy_name_25;
+
+        [FieldOffset(92)]
+        public char __dummy_name_26;
+
+        [FieldOffset(94)]
+        public char __dummy_name_27;
+
+        [FieldOffset(96)]
+        public char __dummy_name_28;
+
+        [FieldOffset(98)]
+        public char __dummy_name_29;
+
+        [FieldOffset(100)]
+        public char __dummy_name_30;
+
+        [FieldOffset(102)]
+        public char __dummy_name_31;
+
+        [FieldOffset(104)]
+        public char __dummy_name_32;
+
+        [FieldOffset(106)]
+        public char __dummy_name_33;
+
+        [FieldOffset(108)]
+        public char __dummy_name_34;
+
+        [FieldOffset(110)]
+        public char __dummy_name_35;
+
+        [FieldOffset(112)]
+        public char __dummy_name_36;
+
+        [FieldOffset(114)]
+        public char __dummy_name_37;
+
+        [FieldOffset(116)]
+        public char __dummy_name_38;
+
+        [FieldOffset(118)]
+        public char __dummy_name_39;
+
+        [FieldOffset(120)]
+        public char __dummy_name_40;
+
+        [FieldOffset(122)]
+        public char __dummy_name_41;
+
+        [FieldOffset(124)]
+        public char __dummy_name_42;
+
+        [FieldOffset(126)]
+        public char __dummy_name_43;
+
+        [FieldOffset(128)]
+        public char __dummy_name_44;
+
+        [FieldOffset(130)]
+        public char __dummy_name_45;
+
+        [FieldOffset(132)]
+        public char __dummy_name_46;
+
+        [FieldOffset(134)]
+        public char __dummy_name_47;
+
+        [FieldOffset(136)]
+        public char __dummy_name_48;
+
+        [FieldOffset(138)]
+        public char __dummy_name_49;
+
+        [FieldOffset(140)]
+        public char __dummy_name_50;
+
+        [FieldOffset(142)]
+        public char __dummy_name_51;
+
+        [FieldOffset(144)]
+        public char __dummy_name_52;
+
+        [FieldOffset(146)]
+        public char __dummy_name_53;
+
+        [FieldOffset(148)]
+        public char __dummy_name_54;
+
+        [FieldOffset(150)]
+        public char __dummy_name_55;
+
+        [FieldOffset(152)]
+        public char __dummy_name_56;
+
+        [FieldOffset(154)]
+        public char __dummy_name_57;
+
+        [FieldOffset(156)]
+        public char __dummy_name_58;
+
+        [FieldOffset(158)]
+        public char __dummy_name_59;
+
+        [FieldOffset(160)]
+        public char __dummy_name_60;
+
+        [FieldOffset(162)]
+        public char __dummy_name_61;
+
+        [FieldOffset(164)]
+        public char __dummy_name_62;
+
+        [FieldOffset(166)]
+        public char __dummy_name_63;
+
+        [FieldOffset(168)]
+        public char __dummy_name_64;
+
+        [FieldOffset(170)]
+        public char __dummy_name_65;
+
+        [FieldOffset(172)]
+        public char __dummy_name_66;
+
+        [FieldOffset(174)]
+        public char __dummy_name_67;
+
+        [FieldOffset(176)]
+        public char __dummy_name_68;
+
+        [FieldOffset(178)]
+        public char __dummy_name_69;
+
+        [FieldOffset(180)]
+        public char __dummy_name_70;
+
+        [FieldOffset(182)]
+        public char __dummy_name_71;
+
+        [FieldOffset(184)]
+        public char __dummy_name_72;
+
+        [FieldOffset(186)]
+        public char __dummy_name_73;
+
+        [FieldOffset(188)]
+        public char __dummy_name_74;
+
+        [FieldOffset(190)]
+        public char __dummy_name_75;
+
+        [FieldOffset(192)]
+        public char __dummy_name_76;
+
+        [FieldOffset(194)]
+        public char __dummy_name_77;
+
+        [FieldOffset(196)]
+        public char __dummy_name_78;
+
+        [FieldOffset(198)]
+        public char __dummy_name_79;
+
+        [FieldOffset(200)]
+        public char __dummy_name_80;
+
+        [FieldOffset(202)]
+        public char __dummy_name_81;
+
+        [FieldOffset(204)]
+        public char __dummy_name_82;
+
+        [FieldOffset(206)]
+        public char __dummy_name_83;
+
+        [FieldOffset(208)]
+        public char __dummy_name_84;
+
+        [FieldOffset(210)]
+        public char __dummy_name_85;
+
+        [FieldOffset(212)]
+        public char __dummy_name_86;
+
+        [FieldOffset(214)]
+        public char __dummy_name_87;
+
+        [FieldOffset(216)]
+        public char __dummy_name_88;
+
+        [FieldOffset(218)]
+        public char __dummy_name_89;
+
+        [FieldOffset(220)]
+        public char __dummy_name_90;
+
+        [FieldOffset(222)]
+        public char __dummy_name_91;
+
+        [FieldOffset(224)]
+        public char __dummy_name_92;
+
+        [FieldOffset(226)]
+        public char __dummy_name_93;
+
+        [FieldOffset(228)]
+        public char __dummy_name_94;
+
+        [FieldOffset(230)]
+        public char __dummy_name_95;
+
+        [FieldOffset(232)]
+        public char __dummy_name_96;
+
+        [FieldOffset(234)]
+        public char __dummy_name_97;
+
+        [FieldOffset(236)]
+        public char __dummy_name_98;
+
+        [FieldOffset(238)]
+        public char __dummy_name_99;
+
+        [FieldOffset(240)]
+        public char __dummy_name_100;
+
+        [FieldOffset(242)]
+        public char __dummy_name_101;
+
+        [FieldOffset(244)]
+        public char __dummy_name_102;
+
+        [FieldOffset(246)]
+        public char __dummy_name_103;
+
+        [FieldOffset(248)]
+        public char __dummy_name_104;
+
+        [FieldOffset(250)]
+        public char __dummy_name_105;
+
+        [FieldOffset(252)]
+        public char __dummy_name_106;
+
+        [FieldOffset(254)]
+        public char __dummy_name_107;
+
+        [FieldOffset(256)]
+        public char __dummy_name_108;
+
+        [FieldOffset(258)]
+        public char __dummy_name_109;
+
+        [FieldOffset(260)]
+        public char __dummy_name_110;
+
+        [FieldOffset(262)]
+        public char __dummy_name_111;
+
+        [FieldOffset(264)]
+        public char __dummy_name_112;
+
+        [FieldOffset(266)]
+        public char __dummy_name_113;
+
+        [FieldOffset(268)]
+        public char __dummy_name_114;
+
+        [FieldOffset(270)]
+        public char __dummy_name_115;
+
+        [FieldOffset(272)]
+        public char __dummy_name_116;
+
+        [FieldOffset(274)]
+        public char __dummy_name_117;
+
+        [FieldOffset(276)]
+        public char __dummy_name_118;
+
+        [FieldOffset(278)]
+        public char __dummy_name_119;
+
+        [FieldOffset(280)]
+        public char __dummy_name_120;
+
+        [FieldOffset(282)]
+        public char __dummy_name_121;
+
+        [FieldOffset(284)]
+        public char __dummy_name_122;
+
+        [FieldOffset(286)]
+        public char __dummy_name_123;
+
+        [FieldOffset(288)]
+        public char __dummy_name_124;
+
+        [FieldOffset(290)]
+        public char __dummy_name_125;
+
+        [FieldOffset(292)]
+        public char __dummy_name_126;
+
+        [FieldOffset(294)]
+        public char __dummy_name_127;
+
+        [FieldOffset(296)]
+        public char __dummy_name_128;
+
+        [FieldOffset(298)]
+        public char __dummy_name_129;
+
+        [FieldOffset(300)]
+        public char __dummy_name_130;
+
+        [FieldOffset(302)]
+        public char __dummy_name_131;
+
+        [FieldOffset(304)]
+        public char __dummy_name_132;
+
+        [FieldOffset(306)]
+        public char __dummy_name_133;
+
+        [FieldOffset(308)]
+        public char __dummy_name_134;
+
+        [FieldOffset(310)]
+        public char __dummy_name_135;
+
+        [FieldOffset(312)]
+        public char __dummy_name_136;
+
+        [FieldOffset(314)]
+        public char __dummy_name_137;
+
+        [FieldOffset(316)]
+        public char __dummy_name_138;
+
+        [FieldOffset(318)]
+        public char __dummy_name_139;
+
+        [FieldOffset(320)]
+        public char __dummy_name_140;
+
+        [FieldOffset(322)]
+        public char __dummy_name_141;
+
+        [FieldOffset(324)]
+        public char __dummy_name_142;
+
+        [FieldOffset(326)]
+        public char __dummy_name_143;
+
+        [FieldOffset(328)]
+        public char __dummy_name_144;
+
+        [FieldOffset(330)]
+        public char __dummy_name_145;
+
+        [FieldOffset(332)]
+        public char __dummy_name_146;
+
+        [FieldOffset(334)]
+        public char __dummy_name_147;
+
+        [FieldOffset(336)]
+        public char __dummy_name_148;
+
+        [FieldOffset(338)]
+        public char __dummy_name_149;
+
+        [FieldOffset(340)]
+        public char __dummy_name_150;
+
+        [FieldOffset(342)]
+        public char __dummy_name_151;
+
+        [FieldOffset(344)]
+        public char __dummy_name_152;
+
+        [FieldOffset(346)]
+        public char __dummy_name_153;
+
+        [FieldOffset(348)]
+        public char __dummy_name_154;
+
+        [FieldOffset(350)]
+        public char __dummy_name_155;
+
+        [FieldOffset(352)]
+        public char __dummy_name_156;
+
+        [FieldOffset(354)]
+        public char __dummy_name_157;
+
+        [FieldOffset(356)]
+        public char __dummy_name_158;
+
+        [FieldOffset(358)]
+        public char __dummy_name_159;
+
+        [FieldOffset(360)]
+        public char __dummy_name_160;
+
+        [FieldOffset(362)]
+        public char __dummy_name_161;
+
+        [FieldOffset(364)]
+        public char __dummy_name_162;
+
+        [FieldOffset(366)]
+        public char __dummy_name_163;
+
+        [FieldOffset(368)]
+        public char __dummy_name_164;
+
+        [FieldOffset(370)]
+        public char __dummy_name_165;
+
+        [FieldOffset(372)]
+        public char __dummy_name_166;
+
+        [FieldOffset(374)]
+        public char __dummy_name_167;
+
+        [FieldOffset(376)]
+        public char __dummy_name_168;
+
+        [FieldOffset(378)]
+        public char __dummy_name_169;
+
+        [FieldOffset(380)]
+        public char __dummy_name_170;
+
+        [FieldOffset(382)]
+        public char __dummy_name_171;
+
+        [FieldOffset(384)]
+        public char __dummy_name_172;
+
+        [FieldOffset(386)]
+        public char __dummy_name_173;
+
+        [FieldOffset(388)]
+        public char __dummy_name_174;
+
+        [FieldOffset(390)]
+        public char __dummy_name_175;
+
+        [FieldOffset(392)]
+        public char __dummy_name_176;
+
+        [FieldOffset(394)]
+        public char __dummy_name_177;
+
+        [FieldOffset(396)]
+        public char __dummy_name_178;
+
+        [FieldOffset(398)]
+        public char __dummy_name_179;
+
+        [FieldOffset(400)]
+        public char __dummy_name_180;
+
+        [FieldOffset(402)]
+        public char __dummy_name_181;
+
+        [FieldOffset(404)]
+        public char __dummy_name_182;
+
+        [FieldOffset(406)]
+        public char __dummy_name_183;
+
+        [FieldOffset(408)]
+        public char __dummy_name_184;
+
+        [FieldOffset(410)]
+        public char __dummy_name_185;
+
+        [FieldOffset(412)]
+        public char __dummy_name_186;
+
+        [FieldOffset(414)]
+        public char __dummy_name_187;
+
+        [FieldOffset(416)]
+        public char __dummy_name_188;
+
+        [FieldOffset(418)]
+        public char __dummy_name_189;
+
+        [FieldOffset(420)]
+        public char __dummy_name_190;
+
+        [FieldOffset(422)]
+        public char __dummy_name_191;
+
+        [FieldOffset(424)]
+        public char __dummy_name_192;
+
+        [FieldOffset(426)]
+        public char __dummy_name_193;
+
+        [FieldOffset(428)]
+        public char __dummy_name_194;
+
+        [FieldOffset(430)]
+        public char __dummy_name_195;
+
+        [FieldOffset(432)]
+        public char __dummy_name_196;
+
+        [FieldOffset(434)]
+        public char __dummy_name_197;
+
+        [FieldOffset(436)]
+        public char __dummy_name_198;
+
+        [FieldOffset(438)]
+        public char __dummy_name_199;
+
+        [FieldOffset(440)]
+        public char __dummy_name_200;
+
+        [FieldOffset(442)]
+        public char __dummy_name_201;
+
+        [FieldOffset(444)]
+        public char __dummy_name_202;
+
+        [FieldOffset(446)]
+        public char __dummy_name_203;
+
+        [FieldOffset(448)]
+        public char __dummy_name_204;
+
+        [FieldOffset(450)]
+        public char __dummy_name_205;
+
+        [FieldOffset(452)]
+        public char __dummy_name_206;
+
+        [FieldOffset(454)]
+        public char __dummy_name_207;
+
+        [FieldOffset(456)]
+        public char __dummy_name_208;
+
+        [FieldOffset(458)]
+        public char __dummy_name_209;
+
+        [FieldOffset(460)]
+        public char __dummy_name_210;
+
+        [FieldOffset(462)]
+        public char __dummy_name_211;
+
+        [FieldOffset(464)]
+        public char __dummy_name_212;
+
+        [FieldOffset(466)]
+        public char __dummy_name_213;
+
+        [FieldOffset(468)]
+        public char __dummy_name_214;
+
+        [FieldOffset(470)]
+        public char __dummy_name_215;
+
+        [FieldOffset(472)]
+        public char __dummy_name_216;
+
+        [FieldOffset(474)]
+        public char __dummy_name_217;
+
+        [FieldOffset(476)]
+        public char __dummy_name_218;
+
+        [FieldOffset(478)]
+        public char __dummy_name_219;
+
+        [FieldOffset(480)]
+        public char __dummy_name_220;
+
+        [FieldOffset(482)]
+        public char __dummy_name_221;
+
+        [FieldOffset(484)]
+        public char __dummy_name_222;
+
+        [FieldOffset(486)]
+        public char __dummy_name_223;
+
+        [FieldOffset(488)]
+        public char __dummy_name_224;
+
+        [FieldOffset(490)]
+        public char __dummy_name_225;
+
+        [FieldOffset(492)]
+        public char __dummy_name_226;
+
+        [FieldOffset(494)]
+        public char __dummy_name_227;
+
+        [FieldOffset(496)]
+        public char __dummy_name_228;
+
+        [FieldOffset(498)]
+        public char __dummy_name_229;
+
+        [FieldOffset(500)]
+        public char __dummy_name_230;
+
+        [FieldOffset(502)]
+        public char __dummy_name_231;
+
+        [FieldOffset(504)]
+        public char __dummy_name_232;
+
+        [FieldOffset(506)]
+        public char __dummy_name_233;
+
+        [FieldOffset(508)]
+        public char __dummy_name_234;
+
+        [FieldOffset(510)]
+        public char __dummy_name_235;
+
+        [FieldOffset(512)]
+        public char __dummy_name_236;
+
+        [FieldOffset(514)]
+        public char __dummy_name_237;
+
+        [FieldOffset(516)]
+        public char __dummy_name_238;
+
+        [FieldOffset(518)]
+        public char __dummy_name_239;
+
+        [FieldOffset(520)]
+        public char __dummy_name_240;
+
+        [FieldOffset(522)]
+        public char __dummy_name_241;
+
+        [FieldOffset(524)]
+        public char __dummy_name_242;
+
+        [FieldOffset(526)]
+        public char __dummy_name_243;
+
+        [FieldOffset(528)]
+        public char __dummy_name_244;
+
+        [FieldOffset(530)]
+        public char __dummy_name_245;
+
+        [FieldOffset(532)]
+        public char __dummy_name_246;
+
+        [FieldOffset(534)]
+        public char __dummy_name_247;
+
+        [FieldOffset(536)]
+        public char __dummy_name_248;
+
+        [FieldOffset(538)]
+        public char __dummy_name_249;
+
+        [FieldOffset(540)]
+        public char __dummy_name_250;
+
+        [FieldOffset(542)]
+        public char __dummy_name_251;
+
+        [FieldOffset(544)]
+        public char __dummy_name_252;
+
+        [FieldOffset(546)]
+        public char __dummy_name_253;
+
+        [FieldOffset(548)]
+        public char __dummy_name_254;
+
+        [FieldOffset(550)]
+        public char __dummy_name_255;
+
+        [FieldOffset(552)]
+        public char __dummy_name_256;
+
+        [FieldOffset(554)]
+        public char __dummy_name_257;
+
+        [FieldOffset(556)]
+        public char __dummy_name_258;
+
+        [FieldOffset(558)]
+        public char __dummy_name_259;
+    }
+}
+
+public unsafe partial class _iobuf
+{
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr _Placeholder;
+    }
+}
+
+public unsafe partial class tm
+{
+    [StructLayout(LayoutKind.Explicit, Size = 36)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public int tm_sec;
+
+        [FieldOffset(4)]
+        public int tm_min;
+
+        [FieldOffset(8)]
+        public int tm_hour;
+
+        [FieldOffset(12)]
+        public int tm_mday;
+
+        [FieldOffset(16)]
+        public int tm_mon;
+
+        [FieldOffset(20)]
+        public int tm_year;
+
+        [FieldOffset(24)]
+        public int tm_wday;
+
+        [FieldOffset(28)]
+        public int tm_yday;
+
+        [FieldOffset(32)]
+        public int tm_isdst;
+    }
+}
+
+public unsafe partial class _stat32
+{
+    [StructLayout(LayoutKind.Explicit, Size = 36)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint st_dev;
+
+        [FieldOffset(4)]
+        public ushort st_ino;
+
+        [FieldOffset(6)]
+        public ushort st_mode;
+
+        [FieldOffset(8)]
+        public short st_nlink;
+
+        [FieldOffset(10)]
+        public short st_uid;
+
+        [FieldOffset(12)]
+        public short st_gid;
+
+        [FieldOffset(16)]
+        public uint st_rdev;
+
+        [FieldOffset(20)]
+        public int st_size;
+
+        [FieldOffset(24)]
+        public int st_atime;
+
+        [FieldOffset(28)]
+        public int st_mtime;
+
+        [FieldOffset(32)]
+        public int st_ctime;
+    }
+}
+
+public unsafe partial class _stat32i64
+{
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint st_dev;
+
+        [FieldOffset(4)]
+        public ushort st_ino;
+
+        [FieldOffset(6)]
+        public ushort st_mode;
+
+        [FieldOffset(8)]
+        public short st_nlink;
+
+        [FieldOffset(10)]
+        public short st_uid;
+
+        [FieldOffset(12)]
+        public short st_gid;
+
+        [FieldOffset(16)]
+        public uint st_rdev;
+
+        [FieldOffset(24)]
+        public long st_size;
+
+        [FieldOffset(32)]
+        public int st_atime;
+
+        [FieldOffset(36)]
+        public int st_mtime;
+
+        [FieldOffset(40)]
+        public int st_ctime;
+    }
+}
+
+public unsafe partial class _stat64i32
+{
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint st_dev;
+
+        [FieldOffset(4)]
+        public ushort st_ino;
+
+        [FieldOffset(6)]
+        public ushort st_mode;
+
+        [FieldOffset(8)]
+        public short st_nlink;
+
+        [FieldOffset(10)]
+        public short st_uid;
+
+        [FieldOffset(12)]
+        public short st_gid;
+
+        [FieldOffset(16)]
+        public uint st_rdev;
+
+        [FieldOffset(20)]
+        public int st_size;
+
+        [FieldOffset(24)]
+        public long st_atime;
+
+        [FieldOffset(32)]
+        public long st_mtime;
+
+        [FieldOffset(40)]
+        public long st_ctime;
+    }
+}
+
+public unsafe partial class _stat64
+{
+    [StructLayout(LayoutKind.Explicit, Size = 56)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint st_dev;
+
+        [FieldOffset(4)]
+        public ushort st_ino;
+
+        [FieldOffset(6)]
+        public ushort st_mode;
+
+        [FieldOffset(8)]
+        public short st_nlink;
+
+        [FieldOffset(10)]
+        public short st_uid;
+
+        [FieldOffset(12)]
+        public short st_gid;
+
+        [FieldOffset(16)]
+        public uint st_rdev;
+
+        [FieldOffset(24)]
+        public long st_size;
+
+        [FieldOffset(32)]
+        public long st_atime;
+
+        [FieldOffset(40)]
+        public long st_mtime;
+
+        [FieldOffset(48)]
+        public long st_ctime;
+    }
+}
+
+public unsafe partial class stat
+{
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint st_dev;
+
+        [FieldOffset(4)]
+        public ushort st_ino;
+
+        [FieldOffset(6)]
+        public ushort st_mode;
+
+        [FieldOffset(8)]
+        public short st_nlink;
+
+        [FieldOffset(10)]
+        public short st_uid;
+
+        [FieldOffset(12)]
+        public short st_gid;
+
+        [FieldOffset(16)]
+        public uint st_rdev;
+
+        [FieldOffset(20)]
+        public int st_size;
+
+        [FieldOffset(24)]
+        public long st_atime;
+
+        [FieldOffset(32)]
+        public long st_mtime;
+
+        [FieldOffset(40)]
+        public long st_ctime;
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace _If
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace plus
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace minus
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace multiplies
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace equal_to
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace less
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Bitwise_hash
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace hash
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    public enum float_denorm_style
+    {
+        denorm_indeterminate = -1,
+        denorm_absent = 0,
+        denorm_present = 1
+    }
+
+    public enum float_round_style
+    {
+        round_indeterminate = -1,
+        round_toward_zero = 0,
+        round_to_nearest = 1,
+        round_toward_infinity = 2,
+        round_toward_neg_infinity = 3
+    }
+
+    namespace numeric_limits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Num_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Num_int_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Num_float_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace is_void
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace integer_sequence
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Invoker_pmf_object
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Invoker_pmf_pointer
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Invoker_pmd_object
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Invoker_pmd_pointer
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Invoker_functor
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Unforced
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Unique_tag_result_of
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Swappable_with_helper_unique_type
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class exception_ptr
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Data1;
+
+            [FieldOffset(4)]
+            public global::System.IntPtr _Data2;
+        }
+    }
+
+    public unsafe partial class nested_exception
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_nested_exception;
+
+            [FieldOffset(4)]
+            internal global::std.exception_ptr.Internal _Exc;
+        }
+    }
+}
+
+public unsafe partial class _heapinfo
+{
+    [StructLayout(LayoutKind.Explicit, Size = 12)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr _pentry;
+
+        [FieldOffset(4)]
+        public uint _size;
+
+        [FieldOffset(8)]
+        public int _useflag;
+    }
+}
+
+public unsafe partial class __std_exception_data
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr _What;
+
+        [FieldOffset(4)]
+        public byte _DoFree;
+    }
+}
+
+namespace std
+{
+    public unsafe partial class exception
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class bad_exception
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class bad_alloc
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class bad_array_new_length
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class nothrow_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+public unsafe partial class _CrtMemState
+{
+    [StructLayout(LayoutKind.Explicit, Size = 52)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr pBlockHeader;
+
+        [FieldOffset(4)]
+        public fixed uint lCounts[5];
+
+        [FieldOffset(8)]
+        public uint __dummy_lCounts_1;
+
+        [FieldOffset(12)]
+        public uint __dummy_lCounts_2;
+
+        [FieldOffset(16)]
+        public uint __dummy_lCounts_3;
+
+        [FieldOffset(20)]
+        public uint __dummy_lCounts_4;
+
+        [FieldOffset(24)]
+        public fixed uint lSizes[5];
+
+        [FieldOffset(28)]
+        public uint __dummy_lSizes_1;
+
+        [FieldOffset(32)]
+        public uint __dummy_lSizes_2;
+
+        [FieldOffset(36)]
+        public uint __dummy_lSizes_3;
+
+        [FieldOffset(40)]
+        public uint __dummy_lSizes_4;
+
+        [FieldOffset(44)]
+        public uint lHighWaterCount;
+
+        [FieldOffset(48)]
+        public uint lTotalCount;
+    }
+}
+
+namespace std
+{
+    namespace _Char_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace char_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class piecewise_construct_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    namespace rel_ops
+    {
+    }
+}
+
+namespace std
+{
+    namespace _Yarn
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal_char
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Myptr;
+
+            [FieldOffset(4)]
+            public sbyte _Nul;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal_wchar_t
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Myptr;
+
+            [FieldOffset(4)]
+            public char _Nul;
+        }
+    }
+
+    namespace _Compressed_pair
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_char_std__String_val_std__Simple_types_char
+        {
+            [FieldOffset(0)]
+            internal global::std._String_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_wchar_t_std__String_val_std__Simple_types_wchar_t
+        {
+            [FieldOffset(0)]
+            internal global::std._String_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_char16_t_std__String_val_std__Simple_types_char16_t
+        {
+            [FieldOffset(0)]
+            internal global::std._String_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_char32_t_std__String_val_std__Simple_types_char32_t
+        {
+            [FieldOffset(0)]
+            internal global::std._String_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_PreprocessedEntityPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_PreprocessedEntityPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_BlockContentCommentPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_BlockContentCommentPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_ParameterPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_ParameterPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_DeclarationPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_DeclarationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_FunctionTemplateSpecializationPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_FunctionTemplateSpecializationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_TemplateArgument_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_TemplateArgument
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_FunctionPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_FunctionPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_TemplatePtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_TemplatePtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_TypedefDeclPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_TypedefDeclPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_TypeAliasPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_TypeAliasPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_VariablePtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_VariablePtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_FriendPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_FriendPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal_std_less_std_basic_string_char_std_char_traits_char_std_allocator_char_std__Compressed_pair_std__Wrap_alloc_std_allocator_std__Tree_node_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr_voidPtr_std__Tree_val_std__Tree_simple_types_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std__Wrap_alloc_std_allocator_std__Tree_node_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr_voidPtr_std__Tree_val_std__Tree_simple_types_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_std__Tree_node_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr_voidPtr_std__Tree_val_std__Tree_simple_types_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Tree_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_BaseClassSpecifierPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_BaseClassSpecifierPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_FieldPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_FieldPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_MethodPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_MethodPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_AccessSpecifierDeclPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_AccessSpecifierDeclPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_VTableComponent_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_VTableComponent
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_VFTableInfo_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_VFTableInfo
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_LayoutField_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_LayoutField
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_LayoutBase_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_LayoutBase
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_ClassPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_ClassPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_Enumeration_ItemPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_Enumeration_ItemPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_EnumerationPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_EnumerationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_NamespacePtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_NamespacePtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_std_basic_string_char_std_char_traits_char_std_allocator_char_std__Vector_val_std__Simple_types_std_basic_string_char_std_char_traits_char_std_allocator_char
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_ClassTemplateSpecializationPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_ClassTemplateSpecializationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_ExpressionPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_ExpressionPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_VarTemplateSpecializationPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_VarTemplateSpecializationPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_MacroDefinitionPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_MacroDefinitionPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_TranslationUnitPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_TranslationUnitPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_InlineContentCommentPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_InlineContentCommentPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_BlockCommandComment_Argument_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_BlockCommandComment_Argument
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_unsigned_int_std__Vector_val_std__Simple_types_unsigned_int
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_VerbatimBlockLineCommentPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_VerbatimBlockLineCommentPtr
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_InlineCommandComment_Argument_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_InlineCommandComment_Argument
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_HTMLStartTagComment_Attribute_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_HTMLStartTagComment_Attribute
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_ParserDiagnostic_std__Vector_val_std__Simple_types_CppSharp_CppParser_ParserDiagnostic
+        {
+            [FieldOffset(0)]
+            internal global::std._Vector_val.Internal _Myval2;
+        }
+    }
+
+    namespace iterator
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Is_character
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Container_base0
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Iterator_base0
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Container_proxy
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Mycont;
+
+            [FieldOffset(4)]
+            public global::System.IntPtr _Myfirstiter;
+        }
+    }
+
+    public unsafe partial class _Container_base12
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Myproxy;
+        }
+    }
+
+    public unsafe partial class _Iterator_base12
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Myproxy;
+
+            [FieldOffset(4)]
+            public global::System.IntPtr _Mynextiter;
+        }
+    }
+
+    public unsafe partial class _Zero_then_variadic_args_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _One_then_variadic_args_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class input_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Mutable_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class output_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class forward_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class bidirectional_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class random_access_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _General_ptr_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Trivially_copyable_ptr_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Really_trivial_ptr_iterator_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Any_tag
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class allocator_arg_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
 namespace std
 {
     public unsafe partial class allocator : IDisposable
@@ -82,6 +4888,47 @@ namespace std
         }
     }
 
+    namespace _Wrap_alloc
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+
+
+        public unsafe partial class rebind
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+
+    namespace allocator_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Simple_types
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Get_voidptr
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
     public unsafe partial class _Alloc_allocate
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -125,115 +4972,1004 @@ namespace std
 
 namespace std
 {
+    public enum memory_order
+    {
+        memory_order_relaxed = 0,
+        memory_order_consume = 1,
+        memory_order_acquire = 2,
+        memory_order_release = 3,
+        memory_order_acq_rel = 4,
+        memory_order_seq_cst = 5
+    }
+}
+
+public unsafe partial class __JUMP_BUFFER
+{
+    [StructLayout(LayoutKind.Explicit, Size = 64)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint Ebp;
+
+        [FieldOffset(4)]
+        public uint Ebx;
+
+        [FieldOffset(8)]
+        public uint Edi;
+
+        [FieldOffset(12)]
+        public uint Esi;
+
+        [FieldOffset(16)]
+        public uint Esp;
+
+        [FieldOffset(20)]
+        public uint Eip;
+
+        [FieldOffset(24)]
+        public uint Registration;
+
+        [FieldOffset(28)]
+        public uint TryLevel;
+
+        [FieldOffset(32)]
+        public uint Cookie;
+
+        [FieldOffset(36)]
+        public uint UnwindFunc;
+
+        [FieldOffset(40)]
+        public fixed uint UnwindData[6];
+
+        [FieldOffset(44)]
+        public uint __dummy_UnwindData_1;
+
+        [FieldOffset(48)]
+        public uint __dummy_UnwindData_2;
+
+        [FieldOffset(52)]
+        public uint __dummy_UnwindData_3;
+
+        [FieldOffset(56)]
+        public uint __dummy_UnwindData_4;
+
+        [FieldOffset(60)]
+        public uint __dummy_UnwindData_5;
+    }
+}
+
+public unsafe partial struct __m256
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed float m256_f32[8];
+
+        [FieldOffset(4)]
+        public float __dummy_m256_f32_1;
+
+        [FieldOffset(8)]
+        public float __dummy_m256_f32_2;
+
+        [FieldOffset(12)]
+        public float __dummy_m256_f32_3;
+
+        [FieldOffset(16)]
+        public float __dummy_m256_f32_4;
+
+        [FieldOffset(20)]
+        public float __dummy_m256_f32_5;
+
+        [FieldOffset(24)]
+        public float __dummy_m256_f32_6;
+
+        [FieldOffset(28)]
+        public float __dummy_m256_f32_7;
+    }
+}
+
+public unsafe partial class __m256d
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed double m256d_f64[4];
+
+        [FieldOffset(8)]
+        public double __dummy_m256d_f64_1;
+
+        [FieldOffset(16)]
+        public double __dummy_m256d_f64_2;
+
+        [FieldOffset(24)]
+        public double __dummy_m256d_f64_3;
+    }
+}
+
+public unsafe partial struct __m256i
+{
+    [StructLayout(LayoutKind.Explicit, Size = 32)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte m256i_i8[32];
+
+        [FieldOffset(1)]
+        public sbyte __dummy_m256i_i8_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy_m256i_i8_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy_m256i_i8_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy_m256i_i8_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy_m256i_i8_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy_m256i_i8_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy_m256i_i8_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy_m256i_i8_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy_m256i_i8_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy_m256i_i8_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy_m256i_i8_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy_m256i_i8_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy_m256i_i8_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy_m256i_i8_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy_m256i_i8_15;
+
+        [FieldOffset(16)]
+        public sbyte __dummy_m256i_i8_16;
+
+        [FieldOffset(17)]
+        public sbyte __dummy_m256i_i8_17;
+
+        [FieldOffset(18)]
+        public sbyte __dummy_m256i_i8_18;
+
+        [FieldOffset(19)]
+        public sbyte __dummy_m256i_i8_19;
+
+        [FieldOffset(20)]
+        public sbyte __dummy_m256i_i8_20;
+
+        [FieldOffset(21)]
+        public sbyte __dummy_m256i_i8_21;
+
+        [FieldOffset(22)]
+        public sbyte __dummy_m256i_i8_22;
+
+        [FieldOffset(23)]
+        public sbyte __dummy_m256i_i8_23;
+
+        [FieldOffset(24)]
+        public sbyte __dummy_m256i_i8_24;
+
+        [FieldOffset(25)]
+        public sbyte __dummy_m256i_i8_25;
+
+        [FieldOffset(26)]
+        public sbyte __dummy_m256i_i8_26;
+
+        [FieldOffset(27)]
+        public sbyte __dummy_m256i_i8_27;
+
+        [FieldOffset(28)]
+        public sbyte __dummy_m256i_i8_28;
+
+        [FieldOffset(29)]
+        public sbyte __dummy_m256i_i8_29;
+
+        [FieldOffset(30)]
+        public sbyte __dummy_m256i_i8_30;
+
+        [FieldOffset(31)]
+        public sbyte __dummy_m256i_i8_31;
+
+        [FieldOffset(0)]
+        public fixed short m256i_i16[16];
+
+        [FieldOffset(2)]
+        public short __dummy_m256i_i16_1;
+
+        [FieldOffset(4)]
+        public short __dummy_m256i_i16_2;
+
+        [FieldOffset(6)]
+        public short __dummy_m256i_i16_3;
+
+        [FieldOffset(8)]
+        public short __dummy_m256i_i16_4;
+
+        [FieldOffset(10)]
+        public short __dummy_m256i_i16_5;
+
+        [FieldOffset(12)]
+        public short __dummy_m256i_i16_6;
+
+        [FieldOffset(14)]
+        public short __dummy_m256i_i16_7;
+
+        [FieldOffset(16)]
+        public short __dummy_m256i_i16_8;
+
+        [FieldOffset(18)]
+        public short __dummy_m256i_i16_9;
+
+        [FieldOffset(20)]
+        public short __dummy_m256i_i16_10;
+
+        [FieldOffset(22)]
+        public short __dummy_m256i_i16_11;
+
+        [FieldOffset(24)]
+        public short __dummy_m256i_i16_12;
+
+        [FieldOffset(26)]
+        public short __dummy_m256i_i16_13;
+
+        [FieldOffset(28)]
+        public short __dummy_m256i_i16_14;
+
+        [FieldOffset(30)]
+        public short __dummy_m256i_i16_15;
+
+        [FieldOffset(0)]
+        public fixed int m256i_i32[8];
+
+        [FieldOffset(4)]
+        public int __dummy_m256i_i32_1;
+
+        [FieldOffset(8)]
+        public int __dummy_m256i_i32_2;
+
+        [FieldOffset(12)]
+        public int __dummy_m256i_i32_3;
+
+        [FieldOffset(16)]
+        public int __dummy_m256i_i32_4;
+
+        [FieldOffset(20)]
+        public int __dummy_m256i_i32_5;
+
+        [FieldOffset(24)]
+        public int __dummy_m256i_i32_6;
+
+        [FieldOffset(28)]
+        public int __dummy_m256i_i32_7;
+
+        [FieldOffset(0)]
+        public fixed long m256i_i64[4];
+
+        [FieldOffset(8)]
+        public long __dummy_m256i_i64_1;
+
+        [FieldOffset(16)]
+        public long __dummy_m256i_i64_2;
+
+        [FieldOffset(24)]
+        public long __dummy_m256i_i64_3;
+
+        [FieldOffset(0)]
+        public fixed byte m256i_u8[32];
+
+        [FieldOffset(1)]
+        public byte __dummy_m256i_u8_1;
+
+        [FieldOffset(2)]
+        public byte __dummy_m256i_u8_2;
+
+        [FieldOffset(3)]
+        public byte __dummy_m256i_u8_3;
+
+        [FieldOffset(4)]
+        public byte __dummy_m256i_u8_4;
+
+        [FieldOffset(5)]
+        public byte __dummy_m256i_u8_5;
+
+        [FieldOffset(6)]
+        public byte __dummy_m256i_u8_6;
+
+        [FieldOffset(7)]
+        public byte __dummy_m256i_u8_7;
+
+        [FieldOffset(8)]
+        public byte __dummy_m256i_u8_8;
+
+        [FieldOffset(9)]
+        public byte __dummy_m256i_u8_9;
+
+        [FieldOffset(10)]
+        public byte __dummy_m256i_u8_10;
+
+        [FieldOffset(11)]
+        public byte __dummy_m256i_u8_11;
+
+        [FieldOffset(12)]
+        public byte __dummy_m256i_u8_12;
+
+        [FieldOffset(13)]
+        public byte __dummy_m256i_u8_13;
+
+        [FieldOffset(14)]
+        public byte __dummy_m256i_u8_14;
+
+        [FieldOffset(15)]
+        public byte __dummy_m256i_u8_15;
+
+        [FieldOffset(16)]
+        public byte __dummy_m256i_u8_16;
+
+        [FieldOffset(17)]
+        public byte __dummy_m256i_u8_17;
+
+        [FieldOffset(18)]
+        public byte __dummy_m256i_u8_18;
+
+        [FieldOffset(19)]
+        public byte __dummy_m256i_u8_19;
+
+        [FieldOffset(20)]
+        public byte __dummy_m256i_u8_20;
+
+        [FieldOffset(21)]
+        public byte __dummy_m256i_u8_21;
+
+        [FieldOffset(22)]
+        public byte __dummy_m256i_u8_22;
+
+        [FieldOffset(23)]
+        public byte __dummy_m256i_u8_23;
+
+        [FieldOffset(24)]
+        public byte __dummy_m256i_u8_24;
+
+        [FieldOffset(25)]
+        public byte __dummy_m256i_u8_25;
+
+        [FieldOffset(26)]
+        public byte __dummy_m256i_u8_26;
+
+        [FieldOffset(27)]
+        public byte __dummy_m256i_u8_27;
+
+        [FieldOffset(28)]
+        public byte __dummy_m256i_u8_28;
+
+        [FieldOffset(29)]
+        public byte __dummy_m256i_u8_29;
+
+        [FieldOffset(30)]
+        public byte __dummy_m256i_u8_30;
+
+        [FieldOffset(31)]
+        public byte __dummy_m256i_u8_31;
+
+        [FieldOffset(0)]
+        public fixed ushort m256i_u16[16];
+
+        [FieldOffset(2)]
+        public ushort __dummy_m256i_u16_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy_m256i_u16_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy_m256i_u16_3;
+
+        [FieldOffset(8)]
+        public ushort __dummy_m256i_u16_4;
+
+        [FieldOffset(10)]
+        public ushort __dummy_m256i_u16_5;
+
+        [FieldOffset(12)]
+        public ushort __dummy_m256i_u16_6;
+
+        [FieldOffset(14)]
+        public ushort __dummy_m256i_u16_7;
+
+        [FieldOffset(16)]
+        public ushort __dummy_m256i_u16_8;
+
+        [FieldOffset(18)]
+        public ushort __dummy_m256i_u16_9;
+
+        [FieldOffset(20)]
+        public ushort __dummy_m256i_u16_10;
+
+        [FieldOffset(22)]
+        public ushort __dummy_m256i_u16_11;
+
+        [FieldOffset(24)]
+        public ushort __dummy_m256i_u16_12;
+
+        [FieldOffset(26)]
+        public ushort __dummy_m256i_u16_13;
+
+        [FieldOffset(28)]
+        public ushort __dummy_m256i_u16_14;
+
+        [FieldOffset(30)]
+        public ushort __dummy_m256i_u16_15;
+
+        [FieldOffset(0)]
+        public fixed uint m256i_u32[8];
+
+        [FieldOffset(4)]
+        public uint __dummy_m256i_u32_1;
+
+        [FieldOffset(8)]
+        public uint __dummy_m256i_u32_2;
+
+        [FieldOffset(12)]
+        public uint __dummy_m256i_u32_3;
+
+        [FieldOffset(16)]
+        public uint __dummy_m256i_u32_4;
+
+        [FieldOffset(20)]
+        public uint __dummy_m256i_u32_5;
+
+        [FieldOffset(24)]
+        public uint __dummy_m256i_u32_6;
+
+        [FieldOffset(28)]
+        public uint __dummy_m256i_u32_7;
+
+        [FieldOffset(0)]
+        public fixed ulong m256i_u64[4];
+
+        [FieldOffset(8)]
+        public ulong __dummy_m256i_u64_1;
+
+        [FieldOffset(16)]
+        public ulong __dummy_m256i_u64_2;
+
+        [FieldOffset(24)]
+        public ulong __dummy_m256i_u64_3;
+    }
+}
+
+public unsafe partial struct __m128i
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed sbyte m128i_i8[16];
+
+        [FieldOffset(1)]
+        public sbyte __dummy_m128i_i8_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy_m128i_i8_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy_m128i_i8_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy_m128i_i8_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy_m128i_i8_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy_m128i_i8_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy_m128i_i8_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy_m128i_i8_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy_m128i_i8_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy_m128i_i8_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy_m128i_i8_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy_m128i_i8_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy_m128i_i8_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy_m128i_i8_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy_m128i_i8_15;
+
+        [FieldOffset(0)]
+        public fixed short m128i_i16[8];
+
+        [FieldOffset(2)]
+        public short __dummy_m128i_i16_1;
+
+        [FieldOffset(4)]
+        public short __dummy_m128i_i16_2;
+
+        [FieldOffset(6)]
+        public short __dummy_m128i_i16_3;
+
+        [FieldOffset(8)]
+        public short __dummy_m128i_i16_4;
+
+        [FieldOffset(10)]
+        public short __dummy_m128i_i16_5;
+
+        [FieldOffset(12)]
+        public short __dummy_m128i_i16_6;
+
+        [FieldOffset(14)]
+        public short __dummy_m128i_i16_7;
+
+        [FieldOffset(0)]
+        public fixed int m128i_i32[4];
+
+        [FieldOffset(4)]
+        public int __dummy_m128i_i32_1;
+
+        [FieldOffset(8)]
+        public int __dummy_m128i_i32_2;
+
+        [FieldOffset(12)]
+        public int __dummy_m128i_i32_3;
+
+        [FieldOffset(0)]
+        public fixed long m128i_i64[2];
+
+        [FieldOffset(8)]
+        public long __dummy_m128i_i64_1;
+
+        [FieldOffset(0)]
+        public fixed byte m128i_u8[16];
+
+        [FieldOffset(1)]
+        public byte __dummy_m128i_u8_1;
+
+        [FieldOffset(2)]
+        public byte __dummy_m128i_u8_2;
+
+        [FieldOffset(3)]
+        public byte __dummy_m128i_u8_3;
+
+        [FieldOffset(4)]
+        public byte __dummy_m128i_u8_4;
+
+        [FieldOffset(5)]
+        public byte __dummy_m128i_u8_5;
+
+        [FieldOffset(6)]
+        public byte __dummy_m128i_u8_6;
+
+        [FieldOffset(7)]
+        public byte __dummy_m128i_u8_7;
+
+        [FieldOffset(8)]
+        public byte __dummy_m128i_u8_8;
+
+        [FieldOffset(9)]
+        public byte __dummy_m128i_u8_9;
+
+        [FieldOffset(10)]
+        public byte __dummy_m128i_u8_10;
+
+        [FieldOffset(11)]
+        public byte __dummy_m128i_u8_11;
+
+        [FieldOffset(12)]
+        public byte __dummy_m128i_u8_12;
+
+        [FieldOffset(13)]
+        public byte __dummy_m128i_u8_13;
+
+        [FieldOffset(14)]
+        public byte __dummy_m128i_u8_14;
+
+        [FieldOffset(15)]
+        public byte __dummy_m128i_u8_15;
+
+        [FieldOffset(0)]
+        public fixed ushort m128i_u16[8];
+
+        [FieldOffset(2)]
+        public ushort __dummy_m128i_u16_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy_m128i_u16_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy_m128i_u16_3;
+
+        [FieldOffset(8)]
+        public ushort __dummy_m128i_u16_4;
+
+        [FieldOffset(10)]
+        public ushort __dummy_m128i_u16_5;
+
+        [FieldOffset(12)]
+        public ushort __dummy_m128i_u16_6;
+
+        [FieldOffset(14)]
+        public ushort __dummy_m128i_u16_7;
+
+        [FieldOffset(0)]
+        public fixed uint m128i_u32[4];
+
+        [FieldOffset(4)]
+        public uint __dummy_m128i_u32_1;
+
+        [FieldOffset(8)]
+        public uint __dummy_m128i_u32_2;
+
+        [FieldOffset(12)]
+        public uint __dummy_m128i_u32_3;
+
+        [FieldOffset(0)]
+        public fixed ulong m128i_u64[2];
+
+        [FieldOffset(8)]
+        public ulong __dummy_m128i_u64_1;
+    }
+}
+
+public unsafe partial class __m128d
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed double m128d_f64[2];
+
+        [FieldOffset(8)]
+        public double __dummy_m128d_f64_1;
+    }
+}
+
+public unsafe partial struct __m128
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public fixed float m128_f32[4];
+
+        [FieldOffset(4)]
+        public float __dummy_m128_f32_1;
+
+        [FieldOffset(8)]
+        public float __dummy_m128_f32_2;
+
+        [FieldOffset(12)]
+        public float __dummy_m128_f32_3;
+
+        [FieldOffset(0)]
+        public fixed ulong m128_u64[2];
+
+        [FieldOffset(8)]
+        public ulong __dummy_m128_u64_1;
+
+        [FieldOffset(0)]
+        public fixed sbyte m128_i8[16];
+
+        [FieldOffset(1)]
+        public sbyte __dummy_m128_i8_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy_m128_i8_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy_m128_i8_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy_m128_i8_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy_m128_i8_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy_m128_i8_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy_m128_i8_7;
+
+        [FieldOffset(8)]
+        public sbyte __dummy_m128_i8_8;
+
+        [FieldOffset(9)]
+        public sbyte __dummy_m128_i8_9;
+
+        [FieldOffset(10)]
+        public sbyte __dummy_m128_i8_10;
+
+        [FieldOffset(11)]
+        public sbyte __dummy_m128_i8_11;
+
+        [FieldOffset(12)]
+        public sbyte __dummy_m128_i8_12;
+
+        [FieldOffset(13)]
+        public sbyte __dummy_m128_i8_13;
+
+        [FieldOffset(14)]
+        public sbyte __dummy_m128_i8_14;
+
+        [FieldOffset(15)]
+        public sbyte __dummy_m128_i8_15;
+
+        [FieldOffset(0)]
+        public fixed short m128_i16[8];
+
+        [FieldOffset(2)]
+        public short __dummy_m128_i16_1;
+
+        [FieldOffset(4)]
+        public short __dummy_m128_i16_2;
+
+        [FieldOffset(6)]
+        public short __dummy_m128_i16_3;
+
+        [FieldOffset(8)]
+        public short __dummy_m128_i16_4;
+
+        [FieldOffset(10)]
+        public short __dummy_m128_i16_5;
+
+        [FieldOffset(12)]
+        public short __dummy_m128_i16_6;
+
+        [FieldOffset(14)]
+        public short __dummy_m128_i16_7;
+
+        [FieldOffset(0)]
+        public fixed int m128_i32[4];
+
+        [FieldOffset(4)]
+        public int __dummy_m128_i32_1;
+
+        [FieldOffset(8)]
+        public int __dummy_m128_i32_2;
+
+        [FieldOffset(12)]
+        public int __dummy_m128_i32_3;
+
+        [FieldOffset(0)]
+        public fixed long m128_i64[2];
+
+        [FieldOffset(8)]
+        public long __dummy_m128_i64_1;
+
+        [FieldOffset(0)]
+        public fixed byte m128_u8[16];
+
+        [FieldOffset(1)]
+        public byte __dummy_m128_u8_1;
+
+        [FieldOffset(2)]
+        public byte __dummy_m128_u8_2;
+
+        [FieldOffset(3)]
+        public byte __dummy_m128_u8_3;
+
+        [FieldOffset(4)]
+        public byte __dummy_m128_u8_4;
+
+        [FieldOffset(5)]
+        public byte __dummy_m128_u8_5;
+
+        [FieldOffset(6)]
+        public byte __dummy_m128_u8_6;
+
+        [FieldOffset(7)]
+        public byte __dummy_m128_u8_7;
+
+        [FieldOffset(8)]
+        public byte __dummy_m128_u8_8;
+
+        [FieldOffset(9)]
+        public byte __dummy_m128_u8_9;
+
+        [FieldOffset(10)]
+        public byte __dummy_m128_u8_10;
+
+        [FieldOffset(11)]
+        public byte __dummy_m128_u8_11;
+
+        [FieldOffset(12)]
+        public byte __dummy_m128_u8_12;
+
+        [FieldOffset(13)]
+        public byte __dummy_m128_u8_13;
+
+        [FieldOffset(14)]
+        public byte __dummy_m128_u8_14;
+
+        [FieldOffset(15)]
+        public byte __dummy_m128_u8_15;
+
+        [FieldOffset(0)]
+        public fixed ushort m128_u16[8];
+
+        [FieldOffset(2)]
+        public ushort __dummy_m128_u16_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy_m128_u16_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy_m128_u16_3;
+
+        [FieldOffset(8)]
+        public ushort __dummy_m128_u16_4;
+
+        [FieldOffset(10)]
+        public ushort __dummy_m128_u16_5;
+
+        [FieldOffset(12)]
+        public ushort __dummy_m128_u16_6;
+
+        [FieldOffset(14)]
+        public ushort __dummy_m128_u16_7;
+
+        [FieldOffset(0)]
+        public fixed uint m128_u32[4];
+
+        [FieldOffset(4)]
+        public uint __dummy_m128_u32_1;
+
+        [FieldOffset(8)]
+        public uint __dummy_m128_u32_2;
+
+        [FieldOffset(12)]
+        public uint __dummy_m128_u32_3;
+    }
+}
+
+public unsafe partial struct __m64
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public ulong m64_u64;
+
+        [FieldOffset(0)]
+        public fixed float m64_f32[2];
+
+        [FieldOffset(4)]
+        public float __dummy_m64_f32_1;
+
+        [FieldOffset(0)]
+        public fixed sbyte m64_i8[8];
+
+        [FieldOffset(1)]
+        public sbyte __dummy_m64_i8_1;
+
+        [FieldOffset(2)]
+        public sbyte __dummy_m64_i8_2;
+
+        [FieldOffset(3)]
+        public sbyte __dummy_m64_i8_3;
+
+        [FieldOffset(4)]
+        public sbyte __dummy_m64_i8_4;
+
+        [FieldOffset(5)]
+        public sbyte __dummy_m64_i8_5;
+
+        [FieldOffset(6)]
+        public sbyte __dummy_m64_i8_6;
+
+        [FieldOffset(7)]
+        public sbyte __dummy_m64_i8_7;
+
+        [FieldOffset(0)]
+        public fixed short m64_i16[4];
+
+        [FieldOffset(2)]
+        public short __dummy_m64_i16_1;
+
+        [FieldOffset(4)]
+        public short __dummy_m64_i16_2;
+
+        [FieldOffset(6)]
+        public short __dummy_m64_i16_3;
+
+        [FieldOffset(0)]
+        public fixed int m64_i32[2];
+
+        [FieldOffset(4)]
+        public int __dummy_m64_i32_1;
+
+        [FieldOffset(0)]
+        public long m64_i64;
+
+        [FieldOffset(0)]
+        public fixed byte m64_u8[8];
+
+        [FieldOffset(1)]
+        public byte __dummy_m64_u8_1;
+
+        [FieldOffset(2)]
+        public byte __dummy_m64_u8_2;
+
+        [FieldOffset(3)]
+        public byte __dummy_m64_u8_3;
+
+        [FieldOffset(4)]
+        public byte __dummy_m64_u8_4;
+
+        [FieldOffset(5)]
+        public byte __dummy_m64_u8_5;
+
+        [FieldOffset(6)]
+        public byte __dummy_m64_u8_6;
+
+        [FieldOffset(7)]
+        public byte __dummy_m64_u8_7;
+
+        [FieldOffset(0)]
+        public fixed ushort m64_u16[4];
+
+        [FieldOffset(2)]
+        public ushort __dummy_m64_u16_1;
+
+        [FieldOffset(4)]
+        public ushort __dummy_m64_u16_2;
+
+        [FieldOffset(6)]
+        public ushort __dummy_m64_u16_3;
+
+        [FieldOffset(0)]
+        public fixed uint m64_u32[2];
+
+        [FieldOffset(4)]
+        public uint __dummy_m64_u32_1;
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
     public unsafe partial class basic_string : IDisposable
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct Internal
         {
             [FieldOffset(0)]
-            public fixed sbyte _Buf[16];
-
-            [FieldOffset(1)]
-            public sbyte __dummy__Buf_1;
-
-            [FieldOffset(2)]
-            public sbyte __dummy__Buf_2;
-
-            [FieldOffset(3)]
-            public sbyte __dummy__Buf_3;
-
-            [FieldOffset(4)]
-            public sbyte __dummy__Buf_4;
-
-            [FieldOffset(5)]
-            public sbyte __dummy__Buf_5;
-
-            [FieldOffset(6)]
-            public sbyte __dummy__Buf_6;
-
-            [FieldOffset(7)]
-            public sbyte __dummy__Buf_7;
-
-            [FieldOffset(8)]
-            public sbyte __dummy__Buf_8;
-
-            [FieldOffset(9)]
-            public sbyte __dummy__Buf_9;
-
-            [FieldOffset(10)]
-            public sbyte __dummy__Buf_10;
-
-            [FieldOffset(11)]
-            public sbyte __dummy__Buf_11;
-
-            [FieldOffset(12)]
-            public sbyte __dummy__Buf_12;
-
-            [FieldOffset(13)]
-            public sbyte __dummy__Buf_13;
-
-            [FieldOffset(14)]
-            public sbyte __dummy__Buf_14;
-
-            [FieldOffset(15)]
-            public sbyte __dummy__Buf_15;
-
-            [FieldOffset(0)]
-            public global::System.IntPtr _Ptr;
-
-            [FieldOffset(0)]
-            public fixed sbyte _Alias[16];
-
-            [FieldOffset(1)]
-            public sbyte __dummy__Alias_1;
-
-            [FieldOffset(2)]
-            public sbyte __dummy__Alias_2;
-
-            [FieldOffset(3)]
-            public sbyte __dummy__Alias_3;
-
-            [FieldOffset(4)]
-            public sbyte __dummy__Alias_4;
-
-            [FieldOffset(5)]
-            public sbyte __dummy__Alias_5;
-
-            [FieldOffset(6)]
-            public sbyte __dummy__Alias_6;
-
-            [FieldOffset(7)]
-            public sbyte __dummy__Alias_7;
-
-            [FieldOffset(8)]
-            public sbyte __dummy__Alias_8;
-
-            [FieldOffset(9)]
-            public sbyte __dummy__Alias_9;
-
-            [FieldOffset(10)]
-            public sbyte __dummy__Alias_10;
-
-            [FieldOffset(11)]
-            public sbyte __dummy__Alias_11;
-
-            [FieldOffset(12)]
-            public sbyte __dummy__Alias_12;
-
-            [FieldOffset(13)]
-            public sbyte __dummy__Alias_13;
-
-            [FieldOffset(14)]
-            public sbyte __dummy__Alias_14;
-
-            [FieldOffset(15)]
-            public sbyte __dummy__Alias_15;
-
-            [FieldOffset(16)]
-            public uint _Mysize;
-
-            [FieldOffset(20)]
-            public uint _Myres;
+            internal global::std._Compressed_pair.Internal_std__Wrap_alloc_std_allocator_char_std__String_val_std__Simple_types_char _Mypair;
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -304,14 +6040,1281 @@ namespace std
             var __ret = Internal.c_str_0((__Instance + __PointerAdjustment));
             return Marshal.PtrToStringAnsi(__ret);
         }
+    }
 
-        public static uint npos
+    namespace _String_alloc
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal
         {
-            get
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std__Wrap_alloc_std_allocator_char_std__String_val_std__Simple_types_char _Mypair;
+        }
+    }
+
+    namespace _String_val
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._String_val._Bxty.Internal _Bx;
+
+            [FieldOffset(16)]
+            public uint _Mysize;
+
+            [FieldOffset(20)]
+            public uint _Myres;
+        }
+
+
+        public unsafe partial struct _Bxty
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
             {
-                var __ptr = (uint*)CppSharp.SymbolResolver.ResolveSymbol("Std-templates", "?npos@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@2IB");
-                return *__ptr;
             }
+        }
+    }
+
+    namespace _String_base_types
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class logic_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class domain_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class invalid_argument
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class length_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class out_of_range
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class runtime_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class overflow_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class underflow_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class range_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+}
+
+namespace std
+{
+    namespace _Vec_base_types
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Vector_val
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Myfirst;
+
+            [FieldOffset(4)]
+            public global::System.IntPtr _Mylast;
+
+            [FieldOffset(8)]
+            public global::System.IntPtr _Myend;
+        }
+    }
+
+    namespace _Vector_alloc
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_PreprocessedEntityPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_PreprocessedEntityPtr _Mypair;
+        }
+    }
+
+    namespace vector
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std__Wrap_alloc_std_allocator_CppSharp_CppParser_AST_PreprocessedEntityPtr_std__Vector_val_std__Simple_types_CppSharp_CppParser_AST_PreprocessedEntityPtr _Mypair;
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe partial class _Ignore
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Tuple_alloc_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Exact_args_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Unpack_tuple_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Alloc_exact_args_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class _Alloc_unpack_tuple_t
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+}
+
+namespace std
+{
+    namespace _Tree_simple_types
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Tree_base_types
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace _Tree_val
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Myhead;
+
+            [FieldOffset(4)]
+            public uint _Mysize;
+        }
+    }
+
+    namespace _Tree_comp_alloc
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std_less_std_basic_string_char_std_char_traits_char_std_allocator_char_std__Compressed_pair_std__Wrap_alloc_std_allocator_std__Tree_node_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr_voidPtr_std__Tree_val_std__Tree_simple_types_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr _Mypair;
+        }
+    }
+
+    namespace _Tree
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std_less_std_basic_string_char_std_char_traits_char_std_allocator_char_std__Compressed_pair_std__Wrap_alloc_std_allocator_std__Tree_node_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr_voidPtr_std__Tree_val_std__Tree_simple_types_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr _Mypair;
+        }
+
+
+        public unsafe partial class _Copy_tag
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial class _Move_tag
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+    namespace _Tmap_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+
+
+        public unsafe partial class value_compare
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+
+    namespace map
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Compressed_pair.Internal_std_less_std_basic_string_char_std_char_traits_char_std_allocator_char_std__Compressed_pair_std__Wrap_alloc_std_allocator_std__Tree_node_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr_voidPtr_std__Tree_val_std__Tree_simple_types_std_pair_std_basic_string_char_std_char_traits_char_std_allocator_char_CppSharp_CppParser_AST_DeclarationPtr _Mypair;
+        }
+    }
+}
+
+public unsafe partial class __std_type_info_data
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr _UndecoratedName;
+
+        [FieldOffset(4)]
+        public fixed sbyte _DecoratedName[1];
+    }
+}
+
+public unsafe partial class type_info
+{
+    [StructLayout(LayoutKind.Explicit, Size = 12)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr vfptr_type_info;
+
+        [FieldOffset(4)]
+        internal global::__std_type_info_data.Internal _Data;
+    }
+}
+
+namespace std
+{
+    public unsafe partial class bad_cast
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class bad_typeid
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+
+    public unsafe partial class __non_rtti_object
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+        }
+    }
+}
+
+public unsafe partial class lconv
+{
+    [StructLayout(LayoutKind.Explicit, Size = 80)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public global::System.IntPtr decimal_point;
+
+        [FieldOffset(4)]
+        public global::System.IntPtr thousands_sep;
+
+        [FieldOffset(8)]
+        public global::System.IntPtr grouping;
+
+        [FieldOffset(12)]
+        public global::System.IntPtr int_curr_symbol;
+
+        [FieldOffset(16)]
+        public global::System.IntPtr currency_symbol;
+
+        [FieldOffset(20)]
+        public global::System.IntPtr mon_decimal_point;
+
+        [FieldOffset(24)]
+        public global::System.IntPtr mon_thousands_sep;
+
+        [FieldOffset(28)]
+        public global::System.IntPtr mon_grouping;
+
+        [FieldOffset(32)]
+        public global::System.IntPtr positive_sign;
+
+        [FieldOffset(36)]
+        public global::System.IntPtr negative_sign;
+
+        [FieldOffset(40)]
+        public sbyte int_frac_digits;
+
+        [FieldOffset(41)]
+        public sbyte frac_digits;
+
+        [FieldOffset(42)]
+        public sbyte p_cs_precedes;
+
+        [FieldOffset(43)]
+        public sbyte p_sep_by_space;
+
+        [FieldOffset(44)]
+        public sbyte n_cs_precedes;
+
+        [FieldOffset(45)]
+        public sbyte n_sep_by_space;
+
+        [FieldOffset(46)]
+        public sbyte p_sign_posn;
+
+        [FieldOffset(47)]
+        public sbyte n_sign_posn;
+
+        [FieldOffset(48)]
+        public global::System.IntPtr _W_decimal_point;
+
+        [FieldOffset(52)]
+        public global::System.IntPtr _W_thousands_sep;
+
+        [FieldOffset(56)]
+        public global::System.IntPtr _W_int_curr_symbol;
+
+        [FieldOffset(60)]
+        public global::System.IntPtr _W_currency_symbol;
+
+        [FieldOffset(64)]
+        public global::System.IntPtr _W_mon_decimal_point;
+
+        [FieldOffset(68)]
+        public global::System.IntPtr _W_mon_thousands_sep;
+
+        [FieldOffset(72)]
+        public global::System.IntPtr _W_positive_sign;
+
+        [FieldOffset(76)]
+        public global::System.IntPtr _W_negative_sign;
+    }
+}
+
+public unsafe partial class _Collvec
+{
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint _Page;
+
+        [FieldOffset(4)]
+        public global::System.IntPtr _LocaleName;
+    }
+}
+
+public unsafe partial class _Ctypevec
+{
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint _Page;
+
+        [FieldOffset(4)]
+        public global::System.IntPtr _Table;
+
+        [FieldOffset(8)]
+        public int _Delfl;
+
+        [FieldOffset(12)]
+        public global::System.IntPtr _LocaleName;
+    }
+}
+
+public unsafe partial class _Cvtvec
+{
+    [StructLayout(LayoutKind.Explicit, Size = 44)]
+    public partial struct Internal
+    {
+        [FieldOffset(0)]
+        public uint _Page;
+
+        [FieldOffset(4)]
+        public uint _Mbcurmax;
+
+        [FieldOffset(8)]
+        public int _Isclocale;
+
+        [FieldOffset(12)]
+        public fixed byte _Isleadbyte[32];
+
+        [FieldOffset(13)]
+        public byte __dummy__Isleadbyte_1;
+
+        [FieldOffset(14)]
+        public byte __dummy__Isleadbyte_2;
+
+        [FieldOffset(15)]
+        public byte __dummy__Isleadbyte_3;
+
+        [FieldOffset(16)]
+        public byte __dummy__Isleadbyte_4;
+
+        [FieldOffset(17)]
+        public byte __dummy__Isleadbyte_5;
+
+        [FieldOffset(18)]
+        public byte __dummy__Isleadbyte_6;
+
+        [FieldOffset(19)]
+        public byte __dummy__Isleadbyte_7;
+
+        [FieldOffset(20)]
+        public byte __dummy__Isleadbyte_8;
+
+        [FieldOffset(21)]
+        public byte __dummy__Isleadbyte_9;
+
+        [FieldOffset(22)]
+        public byte __dummy__Isleadbyte_10;
+
+        [FieldOffset(23)]
+        public byte __dummy__Isleadbyte_11;
+
+        [FieldOffset(24)]
+        public byte __dummy__Isleadbyte_12;
+
+        [FieldOffset(25)]
+        public byte __dummy__Isleadbyte_13;
+
+        [FieldOffset(26)]
+        public byte __dummy__Isleadbyte_14;
+
+        [FieldOffset(27)]
+        public byte __dummy__Isleadbyte_15;
+
+        [FieldOffset(28)]
+        public byte __dummy__Isleadbyte_16;
+
+        [FieldOffset(29)]
+        public byte __dummy__Isleadbyte_17;
+
+        [FieldOffset(30)]
+        public byte __dummy__Isleadbyte_18;
+
+        [FieldOffset(31)]
+        public byte __dummy__Isleadbyte_19;
+
+        [FieldOffset(32)]
+        public byte __dummy__Isleadbyte_20;
+
+        [FieldOffset(33)]
+        public byte __dummy__Isleadbyte_21;
+
+        [FieldOffset(34)]
+        public byte __dummy__Isleadbyte_22;
+
+        [FieldOffset(35)]
+        public byte __dummy__Isleadbyte_23;
+
+        [FieldOffset(36)]
+        public byte __dummy__Isleadbyte_24;
+
+        [FieldOffset(37)]
+        public byte __dummy__Isleadbyte_25;
+
+        [FieldOffset(38)]
+        public byte __dummy__Isleadbyte_26;
+
+        [FieldOffset(39)]
+        public byte __dummy__Isleadbyte_27;
+
+        [FieldOffset(40)]
+        public byte __dummy__Isleadbyte_28;
+
+        [FieldOffset(41)]
+        public byte __dummy__Isleadbyte_29;
+
+        [FieldOffset(42)]
+        public byte __dummy__Isleadbyte_30;
+
+        [FieldOffset(43)]
+        public byte __dummy__Isleadbyte_31;
+    }
+}
+
+namespace std
+{
+    public unsafe partial class _Timevec
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _Timeptr;
+        }
+    }
+
+    public unsafe partial class _Locinfo
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 52)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            internal global::std._Lockit.Internal _Lock;
+
+            [FieldOffset(4)]
+            internal global::std._Yarn.Internal_char _Days;
+
+            [FieldOffset(12)]
+            internal global::std._Yarn.Internal_char _Months;
+
+            [FieldOffset(20)]
+            internal global::std._Yarn.Internal_wchar_t _W_Days;
+
+            [FieldOffset(28)]
+            internal global::std._Yarn.Internal_wchar_t _W_Months;
+
+            [FieldOffset(36)]
+            internal global::std._Yarn.Internal_char _Oldlocname;
+
+            [FieldOffset(44)]
+            internal global::std._Yarn.Internal_char _Newlocname;
+        }
+    }
+}
+
+namespace std
+{
+    public unsafe abstract partial class _Facet_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr__Facet_base;
+        }
+    }
+}
+
+namespace std
+{
+    [Flags]
+    public enum _Codecvt_mode
+    {
+        _Consume_header = 4,
+        _Generate_header = 2
+    }
+
+    namespace _Locbase
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace ctype
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr__Facet_base;
+
+            [FieldOffset(4)]
+            public uint _Myrefs;
+
+            [FieldOffset(8)]
+            internal global::_Ctypevec.Internal _Ctype;
+        }
+    }
+
+    namespace codecvt
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr__Facet_base;
+
+            [FieldOffset(4)]
+            public uint _Myrefs;
+
+            [FieldOffset(8)]
+            public uint _Maxcode;
+
+            [FieldOffset(12)]
+            public global::std._Codecvt_mode _Mode;
+        }
+    }
+
+    namespace ctype_byname
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr__Facet_base;
+
+            [FieldOffset(4)]
+            public uint _Myrefs;
+
+            [FieldOffset(8)]
+            internal global::_Ctypevec.Internal _Ctype;
+        }
+    }
+
+    public unsafe partial class _Crt_new_delete
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class locale
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(4)]
+            public global::System.IntPtr _Ptr;
+        }
+
+        public unsafe partial class _Locimp
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 32)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr vfptr__Facet_base;
+
+                [FieldOffset(4)]
+                public uint _Myrefs;
+
+                [FieldOffset(8)]
+                public global::System.IntPtr _Facetvec;
+
+                [FieldOffset(12)]
+                public uint _Facetcount;
+
+                [FieldOffset(16)]
+                public int _Catmask;
+
+                [FieldOffset(20)]
+                public byte _Xparent;
+
+                [FieldOffset(24)]
+                internal global::std._Yarn.Internal_char _Name;
+            }
+        }
+
+        public unsafe partial class facet
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr vfptr__Facet_base;
+
+                [FieldOffset(4)]
+                public uint _Myrefs;
+            }
+        }
+
+        public unsafe partial class id
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 4)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public uint _Id;
+            }
+        }
+    }
+
+    public unsafe partial class codecvt_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr__Facet_base;
+
+            [FieldOffset(4)]
+            public uint _Myrefs;
+        }
+
+        public enum _0
+        {
+            ok = 0,
+            @partial = 1,
+            error = 2,
+            noconv = 3
+        }
+    }
+
+    public unsafe partial class ctype_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr__Facet_base;
+
+            [FieldOffset(4)]
+            public uint _Myrefs;
+        }
+
+        public enum _0
+        {
+            alnum = 263,
+            alpha = 259,
+            cntrl = 32,
+            digit = 4,
+            graph = 279,
+            lower = 2,
+            print = 471,
+            punct = 16,
+            space = 72,
+            upper = 1,
+            xdigit = 128,
+            blank = 72
+        }
+    }
+}
+
+namespace std
+{
+    public enum io_errc
+    {
+        stream = 1
+    }
+
+    public enum errc
+    {
+        address_family_not_supported = 102,
+        address_in_use = 100,
+        address_not_available = 101,
+        already_connected = 113,
+        argument_list_too_long = 7,
+        argument_out_of_domain = 33,
+        bad_address = 14,
+        bad_file_descriptor = 9,
+        bad_message = 104,
+        broken_pipe = 32,
+        connection_aborted = 106,
+        connection_already_in_progress = 103,
+        connection_refused = 107,
+        connection_reset = 108,
+        cross_device_link = 18,
+        destination_address_required = 109,
+        device_or_resource_busy = 16,
+        directory_not_empty = 41,
+        executable_format_error = 8,
+        file_exists = 17,
+        file_too_large = 27,
+        filename_too_long = 38,
+        function_not_supported = 40,
+        host_unreachable = 110,
+        identifier_removed = 111,
+        illegal_byte_sequence = 42,
+        inappropriate_io_control_operation = 25,
+        interrupted = 4,
+        invalid_argument = 22,
+        invalid_seek = 29,
+        io_error = 5,
+        is_a_directory = 21,
+        message_size = 115,
+        network_down = 116,
+        network_reset = 117,
+        network_unreachable = 118,
+        no_buffer_space = 119,
+        no_child_process = 10,
+        no_link = 121,
+        no_lock_available = 39,
+        no_message_available = 120,
+        no_message = 122,
+        no_protocol_option = 123,
+        no_space_on_device = 28,
+        no_stream_resources = 124,
+        no_such_device_or_address = 6,
+        no_such_device = 19,
+        no_such_file_or_directory = 2,
+        no_such_process = 3,
+        not_a_directory = 20,
+        not_a_socket = 128,
+        not_a_stream = 125,
+        not_connected = 126,
+        not_enough_memory = 12,
+        not_supported = 129,
+        operation_canceled = 105,
+        operation_in_progress = 112,
+        operation_not_permitted = 1,
+        operation_not_supported = 130,
+        operation_would_block = 140,
+        owner_dead = 133,
+        permission_denied = 13,
+        protocol_error = 134,
+        protocol_not_supported = 135,
+        read_only_file_system = 30,
+        resource_deadlock_would_occur = 36,
+        resource_unavailable_try_again = 11,
+        result_out_of_range = 34,
+        state_not_recoverable = 127,
+        stream_timeout = 137,
+        text_file_busy = 139,
+        timed_out = 138,
+        too_many_files_open_in_system = 23,
+        too_many_files_open = 24,
+        too_many_links = 31,
+        too_many_symbolic_link_levels = 114,
+        value_too_large = 132,
+        wrong_protocol_type = 136
+    }
+
+    namespace is_error_code_enum
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    namespace is_error_condition_enum
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe abstract partial class error_category
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_error_category;
+
+            [FieldOffset(4)]
+            public uint _Addr;
+        }
+
+        protected internal enum _0 : uint
+        {
+            _Future_addr = 1,
+            _Generic_addr = 3,
+            _Iostream_addr = 5,
+            _System_addr = 7
+        }
+    }
+
+    public unsafe partial class error_code
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public int _Myval;
+
+            [FieldOffset(4)]
+            public global::System.IntPtr _Mycat;
+        }
+    }
+
+    public unsafe partial class error_condition
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public int _Myval;
+
+            [FieldOffset(4)]
+            public global::System.IntPtr _Mycat;
+        }
+    }
+
+    public unsafe partial class _System_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 20)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+
+            [FieldOffset(12)]
+            internal global::std.error_code.Internal _Mycode;
+        }
+    }
+
+    public unsafe partial class system_error
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 20)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_exception;
+
+            [FieldOffset(4)]
+            internal global::__std_exception_data.Internal _Data;
+
+            [FieldOffset(12)]
+            internal global::std.error_code.Internal _Mycode;
+        }
+    }
+
+    public unsafe partial class _Generic_error_category
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_error_category;
+
+            [FieldOffset(4)]
+            public uint _Addr;
+        }
+    }
+
+    public unsafe partial class _Iostream_error_category
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_error_category;
+
+            [FieldOffset(4)]
+            public uint _Addr;
+        }
+    }
+
+    public unsafe partial class _System_error_category
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_error_category;
+
+            [FieldOffset(4)]
+            public uint _Addr;
+        }
+    }
+}
+
+namespace std
+{
+    namespace _Iosb
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct Internal
+        {
+        }
+    }
+
+    public unsafe partial class ios_base
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 56)]
+        public partial struct Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr vfptr_ios_base;
+
+            [FieldOffset(8)]
+            public uint _Stdstr;
+
+            [FieldOffset(12)]
+            public int _Mystate;
+
+            [FieldOffset(16)]
+            public int _Except;
+
+            [FieldOffset(20)]
+            public int _Fmtfl;
+
+            [FieldOffset(24)]
+            public long _Prec;
+
+            [FieldOffset(32)]
+            public long _Wide;
+
+            [FieldOffset(40)]
+            public global::System.IntPtr _Arr;
+
+            [FieldOffset(44)]
+            public global::System.IntPtr _Calls;
+
+            [FieldOffset(48)]
+            public global::System.IntPtr _Ploc;
+        }
+
+        public enum @event
+        {
+            erase_event = 0,
+            imbue_event = 1,
+            copyfmt_event = 2
+        }
+
+        public unsafe partial class _Iosarray
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 16)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr _Next;
+
+                [FieldOffset(4)]
+                public int _Index;
+
+                [FieldOffset(8)]
+                public int _Lo;
+
+                [FieldOffset(12)]
+                public global::System.IntPtr _Vp;
+            }
+        }
+
+        public unsafe partial class _Fnarray
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr _Next;
+
+                [FieldOffset(4)]
+                public int _Index;
+
+                [FieldOffset(8)]
+                public global::System.IntPtr _Pfn;
+            }
+        }
+
+        public unsafe partial class failure
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 20)]
+            public partial struct Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr vfptr_exception;
+
+                [FieldOffset(4)]
+                internal global::__std_exception_data.Internal _Data;
+
+                [FieldOffset(12)]
+                internal global::std.error_code.Internal _Mycode;
+            }
+        }
+
+        public unsafe partial class Init
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+        }
+    }
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+}
+
+namespace std
+{
+    namespace literals
+    {
+    }
+}
+
+namespace std
+{
+    public unsafe partial class _Rand_urng_from_func
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
         }
     }
 }

@@ -17,8 +17,6 @@ namespace CppSharp.Passes
             Options.VisitNamespaceEnums = false;
             Options.VisitNamespaceEvents = false;
             Options.VisitNamespaceTemplates = false;
-            Options.VisitNamespaceTypedefs = false;
-            Options.VisitNamespaceVariables = false;
             Options.VisitTemplateArguments = false;
         }
 
@@ -26,9 +24,6 @@ namespace CppSharp.Passes
         {
             if (!unit.IsValid)
                 return false;
-
-            if (!Driver.Options.IsCLIGenerator && unit.IsSystemHeader)
-                unit.ExplicitlyIgnore();
 
             if (ClearVisitedDeclarations)
                 Visited.Clear();
@@ -38,18 +33,25 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            if (!Driver.Options.IsCLIGenerator &&
-                decl.Namespace != null && decl.TranslationUnit.IsSystemHeader)
-                decl.ExplicitlyIgnore();
-            return base.VisitDeclaration(decl);
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || !@class.IsDependent ||
-                Driver.Options.IsCLIGenerator || !@class.IsSupportedStdType())
+            if (!base.VisitClassDecl(@class) || Driver.Options.IsCLIGenerator)
+                return false;
+
+            if (!@class.TranslationUnit.IsSystemHeader)
+                return false;
+
+            if (!@class.IsSupportedStdType())
+            {
+
+                @class.ExplicitlyIgnore();
+                if (@class.IsDependent)
+                    foreach (var specialization in @class.Specializations)
+                        specialization.ExplicitlyIgnore();
+                return false;
+            }
+
+            if (!@class.IsDependent)
                 return false;
 
             // we only need a few members for marshalling so strip the rest
@@ -81,6 +83,39 @@ namespace CppSharp.Passes
                     }
                     break;
             }
+            return true;
+        }
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (!base.VisitFunctionDecl(function))
+                return false;
+
+            if (function.TranslationUnit.IsSystemHeader)
+                function.ExplicitlyIgnore();
+
+            return true;
+        }
+
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            if (!base.VisitTypedefDecl(typedef))
+                return false;
+
+            if (typedef.TranslationUnit.IsSystemHeader)
+                typedef.ExplicitlyIgnore();
+
+            return true;
+        }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!base.VisitDeclaration(variable))
+                return false;
+
+            if (variable.TranslationUnit.IsSystemHeader)
+                variable.ExplicitlyIgnore();
+
             return true;
         }
 

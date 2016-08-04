@@ -201,7 +201,7 @@ namespace CppSharp.AST
 
         public static IEnumerable<TranslationUnit> GetGenerated(this IEnumerable<TranslationUnit> units)
         {
-            return units.Where(u => u.IsGenerated && u.HasDeclarations && u.IsValid);
+            return units.Where(u => u.IsGenerated && (u.HasDeclarations || u.IsSystemHeader) && u.IsValid);
         }
 
         public static bool IsSupportedStdSpecialization(this ClassTemplateSpecialization specialization)

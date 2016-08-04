@@ -138,7 +138,7 @@ namespace CppSharp.Passes
             }
 
             var prefixBuilder = new StringBuilder(prefix);
-            prefixBuilder.Trim();
+            prefixBuilder.TrimUnderscores();
             while (@enum.Namespace.Enums.Any(e => e != @enum &&
                 e.Name == prefixBuilder.ToString()))
                 prefixBuilder.Append('_');

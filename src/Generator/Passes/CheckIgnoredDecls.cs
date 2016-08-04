@@ -38,7 +38,7 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateDecl(template))
                 return false;
 
-            if (!Driver.Options.IsCLIGenerator && template.IsSupportedStdType())
+            if (!Driver.Options.IsCLIGenerator && template.TranslationUnit.IsSystemHeader)
                 return false;
 
             // templates are not supported yet

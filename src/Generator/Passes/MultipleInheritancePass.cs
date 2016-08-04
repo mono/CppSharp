@@ -81,6 +81,7 @@ namespace CppSharp.Passes
 
             @interface.Bases.AddRange(
                 from b in @base.Bases
+                where b.Class != null
                 let i = GetInterface(b.Class)
                 select new BaseClassSpecifier(b) { Type = new TagType(i) });
 

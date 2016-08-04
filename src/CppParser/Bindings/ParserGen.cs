@@ -87,6 +87,7 @@ namespace CppSharp
             options.OutputNamespace = string.Empty;
             options.CheckSymbols = false;
             options.Verbose = true;
+            options.UnityBuild = true;
         }
 
         private void SetupLinuxOptions(DriverOptions options)
@@ -108,7 +109,7 @@ namespace CppSharp
             string gccVersion = gccVersionPath.Substring(
                 gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
-            string[] systemIncludeDirs = new[] {
+            string[] systemIncludeDirs = {
                 Path.Combine("usr", "include", "c++", gccVersion),
                 Path.Combine("usr", "include", "x86_64-linux-gnu", "c++", gccVersion),
                 Path.Combine("usr", "include", "c++", gccVersion, "backward"),
