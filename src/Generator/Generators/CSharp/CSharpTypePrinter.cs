@@ -560,6 +560,9 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
                     return GetIntString(primitive, driver.TargetInfo);
+                case PrimitiveType.Int128: return "__int128";
+                case PrimitiveType.UInt128: return "__uint128_t";
+                case PrimitiveType.Half: return "__fp16";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 // not really supported yet but it's closest, and we don't want crashes when parsing long doubles

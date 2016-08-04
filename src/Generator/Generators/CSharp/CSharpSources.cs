@@ -802,10 +802,14 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
-            // we do not support long double yet because its representation in C# is problematic
-            if ((arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
-                arrayType.Type.IsPrimitiveType(PrimitiveType.LongDouble)) ||
-                field.QualifiedType.Type.IsPrimitiveType(PrimitiveType.LongDouble))
+            var coreType = field.QualifiedType.Type.Desugar();
+            if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant)
+                coreType = arrayType.Type.Desugar();
+            // we do not support the primitives below yet because their representation in C# is problematic
+            if (coreType.IsPrimitiveType(PrimitiveType.LongDouble) ||
+                coreType.IsPrimitiveType(PrimitiveType.Int128) ||
+                coreType.IsPrimitiveType(PrimitiveType.UInt128) ||
+                coreType.IsPrimitiveType(PrimitiveType.Half))
                 return;
 
             var safeIdentifier = Helpers.SafeIdentifier(field.Name);
