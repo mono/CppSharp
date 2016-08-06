@@ -19,11 +19,6 @@ namespace CppSharp.Generator.Tests.AST
                 PrimitiveType primitiveType;
                 return type.IsPrimitiveType(out primitiveType) ? primitiveType.ToString() : string.Empty;
             };
-        }
-
-        [SetUp]
-        public void Setup()
-        {
             ParseLibrary("AST.h", "ASTExtensions.h");
         }
 

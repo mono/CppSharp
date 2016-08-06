@@ -74,6 +74,16 @@ namespace CppSharp.AST
         {
             return visitor.VisitParameterDecl(this);
         }
+
+        /// <summary>
+        /// HACK: in many cases QualifiedType.Qualifiers.IsConst does not work.
+        /// It's false in Clang to begin with. I tried fixing it to no avail.
+        /// I don't have any more time at the moment.
+        /// </summary>
+        public bool IsConst
+        {
+            get { return DebugText.StartsWith("const ", System.StringComparison.Ordinal); }
+        }
     }
 
     public class ParameterTypeComparer : IEqualityComparer<Parameter>

@@ -1202,3 +1202,12 @@ enum
     EmptyEnumsWithSameMemberPrefixAndUnderscore_4
 };
 
+class DLL_API HasOverloadsWithDifferentPointerKindsToSameType
+{
+public:
+    HasOverloadsWithDifferentPointerKindsToSameType();
+    ~HasOverloadsWithDifferentPointerKindsToSameType();
+    void overload(int& i);
+    void overload(int&& i);
+    void overload(const int& i);
+};

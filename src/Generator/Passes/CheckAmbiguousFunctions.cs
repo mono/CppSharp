@@ -1,22 +1,36 @@
 ﻿using System;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
 {
     /// <summary>
     /// Checks for ambiguous functions/method declarations.
+    /// <para/>
     /// Example:
-    /// 
+    /// <para/>
     /// struct S
+    /// <para/>
     /// {
+    /// <para/>
     ///     void Foo(int a, int b = 0);
+    /// <para/>
     ///     void Foo(int a);
-    /// 
+    /// <para/>
     ///     void Bar();
+    /// <para/>
     ///     void Bar() const;
-    /// };
     /// 
+    /// <para/>
+    ///     void Qux(int&amp; i);
+    /// <para/>
+    ///     void Qux(int&amp;&amp; i);
+    /// <para/>
+    ///     void Qux(const int&amp; i);
+    /// <para/>
+    /// };
+    /// <para/>
     /// When we call Foo(0) the compiler will not know which call we want and
     /// will error out so we need to detect this and either ignore the methods
     /// or flag them such that the generator can explicitly disambiguate when
@@ -46,7 +60,8 @@ namespace CppSharp.Passes
                 if (!overload.IsGenerated) continue;
 
                 if (CheckConstnessForAmbiguity(function, overload) ||
-                    CheckDefaultParametersForAmbiguity(function, overload))
+                    CheckDefaultParametersForAmbiguity(function, overload) ||
+                    CheckSingleParameterPointerConstnessForAmbiguity(function, overload))
                 {
                     function.IsAmbiguous = true;
                     overload.IsAmbiguous = true;
@@ -116,6 +131,63 @@ namespace CppSharp.Passes
                     method2.ExplicitlyIgnore();
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        private static bool CheckSingleParameterPointerConstnessForAmbiguity(
+            Function function, Function overload)
+        {
+            var functionParams = function.Parameters.Where(
+                p => p.Kind == ParameterKind.Regular && p.Type.IsAddress()).ToList();
+            // It's difficult to handle this case for more than one parameter
+            // For example, if we have:
+            //     void f(float&, const int&);
+            //     void f(const float&, int&);
+            // what should we do? Generate both? Generate the first one encountered?
+            // Generate the one with the least amount of "complex" parameters?
+            // So let's just start with the simplest case for the time being
+            if (functionParams.Count != 1)
+                return false;
+            var overloadParams = overload.Parameters.Where(
+                p => p.Kind == ParameterKind.Regular && p.Type.IsAddress()).ToList();
+            if (overloadParams.Count != 1)
+                return false;
+
+            var parameterFunction = functionParams[0];
+            var parameterOverload = overloadParams[0];
+
+            if (!parameterFunction.Type.GetPointee().Equals(parameterOverload.Type.GetPointee()))
+                return false;
+
+            if (parameterFunction.IsConst && !parameterOverload.IsConst)
+            {
+                function.ExplicitlyIgnore();
+                return true;
+            }
+
+            if (parameterOverload.IsConst && !parameterFunction.IsConst)
+            {
+                overload.ExplicitlyIgnore();
+                return true;
+            }
+
+            var pointerParamFunction = (PointerType) parameterFunction.Type;
+            var pointerParamOverload = (PointerType) parameterOverload.Type;
+
+            if (pointerParamFunction.Modifier == PointerType.TypeModifier.RVReference &&
+                pointerParamOverload.Modifier != PointerType.TypeModifier.RVReference)
+            {
+                function.ExplicitlyIgnore();
+                return true;
+            }
+
+            if (pointerParamFunction.Modifier != PointerType.TypeModifier.RVReference &&
+                pointerParamOverload.Modifier == PointerType.TypeModifier.RVReference)
+            {
+                overload.ExplicitlyIgnore();
+                return true;
             }
 
             return false;

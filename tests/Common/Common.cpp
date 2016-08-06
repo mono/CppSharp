@@ -627,3 +627,23 @@ void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i)
 {
 
 }
+
+HasOverloadsWithDifferentPointerKindsToSameType::HasOverloadsWithDifferentPointerKindsToSameType()
+{
+}
+
+HasOverloadsWithDifferentPointerKindsToSameType::~HasOverloadsWithDifferentPointerKindsToSameType()
+{
+}
+
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(int& i)
+{
+}
+
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(int&& i)
+{
+}
+
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(const int& i)
+{
+}

@@ -568,7 +568,7 @@ std::string Parser::GetTypeName(const clang::Type* Type)
     return TypeName;
 }
 
-static TypeQualifiers GetTypeQualifiers(clang::QualType Type)
+static TypeQualifiers GetTypeQualifiers(const clang::QualType& Type)
 {
     TypeQualifiers quals;
     quals.IsConst = Type.isLocalConstQualified();
@@ -577,7 +577,7 @@ static TypeQualifiers GetTypeQualifiers(clang::QualType Type)
     return quals;
 }
 
-QualifiedType Parser::GetQualifiedType(clang::QualType qual, clang::TypeLoc* TL)
+QualifiedType Parser::GetQualifiedType(const clang::QualType& qual, clang::TypeLoc* TL)
 {
     QualifiedType qualType;
     qualType.Type = WalkType(qual, TL);
@@ -2276,7 +2276,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
                 auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
                 FA->Name = PVD->getNameAsString();
-                FA->QualifiedType = GetQualifiedType(PVD->getType(), &PTL);
+                FA->QualifiedType = GetQualifiedType(PVD->getOriginalType(), &PTL);
             }
             else
             {
@@ -2807,7 +2807,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
         HandlePreprocessedEntities(P, paramRange, MacroLocation::FunctionParameters);
 
-        P->QualifiedType = GetQualifiedType(VD->getType(), &PTL);
+        P->QualifiedType = GetQualifiedType(VD->getOriginalType(), &PTL);
         P->HasDefaultValue = VD->hasDefaultArg();
         P->_Namespace = NS;
         P->Index = VD->getFunctionScopeIndex();
