@@ -76,10 +76,13 @@ namespace CppSharp.Types.Std
             }
             else
             {
+                string varAllocator = "__allocator" + ctx.ParameterIndex;
                 string varBasicString = "__basicString" + ctx.ParameterIndex;
-                ctx.SupportBefore.WriteLine("using (var {0} = new {1}({2}, new {3}()))",
+                ctx.SupportBefore.WriteLine("using (var {0} = new {1}())",
+                    varAllocator, allocator.Visit(typePrinter));
+                ctx.SupportBefore.WriteLine("using (var {0} = new {1}({2}, {3}))",
                     varBasicString, basicString.Visit(typePrinter),
-                    ctx.Parameter.Name, allocator.Visit(typePrinter));
+                    ctx.Parameter.Name, varAllocator);
                 ctx.SupportBefore.WriteStartBraceIndent();
                 ctx.Return.Write("{0}.{1}", varBasicString, Helpers.InstanceIdentifier);
                 ctx.HasCodeBlock = true;
