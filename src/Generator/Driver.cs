@@ -299,6 +299,8 @@ namespace CppSharp
         { 
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
+            if (Options.IsCSharpGenerator)
+                TranslationUnitPasses.AddPass(new MarkSupportedSpecializationsPass());
             TranslationUnitPasses.AddPass(new IgnoreSystemDeclarationsPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
 

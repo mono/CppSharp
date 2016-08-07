@@ -67,7 +67,7 @@ namespace CppSharp.Types.Std
                 ctx.Return.Write("*({0}*) ", basicString.Visit(typePrinter));
             typePrinter.PopContext();
             var allocator = ctx.Driver.ASTContext.FindClass("allocator", false, true).First(
-                a => a.IsSupportedStdType());
+                a => a.IsDependent);
             if (type.IsPointer() || (type.IsReference() && ctx.Declaration is Field))
             {
                 ctx.Return.Write("new {0}({1}, new {2}()).{3}",
@@ -93,7 +93,9 @@ namespace CppSharp.Types.Std
         {
             var type = ctx.ReturnType.Type;
             ClassTemplateSpecialization basicString = GetBasicString(type);
-            var c_str = basicString.Methods.First(m => m.OriginalName == "c_str");
+            Declaration c_str = basicString.Methods.FirstOrDefault(m => m.OriginalName == "c_str");
+            if (c_str == null)
+                c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Driver);
             if (type.IsPointer() || ctx.Declaration is Field)
             {
@@ -108,7 +110,8 @@ namespace CppSharp.Types.Std
                     varBasicString, basicString.Visit(typePrinter),
                     Helpers.CreateInstanceIdentifier, ctx.ReturnVarName);
                 ctx.SupportBefore.WriteStartBraceIndent();
-                ctx.Return.Write("{0}.{1}()", varBasicString, c_str.Name);
+                ctx.Return.Write("{0}.{1}{2}", varBasicString, c_str.Name,
+                    c_str is Method ? "()" : string.Empty);
                 ctx.HasCodeBlock = true;
             }
         }

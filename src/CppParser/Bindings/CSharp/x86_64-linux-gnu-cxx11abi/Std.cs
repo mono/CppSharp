@@ -290,7 +290,7 @@ namespace std
     namespace pair
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internal_Ptr
+        public unsafe partial struct Internalc__N_std_S_pair_____N_std_S__Rb_tree_node_base_S0_
         {
             [FieldOffset(0)]
             public global::System.IntPtr first;
@@ -656,6 +656,15 @@ namespace std
             Internal.dtor_0((__Instance + __PointerAdjustment));
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
+        }
+    }
+
+
+    public unsafe partial class rebind
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct Internal
+        {
         }
     }
 }
@@ -3166,6 +3175,24 @@ namespace std
             {
                 var __ret = Internal.c_str_0((__Instance + __PointerAdjustment));
                 return Marshal.PtrToStringAnsi(__ret);
+            }
+        }
+
+
+        public unsafe partial class _Alloc_hider
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial struct _
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
             }
         }
     }

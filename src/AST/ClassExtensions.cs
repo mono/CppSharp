@@ -203,31 +203,5 @@ namespace CppSharp.AST
         {
             return units.Where(u => u.IsGenerated && (u.HasDeclarations || u.IsSystemHeader) && u.IsValid);
         }
-
-        public static bool IsSupportedStdSpecialization(this ClassTemplateSpecialization specialization)
-        {
-            return IsSupportedStdType(specialization) &&
-                specialization.Arguments[0].Type.Type.IsPrimitiveType(PrimitiveType.Char);
-        }
-
-        public static bool IsSupportedStdType(this Declaration declaration)
-        {
-            return declaration.Namespace != null &&
-                declaration.TranslationUnit.IsSystemHeader &&
-                IsNameSpaceStd(declaration.Namespace) &&
-                supportedStdTypes.Contains(declaration.OriginalName);
-        }
-
-        private static bool IsNameSpaceStd(DeclarationContext declarationContext)
-        {
-            if (declarationContext == null)
-                return false;
-            var @namespace = declarationContext as Namespace;
-            if (@namespace != null && @namespace.IsInline)
-                return IsNameSpaceStd(declarationContext.Namespace);
-            return declarationContext.OriginalName == "std";
-        }
-
-        private static string[] supportedStdTypes = { "basic_string", "allocator" };
     }
 }

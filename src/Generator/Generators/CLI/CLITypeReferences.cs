@@ -177,7 +177,8 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            return decl.IsDeclared;
+            return decl.IsDeclared &&
+                (decl.Namespace == null || !decl.TranslationUnit.IsSystemHeader);
         }
 
         public override bool VisitClassDecl(Class @class)

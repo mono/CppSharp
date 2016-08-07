@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
-using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
@@ -20,7 +19,7 @@ namespace CppSharp.Passes
         {
             if (!specialization.IsDependent &&
                 (!specialization.TranslationUnit.IsSystemHeader ||
-                specialization.IsSupportedStdSpecialization()))
+                !specialization.Ignore))
             {
                 var cppTypePrinter = new CppTypePrinter
                 {

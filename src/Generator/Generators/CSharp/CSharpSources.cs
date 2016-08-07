@@ -236,14 +236,7 @@ namespace CppSharp.Generators.CSharp
                     GenerateClass(@class);
                     continue;
                 }
-                if (@class.IsSupportedStdType())
-                {
-                    var specialization = @class.Specializations.SingleOrDefault(
-                        ClassExtensions.IsSupportedStdSpecialization);
-                    if (specialization != null)
-                        GenerateClass(specialization);
-                }
-                else if (!(@class.Namespace is Class))
+                if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
             }
 
@@ -307,22 +300,43 @@ namespace CppSharp.Generators.CSharp
             if (classTemplate.Specializations.Count == 0)
                 return;
 
-            IList<ClassTemplateSpecialization> specializations;
+            bool generateClass = false;
+            List<ClassTemplateSpecialization> specializations;
             if (classTemplate.Fields.Any(
                 f => f.Type.Desugar() is TemplateParameterType))
                 specializations = classTemplate.Specializations;
             else
-                specializations = new[] { classTemplate.Specializations[0] };
+            {
+                specializations = new List<ClassTemplateSpecialization>();
+                var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
+                if (specialization == null)
+                {
+                    specializations.Add(classTemplate.Specializations[0]);
+                }
+                else
+                {
+                    specializations.Add(specialization);
+                    generateClass = true;
+                }
+            }
 
-            PushBlock(CSharpBlockKind.Namespace);
-            WriteLine("namespace {0}{1}",
-                classTemplate.OriginalNamespace is Class ?
-                    classTemplate.OriginalNamespace.Name + '_' : string.Empty,
-                classTemplate.Name);
-            WriteStartBraceIndent();
+            if (!generateClass)
+            {
+                PushBlock(CSharpBlockKind.Namespace);
+                WriteLine("namespace {0}{1}",
+                    classTemplate.OriginalNamespace is Class ?
+                        classTemplate.OriginalNamespace.Name + '_' : string.Empty,
+                    classTemplate.Name);
+                WriteStartBraceIndent();
+            }
 
             foreach (var specialization in specializations)
-                GenerateClassInternals(specialization);
+            {
+                if (specialization.Ignore)
+                    GenerateClassInternals(specialization);
+                else
+                    GenerateClass(specialization);
+            }
 
             foreach (var nestedClass in classTemplate.Classes)
             {
@@ -334,8 +348,11 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
             }
 
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
+            if (!generateClass)
+            {
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
         }
 
         public void GenerateDeclarationCommon(Declaration decl)
@@ -2563,7 +2580,7 @@ namespace CppSharp.Generators.CSharp
             var templateSpecialization = function.Namespace as ClassTemplateSpecialization;
 
             string @namespace = templateSpecialization != null &&
-                !templateSpecialization.IsSupportedStdType() ?
+                templateSpecialization.Ignore ?
                 (templateSpecialization.Namespace.OriginalName + '.') : string.Empty;
 
             var functionName = string.Format("{0}Internal.{1}", @namespace,

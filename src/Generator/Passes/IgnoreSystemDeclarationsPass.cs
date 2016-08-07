@@ -41,15 +41,8 @@ namespace CppSharp.Passes
             if (!@class.TranslationUnit.IsSystemHeader)
                 return false;
 
-            if (!@class.IsSupportedStdType())
-            {
-
+            if (!@class.IsExplicitlyGenerated)
                 @class.ExplicitlyIgnore();
-                if (@class.IsDependent)
-                    foreach (var specialization in @class.Specializations)
-                        specialization.ExplicitlyIgnore();
-                return false;
-            }
 
             if (!@class.IsDependent)
                 return false;
@@ -58,10 +51,8 @@ namespace CppSharp.Passes
             switch (@class.Name)
             {
                 case "basic_string":
-                    foreach (var specialization in @class.Specializations.Where(
-                        s => s.IsSupportedStdSpecialization()))
+                    foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
                     {
-                        MarkForGeneration(specialization);
                         foreach (var method in specialization.Methods.Where(m => m.OriginalName != "c_str"))
                             method.ExplicitlyIgnore();
                         var l = specialization.Methods.Where(m => m.IsConstructor && m.Parameters.Count == 2).ToList();
@@ -74,13 +65,9 @@ namespace CppSharp.Passes
                     }
                     break;
                 case "allocator":
-                    foreach (var specialization in @class.Specializations.Where(
-                        s => s.IsSupportedStdSpecialization()))
-                    {
-                        MarkForGeneration(specialization);
+                    foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
                         foreach (var method in specialization.Methods.Where(m => !m.IsConstructor || m.Parameters.Any()))
                             method.ExplicitlyIgnore();
-                    }
                     break;
             }
             return true;
@@ -117,17 +104,6 @@ namespace CppSharp.Passes
                 variable.ExplicitlyIgnore();
 
             return true;
-        }
-
-        private static void MarkForGeneration(ClassTemplateSpecialization specialization)
-        {
-            specialization.GenerationKind = GenerationKind.Generate;
-            Declaration declaration = specialization.TemplatedDecl.TemplatedDecl;
-            while (declaration != null)
-            {
-                declaration.GenerationKind = GenerationKind.Generate;
-                declaration = declaration.Namespace;
-            }
         }
     }
 }

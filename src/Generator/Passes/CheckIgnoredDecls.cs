@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
 
@@ -33,16 +34,13 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassTemplateDecl(template))
-                return false;
-
-            if (!Driver.Options.IsCLIGenerator && template.TranslationUnit.IsSystemHeader)
+            if (!base.VisitClassDecl(@class) || !@class.IsDependent)
                 return false;
 
             // templates are not supported yet
-            foreach (var specialization in template.Specializations)
+            foreach (var specialization in @class.Specializations.Where(s => !s.IsExplicitlyGenerated))
                 specialization.ExplicitlyIgnore();
 
             return true;

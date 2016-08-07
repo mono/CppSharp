@@ -6432,6 +6432,15 @@ namespace std
             }
         }
 
+
+        public unsafe partial class rebind
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
         namespace allocator_traits
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -10573,7 +10582,7 @@ namespace std
         namespace __tree_end_node
         {
             [StructLayout(LayoutKind.Explicit, Size = 4)]
-            public unsafe partial struct Internal_Ptr
+            public unsafe partial struct Internalc__N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __left_;
@@ -10887,6 +10896,51 @@ namespace std
             }
         }
 
+
+        public unsafe partial class __long
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial class __short
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial struct __ulx
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial class __raw
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
+
+        public unsafe partial class __rep
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct Internal
+            {
+            }
+
+        }
         namespace __basic_string_common
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
