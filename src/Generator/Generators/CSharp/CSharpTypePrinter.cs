@@ -688,7 +688,7 @@ namespace CppSharp.Generators.CSharp
 
                 ctx = ctx.Namespace;
             }
-            if (!ctx.TranslationUnit.IsSystemHeader &&
+            if (!ctx.TranslationUnit.IsSystemHeader && ctx.TranslationUnit.IsValid &&
                 !string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
                 names.Add(ctx.TranslationUnit.Module.OutputNamespace);
 

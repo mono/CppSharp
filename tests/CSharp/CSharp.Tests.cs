@@ -536,11 +536,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
         foreach (var internalType in new[]
             {
                 typeof(CSharp.IndependentFields.Internal),
-                typeof(CSharp.DependentValueFields.Internal_bool),
+                typeof(CSharp.DependentValueFields.Internalc__S_DependentValueFields__b),
                 //typeof(CSharp.DependentValueFields.Internal_float),
                 typeof(CSharp.DependentPointerFields.Internal),
                 //typeof(CSharp.DependentValueFields.Internal_Ptr),
-                typeof(CSharp.HasDefaultTemplateArgument.Internal_int_IndependentFields_int)
+                typeof(CSharp.HasDefaultTemplateArgument.Internalc__S_HasDefaultTemplateArgument__I___S_IndependentFields__I)
             })
         {
             var independentFields = internalType.GetFields();

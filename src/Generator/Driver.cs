@@ -404,11 +404,12 @@ namespace CppSharp
                 foreach (var template in output.Templates)
                 {
                     var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
-                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
 
                     var file = Path.Combine(outputPath, fileRelativePath);
                     File.WriteAllText(file, template.Generate());
                     output.TranslationUnit.Module.CodeFiles.Add(file);
+
+                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
             }
         }

@@ -8,7 +8,7 @@ using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Types.Std
 {
-    [TypeMap("va_list", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("va_list")]
     public class VaList : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)

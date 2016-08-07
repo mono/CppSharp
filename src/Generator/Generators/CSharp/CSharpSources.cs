@@ -75,61 +75,23 @@ namespace CppSharp.Generators.CSharp
         public static string GetSuffixForInternal(ClassTemplateSpecialization specialization,
             CSharpTypePrinter typePrinter, bool nested = false)
         {
-            if (!nested &&
-                specialization.TemplatedDecl.TemplatedClass.Fields.All(
-                    f => !(f.Type.Desugar() is TemplateParameterType)))
+            if (specialization.TemplatedDecl.TemplatedClass.Fields.All(
+                f => !(f.Type.Desugar() is TemplateParameterType)))
                 return string.Empty;
 
-            if (!nested &&
-                specialization.Arguments.All(
+            if (specialization.Arguments.All(
                 a => a.Type.Type != null && a.Type.Type.IsAddress()))
                 return "_Ptr";
 
-            // we don't want internals in the names of internals :)
-            if (!nested)
-            {
-                typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
-                typePrinter.PushMarshalKind(CSharpMarshalKind.Unknown);
-            }
-            var cppTypePrinter = new CppTypePrinter(false) { PrintScopeKind = CppTypePrintScopeKind.Qualified };
-            CSharpTypePrinter.AppendGlobal = false;
-            var suffix = new StringBuilder();
-            foreach (var argType in from argType in specialization.Arguments
-                                    where argType.Type.Type != null
-                                    select argType.Type.Type)
-            {
-                suffix.Append('_');
-                ClassTemplateSpecialization nestedSpecialization;
-                if (argType.TryGetDeclaration(out nestedSpecialization))
-                {
-                    suffix.Append(typePrinter.GetNestedQualifiedName(nestedSpecialization));
-                    suffix.Append(GetSuffixForInternal(nestedSpecialization, typePrinter, true));
-                    CSharpTypePrinter.AppendGlobal = false;
-                    continue;
-                }
-                Class @class;
-                if (argType.TryGetClass(out @class))
-                {
-                    nestedSpecialization = @class.Namespace as ClassTemplateSpecialization;
-                    if (nestedSpecialization != null)
-                    {
-                        suffix.Append(typePrinter.GetNestedQualifiedName(nestedSpecialization));
-                        suffix.Append(GetSuffixForInternal(nestedSpecialization, typePrinter, true));
-                        CSharpTypePrinter.AppendGlobal = false;
-                        suffix.Append('_');
-                        suffix.Append(@class.Name);
-                        continue;
-                    }
-                }
-                suffix.Append(argType.Visit(cppTypePrinter));
-            }
-            if (!nested)
-            {
-                typePrinter.PopContext();
-                typePrinter.PopMarshalKind();
-            }
-            CSharpTypePrinter.AppendGlobal = true;
-            return FormatTypesStringForIdentifier(suffix);
+            var suffixBuilder = new StringBuilder(specialization.USR);
+            for (int i = 0; i < suffixBuilder.Length; i++)
+                if (!char.IsLetterOrDigit(suffixBuilder[i]))
+                    suffixBuilder[i] = '_';
+            const int maxCSharpIdentifierLength = 480;
+            if (suffixBuilder.Length > maxCSharpIdentifierLength)
+                return suffixBuilder.Remove(maxCSharpIdentifierLength,
+                    suffixBuilder.Length - maxCSharpIdentifierLength).ToString();
+            return suffixBuilder.ToString();
         }
     }
 
