@@ -94,14 +94,14 @@ namespace CppSharp.Types.Std
             var type = ctx.ReturnType.Type;
             ClassTemplateSpecialization basicString = GetBasicString(type);
             Declaration c_str = basicString.Methods.FirstOrDefault(m => m.OriginalName == "c_str");
-            if (c_str == null)
+            if (!c_str.IsGenerated)
                 c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Driver);
             if (type.IsPointer() || ctx.Declaration is Field)
             {
-                ctx.Return.Write("{0}.{1}({2}).{3}()",
+                ctx.Return.Write("{0}.{1}({2}).{3}{4}",
                     basicString.Visit(typePrinter), Helpers.CreateInstanceIdentifier,
-                    ctx.ReturnVarName, c_str.Name);
+                    ctx.ReturnVarName, c_str.Name, c_str is Method ? "()" : string.Empty);
             }
             else
             {

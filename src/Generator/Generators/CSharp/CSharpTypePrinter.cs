@@ -146,6 +146,9 @@ namespace CppSharp.Generators.CSharp
                     return string.Format("{0}*", array.Type.Visit(this, quals));
                 }
 
+                if (Context.Parameter != null)
+                    return string.Format("global::System.IntPtr");
+
                 Class @class;
                 if (arrayType.TryGetClass(out @class))
                 {
