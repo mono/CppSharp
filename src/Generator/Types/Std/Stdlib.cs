@@ -8,7 +8,7 @@ using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Types.Std
 {
-    [TypeMap("va_list")]
+    [TypeMap("va_list", GeneratorKind = GeneratorKind.CLI)]
     public class VaList : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)
@@ -346,7 +346,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::list")]
+    [TypeMap("std::list", GeneratorKind = GeneratorKind.CLI)]
     public class List : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
