@@ -43,7 +43,11 @@ namespace CppSharp.Passes
             {
                 var cppBuilder = new StringBuilder();
                 if (module == Driver.Options.SystemModule)
+                {
                     cppBuilder.Append("#include <string>\n");
+                    cppBuilder.Append("#include <vector>\n");
+                    cppBuilder.Append("#include <map>\n");
+                }
                 else
                     foreach (var header in module.Headers)
                         cppBuilder.AppendFormat("#include <{0}>\n", header);
