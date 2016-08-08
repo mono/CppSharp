@@ -15,17 +15,18 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        public override bool VisitClassDecl(Class @class)
         {
-            if (!specialization.IsDependent &&
-                (!specialization.TranslationUnit.IsSystemHeader ||
-                !specialization.Ignore))
+            if (!base.VisitClassDecl(@class) || !@class.IsDependent)
+                return false;
+
+            var cppTypePrinter = new CppTypePrinter
             {
-                var cppTypePrinter = new CppTypePrinter
-                {
-                    PrintScopeKind = CppTypePrintScopeKind.Qualified,
-                    PrintLogicalNames = true
-                };
+                PrintScopeKind = CppTypePrintScopeKind.Qualified,
+                PrintLogicalNames = true
+            };
+            foreach (var specialization in @class.Specializations.Where(s => !s.IsDependent && !s.Ignore))
+            {
                 var cppCode = specialization.Visit(cppTypePrinter);
                 var module = specialization.TranslationUnit.Module;
                 if (templateInstantiations.ContainsKey(module))
