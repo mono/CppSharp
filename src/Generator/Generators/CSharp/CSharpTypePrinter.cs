@@ -604,7 +604,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (ContextKind == CSharpTypePrinterContextKind.Native)
                 return string.Format("{0}{1}", VisitClassDecl(specialization),
-                    Helpers.GetSuffixForInternal(specialization, this));
+                    Helpers.GetSuffixForInternal(specialization));
             return VisitClassDecl(specialization);
         }
 

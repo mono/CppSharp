@@ -724,10 +724,11 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
+            var realClass = @class.OriginalClass ?? @class;
+            var qualifiedIdentifier = realClass.Visit(this.typePrinter);
             Context.Return.Write(
-                "ReferenceEquals({0}, null) ? new {1}.Internal() : *({1}.Internal*) ({0}.{2})", param,
-                qualifiedIdentifier, Helpers.InstanceIdentifier);
+                "ReferenceEquals({0}, null) ? new {1}.Internal{3}() : *({1}.Internal{3}*) ({0}.{2})", param,
+                qualifiedIdentifier, Helpers.InstanceIdentifier, Helpers.GetSuffixForInternal(@class));
         }
 
         private void MarshalValueClass()
