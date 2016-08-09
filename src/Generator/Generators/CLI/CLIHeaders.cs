@@ -835,31 +835,29 @@ namespace CppSharp.Generators.CLI
                 new TypeQualifiers());
 
             if (@enum.BuiltinType.Type != PrimitiveType.Int)
-                WriteLine(" : {0}", typeName);
-            else
-                NewLine();
+                Write(" : {0}", typeName);
 
-            WriteLine("{");
+            NewLine();
+            WriteStartBraceIndent();
 
-            PushIndent();
             foreach (var item in @enum.Items)
             {
                 PushBlock(CLIBlockKind.EnumItem);
 
                 GenerateInlineSummary(item.Comment);
+
+                Write(item.Name);
+
                 if (item.ExplicitValue)
-                    Write(String.Format("{0} = {1}", item.Name,
-                        @enum.GetItemValueAsString(item)));
-                else
-                    Write(String.Format("{0}", item.Name));
+                    Write(" = {0}", @enum.GetItemValueAsString(item));
 
                 if (item != @enum.Items.Last())
                     WriteLine(",");
 
                 PopBlock(NewLineKind.Never);
             }
-            PopIndent();
 
+            PopIndent();
             WriteLine("};");
 
             PopBlock(NewLineKind.BeforeNextBlock);

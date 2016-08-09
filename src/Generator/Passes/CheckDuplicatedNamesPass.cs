@@ -73,7 +73,8 @@ namespace CppSharp.Passes
 
             if (function.IsOperator)
             {
-                // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
+                // TODO: turn into a method; append the original type (say, "signed long")
+                // of the last parameter to the type so that the user knows which overload is called
                 diagnostics.Warning("Duplicate operator {0} ignored", function.Name);
                 function.ExplicitlyIgnore();
             }
