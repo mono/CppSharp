@@ -319,55 +319,59 @@ namespace CppSharp.Passes
         {
             if (base.Rename(decl, out newName)) return true;
 
-            switch (Pattern)
-            {
-            case RenameCasePattern.LowerCamelCase:
-                newName = ConvertCaseString(decl.Name, RenameCasePattern.LowerCamelCase);
-                return true;
-            case RenameCasePattern.UpperCamelCase:
-                newName = ConvertCaseString(decl.Name, RenameCasePattern.UpperCamelCase);
-                return true;
-            }
-
-            return false;
+            newName = ConvertCaseString(decl, Pattern);
+            return true;
         }
 
         /// <summary>
         /// Converts the phrase to specified convention.
         /// </summary>
-        /// <param name="phrase"></param>
+        /// <param name="decl"></param>
         /// <param name="pattern">The cases.</param>
         /// <returns>string</returns>
-        static string ConvertCaseString(string phrase, RenameCasePattern pattern)
+        static string ConvertCaseString(Declaration decl, RenameCasePattern pattern)
         {
+            if (decl.Name.All(c => !char.IsLetter(c)))
+                return decl.Name;
+
+            var typedef = decl as TypedefDecl;
+            if (typedef != null && typedef.IsSynthetized)
+                return decl.Name;
+
+            var property = decl as Property;
+            if (property != null && property.GetMethod != null &&
+                property.GetMethod.SynthKind == FunctionSynthKind.InterfaceInstance)
+                return decl.Name;
+
+            var sb = new StringBuilder(decl.Name);
             // check if it's been renamed to avoid a keyword
-            if (phrase.StartsWith("@"))
-                phrase = phrase.Substring(1);
+            if (sb[0] == '@')
+                sb.Remove(0, 1);
 
-            var splittedPhrase = phrase.Split(' ', '-', '.');
-            var sb = new StringBuilder();
+            for (int i = sb.Length - 1; i >= 0; i--)
+            {
+                if (sb[i] == '_' && i < sb.Length - 1)
+                {
+                    sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
+                    sb.Remove(i, 1);
+                }
+            }
 
+            var @class = decl as Class;
             switch (pattern)
             {
-                case RenameCasePattern.LowerCamelCase:
-                    sb.Append(splittedPhrase[0].ToLower());
-                    splittedPhrase[0] = string.Empty;
-                    break;
                 case RenameCasePattern.UpperCamelCase:
-                    sb = new StringBuilder();
+                    sb[0] = char.ToUpperInvariant(sb[0]);
+                    if (@class != null && @class.Type == ClassType.Interface)
+                        sb[1] = char.ToUpperInvariant(sb[1]);
+                    break;
+                case RenameCasePattern.LowerCamelCase:
+                    sb[0] = char.ToLowerInvariant(sb[0]);
+                    if (@class != null && @class.Type == ClassType.Interface)
+                        sb[1] = char.ToLowerInvariant(sb[1]);
                     break;
             }
 
-            foreach (var s in splittedPhrase)
-            {
-                var splittedPhraseChars = s.ToCharArray();
-                if (splittedPhraseChars.Length > 0)
-                {
-                    var str = new String(splittedPhraseChars[0], 1);
-                    splittedPhraseChars[0] = (str.ToUpper().ToCharArray())[0];
-                }
-                sb.Append(new String(splittedPhraseChars));
-            }
             return sb.ToString();
         }
     }

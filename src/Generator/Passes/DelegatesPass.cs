@@ -121,7 +121,8 @@ namespace CppSharp.Passes
                                     Parameters = @params,
                                     ReturnType = method.ReturnType
                                 }))),
-                    Namespace = namespaceDelegates
+                    Namespace = namespaceDelegates,
+                    IsSynthetized = true
                 };
 
             Generator.CurrentOutputNamespace = module.OutputNamespace;
