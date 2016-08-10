@@ -62,7 +62,7 @@ function get_toolset_configuration_name()
 
     if not string.starts(vsver, "vs") then
       local out = outputof("cl")
-      local ver, arch = string.match(out, 'Version (%d+)%.%d+%.%d+ for (%w+)')
+      local ver, arch = string.match(out, 'Version (%d+)%.%d+%.%d+%.?%d* for (%w+)')
       vsver = get_vs_version(ver)
     end
 
