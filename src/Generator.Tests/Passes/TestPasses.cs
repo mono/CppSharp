@@ -1,8 +1,8 @@
 ﻿using CppSharp.AST;
 using CppSharp.Generators.CSharp;
-using System.Linq;
 using CppSharp.Passes;
 using NUnit.Framework;
+using System.Linq;
 
 namespace CppSharp.Generator.Tests.Passes
 {
@@ -46,7 +46,7 @@ namespace CppSharp.Generator.Tests.Passes
 
             Assert.IsNull(c.Method("Start"));
 
-            passBuilder.AddPass( new FunctionToInstanceMethodPass());
+            passBuilder.AddPass(new FunctionToInstanceMethodPass());
             passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.IsNotNull(c.Method("Start"));
@@ -199,10 +199,10 @@ namespace CppSharp.Generator.Tests.Passes
         {
             var c = AstContext.Class("TestMethodAsInternal");
             var method = c.Method("beInternal");
-            Assert.AreEqual(method.Access , AccessSpecifier.Public);
+            Assert.AreEqual(method.Access, AccessSpecifier.Public);
             passBuilder.AddPass(new CheckMacroPass());
             passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
-            Assert.AreEqual(method.Access , AccessSpecifier.Internal);
+            Assert.AreEqual(method.Access, AccessSpecifier.Internal);
         }
 
         private string TypePrinterDelegate(CppSharp.AST.Type type)
