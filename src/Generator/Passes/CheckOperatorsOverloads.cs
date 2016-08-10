@@ -8,7 +8,7 @@ namespace CppSharp.Passes
     /// <summary>
     /// Checks for missing operator overloads required by C#.
     /// </summary>
-    class CheckOperatorsOverloadsPass : TranslationUnitPass
+    public class CheckOperatorsOverloadsPass : TranslationUnitPass
     {
         public CheckOperatorsOverloadsPass()
         {
@@ -49,7 +49,7 @@ namespace CppSharp.Passes
         {
             foreach (var @operator in @class.Operators.Where(o => o.IsGenerated))
             {
-                if (!IsValidOperatorOverload(@operator))
+                if (!IsValidOperatorOverload(@operator) || @operator.IsPure)
                 {
                     Driver.Diagnostics.Debug("Invalid operator overload {0}::{1}",
                         @class.OriginalName, @operator.OperatorKind);

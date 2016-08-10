@@ -316,7 +316,6 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new FindSymbolsPass());
             TranslationUnitPasses.AddPass(new CheckStaticClass());
-            TranslationUnitPasses.AddPass(new IgnoreAbstractOperatorsPass());
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
             TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
             TranslationUnitPasses.AddPass(new GenerateAnonymousDelegatesPass());

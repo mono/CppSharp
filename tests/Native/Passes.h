@@ -67,3 +67,8 @@ struct TestMethodAsInternal
 {
     int CS_INTERNAL beInternal();
 };
+
+class ClassWithAbstractOperator
+{
+  virtual operator int() = 0;
+};

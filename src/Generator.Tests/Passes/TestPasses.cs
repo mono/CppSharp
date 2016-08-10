@@ -209,5 +209,15 @@ namespace CppSharp.Generator.Tests.Passes
         {
             return type.Visit(new CSharpTypePrinter(Driver)).Type;
         }
+
+        [Test]
+        public void TestAbstractOperator()
+        {
+            passBuilder.AddPass(new CheckOperatorsOverloadsPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+
+            var @class = AstContext.FindDecl<Class>("ClassWithAbstractOperator").First();
+            Assert.AreEqual(@class.Operators.First().GenerationKind, GenerationKind.None);
+        }
     }
 }
