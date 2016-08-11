@@ -285,8 +285,7 @@ namespace CppSharp.Generators.CSharp
                 if (isManagedContext && isRefParam)
                     return pointee.Visit(this, quals);
 
-                if (MarshalKind == CSharpMarshalKind.GenericDelegate ||
-                    pointee.IsPrimitiveType(PrimitiveType.Void))
+                if (pointee.IsPrimitiveType(PrimitiveType.Void))
                     return IntPtrType;
 
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types

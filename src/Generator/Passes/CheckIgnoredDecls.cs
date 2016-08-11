@@ -78,12 +78,13 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(field))
                 return false;
 
-            var type = field.Type;
+            var type = (field.Type.GetFinalPointee() ?? field.Type).Desugar();
 
             Declaration decl;
             type.TryGetDeclaration(out decl);
             string msg = "internal";
-            if (decl == null || (decl.GenerationKind != GenerationKind.Internal && !HasInvalidType(type, out msg)))
+            if (!(type is FunctionType) && (decl == null ||
+                (decl.GenerationKind != GenerationKind.Internal &&!HasInvalidType(type, out msg))))
                 return false;
 
             field.GenerationKind = GenerationKind.Internal;
@@ -91,7 +92,7 @@ namespace CppSharp.Passes
             var @class = (Class)field.Namespace;
 
             var cppTypePrinter = new CppTypePrinter();
-            var typeName = type.Visit(cppTypePrinter);
+            var typeName = field.Type.Visit(cppTypePrinter);
 
             Log.Debug("Field '{0}::{1}' was ignored due to {2} type '{3}'",
                 @class.Name, field.Name, msg, typeName);

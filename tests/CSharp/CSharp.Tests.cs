@@ -351,15 +351,6 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.AreEqual(dervClass.M, 2);
     }
 
-    [Test]
-    public void TestNullAttributedFunctionPtr()
-    {
-        using (var foo = new Foo())
-        {
-            foo.AttributedFunctionPtr = null;
-        }
-    }
-
     // TODO: fails on the Linux CI but works locally on Vagrant - both have the same Mono version; it also works on OS X; go figure
     [Test, Platform(Exclude = "Linux")]
     public unsafe void TestMultiOverLoadPtrToRef()

@@ -198,6 +198,7 @@ namespace CppSharp.Passes
                 {
                     typePrinter = new CSharpTypePrinter(Driver);
                     typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    typePrinter.PushMarshalKind(CSharpMarshalKind.GenericDelegate);
                 }
                 return typePrinter;
             }
