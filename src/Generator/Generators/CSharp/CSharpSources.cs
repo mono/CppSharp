@@ -1601,7 +1601,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("{0}.Dispose(false);", Helpers.TargetIdentifier);
+                WriteLine("{0}.Dispose(true);", Helpers.TargetIdentifier);
                 return;
             }
 
@@ -1930,15 +1930,9 @@ namespace CppSharp.Generators.CSharp
 
             // Generate Dispose(bool) method
             PushBlock(CSharpBlockKind.Method);
-            if (@class.IsValueType)
-            {
-                Write("private ");
-            }
-            else
-            {
-                Write("protected ");
+            Write("public ");
+            if (!@class.IsValueType)
                 Write(hasBaseClass ? "override " : "virtual ");
-            }
 
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
@@ -1978,8 +1972,10 @@ namespace CppSharp.Generators.CSharp
                 if (!Options.CheckSymbols ||
                     Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
+                    WriteLine("if (disposing)");
                     if (dtor.IsVirtual)
                     {
+                        WriteStartBraceIndent();
                         GenerateVirtualFunctionCall(dtor, @class, true);
                         if (@class.IsAbstract)
                         {
@@ -1987,11 +1983,16 @@ namespace CppSharp.Generators.CSharp
                             WriteLine("else");
                             PushIndent();
                             GenerateInternalFunctionCall(dtor);
-                            PopIndent();   
+                            PopIndent();
                         }
+                        WriteCloseBraceIndent();
                     }
                     else
+                    {
+                        PushIndent();
                         GenerateInternalFunctionCall(dtor);
+                        PopIndent();
+                    }
                 }
             }
 

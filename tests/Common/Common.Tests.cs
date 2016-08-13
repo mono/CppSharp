@@ -636,11 +636,20 @@ public class CommonTests : GeneratorTestFixture
     [Test, Ignore("We need symbols for std::string to invoke and auto-compilation of exported templates is not added yet.")]
     public void TestStdString()
     {
+        // when C++ memory is deleted, it's only marked as free but not immediadely freed
+        // this can hide memory bugs while marshalling
+        // so let's use a long string to increase the chance of a crash right away
+        const string t = @"This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. 
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.";
         using (var hasStdString = new HasStdString())
         {
-            Assert.That(hasStdString.testStdString("test"), Is.EqualTo("test_test"));
-            hasStdString.s = "test";
-            Assert.That(hasStdString.s, Is.EqualTo("test"));
+            Assert.That(hasStdString.testStdString(t), Is.EqualTo(t + "_test"));
+            hasStdString.s = t;
+            Assert.That(hasStdString.s, Is.EqualTo(t));
         }
     }
 
