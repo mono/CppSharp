@@ -555,6 +555,29 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestOverrideVirtualWithString()
+    {
+        using (var overrideVirtualWithString = new OverrideVirtualWithString())
+        {
+            Assert.That(overrideVirtualWithString.CallsVirtualToReturnString("test"), Is.EqualTo("test_test"));
+            Assert.IsFalse(overrideVirtualWithString.CallsVirtualToReturnBool(true));
+        }
+    }
+
+    private class OverrideVirtualWithString : HasVirtualTakesReturnsProblematicTypes
+    {
+        public override string VirtualTakesAndReturnsString(string c)
+        {
+            return "test_test";
+        }
+
+        public override bool VirtualTakesAndReturnsBool(bool b)
+        {
+            return !base.VirtualTakesAndReturnsBool(b);
+        }
+    }
+
     private class GetEnumFromNativePointer : UsesPointerToEnumInParamOfVirtual
     {
         public override Flags HasPointerToEnumInParam(Flags pointerToEnum)

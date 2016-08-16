@@ -13,7 +13,8 @@ namespace CppSharp.Generators.CSharp
         Unknown,
         NativeField,
         GenericDelegate,
-        DefaultExpression
+        DefaultExpression,
+        VTableReturnValue
     }
 
     public class CSharpMarshalContext : MarshalContext
@@ -160,7 +161,8 @@ namespace CppSharp.Generators.CSharp
             var pointee = pointer.Pointee.Desugar();
             bool marshalPointeeAsString = CSharpTypePrinter.IsConstCharString(pointee) && isRefParam;
 
-            if (CSharpTypePrinter.IsConstCharString(pointer) || marshalPointeeAsString)
+            if ((CSharpTypePrinter.IsConstCharString(pointer) && !MarshalsParameter) ||
+                marshalPointeeAsString)
             {
                 Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
                     pointer.GetFinalPointee().Desugar() as BuiltinType));
@@ -505,9 +507,7 @@ namespace CppSharp.Generators.CSharp
             var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
             var pointee = pointer.Pointee.Desugar();
-            bool marshalPointeeAsString = CSharpTypePrinter.IsConstCharString(pointee) && isRefParam;
-
-            if (CSharpTypePrinter.IsConstCharString(pointer) || marshalPointeeAsString)
+            if (CSharpTypePrinter.IsConstCharString(pointee) && isRefParam)
             {
                 if (param.IsOut)
                 {
@@ -555,9 +555,11 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
+            var marshalAsString = CSharpTypePrinter.IsConstCharString(pointer);
             var finalPointee = pointer.GetFinalPointee();
             PrimitiveType primitive;
-            if (finalPointee.IsPrimitiveType(out primitive) || finalPointee.IsEnumType())
+            if (finalPointee.IsPrimitiveType(out primitive) || finalPointee.IsEnumType() ||
+                marshalAsString)
             {
                 // From MSDN: "note that a ref or out parameter is classified as a moveable
                 // variable". This means we must create a local variable to hold the result
@@ -576,13 +578,19 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    if (Context.Driver.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
+                    if (!marshalAsString &&
+                        Context.Driver.Options.MarshalCharAsManagedChar &&
+                        primitive == PrimitiveType.Char)
                     {
-                        var typePrinter = new CSharpTypePrinter(Context.Driver);
                         typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                         Context.Return.Write(string.Format("({0}) ", pointer.Visit(typePrinter)));
+                        typePrinter.PopContext();
                     }
-                    Context.Return.Write(Context.Parameter.Name);
+                    if (marshalAsString && (Context.Kind == CSharpMarshalKind.NativeField ||
+                        Context.Kind == CSharpMarshalKind.VTableReturnValue))
+                        Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
+                    else
+                        Context.Return.Write(Context.Parameter.Name);
                 }
 
                 return true;

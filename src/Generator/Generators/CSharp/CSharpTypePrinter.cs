@@ -6,6 +6,7 @@ using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
 using System.Linq;
+using System.Text;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -265,7 +266,19 @@ namespace CppSharp.Generators.CSharp
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
             if (allowStrings && IsConstCharString(pointer))
-                return isManagedContext ? "string" : IntPtrType;
+            {
+                if (isManagedContext || MarshalKind == CSharpMarshalKind.GenericDelegate)
+                    return "string";
+                if (Context.Parameter == null || Context.Parameter.Name == Helpers.ReturnIdentifier)
+                    return IntPtrType;
+                if (driver.Options.Encoding == Encoding.ASCII)
+                    return string.Format("[MarshalAs(UnmanagedType.LPStr)] string");
+                if (driver.Options.Encoding == Encoding.Unicode ||
+                    driver.Options.Encoding == Encoding.BigEndianUnicode)
+                    return string.Format("[MarshalAs(UnmanagedType.LPWStr)] string");
+                throw new NotSupportedException(string.Format("{0} is not supported yet.",
+                    driver.Options.Encoding.EncodingName));
+            }
 
             var desugared = pointee.Desugar();
 
@@ -288,6 +301,9 @@ namespace CppSharp.Generators.CSharp
                 if (pointee.IsPrimitiveType(PrimitiveType.Void))
                     return IntPtrType;
 
+                if (IsConstCharString(pointee) && isRefParam)
+                    return IntPtrType + "*";
+
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types
                 // like string* for const char **.
                 allowStrings = isRefParam;
@@ -300,9 +316,6 @@ namespace CppSharp.Generators.CSharp
             Enumeration @enum;
             if (desugared.TryGetEnum(out @enum))
             {
-                if (MarshalKind == CSharpMarshalKind.GenericDelegate && isManagedContext)
-                    return IntPtrType;
-
                 // Skip one indirection if passed by reference
                 var param = Context.Parameter;
                 if (isManagedContext && param != null && (param.IsOut || param.IsInOut)

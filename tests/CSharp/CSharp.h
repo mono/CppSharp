@@ -969,3 +969,14 @@ private:
 };
 
 class ForwardInOtherUnitButSameModule;
+
+class DLL_API HasVirtualTakesReturnsProblematicTypes
+{
+public:
+    HasVirtualTakesReturnsProblematicTypes();
+    ~HasVirtualTakesReturnsProblematicTypes();
+    virtual const char* virtualTakesAndReturnsString(const char* c);
+    const char* callsVirtualToReturnString(const char* c);
+    virtual bool virtualTakesAndReturnsBool(bool b);
+    bool callsVirtualToReturnBool(bool b);
+};

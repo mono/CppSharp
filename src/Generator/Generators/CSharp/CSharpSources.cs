@@ -670,8 +670,7 @@ namespace CppSharp.Generators.CSharp
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            var retParam = new Parameter { QualifiedType = function.ReturnType };
-            retType = retParam.CSharpType(TypePrinter);
+            retType = function.ReturnType.CSharpType(TypePrinter);
 
             var @params = function.GatherInternalParams(Driver.Options.IsItaniumLikeAbi).Select(p =>
                 string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
@@ -962,7 +961,8 @@ namespace CppSharp.Generators.CSharp
                 if (marshal.Context.Return.StringBuilder.Length > 0)
                 {
                     WriteLine("{0} = {1}{2};", ctx.ReturnVarName,
-                        field.Type.IsPointer() && field.Type.GetFinalPointee().IsPrimitiveType() ?
+                        field.Type.IsPointer() && field.Type.GetFinalPointee().IsPrimitiveType() &&
+                        !CSharpTypePrinter.IsConstCharString(field.Type) ?
                             string.Format("({0}) ", CSharpTypePrinter.IntPtrType) :
                             string.Empty,
                         marshal.Context.Return);
@@ -1659,7 +1659,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     Parameter = param,
-                    Function = method
+                    Function = method,
+                    Kind = CSharpMarshalKind.VTableReturnValue
                 };
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);

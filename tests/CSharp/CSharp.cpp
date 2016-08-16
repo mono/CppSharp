@@ -1036,3 +1036,31 @@ bool VirtualDtorAddedInDerived::dtorCalled = false;
 void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
 {
 }
+
+HasVirtualTakesReturnsProblematicTypes::HasVirtualTakesReturnsProblematicTypes()
+{
+}
+
+HasVirtualTakesReturnsProblematicTypes::~HasVirtualTakesReturnsProblematicTypes()
+{
+}
+
+const char* HasVirtualTakesReturnsProblematicTypes::virtualTakesAndReturnsString(const char* c)
+{
+    return c;
+}
+
+const char* HasVirtualTakesReturnsProblematicTypes::callsVirtualToReturnString(const char* c)
+{
+    return virtualTakesAndReturnsString(c);
+}
+
+bool HasVirtualTakesReturnsProblematicTypes::virtualTakesAndReturnsBool(bool b)
+{
+    return b;
+}
+
+bool HasVirtualTakesReturnsProblematicTypes::callsVirtualToReturnBool(bool b)
+{
+    return virtualTakesAndReturnsBool(b);
+}
