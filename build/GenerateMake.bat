@@ -1,5 +1,5 @@
 @echo off
 
-premake5 --file=premake4.lua gmake
+premake5 --file=premake5.lua gmake
 
 pause

@@ -1,3 +1,5 @@
+include("../../build/Parser.lua")
+
 project "CppSharp"
 
   kind "SharedLib"

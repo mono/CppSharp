@@ -50,8 +50,8 @@ solution "CppSharp"
       
   group "Libraries"
     include (srcdir .. "/Core")
-    include (srcdir .. "/AST/AST.lua")
-    include (srcdir .. "/Generator/Generator.lua")
-    include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
-    include (srcdir .. "/Runtime/Runtime.lua")
+    include (srcdir .. "/AST")
+    include (srcdir .. "/Generator")
+    include (srcdir .. "/Generator.Tests")
+    include (srcdir .. "/Runtime")
     include (srcdir .. "/CppParser")
