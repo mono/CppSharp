@@ -218,7 +218,7 @@ namespace CppSharp.AST
             if (type.Type == typeof(string))
                 return quals.IsConst ? "const char*" : "char*";
  
-            throw new NotImplementedException();
+            throw new NotImplementedException(string.Format("Unhandled .NET type: {0}", type.Type));
          }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
