@@ -216,7 +216,7 @@ namespace CppSharp.AST
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
             if (type.Type == typeof(string))
-                return "char*";
+                return quals.IsConst ? "const char*" : "char*";
  
             throw new NotImplementedException();
          }
