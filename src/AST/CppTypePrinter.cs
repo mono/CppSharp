@@ -5,6 +5,12 @@ using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
+    public enum CppTypePrintFlavorKind
+    {
+        C,
+        Cpp,
+    } 
+
     public enum CppTypePrintScopeKind
     {
         Local,
@@ -14,6 +20,7 @@ namespace CppSharp.AST
 
     public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
+        public CppTypePrintFlavorKind PrintFlavorKind;
         public CppTypePrintScopeKind PrintScopeKind;
         public bool PrintLogicalNames;
         public bool PrintTypeQualifiers;
@@ -22,6 +29,7 @@ namespace CppSharp.AST
 
         public CppTypePrinter(bool printTypeQualifiers = true, bool printTypeModifiers = true)
         {
+            PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
             PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = printTypeQualifiers;
             PrintTypeModifiers = printTypeModifiers;
@@ -207,8 +215,11 @@ namespace CppSharp.AST
 
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
-            return string.Empty;
-        }
+            if (type.Type == typeof(string))
+                return "char*";
+ 
+            throw new NotImplementedException();
+         }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
