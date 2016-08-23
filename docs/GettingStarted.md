@@ -64,10 +64,10 @@ run the upgrade process after generation.
 
 ## Compiling on Mac OS X
 
-1. Run `premake5-osx gmake` in `<CppSharp>\build`
+1. Run `./premake5-osx gmake` in `<CppSharp>\build`
 2. Build the generated makefiles:
-    - 32-bit builds: `config=release_x32 make`
-    - 64-bit builds: `config=release_x64 make`
+    - 32-bit builds: `config=release_x32 make -C gmake`
+    - 64-bit builds: `config=release_x64 make -C gmake`
 
 The version you compile needs to match the version of the Mono VM installed on your 
 system which you can find by running `mono --version`. The reason for this is because
