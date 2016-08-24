@@ -31,7 +31,7 @@ namespace CppSharp
     public interface IDiagnostics
     {
         void Emit(DiagnosticInfo info);
-        void PushIndent(int level);
+        void PushIndent(int level = 4);
         void PopIndent();
     }
 
