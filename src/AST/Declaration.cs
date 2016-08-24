@@ -116,6 +116,8 @@ namespace CppSharp.AST
             get { return OriginalName; }
         }
 
+        public static string QualifiedNameSeparator = "::";
+
         public string GetQualifiedName(Func<Declaration, string> getName,
             Func<Declaration, DeclarationContext> getNamespace)
         {
@@ -132,10 +134,10 @@ namespace CppSharp.AST
             names.Add(getName(this));
             names = names.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
-            return string.Join("::", names);
+            return string.Join(QualifiedNameSeparator, names);
         }
 
-        private List<Declaration> GatherNamespaces(DeclarationContext @namespace)
+        private static List<Declaration> GatherNamespaces(DeclarationContext @namespace)
         {
             var namespaces = new List<Declaration>();
 
