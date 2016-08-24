@@ -52,6 +52,7 @@ function SetupTestGeneratorProject(name, depends)
       "CppSharp.AST",
       "CppSharp.Generator",
       "CppSharp.Generator.Tests",
+      "CppSharp.Parser"
     }
 
     if depends ~= nil then

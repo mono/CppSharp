@@ -4,8 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CppSharp.Parser;
-using CppSharp.Parser.AST;
 using Microsoft.Win32;
 
 namespace CppSharp
@@ -522,28 +520,6 @@ namespace CppSharp
             }
 
             return hive;
-        }
-    }
-
-    public static partial class OptionsExtensions
-    {
-        /// Sets up the parser options to work with the given Visual Studio toolchain.
-        public static void SetupMSVC(this ParserOptions options,
-            VisualStudioVersion vsVersion = VisualStudioVersion.Latest)
-        {
-            options.MicrosoftMode = true;
-            options.NoBuiltinIncludes = true;
-            options.NoStandardIncludes = true;
-            options.Abi = CppAbi.Microsoft;
-            options.ToolSetToUse = MSVCToolchain.GetCLVersion(vsVersion) * 10000000;
-
-            options.addArguments("-fms-extensions");
-            options.addArguments("-fms-compatibility");
-            options.addArguments("-fdelayed-template-parsing");
-
-            var includes = MSVCToolchain.GetSystemIncludes(vsVersion);
-            foreach (var include in includes)
-                options.addSystemIncludeDirs(include);
         }
     }
 }

@@ -54,4 +54,5 @@ solution "CppSharp"
     include (srcdir .. "/Generator")
     include (srcdir .. "/Generator.Tests")
     include (srcdir .. "/Runtime")
+    include (srcdir .. "/Parser")
     include (srcdir .. "/CppParser")

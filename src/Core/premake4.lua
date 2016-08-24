@@ -1,5 +1,3 @@
-include("../../build/Parser.lua")
-
 project "CppSharp"
 
   kind "SharedLib"
@@ -13,8 +11,4 @@ project "CppSharp"
   {
     "System",
     "System.Core",
-    "CppSharp.AST",
-    "CppSharp.Runtime"
   }
-
-  SetupParser()

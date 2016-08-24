@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using CppSharp.Parser;
 
 namespace CppSharp
 {
@@ -73,26 +72,6 @@ namespace CppSharp
                 throw new Exception("Could not find a valid Mac SDK");
 
             return Path.Combine(sdkPath, "usr/include");
-        }
-    }
-
-    public static partial class OptionsExtensions
-    {
-        public static void SetupXcode(this ParserOptions options)
-        {
-            var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
-            options.addSystemIncludeDirs(builtinsPath);
-
-            var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
-            options.addSystemIncludeDirs(cppIncPath);
-
-            var includePath = XcodeToolchain.GetXcodeIncludesFolder();
-            options.addSystemIncludeDirs(includePath);
-
-            options.NoBuiltinIncludes = true;
-            options.NoStandardIncludes = true;
-
-            options.addArguments("-stdlib=libc++");
         }
     }
 }
