@@ -4,7 +4,6 @@ project "CppSharp.Generator"
 
   kind "SharedLib"
   language "C#"
-  location "."
 
   files   { "**.cs", "**verbs.txt" }
   excludes { "Filter.cs" }
