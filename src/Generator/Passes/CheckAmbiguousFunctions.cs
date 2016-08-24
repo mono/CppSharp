@@ -7,30 +7,20 @@ namespace CppSharp.Passes
 {
     /// <summary>
     /// Checks for ambiguous functions/method declarations.
-    /// <para/>
+    ///
     /// Example:
-    /// <para/>
     /// struct S
-    /// <para/>
     /// {
-    /// <para/>
     ///     void Foo(int a, int b = 0);
-    /// <para/>
     ///     void Foo(int a);
-    /// <para/>
     ///     void Bar();
-    /// <para/>
     ///     void Bar() const;
     /// 
-    /// <para/>
     ///     void Qux(int&amp; i);
-    /// <para/>
     ///     void Qux(int&amp;&amp; i);
-    /// <para/>
     ///     void Qux(const int&amp; i);
-    /// <para/>
     /// };
-    /// <para/>
+    ///
     /// When we call Foo(0) the compiler will not know which call we want and
     /// will error out so we need to detect this and either ignore the methods
     /// or flag them such that the generator can explicitly disambiguate when
