@@ -13,7 +13,6 @@ project "CppSharp.CppParser"
   kind "SharedLib"
   language "C++"
   SetupNativeProject()
-  flags { common_flags }
   rtti "Off"
 
   configuration "vs*"

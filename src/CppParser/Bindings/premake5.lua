@@ -11,13 +11,14 @@ project "CppSharp.Parser.Gen"
   SetupParser()
   
 project "CppSharp.Parser.CSharp"
-  
+
+  SetupManagedProject()
+
   kind "SharedLib"
   language "C#"
-  SetupManagedProject()
-  
+  clr "Unsafe"
+
   dependson { "CppSharp.CppParser" }
-  flags { common_flags, "Unsafe" }
 
   files
   {

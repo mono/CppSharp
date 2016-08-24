@@ -1,10 +1,10 @@
 project "CppSharp.Generator"
 
+  SetupManagedProject()
+
   kind "SharedLib"
   language "C#"
   location "."
-
-  SetupManagedProject()
 
   files   { "**.cs", "**verbs.txt" }
   excludes { "Filter.cs" }

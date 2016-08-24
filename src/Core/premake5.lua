@@ -1,10 +1,10 @@
 project "CppSharp"
 
+  SetupManagedProject()
+
   kind "SharedLib"
   language "C#"
-  flags { "Unsafe"}
-
-  SetupManagedProject()
+  clr "Unsafe"
 
   files { "**.cs" }
   links

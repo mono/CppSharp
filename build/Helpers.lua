@@ -19,7 +19,6 @@ objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}_%{cfg.platform}");
 libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 
-common_flags = { "Unicode", "Symbols" }
 msvc_buildflags = { "/wd4267" }
 gcc_buildflags = { "-std=c++11 -fpermissive" }
 

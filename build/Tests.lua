@@ -32,10 +32,10 @@ function SetupTestCLI(name)
 end
 
 function SetupManagedTestProject()
+    SetupManagedProject()
     kind "SharedLib"
     language "C#"  
-    flags { "Unsafe" }
-    SetupManagedProject()
+    clr "Unsafe"
 end
 
 function SetupTestGeneratorProject(name, depends)
@@ -87,7 +87,6 @@ function SetupTestNativeProject(name, depends)
     kind "SharedLib"
     language "C++"
 
-    flags { common_flags }
     files { "**.h", "**.cpp" }
 
     if depends ~= nil then

@@ -1,8 +1,9 @@
 project "CppSharp.Runtime"
 
-  kind "SharedLib"
   SetupManagedProject()
-  flags { "Unsafe" }
+
+  kind "SharedLib"
+  clr "Unsafe"
 
   files   { "**.cs" }
   links { "System" }

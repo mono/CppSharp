@@ -13,7 +13,9 @@ solution "CppSharp"
 
   configurations { "Debug", "Release" }
   platforms { "x32", "x64" }
-  flags { common_flags }
+
+  characterset "Unicode"
+  symbols "On"
   
   location (builddir)
   objdir (objsdir)
