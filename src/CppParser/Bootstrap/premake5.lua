@@ -1,8 +1,9 @@
 project "CppSharp.Parser.Bootstrap"
 
+  SetupManagedProject()
+
   kind "ConsoleApp"
   language "C#"
-  SetupManagedProject()
   debugdir "."
   
   files { "Bootstrap.cs", "*.lua" }
