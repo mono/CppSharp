@@ -12,7 +12,7 @@ namespace CppSharp.Passes
         public Driver Driver { get; set; }
         public ASTContext AstContext { get; set; }
         
-        public IDiagnosticConsumer Log
+        public IDiagnostics Log
         {
             get { return Driver.Diagnostics; }
         }

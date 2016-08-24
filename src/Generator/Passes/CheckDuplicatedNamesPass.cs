@@ -11,9 +11,9 @@ namespace CppSharp.Passes
     {
         private readonly Dictionary<string, int> methodSignatures;
         private int Count;
-        private readonly IDiagnosticConsumer diagnostics;
+        private readonly IDiagnostics diagnostics;
 
-        public DeclarationName(IDiagnosticConsumer diagnostics)
+        public DeclarationName(IDiagnostics diagnostics)
         {
             this.diagnostics = diagnostics;
             methodSignatures = new Dictionary<string, int>();

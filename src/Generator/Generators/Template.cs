@@ -286,7 +286,7 @@ namespace CppSharp.Generators
 
         public TranslationUnit TranslationUnit { get { return TranslationUnits[0]; } }
 
-        public IDiagnosticConsumer Log
+        public IDiagnostics Log
         {
             get { return Driver.Diagnostics; }
         }

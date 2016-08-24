@@ -20,7 +20,7 @@ namespace CppSharp
 {
     public class Driver
     {
-        public IDiagnosticConsumer Diagnostics { get; set; }
+        public IDiagnostics Diagnostics { get; set; }
 
         public DriverOptions Options { get; private set; }
         public Project Project { get; private set; }
@@ -39,7 +39,7 @@ namespace CppSharp
 
         private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
 
-        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
+        public Driver(DriverOptions options, IDiagnostics diagnostics)
         {
             Options = options;
             Diagnostics = diagnostics;

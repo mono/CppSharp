@@ -15,13 +15,13 @@ namespace CppSharp.Passes
     {
         private class PropertyGenerator
         {
-            private readonly IDiagnosticConsumer log;
+            private readonly IDiagnostics log;
             private readonly List<Method> getters = new List<Method>();
             private readonly List<Method> setters = new List<Method>();
             private readonly List<Method> setMethods = new List<Method>();
             private readonly List<Method> nonSetters = new List<Method>();
 
-            public PropertyGenerator(Class @class, IDiagnosticConsumer log)
+            public PropertyGenerator(Class @class, IDiagnostics log)
             {
                 this.log = log;
                 foreach (var method in @class.Methods.Where(
