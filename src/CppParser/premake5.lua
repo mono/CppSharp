@@ -42,3 +42,4 @@ end
 
 include ("Bindings")
 include ("Bootstrap")
+include ("ParserGen")
