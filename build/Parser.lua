@@ -11,7 +11,7 @@ function SetupCSharpParser()
 end
 
 function SetupParser()
-  if string.match(action, "vs*") and os.is_windows() then
+  if string.match(action, "vs*") and os.is("windows") then
     SetupCLIParser()
   else
     SetupCSharpParser()

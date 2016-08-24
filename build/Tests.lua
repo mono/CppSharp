@@ -76,7 +76,7 @@ function SetupTestGeneratorBuildEvent(name)
 end
 
 function SetupTestNativeProject(name, depends)
-  if string.starts(action, "vs") and not os.is_windows() then
+  if string.starts(action, "vs") and not os.is("windows") then
     return
   end
 
@@ -141,7 +141,7 @@ function SetupTestProjectsCSharp(name, depends)
 end
 
 function SetupTestProjectsCLI(name, extraFiles)
-  if not os.is_windows() then
+  if not os.is("windows") then
     return
   end
 

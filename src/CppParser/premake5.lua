@@ -6,7 +6,7 @@ clang_msvc_flags =
   "/wd4141", -- 'inline' : used more than once
 }
 
-if not (string.starts(action, "vs") and not os.is_windows()) then
+if not (string.starts(action, "vs") and not os.is("windows")) then
 
 project "CppSharp.CppParser"
   

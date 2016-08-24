@@ -15,9 +15,9 @@ project "CppSharp.Parser.CSharp"
 
   links { "CppSharp.Runtime" }
 
-  if os.is_windows() then
+  if os.is("windows") then
       files { "CSharp/i686-pc-win32-msvc/**.cs" }
-  elseif os.is_osx() then
+  elseif os.is("macosx") then
       local file = io.popen("lipo -info `which mono`")
       local output = file:read('*all')
       if string.find(output, "x86_64") then  
@@ -26,7 +26,7 @@ project "CppSharp.Parser.CSharp"
         files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
       end
 
-  elseif os.is_linux() then
+  elseif os.is("linux") then
       files { "CSharp/x86_64-linux-gnu/**.cs" }
   else
       print "Unknown architecture"
@@ -34,7 +34,7 @@ project "CppSharp.Parser.CSharp"
 
   configuration ""
 
-if string.starts(action, "vs") and os.is_windows() then
+if string.starts(action, "vs") and os.is("windows") then
 
   project "CppSharp.Parser.CLI"
     

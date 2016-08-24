@@ -24,18 +24,6 @@ gcc_buildflags = { "-std=c++11 -fpermissive" }
 
 msvc_cpp_defines = { }
 
-function os.is_osx()
-  return os.is("macosx")
-end
-
-function os.is_windows()
-  return os.is("windows")
-end
-
-function os.is_linux()
-  return os.is("linux")
-end
-
 function string.starts(str, start)
    return string.sub(str, 1, string.len(start)) == start
 end
@@ -79,7 +67,7 @@ function SetupManagedProject()
   language "C#"
   location (path.join(builddir, "projects"))
 
-  if not os.is_osx() then
+  if not os.is("macosx") then
     local c = configuration { "vs*" }
       location "."
     configuration(c)

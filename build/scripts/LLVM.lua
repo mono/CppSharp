@@ -154,7 +154,7 @@ end
 function cmake(gen, conf, builddir, options)
 	local cwd = os.getcwd()
 	os.chdir(builddir)
-	local cmake = os.is_osx() and "/Applications/CMake.app/Contents/bin/cmake"
+	local cmake = os.is("macosx") and "/Applications/CMake.app/Contents/bin/cmake"
 		or "cmake"
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
  		.. ' -DLLVM_BUILD_TOOLS=false '
