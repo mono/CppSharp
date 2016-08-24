@@ -1,19 +1,19 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using Microsoft.CSharp;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using CppSharp.Types;
-using Microsoft.CSharp;
 using CppSharp.Parser;
-using System;
-using System.Reflection;
 using CppSharp.Utils;
 
 namespace CppSharp
