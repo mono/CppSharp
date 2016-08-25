@@ -20,7 +20,7 @@ namespace CppSharp.Generators.CLI
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CLIMarshalToManaged(Context);
@@ -155,7 +155,7 @@ namespace CppSharp.Generators.CLI
             }
 
             TypeMap typeMap = null;
-            Context.Driver.TypeDatabase.FindTypeMap(pointee, out typeMap);
+            Context.Context.TypeDatabase.FindTypeMap(pointee, out typeMap);
 
             Class @class;
             if (pointee.TryGetClass(out @class) && typeMap == null)
@@ -175,7 +175,7 @@ namespace CppSharp.Generators.CLI
                 Encoding.ASCII : Encoding.Unicode;
 
             if (Equals(encoding, Encoding.ASCII))
-                encoding = Context.Driver.Options.Encoding;
+                encoding = Context.Context.Options.Encoding;
 
             string param;
             if (Equals(encoding, Encoding.ASCII))
@@ -185,7 +185,7 @@ namespace CppSharp.Generators.CLI
                 param = "E_UTF16";
             else
                 throw new NotSupportedException(string.Format("{0} is not supported yet.",
-                    Context.Driver.Options.Encoding.EncodingName));
+                    Context.Context.Options.Encoding.EncodingName));
 
             return string.Format(
                 "({0} == 0 ? nullptr : clix::marshalString<clix::{1}>({0}))",
@@ -237,7 +237,7 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = typedef;
                 typeMap.CLIMarshalToManaged(Context);
@@ -262,7 +262,7 @@ namespace CppSharp.Generators.CLI
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToManaged(Context);
@@ -374,7 +374,7 @@ namespace CppSharp.Generators.CLI
 
         private string ToCLITypeName(Declaration decl)
         {
-            var typePrinter = new CLITypePrinter(Context.Driver);
+            var typePrinter = new CLITypePrinter(Context.Context);
             return typePrinter.VisitDeclaration(decl);
         }
 
@@ -426,7 +426,7 @@ namespace CppSharp.Generators.CLI
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CLIMarshalToNative(Context);
@@ -611,7 +611,7 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return typeMap.IsValueType;
@@ -647,7 +647,7 @@ namespace CppSharp.Generators.CLI
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToNative(Context);
@@ -693,7 +693,7 @@ namespace CppSharp.Generators.CLI
         private void MarshalRefClass(Class @class)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return;
@@ -775,7 +775,7 @@ namespace CppSharp.Generators.CLI
             var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
                                          property.Name);
 
-            var marshalCtx = new MarshalContext(Context.Driver)
+            var marshalCtx = new MarshalContext(Context.Context)
                                  {
                                      ArgName = fieldRef,
                                      ParameterIndex = Context.ParameterIndex++,

@@ -61,10 +61,10 @@ namespace CppSharp.Generators.CLI
 
         public ISet<Include> Includes;
 
-        protected CLITemplate(Driver driver, IEnumerable<TranslationUnit> units)
-            : base(driver, units)
+        protected CLITemplate(BindingContext context, IEnumerable<TranslationUnit> units)
+            : base(context, units)
         {
-            TypePrinter = new CLITypePrinter(driver);
+            TypePrinter = new CLITypePrinter(context);
             Includes = new HashSet<Include>();
         }
 

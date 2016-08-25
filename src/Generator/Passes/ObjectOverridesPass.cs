@@ -15,6 +15,13 @@ namespace CppSharp
     // this to work.
     public class ObjectOverridesPass : TranslationUnitPass
     {
+        private Generator Generator { get; set; }
+
+        public ObjectOverridesPass(Generator generator)
+        {
+            Generator = generator;
+        }
+
         private bool needsStreamInclude;
         private void OnUnitGenerated(GeneratorOutput output)
         {
@@ -67,7 +74,7 @@ namespace CppSharp
 
         void GenerateEquals(Class @class, Block block, Method method)
         {
-            var cliTypePrinter = new CLITypePrinter(Driver);
+            var cliTypePrinter = new CLITypePrinter(Context);
             var classCliType = @class.Visit(cliTypePrinter);
 
             block.WriteLine("if (!object) return false;");
@@ -93,7 +100,7 @@ namespace CppSharp
             // FIXME: Add a better way to hook the event
             if (!isHooked)
             {
-                Driver.Generator.OnUnitGenerated += OnUnitGenerated;
+                Generator.OnUnitGenerated += OnUnitGenerated;
                 isHooked = true;
             }
 
@@ -126,7 +133,7 @@ namespace CppSharp
 
                 @class.Methods.Add(toStringMethod);
 
-                Driver.Diagnostics.Debug("Function converted to ToString: {0}::{1}",
+                Diagnostics.Debug("Function converted to ToString: {0}::{1}",
                     @class.Name, method.Name);
 
                 break;
@@ -172,7 +179,7 @@ namespace CppSharp
             AST.Type result;
             if (!typeCache.TryGetValue(typeName, out result))
             {
-                var typeDef = Driver.ASTContext.FindTypedef(typeName)
+                var typeDef = ASTContext.FindTypedef(typeName)
                     .FirstOrDefault();
                 if (typeDef != null)
                     result = new TypedefType() { Declaration = typeDef };

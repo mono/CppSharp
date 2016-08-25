@@ -20,7 +20,7 @@ namespace CppSharp.Passes
             if (@params.Count == 0)
                 return false;
 
-            if (Driver.Options.GenerateDefaultValuesForArguments)
+            if (Options.GenerateDefaultValuesForArguments)
             {
                 var nonDefaultParams = @params.Count(p => p.DefaultArgument == null);
                 if (nonDefaultParams > 1)
@@ -34,7 +34,7 @@ namespace CppSharp.Passes
 
             var parameter = method.Parameters[0];
             // TODO: disable implicit operators for C++/CLI because they seem not to be support parameters
-            if (!Driver.Options.IsCSharpGenerator)
+            if (!Options.IsCSharpGenerator)
             {
                 var pointerType = parameter.Type as PointerType;
                 if (pointerType != null && !pointerType.IsReference)

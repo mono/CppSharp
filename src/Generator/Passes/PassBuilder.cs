@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CppSharp.Generators;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -11,13 +12,13 @@ namespace CppSharp
     /// </summary>
     public class PassBuilder<T>
     {
+        public BindingContext Context { get; private set; }
         public List<T> Passes { get; private set; }
-        public Driver Driver { get; private set; }
 
-        public PassBuilder(Driver driver)
+        public PassBuilder(BindingContext context)
         {
+            Context = context;
             Passes = new List<T>();
-            Driver = driver;
         }
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace CppSharp
         public void AddPass(T pass)
         {
             if (pass is TranslationUnitPass)
-                (pass as TranslationUnitPass).Driver = Driver;
+                (pass as TranslationUnitPass).Context = Context;
 
             Passes.Add(pass);
         }

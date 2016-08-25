@@ -37,7 +37,7 @@ namespace CppSharp.Passes
 
         public override bool VisitLibrary(ASTContext context)
         {
-            foreach (var library in Driver.Options.Modules.SelectMany(m => m.Libraries))
+            foreach (var library in Options.Modules.SelectMany(m => m.Libraries))
                 libsDelegates[library] = new Dictionary<string, DelegateDefinition>();
 
             var unit = context.TranslationUnits.GetGenerated().LastOrDefault();
@@ -47,7 +47,7 @@ namespace CppSharp.Passes
 
             var result = base.VisitLibrary(context);
 
-            foreach (var module in Driver.Options.Modules.Where(m => namespacesDelegates.ContainsKey(m)))
+            foreach (var module in Options.Modules.Where(m => namespacesDelegates.ContainsKey(m)))
                 module.Units.Last(u => u.HasDeclarations).Declarations.Add(namespacesDelegates[module]);
 
             return result;
@@ -61,7 +61,7 @@ namespace CppSharp.Passes
             // dependent types with virtuals have no own virtual layouts
             // so virtuals are considered different objects in template instantiations
             // therefore the method itself won't be visited, so let's visit it through the v-table
-            if (Driver.Options.IsMicrosoftAbi)
+            if (Options.IsMicrosoftAbi)
             {
                 foreach (var method in from vfTable in @class.Layout.VFTables
                                        from component in vfTable.Layout.Components
@@ -88,7 +88,7 @@ namespace CppSharp.Passes
             if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
                 return false;
 
-            var @params = method.GatherInternalParams(Driver.Options.IsItaniumLikeAbi, true).ToList();
+            var @params = method.GatherInternalParams(Options.IsItaniumLikeAbi, true).ToList();
             var delegateName = GenerateDelegateSignature(@params, method.ReturnType);
 
             var module = method.TranslationUnit.Module;
@@ -132,12 +132,12 @@ namespace CppSharp.Passes
 
             if (existingDelegate != null)
             {
-                Driver.Delegates.Add(method, existingDelegate);
+                Context.Delegates.Add(method, existingDelegate);
                 return true;
             }
 
             existingDelegate = new DelegateDefinition(module.OutputNamespace, delegateString);
-            Driver.Delegates.Add(method, existingDelegate);
+            Context.Delegates.Add(method, existingDelegate);
 
             foreach (var library in module.Libraries)
                 libsDelegates[library].Add(delegateString, existingDelegate);
@@ -150,11 +150,11 @@ namespace CppSharp.Passes
         private DelegateDefinition GetExistingDelegate(IList<string> libraries, string delegateString)
         {
             if (libraries.Count == 0)
-                return Driver.Delegates.Values.FirstOrDefault(t => t.Signature == delegateString);
+                return Context.Delegates.Values.FirstOrDefault(t => t.Signature == delegateString);
 
             DelegateDefinition @delegate = null;
             if (libraries.Union(
-                Driver.Symbols.Libraries.Where(l => libraries.Contains(l.FileName)).SelectMany(
+                Context.Symbols.Libraries.Where(l => libraries.Contains(l.FileName)).SelectMany(
                     l => l.Dependencies)).Any(l => libsDelegates.ContainsKey(l) &&
                         libsDelegates[l].TryGetValue(delegateString, out @delegate)))
                 return @delegate;
@@ -196,7 +196,7 @@ namespace CppSharp.Passes
             {
                 if (typePrinter == null)
                 {
-                    typePrinter = new CSharpTypePrinter(Driver);
+                    typePrinter = new CSharpTypePrinter(Context);
                     typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                     typePrinter.PushMarshalKind(CSharpMarshalKind.GenericDelegate);
                 }

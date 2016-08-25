@@ -130,7 +130,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreFunction(decl, Driver.Options))
+            if (ASTUtils.CheckIgnoreFunction(decl, Options))
                 return false;
 
             CheckDuplicate(decl);
@@ -142,7 +142,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreMethod(decl, Driver.Options))
+            if (ASTUtils.CheckIgnoreMethod(decl, Options))
                 return false;
 
             if (decl.ExplicitInterfaceImpl == null)
@@ -219,11 +219,11 @@ namespace CppSharp.Passes
 
             // If the name is not yet on the map, then add it.
             if (!names.ContainsKey(fullName))
-                names.Add(fullName, new DeclarationName(Driver.Diagnostics));
+                names.Add(fullName, new DeclarationName(Diagnostics));
 
             if (names[fullName].UpdateName(decl))
             {
-                Driver.Diagnostics.Debug("Duplicate name {0}, renamed to {1}",
+                Diagnostics.Debug("Duplicate name {0}, renamed to {1}",
                     fullName, decl.Name);
             }
         }

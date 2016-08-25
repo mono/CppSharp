@@ -6,11 +6,8 @@ namespace CppSharp.Passes
 {
     public class CleanUnitPass : TranslationUnitPass
     {
-        public DriverOptions DriverOptions;
-
-        public CleanUnitPass(DriverOptions options)
+        public CleanUnitPass()
         {
-            DriverOptions = options;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
@@ -20,14 +17,14 @@ namespace CppSharp.Passes
 
             if (unit.IsSystemHeader)
             {
-                unit.Module = DriverOptions.SystemModule;
+                unit.Module = Options.SystemModule;
             }
             else
             {
                 var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
-                unit.Module = DriverOptions.Modules.FirstOrDefault(
+                unit.Module = Options.Modules.FirstOrDefault(
                     m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
-                    DriverOptions.MainModule;
+                    Options.MainModule;
             }
             unit.Module.Units.Add(unit);
             // Try to get an include path that works from the original include directories paths
@@ -45,9 +42,9 @@ namespace CppSharp.Passes
             var includePath = filePath;
             var shortestIncludePath = filePath;
 
-            for (uint i = 0; i < DriverOptions.IncludeDirsCount; ++i)
+            for (uint i = 0; i < Options.IncludeDirsCount; ++i)
             {
-                var path = DriverOptions.getIncludeDirs(i);
+                var path = Options.getIncludeDirs(i);
 
                 int idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
                 if (idx == -1)
@@ -64,7 +61,7 @@ namespace CppSharp.Passes
                     shortestIncludePath = inc;
             }
 
-            includePath = DriverOptions.IncludePrefix
+            includePath = Options.IncludePrefix
                 + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
 
             return includePath.Replace('\\', '/');

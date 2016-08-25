@@ -51,7 +51,7 @@ namespace CppSharp.Passes
 
             @class.Properties.Add(prop);
 
-            Log.Debug("Property created from field: {0}::{1}", @class.Name,
+            Diagnostics.Debug("Property created from field: {0}::{1}", @class.Name,
                 field.Name);
 
             return false;

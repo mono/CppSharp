@@ -334,7 +334,7 @@ namespace CppSharp.Passes
             {
                 method.ReturnType = overridenMethod.ReturnType;
 
-                Driver.Diagnostics.Debug(
+                Diagnostics.Debug(
                     "{0} return type is co-variant with overriden base",
                     method.QualifiedOriginalName);
             }

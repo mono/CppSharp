@@ -20,36 +20,19 @@ namespace CppSharp
 {
     public class Driver
     {
-        public IDiagnostics Diagnostics { get; set; }
-
+        public IDiagnostics Diagnostics { get; private set; }
         public DriverOptions Options { get; private set; }
         public Project Project { get; private set; }
-
-        public TypeMapDatabase TypeDatabase { get; private set; }
-        public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
-        public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
+        public BindingContext Context { get; private set; }
         public Generator Generator { get; private set; }
 
-        public ASTContext ASTContext { get; private set; }
-        public SymbolContext Symbols { get; private set; }
-
-        public Dictionary<Function, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
-
         public bool HasCompilationErrors { get; set; }
-
-        private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
 
         public Driver(DriverOptions options, IDiagnostics diagnostics)
         {
             Options = options;
             Diagnostics = diagnostics;
             Project = new Project();
-            ASTContext = new ASTContext();
-            Symbols = new SymbolContext();
-            Delegates = new Dictionary<Function, DelegatesPass.DelegateDefinition>();
-            TypeDatabase = new TypeMapDatabase();
-            TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
-            GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
         }
 
         Generator CreateGeneratorFromKind(GeneratorKind kind)
@@ -57,9 +40,9 @@ namespace CppSharp
             switch (kind)
             {
                 case GeneratorKind.CLI:
-                    return new CLIGenerator(this);
+                    return new CLIGenerator(Context);
                 case GeneratorKind.CSharp:
-                    return new CSharpGenerator(this);
+                    return new CSharpGenerator(Context);
             }
 
             return null;
@@ -81,16 +64,6 @@ namespace CppSharp
                     options.addIncludeDirs(incDir);
         }
 
-        public void Setup()
-        {
-            ValidateOptions(Options);
-
-            SetupIncludes();
-
-            TypeDatabase.SetupTypeMaps(Options.GeneratorKind);
-            Generator = CreateGeneratorFromKind(Options.GeneratorKind);
-        }
-
         public void SetupIncludes()
         {
             if (Platform.IsMacOS)
@@ -99,21 +72,12 @@ namespace CppSharp
                 Options.SetupMSVC();
         }
 
-        public void SortModulesByDependencies()
+        public void Setup()
         {
-            if (Options.Modules.All(m => m.Libraries.Any()))
-            {
-                var sortedModules = Options.Modules.TopologicalSort(m =>
-                {
-                    return from library in Symbols.Libraries
-                           where m.Libraries.Contains(library.FileName)
-                           from module in Options.Modules
-                           where library.Dependencies.Intersect(module.Libraries).Any()
-                           select module;
-                });
-                Options.Modules.Clear();
-                Options.Modules.AddRange(sortedModules);
-            }
+            ValidateOptions(Options);
+            SetupIncludes();
+            Context = new BindingContext(Diagnostics, Options);
+            Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 
         void OnSourceFileParsed(IList<SourceFile> files, ParserResult result)
@@ -244,9 +208,8 @@ namespace CppSharp
             parser.SourcesParsed += OnSourceFileParsed;
             parser.ParseProject(Project, Options.UnityBuild);
            
-            TargetInfo = parser.GetTargetInfo(Options);
-
-            ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
+            Context.TargetInfo = parser.GetTargetInfo(Options);
+            Context.ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
 
             return !hasParsingErrors;
         }
@@ -265,6 +228,23 @@ namespace CppSharp
 
         public ParserTargetInfo TargetInfo { get; set; }
 
+        public void SortModulesByDependencies()
+        {
+            if (Options.Modules.All(m => m.Libraries.Any()))
+            {
+                var sortedModules = Options.Modules.TopologicalSort(m =>
+                {
+                    return from library in Context.Symbols.Libraries
+                           where m.Libraries.Contains(library.FileName)
+                           from module in Options.Modules
+                           where library.Dependencies.Intersect(module.Libraries).Any()
+                           select module;
+                });
+                Options.Modules.Clear();
+                Options.Modules.AddRange(sortedModules);
+            }
+        }
+
         public bool ParseLibraries()
         {
             foreach (var module in Options.Modules)
@@ -274,7 +254,7 @@ namespace CppSharp
 
                 foreach (var library in module.Libraries)
                 {
-                    if (Symbols.Libraries.Any(l => l.FileName == library))
+                    if (Context.Symbols.Libraries.Any(l => l.FileName == library))
                         continue;
 
                     var parser = new ClangParser();
@@ -285,18 +265,23 @@ namespace CppSharp
                         if (res.Kind != ParserResultKind.Success)
                             continue;
 
-                        Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+                        Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
 
                         res.Library.Dispose();
                     }
                 }
             }
 
+            Context.Symbols.IndexSymbols();
+            SortModulesByDependencies();
+
             return true;
         }
 
         public void SetupPasses(ILibrary library)
         { 
+            var TranslationUnitPasses = Context.TranslationUnitPasses;
+
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             if (Options.IsCSharpGenerator)
@@ -365,14 +350,7 @@ namespace CppSharp
 
         public void ProcessCode()
         {
-            TranslationUnitPasses.RunPasses(pass =>
-                {
-                    Diagnostics.Debug("Pass '{0}'", pass);
-
-                    Diagnostics.PushIndent(4);
-                    pass.VisitLibrary(ASTContext);
-                    Diagnostics.PopIndent();
-                });
+            Context.RunPasses();
             Generator.Process();
         }
 
@@ -415,6 +393,8 @@ namespace CppSharp
             }
         }
 
+        private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
+
         public void CompileCode(AST.Module module)
         {
             var assemblyFile = string.IsNullOrEmpty(module.LibraryName) ?
@@ -447,7 +427,7 @@ namespace CppSharp
             var locationRuntime = Path.Combine(outputDir, "CppSharp.Runtime.dll");
             compilerParameters.ReferencedAssemblies.Add(locationRuntime);
 
-            compilerParameters.ReferencedAssemblies.AddRange(Symbols.Libraries.SelectMany(
+            compilerParameters.ReferencedAssemblies.AddRange(Context.Symbols.Libraries.SelectMany(
                 lib => lib.Dependencies.Where(
                     d => libraryMappings.ContainsKey(d) &&
                          !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
@@ -480,12 +460,12 @@ namespace CppSharp
 
         public void AddTranslationUnitPass(TranslationUnitPass pass)
         {
-            TranslationUnitPasses.AddPass(pass);
+            Context.TranslationUnitPasses.AddPass(pass);
         }
 
         public void AddGeneratorOutputPass(GeneratorOutputPass pass)
         {
-            GeneratorOutputPasses.AddPass(pass);
+            Context.GeneratorOutputPasses.AddPass(pass);
         }
 
         private bool hasParsingErrors;
@@ -514,14 +494,8 @@ namespace CppSharp
                 return;
 
             if (!options.Quiet)
-                Log.Message("Indexing library symbols...");
-
-            driver.Symbols.IndexSymbols();
-
-            if (!options.Quiet)
                 Log.Message("Parsing code...");
 
-            driver.SortModulesByDependencies();
             driver.BuildParseOptions();
 
             if (!driver.ParseCode())
@@ -530,18 +504,18 @@ namespace CppSharp
                 return;
             }
 
-            new CleanUnitPass(options).VisitLibrary(driver.ASTContext);
+            new CleanUnitPass().VisitLibrary(driver.Context.ASTContext);
             options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
 
             if (!options.Quiet)
                 Log.Message("Processing code...");
 
-            library.Preprocess(driver, driver.ASTContext);
+            library.Preprocess(driver, driver.Context.ASTContext);
 
             driver.SetupPasses(library);
 
             driver.ProcessCode();
-            library.Postprocess(driver, driver.ASTContext);
+            library.Postprocess(driver, driver.Context.ASTContext);
 
             if (!options.Quiet)
                 Log.Message("Generating code...");
@@ -550,9 +524,8 @@ namespace CppSharp
 
             foreach (var output in outputs)
             {
-                foreach (var pass in driver.GeneratorOutputPasses.Passes)
+                foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
                 {
-                    pass.Driver = driver;
                     pass.VisitGeneratorOutput(output);
                 }
             }

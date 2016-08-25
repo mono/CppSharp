@@ -43,12 +43,12 @@ namespace CppSharp.Passes
                 goto Out;
 
             @enum.CompleteDeclaration =
-                AstContext.FindCompleteEnum(@enum.QualifiedName);
+                ASTContext.FindCompleteEnum(@enum.QualifiedName);
 
             if (@enum.CompleteDeclaration == null)
             {
                 @enum.GenerationKind = GenerationKind.Internal;
-                Driver.Diagnostics.Warning("Unresolved declaration: {0}", @enum.Name);
+                Diagnostics.Warning("Unresolved declaration: {0}", @enum.Name);
             }
 
         Out:
@@ -65,12 +65,12 @@ namespace CppSharp.Passes
                 return;
 
             declaration.CompleteDeclaration =
-                AstContext.FindCompleteClass(declaration.QualifiedName);
+                ASTContext.FindCompleteClass(declaration.QualifiedName);
 
             if (declaration.CompleteDeclaration == null)
             {
                 declaration.GenerationKind = GenerationKind.Internal;
-                Driver.Diagnostics.Debug("Unresolved declaration: {0}",
+                Diagnostics.Debug("Unresolved declaration: {0}",
                     declaration.Name);
             }
         }

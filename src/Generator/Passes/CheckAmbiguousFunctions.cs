@@ -59,7 +59,7 @@ namespace CppSharp.Passes
             }
 
             if (function.IsAmbiguous)
-                Driver.Diagnostics.Debug("Found ambiguous overload: {0}",
+                Diagnostics.Debug("Found ambiguous overload: {0}",
                     function.QualifiedOriginalName);
 
             return true;

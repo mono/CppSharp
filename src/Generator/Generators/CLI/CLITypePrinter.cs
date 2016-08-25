@@ -23,24 +23,23 @@ namespace CppSharp.Generators.CLI
 
     public class CLITypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
-        public Driver Driver { get; set; }
         public CLITypePrinterContext TypePrinterContext { get; set; }
 
-        readonly ITypeMapDatabase TypeMapDatabase;
-        readonly DriverOptions Options;
+        public BindingContext Context { get; private set; }
 
-        public CLITypePrinter(Driver driver)
+        public DriverOptions Options { get { return Context.Options; } }
+        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeDatabase; } }
+
+        public CLITypePrinter(BindingContext context)
         {
-            Driver = driver;
-            TypeMapDatabase = driver.TypeDatabase;
-            Options = driver.Options;
+            Context = context;
             TypePrinterContext = new CLITypePrinterContext();
         }
 
-        public CLITypePrinter(Driver driver, CLITypePrinterContext context)
-            : this(driver)
+        public CLITypePrinter(BindingContext context, CLITypePrinterContext typePrinterContext)
+            : this(context)
         {
-            TypePrinterContext = context;
+            TypePrinterContext = typePrinterContext;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)

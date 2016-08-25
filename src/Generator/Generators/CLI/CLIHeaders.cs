@@ -15,8 +15,8 @@ namespace CppSharp.Generators.CLI
     {
         public override string FileExtension { get { return "h"; } }
 
-        public CLIHeaders(Driver driver, IEnumerable<TranslationUnit> units)
-            : base(driver, units)
+        public CLIHeaders(BindingContext context, IEnumerable<TranslationUnit> units)
+            : base(context, units)
         {
         }
 
@@ -52,8 +52,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase,
-                Driver.Options);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeDatabase,
+                Context.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -131,8 +131,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase,
-                Driver.Options);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeDatabase,
+                Context.Options);
             typeReferenceCollector.Process(TranslationUnit);
 
             var typeReferences = typeReferenceCollector.TypeReferences;
@@ -336,7 +336,7 @@ namespace CppSharp.Generators.CLI
 
                 printer.TypePrinterContext = typeCtx;
 
-                var typePrinter = new CLITypePrinter(Driver, typeCtx);
+                var typePrinter = new CLITypePrinter(Context, typeCtx);
                 var retType = function.ReturnType.Type.Visit(typePrinter,
                     function.ReturnType.Qualifiers);
 
@@ -493,7 +493,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("void add({0} evt);", @event.Type);
                 WriteLine("void remove({0} evt);", @event.Type);
 
-                var cliTypePrinter = new CLITypePrinter(Driver);
+                var cliTypePrinter = new CLITypePrinter(Context);
                 var cliArgs = cliTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
                 WriteLine("void raise({0});", cliArgs);

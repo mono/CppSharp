@@ -11,19 +11,19 @@ namespace CppSharp.Generators.CLI
     {
         private readonly CLITypePrinter typePrinter;
 
-        public CLIGenerator(Driver driver) : base(driver)
+        public CLIGenerator(BindingContext context) : base(context)
         {
-            typePrinter = new CLITypePrinter(driver);
+            typePrinter = new CLITypePrinter(context);
         }
 
         public override List<Template> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<Template>();
 
-            var header = new CLIHeaders(Driver, units);
+            var header = new CLIHeaders(Context, units);
             outputs.Add(header);
 
-            var source = new CLISources(Driver, units);
+            var source = new CLISources(Context, units);
             outputs.Add(source);
 
             return outputs;
@@ -33,8 +33,8 @@ namespace CppSharp.Generators.CLI
         {
             // Note: The ToString override will only work if this pass runs
             // after the MoveOperatorToCallPass.
-            if (Driver.Options.GenerateObjectOverrides)
-                Driver.TranslationUnitPasses.AddPass(new ObjectOverridesPass());
+            if (Context.Options.GenerateObjectOverrides)
+                Context.TranslationUnitPasses.AddPass(new ObjectOverridesPass(this));
             return true;
         }
 

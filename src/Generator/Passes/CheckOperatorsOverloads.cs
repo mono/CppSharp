@@ -26,7 +26,7 @@ namespace CppSharp.Passes
             // Check for C++ operators that cannot be represented in C#.
             CheckInvalidOperators(@class);
 
-            if (Driver.Options.IsCSharpGenerator)
+            if (Options.IsCSharpGenerator)
             {
                 // The comparison operators, if overloaded, must be overloaded in pairs;
                 // that is, if == is overloaded, != must also be overloaded. The reverse
@@ -51,7 +51,7 @@ namespace CppSharp.Passes
             {
                 if (!IsValidOperatorOverload(@operator) || @operator.IsPure)
                 {
-                    Driver.Diagnostics.Debug("Invalid operator overload {0}::{1}",
+                    Diagnostics.Debug("Invalid operator overload {0}::{1}",
                         @class.OriginalName, @operator.OperatorKind);
                     @operator.ExplicitlyIgnore();
                     continue;
@@ -115,7 +115,7 @@ namespace CppSharp.Passes
                 property.QualifiedType = new QualifiedType(
                     pointerType.Pointee, property.QualifiedType.Qualifiers);
 
-            if (Driver.Options.IsCLIGenerator)
+            if (Options.IsCLIGenerator)
                 // C++/CLI uses "default" as the indexer property name.
                 property.Name = "default";
 

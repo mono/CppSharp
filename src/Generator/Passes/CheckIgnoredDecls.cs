@@ -9,7 +9,7 @@ namespace CppSharp.Passes
     {
         public bool CheckDeclarationAccess(Declaration decl)
         {
-            var generateNonPublicDecls = Driver.Options.IsCSharpGenerator;
+            var generateNonPublicDecls = Options.IsCSharpGenerator;
 
             switch (decl.Access)
             {
@@ -56,7 +56,7 @@ namespace CppSharp.Passes
 
             if (!CheckDeclarationAccess(decl))
             {
-                Log.Debug("Decl '{0}' was ignored due to invalid access",
+                Diagnostics.Debug("Decl '{0}' was ignored due to invalid access",
                     decl.Name);
                 decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
                 return true;
@@ -65,7 +65,7 @@ namespace CppSharp.Passes
             if (decl.IsDependent)
             {
                 decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
-                Log.Debug("Decl '{0}' was ignored due to dependent context",
+                Diagnostics.Debug("Decl '{0}' was ignored due to dependent context",
                     decl.Name);
                 return true;
             }
@@ -94,7 +94,7 @@ namespace CppSharp.Passes
             var cppTypePrinter = new CppTypePrinter();
             var typeName = field.Type.Visit(cppTypePrinter);
 
-            Log.Debug("Field '{0}::{1}' was ignored due to {2} type '{3}'",
+            Diagnostics.Debug("Field '{0}::{1}' was ignored due to {2} type '{3}'",
                 @class.Name, field.Name, msg, typeName);
 
             return true;
@@ -111,7 +111,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(ret.Type, out msg))
             {
                 function.ExplicitlyIgnore();
-                Log.Debug("Function '{0}' was ignored due to {1} return decl",
+                Diagnostics.Debug("Function '{0}' was ignored due to {1} return decl",
                     function.Name, msg);
                 return false;
             }
@@ -121,7 +121,7 @@ namespace CppSharp.Passes
                 if (HasInvalidDecl(param, out msg))
                 {
                     function.ExplicitlyIgnore();
-                    Log.Debug("Function '{0}' was ignored due to {1} param",
+                    Diagnostics.Debug("Function '{0}' was ignored due to {1} param",
                         function.Name, msg);
                     return false;
                 }
@@ -129,7 +129,7 @@ namespace CppSharp.Passes
                 if (HasInvalidType(param.Type, out msg))
                 {
                     function.ExplicitlyIgnore();
-                    Log.Debug("Function '{0}' was ignored due to {1} param",
+                    Diagnostics.Debug("Function '{0}' was ignored due to {1} param",
                         function.Name, msg);
                     return false;
                 }
@@ -138,7 +138,7 @@ namespace CppSharp.Passes
                 if (decayedType != null)
                 {
                     function.ExplicitlyIgnore();
-                    Log.Debug("Function '{0}' was ignored due to unsupported decayed type param",
+                    Diagnostics.Debug("Function '{0}' was ignored due to unsupported decayed type param",
                         function.Name);
                     return false;
                 }
@@ -150,7 +150,7 @@ namespace CppSharp.Passes
                     if (retClass == null)
                     {
                         function.ExplicitlyIgnore();
-                        Log.Debug(
+                        Diagnostics.Debug(
                             "Function '{0}' was ignored due to an indirect return param not of a tag type",
                             function.Name);
                         return false;
@@ -178,7 +178,7 @@ namespace CppSharp.Passes
                 Class ignoredBase;
                 if (HasIgnoredBaseClass(method, @class, out ignoredBase))
                 {
-                    Log.Debug(
+                    Diagnostics.Debug(
                         "Virtual method '{0}' was ignored due to ignored base '{1}'",
                         method.QualifiedOriginalName, ignoredBase.Name);
 
@@ -225,7 +225,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(typedef.Type, out msg))
             {
                 typedef.ExplicitlyIgnore();
-                Log.Debug("Typedef '{0}' was ignored due to {1} type",
+                Diagnostics.Debug("Typedef '{0}' was ignored due to {1} type",
                     typedef.Name, msg);
                 return false;
             }
@@ -242,7 +242,7 @@ namespace CppSharp.Passes
             if (HasInvalidDecl(property, out msg))
             {
                 property.ExplicitlyIgnore();
-                Log.Debug("Property '{0}' was ignored due to {1} decl",
+                Diagnostics.Debug("Property '{0}' was ignored due to {1} decl",
                     property.Name, msg);
                 return false;
             }
@@ -250,7 +250,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(property.Type, out msg))
             {
                 property.ExplicitlyIgnore();
-                Log.Debug("Property '{0}' was ignored due to {1} type",
+                Diagnostics.Debug("Property '{0}' was ignored due to {1} type",
                     property.Name, msg);
                 return false;
             }
@@ -267,7 +267,7 @@ namespace CppSharp.Passes
             if (HasInvalidDecl(variable, out msg))
             {
                 variable.ExplicitlyIgnore();
-                Log.Debug("Variable '{0}' was ignored due to {1} decl",
+                Diagnostics.Debug("Variable '{0}' was ignored due to {1} decl",
                     variable.Name, msg);
                 return false;
             }
@@ -275,7 +275,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(variable.Type, out msg))
             {
                 variable.ExplicitlyIgnore();
-                Log.Debug("Variable '{0}' was ignored due to {1} type",
+                Diagnostics.Debug("Variable '{0}' was ignored due to {1} type",
                     variable.Name, msg);
                 return false;
             }
@@ -292,7 +292,7 @@ namespace CppSharp.Passes
             if (HasInvalidDecl(@event, out msg))
             {
                 @event.ExplicitlyIgnore();
-                Log.Debug("Event '{0}' was ignored due to {1} decl",
+                Diagnostics.Debug("Event '{0}' was ignored due to {1} decl",
                     @event.Name, msg);
                 return false;
             }
@@ -302,7 +302,7 @@ namespace CppSharp.Passes
                 if (HasInvalidDecl(param, out msg))
                 {
                     @event.ExplicitlyIgnore();
-                    Log.Debug("Event '{0}' was ignored due to {1} param",
+                    Diagnostics.Debug("Event '{0}' was ignored due to {1} param",
                         @event.Name, msg);
                     return false;
                 }
@@ -310,7 +310,7 @@ namespace CppSharp.Passes
                 if (HasInvalidType(param.Type, out msg))
                 {
                     @event.ExplicitlyIgnore();
-                    Log.Debug("Event '{0}' was ignored due to {1} param",
+                    Diagnostics.Debug("Event '{0}' was ignored due to {1} param",
                         @event.Name, msg);
                     return false;
                 }
@@ -377,7 +377,7 @@ namespace CppSharp.Passes
         private bool IsTypeComplete(Type type)
         {
             TypeMap typeMap;
-            if (Driver.TypeDatabase.FindTypeMap(type, out typeMap) && !typeMap.IsIgnored)
+            if (TypeDatabase.FindTypeMap(type, out typeMap) && !typeMap.IsIgnored)
                 return true;
 
             var desugared = type.Desugar();
@@ -394,7 +394,7 @@ namespace CppSharp.Passes
 
         private bool IsTypeIgnored(Type type)
         {
-            var checker = new TypeIgnoreChecker(Driver.TypeDatabase);
+            var checker = new TypeIgnoreChecker(TypeDatabase);
             type.Visit(checker);
 
             return checker.IsIgnored;
@@ -407,7 +407,7 @@ namespace CppSharp.Passes
                 return true;
 
             TypeMap typeMap;
-            return Driver.TypeDatabase.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
+            return TypeDatabase.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
         }
 
         #endregion

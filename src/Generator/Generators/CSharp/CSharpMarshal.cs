@@ -19,8 +19,8 @@ namespace CppSharp.Generators.CSharp
 
     public class CSharpMarshalContext : MarshalContext
     {
-        public CSharpMarshalContext(Driver driver)
-            : base(driver)
+        public CSharpMarshalContext(BindingContext context)
+            : base(context)
         {
             Kind = CSharpMarshalKind.Unknown;
             ArgumentPrefix = new TextGenerator();
@@ -56,7 +56,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalNativeToManagedPrinter(CSharpMarshalContext context)
             : base(context)
         {
-            typePrinter = new CSharpTypePrinter(context.Driver);
+            typePrinter = new CSharpTypePrinter(context.Context);
         }
 
         public bool MarshalsParameter { get; set; }
@@ -64,7 +64,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CSharpMarshalToManaged(Context);
@@ -77,7 +77,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitDeclaration(Declaration decl)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Declaration = decl;
                 typeMap.CSharpMarshalToManaged(Context);
@@ -116,7 +116,7 @@ namespace CppSharp.Generators.CSharp
                         else
                         {
                             if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
-                                Context.Driver.Options.MarshalCharAsManagedChar)
+                                Context.Context.Options.MarshalCharAsManagedChar)
                             {
                                 supportBefore.WriteLineIndent(
                                     "{0}[i] = global::System.Convert.ToChar({1}[i]);",
@@ -179,7 +179,7 @@ namespace CppSharp.Generators.CSharp
                     return true;
                 }
 
-                if (Context.Driver.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
+                if (Context.Context.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
                     Context.Return.Write(string.Format("({0}) ", pointer));
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
@@ -194,14 +194,14 @@ namespace CppSharp.Generators.CSharp
             var encoding = isChar ? Encoding.ASCII : Encoding.Unicode;
 
             if (Equals(encoding, Encoding.ASCII))
-                encoding = Context.Driver.Options.Encoding;
+                encoding = Context.Context.Options.Encoding;
 
             if (Equals(encoding, Encoding.ASCII))
                 return string.Format("Marshal.PtrToStringAnsi({0})", varName);
 
             // If we reach this, we know the string is Unicode.
             if (type.Type == PrimitiveType.Char ||
-                Context.Driver.TargetInfo.WCharWidth == 16)
+                Context.Context.TargetInfo.WCharWidth == 16)
                 return string.Format("Marshal.PtrToStringUni({0})", varName);
 
             // If we reach this, we should have an UTF-32 wide string.
@@ -219,7 +219,7 @@ namespace CppSharp.Generators.CSharp
                     return true;
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
-                    if (Context.Driver.Options.MarshalCharAsManagedChar)
+                    if (Context.Context.Options.MarshalCharAsManagedChar)
                     {
                         Context.Return.Write("global::System.Convert.ToChar({0})",
                             Context.ReturnVarName);
@@ -305,7 +305,7 @@ namespace CppSharp.Generators.CSharp
             if (parameter.Usage == ParameterUsage.Unknown || parameter.IsIn)
                 return base.VisitParameterDecl(parameter);
 
-            var ctx = new CSharpMarshalContext(Context.Driver)
+            var ctx = new CSharpMarshalContext(Context.Context)
             {
                 ReturnType = Context.ReturnType,
                 ReturnVarName = Context.ReturnVarName
@@ -375,13 +375,13 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalManagedToNativePrinter(CSharpMarshalContext context)
             : base(context)
         {
-            typePrinter = new CSharpTypePrinter(context.Driver);
+            typePrinter = new CSharpTypePrinter(context.Context);
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CSharpMarshalToNative(Context);
@@ -394,7 +394,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitDeclaration(Declaration decl)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Declaration = decl;
                 typeMap.CSharpMarshalToNative(Context);
@@ -446,7 +446,7 @@ namespace CppSharp.Generators.CSharp
                         else
                         {
                             if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
-                                Context.Driver.Options.MarshalCharAsManagedChar)
+                                Context.Context.Options.MarshalCharAsManagedChar)
                             {
                                 supportBefore.WriteLineIndent(
                                     "{0}[i] = global::System.Convert.ToSByte({1}[i]);",
@@ -579,7 +579,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     if (!marshalAsString &&
-                        Context.Driver.Options.MarshalCharAsManagedChar &&
+                        Context.Context.Options.MarshalCharAsManagedChar &&
                         primitive == PrimitiveType.Char)
                     {
                         typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
@@ -601,17 +601,17 @@ namespace CppSharp.Generators.CSharp
 
         private string MarshalStringToUnmanaged(string varName)
         {
-            if (Equals(Context.Driver.Options.Encoding, Encoding.ASCII))
+            if (Equals(Context.Context.Options.Encoding, Encoding.ASCII))
             {
                 return string.Format("Marshal.StringToHGlobalAnsi({0})", varName);
             }
-            if (Equals(Context.Driver.Options.Encoding, Encoding.Unicode) ||
-                Equals(Context.Driver.Options.Encoding, Encoding.BigEndianUnicode))
+            if (Equals(Context.Context.Options.Encoding, Encoding.Unicode) ||
+                Equals(Context.Context.Options.Encoding, Encoding.BigEndianUnicode))
             {
                 return string.Format("Marshal.StringToHGlobalUni({0})", varName);
             }
             throw new NotSupportedException(string.Format("{0} is not supported yet.",
-                Context.Driver.Options.Encoding.EncodingName));
+                Context.Context.Options.Encoding.EncodingName));
         }
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
@@ -622,7 +622,7 @@ namespace CppSharp.Generators.CSharp
                     return true;
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
-                    if (Context.Driver.Options.MarshalCharAsManagedChar)
+                    if (Context.Context.Options.MarshalCharAsManagedChar)
                     {
                         Context.Return.Write("global::System.Convert.ToSByte({0})",
                             Context.Parameter.Name);

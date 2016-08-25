@@ -52,8 +52,6 @@ namespace CppSharp.Generators.CSharp
             AppendGlobal = true;
         }
 
-        private readonly Driver driver;
-
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
         private readonly Stack<CSharpMarshalKind> marshalKinds;
 
@@ -69,10 +67,14 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterContext TypePrinterContext;
 
-        public CSharpTypePrinter(Driver driver)
-        {
-            this.driver = driver;
+        public BindingContext Context { get; set; }
 
+        public DriverOptions Options { get { return Context.Options; } }
+        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeDatabase; } }
+
+        public CSharpTypePrinter(BindingContext context)
+        {
+            Context = context;
             contexts = new Stack<CSharpTypePrinterContextKind>();
             marshalKinds = new Stack<CSharpMarshalKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);
@@ -107,7 +109,7 @@ namespace CppSharp.Generators.CSharp
                 return string.Empty;
 
             TypeMap typeMap;
-            if (driver.TypeDatabase.FindTypeMap(tag.Declaration, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(tag.Declaration, out typeMap))
             {
                 typeMap.Type = tag;
                 TypePrinterContext.CSharpKind = ContextKind;
@@ -165,7 +167,7 @@ namespace CppSharp.Generators.CSharp
                 // C# does not support fixed arrays of machine pointer type (void* or IntPtr).
                 // In that case, replace it by a pointer to an integer type of the same size.
                 if (arrayElemType == IntPtrType)
-                    arrayElemType = driver.TargetInfo.PointerWidth == 64 ? "long" : "int";
+                    arrayElemType = Context.TargetInfo.PointerWidth == 64 ? "long" : "int";
 
                 // Do not write the fixed keyword multiple times for nested array types
                 var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
@@ -271,13 +273,13 @@ namespace CppSharp.Generators.CSharp
                     return "string";
                 if (TypePrinterContext.Parameter == null || TypePrinterContext.Parameter.Name == Helpers.ReturnIdentifier)
                     return IntPtrType;
-                if (driver.Options.Encoding == Encoding.ASCII)
+                if (Options.Encoding == Encoding.ASCII)
                     return string.Format("[MarshalAs(UnmanagedType.LPStr)] string");
-                if (driver.Options.Encoding == Encoding.Unicode ||
-                    driver.Options.Encoding == Encoding.BigEndianUnicode)
+                if (Options.Encoding == Encoding.Unicode ||
+                    Options.Encoding == Encoding.BigEndianUnicode)
                     return string.Format("[MarshalAs(UnmanagedType.LPWStr)] string");
                 throw new NotSupportedException(string.Format("{0} is not supported yet.",
-                    driver.Options.Encoding.EncodingName));
+                    Options.Encoding.EncodingName));
             }
 
             var desugared = pointee.Desugar();
@@ -360,7 +362,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
                 TypePrinterContext.CSharpKind = ContextKind;
@@ -408,7 +410,7 @@ namespace CppSharp.Generators.CSharp
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap;
-            if (!driver.TypeDatabase.FindTypeMap(template, out typeMap))
+            if (!TypeMapDatabase.FindTypeMap(template, out typeMap))
             {
                 if (ContextKind != CSharpTypePrinterContextKind.Native)
                     return GetNestedQualifiedName(decl);
@@ -563,7 +565,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
-                    return driver.Options.MarshalCharAsManagedChar &&
+                    return Options.MarshalCharAsManagedChar &&
                         ContextKind != CSharpTypePrinterContextKind.Native
                         ? "char"
                         : "sbyte";
@@ -576,7 +578,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.ULong:
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
-                    return GetIntString(primitive, driver.TargetInfo);
+                    return GetIntString(primitive, Context.TargetInfo);
                 case PrimitiveType.Int128: return "__int128";
                 case PrimitiveType.UInt128: return "__uint128_t";
                 case PrimitiveType.Half: return "__fp16";

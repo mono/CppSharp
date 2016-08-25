@@ -61,12 +61,12 @@ namespace CppSharp.Types.Std
         {
             var type = ctx.Parameter.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
-            var typePrinter = new CSharpTypePrinter(ctx.Driver);
+            var typePrinter = new CSharpTypePrinter(ctx.Context);
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
             if (!ctx.Parameter.Type.Desugar().IsAddress())
                 ctx.Return.Write("*({0}*) ", basicString.Visit(typePrinter));
             typePrinter.PopContext();
-            var allocator = ctx.Driver.ASTContext.FindClass("allocator", false, true).First(
+            var allocator = ctx.Context.ASTContext.FindClass("allocator", false, true).First(
                 a => a.IsDependent);
             if (type.IsPointer() || (type.IsReference() && ctx.Declaration is Field))
             {
@@ -97,7 +97,7 @@ namespace CppSharp.Types.Std
             Declaration c_str = basicString.Methods.FirstOrDefault(m => m.OriginalName == "c_str");
             if (!c_str.IsGenerated)
                 c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
-            var typePrinter = new CSharpTypePrinter(ctx.Driver);
+            var typePrinter = new CSharpTypePrinter(ctx.Context);
             if (type.IsPointer() || ctx.Declaration is Field)
             {
                 ctx.Return.Write("{0}.{1}({2}).{3}{4}",
@@ -220,7 +220,7 @@ namespace CppSharp.Types.Std
                     QualifiedType = type
                 };
 
-                var elementCtx = new MarshalContext(ctx.Driver)
+                var elementCtx = new MarshalContext(ctx.Context)
                                      {
                                          Parameter = param,
                                          ArgName = param.Name,
@@ -265,7 +265,7 @@ namespace CppSharp.Types.Std
                 ctx.ReturnVarName);
             ctx.SupportBefore.WriteStartBraceIndent();
             {
-                var elementCtx = new MarshalContext(ctx.Driver)
+                var elementCtx = new MarshalContext(ctx.Context)
                                      {
                                          ReturnVarName = "_element",
                                          ReturnType = type

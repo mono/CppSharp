@@ -38,11 +38,11 @@ namespace CppSharp.Generators
     {
         public static string CurrentOutputNamespace = string.Empty;
 
-        public Driver Driver { get; private set; }
+        public BindingContext Context { get; private set; }
 
-        protected Generator(Driver driver)
+        protected Generator(BindingContext context)
         {
-            Driver = driver;
+            Context = context;
             CppSharp.AST.Type.TypePrinterDelegate += TypePrinterDelegate;
         }
 
@@ -71,11 +71,13 @@ namespace CppSharp.Generators
         {
             var outputs = new List<GeneratorOutput>();
 
-            var units = Driver.ASTContext.TranslationUnits.GetGenerated().ToList();
-            if (Driver.Options.IsCSharpGenerator)
+            var units = Context.ASTContext.TranslationUnits.GetGenerated().ToList();
+
+            if (Context.Options.IsCSharpGenerator)
                 GenerateSingleTemplate(outputs);
             else
                 GenerateTemplates(outputs, units.Where(u => !u.IsSystemHeader));
+
             return outputs;
         }
 
@@ -99,6 +101,7 @@ namespace CppSharp.Generators
                     TranslationUnit = unit,
                     Templates = templates
                 };
+
                 outputs.Add(output);
 
                 OnUnitGenerated(output);
@@ -107,7 +110,7 @@ namespace CppSharp.Generators
 
         private void GenerateSingleTemplate(ICollection<GeneratorOutput> outputs)
         {
-            foreach (var module in Driver.Options.Modules)
+            foreach (var module in Context.Options.Modules)
             {
                 CurrentOutputNamespace = module.OutputNamespace;
                 var output = new GeneratorOutput

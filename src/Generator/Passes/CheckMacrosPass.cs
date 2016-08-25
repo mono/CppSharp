@@ -79,7 +79,7 @@ namespace CppSharp.Passes
                                     e.MacroLocation != MacroLocation.FunctionBody &&
                                     e.MacroLocation != MacroLocation.FunctionParameters))
             {
-                Log.Debug("Decl '{0}' was ignored due to ignore macro",
+                Diagnostics.Debug("Decl '{0}' was ignored due to ignore macro",
                     decl.Name);
                 decl.ExplicitlyIgnore();
             }

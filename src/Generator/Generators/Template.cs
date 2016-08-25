@@ -280,26 +280,23 @@ namespace CppSharp.Generators
 
     public abstract class Template : ITextGenerator
     {
-        public Driver Driver { get; private set; }
-        public DriverOptions Options { get; private set; }
+        public BindingContext Context { get; private set; }
+
+        public IDiagnostics Log { get { return Context.Diagnostics; } }
+        public DriverOptions Options { get { return Context.Options; } }
+
         public List<TranslationUnit> TranslationUnits { get; private set; }
 
         public TranslationUnit TranslationUnit { get { return TranslationUnits[0]; } }
-
-        public IDiagnostics Log
-        {
-            get { return Driver.Diagnostics; }
-        }
 
         public Block RootBlock { get; private set; }
         public Block ActiveBlock { get; private set; }
 
         public abstract string FileExtension { get; }
 
-        protected Template(Driver driver, IEnumerable<TranslationUnit> units)
+        protected Template(BindingContext context, IEnumerable<TranslationUnit> units)
         {
-            Driver = driver;
-            Options = driver.Options;
+            Context = context;
             TranslationUnits = new List<TranslationUnit>(units);
             RootBlock = new Block();
             ActiveBlock = RootBlock;

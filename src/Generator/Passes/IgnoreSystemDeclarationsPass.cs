@@ -35,7 +35,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || Driver.Options.IsCLIGenerator)
+            if (!base.VisitClassDecl(@class) || Options.IsCLIGenerator)
                 return false;
 
             if (!@class.TranslationUnit.IsSystemHeader)

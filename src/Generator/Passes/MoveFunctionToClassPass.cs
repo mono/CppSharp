@@ -20,7 +20,7 @@ namespace CppSharp.Passes
             if (@class != null && @class.TranslationUnit.Module == function.TranslationUnit.Module)
             {
                 MoveFunction(function, @class);
-                Log.Debug("Function moved to class: {0}::{1}", @class.Name, function.Name);
+                Diagnostics.Debug("Function moved to class: {0}::{1}", @class.Name, function.Name);
             }
 
             if (function.IsOperator)
@@ -34,10 +34,10 @@ namespace CppSharp.Passes
             var unit = @namespace as TranslationUnit;
             if (unit == null)
             {
-                return Driver.ASTContext.FindClass(
+                return ASTContext.FindClass(
                     @namespace.Name, ignoreCase: true).FirstOrDefault();
             }
-            return Driver.ASTContext.FindCompleteClass(
+            return ASTContext.FindCompleteClass(
                 unit.FileNameWithoutExtension.ToLowerInvariant(), true);
         }
 

@@ -59,12 +59,12 @@ namespace CppSharp.Passes
                     Conversion = MethodConversionKind.FunctionToInstanceMethod
                 };
 
-            if (Driver.Options.GeneratorKind == GeneratorKind.CSharp)
+            if (Options.GeneratorKind == GeneratorKind.CSharp)
                 method.Parameters = method.Parameters.Skip(1).ToList();
 
             @class.Methods.Add(method);
 
-            Log.Debug("Function converted to instance method: {0}::{1}", @class.Name,
+            Diagnostics.Debug("Function converted to instance method: {0}::{1}", @class.Name,
                 function.Name);
 
             return true;

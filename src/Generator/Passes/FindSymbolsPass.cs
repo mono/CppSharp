@@ -21,8 +21,7 @@ namespace CppSharp.Passes
             if (!base.VisitDeclaration(decl))
                 return false;
 
-            var options = Driver.Options;
-            if (!options.CheckSymbols || options.IsCLIGenerator)
+            if (!Options.CheckSymbols || Options.IsCLIGenerator)
                 return false;
 
             var mangledDecl = decl as IMangledDecl;
@@ -42,9 +41,9 @@ namespace CppSharp.Passes
         {
             var symbol = mangledDecl.Mangled;
 
-            if (!Driver.Symbols.FindSymbol(ref symbol))
+            if (!Context.Symbols.FindSymbol(ref symbol))
             {
-                Driver.Diagnostics.Warning("Symbol not found: {0}", symbol);
+                Diagnostics.Warning("Symbol not found: {0}", symbol);
                 return false;
             }
 

@@ -20,7 +20,7 @@ namespace CppSharp.Passes
             if (char.IsNumber(name[0]))
                 return '_' + name;
 
-            if (Driver.Options.IsCLIGenerator)
+            if (Options.IsCLIGenerator)
                 return CLITemplate.SafeIdentifier(name);
             return Helpers.SafeIdentifier(name);
         }

@@ -39,10 +39,10 @@ namespace CppSharp.Passes
 
         private void WriteTemplateInstantiations()
         {
-            foreach (var module in Driver.Options.Modules.Where(m => templateInstantiations.ContainsKey(m)))
+            foreach (var module in Options.Modules.Where(m => templateInstantiations.ContainsKey(m)))
             {
                 var cppBuilder = new StringBuilder();
-                if (module == Driver.Options.SystemModule)
+                if (module == Options.SystemModule)
                 {
                     cppBuilder.Append("#include <string>\n");
                     cppBuilder.Append("#include <vector>\n");
@@ -55,8 +55,8 @@ namespace CppSharp.Passes
                     cppBuilder.AppendFormat("\ntemplate class {0}{1};",
                         Platform.IsWindows ? "__declspec(dllexport) " : string.Empty, templateInstantiation);
                 var cpp = string.Format("{0}.cpp", module.TemplatesLibraryName);
-                Directory.CreateDirectory(Driver.Options.OutputDir);
-                var path = Path.Combine(Driver.Options.OutputDir, cpp);
+                Directory.CreateDirectory(Options.OutputDir);
+                var path = Path.Combine(Options.OutputDir, cpp);
                 File.WriteAllText(path, cppBuilder.ToString());
             }
         }

@@ -131,9 +131,9 @@ namespace CppSharp.Generators.CSharp
             get { return "cs"; }
         }
 
-        public CSharpSources(Driver driver, IEnumerable<TranslationUnit> units,
+        public CSharpSources(BindingContext context, IEnumerable<TranslationUnit> units,
             CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
-            : base(driver, units)
+            : base(context, units)
         {
             TypePrinter = typePrinter;
             ExpressionPrinter = expressionPrinter;
@@ -163,7 +163,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             var module = TranslationUnits.Count == 0 ?
-                Driver.Options.SystemModule : TranslationUnit.Module;
+                Context.Options.SystemModule : TranslationUnit.Module;
             if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 PushBlock(CSharpBlockKind.Namespace);
@@ -426,11 +426,11 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
             System.Type typeMap = null;
-            if (Driver.TypeDatabase.TypeMaps.ContainsKey(@class.Name))
+            if (Context.TypeDatabase.TypeMaps.ContainsKey(@class.Name))
             {
-                typeMap = Driver.TypeDatabase.TypeMaps[@class.Name];
+                typeMap = Context.TypeDatabase.TypeMaps[@class.Name];
                 // disable the type map for the mapped class itself so that operator params are not mapped
-                Driver.TypeDatabase.TypeMaps.Remove(@class.Name);
+                Context.TypeDatabase.TypeMaps.Remove(@class.Name);
             }
 
             PushBlock(CSharpBlockKind.Class);
@@ -499,7 +499,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             if (typeMap != null)
-                Driver.TypeDatabase.TypeMaps.Add(@class.Name, typeMap);
+                Context.TypeDatabase.TypeMaps.Add(@class.Name, typeMap);
         }
 
         private void GenerateClassMarshals(Class @class)
@@ -672,7 +672,7 @@ namespace CppSharp.Generators.CSharp
 
             retType = function.ReturnType.CSharpType(TypePrinter);
 
-            var @params = function.GatherInternalParams(Driver.Options.IsItaniumLikeAbi).Select(p =>
+            var @params = function.GatherInternalParams(Context.Options.IsItaniumLikeAbi).Select(p =>
                 string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
 
             TypePrinter.PopContext();
@@ -753,7 +753,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var @base in @class.Bases.Where(b => b.Class != null))
             {
                 TypeMap typeMap;
-                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
+                if ((!Context.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
                     continue;
 
@@ -871,7 +871,7 @@ namespace CppSharp.Generators.CSharp
                 QualifiedType = decl.QualifiedType
             };
 
-            var ctx = new CSharpMarshalContext(Driver)
+            var ctx = new CSharpMarshalContext(Context)
             {
                 Parameter = param,
                 ArgName = param.Name,
@@ -985,9 +985,9 @@ namespace CppSharp.Generators.CSharp
             var isChar = finalElementType.IsPrimitiveType(PrimitiveType.Char);
 
             string type;
-            if (Driver.Options.MarshalCharAsManagedChar && isChar)
+            if (Context.Options.MarshalCharAsManagedChar && isChar)
             {
-                var typePrinter = new CSharpTypePrinter(Driver);
+                var typePrinter = new CSharpTypePrinter(Context);
                 typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 type = originalType.Visit(typePrinter).Type;
             }
@@ -1090,7 +1090,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
 
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = decl.Name,
@@ -1125,7 +1125,7 @@ namespace CppSharp.Generators.CSharp
                     var final = field.Type.GetFinalPointee().Desugar();
                     if (final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
                         (!final.IsPrimitiveType(PrimitiveType.Char) ||
-                         (!Driver.Options.MarshalCharAsManagedChar &&
+                         (!Context.Options.MarshalCharAsManagedChar &&
                           !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)))
                         @return = string.Format("({0}*) {1}", field.Type.GetPointee().Desugar(), @return);
                 }
@@ -1159,7 +1159,7 @@ namespace CppSharp.Generators.CSharp
 
                 TypePrinter.PopContext();
 
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     ArgName = decl.Name,
                     ReturnVarName = (isRefTypeArray ? string.Empty : "*") + Generator.GeneratedIdentifier("ptr"),
@@ -1495,7 +1495,7 @@ namespace CppSharp.Generators.CSharp
         private void SaveOriginalVTablePointers(Class @class)
         {
             var suffix = Helpers.GetSuffixForInternal(@class);
-            if (Driver.Options.IsMicrosoftAbi)
+            if (Context.Options.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
                         @class.Layout.VTablePointers.Select(v => string.Format(
@@ -1518,7 +1518,7 @@ namespace CppSharp.Generators.CSharp
                 var vfptr = @class.Layout.VFTables[i];
                 var size = vfptr.Layout.Components.Count;
                 WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});",
-                    i, size, Driver.TargetInfo.PointerWidth / 8);
+                    i, size, Context.TargetInfo.PointerWidth / 8);
                 WriteLine("{0}[{1}] = vfptr{1}.ToPointer();", managedVTables, i);
 
                 AllocateNewVTableEntries(vfptr.Layout.Components, wrappedEntries,
@@ -1540,7 +1540,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0} = new void*[1];", managedVTables);
 
             var size = @class.Layout.Layout.Components.Count;
-            var pointerSize = Driver.TargetInfo.PointerWidth / 8;
+            var pointerSize = Context.TargetInfo.PointerWidth / 8;
             WriteLine("var vtptr = Marshal.AllocHGlobal({0} * {1});", size, pointerSize);
 
             WriteLine("var vfptr0 = vtptr + {0} * {1};", VTables.ItaniumOffsetToTopAndRTTI, pointerSize);
@@ -1559,7 +1559,7 @@ namespace CppSharp.Generators.CSharp
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
             IList<VTableComponent> wrappedEntries, string vptr, int tableIndex, bool destructorOnly)
         {
-            var pointerSize = Driver.TargetInfo.PointerWidth / 8;
+            var pointerSize = Context.TargetInfo.PointerWidth / 8;
             for (var i = 0; i < entries.Count; i++)
             {
                 var entry = entries[i];
@@ -1573,7 +1573,7 @@ namespace CppSharp.Generators.CSharp
                      entry.Kind == VTableComponentKind.DeletingDtorPointer) &&
                     !entry.IsIgnored() &&
                     (!destructorOnly || entry.Method.IsDestructor ||
-                     Driver.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.QualifiedOriginalName)))
+                     Context.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.QualifiedOriginalName)))
                     WriteLine("{0} = _Thunks[{1}];", managedVftableEntry, wrappedEntries.IndexOf(entry));
                 else
                     WriteLine("{0} = {1};", managedVftableEntry, nativeVftableEntry);
@@ -1615,7 +1615,7 @@ namespace CppSharp.Generators.CSharp
                 if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     ReturnType = param.QualifiedType,
                     ReturnVarName = param.Name,
@@ -1655,7 +1655,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 // Marshal the managed result to native
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     Parameter = param,
@@ -1837,7 +1837,7 @@ namespace CppSharp.Generators.CSharp
             var returns = new List<string>();
             foreach (var param in @event.Parameters)
             {
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     ReturnVarName = param.Name,
                     ReturnType = param.QualifiedType
@@ -1970,7 +1970,7 @@ namespace CppSharp.Generators.CSharp
             {
                 NativeLibrary library;
                 if (!Options.CheckSymbols ||
-                    Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
+                    Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
                     WriteLine("if (disposing)");
                     if (dtor.IsVirtual)
@@ -2486,7 +2486,7 @@ namespace CppSharp.Generators.CSharp
         {
             var i = VTables.GetVTableIndex(method.OriginalFunction ?? method, @class);
             WriteLine("var {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
-                Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
+                Helpers.SlotIdentifier, i, Context.TargetInfo.PointerWidth / 8);
             if (method.IsDestructor && @class.IsAbstract)
             {
                 WriteLine("if ({0} != null)", Helpers.SlotIdentifier);
@@ -2503,7 +2503,7 @@ namespace CppSharp.Generators.CSharp
 
         private string GetDelegateName(Function function, string outputNamespace)
         {
-            var @delegate = Driver.Delegates[function];
+            var @delegate = Context.Delegates[function];
             if (string.IsNullOrWhiteSpace(@delegate.Namespace) ||
                 outputNamespace == @delegate.Namespace)
             {
@@ -2651,7 +2651,7 @@ namespace CppSharp.Generators.CSharp
 
                 TypeMap typeMap;
                 string construct = null;
-                if (Driver.TypeDatabase.FindTypeMap(retClass, out typeMap))
+                if (Context.TypeDatabase.FindTypeMap(retClass, out typeMap))
                     construct = typeMap.CSharpConstruct();
 
                 if (construct == null)
@@ -2750,7 +2750,7 @@ namespace CppSharp.Generators.CSharp
 
             if (needsReturn)
             {
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     ReturnVarName = Helpers.ReturnIdentifier,
@@ -2838,7 +2838,7 @@ namespace CppSharp.Generators.CSharp
 
                 var nativeVarName = paramInfo.Name;
 
-                var ctx = new CSharpMarshalContext(Driver)
+                var ctx = new CSharpMarshalContext(Context)
                 {
                     Parameter = param,
                     ArgName = nativeVarName,
@@ -2911,7 +2911,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            var ctx = new CSharpMarshalContext(Driver)
+            var ctx = new CSharpMarshalContext(Context)
             {
                 Parameter = param,
                 ParameterIndex = paramIndex,
@@ -3135,14 +3135,14 @@ namespace CppSharp.Generators.CSharp
         private string GetLibraryOf(Declaration declaration)
         {
             if (declaration.TranslationUnit.IsSystemHeader)
-                return Driver.Options.SystemModule.TemplatesLibraryName;
+                return Context.Options.SystemModule.TemplatesLibraryName;
 
             string libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
             if (Options.CheckSymbols)
             {
                 NativeLibrary library;
-                Driver.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
+                Context.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
 
                 if (library != null)
                     libName = Path.GetFileNameWithoutExtension(library.FileName);
@@ -3161,9 +3161,9 @@ namespace CppSharp.Generators.CSharp
             if (Platform.IsMacOS)
             {
                 var framework = libName + ".framework";
-                for (uint i = 0; i < Driver.Options.LibraryDirsCount; i++)
+                for (uint i = 0; i < Context.Options.LibraryDirsCount; i++)
                 {
-                    var libDir = Driver.Options.getLibraryDirs(i);
+                    var libDir = Context.Options.getLibraryDirs(i);
                     if (Path.GetFileName(libDir) == framework && File.Exists(Path.Combine(libDir, libName)))
                     {
                         libName = string.Format("@executable_path/../Frameworks/{0}/{1}", framework, libName);

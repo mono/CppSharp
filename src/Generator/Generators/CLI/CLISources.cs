@@ -16,8 +16,8 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public class CLISources : CLITemplate
     {
-        public CLISources(Driver driver, IEnumerable<TranslationUnit> units)
-            : base(driver, units)
+        public CLISources(BindingContext context, IEnumerable<TranslationUnit> units)
+            : base(context, units)
         {
             
         }
@@ -30,8 +30,8 @@ namespace CppSharp.Generators.CLI
             var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName)
                 .Replace('\\', '/');
 
-            if (Driver.Options.GenerateName != null)
-                file = Driver.Options.GenerateName(TranslationUnit);
+            if (Context.Options.GenerateName != null)
+                file = Context.Options.GenerateName(TranslationUnit);
 
             PushBlock(CLIBlockKind.Includes);
             WriteLine("#include \"{0}.h\"", file);
@@ -60,7 +60,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.IncludesForwardReferences);
 
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase, Driver.Options);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeDatabase, Context.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -306,7 +306,7 @@ namespace CppSharp.Generators.CLI
 
             printer.TypePrinterContext = typeCtx;
 
-            var typePrinter = new CLITypePrinter(Driver, typeCtx);
+            var typePrinter = new CLITypePrinter(Context, typeCtx);
             var retType = function.ReturnType.Type.Visit(typePrinter,
                 function.ReturnType.Qualifiers);
 
@@ -412,7 +412,7 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                 {
                     Parameter = param,
                     ArgName = param.Name,
@@ -424,7 +424,7 @@ namespace CppSharp.Generators.CLI
 
                 if (isIndexer)
                 {
-                    var ctx2 = new MarshalContext(Driver)
+                    var ctx2 = new MarshalContext(Context)
                     {
                         Parameter = indexParameter,
                         ArgName = indexParameter.Name
@@ -499,7 +499,7 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                     {
                         Declaration = decl,
                         ArgName = decl.Name,
@@ -581,7 +581,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateEventRaise(Event @event, Class @class)
         {
-            var typePrinter = new CLITypePrinter(Driver);
+            var typePrinter = new CLITypePrinter(Context);
             var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
             WriteLine("void {0}::{1}::raise({2})", QualifiedIdentifier(@class),
@@ -608,7 +608,7 @@ namespace CppSharp.Generators.CLI
             var returns = new List<string>();
             foreach (var param in @event.Parameters)
             {
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                     {
                         ReturnVarName = param.Name,
                         ReturnType = param.QualifiedType
@@ -701,7 +701,7 @@ namespace CppSharp.Generators.CLI
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, property.Field.OriginalName);
 
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                 {
                     ArgName = property.Name,
                     ReturnVarName = nativeField,
@@ -847,7 +847,7 @@ namespace CppSharp.Generators.CLI
             var paramIndex = 0;
             foreach (var param in method.Parameters)
             {
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                               {
                                   Function = method,
                                   Parameter = param,
@@ -883,7 +883,7 @@ namespace CppSharp.Generators.CLI
 
                 var varName = string.Format("_native.{0}", property.Field.OriginalName);
 
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                     {
                         ReturnVarName = varName,
                         ReturnType = property.QualifiedType
@@ -959,7 +959,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
                 var param = new Parameter { Name = "(*this)" };
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                     {
                         MarshalVarPrefix = valueMarshalName,
                         Parameter = param
@@ -1034,7 +1034,7 @@ namespace CppSharp.Generators.CLI
 
                 var nativeVarName = paramInfo.Name;
 
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                     {
                         ArgName = nativeVarName,
                         ReturnVarName = nativeVarName,
@@ -1067,7 +1067,7 @@ namespace CppSharp.Generators.CLI
                         isIntPtr ? "System::IntPtr()" : "nullptr");
                 }
 
-                var ctx = new MarshalContext(Driver)
+                var ctx = new MarshalContext(Context)
                 {
                     ArgName = returnIdentifier,
                     ReturnVarName = returnIdentifier,
@@ -1095,7 +1095,7 @@ namespace CppSharp.Generators.CLI
 
         private void CheckArgumentRange(Function method)
         {
-            if (Driver.Options.MarshalCharAsManagedChar)
+            if (Context.Options.MarshalCharAsManagedChar)
             {
                 foreach (var param in method.Parameters.Where(
                     p => p.Type.IsPrimitiveType(PrimitiveType.Char)))
@@ -1180,7 +1180,7 @@ namespace CppSharp.Generators.CLI
                 QualifiedType = new QualifiedType(paramType)
             };
 
-            var ctx = new MarshalContext(Driver)
+            var ctx = new MarshalContext(Context)
             {
                 Parameter = effectiveParam,
                 ParameterIndex = paramIndex,

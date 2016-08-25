@@ -41,7 +41,7 @@ namespace CppSharp.Passes
 
             @class.Methods.Add(method);
 
-            Driver.Diagnostics.Debug("Function converted to operator: {0}::{1}",
+            Diagnostics.Debug("Function converted to operator: {0}::{1}",
                 @class.Name, function.Name);
 
             return true;

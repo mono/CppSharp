@@ -21,7 +21,7 @@ namespace CppSharp.Passes
             if (types.Length == 0)
                 return false;
 
-            var @class = AstContext.FindCompleteClass(types[0]);
+            var @class = ASTContext.FindCompleteClass(types[0]);
             if (@class == null)
                 return false;
 
@@ -56,7 +56,7 @@ namespace CppSharp.Passes
 
             @class.Methods.Add(method);
 
-            Log.Debug("Function converted to static method: {0}::{1}",
+            Diagnostics.Debug("Function converted to static method: {0}::{1}",
                 @class.Name, function.Name);
 
             return true;
