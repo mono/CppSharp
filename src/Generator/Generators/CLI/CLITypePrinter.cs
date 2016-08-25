@@ -24,7 +24,7 @@ namespace CppSharp.Generators.CLI
     public class CLITypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
         public Driver Driver { get; set; }
-        public CLITypePrinterContext Context { get; set; }
+        public CLITypePrinterContext TypePrinterContext { get; set; }
 
         readonly ITypeMapDatabase TypeMapDatabase;
         readonly DriverOptions Options;
@@ -34,13 +34,13 @@ namespace CppSharp.Generators.CLI
             Driver = driver;
             TypeMapDatabase = driver.TypeDatabase;
             Options = driver.Options;
-            Context = new CLITypePrinterContext();
+            TypePrinterContext = new CLITypePrinterContext();
         }
 
         public CLITypePrinter(Driver driver, CLITypePrinterContext context)
             : this(driver)
         {
-            Context = context;
+            TypePrinterContext = context;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -49,8 +49,8 @@ namespace CppSharp.Generators.CLI
             if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
             {
                 typeMap.Type = tag;
-                Context.Type = tag;
-                return typeMap.CLISignature(Context);
+                TypePrinterContext.Type = tag;
+                return typeMap.CLISignature(TypePrinterContext);
             }
 
             Declaration decl = tag.Declaration;
@@ -107,9 +107,9 @@ namespace CppSharp.Generators.CLI
 
         public string VisitParameter(Parameter param, bool hasName = true)
         {
-            Context.Parameter = param;
+            TypePrinterContext.Parameter = param;
             var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
-            Context.Parameter = null;
+            TypePrinterContext.Parameter = null;
 
             var str = string.Empty;
             if(param.Usage == ParameterUsage.Out)
@@ -159,7 +159,7 @@ namespace CppSharp.Generators.CLI
             if (finalPointee.IsPrimitiveType())
             {
                 // Skip one indirection if passed by reference
-                var param = Context.Parameter;
+                var param = TypePrinterContext.Parameter;
                 bool isRefParam = param != null && (param.IsOut || param.IsInOut);
                 if (isRefParam)
                     return pointee.Visit(this, quals);
@@ -177,7 +177,7 @@ namespace CppSharp.Generators.CLI
                 var typeName = @enum.Visit(this);
 
                 // Skip one indirection if passed by reference
-                var param = Context.Parameter;
+                var param = TypePrinterContext.Parameter;
                 if (param != null && (param.IsOut || param.IsInOut)
                     && pointee == finalPointee)
                     return string.Format("{0}", typeName);
@@ -238,8 +238,8 @@ namespace CppSharp.Generators.CLI
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                Context.Type = typedef;
-                return typeMap.CLISignature(Context);
+                TypePrinterContext.Type = typedef;
+                return typeMap.CLISignature(TypePrinterContext);
             }
 
             FunctionType func;
@@ -274,8 +274,8 @@ namespace CppSharp.Generators.CLI
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
-                Context.Type = template;
-                return typeMap.CLISignature(Context);
+                TypePrinterContext.Type = template;
+                return typeMap.CLISignature(TypePrinterContext);
             }
 
             return decl.Name;

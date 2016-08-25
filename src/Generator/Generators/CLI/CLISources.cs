@@ -292,7 +292,7 @@ namespace CppSharp.Generators.CLI
         private void GenerateFunctionTemplate(FunctionTemplate template)
         {
             var printer = TypePrinter;
-            var oldCtx = printer.Context;
+            var oldCtx = printer.TypePrinterContext;
 
             PushBlock(CLIBlockKind.Template);
 
@@ -304,7 +304,7 @@ namespace CppSharp.Generators.CLI
                     Declaration = template
                 };
 
-            printer.Context = typeCtx;
+            printer.TypePrinterContext = typeCtx;
 
             var typePrinter = new CLITypePrinter(Driver, typeCtx);
             var retType = function.ReturnType.Type.Visit(typePrinter,
@@ -330,7 +330,7 @@ namespace CppSharp.Generators.CLI
 
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            printer.Context = oldCtx;
+            printer.TypePrinterContext = oldCtx;
         }
 
         private void GenerateProperty(Property property, Class realOwner)

@@ -67,7 +67,7 @@ namespace CppSharp.Generators.CSharp
             get { return marshalKinds.Peek(); }
         }
 
-        public CSharpTypePrinterContext Context;
+        public CSharpTypePrinterContext TypePrinterContext;
 
         public CSharpTypePrinter(Driver driver)
         {
@@ -78,7 +78,7 @@ namespace CppSharp.Generators.CSharp
             PushContext(CSharpTypePrinterContextKind.Managed);
             PushMarshalKind(CSharpMarshalKind.Unknown);
 
-            Context = new CSharpTypePrinterContext();
+            TypePrinterContext = new CSharpTypePrinterContext();
         }
 
         public void PushContext(CSharpTypePrinterContextKind contextKind)
@@ -110,11 +110,11 @@ namespace CppSharp.Generators.CSharp
             if (driver.TypeDatabase.FindTypeMap(tag.Declaration, out typeMap))
             {
                 typeMap.Type = tag;
-                Context.CSharpKind = ContextKind;
-                Context.MarshalKind = MarshalKind;
-                Context.Type = tag;
+                TypePrinterContext.CSharpKind = ContextKind;
+                TypePrinterContext.MarshalKind = MarshalKind;
+                TypePrinterContext.Type = tag;
 
-                string type = typeMap.CSharpSignature(Context);
+                string type = typeMap.CSharpSignature(TypePrinterContext);
                 if (!string.IsNullOrEmpty(type))
                 {
                     return new CSharpTypePrinterResult
@@ -147,7 +147,7 @@ namespace CppSharp.Generators.CSharp
                     return string.Format("{0}*", array.Type.Visit(this, quals));
                 }
 
-                if (Context.Parameter != null)
+                if (TypePrinterContext.Parameter != null)
                     return string.Format("global::System.IntPtr");
 
                 Class @class;
@@ -269,7 +269,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (isManagedContext || MarshalKind == CSharpMarshalKind.GenericDelegate)
                     return "string";
-                if (Context.Parameter == null || Context.Parameter.Name == Helpers.ReturnIdentifier)
+                if (TypePrinterContext.Parameter == null || TypePrinterContext.Parameter.Name == Helpers.ReturnIdentifier)
                     return IntPtrType;
                 if (driver.Options.Encoding == Encoding.ASCII)
                     return string.Format("[MarshalAs(UnmanagedType.LPStr)] string");
@@ -293,7 +293,7 @@ namespace CppSharp.Generators.CSharp
             if (finalPointee.IsPrimitiveType())
             {
                 // Skip one indirection if passed by reference
-                var param = Context.Parameter;
+                var param = TypePrinterContext.Parameter;
                 bool isRefParam = param != null && (param.IsOut || param.IsInOut);
                 if (isManagedContext && isRefParam)
                     return pointee.Visit(this, quals);
@@ -317,7 +317,7 @@ namespace CppSharp.Generators.CSharp
             if (desugared.TryGetEnum(out @enum))
             {
                 // Skip one indirection if passed by reference
-                var param = Context.Parameter;
+                var param = TypePrinterContext.Parameter;
                 if (isManagedContext && param != null && (param.IsOut || param.IsInOut)
                     && pointee == finalPointee)
                     return pointee.Visit(this, quals);
@@ -327,7 +327,7 @@ namespace CppSharp.Generators.CSharp
 
             Class @class;
             if ((desugared.IsDependent || desugared.TryGetClass(out @class) ||
-                (desugared is ArrayType && Context.Parameter != null))
+                (desugared is ArrayType && TypePrinterContext.Parameter != null))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 return IntPtrType;
@@ -363,11 +363,11 @@ namespace CppSharp.Generators.CSharp
             if (driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                Context.CSharpKind = ContextKind;
-                Context.MarshalKind = MarshalKind;
-                Context.Type = typedef;
+                TypePrinterContext.CSharpKind = ContextKind;
+                TypePrinterContext.MarshalKind = MarshalKind;
+                TypePrinterContext.Type = typedef;
 
-                string type = typeMap.CSharpSignature(Context);
+                string type = typeMap.CSharpSignature(TypePrinterContext);
                 if (!string.IsNullOrEmpty(type))
                 {
                     return new CSharpTypePrinterResult
@@ -420,9 +420,9 @@ namespace CppSharp.Generators.CSharp
 
             typeMap.Declaration = decl;
             typeMap.Type = template;
-            Context.Type = template;
-            Context.CSharpKind = ContextKind;
-            Context.MarshalKind = MarshalKind;
+            TypePrinterContext.Type = template;
+            TypePrinterContext.CSharpKind = ContextKind;
+            TypePrinterContext.MarshalKind = MarshalKind;
 
             var type = GetCSharpSignature(typeMap);
             if (!string.IsNullOrEmpty(type))
@@ -449,9 +449,9 @@ namespace CppSharp.Generators.CSharp
 
         private string GetCSharpSignature(TypeMap typeMap)
         {
-            Context.CSharpKind = ContextKind;
-            Context.MarshalKind = MarshalKind;
-            return typeMap.CSharpSignature(Context);
+            TypePrinterContext.CSharpKind = ContextKind;
+            TypePrinterContext.MarshalKind = MarshalKind;
+            return typeMap.CSharpSignature(TypePrinterContext);
         }
 
         public CSharpTypePrinterResult VisitTemplateParameterType(
@@ -642,9 +642,9 @@ namespace CppSharp.Generators.CSharp
             if (parameter.Kind == ParameterKind.IndirectReturnType)
                 return IntPtrType;
 
-            Context.Parameter = parameter;
+            TypePrinterContext.Parameter = parameter;
             var ret = paramType.Visit(this);
-            Context.Parameter = null;
+            TypePrinterContext.Parameter = null;
 
             return ret;
         }
@@ -763,11 +763,11 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var param in @params)
             {
-                Context.Parameter = param;
+                TypePrinterContext.Parameter = param;
                 args.Add(VisitParameter(param, hasNames).Type);
             }
 
-            Context.Parameter = null;
+            TypePrinterContext.Parameter = null;
             return string.Join(", ", args);
         }
 
@@ -842,7 +842,7 @@ namespace CppSharp.Generators.CSharp
         public static CSharpTypePrinterResult CSharpType(this QualifiedType type,
             CSharpTypePrinter printer)
         {
-            printer.Context.FullType = type;
+            printer.TypePrinterContext.FullType = type;
             return type.Visit(printer);
         }
 
@@ -858,7 +858,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is ITypedDecl)
             {
                 var type = (decl as ITypedDecl).QualifiedType;
-                printer.Context.FullType = type;
+                printer.TypePrinterContext.FullType = type;
             }
 
             return decl.Visit(printer);

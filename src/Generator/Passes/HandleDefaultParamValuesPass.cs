@@ -147,7 +147,7 @@ namespace CppSharp.Passes
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
             {
                 var typeInSignature = typeMap.CSharpSignatureType(
-                    typePrinter.Context).SkipPointerRefs().Desugar();
+                    typePrinter.TypePrinterContext).SkipPointerRefs().Desugar();
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
