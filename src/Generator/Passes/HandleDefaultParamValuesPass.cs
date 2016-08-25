@@ -21,7 +21,7 @@ namespace CppSharp.Passes
 
         public HandleDefaultParamValuesPass()
         {
-            Options.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionParameters = false;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)

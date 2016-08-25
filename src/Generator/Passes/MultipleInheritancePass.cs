@@ -17,14 +17,14 @@ namespace CppSharp.Passes
 
         public MultipleInheritancePass()
         {
-            Options.VisitClassFields = false;
-            Options.VisitNamespaceEnums = false;
-            Options.VisitNamespaceVariables = false;
-            Options.VisitTemplateArguments = false;
-            Options.VisitClassMethods = false;
-            Options.VisitClassProperties = false;
-            Options.VisitFunctionReturnType = false;
-            Options.VisitFunctionParameters = false;
+            VisitOptions.VisitClassFields = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceVariables = false;
+            VisitOptions.VisitTemplateArguments = false;
+            VisitOptions.VisitClassMethods = false;
+            VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitFunctionParameters = false;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)

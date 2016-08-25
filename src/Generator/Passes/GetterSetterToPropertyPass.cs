@@ -13,15 +13,15 @@ namespace CppSharp.Passes
     {
         public GetterSetterToPropertyPass()
         {
-            Options.VisitClassFields = false;
-            Options.VisitClassProperties = false;
-            Options.VisitNamespaceEnums = false;
-            Options.VisitNamespaceTemplates = false;
-            Options.VisitNamespaceTypedefs = false;
-            Options.VisitNamespaceEvents = false;
-            Options.VisitNamespaceVariables = false;
-            Options.VisitFunctionParameters = false;
-            Options.VisitTemplateArguments = false;
+            VisitOptions.VisitClassFields = false;
+            VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitNamespaceTypedefs = false;
+            VisitOptions.VisitNamespaceEvents = false;
+            VisitOptions.VisitNamespaceVariables = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
 
         static bool IsSetter(Function method)

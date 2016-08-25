@@ -15,8 +15,8 @@ namespace CppSharp
         public TypeIgnoreChecker(ITypeMapDatabase database)
         {
             TypeMapDatabase = database;
-            Options.VisitClassBases = false;
-            Options.VisitTemplateArguments = false;
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
 
         void Ignore()

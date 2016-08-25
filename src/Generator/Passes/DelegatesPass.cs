@@ -27,12 +27,12 @@ namespace CppSharp.Passes
 
         public DelegatesPass()
         {
-            Options.VisitClassBases = false;
-            Options.VisitFunctionParameters = false;
-            Options.VisitFunctionReturnType = false;
-            Options.VisitNamespaceEnums = false;
-            Options.VisitNamespaceTemplates = false;
-            Options.VisitTemplateArguments = false;
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
 
         public override bool VisitLibrary(ASTContext context)

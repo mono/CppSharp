@@ -30,9 +30,9 @@ namespace CppSharp.Passes
 
         protected RenamePass()
         {
-            Options.VisitFunctionReturnType = false;
-            Options.VisitFunctionParameters = false;
-            Options.VisitTemplateArguments = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
 
         protected RenamePass(RenameTargets targets)

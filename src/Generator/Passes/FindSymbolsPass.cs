@@ -6,14 +6,14 @@ namespace CppSharp.Passes
     {
         public FindSymbolsPass()
         {
-            Options.VisitClassBases = false;
-            Options.VisitFunctionParameters = false;
-            Options.VisitFunctionReturnType = false;
-            Options.VisitNamespaceEnums = false;
-            Options.VisitNamespaceTemplates = false;
-            Options.VisitNamespaceTypedefs = false;
-            Options.VisitTemplateArguments = false;
-            Options.VisitClassFields = false;
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitNamespaceTypedefs = false;
+            VisitOptions.VisitTemplateArguments = false;
+            VisitOptions.VisitClassFields = false;
         }
 
         public override bool VisitDeclaration(Declaration decl)

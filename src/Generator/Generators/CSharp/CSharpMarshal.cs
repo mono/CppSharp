@@ -40,8 +40,8 @@ namespace CppSharp.Generators.CSharp
         protected CSharpMarshalPrinter(CSharpMarshalContext context)
             : base(context)
         {
-            Options.VisitFunctionParameters = false;
-            Options.VisitTemplateArguments = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,

@@ -8,16 +8,16 @@ namespace CppSharp.Passes
     {
         public IgnoreSystemDeclarationsPass()
         {
-            Options.VisitClassBases = false;
-            Options.VisitClassFields = false;
-            Options.VisitClassMethods = false;
-            Options.VisitClassProperties = false;
-            Options.VisitFunctionParameters = false;
-            Options.VisitFunctionReturnType = false;
-            Options.VisitNamespaceEnums = false;
-            Options.VisitNamespaceEvents = false;
-            Options.VisitNamespaceTemplates = false;
-            Options.VisitTemplateArguments = false;
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassFields = false;
+            VisitOptions.VisitClassMethods = false;
+            VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceEvents = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)

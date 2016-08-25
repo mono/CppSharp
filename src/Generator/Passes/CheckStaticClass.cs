@@ -11,7 +11,7 @@ namespace CppSharp.Passes
     {
         public CheckStaticClass()
         {
-            Options.VisitClassBases = false;
+            VisitOptions.VisitClassBases = false;
         }
 
         public override bool VisitDeclaration(Declaration decl)

@@ -45,12 +45,12 @@ namespace CppSharp.AST
     public abstract class AstVisitor : IAstVisitor<bool>, IAstVisited
     {
         public ISet<object> Visited { get; private set; }
-        public AstVisitorOptions Options { get; private set; }
+        public AstVisitorOptions VisitOptions { get; private set; }
 
         protected AstVisitor()
         {
             Visited = new HashSet<object>();
-            Options = new AstVisitorOptions();
+            VisitOptions = new AstVisitorOptions();
         }
 
         public bool AlreadyVisited(Type type)
@@ -98,7 +98,7 @@ namespace CppSharp.AST
             if (function.ReturnType.Type != null)
                 function.ReturnType.Visit(this);
 
-            if (Options.VisitFunctionParameters)
+            if (VisitOptions.VisitFunctionParameters)
                 foreach (var param in function.Parameters)
                     param.Visit(this);
 
@@ -163,7 +163,7 @@ namespace CppSharp.AST
             if (!VisitType(template, quals))
                 return false;
 
-            if (Options.VisitTemplateArguments)
+            if (VisitOptions.VisitTemplateArguments)
             {
                 foreach (var arg in template.Arguments)
                 {
@@ -194,7 +194,7 @@ namespace CppSharp.AST
             if (!VisitType(template, quals))
                 return false;
 
-            if (Options.VisitTemplateArguments)
+            if (VisitOptions.VisitTemplateArguments)
             {
                 foreach (var arg in template.Arguments)
                 {
@@ -293,20 +293,20 @@ namespace CppSharp.AST
             if (!VisitDeclarationContext(@class))
                 return false;
 
-            if (Options.VisitClassBases)
+            if (VisitOptions.VisitClassBases)
                 foreach (var baseClass in @class.Bases)
                     if (baseClass.IsClass)
                         baseClass.Class.Visit(this);
 
-            if (Options.VisitClassFields)
+            if (VisitOptions.VisitClassFields)
                 foreach (var field in @class.Fields)
                     VisitFieldDecl(field);
 
-            if (Options.VisitClassProperties)
+            if (VisitOptions.VisitClassProperties)
                 foreach (var property in @class.Properties)
                     VisitProperty(property);
 
-            if (Options.VisitClassMethods)
+            if (VisitOptions.VisitClassMethods)
             {
                 var methods = @class.Methods.ToArray();
                 foreach (var method in methods)
@@ -329,7 +329,7 @@ namespace CppSharp.AST
             if (!VisitDeclaration(property))
                 return false;
 
-            if (Options.VisitFunctionReturnType)
+            if (VisitOptions.VisitFunctionReturnType)
                 return property.Type.Visit(this);
 
             return true;
@@ -349,10 +349,10 @@ namespace CppSharp.AST
                 return false;
 
             var retType = function.ReturnType;
-            if (Options.VisitFunctionReturnType && retType.Type != null)
+            if (VisitOptions.VisitFunctionReturnType && retType.Type != null)
                 retType.Type.Visit(this, retType.Qualifiers);
 
-            if (Options.VisitFunctionParameters)
+            if (VisitOptions.VisitFunctionParameters)
                 foreach (var param in function.Parameters)
                     param.Visit(this);
 
@@ -513,23 +513,23 @@ namespace CppSharp.AST
             foreach (var decl in context.Functions)
                 decl.Visit(this);
 
-            if (Options.VisitNamespaceEnums)
+            if (VisitOptions.VisitNamespaceEnums)
                 foreach (var decl in context.Enums)
                   decl.Visit(this);
 
-            if (Options.VisitNamespaceTemplates)
+            if (VisitOptions.VisitNamespaceTemplates)
                 foreach (var decl in context.Templates)
                     decl.Visit(this);
 
-            if (Options.VisitNamespaceTypedefs)
+            if (VisitOptions.VisitNamespaceTypedefs)
                 foreach (var decl in context.Typedefs)
                     decl.Visit(this);
 
-            if (Options.VisitNamespaceVariables)
+            if (VisitOptions.VisitNamespaceVariables)
                 foreach (var decl in context.Variables)
                     decl.Visit(this);
 
-            if (Options.VisitNamespaceEvents)
+            if (VisitOptions.VisitNamespaceEvents)
                 foreach (var decl in context.Events)
                     decl.Visit(this);
 
@@ -544,7 +544,7 @@ namespace CppSharp.AST
             if (!VisitDeclaration(@event))
                 return false;
 
-            if (Options.VisitEventParameters)
+            if (VisitOptions.VisitEventParameters)
                 foreach (var param in @event.Parameters)
                     param.Visit(this);
 
