@@ -6,10 +6,6 @@ namespace CppSharp.Passes
 {
     public class CleanUnitPass : TranslationUnitPass
     {
-        public CleanUnitPass()
-        {
-        }
-
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             if (!base.VisitTranslationUnit(unit))

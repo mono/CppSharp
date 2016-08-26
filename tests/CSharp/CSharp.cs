@@ -154,8 +154,8 @@ namespace CppSharp.Tests
             // To ensure that calls to constructors in conversion operators
             // are not ambiguous with multiple inheritance pass enabled.
             driver.Options.GenerateConversionOperators = true;
-            driver.TranslationUnitPasses.AddPass(new TestAttributesPass());
-            driver.TranslationUnitPasses.AddPass(new CheckMacroPass());
+            driver.Context.TranslationUnitPasses.AddPass(new TestAttributesPass());
+            driver.Context.TranslationUnitPasses.AddPass(new CheckMacroPass());
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
         }
@@ -176,7 +176,7 @@ namespace CppSharp.Tests
         {
             new CaseRenamePass(
                 RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate | RenameTargets.Variable,
-                RenameCasePattern.UpperCamelCase).VisitLibrary(driver.ASTContext);
+                RenameCasePattern.UpperCamelCase).VisitLibrary(driver.Context.ASTContext);
         }
 
         public static void Main(string[] args)

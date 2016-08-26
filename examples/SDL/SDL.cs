@@ -19,11 +19,11 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
-            driver.TranslationUnitPasses.RemovePrefix("SDL_");
-            driver.TranslationUnitPasses.RemovePrefix("SCANCODE_");
-            driver.TranslationUnitPasses.RemovePrefix("SDLK_");
-            driver.TranslationUnitPasses.RemovePrefix("KMOD_");
-            driver.TranslationUnitPasses.RemovePrefix("LOG_CATEGORY_");
+            driver.Context.TranslationUnitPasses.RemovePrefix("SDL_");
+            driver.Context.TranslationUnitPasses.RemovePrefix("SCANCODE_");
+            driver.Context.TranslationUnitPasses.RemovePrefix("SDLK_");
+            driver.Context.TranslationUnitPasses.RemovePrefix("KMOD_");
+            driver.Context.TranslationUnitPasses.RemovePrefix("LOG_CATEGORY_");
         }
 
         public void Preprocess(Driver driver, ASTContext ctx)

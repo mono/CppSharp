@@ -20,12 +20,14 @@ namespace CppSharp.Generator.Tests
             Options.Headers.AddRange(files);
 
             Driver = new Driver(Options, new TextDiagnosticPrinter());
-            Driver.SetupIncludes();
+            foreach (var module in Driver.Options.Modules)
+                module.LibraryName = "Test";
+            Driver.Setup();
             Driver.BuildParseOptions();
             if (!Driver.ParseCode())
                 throw new Exception("Error parsing the code");
 
-            AstContext = Driver.ASTContext;
+            AstContext = Driver.Context.ASTContext;
         }
     }
 }

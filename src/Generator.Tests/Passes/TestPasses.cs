@@ -20,7 +20,7 @@ namespace CppSharp.Generator.Tests.Passes
         public void Setup()
         {
             ParseLibrary("Passes.h");
-            passBuilder = new PassBuilder<TranslationUnitPass>(Driver);
+            passBuilder = new PassBuilder<TranslationUnitPass>(Driver.Context);
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace CppSharp.Generator.Tests.Passes
 
         private string TypePrinterDelegate(CppSharp.AST.Type type)
         {
-            return type.Visit(new CSharpTypePrinter(Driver)).Type;
+            return type.Visit(new CSharpTypePrinter(Driver.Context)).Type;
         }
 
         [Test]

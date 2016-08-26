@@ -226,8 +226,6 @@ namespace CppSharp
                 Project.Sources[0].Options = BuildParserOptions();
         }
 
-        public ParserTargetInfo TargetInfo { get; set; }
-
         public void SortModulesByDependencies()
         {
             if (Options.Modules.All(m => m.Libraries.Any()))
@@ -504,7 +502,7 @@ namespace CppSharp
                 return;
             }
 
-            new CleanUnitPass().VisitLibrary(driver.Context.ASTContext);
+            new CleanUnitPass { Context = driver.Context }.VisitLibrary(driver.Context.ASTContext);
             options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
 
             if (!options.Quiet)
@@ -543,7 +541,7 @@ namespace CppSharp
             }
 
             driver.Generator.Dispose();
-            driver.TargetInfo.Dispose();
+            driver.Context.TargetInfo.Dispose();
         }
     }
 }

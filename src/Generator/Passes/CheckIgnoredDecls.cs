@@ -102,7 +102,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!VisitDeclaration(function))
+            if (!VisitDeclaration(function) || function.IsSynthetized)
                 return false;
 
             var ret = function.ReturnType;
