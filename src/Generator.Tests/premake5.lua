@@ -20,6 +20,7 @@ project "CppSharp.Generator.Tests"
     "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
+    "CppSharp.Parser",
     "nunit.framework",
     "NSubstitute"
   }

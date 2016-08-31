@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CppSharp.Utils;
 using NUnit.Framework;
+using CppSharp.Parser;
 
 namespace CppSharp.Generator.Tests
 {
@@ -37,10 +38,14 @@ namespace CppSharp.Generator.Tests
 
         private static IList<string> GetDependencies(string library)
         {
+            var parserOptions = new ParserOptions2();
+            parserOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
-            driverOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             driverOptions.Libraries.Add(library);
-            var driver = new Driver(driverOptions, new TextDiagnosticPrinter());
+            var driver = new Driver(driverOptions, new TextDiagnosticPrinter())
+            {
+                ParserOptions = parserOptions
+            };
             foreach (var module in driver.Options.Modules)
                 module.LibraryName = "Test";
             driver.Setup();

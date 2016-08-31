@@ -22,6 +22,7 @@ namespace CppSharp
     {
         public IDiagnostics Diagnostics { get; private set; }
         public DriverOptions Options { get; private set; }
+        public ParserOptions2 ParserOptions { get; set; }
         public Project Project { get; private set; }
         public BindingContext Context { get; private set; }
         public Generator Generator { get; private set; }
@@ -33,6 +34,7 @@ namespace CppSharp
             Options = options;
             Diagnostics = diagnostics;
             Project = new Project();
+            ParserOptions = new ParserOptions2();
         }
 
         Generator CreateGeneratorFromKind(GeneratorKind kind)
@@ -48,9 +50,9 @@ namespace CppSharp
             return null;
         }
 
-        static void ValidateOptions(DriverOptions options)
+        void ValidateOptions()
         {
-            foreach (var module in options.Modules)
+            foreach (var module in Options.Modules)
             {
                 if (string.IsNullOrWhiteSpace(module.LibraryName))
                     throw new InvalidOptionException("One of your modules has no library name.");
@@ -59,24 +61,25 @@ namespace CppSharp
                     module.OutputNamespace = module.LibraryName;
             }
 
-            if (options.NoGenIncludeDirs != null)
-                foreach (var incDir in options.NoGenIncludeDirs)
-                    options.addIncludeDirs(incDir);
+            if (Options.NoGenIncludeDirs != null)
+                foreach (var incDir in Options.NoGenIncludeDirs)
+                    ParserOptions.addIncludeDirs(incDir);
         }
 
         public void SetupIncludes()
         {
             if (Platform.IsMacOS)
-                Options.SetupXcode();
-            else if (Platform.IsWindows && !Options.NoBuiltinIncludes)
-                Options.SetupMSVC();
+                ParserOptions.SetupXcode();
+            else if (Platform.IsWindows && !ParserOptions.NoBuiltinIncludes)
+                ParserOptions.SetupMSVC();
         }
 
         public void Setup()
         {
-            ValidateOptions(Options);
+            ValidateOptions();
             SetupIncludes();
             Context = new BindingContext(Diagnostics, Options);
+            Context.ParserOptions = ParserOptions;
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 
@@ -127,14 +130,14 @@ namespace CppSharp
         {
             var options = new ParserOptions
             {
-                Abi = Options.Abi,
-                ToolSetToUse = Options.ToolSetToUse,
-                TargetTriple = Options.TargetTriple,
-                NoStandardIncludes = Options.NoStandardIncludes,
-                NoBuiltinIncludes = Options.NoBuiltinIncludes,
-                MicrosoftMode = Options.MicrosoftMode,
-                Verbose = Options.Verbose,
-                LanguageVersion = Options.LanguageVersion
+                Abi = ParserOptions.Abi,
+                ToolSetToUse = ParserOptions.ToolSetToUse,
+                TargetTriple = ParserOptions.TargetTriple,
+                NoStandardIncludes = ParserOptions.NoStandardIncludes,
+                NoBuiltinIncludes = ParserOptions.NoBuiltinIncludes,
+                MicrosoftMode = ParserOptions.MicrosoftMode,
+                Verbose = ParserOptions.Verbose,
+                LanguageVersion = ParserOptions.LanguageVersion
             };
 
             // This eventually gets passed to Clang's MSCompatibilityVersion, which
@@ -143,42 +146,42 @@ namespace CppSharp
             // version MSVC digit, so check if we still have the old version and 
             // convert to the right format.
 
-            if (Options.ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
-                Options.ToolSetToUse *= 100000;
+            if (ParserOptions.ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
+                ParserOptions.ToolSetToUse *= 100000;
 
-            for (uint i = 0; i < Options.ArgumentsCount; ++i)
+            for (uint i = 0; i < ParserOptions.ArgumentsCount; ++i)
             {
-                var arg = Options.getArguments(i);
+                var arg = ParserOptions.getArguments(i);
                 options.addArguments(arg);
             }
 
-            for (uint i = 0; i < Options.IncludeDirsCount; ++i)
+            for (uint i = 0; i < ParserOptions.IncludeDirsCount; ++i)
             {
-                var include = Options.getIncludeDirs(i);
+                var include = ParserOptions.getIncludeDirs(i);
                 options.addIncludeDirs(include);
             }
 
-            for (uint i = 0; i < Options.SystemIncludeDirsCount; ++i)
+            for (uint i = 0; i < ParserOptions.SystemIncludeDirsCount; ++i)
             {
-                var include = Options.getSystemIncludeDirs(i);
+                var include = ParserOptions.getSystemIncludeDirs(i);
                 options.addSystemIncludeDirs(include);
             }
 
-            for (uint i = 0; i < Options.DefinesCount; ++i)
+            for (uint i = 0; i < ParserOptions.DefinesCount; ++i)
             {
-                var define = Options.getDefines(i);
+                var define = ParserOptions.getDefines(i);
                 options.addDefines(define);
             }
 
-            for (uint i = 0; i < Options.UndefinesCount; ++i)
+            for (uint i = 0; i < ParserOptions.UndefinesCount; ++i)
             {
-                var define = Options.getUndefines(i);
+                var define = ParserOptions.getUndefines(i);
                 options.addUndefines(define);
             }
 
-            for (uint i = 0; i < Options.LibraryDirsCount; ++i)
+            for (uint i = 0; i < ParserOptions.LibraryDirsCount; ++i)
             {
-                var lib = Options.getLibraryDirs(i);
+                var lib = ParserOptions.getLibraryDirs(i);
                 options.addLibraryDirs(lib);
             }
 
@@ -208,7 +211,7 @@ namespace CppSharp
             parser.SourcesParsed += OnSourceFileParsed;
             parser.ParseProject(Project, Options.UnityBuild);
            
-            Context.TargetInfo = parser.GetTargetInfo(Options);
+            Context.TargetInfo = parser.GetTargetInfo(ParserOptions);
             Context.ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
 
             return !hasParsingErrors;
@@ -248,7 +251,7 @@ namespace CppSharp
             foreach (var module in Options.Modules)
             {
                 foreach (var libraryDir in module.LibraryDirs)
-                    Options.addLibraryDirs(libraryDir);
+                    ParserOptions.addLibraryDirs(libraryDir);
 
                 foreach (var library in module.Libraries)
                 {
@@ -258,7 +261,7 @@ namespace CppSharp
                     var parser = new ClangParser();
                     parser.LibraryParsed += OnFileParsed;
 
-                    using (var res = parser.ParseLibrary(library, Options))
+                    using (var res = parser.ParseLibrary(library, ParserOptions))
                     {
                         if (res.Kind != ParserResultKind.Success)
                             continue;
@@ -482,7 +485,7 @@ namespace CppSharp
 
             driver.Setup();
 
-            if(driver.Options.Verbose)
+            if(driver.ParserOptions.Verbose)
                 Log.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)

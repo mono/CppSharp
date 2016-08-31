@@ -7,6 +7,7 @@ using CppSharp.Generators;
 using CppSharp.Passes;
 using CppSharp.Types;
 using CppAbi = CppSharp.Parser.AST.CppAbi;
+using CppSharp.Parser;
 
 namespace CppSharp
 {
@@ -49,9 +50,11 @@ namespace CppSharp
 
         public void Setup(Driver driver)
         {
+            var parserOptions = driver.ParserOptions;
+            parserOptions.TargetTriple = Triple;
+            parserOptions.Abi = Abi;
+
             var options = driver.Options;
-            options.TargetTriple = Triple;
-            options.Abi = Abi;
             options.LibraryName = "CppSharp.CppParser";
             options.SharedLibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
@@ -64,17 +67,17 @@ namespace CppSharp
             options.Libraries.Add("CppSharp.CppParser.lib");
 
             if (Abi == CppAbi.Microsoft)
-                options.MicrosoftMode = true;
+                parserOptions.MicrosoftMode = true;
 
             if (Triple.Contains("apple"))
-                SetupMacOptions(options);
+                SetupMacOptions(parserOptions);
 
             if (Triple.Contains("linux"))
-                SetupLinuxOptions(options);
+                SetupLinuxOptions(parserOptions);
 
             var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
-            options.addIncludeDirs(basePath);
-            options.addLibraryDirs(".");
+            parserOptions.addIncludeDirs(basePath);
+            parserOptions.addLibraryDirs(".");
 
             options.OutputDir = Path.Combine(GetSourceDirectory("src"), "CppParser",
                 "Bindings", Kind.ToString());
@@ -82,15 +85,15 @@ namespace CppSharp
             var extraTriple = IsGnuCpp11Abi ? "-cxx11abi" : string.Empty;
 
             if (Kind == GeneratorKind.CSharp)
-                options.OutputDir = Path.Combine(options.OutputDir, options.TargetTriple + extraTriple);
+                options.OutputDir = Path.Combine(options.OutputDir, parserOptions.TargetTriple + extraTriple);
 
             options.OutputNamespace = string.Empty;
             options.CheckSymbols = false;
-            options.Verbose = true;
+            //options.Verbose = true;
             options.UnityBuild = true;
         }
 
-        private void SetupLinuxOptions(DriverOptions options)
+        private void SetupLinuxOptions(ParserOptions options)
         {
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
@@ -124,7 +127,7 @@ namespace CppSharp
             options.addDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
 
-        private static void SetupMacOptions(DriverOptions options)
+        private static void SetupMacOptions(ParserOptions options)
         {
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;

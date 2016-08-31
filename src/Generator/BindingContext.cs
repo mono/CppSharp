@@ -1,10 +1,7 @@
 using CppSharp.AST;
-using CppSharp.Generators.CLI;
-using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Parser;
-using CppSharp.Utils;
 using System.Collections.Generic;
 
 namespace CppSharp.Generators
@@ -12,7 +9,9 @@ namespace CppSharp.Generators
     public class BindingContext
     {
         public IDiagnostics Diagnostics { get; set; }
+
         public DriverOptions Options { get; private set; }
+        public ParserOptions2 ParserOptions { get; set; }
 
         public ASTContext ASTContext { get; set; }
         public ParserTargetInfo TargetInfo { get; set; }

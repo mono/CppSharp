@@ -41,11 +41,12 @@ namespace CppSharp.Utils
             if (!Platform.IsMono)
                 options.SharedLibraryName += ".dll";
 
+            var parserOptions = driver.ParserOptions;
             if (Platform.IsMacOS)
-                options.TargetTriple = Environment.Is64BitProcess ? "x86_64-apple-darwin" : "i686-apple-darwin";
+                parserOptions.TargetTriple = Environment.Is64BitProcess ? "x86_64-apple-darwin" : "i686-apple-darwin";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
-            options.addIncludeDirs(path);
+            parserOptions.addIncludeDirs(path);
 
             driver.Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");

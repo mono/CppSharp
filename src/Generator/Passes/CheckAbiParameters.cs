@@ -67,7 +67,7 @@ namespace CppSharp.Passes
 
             // Deleting destructors (default in v-table) accept an i32 bitfield as a
             // second parameter.in MS ABI.
-            if (method != null && method.IsDestructor && Options.IsMicrosoftAbi)
+            if (method != null && method.IsDestructor && Context.ParserOptions.IsMicrosoftAbi)
             {
                 method.Parameters.Add(new Parameter
                 {

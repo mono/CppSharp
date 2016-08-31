@@ -61,7 +61,7 @@ namespace CppSharp.Passes
             // dependent types with virtuals have no own virtual layouts
             // so virtuals are considered different objects in template instantiations
             // therefore the method itself won't be visited, so let's visit it through the v-table
-            if (Options.IsMicrosoftAbi)
+            if (Context.ParserOptions.IsMicrosoftAbi)
             {
                 foreach (var method in from vfTable in @class.Layout.VFTables
                                        from component in vfTable.Layout.Components
@@ -88,7 +88,7 @@ namespace CppSharp.Passes
             if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
                 return false;
 
-            var @params = method.GatherInternalParams(Options.IsItaniumLikeAbi, true).ToList();
+            var @params = method.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, true).ToList();
             var delegateName = GenerateDelegateSignature(@params, method.ReturnType);
 
             var module = method.TranslationUnit.Module;

@@ -38,9 +38,9 @@ namespace CppSharp.Passes
             var includePath = filePath;
             var shortestIncludePath = filePath;
 
-            for (uint i = 0; i < Options.IncludeDirsCount; ++i)
+            for (uint i = 0; i < Context.ParserOptions.IncludeDirsCount; ++i)
             {
-                var path = Options.getIncludeDirs(i);
+                var path = Context.ParserOptions.getIncludeDirs(i);
 
                 int idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
                 if (idx == -1)

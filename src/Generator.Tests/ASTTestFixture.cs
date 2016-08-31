@@ -1,6 +1,7 @@
 ﻿using System;
 using CppSharp.AST;
 using CppSharp.Utils;
+using CppSharp.Parser;
 
 namespace CppSharp.Generator.Tests
 {
@@ -8,18 +9,24 @@ namespace CppSharp.Generator.Tests
     {
         protected Driver Driver;
         protected DriverOptions Options;
+        protected ParserOptions2 ParserOptions;
         protected ASTContext AstContext;
 
         protected void ParseLibrary(params string[] files)
         {
             Options = new DriverOptions();
+            ParserOptions = new ParserOptions2();
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
-            Options.addIncludeDirs(testsPath);
+            ParserOptions.addIncludeDirs(testsPath);
 
             Options.Headers.AddRange(files);
 
-            Driver = new Driver(Options, new TextDiagnosticPrinter());
+            Driver = new Driver(Options, new TextDiagnosticPrinter())
+            {
+                ParserOptions = this.ParserOptions
+            };
+
             foreach (var module in Driver.Options.Modules)
                 module.LibraryName = "Test";
             Driver.Setup();

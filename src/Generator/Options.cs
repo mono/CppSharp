@@ -4,27 +4,13 @@ using System.IO;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
-using CppSharp.Parser;
-using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
-    public class DriverOptions : ParserOptions
+    public class DriverOptions
     {
-        public static bool IsUnixPlatform
-        {
-            get
-            {
-                var platform = Environment.OSVersion.Platform;
-                return platform == PlatformID.Unix || platform == PlatformID.MacOSX;
-            }
-        }
-
         public DriverOptions()
         {
-            Abi = IsUnixPlatform ? CppAbi.Itanium : CppAbi.Microsoft;
-            MicrosoftMode = !IsUnixPlatform;
-
             OutputDir = Directory.GetCurrentDirectory();
 
             SystemModule = new Module { OutputNamespace = string.Empty, LibraryName = "Std" };
@@ -74,9 +60,6 @@ namespace CppSharp
         public List<string> Headers { get { return MainModule.Headers; } }
         public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
-
-        public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
-        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
         public List<string> Libraries { get { return MainModule.Libraries; } }

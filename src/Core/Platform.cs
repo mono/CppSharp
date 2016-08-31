@@ -57,5 +57,14 @@ namespace CppSharp
         {
             get { return Type.GetType("Mono.Runtime") != null; }
         }
+
+        public static bool IsUnixPlatform
+        {
+            get
+            {
+                var platform = Environment.OSVersion.Platform;
+                return platform == PlatformID.Unix || platform == PlatformID.MacOSX;
+            }
+        }
     }
 }

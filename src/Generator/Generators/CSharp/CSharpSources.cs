@@ -672,7 +672,7 @@ namespace CppSharp.Generators.CSharp
 
             retType = function.ReturnType.CSharpType(TypePrinter);
 
-            var @params = function.GatherInternalParams(Context.Options.IsItaniumLikeAbi).Select(p =>
+            var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
                 string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
 
             TypePrinter.PopContext();
@@ -1486,7 +1486,7 @@ namespace CppSharp.Generators.CSharp
         private void AllocateNewVTables(Class @class, IList<VTableComponent> wrappedEntries,
             bool destructorOnly)
         {
-            if (Options.IsMicrosoftAbi)
+            if (Context.ParserOptions.IsMicrosoftAbi)
                 AllocateNewVTablesMS(@class, wrappedEntries, destructorOnly);
             else
                 AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly);
@@ -1495,7 +1495,7 @@ namespace CppSharp.Generators.CSharp
         private void SaveOriginalVTablePointers(Class @class)
         {
             var suffix = Helpers.GetSuffixForInternal(@class);
-            if (Context.Options.IsMicrosoftAbi)
+            if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
                         @class.Layout.VTablePointers.Select(v => string.Format(
@@ -1564,7 +1564,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var entry = entries[i];
                 var offset = pointerSize
-                    * (i - (Options.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
+                    * (i - (Context.ParserOptions.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
 
                 var nativeVftableEntry = string.Format("*(void**)(native->{0} + {1})", vptr, offset);
                 var managedVftableEntry = string.Format("*(void**)(vfptr{0} + {1})", tableIndex, offset);
@@ -1953,7 +1953,7 @@ namespace CppSharp.Generators.CSharp
                 var suffix = Helpers.GetSuffixForInternal(@class);
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
-                    if (Options.IsMicrosoftAbi)
+                    if (Context.ParserOptions.IsMicrosoftAbi)
                         for (var i = 0; i < @class.Layout.VTablePointers.Count; i++)
                             WriteLine("((Internal{0}*) {1})->{2} = new global::System.IntPtr(__OriginalVTables[{3}]);",
                                 suffix, Helpers.InstanceIdentifier,
@@ -2816,7 +2816,7 @@ namespace CppSharp.Generators.CSharp
 
         private int GetInstanceParamIndex(Function method)
         {
-            if (Options.IsMicrosoftAbi)
+            if (Context.ParserOptions.IsMicrosoftAbi)
                 return 0;
 
             var indirectReturnType = method.Parameters.FirstOrDefault(
@@ -3161,9 +3161,9 @@ namespace CppSharp.Generators.CSharp
             if (Platform.IsMacOS)
             {
                 var framework = libName + ".framework";
-                for (uint i = 0; i < Context.Options.LibraryDirsCount; i++)
+                for (uint i = 0; i < Context.ParserOptions.LibraryDirsCount; i++)
                 {
-                    var libDir = Context.Options.getLibraryDirs(i);
+                    var libDir = Context.ParserOptions.getLibraryDirs(i);
                     if (Path.GetFileName(libDir) == framework && File.Exists(Path.Combine(libDir, libName)))
                     {
                         libName = string.Format("@executable_path/../Frameworks/{0}/{1}", framework, libName);
