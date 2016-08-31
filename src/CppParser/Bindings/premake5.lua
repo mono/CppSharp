@@ -1,3 +1,5 @@
+include "../../../build/LLVM.lua"
+
 project "CppSharp.Parser.CSharp"
 
   SetupManagedProject()

@@ -8,7 +8,14 @@ project "CppSharp.Generator"
   files   { "**.cs", "**verbs.txt" }
   excludes { "Filter.cs" }
 
-  links { "System", "System.Core", "CppSharp", "CppSharp.AST", "CppSharp.Parser" }
+  links
+  {
+  	"System",
+  	"System.Core",
+  	"CppSharp",
+  	"CppSharp.AST",
+  	"CppSharp.Parser"
+  }
 
   SetupParser()
 

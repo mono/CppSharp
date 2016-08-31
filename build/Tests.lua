@@ -6,7 +6,12 @@ function SetupExampleProject()
   debugdir "."
   
   files { "**.cs", "./*.lua" }
-  links { "CppSharp.AST", "CppSharp.Generator" }
+  links
+  {
+    "CppSharp.AST",
+    "CppSharp.Generator",
+    "CppSharp.Parser"
+  }
 
   SetupManagedProject()
   SetupParser()

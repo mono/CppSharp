@@ -1,7 +1,9 @@
+include "../../build/Tests.lua"
+
 project "SDL"
   SetupExampleProject()
 
-if config.ExampleTests then
+if config ~= nil and config.ExampleTests then
 
 project "SDL.Tests"
 
