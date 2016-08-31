@@ -22,19 +22,6 @@ solution "CppSharp"
   targetdir (libdir)
   debugdir (bindir)
 
-  if action == "vs2015" then
-
-  configuration "vs2015"
-    framework "4.6"
-
-  end
-
-  configuration "vs2013"
-    framework "4.5"
-
-  configuration "vs2012"
-    framework "4.5"
-
   configuration "windows"
     defines { "WINDOWS" }
 	
