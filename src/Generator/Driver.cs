@@ -66,18 +66,10 @@ namespace CppSharp
                     ParserOptions.addIncludeDirs(incDir);
         }
 
-        public void SetupIncludes()
-        {
-            if (Platform.IsMacOS)
-                ParserOptions.SetupXcode();
-            else if (Platform.IsWindows && !ParserOptions.NoBuiltinIncludes)
-                ParserOptions.SetupMSVC();
-        }
-
         public void Setup()
         {
             ValidateOptions();
-            SetupIncludes();
+            ParserOptions.SetupIncludes();
             Context = new BindingContext(Diagnostics, Options, ParserOptions);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
