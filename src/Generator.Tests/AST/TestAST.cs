@@ -6,6 +6,7 @@ using NUnit.Framework;
 using CppSharp.Generators.CSharp;
 using System;
 using CppSharp.Generators;
+using CppSharp.Parser;
 
 namespace CppSharp.Generator.Tests.AST
 {
@@ -314,10 +315,11 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestAmbiguity()
         {
-            var bindingContext = new BindingContext(new TextDiagnosticPrinter(), new DriverOptions());
+            var bindingContext = new BindingContext(new TextDiagnosticPrinter(), new DriverOptions(),
+                new ParserOptions2())
             new CleanUnitPass { Context = bindingContext }.VisitLibrary(AstContext);
             new CheckAmbiguousFunctions { Context = bindingContext }.VisitLibrary(AstContext);
-            Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);            
+            Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);
         }
 
         [Test]

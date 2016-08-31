@@ -26,10 +26,12 @@ namespace CppSharp.Generators
 
         private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
 
-        public BindingContext(IDiagnostics diagnostics, DriverOptions options)
+        public BindingContext(IDiagnostics diagnostics, DriverOptions options,
+            ParserOptions2 parserOptions = null)
         {
             Options = options;
             Diagnostics = diagnostics;
+            ParserOptions = parserOptions;
 
             Symbols = new SymbolContext();
             Delegates = new Dictionary<Function, DelegatesPass.DelegateDefinition>();

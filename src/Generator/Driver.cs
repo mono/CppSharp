@@ -78,8 +78,7 @@ namespace CppSharp
         {
             ValidateOptions();
             SetupIncludes();
-            Context = new BindingContext(Diagnostics, Options);
-            Context.ParserOptions = ParserOptions;
+            Context = new BindingContext(Diagnostics, Options, ParserOptions);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 
