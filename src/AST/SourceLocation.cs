@@ -1,4 +1,4 @@
-﻿namespace CppSharp
+﻿namespace CppSharp.AST
 {
     /// <summary>
     /// Encodes a location in the source.

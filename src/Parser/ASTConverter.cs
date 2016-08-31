@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SourceLocation = CppSharp.AST.SourceLocation;
 using CppSharp.Parser.AST;
 
 namespace CppSharp
