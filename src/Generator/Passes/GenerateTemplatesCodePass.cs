@@ -47,6 +47,7 @@ namespace CppSharp.Passes
                     cppBuilder.Append("#include <string>\n");
                     cppBuilder.Append("#include <vector>\n");
                     cppBuilder.Append("#include <map>\n");
+                    cppBuilder.Append("#include <unordered_map>\n");
                 }
                 else
                     foreach (var header in module.Headers)
