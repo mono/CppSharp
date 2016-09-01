@@ -33,7 +33,7 @@ function SafePath(path)
 end
 
 function SetupNativeProject()
-  location (path.join(builddir, "projects"))
+  location ("%{wks.location}/projects")
 
   local c = configuration "Debug"
     defines { "DEBUG" }
@@ -65,7 +65,7 @@ end
 
 function SetupManagedProject()
   language "C#"
-  location (path.join(builddir, "projects"))
+  location ("%{wks.location}/projects")
 
   if not os.is("macosx") then
     local c = configuration { "vs*" }
