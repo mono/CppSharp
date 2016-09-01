@@ -20,7 +20,6 @@ libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 
 msvc_buildflags = { "/wd4267" }
-gcc_buildflags = { "-std=c++11 -fpermissive" }
 
 msvc_cpp_defines = { }
 
@@ -50,10 +49,13 @@ function SetupNativeProject()
 
   configuration { "gmake" }
     buildoptions { gcc_buildflags }
-    
-  configuration { "macosx" }
+
+  filter { "system:macosx", "language:C++" }
     buildoptions { gcc_buildflags, "-stdlib=libc++" }
     links { "c++" }
+
+  filter { "system:not windows", "language:C++" }
+    buildoptions { "-fpermissive -std=c++11" }
   
   -- OS-specific options
   
