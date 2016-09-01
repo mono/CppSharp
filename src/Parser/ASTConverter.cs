@@ -1678,7 +1678,7 @@ namespace CppSharp
 
         public override AST.Declaration VisitFunctionTemplate(FunctionTemplate decl)
         {
-            var _decl = new AST.FunctionTemplate(Visit(decl.TemplatedDecl));
+            var _decl = new AST.FunctionTemplate();
             VisitTemplate(decl, _decl);
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
