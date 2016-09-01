@@ -39,7 +39,8 @@ namespace CppSharp.AST
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
         {
-            return tag.Declaration.Visit(this);
+            var qual = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
+            return string.Format("{0}{1}", qual, tag.Declaration.Visit(this));
         }
 
         public string VisitArrayType(ArrayType array, TypeQualifiers quals)

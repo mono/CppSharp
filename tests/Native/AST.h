@@ -154,3 +154,5 @@ class ForwardedTemplate;
 
 typedef ForwardedTemplate<int> i;
 typedef ForwardedTemplate<long> l;
+
+template class TestSpecializationArguments<const TestASTEnumItemByName>;

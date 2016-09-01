@@ -408,5 +408,14 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(template.Specializations[0].Constructors.First().QualifiedName,
                 Is.Not.EqualTo(template.Specializations[1].Constructors.First().QualifiedName));
         }
+
+        [Test]
+        public void TestPrintingSpecializationWithConstValue()
+        {
+            var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            Assert.That(template.Specializations.Last().Visit(cppTypePrinter),
+                Is.EqualTo("TestSpecializationArguments<const TestASTEnumItemByName>"));
+        }
     }
 }
