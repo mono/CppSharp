@@ -30,6 +30,7 @@ namespace CppSharp
 
     public interface IDiagnostics
     {
+        DiagnosticKind Level { get; set; }
         void Emit(DiagnosticInfo info);
         void PushIndent(int level = 4);
         void PopIndent();
@@ -101,7 +102,7 @@ namespace CppSharp
     public class TextDiagnosticPrinter : IDiagnostics
     {
         public Stack<int> Indents;
-        public DiagnosticKind Level;
+        public DiagnosticKind Level { get; set; }
 
         public TextDiagnosticPrinter()
         {
