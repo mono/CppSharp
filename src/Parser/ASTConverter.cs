@@ -916,10 +916,13 @@ namespace CppSharp
 
         public void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)
         {
+            var namespaces = new Dictionary<Namespace, AST.Namespace>();
+
             for (uint i = 0; i < ctx.NamespacesCount; ++i)
             {
                 var decl = ctx.getNamespaces(i);
                 var _decl = Visit(decl) as AST.Namespace;
+                namespaces.Add(decl, _decl);
                 _ctx.Namespaces.Add(_decl);
             }
 
@@ -973,6 +976,13 @@ namespace CppSharp
                 _ctx.Declarations.Add(_decl);
             }
 
+            foreach (var @namespace in namespaces)
+            {
+                VisitDeclContext(@namespace.Key, @namespace.Value);
+            }
+
+            namespaces.Clear();
+
             // Anonymous types
         }
 
@@ -997,7 +1007,6 @@ namespace CppSharp
         {
             var _namespace = new AST.Namespace();
             VisitDeclaration(decl, _namespace);
-            VisitDeclContext(decl, _namespace);
             _namespace.IsInline = decl.IsInline;
 
             return _namespace;
