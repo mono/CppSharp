@@ -2,9 +2,9 @@
 
 namespace CppSharp.Parser
 {
-    public class ParserOptions2 : ParserOptions
+    public class ParserOptions : CppParserOptions
     {
-        public ParserOptions2()
+        public ParserOptions()
         {
             Abi = Platform.IsUnixPlatform ? CppAbi.Itanium : CppAbi.Microsoft;
             MicrosoftMode = !Platform.IsUnixPlatform;
@@ -19,7 +19,7 @@ namespace CppSharp.Parser
             MicrosoftMode = true;
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
-            Abi = CppSharp.Parser.AST.CppAbi.Microsoft;
+            Abi = CppAbi.Microsoft;
             ToolSetToUse = MSVCToolchain.GetCLVersion(vsVersion) * 10000000;
 
             addArguments("-fms-extensions");

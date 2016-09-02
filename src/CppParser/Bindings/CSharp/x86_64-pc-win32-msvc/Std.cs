@@ -4879,7 +4879,7 @@ namespace std
             Dispose(disposing: true);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             global::std.allocator __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
@@ -6072,11 +6072,12 @@ namespace std
             Dispose(disposing: true);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             global::std.basic_string __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
-            Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+            if (disposing)
+                Internal.dtor_0((__Instance + __PointerAdjustment), 0);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
         }

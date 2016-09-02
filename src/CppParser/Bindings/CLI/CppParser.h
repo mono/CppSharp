@@ -12,9 +12,9 @@ namespace CppSharp
         enum struct ParserResultKind;
         enum struct SourceLocationKind;
         ref class ClangParser;
+        ref class CppParserOptions;
         ref class Parser;
         ref class ParserDiagnostic;
-        ref class ParserOptions;
         ref class ParserResult;
         ref class ParserTargetInfo;
         namespace AST
@@ -65,24 +65,24 @@ namespace CppSharp
             User = 4
         };
 
-        public ref class ParserOptions : ICppInstance
+        public ref class CppParserOptions : ICppInstance
         {
         public:
 
-            property ::CppSharp::CppParser::ParserOptions* NativePtr;
+            property ::CppSharp::CppParser::CppParserOptions* NativePtr;
             property System::IntPtr __Instance
             {
                 virtual System::IntPtr get();
                 virtual void set(System::IntPtr instance);
             }
 
-            ParserOptions(::CppSharp::CppParser::ParserOptions* native);
-            static ParserOptions^ __CreateInstance(::System::IntPtr native);
-            ParserOptions();
+            CppParserOptions(::CppSharp::CppParser::CppParserOptions* native);
+            static CppParserOptions^ __CreateInstance(::System::IntPtr native);
+            CppParserOptions();
 
-            ParserOptions(CppSharp::Parser::ParserOptions^ _0);
+            CppParserOptions(CppSharp::Parser::CppParserOptions^ _0);
 
-            ~ParserOptions();
+            ~CppParserOptions();
 
             property unsigned int ArgumentsCount
             {
@@ -355,11 +355,11 @@ namespace CppSharp
 
             ~ClangParser();
 
-            static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::ParserOptions^ Opts);
+            static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::CppParserOptions^ Opts);
 
-            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::ParserOptions^ Opts);
+            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::CppParserOptions^ Opts);
 
-            static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts);
+            static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::CppParserOptions^ Opts);
 
             protected:
             bool __ownsNativeInstance;

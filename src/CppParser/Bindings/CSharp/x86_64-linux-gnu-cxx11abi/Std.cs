@@ -290,7 +290,7 @@ namespace std
     namespace pair
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internalc__N_std_S_pair_____N_std_S__Rb_tree_node_base_S0_
+        public unsafe partial struct Internal_Ptr
         {
             [FieldOffset(0)]
             public global::System.IntPtr first;
@@ -649,11 +649,12 @@ namespace std
             Dispose(disposing: true);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             global::std.allocator __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
-            Internal.dtor_0((__Instance + __PointerAdjustment));
+            if (disposing)
+                Internal.dtor_0((__Instance + __PointerAdjustment));
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
         }
@@ -3162,11 +3163,12 @@ namespace std
                 Dispose(disposing: true);
             }
 
-            protected virtual void Dispose(bool disposing)
+            public virtual void Dispose(bool disposing)
             {
                 global::std.__cxx11.basic_string __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                Internal.dtor_0((__Instance + __PointerAdjustment));
+                if (disposing)
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }

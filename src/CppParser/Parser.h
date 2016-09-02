@@ -45,7 +45,7 @@ namespace CppSharp { namespace CppParser {
 class Parser
 {
 public:
-    Parser(ParserOptions* Opts);
+    Parser(CppParserOptions* Opts);
 
     void SetupHeader();
     ParserResult* ParseHeader(const std::vector<std::string>& SourceFiles, ParserResult* res);
@@ -140,7 +140,7 @@ private:
 
     int Index;
     ASTContext* Lib;
-    ParserOptions* Opts;
+    CppParserOptions* Opts;
     std::unique_ptr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;

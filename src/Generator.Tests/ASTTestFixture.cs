@@ -9,13 +9,13 @@ namespace CppSharp.Generator.Tests
     {
         protected Driver Driver;
         protected DriverOptions Options;
-        protected ParserOptions2 ParserOptions;
+        protected ParserOptions ParserOptions;
         protected ASTContext AstContext;
 
         protected void ParseLibrary(params string[] files)
         {
             Options = new DriverOptions();
-            ParserOptions = new ParserOptions2();
+            ParserOptions = new ParserOptions();
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
             ParserOptions.addIncludeDirs(testsPath);

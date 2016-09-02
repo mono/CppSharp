@@ -11,7 +11,7 @@ namespace CppSharp.Generators
         public IDiagnostics Diagnostics { get; set; }
 
         public DriverOptions Options { get; private set; }
-        public ParserOptions2 ParserOptions { get; set; }
+        public ParserOptions ParserOptions { get; set; }
 
         public ASTContext ASTContext { get; set; }
         public ParserTargetInfo TargetInfo { get; set; }
@@ -27,7 +27,7 @@ namespace CppSharp.Generators
         private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
 
         public BindingContext(IDiagnostics diagnostics, DriverOptions options,
-            ParserOptions2 parserOptions = null)
+            ParserOptions parserOptions = null)
         {
             Options = options;
             Diagnostics = diagnostics;

@@ -38,7 +38,7 @@ namespace CppSharp.Generator.Tests
 
         private static IList<string> GetDependencies(string library)
         {
-            var parserOptions = new ParserOptions2();
+            var parserOptions = new ParserOptions();
             parserOptions.addLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
             driverOptions.Libraries.Add(library);

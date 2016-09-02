@@ -31,9 +31,9 @@ enum class LanguageVersion
     CPlusPlus11
 };
 
-struct CS_API ParserOptions
+struct CS_API CppParserOptions
 {
-    ParserOptions();
+    CppParserOptions();
 
     VECTOR_STRING(Arguments)
 
@@ -120,9 +120,9 @@ class CS_API ClangParser
 {
 public:
 
-    static ParserResult* ParseHeader(ParserOptions* Opts);
-    static ParserResult* ParseLibrary(ParserOptions* Opts);
-    static ParserTargetInfo* GetTargetInfo(ParserOptions* Opts);
+    static ParserResult* ParseHeader(CppParserOptions* Opts);
+    static ParserResult* ParseLibrary(CppParserOptions* Opts);
+    static ParserTargetInfo* GetTargetInfo(CppParserOptions* Opts);
 };
 
 } }

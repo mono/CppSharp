@@ -22,7 +22,7 @@ namespace CppSharp
     {
         public IDiagnostics Diagnostics { get; private set; }
         public DriverOptions Options { get; private set; }
-        public ParserOptions2 ParserOptions { get; set; }
+        public ParserOptions ParserOptions { get; set; }
         public Project Project { get; private set; }
         public BindingContext Context { get; private set; }
         public Generator Generator { get; private set; }
@@ -34,7 +34,7 @@ namespace CppSharp
             Options = options;
             Diagnostics = diagnostics;
             Project = new Project();
-            ParserOptions = new ParserOptions2();
+            ParserOptions = new ParserOptions();
         }
 
         Generator CreateGeneratorFromKind(GeneratorKind kind)

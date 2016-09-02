@@ -66,7 +66,7 @@ void* IgnorePtr = (void*) 0x1;
 
 //-----------------------------------//
 
-Parser::Parser(ParserOptions* Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0)
+Parser::Parser(CppParserOptions* Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0)
 {
 }
 
@@ -4029,7 +4029,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
     return res;
 }
 
-ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
+ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
 {
     if (!Opts)
         return nullptr;
@@ -4039,7 +4039,7 @@ ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
     return res->CodeParser->ParseHeader(Opts->SourceFiles, res);
 }
 
-ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
+ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)
 {
     if (!Opts)
         return nullptr;
@@ -4049,7 +4049,7 @@ ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
     return res->CodeParser->ParseLibrary(Opts->LibraryFile, res);
 }
 
-ParserTargetInfo* ClangParser::GetTargetInfo(ParserOptions* Opts)
+ParserTargetInfo* ClangParser::GetTargetInfo(CppParserOptions* Opts)
 {
     if (!Opts)
         return nullptr;

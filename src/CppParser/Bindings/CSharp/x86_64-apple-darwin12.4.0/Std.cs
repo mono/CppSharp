@@ -8535,7 +8535,7 @@ namespace std
                 Dispose(disposing: true);
             }
 
-            protected virtual void Dispose(bool disposing)
+            public virtual void Dispose(bool disposing)
             {
                 global::std.__1.allocator __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
@@ -12694,7 +12694,7 @@ namespace std
         namespace __tree_end_node
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public unsafe partial struct Internalc__N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v
+            public unsafe partial struct Internal_Ptr
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __left_;
@@ -13028,11 +13028,12 @@ namespace std
                 Dispose(disposing: true);
             }
 
-            protected virtual void Dispose(bool disposing)
+            public virtual void Dispose(bool disposing)
             {
                 global::std.__1.basic_string __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                Internal.dtor_0((__Instance + __PointerAdjustment));
+                if (disposing)
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }
