@@ -250,10 +250,10 @@ void Parser::SetupHeader()
     switch (Opts->LanguageVersion)
     {
     case CppParser::LanguageVersion::C:
+    case CppParser::LanguageVersion::GNUC:
         args.push_back("-xc");
         break;
-    case CppParser::LanguageVersion::CPlusPlus98:
-    case CppParser::LanguageVersion::CPlusPlus11:
+    default:
         args.push_back("-xc++");
         break;
     }
@@ -261,10 +261,19 @@ void Parser::SetupHeader()
     switch (Opts->LanguageVersion)
     {
     case CppParser::LanguageVersion::C:
+        args.push_back("-std=c99");
+        break;
+    case CppParser::LanguageVersion::GNUC:
         args.push_back("-std=gnu99");
         break;
     case CppParser::LanguageVersion::CPlusPlus98:
+        args.push_back("-std=c++98");
+        break;
+    case CppParser::LanguageVersion::GNUPlusPlus98:
         args.push_back("-std=gnu++98");
+        break;
+    case CppParser::LanguageVersion::CPlusPlus11:
+        args.push_back(Opts->MicrosoftMode ? "-std=c++14" : "-std=c++11");
         break;
     default:
         args.push_back(Opts->MicrosoftMode ? "-std=gnu++14" : "-std=gnu++11");

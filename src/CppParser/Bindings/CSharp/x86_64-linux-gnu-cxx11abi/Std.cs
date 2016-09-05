@@ -1096,6 +1096,10 @@ namespace std
     namespace __cxx11
     {
     }
+
+    namespace __cxx11
+    {
+    }
 }
 
 public unsafe partial class __mbstate_t
@@ -3475,6 +3479,10 @@ public unsafe partial class fd_set
 
 namespace std
 {
+    namespace __cxx11
+    {
+    }
+
     namespace __cxx11
     {
     }

@@ -16813,10 +16813,16 @@ namespace CppSharp
         {
             /// <summary>The C programming language.</summary>
             C = 0,
+            /// <summary>The C programming language (GNU version).</summary>
+            GNUC = 1,
             /// <summary>The C++ programming language year 1998; supports deprecated constructs.</summary>
-            CPlusPlus98 = 1,
+            CPlusPlus98 = 2,
+            /// <summary>The C++ programming language year 1998; supports deprecated constructs (GNU version).</summary>
+            GNUPlusPlus98 = 3,
             /// <summary>The C++ programming language year 2011.</summary>
-            CPlusPlus11 = 2
+            CPlusPlus11 = 4,
+            /// <summary>The C++ programming language year 2011 (GNU version).</summary>
+            GNUPlusPlus11 = 5
         }
 
         public enum ParserDiagnosticLevel
