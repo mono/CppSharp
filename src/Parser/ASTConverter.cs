@@ -940,19 +940,19 @@ namespace CppSharp
                 _ctx.Functions.Add(_decl);
             }
 
+            for (uint i = 0; i < ctx.TemplatesCount; ++i)
+            {
+                var decl = ctx.getTemplates(i);
+                var _decl = Visit(decl) as AST.Template;
+                _ctx.Templates.Add(_decl);
+            }
+
             for (uint i = 0; i < ctx.ClassesCount; ++i)
             {
                 var decl = ctx.getClasses(i);
                 var _decl = Visit(decl) as AST.Class;
                 if (!_decl.IsIncomplete)
                     _ctx.Classes.Add(_decl);
-            }
-
-            for (uint i = 0; i < ctx.TemplatesCount; ++i)
-            {
-                var decl = ctx.getTemplates(i);
-                var _decl = Visit(decl) as AST.Template;
-                _ctx.Templates.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.TypedefsCount; ++i)
