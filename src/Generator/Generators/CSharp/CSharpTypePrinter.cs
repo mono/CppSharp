@@ -823,6 +823,11 @@ namespace CppSharp.Generators.CSharp
             return unaryTransformType.BaseType.Visit(this);
         }
 
+        public CSharpTypePrinterResult VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public CSharpTypePrinterResult VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
         {
             throw new NotImplementedException();

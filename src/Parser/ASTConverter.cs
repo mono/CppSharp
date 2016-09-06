@@ -29,6 +29,7 @@ namespace CppSharp
         public abstract TRet VisitBuiltin(BuiltinType type);
         public abstract TRet VisitPackExpansion(PackExpansionType type);
         public abstract TRet VisitUnaryTransform(UnaryTransformType type);
+        public abstract TRet VisitVector(VectorType type);
 
         public TRet Visit(Parser.AST.Type type)
         {
@@ -121,6 +122,11 @@ namespace CppSharp
                 {
                     var _type = UnaryTransformType.__CreateInstance(type.__Instance);
                     return VisitUnaryTransform(_type);
+                }
+                case TypeKind.Vector:
+                {
+                    var _type = VectorType.__CreateInstance(type.__Instance);
+                    return VisitVector(_type);
                 }
             }
 
@@ -385,7 +391,7 @@ namespace CppSharp
             typeConverter.declConverter = declConverter;
         }
 
-        public CppSharp.AST.ASTContext Convert()
+        public AST.ASTContext Convert()
         {
             var _ctx = new AST.ASTContext();
 
@@ -748,6 +754,14 @@ namespace CppSharp
             VisitType(type, _type);
             _type.Desugared = VisitQualified(type.Desugared);
             _type.BaseType = VisitQualified(type.BaseType);
+            return _type;
+        }
+
+        public override AST.Type VisitVector(VectorType type)
+        {
+            var _type = new AST.VectorType();
+            _type.NumElements = type.NumElements;
+            _type.ElementType = VisitQualified(type.ElementType);
             return _type;
         }
     }

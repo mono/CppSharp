@@ -1166,6 +1166,57 @@ void CppSharp::Parser::AST::UnaryTransformType::BaseType::set(CppSharp::Parser::
     ((::CppSharp::CppParser::AST::UnaryTransformType*)NativePtr)->BaseType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::VectorType::VectorType(::CppSharp::CppParser::AST::VectorType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::VectorType^ CppSharp::Parser::AST::VectorType::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::VectorType((::CppSharp::CppParser::AST::VectorType*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::VectorType::~VectorType()
+{
+}
+
+CppSharp::Parser::AST::VectorType::VectorType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::VectorType();
+}
+
+CppSharp::Parser::AST::VectorType::VectorType(CppSharp::Parser::AST::VectorType^ _0)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::VectorType*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::VectorType(__arg0);
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::VectorType::ElementType::get()
+{
+    return (&((::CppSharp::CppParser::AST::VectorType*)NativePtr)->ElementType == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::VectorType*)NativePtr)->ElementType);
+}
+
+void CppSharp::Parser::AST::VectorType::ElementType::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::VectorType*)NativePtr)->ElementType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+unsigned int CppSharp::Parser::AST::VectorType::NumElements::get()
+{
+    return ((::CppSharp::CppParser::AST::VectorType*)NativePtr)->NumElements;
+}
+
+void CppSharp::Parser::AST::VectorType::NumElements::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::VectorType*)NativePtr)->NumElements = value;
+}
+
 CppSharp::Parser::AST::BuiltinType::BuiltinType(::CppSharp::CppParser::AST::BuiltinType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

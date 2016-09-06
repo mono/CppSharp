@@ -32,7 +32,8 @@ namespace CppSharp
                 DependentName = 13,
                 PackExpansion = 14,
                 Builtin = 15,
-                UnaryTransform = 16
+                UnaryTransform = 16,
+                Vector = 17
             }
 
             public enum DeclarationKind
@@ -2752,6 +2753,115 @@ namespace CppSharp
                     set
                     {
                         ((Internal*) __Instance)->BaseType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.Internal() : *(global::CppSharp.Parser.AST.QualifiedType.Internal*) (value.__Instance);
+                    }
+                }
+            }
+
+            public unsafe partial class VectorType : global::CppSharp.Parser.AST.Type, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                public new partial struct Internal
+                {
+                    [FieldOffset(0)]
+                    public global::CppSharp.Parser.AST.TypeKind Kind;
+
+                    [FieldOffset(4)]
+                    public byte IsDependent;
+
+                    [FieldOffset(8)]
+                    public global::CppSharp.Parser.AST.QualifiedType.Internal ElementType;
+
+                    [FieldOffset(16)]
+                    public uint NumElements;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??0VectorType@AST@CppParser@CppSharp@@QAE@XZ")]
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??0VectorType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
+                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                }
+
+                public static new VectorType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new VectorType(native.ToPointer(), skipVTables);
+                }
+
+                public static VectorType __CreateInstance(VectorType.Internal native, bool skipVTables = false)
+                {
+                    return new VectorType(native, skipVTables);
+                }
+
+                private static void* __CopyValue(VectorType.Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(20);
+                    global::CppSharp.Parser.AST.VectorType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private VectorType(VectorType.Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VectorType(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VectorType()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(20);
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
+                }
+
+                public VectorType(global::CppSharp.Parser.AST.VectorType _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(20);
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public global::CppSharp.Parser.AST.QualifiedType ElementType
+                {
+                    get
+                    {
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((Internal*) __Instance)->ElementType);
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->ElementType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.Internal() : *(global::CppSharp.Parser.AST.QualifiedType.Internal*) (value.__Instance);
+                    }
+                }
+
+                public uint NumElements
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->NumElements;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->NumElements = value;
                     }
                 }
             }

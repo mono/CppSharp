@@ -184,6 +184,8 @@ PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
 
 UnaryTransformType::UnaryTransformType() : Type(TypeKind::UnaryTransform) {}
 
+VectorType::VectorType() : Type(TypeKind::Vector), NumElements(0) {}
+
 BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
 
 VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}

@@ -214,6 +214,12 @@ namespace CppSharp.AST
             return unaryTransformType.BaseType.Visit(this);
         }
 
+        public string VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        {
+            // an incomplete implementation but we'd hardly need anything better
+            return "__attribute__()";
+        }
+
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
             if (type.Type == typeof(string))

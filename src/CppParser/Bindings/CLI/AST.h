@@ -107,6 +107,7 @@ namespace CppSharp
             ref class VarTemplatePartialSpecialization;
             ref class VarTemplateSpecialization;
             ref class Variable;
+            ref class VectorType;
             ref class VerbatimBlockComment;
             ref class VerbatimBlockLineComment;
             ref class VerbatimLineComment;
@@ -138,7 +139,8 @@ namespace CppSharp
                 DependentName = 13,
                 PackExpansion = 14,
                 Builtin = 15,
-                UnaryTransform = 16
+                UnaryTransform = 16,
+                Vector = 17
             };
 
             public enum struct DeclarationKind
@@ -967,6 +969,31 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+            };
+
+            public ref class VectorType : CppSharp::Parser::AST::Type
+            {
+            public:
+
+                VectorType(::CppSharp::CppParser::AST::VectorType* native);
+                static VectorType^ __CreateInstance(::System::IntPtr native);
+                VectorType();
+
+                VectorType(CppSharp::Parser::AST::VectorType^ _0);
+
+                ~VectorType();
+
+                property CppSharp::Parser::AST::QualifiedType^ ElementType
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
+                property unsigned int NumElements
+                {
+                    unsigned int get();
+                    void set(unsigned int);
                 }
             };
 

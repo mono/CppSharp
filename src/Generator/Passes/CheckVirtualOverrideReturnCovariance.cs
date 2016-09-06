@@ -173,6 +173,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        {
+            return false;
+        }
+
         public bool VisitCILType(CILType type, TypeQualifiers quals)
         {
             return false;

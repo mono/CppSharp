@@ -1011,6 +1011,8 @@ namespace CppSharp.AST
         public UnaryTransformType(UnaryTransformType type)
             : base(type)
         {
+            Desugared = type.Desugared;
+            BaseType = type.BaseType;
         }
 
         public QualifiedType Desugared { get; set; }
@@ -1024,6 +1026,31 @@ namespace CppSharp.AST
         public override object Clone()
         {
             return new UnaryTransformType(this);
+        }
+    }
+
+    public class VectorType : Type
+    {
+        public VectorType()
+        {
+        }
+
+        public VectorType(VectorType type)
+            : base(type)
+        {
+        }
+
+        public QualifiedType ElementType { get; set; }
+        public uint NumElements { get; set; }
+
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitVectorType(this, quals);
+        }
+
+        public override object Clone()
+        {
+            return new VectorType(this);
         }
     }
 
@@ -1156,6 +1183,7 @@ namespace CppSharp.AST
             TypeQualifiers quals);
         T VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals);
         T VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals);
+        T VisitVectorType(VectorType vectorType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
     }
 }

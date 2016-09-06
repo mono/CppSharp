@@ -261,6 +261,11 @@ namespace CppSharp.AST
             return true;
         }
 
+        public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public virtual bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return true;

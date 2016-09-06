@@ -322,6 +322,11 @@ namespace CppSharp.Generators.CLI
             return unaryTransformType.BaseType.Visit(this);
         }
 
+        public string VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
             var result = type.Type.FullName.Replace(".", "::");

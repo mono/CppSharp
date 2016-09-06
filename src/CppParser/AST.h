@@ -33,7 +33,8 @@ enum class TypeKind
     DependentName,
     PackExpansion,
     Builtin,
-    UnaryTransform
+    UnaryTransform,
+    Vector
 };
 
 #define DECLARE_TYPE_KIND(kind) \
@@ -233,7 +234,7 @@ class Class;
 class CS_API InjectedClassNameType : public Type
 {
 public:
-    InjectedClassNameType();
+    DECLARE_TYPE_KIND(InjectedClassName)
     QualifiedType InjectedSpecializationType;
     CppSharp::CppParser::AST::Class* Class;
 };
@@ -257,6 +258,14 @@ public:
     DECLARE_TYPE_KIND(UnaryTransform)
     QualifiedType Desugared;
     QualifiedType BaseType;
+};
+
+class CS_API VectorType : public Type
+{
+public:
+    DECLARE_TYPE_KIND(Vector)
+    QualifiedType ElementType;
+    unsigned NumElements;
 };
 
 enum class PrimitiveType

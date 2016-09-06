@@ -2546,8 +2546,14 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     }
     case clang::Type::Vector:
     {
-        // GCC-specific / __attribute__((vector_size(n))
-        return nullptr;
+        auto V = Type->getAs<clang::VectorType>();
+
+        auto VT = new VectorType();
+        VT->ElementType = GetQualifiedType(V->getElementType());
+        VT->NumElements = V->getNumElements();
+
+        Ty = VT;
+        break;
     }
     case clang::Type::PackExpansion:
     {
