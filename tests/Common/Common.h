@@ -212,7 +212,8 @@ public:
 class DLL_API ImplementsAbstractFoo : public AbstractFoo
 {
 public:
-    virtual int pureFunction(int i = 0);
+    typedef int typedefInOverride;
+    virtual int pureFunction(typedefInOverride i = 0);
     virtual int pureFunction1();
     virtual int pureFunction2(bool* ok = 0);
 };

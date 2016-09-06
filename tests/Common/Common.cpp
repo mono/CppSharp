@@ -309,7 +309,7 @@ int TestDelegates::CDecl(DelegateCDecl del)
     return del(1);
 }
 
-int ImplementsAbstractFoo::pureFunction(int i)
+int ImplementsAbstractFoo::pureFunction(typedefInOverride i)
 {
     return 5;
 }

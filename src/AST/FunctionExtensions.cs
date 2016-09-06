@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
@@ -76,7 +77,7 @@ namespace CppSharp.AST
         public static bool CanOverride(this Method @override, Method method)
         {
             return (method.OriginalName == @override.OriginalName &&
-                method.ReturnType == @override.ReturnType &&
+                method.ReturnType.ResolvesTo(@override.ReturnType) &&
                 method.Parameters.SequenceEqual(@override.Parameters, ParameterTypeComparer.Instance)) ||
                 (@override.IsDestructor && method.IsDestructor && method.IsVirtual);
         }

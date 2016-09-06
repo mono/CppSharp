@@ -272,5 +272,22 @@
 
             return type;
         }
+
+        public static bool ResolvesTo(this QualifiedType type, QualifiedType other)
+        {
+            if (!type.Qualifiers.Equals(other.Qualifiers))
+                return false;
+
+            var left = type.Type.Desugar();
+            var right = other.Type.Desugar();
+            var leftPointer = left as PointerType;
+            var rightPointer = right as PointerType;
+            if (leftPointer != null && rightPointer != null)
+            {
+                return leftPointer.Modifier == rightPointer.Modifier &&
+                    leftPointer.QualifiedPointee.ResolvesTo(rightPointer.QualifiedPointee);
+            }
+            return left.Equals(right);
+        }
     }
 }

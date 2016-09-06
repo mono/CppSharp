@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
@@ -96,7 +97,7 @@ namespace CppSharp.AST
 
         public bool Equals(Parameter x, Parameter y)
         {
-            return x.QualifiedType == y.QualifiedType;
+            return x.QualifiedType.ResolvesTo(y.QualifiedType);
         }
 
         public int GetHashCode(Parameter obj)
