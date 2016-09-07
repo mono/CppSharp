@@ -222,7 +222,7 @@ namespace CppSharp
 
         public void SortModulesByDependencies()
         {
-            if (Options.Modules.All(m => m.Libraries.Any()))
+            if (Options.Modules.All(m => m.Libraries.Any() || m == Options.SystemModule))
             {
                 var sortedModules = Options.Modules.TopologicalSort(m =>
                 {
