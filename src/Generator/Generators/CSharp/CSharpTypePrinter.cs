@@ -438,7 +438,7 @@ namespace CppSharp.Generators.CSharp
 
             return GetNestedQualifiedName(decl) +
                 (ContextKind == CSharpTypePrinterContextKind.Native ?
-                    ".Internal" : string.Empty);
+                    Helpers.InternalStruct : string.Empty);
         }
 
         public CSharpTypePrinterResult VisitDependentTemplateSpecializationType(
@@ -608,8 +608,9 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == CSharpTypePrinterContextKind.Native)
-                return string.Format("{0}.Internal",
-                    GetNestedQualifiedName(@class.OriginalClass ?? @class));
+                return string.Format("{0}.{1}",
+                    GetNestedQualifiedName(@class.OriginalClass ?? @class),
+                    Helpers.InternalStruct);
 
             return GetNestedQualifiedName(@class);
         }

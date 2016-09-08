@@ -111,8 +111,9 @@ namespace CppSharp.Generators.CSharp
                         Class @class;
                         if (arrayType.TryGetClass(out @class) && @class.IsRefType)
                             supportBefore.WriteLineIndent(
-                                "{0}[i] = {1}.{2}(*(({1}.Internal*)&({3}[i * sizeof({1}.Internal)])));",
-                                value, array.Type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                                "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
+                                value, array.Type, Helpers.CreateInstanceIdentifier,
+                                Helpers.InternalStruct, Context.ReturnVarName);
                         else
                         {
                             if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
@@ -440,8 +441,9 @@ namespace CppSharp.Generators.CSharp
                         if (@class != null && @class.IsRefType)
                         {
                             supportBefore.WriteLineIndent(
-                                "{0}[i * sizeof({2}.Internal)] = *((byte*)({2}.Internal*){1}[i].__Instance);",
-                                Context.ReturnVarName, Context.ArgName, array.Type);
+                                "{0}[i * sizeof({1}.{2})] = *((byte*)({1}.{2}*){3}[i].{4});",
+                                Context.ReturnVarName, array.Type, Helpers.InternalStruct,
+                                Context.ArgName, Helpers.InstanceIdentifier);
                         }
                         else
                         {
@@ -539,8 +541,9 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
                     var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
-                    Context.SupportBefore.WriteLine("var {0} = new {1}.Internal();",
-                        Generator.GeneratedIdentifier(Context.ArgName), qualifiedIdentifier);
+                    Context.SupportBefore.WriteLine("var {0} = new {1}.{2}();",
+                        Generator.GeneratedIdentifier(Context.ArgName), qualifiedIdentifier,
+                        Helpers.InternalStruct);
                 }
                 else
                 {
@@ -735,8 +738,9 @@ namespace CppSharp.Generators.CSharp
             var realClass = @class.OriginalClass ?? @class;
             var qualifiedIdentifier = realClass.Visit(this.typePrinter);
             Context.Return.Write(
-                "ReferenceEquals({0}, null) ? new {1}.Internal{3}() : *({1}.Internal{3}*) ({0}.{2})", param,
-                qualifiedIdentifier, Helpers.InstanceIdentifier, Helpers.GetSuffixForInternal(@class));
+                "ReferenceEquals({0}, null) ? new {1}.{2}{3}() : *({1}.{2}{3}*) ({0}.{4})",
+                param, qualifiedIdentifier, Helpers.InternalStruct,
+                Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier);
         }
 
         private void MarshalValueClass()

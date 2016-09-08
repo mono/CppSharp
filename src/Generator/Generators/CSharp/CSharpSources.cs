@@ -40,6 +40,7 @@ namespace CppSharp.Generators.CSharp
             return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
+        public static readonly string InternalStruct = Generator.GeneratedIdentifier("_Internal");
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
         public static readonly string PointerAdjustmentIdentifier = Generator.GeneratedIdentifier("PointerAdjustment");
@@ -460,9 +461,10 @@ namespace CppSharp.Generators.CSharp
                     PushBlock(CSharpBlockKind.Field);
                     if (@class.IsValueType)
                     {
-                        WriteLine("private {0}.Internal {1};", @class.Name, Helpers.InstanceField);
-                        WriteLine("public {0}.Internal {1} {{ get {{ return {2}; }} }}", @class.Name,
-                            Helpers.InstanceIdentifier, Helpers.InstanceField);
+                        WriteLine("private {0}.{1} {2};", @class.Name, Helpers.InternalStruct,
+                            Helpers.InstanceField);
+                        WriteLine("public {0}.{1} {2} {{ get {{ return {3}; }} }}", @class.Name,
+                            Helpers.InternalStruct, Helpers.InstanceIdentifier, Helpers.InstanceField);
                     }
                     else
                     {
@@ -694,8 +696,8 @@ namespace CppSharp.Generators.CSharp
                 Write("new ");
 
             var suffix = Helpers.GetSuffixForInternal(@class);
-            WriteLine("{0}partial struct Internal{1}",
-                isSpecialization ? "unsafe " : string.Empty, suffix);
+            WriteLine("{0}partial struct {1}{2}",
+                isSpecialization ? "unsafe " : string.Empty, Helpers.InternalStruct, suffix);
         }
 
         public static bool ShouldGenerateClassNativeField(Class @class)
@@ -950,7 +952,7 @@ namespace CppSharp.Generators.CSharp
                     ctx.ReturnVarName = string.Format("{0}{1}{2}",
                         @class.IsValueType
                             ? Helpers.InstanceField
-                            : string.Format("((Internal{0}*) {1})",
+                            : string.Format("(({0}{1}*) {2})", Helpers.InternalStruct,
                                 Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier),
                         @class.IsValueType ? "." : "->",
                         Helpers.SafeIdentifier(name));
@@ -1036,8 +1038,8 @@ namespace CppSharp.Generators.CSharp
             var internalFunction = GetFunctionNativeIdentifier(function);
             if (type.IsPrimitiveType(out primitiveType))
             {
-                WriteLine("*Internal{0}.{1}({2}, {3}) = value;",
-                    Helpers.GetSuffixForInternal(function.Namespace),
+                WriteLine("*{0}{1}.{2}({3}, {4}) = value;",
+                    Helpers.InternalStruct, Helpers.GetSuffixForInternal(function.Namespace),
                     internalFunction, GetInstanceParam(function), function.Parameters[0].Name);
             }
             else
@@ -1048,11 +1050,11 @@ namespace CppSharp.Generators.CSharp
                     @class.IsValueType;
                 var paramMarshal = GenerateFunctionParamMarshal(function.Parameters[0], 0, function);
                 var suffix = Helpers.GetSuffixForInternal(function.Namespace);
-                WriteLine("*({0}.Internal{1}*) Internal{1}.{2}({3}, {4}) = {5}value.{6};",
-                    typeString, suffix, internalFunction, GetInstanceParam(function),
+                WriteLine("*({0}.{1}{2}*) {1}{2}.{3}({4}, {5}) = {6}value.{7};",
+                    typeString, Helpers.InternalStruct, suffix, internalFunction, GetInstanceParam(function),
                     paramMarshal.Context == null ? paramMarshal.Name : paramMarshal.Context.Return,
                     isValueType ? string.Empty :
-                        string.Format("*({0}.Internal{1}*) ", typeString, suffix),
+                        string.Format("*({0}.{1}{2}*) ", typeString, Helpers.InternalStruct, suffix),
                     Helpers.InstanceIdentifier);
             }
         }
@@ -1103,7 +1105,7 @@ namespace CppSharp.Generators.CSharp
                     ReturnVarName = string.Format("{0}{1}{2}",
                         @class.IsValueType
                             ? Helpers.InstanceField
-                            : string.Format("((Internal{0}*) {1})",
+                            : string.Format("(({0}{1}*) {2})", Helpers.InternalStruct,
                                 Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier),
                         @class.IsValueType ? "." : "->",
                         Helpers.SafeIdentifier(name)),
@@ -1426,7 +1428,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("if (__OriginalVTables != null)");
             WriteLineIndent("return;");
 
-            WriteLine("var native = (Internal{0}*) {1}.ToPointer();",
+            WriteLine("var native = ({0}{1}*) {2}.ToPointer();", Helpers.InternalStruct,
                 Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier);
             NewLine();
 
@@ -1504,12 +1506,12 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
                         @class.Layout.VTablePointers.Select(v => string.Format(
-                            "((Internal{0}*) native)->{1}.ToPointer()",
-                                suffix, v.Name))));
+                            "(({0}{1}*) native)->{2}.ToPointer()",
+                                Helpers.InternalStruct, suffix, v.Name))));
             else
                 WriteLine(
-                    "__OriginalVTables = new void*[] {{ ((Internal{0}*) native)->{1}.ToPointer() }};",
-                    suffix, @class.Layout.VTablePointers[0].Name);
+                    "__OriginalVTables = new void*[] {{ (({0}{1}*) native)->{2}.ToPointer() }};",
+                    Helpers.InternalStruct, suffix, @class.Layout.VTablePointers[0].Name);
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1960,12 +1962,13 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (Context.ParserOptions.IsMicrosoftAbi)
                         for (var i = 0; i < @class.Layout.VTablePointers.Count; i++)
-                            WriteLine("((Internal{0}*) {1})->{2} = new global::System.IntPtr(__OriginalVTables[{3}]);",
-                                suffix, Helpers.InstanceIdentifier,
+                            WriteLine("(({0}{1}*) {2})->{3} = new global::System.IntPtr(__OriginalVTables[{4}]);",
+                                Helpers.InternalStruct, suffix, Helpers.InstanceIdentifier,
                                 @class.Layout.VTablePointers[i].Name, i);
                     else
-                        WriteLine("((Internal{0}*) {1})->{2} = new global::System.IntPtr(__OriginalVTables[0]);",
-                            suffix, Helpers.InstanceIdentifier, @class.Layout.VTablePointers[0].Name);
+                        WriteLine("(({0}{1}*) {2})->{3} = new global::System.IntPtr(__OriginalVTables[0]);",
+                            Helpers.InternalStruct, suffix, Helpers.InstanceIdentifier,
+                            @class.Layout.VTablePointers[0].Name);
                 }
             }
 
@@ -2082,8 +2085,8 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                WriteLine("{0} = *(Internal{1}*) native;",
-                    Helpers.InstanceField, Helpers.GetSuffixForInternal(@class));
+                WriteLine("{0} = *({1}{2}*) native;", Helpers.InstanceField,
+                    Helpers.InternalStruct, Helpers.GetSuffixForInternal(@class));
             }
 
             WriteCloseBraceIndent();
@@ -2097,8 +2100,9 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0} {1}({0}.Internal{2} native, bool skipVTables = false)",
-                    className, Helpers.CreateInstanceIdentifier, internalSuffix);
+                WriteLine("public static {0} {1}({0}.{2}{3} native, bool skipVTables = false)",
+                    className, Helpers.CreateInstanceIdentifier,
+                    Helpers.InternalStruct, internalSuffix);
                 WriteStartBraceIndent();
                 WriteLine("return new {0}(native, skipVTables);", ctorCall);
                 WriteCloseBraceIndent();
@@ -2108,17 +2112,19 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType && !@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("private static void* __CopyValue({0}.Internal{1} native)",
-                    className, internalSuffix);
+                WriteLine("private static void* __CopyValue({0}.{1}{2} native)",
+                    className, Helpers.InternalStruct, internalSuffix);
                 WriteStartBraceIndent();
                 var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
                     method.IsCopyConstructor);
-                if (@class.HasNonTrivialCopyConstructor && copyCtorMethod != null && copyCtorMethod.IsGenerated)
+                if (@class.HasNonTrivialCopyConstructor && copyCtorMethod != null &&
+                    copyCtorMethod.IsGenerated)
                 {
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                    WriteLine("{0}.Internal{1}.{2}(ret, new global::System.IntPtr(&native));",
-                        @class.Visit(TypePrinter), Helpers.GetSuffixForInternal(@class),
+                    WriteLine("{0}.{1}{2}.{3}(ret, new global::System.IntPtr(&native));",
+                        @class.Visit(TypePrinter), Helpers.InternalStruct,
+                        Helpers.GetSuffixForInternal(@class),
                         GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ret.ToPointer();", className);
                 }
@@ -2126,8 +2132,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("var ret = Marshal.AllocHGlobal({1});",
                         className, @class.Layout.Size);
-                    WriteLine("*({0}.Internal{1}*) ret = native;",
-                        className, Helpers.GetSuffixForInternal(@class));
+                    WriteLine("*({0}.{1}{2}*) ret = native;", className,
+                        Helpers.InternalStruct, Helpers.GetSuffixForInternal(@class));
                     WriteLine("return ret.ToPointer();");
                 }
                 WriteCloseBraceIndent();
@@ -2136,9 +2142,9 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("{0} {1}({2}.Internal{3} native, bool skipVTables = false)",
+                WriteLine("{0} {1}({2}.{3}{4} native, bool skipVTables = false)",
                     @class.IsAbstractImpl ? "internal" : "private",
-                    @class.Name, className, internalSuffix);
+                    @class.Name, className, Helpers.InternalStruct, internalSuffix);
                 WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native), skipVTables)" : ": this()");
                 WriteStartBraceIndent();
                 if (@class.IsRefType)
@@ -2421,7 +2427,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("if ({0} == global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
                     WriteLineIndent("return global::System.IntPtr.Zero.GetHashCode();");
-                    WriteLine("return (*(Internal{0}*) {1}).GetHashCode();",
+                    WriteLine("return (*({0}{1}*) {2}).GetHashCode();", Helpers.InternalStruct,
                         Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier);   
                 }
                 else
@@ -2580,9 +2586,10 @@ namespace CppSharp.Generators.CSharp
                 if (@class.HasNonTrivialCopyConstructor)
                     GenerateInternalFunctionCall(method);
                 else
-                    WriteLine("*(({0}.Internal{1}*) {3}) = *(({0}.Internal{1}*) {2}.{3});",
-                        @class.Name, Helpers.GetSuffixForInternal(@class),
-                        method.Parameters[0].Name, Helpers.InstanceIdentifier);
+                    WriteLine("*(({0}.{1}{2}*) {3}) = *(({0}.{1}{2}*) {4}.{3});",
+                        @class.Name, Helpers.InternalStruct,
+                        Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier,
+                        method.Parameters[0].Name);
             }
             else
             {
@@ -2605,8 +2612,8 @@ namespace CppSharp.Generators.CSharp
                 templateSpecialization.Ignore ?
                 (templateSpecialization.Namespace.OriginalName + '.') : string.Empty;
 
-            var functionName = string.Format("{0}Internal{1}.{2}", @namespace,
-                Helpers.GetSuffixForInternal(function.Namespace),
+            var functionName = string.Format("{0}{1}{2}.{3}", @namespace,
+                Helpers.InternalStruct, Helpers.GetSuffixForInternal(function.Namespace),
                 GetFunctionNativeIdentifier(function.OriginalFunction ?? function));
             GenerateFunctionCall(functionName, parameters, function, returnType);
         }
@@ -2663,8 +2670,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     var @class = retClass.OriginalClass ?? retClass;
                     var specialization = @class as ClassTemplateSpecialization;
-                    WriteLine("var {0} = new {1}.Internal{2}();", Helpers.ReturnIdentifier,
-                        @class.Visit(TypePrinter),
+                    WriteLine("var {0} = new {1}.{2}{3}();", Helpers.ReturnIdentifier,
+                        @class.Visit(TypePrinter), Helpers.InternalStruct,
                         Helpers.GetSuffixForInternal(@class));
                 }
                 else
@@ -2723,8 +2730,9 @@ namespace CppSharp.Generators.CSharp
             {
                 if (operatorParam == null)
                 {
-                    WriteLine("fixed (Internal{0}* __instancePtr = &{1})",
-                        Helpers.GetSuffixForInternal(originalFunction.Namespace), Helpers.InstanceField);
+                    WriteLine("fixed ({0}{1}* __instancePtr = &{2})",
+                        Helpers.InternalStruct, Helpers.GetSuffixForInternal(originalFunction.Namespace),
+                        Helpers.InstanceField);
                     WriteStartBraceIndent();
                 }
                 else
