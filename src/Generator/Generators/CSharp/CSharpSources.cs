@@ -233,6 +233,11 @@ namespace CppSharp.Generators.CSharp
                     GenerateInterface(@class);
                     continue;
                 }
+                var specialization = @class as ClassTemplateSpecialization;
+                if (specialization != null &&
+                    specialization.SpecializationKind ==
+                        TemplateSpecializationKind.ExplicitInstantiationDeclaration)
+                    continue;
                 if (!@class.IsDependent)
                 {
                     GenerateClass(@class);
