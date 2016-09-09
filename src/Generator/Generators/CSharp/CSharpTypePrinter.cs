@@ -152,6 +152,16 @@ namespace CppSharp.Generators.CSharp
                 if (TypePrinterContext.Parameter != null)
                     return string.Format("global::System.IntPtr");
 
+                Enumeration @enum;
+                if (arrayType.TryGetEnum(out @enum))
+                {
+                    return new CSharpTypePrinterResult
+                    {
+                        Type = string.Format("fixed {0}", @enum.BuiltinType),
+                        NameSuffix = string.Format("[{0}]", array.Size)
+                    };
+                }
+
                 Class @class;
                 if (arrayType.TryGetClass(out @class))
                 {

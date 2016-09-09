@@ -84,6 +84,7 @@ struct DLL_API Bar
     Item RetItem1() const;
     int A;
     float B;
+    Item fixedEnumArray[3];
 
     Bar* returnPointerToValueType();
 
