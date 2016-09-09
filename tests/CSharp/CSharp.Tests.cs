@@ -436,7 +436,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public unsafe void TestSizeOfDerivesFromTemplateInstantiation()
     {
-        Assert.That(sizeof(DerivesFromTemplateInstantiation.___Internal), Is.EqualTo(sizeof(int)));
+        Assert.That(sizeof(DerivesFromTemplateInstantiation.__Internal), Is.EqualTo(sizeof(int)));
     }
 
     [Test]
@@ -526,12 +526,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         foreach (var internalType in new[]
             {
-                typeof(CSharp.IndependentFields.___Internal),
-                typeof(CSharp.DependentValueFields.___Internalc__S_DependentValueFields__b),
+                typeof(CSharp.IndependentFields.__Internal),
+                typeof(CSharp.DependentValueFields.__Internalc__S_DependentValueFields__b),
                 //typeof(CSharp.DependentValueFields.Internal_float),
-                typeof(CSharp.DependentPointerFields.___Internal),
+                typeof(CSharp.DependentPointerFields.__Internal),
                 //typeof(CSharp.DependentValueFields.Internal_Ptr),
-                typeof(CSharp.HasDefaultTemplateArgument.___Internalc__S_HasDefaultTemplateArgument__I___S_IndependentFields__I)
+                typeof(CSharp.HasDefaultTemplateArgument.__Internalc__S_HasDefaultTemplateArgument__I___S_IndependentFields__I)
             })
         {
             var independentFields = internalType.GetFields();

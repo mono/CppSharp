@@ -40,7 +40,7 @@ namespace CppSharp.Generators.CSharp
             return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
-        public static readonly string InternalStruct = Generator.GeneratedIdentifier("_Internal");
+        public static readonly string InternalStruct = Generator.GeneratedIdentifier("Internal");
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
         public static readonly string PointerAdjustmentIdentifier = Generator.GeneratedIdentifier("PointerAdjustment");
