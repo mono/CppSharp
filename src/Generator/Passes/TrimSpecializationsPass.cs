@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
@@ -17,9 +18,9 @@ namespace CppSharp.Passes
             if (@class.Specializations.Count == 0)
                 return false;
 
+            Func<TemplateArgument, bool> allPointers = a => a.Type.Type != null && a.Type.Type.IsAddress();
             var groups = (from specialization in @class.Specializations
-                          group specialization by specialization.Arguments.All(
-                              a => a.Type.Type != null && a.Type.Type.IsAddress()) into @group
+                          group specialization by specialization.Arguments.All(allPointers) into @group
                           select @group).ToList();
 
             foreach (var group in groups.Where(g => g.Key))
@@ -27,7 +28,8 @@ namespace CppSharp.Passes
                     @class.Specializations.Remove(specialization);
 
             for (int i = @class.Specializations.Count - 1; i >= 0; i--)
-                if (@class.Specializations[i] is ClassTemplatePartialSpecialization)
+                if (@class.Specializations[i] is ClassTemplatePartialSpecialization &&
+                    !@class.Specializations[i].Arguments.All(allPointers))
                     @class.Specializations.RemoveAt(i);
 
             return true;
