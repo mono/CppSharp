@@ -561,6 +561,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         Assert.That(CSharp.CSharp.VariableWithFixedPrimitiveArray[0], Is.EqualTo(5));
         Assert.That(CSharp.CSharp.VariableWithFixedPrimitiveArray[1], Is.EqualTo(10));
+        Assert.That(CSharp.CSharp.VariableWithVariablePrimitiveArray[0], Is.EqualTo(15));
+        Assert.That(CSharp.CSharp.VariableWithVariablePrimitiveArray[1], Is.EqualTo(20));
     }
 
     [Test]

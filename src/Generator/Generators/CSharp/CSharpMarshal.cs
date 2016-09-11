@@ -144,7 +144,7 @@ namespace CppSharp.Generators.CSharp
 
                     goto case ArrayType.ArraySize.Variable;
                 case ArrayType.ArraySize.Variable:
-                    Context.Return.Write("null");
+                    Context.Return.Write(Context.ReturnVarName);
                     break;
             }
 

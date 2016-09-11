@@ -1066,3 +1066,4 @@ bool HasVirtualTakesReturnsProblematicTypes::callsVirtualToReturnBool(bool b)
 }
 
 extern const unsigned char variableWithFixedPrimitiveArray[2] = { 5, 10 };
+extern const unsigned int variableWithVariablePrimitiveArray[] = { 15, 20 };

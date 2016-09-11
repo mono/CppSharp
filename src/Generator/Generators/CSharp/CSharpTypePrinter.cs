@@ -195,7 +195,9 @@ namespace CppSharp.Generators.CSharp
                 array.QualifiedType.Qualifiers.IsConst)
                 return "string";
 
-            return string.Format("{0}[]", array.Type.Visit(this));
+            return string.Format("{0}{1}", array.Type.Visit(this),
+                array.SizeType == ArrayType.ArraySize.Constant ? "[]" :
+                   (ContextKind == CSharpTypePrinterContextKind.Managed ? "*" : string.Empty));
 
             // C# only supports fixed arrays in unsafe sections
             // and they are constrained to a set of built-in types.

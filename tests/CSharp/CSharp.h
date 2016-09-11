@@ -982,6 +982,7 @@ public:
     bool callsVirtualToReturnBool(bool b);
 };
 
-extern const unsigned char DLL_API variableWithFixedPrimitiveArray[2];
+DLL_API extern const unsigned char variableWithFixedPrimitiveArray[2];
+DLL_API extern const unsigned int variableWithVariablePrimitiveArray[];
 
 typedef void (*ALLCAPS_UNDERSCORES)(int i);
