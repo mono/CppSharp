@@ -19,6 +19,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestUncompilableCode()
     {
+        ALLCAPS_UNDERSCORES a;
         new ForceCreationOfInterface().Dispose();
         new InheritsProtectedVirtualFromSecondaryBase().Dispose();
         new InheritanceBuffer().Dispose();
@@ -285,11 +286,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestPrimarySecondaryBase()
     {
-        var a = new MIA0();
+        var a = new MI_A0();
         var resa = a.Get();
         Assert.That(resa, Is.EqualTo(50));
 
-        var c = new MIC();
+        var c = new MI_C();
         var res = c.Get();
         Assert.That(res, Is.EqualTo(50));
     }

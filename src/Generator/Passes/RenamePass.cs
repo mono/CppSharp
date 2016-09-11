@@ -128,7 +128,7 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Variables);
             declarations.AddRange(from typedefDecl in decl.Namespace.Typedefs
                                   let pointerType = typedefDecl.Type.Desugar() as PointerType
-                                  where pointerType != null && pointerType.Pointee is FunctionType
+                                  where pointerType != null && pointerType.GetFinalPointee() is FunctionType
                                   select typedefDecl);
             var specialization = decl as ClassTemplateSpecialization;
             if (specialization != null)
@@ -347,12 +347,16 @@ namespace CppSharp.Passes
             if (sb[0] == '@')
                 sb.Remove(0, 1);
 
-            for (int i = sb.Length - 1; i >= 0; i--)
+            // do not remove underscores from ALL_CAPS names
+            if (!decl.Name.Where(char.IsLetter).All(char.IsUpper))
             {
-                if (sb[i] == '_' && i < sb.Length - 1)
+                for (int i = sb.Length - 1; i >= 0; i--)
                 {
-                    sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
-                    sb.Remove(i, 1);
+                    if (sb[i] == '_' && i < sb.Length - 1)
+                    {
+                        sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
+                        sb.Remove(i, 1);
+                    }
                 }
             }
 

@@ -982,3 +982,5 @@ public:
 };
 
 extern const unsigned char DLL_API variableWithFixedPrimitiveArray[2];
+
+typedef void (*ALLCAPS_UNDERSCORES)(int i);
