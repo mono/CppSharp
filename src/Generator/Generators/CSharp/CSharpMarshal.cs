@@ -418,7 +418,7 @@ namespace CppSharp.Generators.CSharp
                         Context.SupportBefore.WriteLine("if ({0} == null || {0}.Length != {1})",
                             Context.Parameter.Name, array.Size);
                         ThrowArgumentOutOfRangeException();
-                        const string ptr = "__ptr";
+                        var ptr = "__ptr" + Context.ParameterIndex;
                         Context.SupportBefore.WriteLine("fixed ({0}* {1} = {2})",
                             array.Type, ptr, Context.Parameter.Name);
                         Context.SupportBefore.WriteStartBraceIndent();
