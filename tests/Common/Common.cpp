@@ -647,3 +647,11 @@ void HasOverloadsWithDifferentPointerKindsToSameType::overload(int&& i)
 void HasOverloadsWithDifferentPointerKindsToSameType::overload(const int& i)
 {
 }
+
+void hasPointerParam(Foo* foo, int i)
+{
+}
+
+void hasPointerParam(const Foo& foo)
+{
+}

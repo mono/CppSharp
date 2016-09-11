@@ -130,7 +130,7 @@ namespace CppSharp.Passes
             Function function, Function overload)
         {
             var functionParams = function.Parameters.Where(
-                p => p.Kind == ParameterKind.Regular && p.Type.IsAddress()).ToList();
+                p => p.Kind == ParameterKind.Regular).ToList();
             // It's difficult to handle this case for more than one parameter
             // For example, if we have:
             //     void f(float&, const int&);
@@ -141,14 +141,20 @@ namespace CppSharp.Passes
             if (functionParams.Count != 1)
                 return false;
             var overloadParams = overload.Parameters.Where(
-                p => p.Kind == ParameterKind.Regular && p.Type.IsAddress()).ToList();
+                p => p.Kind == ParameterKind.Regular).ToList();
             if (overloadParams.Count != 1)
                 return false;
 
             var parameterFunction = functionParams[0];
             var parameterOverload = overloadParams[0];
 
-            if (!parameterFunction.Type.GetPointee().Equals(parameterOverload.Type.GetPointee()))
+            var pointerParamFunction = parameterFunction.Type.Desugar() as PointerType;
+            var pointerParamOverload = parameterOverload.Type.Desugar() as PointerType;
+
+            if (pointerParamFunction == null || pointerParamOverload == null)
+                return false;
+
+            if (!pointerParamFunction.GetPointee().Equals(pointerParamOverload.GetPointee()))
                 return false;
 
             if (parameterFunction.IsConst && !parameterOverload.IsConst)
@@ -162,9 +168,6 @@ namespace CppSharp.Passes
                 overload.ExplicitlyIgnore();
                 return true;
             }
-
-            var pointerParamFunction = (PointerType) parameterFunction.Type;
-            var pointerParamOverload = (PointerType) parameterOverload.Type;
 
             if (pointerParamFunction.Modifier == PointerType.TypeModifier.RVReference &&
                 pointerParamOverload.Modifier != PointerType.TypeModifier.RVReference)

@@ -1213,3 +1213,6 @@ public:
     void overload(int&& i);
     void overload(const int& i);
 };
+
+DLL_API void hasPointerParam(Foo* foo, int i);
+DLL_API void hasPointerParam(const Foo& foo);

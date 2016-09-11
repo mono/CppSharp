@@ -195,6 +195,11 @@ public class CommonTests : GeneratorTestFixture
         var def = new DefaultParameters();
         def.Foo(1, 2);
         def.Bar();
+        using (Foo foo = new Foo())
+        {
+            common.hasPointerParam(foo, 0);
+            common.hasPointerParam(foo);
+        }
     }
 
     [Test]
