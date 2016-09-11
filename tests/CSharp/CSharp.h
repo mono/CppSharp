@@ -30,6 +30,7 @@ public:
 
 protected:
     int P;
+    int _method;
     TemplateInAnotherUnit<int> templateInAnotherUnit;
 };
 

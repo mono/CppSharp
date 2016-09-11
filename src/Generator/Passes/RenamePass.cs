@@ -138,11 +138,15 @@ namespace CppSharp.Passes
             if (result)
                 return true;
 
-            var method = decl as Method;
-            if (method == null || !method.IsGenerated)
-                return false;
+            if (decl is Method && decl.IsGenerated)
+                return ((Class) decl.Namespace).GetPropertyByName(newName) != null;
 
-            return ((Class) method.Namespace).GetPropertyByName(newName) != null;
+            var property = decl as Property;
+            if (property != null && property.Field != null)
+                return ((Class) decl.Namespace).Properties.FirstOrDefault(
+                    p => p != decl && p.Name == newName) != null;
+
+            return false;
         }
 
         private static IEnumerable<Function> GetFunctionsWithTheSameParams(Function function)
