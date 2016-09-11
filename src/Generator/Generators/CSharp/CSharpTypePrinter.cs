@@ -139,14 +139,15 @@ namespace CppSharp.Generators.CSharp
                 Type arrayType = array.Type.Desugar();
 
                 PrimitiveType primitiveType;
-                if (arrayType.IsPointerToPrimitiveType(out primitiveType) &&
-                    !(arrayType is FunctionType)) 
+                if ((arrayType.IsPointerToPrimitiveType(out primitiveType) &&
+                    !(arrayType is FunctionType)) || 
+                    (arrayType.IsPrimitiveType() && MarshalKind != CSharpMarshalKind.NativeField))
                 {
                     if (primitiveType == PrimitiveType.Void)
                     {
-                        return "void**";
+                        return "void*";
                     }
-                    return string.Format("{0}*", array.Type.Visit(this, quals));
+                    return string.Format("{0}", array.Type.Visit(this, quals));
                 }
 
                 if (TypePrinterContext.Parameter != null)

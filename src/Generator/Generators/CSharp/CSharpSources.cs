@@ -1169,7 +1169,9 @@ namespace CppSharp.Generators.CSharp
                 var ctx = new CSharpMarshalContext(Context)
                 {
                     ArgName = decl.Name,
-                    ReturnVarName = (isRefTypeArray ? string.Empty : "*") + Generator.GeneratedIdentifier("ptr"),
+                    ReturnVarName = (isRefTypeArray ||
+                        (arrayType != null && arrayType.Type.Desugar().IsPrimitiveType()) ? string.Empty : "*")
+                        + Generator.GeneratedIdentifier("ptr"),
                     ReturnType = new QualifiedType(var.Type)
                 };
 

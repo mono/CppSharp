@@ -1064,3 +1064,5 @@ bool HasVirtualTakesReturnsProblematicTypes::callsVirtualToReturnBool(bool b)
 {
     return virtualTakesAndReturnsBool(b);
 }
+
+extern const unsigned char variableWithFixedPrimitiveArray[2] = { 5, 10 };

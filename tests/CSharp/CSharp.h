@@ -980,3 +980,5 @@ public:
     virtual bool virtualTakesAndReturnsBool(bool b);
     bool callsVirtualToReturnBool(bool b);
 };
+
+extern const unsigned char DLL_API variableWithFixedPrimitiveArray[2];

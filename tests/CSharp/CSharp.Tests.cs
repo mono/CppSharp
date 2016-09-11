@@ -556,6 +556,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestConstantArray()
+    {
+        Assert.That(CSharp.CSharp.VariableWithFixedPrimitiveArray[0], Is.EqualTo(5));
+        Assert.That(CSharp.CSharp.VariableWithFixedPrimitiveArray[1], Is.EqualTo(10));
+    }
+
+    [Test]
     public void TestOverrideVirtualWithString()
     {
         using (var overrideVirtualWithString = new OverrideVirtualWithString())
