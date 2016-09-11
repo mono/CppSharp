@@ -72,7 +72,6 @@ namespace CppSharp.Passes
         public bool IsRenameableDecl(Declaration decl)
         {
             if (decl is Class) return true;
-            if (decl is Field) return true;
             var function = decl as Function;
             if (function != null)
             {

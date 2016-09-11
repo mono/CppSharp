@@ -70,20 +70,23 @@ namespace CppSharp.Generator.Tests.Passes
         [Test]
         public void TestCaseRenamePass()
         {
-            CppSharp.AST.Type.TypePrinterDelegate += TypePrinterDelegate;
+            Type.TypePrinterDelegate += TypePrinterDelegate;
 
             var c = AstContext.Class("TestRename");
 
+            passBuilder.AddPass(new FieldToPropertyPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+
             var method = c.Method("lowerCaseMethod");
-            var field = c.Field("lowerCaseField");
+            var property = c.Properties.Find(p => p.Name == "lowerCaseField");
 
             passBuilder.RenameDeclsUpperCase(RenameTargets.Any);
             passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
-            Assert.That(field.Name, Is.EqualTo("LowerCaseField"));
+            Assert.That(property.Name, Is.EqualTo("LowerCaseField"));
 
-            CppSharp.AST.Type.TypePrinterDelegate -= TypePrinterDelegate;
+            Type.TypePrinterDelegate -= TypePrinterDelegate;
         }
 
         [Test]
