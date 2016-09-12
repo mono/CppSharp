@@ -701,20 +701,28 @@ namespace CppSharp.Generators.CSharp
 
             string param = Context.Parameter.Name;
             Type type = Context.Parameter.Type.Desugar();
+            string paramInstance;
+            Class @interface;
+            if ((type.GetFinalPointee() ?? type).TryGetClass(out @interface) &&
+                @interface.IsInterface)
+                paramInstance = string.Format("{0}.__PointerTo{1}",
+                    param, @interface.OriginalClass.Name);
+            else
+                paramInstance = string.Format("{0}.{1}", param, Helpers.InstanceIdentifier);
             if (type.IsAddress())
             {
                 Class decl;
                 if (type.TryGetClass(out decl) && decl.IsValueType)
-                    Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
+                    Context.Return.Write(paramInstance);
                 else
                 {
                     if (type.IsPointer())
                     {
-                        Context.Return.Write("{0}{1}.{2}",
+                        Context.Return.Write("{0}{1}",
                             method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
                                 ? string.Empty
                                 : string.Format("ReferenceEquals({0}, null) ? global::System.IntPtr.Zero : ", param),
-                            param, Helpers.InstanceIdentifier, type);
+                            paramInstance);
                     }
                     else
                     {
@@ -729,7 +737,7 @@ namespace CppSharp.Generators.CSharp
                                 "\"Cannot be null because it is a C++ reference (&).\");",
                                 param);
                         }
-                        Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
+                        Context.Return.Write(paramInstance);
                     }
                 }
                 return;
@@ -738,9 +746,9 @@ namespace CppSharp.Generators.CSharp
             var realClass = @class.OriginalClass ?? @class;
             var qualifiedIdentifier = realClass.Visit(this.typePrinter);
             Context.Return.Write(
-                "ReferenceEquals({0}, null) ? new {1}.{2}{3}() : *({1}.{2}{3}*) ({0}.{4})",
+                "ReferenceEquals({0}, null) ? new {1}.{2}{3}() : *({1}.{2}{3}*) {4}",
                 param, qualifiedIdentifier, Helpers.InternalStruct,
-                Helpers.GetSuffixForInternal(@class), Helpers.InstanceIdentifier);
+                Helpers.GetSuffixForInternal(@class), paramInstance);
         }
 
         private void MarshalValueClass()

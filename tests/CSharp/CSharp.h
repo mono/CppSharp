@@ -841,13 +841,30 @@ public:
     virtual void event();
 };
 
-class DLL_API QWidget : public QObject
+class DLL_API QPaintDevice
+{
+public:
+    QPaintDevice();
+    ~QPaintDevice();
+    int test;
+    virtual void changeVTableLayout();
+};
+
+class DLL_API QWidget : public QObject, QPaintDevice
 {
 public:
     QWidget();
-    void event();
+    ~QWidget();
+    virtual void event();
 private:
     QObject child;
+};
+
+class DLL_API QPainter
+{
+public:
+    QPainter(QPaintDevice& paintDevice);
+    ~QPainter();
 };
 
 class DLL_API QApplication : public QObject

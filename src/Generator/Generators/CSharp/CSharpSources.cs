@@ -1066,6 +1066,19 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             Write("get");
 
+            if (property != null && property.GetMethod != null &&
+                property.GetMethod.SynthKind == FunctionSynthKind.InterfaceInstance)
+            {
+                NewLine();
+                WriteStartBraceIndent();
+                var to = ((Class) property.OriginalNamespace).OriginalClass;
+                var baseOffset = GetOffsetToBase(@class, to);
+                WriteLine("return {0} + {1};", Helpers.InstanceIdentifier, baseOffset);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+                return;
+            }
+
             if (decl is Function)
             {
                 var function = decl as Function;
@@ -2055,8 +2068,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (@class.HasBaseClass)
                     WriteLine("{0} = {1};", Helpers.PointerAdjustmentIdentifier,
-                        @class.Layout.Bases.Where(
-                            b => b.Class == @class.BaseClass).Select(b => b.Offset).FirstOrDefault());
+                        GetOffsetToBase(@class, @class.BaseClass));
                 if (!@class.IsAbstractImpl)
                 {
                     WriteLine("if (native == null)");
@@ -2813,8 +2825,7 @@ namespace CppSharp.Generators.CSharp
             if (to != null)
             {
                 to = to.OriginalClass ?? to;
-                baseOffset = from.Layout.Bases.Where(
-                    b => b.Class == to).Select(b => b.Offset).FirstOrDefault();
+                baseOffset = GetOffsetToBase(from, to);
             }
             var isPrimaryBase = from.BaseClass == to;
             if (isPrimaryBase)
@@ -2827,6 +2838,12 @@ namespace CppSharp.Generators.CSharp
             return string.Format("({0}{1})",
                 Helpers.InstanceIdentifier,
                 baseOffset == 0 ? string.Empty : " + " + baseOffset);
+        }
+
+        private static uint GetOffsetToBase(Class from, Class to)
+        {
+            return from.Layout.Bases.Where(
+                b => b.Class == to).Select(b => b.Offset).FirstOrDefault();
         }
 
         private int GetInstanceParamIndex(Function method)

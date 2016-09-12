@@ -38,7 +38,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class))
+            if (!base.VisitClassDecl(@class) || !@class.IsGenerated)
                 return false;
 
             // skip the first base because we can inherit from one class
@@ -118,8 +118,23 @@ namespace CppSharp.Passes
 
             @interface.Events.AddRange(@base.Events);
 
-            if (@base.Bases.All(b => b.Class != @interface))
-                @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
+            var type = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
+            var adjustmentTo = new Property
+            {
+                Namespace = @interface,
+                Name = "__PointerTo" + @base.Name,
+                QualifiedType = type,
+                GetMethod = new Method
+                {
+                    SynthKind = FunctionSynthKind.InterfaceInstance,
+                    Namespace = @interface,
+                    ReturnType = type
+                }
+            };
+            @interface.Properties.Add(adjustmentTo);
+            @base.Properties.Add(adjustmentTo);
+
+            @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
 
             interfaces.Add(@base, @interface);
             return @interface;

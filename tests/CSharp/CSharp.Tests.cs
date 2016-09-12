@@ -572,6 +572,21 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPointerPassedAsItsSecondaryBase()
+    {
+        using (QApplication application = new QApplication())
+        {
+            using (QWidget widget = new QWidget())
+            {
+                using (QPainter painter = new QPainter(widget))
+                {
+                    Assert.That(widget.Test, Is.EqualTo(5));
+                }
+            }
+        }
+    }
+
+    [Test]
     public void TestOverrideVirtualWithString()
     {
         using (var overrideVirtualWithString = new OverrideVirtualWithString())

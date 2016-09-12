@@ -996,14 +996,39 @@ void QObject::event()
 {
 }
 
+QPaintDevice::QPaintDevice() : test(0)
+{
+}
+
+QPaintDevice::~QPaintDevice()
+{
+}
+
+void QPaintDevice::changeVTableLayout()
+{
+}
+
 QWidget::QWidget()
 {
     QApplication::instance->notify(this);
 }
 
+QWidget::~QWidget()
+{
+}
+
 void QWidget::event()
 {
     QApplication::instance->notify(&child);
+}
+
+QPainter::QPainter(QPaintDevice& paintDevice)
+{
+    paintDevice.test = 5;
+}
+
+QPainter::~QPainter()
+{
 }
 
 QApplication::QApplication()
