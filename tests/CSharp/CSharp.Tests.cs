@@ -20,6 +20,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     public void TestUncompilableCode()
     {
         ALLCAPS_UNDERSCORES a;
+        using (var testRenaming = new TestRenaming())
+        {
+            testRenaming.name();
+            testRenaming.Name();
+            testRenaming.Property.GetHashCode();
+        }
         new ForceCreationOfInterface().Dispose();
         new InheritsProtectedVirtualFromSecondaryBase().Dispose();
         new InheritanceBuffer().Dispose();

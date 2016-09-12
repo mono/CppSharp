@@ -363,6 +363,27 @@ TestCopyConstructorVal::TestCopyConstructorVal(const TestCopyConstructorVal& oth
     B = other.B;
 }
 
+TestRenaming::TestRenaming()
+{
+}
+
+TestRenaming::~TestRenaming()
+{
+}
+
+void TestRenaming::name()
+{
+}
+
+void TestRenaming::Name()
+{
+}
+
+int TestRenaming::property()
+{
+    return 1;
+}
+
 UsesPointerToEnumInParamOfVirtual::UsesPointerToEnumInParamOfVirtual()
 {
 }

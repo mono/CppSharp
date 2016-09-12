@@ -33,6 +33,9 @@ namespace CppSharp.Passes
             VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitTemplateArguments = false;
+            // properties need to be visited but in a different order (see VisitClassDecl) so disable the default order
+            VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitClassMethods = false;
         }
 
         protected RenamePass(RenameTargets targets)
@@ -174,6 +177,19 @@ namespace CppSharp.Passes
             }
 
             return true;
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            var result = base.VisitClassDecl(@class);
+
+            foreach (var property in @class.Properties.OrderByDescending(p => p.Access))
+                VisitProperty(property);
+
+            foreach (var method in @class.Methods)
+                VisitMethodDecl(method);
+
+            return result;
         }
 
         public override bool VisitFieldDecl(Field field)

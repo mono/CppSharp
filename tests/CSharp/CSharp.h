@@ -30,7 +30,6 @@ public:
 
 protected:
     int P;
-    int _method;
     TemplateInAnotherUnit<int> templateInAnotherUnit;
 };
 
@@ -262,8 +261,13 @@ public:
 class DLL_API TestRenaming
 {
 public:
+    TestRenaming();
+    ~TestRenaming();
     void name();
     void Name();
+    int property();
+protected:
+    int _property;
 };
 
 enum class Flags

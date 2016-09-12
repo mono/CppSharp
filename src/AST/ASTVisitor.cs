@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -309,7 +307,7 @@ namespace CppSharp.AST
                     VisitFieldDecl(field);
 
             if (VisitOptions.VisitClassProperties)
-                foreach (var property in @class.Properties.OrderByDescending(p => p.Access))
+                foreach (var property in @class.Properties)
                     VisitProperty(property);
 
             if (VisitOptions.VisitClassMethods)
