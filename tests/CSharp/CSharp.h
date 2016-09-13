@@ -1007,3 +1007,12 @@ DLL_API extern const unsigned char variableWithFixedPrimitiveArray[2];
 DLL_API extern const unsigned int variableWithVariablePrimitiveArray[];
 
 typedef void (*ALLCAPS_UNDERSCORES)(int i);
+
+class DLL_API TestString
+{
+public:
+    TestString();
+    ~TestString();
+    const wchar_t* unicodeConst;
+    wchar_t* unicode;
+};

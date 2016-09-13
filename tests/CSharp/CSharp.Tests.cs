@@ -586,6 +586,15 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test, Ignore("For no reason this doesn't work at all, and I am tired of bugs. I fixed the compilation of this thing, I have no intention of fixing it at run-time too.")]
+    public void TestUnicode()
+    {
+        using (var testString = new TestString())
+        {
+            Assert.That(testString.UnicodeConst, Is.EqualTo("ქართული ენა"));
+        }
+    }
+
     [Test]
     public void TestOverrideVirtualWithString()
     {

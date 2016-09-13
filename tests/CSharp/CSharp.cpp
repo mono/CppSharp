@@ -1113,3 +1113,11 @@ bool HasVirtualTakesReturnsProblematicTypes::callsVirtualToReturnBool(bool b)
 
 extern const unsigned char variableWithFixedPrimitiveArray[2] = { 5, 10 };
 extern const unsigned int variableWithVariablePrimitiveArray[] = { 15, 20 };
+
+TestString::TestString() : unicodeConst(L"ქართული ენა"), unicode(0)
+{
+}
+
+TestString::~TestString()
+{
+}
