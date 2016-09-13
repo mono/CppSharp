@@ -159,9 +159,18 @@ public:
     virtual void setValue(int value);
 
     virtual long prop();
+
+    Bar::Items items() const;
+    void setItems(const Bar::Items& value);
+
+    Bar::Items itemsByValue() const;
+    void setItemsByValue(Bar::Items value);
+private:
+    Bar::Items _items;
+    Bar::Items _itemsByValue;
 };
 
-Proprietor::Proprietor() {}
+Proprietor::Proprietor() : _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1) {}
 
 template <typename T>
 class DLL_API QFlags

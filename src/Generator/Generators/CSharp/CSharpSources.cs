@@ -901,6 +901,9 @@ namespace CppSharp.Generators.CSharp
 
                 param.QualifiedType = function.Parameters[0].QualifiedType;
 
+                if (!property.Type.Equals(param.Type) && property.Type.IsEnumType())
+                    param.Name = ctx.ArgName = "&" + param.Name;
+
                 var method = function as Method;
                 if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
                     GenerateVirtualPropertyCall(method, @class.BaseClass, property,

@@ -262,6 +262,26 @@ long Proprietor::prop()
     return m_property;
 }
 
+Bar::Items Proprietor::items() const
+{
+    return _items;
+}
+
+void Proprietor::setItems(const Bar::Items& value)
+{
+    _items = value;
+}
+
+Bar::Items Proprietor::itemsByValue() const
+{
+    return _itemsByValue;
+}
+
+void Proprietor::setItemsByValue(Bar::Items value)
+{
+    _itemsByValue = value;
+}
+
 void P::setValue(int value)
 {
     m_value = value + 10;

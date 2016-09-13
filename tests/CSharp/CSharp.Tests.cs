@@ -596,6 +596,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestEnumProperty()
+    {
+        using (var proprietor = new Proprietor())
+        {
+            Assert.That(proprietor.Items, Is.EqualTo(Bar.Items.Item1));
+            proprietor.Items = Bar.Items.Item2;
+            Assert.That(proprietor.Items, Is.EqualTo(Bar.Items.Item2));
+            Assert.That(proprietor.ItemsByValue, Is.EqualTo(Bar.Items.Item1));
+            proprietor.ItemsByValue = Bar.Items.Item2;
+            Assert.That(proprietor.ItemsByValue, Is.EqualTo(Bar.Items.Item2));
+        }
+    }
+
+    [Test]
     public void TestOverrideVirtualWithString()
     {
         using (var overrideVirtualWithString = new OverrideVirtualWithString())
