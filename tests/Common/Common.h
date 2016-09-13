@@ -240,7 +240,7 @@ typedef Exception Ex1;
 struct DerivedException;
 typedef DerivedException Ex2;
 
-struct DLL_API Exception
+struct DLL_API Exception : public Foo
 {
     virtual Ex1* clone() = 0;
 };

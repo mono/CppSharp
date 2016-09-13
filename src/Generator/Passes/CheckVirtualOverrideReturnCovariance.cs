@@ -74,10 +74,8 @@ namespace CppSharp.Passes
 
         static bool IsDescendentOf(Class @class, Class parent)
         {
-            if (!@class.HasBaseClass)
-                return @class == parent;
-
-            return IsDescendentOf(@class.BaseClass, parent);
+            return @class == parent ||
+                (@class.HasBaseClass && IsDescendentOf(@class.BaseClass, parent));
         }
 
         public bool VisitClassDecl(Class @class)
@@ -322,7 +320,7 @@ namespace CppSharp.Passes
     /// </summary>
     public class CheckVirtualOverrideReturnCovariance : TranslationUnitPass
     {
-        public override bool VisitMethodDecl(AST.Method method)
+        public override bool VisitMethodDecl(Method method)
         {
             if (!VisitDeclaration(method))
                 return false;
