@@ -36,7 +36,7 @@ public:
     class NestedAbstract
     {
     public:
-        virtual void abstractFunctionInNestedClass() = 0;
+        virtual int* abstractFunctionInNestedClass() = 0;
     };
 
     Foo();

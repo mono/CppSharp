@@ -494,7 +494,8 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
-            if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef())
+            if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef() &&
+                Context.Kind != CSharpMarshalKind.VTableReturnValue)
             {
                 var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
                 Context.SupportBefore.WriteLine("fixed ({0} {1} = &{2})",
