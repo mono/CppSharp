@@ -976,6 +976,13 @@ namespace CppSharp
                 _ctx.Typedefs.Add(_decl);
             }
 
+            for (uint i = 0; i < ctx.TypeAliasesCount; ++i)
+            {
+                var decl = ctx.getTypeAliases(i);
+                var _decl = Visit(decl) as AST.TypeAlias;
+                _ctx.Typedefs.Add(_decl);
+            }
+
             for (uint i = 0; i < ctx.VariablesCount; ++i)
             {
                 var decl = ctx.getVariables(i);

@@ -25,7 +25,7 @@ namespace CppSharp.Generator.Tests
             return context.FindEnum(name).First();
         }
 
-        public static TypedefDecl Typedef(this ASTContext context, string name)
+        public static TypedefNameDecl Typedef(this ASTContext context, string name)
         {
             return context.FindTypedef(name).First();
         }

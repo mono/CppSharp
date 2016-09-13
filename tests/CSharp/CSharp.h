@@ -1025,3 +1025,8 @@ public:
     const wchar_t* unicodeConst;
     wchar_t* unicode;
 };
+
+void decltypeFunctionPointer();
+
+using funcPtr = decltype(&decltypeFunctionPointer);
+void usesDecltypeFunctionPointer(funcPtr func);

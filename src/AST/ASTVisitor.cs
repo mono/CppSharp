@@ -180,7 +180,7 @@ namespace CppSharp.AST
                 }
             }
 
-            if (template.IsDependent)
+            if (template.IsDependent && template.Template != null)
                 return template.Template.Visit(this);
 
             var specialization = template.GetClassTemplateSpecialization();

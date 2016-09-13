@@ -91,7 +91,7 @@ namespace CppSharp.AST
         }
 
         /// Finds an existing typedef in the library modules.
-        public IEnumerable<TypedefDecl> FindTypedef(string name)
+        public IEnumerable<TypedefNameDecl> FindTypedef(string name)
         {
             return TranslationUnits.Select(module => module.FindTypedef(name))
                 .Where(type => type != null);

@@ -754,7 +754,7 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        public bool GenerateTypedef(TypedefDecl typedef)
+        public bool GenerateTypedef(TypedefNameDecl typedef)
         {
             if (!typedef.IsGenerated)
                 return false;

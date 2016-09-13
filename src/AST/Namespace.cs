@@ -39,9 +39,9 @@ namespace CppSharp.AST
             get { return new DeclIterator<Template>(Declarations); }
         }
 
-        public DeclIterator<TypedefDecl> Typedefs
+        public DeclIterator<TypedefNameDecl> Typedefs
         {
-            get { return new DeclIterator<TypedefDecl>(Declarations); }
+            get { return new DeclIterator<TypedefNameDecl>(Declarations); }
         }
 
         public DeclIterator<Variable> Variables
@@ -356,7 +356,7 @@ namespace CppSharp.AST
                 .FirstOrDefault(t => t.USR == usr);
         }
 
-        public TypedefDecl FindTypedef(string name, bool createDecl = false)
+        public TypedefNameDecl FindTypedef(string name, bool createDecl = false)
         {
             var entries = name.Split(new string[] { "::" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -367,7 +367,7 @@ namespace CppSharp.AST
 
                 if (typeDef == null && createDecl)
                 {
-                    typeDef = new TypedefDecl() { Name = name, Namespace = this };
+                    typeDef = new TypedefDecl { Name = name, Namespace = this };
                     Typedefs.Add(typeDef);
                 }
 
