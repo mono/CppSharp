@@ -12,7 +12,10 @@ namespace CppSharp.Generators
     public enum GeneratorKind
     {
         CLI = 1,
-        CSharp = 2
+        CSharp = 2,
+        C,
+        CPlusPlus,
+        ObjectiveC
     }
 
     /// <summary>
