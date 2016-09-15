@@ -63,7 +63,7 @@ namespace CppSharp.AST
 
     public interface ITypePrinter<out T> : ITypePrinter, ITypeVisitor<T>
     {
-        T VisitParameters(IEnumerable<Parameter> @params, bool hasNames);
+        T VisitParameters(IEnumerable<Parameter> @params, bool hasNames = true);
         T VisitParameter(Parameter param, bool hasName = true);
 
         T VisitDelegate(FunctionType function);

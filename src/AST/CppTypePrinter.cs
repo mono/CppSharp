@@ -9,6 +9,7 @@ namespace CppSharp.AST
     {
         C,
         Cpp,
+        ObjC
     } 
 
     public enum CppTypePrintScopeKind
@@ -251,12 +252,15 @@ namespace CppSharp.AST
         }
 
         public string VisitParameters(IEnumerable<Parameter> @params,
-            bool hasNames)
+            bool hasNames = true)
         {
             var args = new List<string>();
 
             foreach (var param in @params)
                 args.Add(VisitParameter(param, hasNames));
+
+            if (PrintFlavorKind == CppTypePrintFlavorKind.ObjC)
+                return string.Join(" ", args);
 
             return string.Join(", ", args);
         }
@@ -265,11 +269,13 @@ namespace CppSharp.AST
         {
             var type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
             var name = arg.Name;
+            var printName = hasName && !string.IsNullOrEmpty(name);
 
-            if (hasName && !string.IsNullOrEmpty(name))
-                return string.Format("{0} {1}", type, name);
+            if (PrintFlavorKind == CppTypePrintFlavorKind.ObjC)
+                return printName ? string.Format(":({0}){1}", type, name)
+                    : string.Format(":({0})", type);
 
-            return type;
+            return printName ? string.Format("{0} {1}", type, name) : type;
         }
 
         public string VisitDelegate(FunctionType function)
