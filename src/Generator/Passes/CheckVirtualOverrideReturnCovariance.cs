@@ -186,6 +186,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
+            return false;
+        }
+
         public bool VisitDeclaration(Declaration decl)
         {
             return false;

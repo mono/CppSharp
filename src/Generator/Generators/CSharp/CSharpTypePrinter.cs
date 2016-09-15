@@ -842,6 +842,11 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public CSharpTypePrinterResult VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public CSharpTypePrinterResult VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
         {
             throw new NotImplementedException();

@@ -340,6 +340,11 @@ namespace CppSharp.Generators.CLI
             return VisitPrimitiveType(type);
         }
 
+        public string VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
             return VisitDeclaration(decl);

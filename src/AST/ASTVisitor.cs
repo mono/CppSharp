@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -271,6 +272,14 @@ namespace CppSharp.AST
         }
 
         public virtual bool VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            if (!VisitType(type, quals))
+                return false;
+
+            return true;
+        }
+
+        public bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
         {
             if (!VisitType(type, quals))
                 return false;

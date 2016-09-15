@@ -1054,6 +1054,30 @@ namespace CppSharp.AST
         }
     }
 
+    public class UnsupportedType : Type
+    {
+        public UnsupportedType()
+        {
+        }
+
+        public UnsupportedType(UnsupportedType type)
+            : base(type)
+        {
+        }
+
+        public string Description;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitUnsupportedType(this, quals);
+        }
+
+        public override object Clone()
+        {
+            return new UnsupportedType(this);
+        }
+    }
+
     #region Primitives
 
     /// <summary>
@@ -1185,5 +1209,6 @@ namespace CppSharp.AST
         T VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals);
         T VisitVectorType(VectorType vectorType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
+        T VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals);
     }
 }

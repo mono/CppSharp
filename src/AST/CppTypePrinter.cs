@@ -227,7 +227,12 @@ namespace CppSharp.AST
                 return quals.IsConst ? "const char*" : "char*";
  
             throw new NotImplementedException(string.Format("Unhandled .NET type: {0}", type.Type));
-         }
+        }
+
+        public string VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
+            return string.Empty;
+        }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
