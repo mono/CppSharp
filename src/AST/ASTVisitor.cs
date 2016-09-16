@@ -279,7 +279,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        public virtual bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
         {
             if (!VisitType(type, quals))
                 return false;
