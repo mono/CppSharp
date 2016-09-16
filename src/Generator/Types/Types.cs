@@ -132,6 +132,9 @@ namespace CppSharp
                 return false;
             }
 
+            if (!array.QualifiedType.Visit(this))
+                return false;
+
             if (array.SizeType != ArrayType.ArraySize.Constant)
                 return true;
 
@@ -146,6 +149,12 @@ namespace CppSharp
                 arrayElemType.IsPointerToPrimitiveType())
                 return true;
 
+            Ignore();
+            return false;
+        }
+
+        public override bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
             Ignore();
             return false;
         }
