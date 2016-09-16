@@ -27,6 +27,7 @@ namespace CppSharp.AST
         public bool PrintTypeQualifiers;
 
         public bool PrintTypeModifiers { get; set; }
+        public bool PrintVariableArrayAsPointers { get; set; }
 
         public CppTypePrinter(bool printTypeQualifiers = true, bool printTypeModifiers = true)
         {
@@ -55,7 +56,8 @@ namespace CppSharp.AST
             case ArrayType.ArraySize.Variable:
             case ArrayType.ArraySize.Dependent:
             case ArrayType.ArraySize.Incomplete:
-                return string.Format("{0}[]", typeName);
+                return string.Format("{0}{1}", typeName,
+                                     PrintVariableArrayAsPointers ? "*" : "[]");
             }
 
             throw new NotSupportedException();
@@ -92,7 +94,7 @@ namespace CppSharp.AST
             }
 
             var qual = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
-            var pointeeType = pointer.Pointee.Visit(this, quals);
+            var pointeeType = pointee.Visit(this, quals);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
             return string.Format("{0}{1}{2}", qual, pointeeType, mod);
         }
