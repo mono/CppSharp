@@ -1142,6 +1142,14 @@ TestString::~TestString()
 {
 }
 
+PrimaryBaseWithAbstractWithDefaultArg::PrimaryBaseWithAbstractWithDefaultArg()
+{
+}
+
+PrimaryBaseWithAbstractWithDefaultArg::~PrimaryBaseWithAbstractWithDefaultArg()
+{
+}
+
 SecondaryBaseWithAbstractWithDefaultArg::SecondaryBaseWithAbstractWithDefaultArg()
 {
 }
@@ -1159,5 +1167,9 @@ HasSecondaryBaseWithAbstractWithDefaultArg::~HasSecondaryBaseWithAbstractWithDef
 }
 
 void HasSecondaryBaseWithAbstractWithDefaultArg::abstract(const Foo& foo)
+{
+}
+
+void HasSecondaryBaseWithAbstractWithDefaultArg::abstractWithNoDefaultArg(const Foo& foo)
 {
 }

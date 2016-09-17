@@ -1031,6 +1031,14 @@ void decltypeFunctionPointer();
 using funcPtr = decltype(&decltypeFunctionPointer);
 void usesDecltypeFunctionPointer(funcPtr func);
 
+class DLL_API PrimaryBaseWithAbstractWithDefaultArg
+{
+public:
+    PrimaryBaseWithAbstractWithDefaultArg();
+    ~PrimaryBaseWithAbstractWithDefaultArg();
+    virtual void abstractWithNoDefaultArg(const Foo& foo) = 0;
+};
+
 class DLL_API SecondaryBaseWithAbstractWithDefaultArg
 {
 public:
@@ -1039,10 +1047,11 @@ public:
     virtual void abstract(const Foo& foo = Foo()) = 0;
 };
 
-class DLL_API HasSecondaryBaseWithAbstractWithDefaultArg : public Foo, public SecondaryBaseWithAbstractWithDefaultArg
+class DLL_API HasSecondaryBaseWithAbstractWithDefaultArg : public PrimaryBaseWithAbstractWithDefaultArg, public SecondaryBaseWithAbstractWithDefaultArg
 {
 public:
     HasSecondaryBaseWithAbstractWithDefaultArg();
     ~HasSecondaryBaseWithAbstractWithDefaultArg();
     virtual void abstract(const Foo& foo = Foo());
+    virtual void abstractWithNoDefaultArg(const Foo& foo = Foo());
 };

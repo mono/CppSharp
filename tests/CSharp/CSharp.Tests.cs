@@ -44,6 +44,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
             var isNoParams = foo.IsNoParams;
             foo.SetNoParams();
             foo.Width = 5;
+            using (var hasSecondaryBaseWithAbstractWithDefaultArg = new HasSecondaryBaseWithAbstractWithDefaultArg())
+            {
+                hasSecondaryBaseWithAbstractWithDefaultArg.Abstract();
+                hasSecondaryBaseWithAbstractWithDefaultArg.AbstractWithNoDefaultArg(foo);
+            }
         }
         using (var hasOverride = new HasOverrideOfHasPropertyWithDerivedType())
             hasOverride.CauseRenamingError();
@@ -57,10 +62,6 @@ public unsafe class CSharpTests : GeneratorTestFixture
         using (var typeMappedWithOperator = new TypeMappedWithOperator())
         {
             int i = typeMappedWithOperator | 5;
-        }
-        using (var hasSecondaryBaseWithAbstractWithDefaultArg = new HasSecondaryBaseWithAbstractWithDefaultArg())
-        {
-            hasSecondaryBaseWithAbstractWithDefaultArg.Abstract();
         }
     }
 

@@ -11,10 +11,15 @@ namespace CppSharp.Passes
                 Method rootBaseMethod = ((Class) method.Namespace).GetBaseMethod(method);
                 for (int i = 0; i < method.Parameters.Count; i++)
                 {
-                    if (rootBaseMethod.Parameters[i].DefaultArgument != null)
+                    var rootBaseParameter = rootBaseMethod.Parameters[i];
+                    var parameter = method.Parameters[i];
+                    if (rootBaseParameter.DefaultArgument == null)
                     {
-                        method.Parameters[i].DefaultArgument =
-                            rootBaseMethod.Parameters[i].DefaultArgument.Clone();
+                        parameter.DefaultArgument = null;
+                    }
+                    else
+                    {
+                        parameter.DefaultArgument = rootBaseParameter.DefaultArgument.Clone();
                     }
                 }
             }
