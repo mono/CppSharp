@@ -2399,16 +2399,16 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            GenerateManagedCall(function);
+            GenerateManagedCall(function, prependThis: function.Parameters.Any(p => !p.Ignore && p.Name == function.Name));
         }
 
-        private void GenerateManagedCall(Function function, bool prependBase = false)
+        private void GenerateManagedCall(Function function, bool prependBase = false, bool prependThis = false)
         {
             var type = function.OriginalReturnType.Type;
             var index = 0;
             WriteLine("{0}{1}{2}({3});",
                 type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
-                prependBase ? "base." : string.Empty,
+                prependBase ? "base." : prependThis ? "this." : string.Empty,
                 function.Name,
                 string.Join(", ",
                     function.Parameters.Where(

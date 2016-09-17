@@ -636,6 +636,11 @@ void MethodsWithDefaultValues::defaultWithStdNumericLimits(double d, int i)
 {
 }
 
+int MethodsWithDefaultValues::DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg)
+{
+    return 1;
+}
+
 int MethodsWithDefaultValues::getA()
 {
     return m_foo.A;

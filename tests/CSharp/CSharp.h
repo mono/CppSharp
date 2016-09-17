@@ -429,6 +429,7 @@ public:
     void defaultWithCharFromInt(char c = 32);
     void defaultWithFreeConstantInNameSpace(int c = HasFreeConstant::FREE_CONSTANT_IN_NAMESPACE);
     void defaultWithStdNumericLimits(double d = 1.0, int i = std::numeric_limits<double>::infinity());
+    int DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg = Foo());
     int getA();
 private:
     Foo m_foo;
