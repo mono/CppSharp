@@ -1141,3 +1141,23 @@ TestString::TestString() : unicodeConst(L"ქართული ენა"), uni
 TestString::~TestString()
 {
 }
+
+SecondaryBaseWithAbstractWithDefaultArg::SecondaryBaseWithAbstractWithDefaultArg()
+{
+}
+
+SecondaryBaseWithAbstractWithDefaultArg::~SecondaryBaseWithAbstractWithDefaultArg()
+{
+}
+
+HasSecondaryBaseWithAbstractWithDefaultArg::HasSecondaryBaseWithAbstractWithDefaultArg()
+{
+}
+
+HasSecondaryBaseWithAbstractWithDefaultArg::~HasSecondaryBaseWithAbstractWithDefaultArg()
+{
+}
+
+void HasSecondaryBaseWithAbstractWithDefaultArg::abstract(const Foo& foo)
+{
+}

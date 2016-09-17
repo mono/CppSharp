@@ -58,6 +58,10 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             int i = typeMappedWithOperator | 5;
         }
+        using (var hasSecondaryBaseWithAbstractWithDefaultArg = new HasSecondaryBaseWithAbstractWithDefaultArg())
+        {
+            hasSecondaryBaseWithAbstractWithDefaultArg.Abstract();
+        }
     }
 
     [Test]

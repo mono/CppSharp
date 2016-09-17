@@ -165,7 +165,8 @@ namespace CppSharp.Passes
             foreach (var method in @interface.Methods)
             {
                 if (@class.Methods.Any(m => m.OriginalName == method.OriginalName &&
-                        m.Parameters.SequenceEqual(method.Parameters.Where(p => !p.Ignore),
+                        m.Parameters.Where(p => !p.Ignore).SequenceEqual(
+                            method.Parameters.Where(p => !p.Ignore),
                             ParameterTypeComparer.Instance)))
                     continue;
                 var impl = new Method(method)
