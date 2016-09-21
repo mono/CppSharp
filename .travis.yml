@@ -19,7 +19,6 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -qq; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y mono-devel; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install wget xz; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then wget -O mono.pkg http://download.mono-project.com/archive/4.2.1/macos-10-x86/MonoFramework-MDK-4.2.1.102.macos10.xamarin.x86.pkg; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo installer -pkg "mono.pkg" -target /; fi
   - wget https://nuget.org/nuget.exe
