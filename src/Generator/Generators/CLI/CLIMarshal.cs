@@ -124,7 +124,7 @@ namespace CppSharp.Generators.CLI
                 var returnVarName = Context.ReturnVarName;
                 if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
                 {
-                    var nativeTypePrinter = new CppTypePrinter(false);
+                    var nativeTypePrinter = new CppTypePrinter { PrintTypeQualifiers = false };
                     var returnType = Context.ReturnType.Type.Desugar();
                     var constlessPointer = new PointerType()
                     {

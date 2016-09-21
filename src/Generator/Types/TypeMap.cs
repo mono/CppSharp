@@ -201,7 +201,12 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
-            var typePrinter = new CppTypePrinter(false, false) { PrintLogicalNames = true };
+            var typePrinter = new CppTypePrinter
+            {
+                PrintTypeQualifiers = false,
+                PrintTypeModifiers = false,
+                PrintLogicalNames = true
+            };
 
             var template = type as TemplateSpecializationType;
             if (template != null)
