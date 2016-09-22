@@ -428,7 +428,8 @@ namespace CppSharp
             Diagnostics.Message("Compiling {0}...", module.LibraryName);
             CompilerResults compilerResults;
             using (var codeProvider = new CSharpCodeProvider(
-                new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
+                new Dictionary<string, string> {
+                    { "CompilerDirectoryPath", ManagedToolchain.FindCSharpCompilerDir() } }))
             {
                 compilerResults = codeProvider.CompileAssemblyFromFile(
                     compilerParameters, module.CodeFiles.ToArray());

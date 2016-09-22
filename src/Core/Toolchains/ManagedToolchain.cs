@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace CppSharp
 {
-    public static class MonoToolchain
+    public static class ManagedToolchain
     {
         public static string FindMonoPath()
         {
             if (Platform.IsWindows)
-                return @"C:\\Program Files (x86)\\Mono";
+                return @"C:\\Program Files (x86)\\Mono\bin";
             else if (Platform.IsMacOS)
-                return "/Library/Frameworks/Mono.framework/Versions/Current";
+                return "/Library/Frameworks/Mono.framework/Versions/Current/bin";
 
             throw new NotImplementedException();
         }
 
-        public static string FindCSharpCompilerPath()
+        public static string FindCSharpCompilerDir()
         {
             if (Platform.IsWindows)
             {
@@ -27,10 +27,15 @@ namespace CppSharp
 
                 var sdk = versions.Last();
 
-                return Path.Combine(sdk.Directory, "csc.exe");
+                return sdk.Directory;
             }
 
-            return Path.Combine(FindMonoPath(), "bin", "mcs.exe");
+            return FindMonoPath();
+        }
+
+        public static string FindCSharpCompilerPath()
+        {
+            return Path.Combine(FindCSharpCompilerDir(), Platform.IsWindows ? "csc.exe" : "mcs");
         }
     }
 }
