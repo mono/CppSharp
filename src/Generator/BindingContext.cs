@@ -52,7 +52,7 @@ namespace CppSharp.Generators
                     Diagnostics.PushIndent();
                     pass.VisitLibrary(ASTContext);
                     Diagnostics.PopIndent();
-                });            
+                });
         }
     }
 }
