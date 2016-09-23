@@ -70,7 +70,7 @@ namespace CppSharp
             return obj.Select((t, i) => i == obj.Length - 1 ? t : t + seperator);
         }
 
-        public static string UppercaseFirst(string s)
+        public static string Capitalize(string s)
         {
             // Check for empty string.
             if (string.IsNullOrEmpty(s))
