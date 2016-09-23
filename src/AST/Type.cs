@@ -405,6 +405,11 @@ namespace CppSharp.AST
         {
         }
 
+        public TypedefType(TypedefNameDecl decl)
+        {
+            Declaration = decl;
+        }
+
         public TypedefType(TypedefType type)
             : base(type)
         {
