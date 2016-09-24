@@ -670,6 +670,14 @@ void HasOverridesWithChangedAccess::publicOverride()
 {
 }
 
+HasOverridesWithIncreasedAccess::HasOverridesWithIncreasedAccess()
+{
+}
+
+void HasOverridesWithIncreasedAccess::privateOverride(int i)
+{
+}
+
 IgnoredType<int> PropertyWithIgnoredType::ignoredType()
 {
     return _ignoredType;

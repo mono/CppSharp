@@ -244,6 +244,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (var hasOverridesWithChangedAccess = new HasOverridesWithChangedAccess())
             hasOverridesWithChangedAccess.PrivateOverride();
+        using (var hasOverridesWithIncreasedAccess = new HasOverridesWithIncreasedAccess())
+            hasOverridesWithIncreasedAccess.PrivateOverride();
     }
 
     [Test]

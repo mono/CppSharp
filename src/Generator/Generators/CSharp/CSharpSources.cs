@@ -2254,8 +2254,6 @@ namespace CppSharp.Generators.CSharp
 
             if (isOverride)
             {
-                if (method.Access == AccessSpecifier.Private)
-                    Write("sealed ");
                 Write("override ");
             }
 
