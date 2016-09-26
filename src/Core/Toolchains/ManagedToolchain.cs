@@ -10,9 +10,9 @@ namespace CppSharp
         public static string FindMonoPath()
         {
             if (Platform.IsWindows)
-                return @"C:\\Program Files (x86)\\Mono\bin";
+                return @"C:\Program Files (x86)\Mono";
             else if (Platform.IsMacOS)
-                return "/Library/Frameworks/Mono.framework/Versions/Current/bin";
+                return "/Library/Frameworks/Mono.framework/Versions/Current";
 
             throw new NotImplementedException();
         }
@@ -35,7 +35,8 @@ namespace CppSharp
 
         public static string FindCSharpCompilerPath()
         {
-            return Path.Combine(FindCSharpCompilerDir(), Platform.IsWindows ? "csc.exe" : "mcs");
+            return Path.Combine(FindCSharpCompilerDir(), "bin",
+                Platform.IsWindows ? "csc.exe" : "mcs");
         }
     }
 }
