@@ -166,7 +166,7 @@ end
 function os.rmfiles(src_dir, filter)
   filter = filter or "**"
   src_dir = src_dir .. "/"
-  print('rm "' .. path.getabsolute(src_dir) .. filter)
+  print('rm ' .. path.getabsolute(src_dir) .. " " .. filter)
   if not os.isdir(src_dir) then error(src_dir .. " is not an existing directory!") end
   local dir = path.rebase(".",path.getabsolute("."), src_dir) -- root dir, relative from src_dir
  
