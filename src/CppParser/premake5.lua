@@ -39,6 +39,3 @@ project "CppSharp.CppParser"
   configuration "*"
 
 end
-
-include ("Bindings")
-include ("ParserGen")

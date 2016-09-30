@@ -5,9 +5,7 @@
 config = {}
 
 dofile "Helpers.lua"
-dofile "Tests.lua"
 dofile "LLVM.lua"
-dofile "Parser.lua"
 
 solution "CppSharp"
 
@@ -26,22 +24,26 @@ solution "CppSharp"
     defines { "WINDOWS" }
 	
   configuration {}
-    
+
+  group "Libraries"
+    include (srcdir .. "/Core")
+    include (srcdir .. "/AST")
+    include (srcdir .. "/CppParser")
+    include (srcdir .. "/CppParser/Bindings")
+    include (srcdir .. "/CppParser/ParserGen")
+    include (srcdir .. "/Parser")    
+    include (srcdir .. "/Generator")
+    include (srcdir .. "/Generator.Tests")
+    include (srcdir .. "/Runtime")
+
+  dofile "Tests.lua"
+
+  group "Tests"
+      IncludeTests()
+
   if string.starts(action, "vs") then
 
   group "Examples"
     IncludeExamples()
   
   end
-  
-  group "Tests"
-      IncludeTests()
-      
-  group "Libraries"
-    include (srcdir .. "/Core")
-    include (srcdir .. "/AST")
-    include (srcdir .. "/Generator")
-    include (srcdir .. "/Generator.Tests")
-    include (srcdir .. "/Runtime")
-    include (srcdir .. "/Parser")
-    include (srcdir .. "/CppParser")

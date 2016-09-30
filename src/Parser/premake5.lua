@@ -1,5 +1,3 @@
-include("../../build/Parser.lua")
-
 project "CppSharp.Parser"
 
   SetupManagedProject()
