@@ -39,6 +39,8 @@ msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=x64 /m
 
 ## Compiling on Mac OS X
 
+### Compiling manually
+
 1. Compile LLVM solution in *RelWithDebInfo* mode
    The following CMake variables should be enabled:
     - LLVM_ENABLE_LIBCXX (enables libc++ standard library support)
@@ -51,6 +53,22 @@ cmake -G "Unix Makefiles" -DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true -D
 
 make
 ```
+
+### Compiling using the build script
+
+Before building, ensure cmake is installed under Applications/Cmake.app and Ninja is installed in your PATH.
+
+1. Navigate to `build/scripts`
+2. Clone, build and package LLVM with
+```../premake5-osx --file=LLVM.lua clone_llvm
+../premake5-osx --file=LLVM.lua build_llvm
+../premake5-osx --file=LLVM.lua package_llvm
+```
+
+If the clone_llvm step fails, you can try to manually clone LLVM and Clang as explained above. You should still run clone_llvm to ensure that you are on the correct revision.
+
+The compile flags for cmake can be edited in `build/scripts/LLVM.lua`, e.g. if you need to build a 64-bit version.
+
 
 ## Compiling on Linux
 
