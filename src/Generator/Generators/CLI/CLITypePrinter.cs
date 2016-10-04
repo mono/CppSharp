@@ -217,13 +217,15 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.ULong: return "unsigned long";
                 case PrimitiveType.LongLong: return "long long";
                 case PrimitiveType.ULongLong: return "unsigned long long";
+                case PrimitiveType.Int128: return "__int128";
+                case PrimitiveType.UInt128: return "__uint128";                  
+                case PrimitiveType.Half: return "__fp16";                
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.LongDouble: return "long double";
                 case PrimitiveType.IntPtr: return "IntPtr";
                 case PrimitiveType.UIntPtr: return "UIntPtr";
-                case PrimitiveType.Null: return "void*";
-                case PrimitiveType.Int128: return "__int128";
+                case PrimitiveType.Null: return "void*";              
             }
 
             throw new NotSupportedException();
