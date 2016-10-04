@@ -60,7 +60,8 @@ Before building, ensure cmake is installed under Applications/Cmake.app and Ninj
 
 1. Navigate to `build/scripts`
 2. Clone, build and package LLVM with
-```../premake5-osx --file=LLVM.lua clone_llvm
+```
+../premake5-osx --file=LLVM.lua clone_llvm
 ../premake5-osx --file=LLVM.lua build_llvm
 ../premake5-osx --file=LLVM.lua package_llvm
 ```
