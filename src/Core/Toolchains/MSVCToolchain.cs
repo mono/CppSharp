@@ -11,10 +11,10 @@ namespace CppSharp
     /// Represents a Visual Studio version.
     public enum VisualStudioVersion
     {
-        VS2012,
-        VS2013,
-        VS2015,
-        Latest
+        VS2012 = 11,
+        VS2013 = 12,
+        VS2015 = 14,
+        Latest,
     }
 
     /// Represents a toolchain with associated version and directory.
