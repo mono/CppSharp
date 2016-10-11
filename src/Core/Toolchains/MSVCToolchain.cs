@@ -132,8 +132,8 @@ namespace CppSharp
             return vsSdk;
         }
 
-        /// Gets the system include folders for the given Visual Studio version.
-        public static List<string> GetSystemIncludes(VisualStudioVersion vsVersion)
+        public static ToolchainVersion GetWindowsKitsToolchain(VisualStudioVersion vsVersion,
+            out int windowsSdkMajorVer)
         {
             var vsSdk = GetVSToolchain(vsVersion);
 
@@ -141,26 +141,51 @@ namespace CppSharp
             vsDir = vsDir.Substring(0, vsDir.LastIndexOf(@"\Common7\IDE",
                 StringComparison.Ordinal));
 
-            var includes = new List<string>();
-            includes.Add(Path.Combine(vsDir, @"VC\include"));
-
             // Check VCVarsQueryRegistry.bat to see which Windows SDK version
             // is supposed to be used with this VS version.
             var vcVarsPath = Path.Combine(vsDir, @"Common7\Tools\VCVarsQueryRegistry.bat");
 
-            int windowsSdkMajorVer = 0;
+            windowsSdkMajorVer = 0;
             string kitsRootKey = string.Empty;
-            if (File.Exists(vcVarsPath))
-            {
-                var vcVarsFile = File.ReadAllText(vcVarsPath);
-                var match = Regex.Match(vcVarsFile, @"Windows\\v([1-9][0-9]*)\.?([0-9]*)");
-                if (match.Success)
-                    windowsSdkMajorVer = int.Parse(match.Groups[1].Value);
 
-                match = Regex.Match(vcVarsFile, @"KitsRoot([1-9][0-9]*)");
-                if (match.Success)
-                    kitsRootKey = match.Groups[0].Value;
-            }
+            var vcVarsFile = File.ReadAllText(vcVarsPath);
+            var match = Regex.Match(vcVarsFile, @"Windows\\v([1-9][0-9]*)\.?([0-9]*)");
+            if (match.Success)
+                windowsSdkMajorVer = int.Parse(match.Groups[1].Value);
+
+            match = Regex.Match(vcVarsFile, @"KitsRoot([1-9][0-9]*)");
+            if (match.Success)
+                kitsRootKey = match.Groups[0].Value;
+
+            List<ToolchainVersion> windowsKitsSdks;
+            GetWindowsKitsSdks(out windowsKitsSdks);
+
+            var windowsKitSdk = (!string.IsNullOrWhiteSpace(kitsRootKey))
+                ? windowsKitsSdks.Find(version => version.Value == kitsRootKey)
+                : windowsKitsSdks.Last();
+
+            // If for some reason we cannot find the SDK version reported by VS
+            // in the system, then fallback to the latest version found.
+            if (windowsKitSdk.Value == null)
+                windowsKitSdk = windowsKitsSdks.Last();
+
+            return windowsKitSdk;
+        }
+
+        /// Gets the system include folders for the given Visual Studio version.
+        public static List<string> GetSystemIncludes(VisualStudioVersion vsVersion)
+        {
+            var vsSdk = GetVSToolchain(vsVersion);
+
+            int windowsSdkMajorVer;
+            var windowsKitSdk = GetWindowsKitsToolchain(vsVersion, out windowsSdkMajorVer);
+
+            var vsDir = vsSdk.Directory;
+            vsDir = vsDir.Substring(0, vsDir.LastIndexOf(@"\Common7\IDE",
+                StringComparison.Ordinal));
+
+            var includes = new List<string>();
+            includes.Add(Path.Combine(vsDir, @"VC\include"));
 
             List<ToolchainVersion> windowsSdks;
             GetWindowsSdks(out windowsSdks);
@@ -174,18 +199,6 @@ namespace CppSharp
             {
                 includes.AddRange(GetIncludeDirsFromWindowsSdks(windowsSdkMajorVer, windowsSdks));
             }
-
-            List<ToolchainVersion> windowsKitsSdks;
-            GetWindowsKitsSdks(out windowsKitsSdks);
-
-            var windowsKitSdk = (!string.IsNullOrWhiteSpace(kitsRootKey))
-                ? windowsKitsSdks.Find(version => version.Value == kitsRootKey)
-                : windowsKitsSdks.Last();
-
-            // If for some reason we cannot find the SDK version reported by VS
-            // in the system, then fallback to the latest version found.
-            if (windowsKitSdk.Value == null)
-                windowsKitSdk = windowsKitsSdks.Last();
 
             includes.AddRange(
                 CollectUniversalCRuntimeIncludeDirs(vsDir, windowsKitSdk, windowsSdkMajorVer));
