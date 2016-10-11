@@ -21,6 +21,7 @@ namespace CppSharp
             enum struct MacroLocation;
             enum struct PrimitiveType;
             enum struct RawCommentKind;
+            enum struct RefQualifierKind;
             enum struct StatementClass;
             enum struct TemplateSpecializationKind;
             enum struct TypeKind;
@@ -313,6 +314,13 @@ namespace CppSharp
                 Conversion = 3,
                 Operator = 4,
                 UsingDirective = 5
+            };
+
+            public enum struct RefQualifierKind
+            {
+                None = 0,
+                LValue = 1,
+                RValue = 2
             };
 
             public enum struct CppAbi
@@ -1974,6 +1982,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
+                property CppSharp::Parser::AST::RefQualifierKind RefQualifier
+                {
+                    CppSharp::Parser::AST::RefQualifierKind get();
+                    void set(CppSharp::Parser::AST::RefQualifierKind);
                 }
             };
 

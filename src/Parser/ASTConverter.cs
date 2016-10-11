@@ -1164,6 +1164,19 @@ namespace CppSharp
             _method.IsExplicit = decl.IsExplicit;
             _method.IsOverride = decl.IsOverride;
 
+            switch (decl.RefQualifier)
+            {
+                case RefQualifierKind.None:
+                    _method.RefQualifier = AST.RefQualifier.None;
+                    break;
+                case RefQualifierKind.LValue:
+                    _method.RefQualifier = AST.RefQualifier.LValue;
+                    break;
+                case RefQualifierKind.RValue:
+                    _method.RefQualifier = AST.RefQualifier.RValue;
+                    break;
+            }
+
             _method.Kind = VisitCXXMethodKind(decl.MethodKind);
 
             _method.IsDefaultConstructor = decl.IsDefaultConstructor;

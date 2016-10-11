@@ -8,10 +8,18 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
+namespace __vcrt_va_list_is_reference
+{
+    [StructLayout(LayoutKind.Explicit, Size = 0)]
+    public unsafe partial struct __Internal
+    {
+    }
+}
+
 public unsafe partial class __crt_locale_data_public
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _locale_pctype;
@@ -27,7 +35,7 @@ public unsafe partial class __crt_locale_data_public
 public unsafe partial class __crt_locale_pointers
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr locinfo;
@@ -40,7 +48,7 @@ public unsafe partial class __crt_locale_pointers
 public unsafe partial class _Mbstatet
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint _Wchar;
@@ -63,7 +71,7 @@ namespace std
     public unsafe partial class _Lockit
     {
         [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public int _Locktype;
@@ -73,7 +81,7 @@ namespace std
     public unsafe partial class _Init_locks
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -82,7 +90,7 @@ namespace std
 public unsafe partial class _div_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int quot;
@@ -95,7 +103,7 @@ public unsafe partial class _div_t
 public unsafe partial class _ldiv_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int quot;
@@ -108,7 +116,7 @@ public unsafe partial class _ldiv_t
 public unsafe partial class _lldiv_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long quot;
@@ -121,7 +129,7 @@ public unsafe partial class _lldiv_t
 public unsafe partial class _LDOUBLE
 {
     [StructLayout(LayoutKind.Explicit, Size = 10)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed byte ld[10];
@@ -158,7 +166,7 @@ public unsafe partial class _LDOUBLE
 public unsafe partial class _CRT_DOUBLE
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public double x;
@@ -168,7 +176,7 @@ public unsafe partial class _CRT_DOUBLE
 public unsafe partial class _CRT_FLOAT
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public float f;
@@ -178,7 +186,7 @@ public unsafe partial class _CRT_FLOAT
 public unsafe partial class _LONGDOUBLE
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
     }
 }
@@ -186,7 +194,7 @@ public unsafe partial class _LONGDOUBLE
 public unsafe partial class _LDBL12
 {
     [StructLayout(LayoutKind.Explicit, Size = 12)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed byte ld12[12];
@@ -229,7 +237,7 @@ public unsafe partial class _LDBL12
 public unsafe partial struct _Dconst
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed ushort _Word[8];
@@ -266,7 +274,7 @@ public unsafe partial struct _Dconst
 namespace _Combined_type
 {
     [StructLayout(LayoutKind.Explicit, Size = 0)]
-    public unsafe partial struct Internal
+    public unsafe partial struct __Internal
     {
     }
 }
@@ -274,7 +282,7 @@ namespace _Combined_type
 namespace _Real_widened
 {
     [StructLayout(LayoutKind.Explicit, Size = 0)]
-    public unsafe partial struct Internal
+    public unsafe partial struct __Internal
     {
     }
 }
@@ -282,7 +290,7 @@ namespace _Real_widened
 namespace _Real_type
 {
     [StructLayout(LayoutKind.Explicit, Size = 0)]
-    public unsafe partial struct Internal
+    public unsafe partial struct __Internal
     {
     }
 }
@@ -290,7 +298,7 @@ namespace _Real_type
 public unsafe partial class _exception
 {
     [StructLayout(LayoutKind.Explicit, Size = 40)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int type;
@@ -312,7 +320,7 @@ public unsafe partial class _exception
 public unsafe partial class _complex
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public double x;
@@ -325,7 +333,7 @@ public unsafe partial class _complex
 public unsafe partial struct _double_val
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed ushort _Sh[4];
@@ -347,7 +355,7 @@ public unsafe partial struct _double_val
 public unsafe partial struct _float_val
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed ushort _Sh[2];
@@ -363,7 +371,7 @@ public unsafe partial struct _float_val
 public unsafe partial struct _ldouble_val
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed ushort _Sh[4];
@@ -382,7 +390,7 @@ public unsafe partial struct _ldouble_val
 public unsafe partial struct _float_const
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed ushort _Word[4];
@@ -413,7 +421,7 @@ namespace std
     namespace integral_constant
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -421,7 +429,7 @@ namespace std
     namespace _Is_integral
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -429,7 +437,15 @@ namespace std
     namespace _Is_floating_point
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace remove_reference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -437,7 +453,7 @@ namespace std
     public unsafe partial class _Nil
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -445,7 +461,7 @@ namespace std
     public unsafe partial class _Wrap_int
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -454,7 +470,7 @@ namespace std
 public unsafe partial class _wfinddata32_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 540)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint attrib;
@@ -1256,7 +1272,7 @@ public unsafe partial class _wfinddata32_t
 public unsafe partial class _wfinddata32i64_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 544)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint attrib;
@@ -2058,7 +2074,7 @@ public unsafe partial class _wfinddata32i64_t
 public unsafe partial class _wfinddata64i32_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 560)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint attrib;
@@ -2860,7 +2876,7 @@ public unsafe partial class _wfinddata64i32_t
 public unsafe partial class _wfinddata64_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 560)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint attrib;
@@ -3662,7 +3678,7 @@ public unsafe partial class _wfinddata64_t
 public unsafe partial class _iobuf
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _Placeholder;
@@ -3672,7 +3688,7 @@ public unsafe partial class _iobuf
 public unsafe partial class tm
 {
     [StructLayout(LayoutKind.Explicit, Size = 36)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int tm_sec;
@@ -3706,7 +3722,7 @@ public unsafe partial class tm
 public unsafe partial class _stat32
 {
     [StructLayout(LayoutKind.Explicit, Size = 36)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint st_dev;
@@ -3746,7 +3762,7 @@ public unsafe partial class _stat32
 public unsafe partial class _stat32i64
 {
     [StructLayout(LayoutKind.Explicit, Size = 48)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint st_dev;
@@ -3786,7 +3802,7 @@ public unsafe partial class _stat32i64
 public unsafe partial class _stat64i32
 {
     [StructLayout(LayoutKind.Explicit, Size = 48)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint st_dev;
@@ -3826,7 +3842,7 @@ public unsafe partial class _stat64i32
 public unsafe partial class _stat64
 {
     [StructLayout(LayoutKind.Explicit, Size = 56)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint st_dev;
@@ -3866,7 +3882,7 @@ public unsafe partial class _stat64
 public unsafe partial class stat
 {
     [StructLayout(LayoutKind.Explicit, Size = 48)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint st_dev;
@@ -3912,7 +3928,7 @@ namespace std
     namespace _If
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3920,7 +3936,7 @@ namespace std
     namespace plus
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3928,7 +3944,7 @@ namespace std
     namespace minus
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3936,7 +3952,7 @@ namespace std
     namespace multiplies
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3944,7 +3960,7 @@ namespace std
     namespace equal_to
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3952,7 +3968,7 @@ namespace std
     namespace less
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3960,7 +3976,7 @@ namespace std
     namespace _Bitwise_hash
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3968,7 +3984,7 @@ namespace std
     namespace hash
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -3995,7 +4011,7 @@ namespace std
     namespace numeric_limits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4003,7 +4019,7 @@ namespace std
     public unsafe partial class _Num_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4011,7 +4027,7 @@ namespace std
     public unsafe partial class _Num_int_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4019,7 +4035,7 @@ namespace std
     public unsafe partial class _Num_float_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4027,10 +4043,50 @@ namespace std
 
 namespace std
 {
+    namespace _Is_memfunptr
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
     namespace is_void
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace remove_pointer
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace is_lvalue_reference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace is_rvalue_reference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace _Is_pointer
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4038,7 +4094,7 @@ namespace std
     namespace integer_sequence
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4046,7 +4102,7 @@ namespace std
     public unsafe partial class _Invoker_pmf_object
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4054,7 +4110,7 @@ namespace std
     public unsafe partial class _Invoker_pmf_pointer
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4062,7 +4118,7 @@ namespace std
     public unsafe partial class _Invoker_pmd_object
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4070,7 +4126,7 @@ namespace std
     public unsafe partial class _Invoker_pmd_pointer
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4078,7 +4134,7 @@ namespace std
     public unsafe partial class _Invoker_functor
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4086,7 +4142,7 @@ namespace std
     public unsafe partial class _Unforced
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4094,7 +4150,7 @@ namespace std
     public unsafe partial class _Unique_tag_result_of
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4102,7 +4158,7 @@ namespace std
     public unsafe partial class _Swappable_with_helper_unique_type
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4113,7 +4169,7 @@ namespace std
     public unsafe partial class exception_ptr
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Data1;
@@ -4126,13 +4182,13 @@ namespace std
     public unsafe partial class nested_exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_nested_exception;
 
             [FieldOffset(8)]
-            internal global::std.exception_ptr.Internal _Exc;
+            internal global::std.exception_ptr.__Internal _Exc;
         }
     }
 }
@@ -4140,7 +4196,7 @@ namespace std
 public unsafe partial class _heapinfo
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _pentry;
@@ -4156,7 +4212,7 @@ public unsafe partial class _heapinfo
 public unsafe partial class __std_exception_data
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _What;
@@ -4171,52 +4227,52 @@ namespace std
     public unsafe partial class exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class bad_exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class bad_alloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class bad_array_new_length
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 }
@@ -4226,7 +4282,7 @@ namespace std
     public unsafe partial class nothrow_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4235,7 +4291,7 @@ namespace std
 public unsafe partial class _CrtMemState
 {
     [StructLayout(LayoutKind.Explicit, Size = 104)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr pBlockHeader;
@@ -4283,7 +4339,7 @@ namespace std
     namespace _Char_traits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4291,7 +4347,7 @@ namespace std
     namespace char_traits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4302,7 +4358,7 @@ namespace std
     public unsafe partial class piecewise_construct_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4317,7 +4373,7 @@ namespace std
     namespace _Yarn
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internalc__N_std_S__Yarn__C
+        public unsafe partial struct __Internalc__N_std_S__Yarn__C
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Myptr;
@@ -4327,7 +4383,7 @@ namespace std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internalc__N_std_S__Yarn__W
+        public unsafe partial struct __Internalc__N_std_S__Yarn__W
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Myptr;
@@ -4340,311 +4396,327 @@ namespace std
     namespace _Compressed_pair
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1
         {
             [FieldOffset(0)]
-            internal global::std._String_val.Internal _Myval2;
+            internal global::std._String_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__W___N_std_S__String_val____N_std_S__Simple_types__W_Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__W___N_std_S__String_val____N_std_S__Simple_types__W_Vb1
         {
             [FieldOffset(0)]
-            internal global::std._String_val.Internal _Myval2;
+            internal global::std._String_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__q___N_std_S__String_val____N_std_S__Simple_types__q_Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__q___N_std_S__String_val____N_std_S__Simple_types__q_Vb1
         {
             [FieldOffset(0)]
-            internal global::std._String_val.Internal _Myval2;
+            internal global::std._String_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__w___N_std_S__String_val____N_std_S__Simple_types__w_Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__w___N_std_S__String_val____N_std_S__Simple_types__w_Vb1
         {
             [FieldOffset(0)]
-            internal global::std._String_val.Internal _Myval2;
+            internal global::std._String_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S3__Vb1 _Myval2;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S3__Vb1 _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S3__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S3__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Tree_val.Internal _Myval2;
+            internal global::std._Tree_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Expression___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Expression___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__i___N_std_S__Vector_val____N_std_S__Simple_types__i_Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__i___N_std_S__Vector_val____N_std_S__Simple_types__i_Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
-            internal global::std._Vector_val.Internal _Myval2;
+            internal global::std._Vector_val.__Internal _Myval2;
         }
     }
 
     namespace iterator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace iterator_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace _Ptr_cat_helper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4652,7 +4724,7 @@ namespace std
     namespace _Is_character
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4660,7 +4732,7 @@ namespace std
     public unsafe partial class _Container_base0
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4668,7 +4740,7 @@ namespace std
     public unsafe partial class _Iterator_base0
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4676,7 +4748,7 @@ namespace std
     public unsafe partial class _Container_proxy
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Mycont;
@@ -4689,7 +4761,7 @@ namespace std
     public unsafe partial class _Container_base12
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Myproxy;
@@ -4699,7 +4771,7 @@ namespace std
     public unsafe partial class _Iterator_base12
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Myproxy;
@@ -4712,7 +4784,7 @@ namespace std
     public unsafe partial class _Zero_then_variadic_args_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4720,7 +4792,7 @@ namespace std
     public unsafe partial class _One_then_variadic_args_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4728,7 +4800,7 @@ namespace std
     public unsafe partial class input_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4736,7 +4808,7 @@ namespace std
     public unsafe partial class _Mutable_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4744,7 +4816,7 @@ namespace std
     public unsafe partial class output_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4752,7 +4824,7 @@ namespace std
     public unsafe partial class forward_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4760,7 +4832,7 @@ namespace std
     public unsafe partial class bidirectional_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4768,7 +4840,7 @@ namespace std
     public unsafe partial class random_access_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4776,7 +4848,7 @@ namespace std
     public unsafe partial class _General_ptr_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4784,7 +4856,7 @@ namespace std
     public unsafe partial class _Trivially_copyable_ptr_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4792,7 +4864,7 @@ namespace std
     public unsafe partial class _Really_trivial_ptr_iterator_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4800,7 +4872,7 @@ namespace std
     public unsafe partial class _Any_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4808,7 +4880,7 @@ namespace std
     public unsafe partial class allocator_arg_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4819,7 +4891,7 @@ namespace std
     public unsafe partial class allocator : IDisposable
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -4840,19 +4912,19 @@ namespace std
             return new allocator(native.ToPointer(), skipVTables);
         }
 
-        public static allocator __CreateInstance(allocator.Internal native, bool skipVTables = false)
+        public static allocator __CreateInstance(allocator.__Internal native, bool skipVTables = false)
         {
             return new allocator(native, skipVTables);
         }
 
-        private static void* __CopyValue(allocator.Internal native)
+        private static void* __CopyValue(allocator.__Internal native)
         {
             var ret = Marshal.AllocHGlobal(0);
-            *(allocator.Internal*) ret = native;
+            *(allocator.__Internal*) ret = native;
             return ret.ToPointer();
         }
 
-        private allocator(allocator.Internal native, bool skipVTables = false)
+        private allocator(allocator.__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
@@ -4871,7 +4943,7 @@ namespace std
             __Instance = Marshal.AllocHGlobal(0);
             __ownsNativeInstance = true;
             NativeToManagedMap[__Instance] = this;
-            Internal.ctor_0((__Instance + __PointerAdjustment));
+            __Internal.ctor_0((__Instance + __PointerAdjustment));
         }
 
         public void Dispose()
@@ -4892,7 +4964,7 @@ namespace std
     public unsafe partial class rebind
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
 
@@ -4900,7 +4972,7 @@ namespace std
     namespace _Wrap_alloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
 
@@ -4908,7 +4980,7 @@ namespace std
         public unsafe partial class rebind
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -4917,7 +4989,7 @@ namespace std
     namespace allocator_traits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4925,7 +4997,15 @@ namespace std
     namespace _Simple_types
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace pointer_traits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4933,7 +5013,7 @@ namespace std
     namespace _Get_voidptr
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -4941,7 +5021,7 @@ namespace std
     public unsafe partial class _Alloc_allocate
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4949,7 +5029,7 @@ namespace std
     public unsafe partial class _Has_no_alloc_construct_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4957,7 +5037,7 @@ namespace std
     public unsafe partial class _Has_no_alloc_destroy_tag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4965,7 +5045,7 @@ namespace std
     public unsafe partial class _Alloc_max_size
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4973,7 +5053,7 @@ namespace std
     public unsafe partial class _Alloc_select
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -4995,7 +5075,7 @@ namespace std
 public unsafe partial class _SETJMP_FLOAT128
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed ulong Part[2];
@@ -5008,7 +5088,7 @@ public unsafe partial class _SETJMP_FLOAT128
 public unsafe partial class _JUMP_BUFFER
 {
     [StructLayout(LayoutKind.Explicit, Size = 256)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ulong Frame;
@@ -5053,41 +5133,41 @@ public unsafe partial class _JUMP_BUFFER
         public ushort Spare;
 
         [FieldOffset(96)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm6;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm6;
 
         [FieldOffset(112)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm7;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm7;
 
         [FieldOffset(128)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm8;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm8;
 
         [FieldOffset(144)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm9;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm9;
 
         [FieldOffset(160)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm10;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm10;
 
         [FieldOffset(176)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm11;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm11;
 
         [FieldOffset(192)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm12;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm12;
 
         [FieldOffset(208)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm13;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm13;
 
         [FieldOffset(224)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm14;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm14;
 
         [FieldOffset(240)]
-        internal global::_SETJMP_FLOAT128.Internal Xmm15;
+        internal global::_SETJMP_FLOAT128.__Internal Xmm15;
     }
 }
 
 public unsafe partial struct __m256
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed float m256_f32[8];
@@ -5118,7 +5198,7 @@ public unsafe partial struct __m256
 public unsafe partial class __m256d
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed double m256d_f64[4];
@@ -5137,7 +5217,7 @@ public unsafe partial class __m256d
 public unsafe partial struct __m256i
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte m256i_i8[32];
@@ -5504,7 +5584,7 @@ public unsafe partial struct __m256i
 public unsafe partial struct __m128i
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte m128i_i8[16];
@@ -5691,7 +5771,7 @@ public unsafe partial struct __m128i
 public unsafe partial class __m128d
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed double m128d_f64[2];
@@ -5704,7 +5784,7 @@ public unsafe partial class __m128d
 public unsafe partial struct __m128
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed float m128_f32[4];
@@ -5903,7 +5983,7 @@ public unsafe partial struct __m128
 public unsafe partial struct __m64
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ulong m64_u64;
@@ -6012,10 +6092,10 @@ namespace std
     public unsafe partial class basic_string : IDisposable
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -6041,19 +6121,19 @@ namespace std
             return new basic_string(native.ToPointer(), skipVTables);
         }
 
-        public static basic_string __CreateInstance(basic_string.Internal native, bool skipVTables = false)
+        public static basic_string __CreateInstance(basic_string.__Internal native, bool skipVTables = false)
         {
             return new basic_string(native, skipVTables);
         }
 
-        private static void* __CopyValue(basic_string.Internal native)
+        private static void* __CopyValue(basic_string.__Internal native)
         {
             var ret = Marshal.AllocHGlobal(32);
-            *(basic_string.Internal*) ret = native;
+            *(basic_string.__Internal*) ret = native;
             return ret.ToPointer();
         }
 
-        private basic_string(basic_string.Internal native, bool skipVTables = false)
+        private basic_string(basic_string.__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
@@ -6077,14 +6157,14 @@ namespace std
             global::std.basic_string __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (disposing)
-                Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                __Internal.dtor_0((__Instance + __PointerAdjustment), 0);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
         }
 
         public string c_str()
         {
-            var __ret = Internal.c_str_0((__Instance + __PointerAdjustment));
+            var __ret = __Internal.c_str_0((__Instance + __PointerAdjustment));
             return Marshal.PtrToStringAnsi(__ret);
         }
     }
@@ -6092,20 +6172,20 @@ namespace std
     namespace _String_alloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
         }
     }
 
     namespace _String_val
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._String_val._Bxty.Internal _Bx;
+            internal global::std._String_val._Bxty.__Internal _Bx;
 
             [FieldOffset(16)]
             public ulong _Mysize;
@@ -6118,7 +6198,7 @@ namespace std
         public unsafe partial struct _Bxty
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -6127,7 +6207,7 @@ namespace std
     namespace _String_base_types
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -6138,117 +6218,117 @@ namespace std
     public unsafe partial class logic_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class domain_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class invalid_argument
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class length_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class out_of_range
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class runtime_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class overflow_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class underflow_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class range_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 }
@@ -6258,7 +6338,7 @@ namespace std
     namespace _Vec_base_types
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -6266,7 +6346,7 @@ namespace std
     namespace _Vector_val
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Myfirst;
@@ -6282,20 +6362,20 @@ namespace std
     namespace _Vector_alloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1 _Mypair;
         }
     }
 
     namespace vector
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1 _Mypair;
         }
     }
 }
@@ -6305,7 +6385,7 @@ namespace std
     public unsafe partial class _Ignore
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6313,7 +6393,7 @@ namespace std
     public unsafe partial class _Tuple_alloc_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6321,7 +6401,7 @@ namespace std
     public unsafe partial class _Exact_args_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6329,7 +6409,7 @@ namespace std
     public unsafe partial class _Unpack_tuple_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6337,7 +6417,7 @@ namespace std
     public unsafe partial class _Alloc_exact_args_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6345,7 +6425,7 @@ namespace std
     public unsafe partial class _Alloc_unpack_tuple_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6356,7 +6436,7 @@ namespace std
     namespace _Tree_simple_types
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -6364,7 +6444,7 @@ namespace std
     namespace _Tree_base_types
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -6372,7 +6452,7 @@ namespace std
     namespace _Tree_val
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Myhead;
@@ -6385,27 +6465,27 @@ namespace std
     namespace _Tree_comp_alloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1 _Mypair;
         }
     }
 
     namespace _Tree
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1 _Mypair;
         }
 
 
         public unsafe partial class _Copy_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -6414,7 +6494,7 @@ namespace std
         public unsafe partial class _Move_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -6426,7 +6506,7 @@ namespace std
     namespace _Tmap_traits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
 
@@ -6434,7 +6514,7 @@ namespace std
         public unsafe partial class value_compare
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -6443,10 +6523,10 @@ namespace std
     namespace map
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Compressed_pair.Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1 _Mypair;
+            internal global::std._Compressed_pair.__Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S8__Vb1_Vb1 _Mypair;
         }
     }
 }
@@ -6454,7 +6534,7 @@ namespace std
 public unsafe partial class __std_type_info_data
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _UndecoratedName;
@@ -6467,13 +6547,13 @@ public unsafe partial class __std_type_info_data
 public unsafe partial class type_info
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr vfptr_type_info;
 
         [FieldOffset(8)]
-        internal global::__std_type_info_data.Internal _Data;
+        internal global::__std_type_info_data.__Internal _Data;
     }
 }
 
@@ -6482,39 +6562,39 @@ namespace std
     public unsafe partial class bad_cast
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class bad_typeid
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 
     public unsafe partial class __non_rtti_object
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
         }
     }
 }
@@ -6522,7 +6602,7 @@ namespace std
 public unsafe partial class lconv
 {
     [StructLayout(LayoutKind.Explicit, Size = 152)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr decimal_point;
@@ -6607,7 +6687,7 @@ public unsafe partial class lconv
 public unsafe partial class _Collvec
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint _Page;
@@ -6620,7 +6700,7 @@ public unsafe partial class _Collvec
 public unsafe partial class _Ctypevec
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint _Page;
@@ -6639,7 +6719,7 @@ public unsafe partial class _Ctypevec
 public unsafe partial class _Cvtvec
 {
     [StructLayout(LayoutKind.Explicit, Size = 44)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint _Page;
@@ -6753,7 +6833,7 @@ namespace std
     public unsafe partial class _Timevec
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr _Timeptr;
@@ -6763,28 +6843,28 @@ namespace std
     public unsafe partial class _Locinfo
     {
         [StructLayout(LayoutKind.Explicit, Size = 104)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Lockit.Internal _Lock;
+            internal global::std._Lockit.__Internal _Lock;
 
             [FieldOffset(8)]
-            internal global::std._Yarn.Internalc__N_std_S__Yarn__C _Days;
+            internal global::std._Yarn.__Internalc__N_std_S__Yarn__C _Days;
 
             [FieldOffset(24)]
-            internal global::std._Yarn.Internalc__N_std_S__Yarn__C _Months;
+            internal global::std._Yarn.__Internalc__N_std_S__Yarn__C _Months;
 
             [FieldOffset(40)]
-            internal global::std._Yarn.Internalc__N_std_S__Yarn__W _W_Days;
+            internal global::std._Yarn.__Internalc__N_std_S__Yarn__W _W_Days;
 
             [FieldOffset(56)]
-            internal global::std._Yarn.Internalc__N_std_S__Yarn__W _W_Months;
+            internal global::std._Yarn.__Internalc__N_std_S__Yarn__W _W_Months;
 
             [FieldOffset(72)]
-            internal global::std._Yarn.Internalc__N_std_S__Yarn__C _Oldlocname;
+            internal global::std._Yarn.__Internalc__N_std_S__Yarn__C _Oldlocname;
 
             [FieldOffset(88)]
-            internal global::std._Yarn.Internalc__N_std_S__Yarn__C _Newlocname;
+            internal global::std._Yarn.__Internalc__N_std_S__Yarn__C _Newlocname;
         }
     }
 }
@@ -6794,7 +6874,7 @@ namespace std
     public unsafe abstract partial class _Facet_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr__Facet_base;
@@ -6814,7 +6894,7 @@ namespace std
     namespace _Locbase
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -6822,7 +6902,7 @@ namespace std
     namespace ctype
     {
         [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr__Facet_base;
@@ -6831,14 +6911,14 @@ namespace std
             public uint _Myrefs;
 
             [FieldOffset(16)]
-            internal global::_Ctypevec.Internal _Ctype;
+            internal global::_Ctypevec.__Internal _Ctype;
         }
     }
 
     namespace codecvt
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr__Facet_base;
@@ -6857,7 +6937,7 @@ namespace std
     namespace ctype_byname
     {
         [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr__Facet_base;
@@ -6866,14 +6946,14 @@ namespace std
             public uint _Myrefs;
 
             [FieldOffset(16)]
-            internal global::_Ctypevec.Internal _Ctype;
+            internal global::_Ctypevec.__Internal _Ctype;
         }
     }
 
     public unsafe partial class _Crt_new_delete
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -6881,7 +6961,7 @@ namespace std
     public unsafe partial class locale
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(8)]
             public global::System.IntPtr _Ptr;
@@ -6890,7 +6970,7 @@ namespace std
         public unsafe partial class _Locimp
         {
             [StructLayout(LayoutKind.Explicit, Size = 56)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vfptr__Facet_base;
@@ -6911,14 +6991,14 @@ namespace std
                 public byte _Xparent;
 
                 [FieldOffset(40)]
-                internal global::std._Yarn.Internalc__N_std_S__Yarn__C _Name;
+                internal global::std._Yarn.__Internalc__N_std_S__Yarn__C _Name;
             }
         }
 
         public unsafe partial class facet
         {
             [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vfptr__Facet_base;
@@ -6931,7 +7011,7 @@ namespace std
         public unsafe partial class id
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public ulong _Id;
@@ -6942,7 +7022,7 @@ namespace std
     public unsafe partial class codecvt_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr__Facet_base;
@@ -6963,7 +7043,7 @@ namespace std
     public unsafe partial class ctype_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr__Facet_base;
@@ -7082,7 +7162,7 @@ namespace std
     namespace is_error_code_enum
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -7090,7 +7170,7 @@ namespace std
     namespace is_error_condition_enum
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -7098,7 +7178,7 @@ namespace std
     public unsafe abstract partial class error_category
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_error_category;
@@ -7119,7 +7199,7 @@ namespace std
     public unsafe partial class error_code
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public int _Myval;
@@ -7132,7 +7212,7 @@ namespace std
     public unsafe partial class error_condition
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public int _Myval;
@@ -7145,39 +7225,39 @@ namespace std
     public unsafe partial class _System_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 40)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
 
             [FieldOffset(24)]
-            internal global::std.error_code.Internal _Mycode;
+            internal global::std.error_code.__Internal _Mycode;
         }
     }
 
     public unsafe partial class system_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 40)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_exception;
 
             [FieldOffset(8)]
-            internal global::__std_exception_data.Internal _Data;
+            internal global::__std_exception_data.__Internal _Data;
 
             [FieldOffset(24)]
-            internal global::std.error_code.Internal _Mycode;
+            internal global::std.error_code.__Internal _Mycode;
         }
     }
 
     public unsafe partial class _Generic_error_category
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_error_category;
@@ -7190,7 +7270,7 @@ namespace std
     public unsafe partial class _Iostream_error_category
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_error_category;
@@ -7203,7 +7283,7 @@ namespace std
     public unsafe partial class _System_error_category
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_error_category;
@@ -7219,7 +7299,7 @@ namespace std
     namespace _Iosb
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -7227,7 +7307,7 @@ namespace std
     public unsafe partial class ios_base
     {
         [StructLayout(LayoutKind.Explicit, Size = 72)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vfptr_ios_base;
@@ -7270,7 +7350,7 @@ namespace std
         public unsafe partial class _Iosarray
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr _Next;
@@ -7289,7 +7369,7 @@ namespace std
         public unsafe partial class _Fnarray
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr _Next;
@@ -7305,23 +7385,23 @@ namespace std
         public unsafe partial class failure
         {
             [StructLayout(LayoutKind.Explicit, Size = 40)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vfptr_exception;
 
                 [FieldOffset(8)]
-                internal global::__std_exception_data.Internal _Data;
+                internal global::__std_exception_data.__Internal _Data;
 
                 [FieldOffset(24)]
-                internal global::std.error_code.Internal _Mycode;
+                internal global::std.error_code.__Internal _Mycode;
             }
         }
 
         public unsafe partial class Init
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -7360,7 +7440,7 @@ namespace std
     public unsafe partial class _Rand_urng_from_func
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }

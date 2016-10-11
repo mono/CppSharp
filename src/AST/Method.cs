@@ -69,6 +69,13 @@ namespace CppSharp.AST
         ExplicitConversion
     }
 
+    public enum RefQualifier
+    {
+        None,
+        LValue,
+        RValue
+    }
+
     /// <summary>
     /// Represents a C++ record method declaration.
     /// </summary>
@@ -109,6 +116,8 @@ namespace CppSharp.AST
         public bool IsExplicit { get; set; }
         public bool IsOverride { get; set; }
         public bool IsProxy { get; set; }
+
+        public RefQualifier RefQualifier { get; set; }
 
         private CXXMethodKind kind;
         public CXXMethodKind Kind

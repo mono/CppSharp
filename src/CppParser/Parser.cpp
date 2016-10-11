@@ -1615,6 +1615,18 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
     Method->IsVirtual = MD->isVirtual();
     Method->IsConst = MD->isConst();
     Method->IsOverride = MD->size_overridden_methods() > 0;
+    switch (MD->getRefQualifier())
+    {
+    case clang::RefQualifierKind::RQ_None:
+        Method->RefQualifier = RefQualifierKind::None;
+        break;
+    case clang::RefQualifierKind::RQ_LValue:
+        Method->RefQualifier = RefQualifierKind::LValue;
+        break;
+    case clang::RefQualifierKind::RQ_RValue:
+        Method->RefQualifier = RefQualifierKind::RValue;
+        break;
+    }
 
     WalkFunction(MD, Method);
 

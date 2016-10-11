@@ -3215,6 +3215,16 @@ void CppSharp::Parser::AST::Method::ConversionType::set(CppSharp::Parser::AST::Q
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->ConversionType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::RefQualifierKind CppSharp::Parser::AST::Method::RefQualifier::get()
+{
+    return (CppSharp::Parser::AST::RefQualifierKind)((::CppSharp::CppParser::AST::Method*)NativePtr)->RefQualifier;
+}
+
+void CppSharp::Parser::AST::Method::RefQualifier::set(CppSharp::Parser::AST::RefQualifierKind value)
+{
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->RefQualifier = (::CppSharp::CppParser::AST::RefQualifierKind)value;
+}
+
 CppSharp::Parser::AST::Enumeration::Item::Item(::CppSharp::CppParser::AST::Enumeration::Item* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {

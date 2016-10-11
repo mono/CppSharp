@@ -646,6 +646,7 @@ Method::Method()
     , IsDefaultConstructor(false)
     , IsCopyConstructor(false)
     , IsMoveConstructor(false)
+    , RefQualifier(RefQualifierKind::None)
 { 
     Kind = DeclarationKind::Method; 
 }

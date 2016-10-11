@@ -11,7 +11,7 @@ using System.Security;
 public unsafe partial struct __mbstate_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 128)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte __mbstate8[128];
@@ -405,7 +405,7 @@ public unsafe partial struct __mbstate_t
 public unsafe partial class __darwin_pthread_handler_rec
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr __routine;
@@ -421,7 +421,7 @@ public unsafe partial class __darwin_pthread_handler_rec
 public unsafe partial class _opaque_pthread_attr_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -599,7 +599,7 @@ public unsafe partial class _opaque_pthread_attr_t
 public unsafe partial class _opaque_pthread_cond_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 48)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -729,7 +729,7 @@ public unsafe partial class _opaque_pthread_cond_t
 public unsafe partial class _opaque_pthread_condattr_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -763,7 +763,7 @@ public unsafe partial class _opaque_pthread_condattr_t
 public unsafe partial class _opaque_pthread_mutex_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -941,7 +941,7 @@ public unsafe partial class _opaque_pthread_mutex_t
 public unsafe partial class _opaque_pthread_mutexattr_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -975,7 +975,7 @@ public unsafe partial class _opaque_pthread_mutexattr_t
 public unsafe partial class _opaque_pthread_once_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -1009,7 +1009,7 @@ public unsafe partial class _opaque_pthread_once_t
 public unsafe partial class _opaque_pthread_rwlock_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 200)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -1595,7 +1595,7 @@ public unsafe partial class _opaque_pthread_rwlock_t
 public unsafe partial class _opaque_pthread_rwlockattr_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -1653,7 +1653,7 @@ public unsafe partial class _opaque_pthread_rwlockattr_t
 public unsafe partial class _opaque_pthread_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 1184)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long __sig;
@@ -5176,7 +5176,7 @@ namespace std
     namespace initializer_list
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public unsafe partial struct Internal
+        public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr __begin_;
@@ -5194,7 +5194,7 @@ namespace std
         namespace conditional
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5202,7 +5202,7 @@ namespace std
         namespace integral_constant
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5210,7 +5210,7 @@ namespace std
         namespace __libcpp_is_void
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5218,7 +5218,7 @@ namespace std
         namespace __is_nullptr_t_impl
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5226,7 +5226,7 @@ namespace std
         namespace __libcpp_is_integral
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5234,7 +5234,55 @@ namespace std
         namespace __libcpp_is_floating_point
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace __libcpp_is_pointer
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace is_lvalue_reference
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace is_rvalue_reference
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace is_reference
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace __libcpp_is_member_function_pointer
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace __libcpp_is_member_pointer
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5242,7 +5290,7 @@ namespace std
         namespace is_scalar
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5250,7 +5298,7 @@ namespace std
         namespace remove_reference
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5258,7 +5306,7 @@ namespace std
         namespace add_lvalue_reference
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5266,7 +5314,15 @@ namespace std
         namespace add_rvalue_reference
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace remove_pointer
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5274,7 +5330,7 @@ namespace std
         namespace __type_list
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5282,7 +5338,7 @@ namespace std
         namespace __align_type
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5290,7 +5346,7 @@ namespace std
         namespace aligned_storage
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
 
@@ -5298,7 +5354,7 @@ namespace std
             public unsafe partial struct type
             {
                 [StructLayout(LayoutKind.Explicit, Size = 0)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                 }
             }
@@ -5307,7 +5363,7 @@ namespace std
         namespace __numeric_type
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5315,7 +5371,7 @@ namespace std
         namespace __make_signed
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5323,7 +5379,15 @@ namespace std
         namespace __make_unsigned
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace is_nothrow_destructible
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5331,7 +5395,7 @@ namespace std
         public unsafe partial class __two
         {
             [StructLayout(LayoutKind.Explicit, Size = 2)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public fixed sbyte __lx[2];
@@ -5344,7 +5408,7 @@ namespace std
         public unsafe partial class __any
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -5352,7 +5416,7 @@ namespace std
         public unsafe partial class __nat
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -5360,7 +5424,7 @@ namespace std
         public unsafe partial class __struct_double
         {
             [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -5368,7 +5432,7 @@ namespace std
         public unsafe partial class __struct_double4
         {
             [StructLayout(LayoutKind.Explicit, Size = 32)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public fixed double __lx[4];
@@ -5409,7 +5473,7 @@ namespace std
         namespace __tuple_convertible_imp
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5417,7 +5481,7 @@ namespace std
         namespace __tuple_constructible_imp
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5425,7 +5489,7 @@ namespace std
         namespace __tuple_assignable_imp
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5439,7 +5503,7 @@ namespace std
         public unsafe partial class piecewise_construct_t
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -5455,7 +5519,7 @@ namespace std
     public unsafe partial class exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -5465,7 +5529,7 @@ namespace std
     public unsafe partial class bad_exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -5475,7 +5539,7 @@ namespace std
     public unsafe partial class exception_ptr
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr __ptr_;
@@ -5485,13 +5549,13 @@ namespace std
     public unsafe partial class nested_exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_nested_exception;
 
             [FieldOffset(8)]
-            internal global::std.exception_ptr.Internal __ptr_;
+            internal global::std.exception_ptr.__Internal __ptr_;
         }
     }
 }
@@ -5501,7 +5565,7 @@ namespace std
     public unsafe partial class type_info
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_type_info;
@@ -5514,7 +5578,7 @@ namespace std
     public unsafe partial class bad_cast
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -5524,7 +5588,7 @@ namespace std
     public unsafe partial class bad_typeid
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -5537,7 +5601,7 @@ namespace std
     public unsafe partial class bad_alloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -5547,7 +5611,7 @@ namespace std
     public unsafe partial class bad_array_new_length
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -5557,7 +5621,7 @@ namespace std
     public unsafe partial class nothrow_t
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct Internal
+        public partial struct __Internal
         {
         }
     }
@@ -5586,7 +5650,7 @@ namespace std
         namespace __libcpp_numeric_limits
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -5596,7 +5660,7 @@ namespace std
 public unsafe partial class __sbuf
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _base;
@@ -5609,7 +5673,7 @@ public unsafe partial class __sbuf
 public unsafe partial class __sFILE
 {
     [StructLayout(LayoutKind.Explicit, Size = 152)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr _p;
@@ -5627,7 +5691,7 @@ public unsafe partial class __sFILE
         public short _file;
 
         [FieldOffset(24)]
-        internal global::__sbuf.Internal _bf;
+        internal global::__sbuf.__Internal _bf;
 
         [FieldOffset(40)]
         public int _lbfsize;
@@ -5648,7 +5712,7 @@ public unsafe partial class __sFILE
         public global::System.IntPtr _write;
 
         [FieldOffset(88)]
-        internal global::__sbuf.Internal _ub;
+        internal global::__sbuf.__Internal _ub;
 
         [FieldOffset(104)]
         public global::System.IntPtr _extra;
@@ -5669,7 +5733,7 @@ public unsafe partial class __sFILE
         public fixed byte _nbuf[1];
 
         [FieldOffset(120)]
-        internal global::__sbuf.Internal _lb;
+        internal global::__sbuf.__Internal _lb;
 
         [FieldOffset(136)]
         public int _blksize;
@@ -5682,7 +5746,7 @@ public unsafe partial class __sFILE
 public unsafe partial class timespec
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long tv_sec;
@@ -5695,7 +5759,7 @@ public unsafe partial class timespec
 public unsafe partial class __darwin_sigaltstack
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr ss_sp;
@@ -5711,7 +5775,7 @@ public unsafe partial class __darwin_sigaltstack
 public unsafe partial class __darwin_ucontext
 {
     [StructLayout(LayoutKind.Explicit, Size = 56)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int uc_onstack;
@@ -5720,7 +5784,7 @@ public unsafe partial class __darwin_ucontext
         public uint uc_sigmask;
 
         [FieldOffset(8)]
-        internal global::__darwin_sigaltstack.Internal uc_stack;
+        internal global::__darwin_sigaltstack.__Internal uc_stack;
 
         [FieldOffset(32)]
         public global::System.IntPtr uc_link;
@@ -5736,7 +5800,7 @@ public unsafe partial class __darwin_ucontext
 public unsafe partial class timeval
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long tv_sec;
@@ -5749,7 +5813,7 @@ public unsafe partial class timeval
 public unsafe partial class tm
 {
     [StructLayout(LayoutKind.Explicit, Size = 56)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int tm_sec;
@@ -5789,7 +5853,7 @@ public unsafe partial class tm
 public unsafe partial class _RuneEntry
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int __min;
@@ -5808,7 +5872,7 @@ public unsafe partial class _RuneEntry
 public unsafe partial class _RuneRange
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int __nranges;
@@ -5821,7 +5885,7 @@ public unsafe partial class _RuneRange
 public unsafe partial class _RuneCharClass
 {
     [StructLayout(LayoutKind.Explicit, Size = 20)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte __name[14];
@@ -5873,7 +5937,7 @@ public unsafe partial class _RuneCharClass
 public unsafe partial class _RuneLocale
 {
     [StructLayout(LayoutKind.Explicit, Size = 3208)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte __magic[8];
@@ -8309,13 +8373,13 @@ public unsafe partial class _RuneLocale
         public int __dummy___mapupper_255;
 
         [FieldOffset(3136)]
-        internal global::_RuneRange.Internal __runetype_ext;
+        internal global::_RuneRange.__Internal __runetype_ext;
 
         [FieldOffset(3152)]
-        internal global::_RuneRange.Internal __maplower_ext;
+        internal global::_RuneRange.__Internal __maplower_ext;
 
         [FieldOffset(3168)]
-        internal global::_RuneRange.Internal __mapupper_ext;
+        internal global::_RuneRange.__Internal __mapupper_ext;
 
         [FieldOffset(3184)]
         public global::System.IntPtr __variable;
@@ -8345,7 +8409,15 @@ namespace std
         namespace iterator
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace iterator_traits
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8353,7 +8425,7 @@ namespace std
         public unsafe partial class input_iterator_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -8361,7 +8433,7 @@ namespace std
         public unsafe partial class output_iterator_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -8369,7 +8441,7 @@ namespace std
         public unsafe partial class forward_iterator_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -8377,7 +8449,7 @@ namespace std
         public unsafe partial class bidirectional_iterator_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -8385,7 +8457,7 @@ namespace std
         public unsafe partial class random_access_iterator_tag
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -8396,10 +8468,18 @@ namespace std
 {
     namespace __1
     {
+        namespace __weak_result_type
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
         namespace unary_function
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8407,7 +8487,7 @@ namespace std
         namespace binary_function
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8415,7 +8495,7 @@ namespace std
         namespace less
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8423,7 +8503,7 @@ namespace std
         public unsafe partial class allocator_arg_t
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -8437,7 +8517,7 @@ namespace std
         namespace tuple
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8445,7 +8525,7 @@ namespace std
         namespace __ignore_t
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8453,7 +8533,7 @@ namespace std
         namespace __tuple_equal
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8461,7 +8541,7 @@ namespace std
         namespace __tuple_less
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8475,7 +8555,7 @@ namespace std
         public unsafe partial class allocator : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -8496,19 +8576,19 @@ namespace std
                 return new allocator(native.ToPointer(), skipVTables);
             }
 
-            public static allocator __CreateInstance(allocator.Internal native, bool skipVTables = false)
+            public static allocator __CreateInstance(allocator.__Internal native, bool skipVTables = false)
             {
                 return new allocator(native, skipVTables);
             }
 
-            private static void* __CopyValue(allocator.Internal native)
+            private static void* __CopyValue(allocator.__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(0);
-                *(allocator.Internal*) ret = native;
+                *(allocator.__Internal*) ret = native;
                 return ret.ToPointer();
             }
 
-            private allocator(allocator.Internal native, bool skipVTables = false)
+            private allocator(allocator.__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -8527,7 +8607,7 @@ namespace std
                 __Instance = Marshal.AllocHGlobal(0);
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                Internal.ctor_0((__Instance + __PointerAdjustment));
+                __Internal.ctor_0((__Instance + __PointerAdjustment));
             }
 
             public void Dispose()
@@ -8548,7 +8628,7 @@ namespace std
         public unsafe partial class rebind
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -8556,7 +8636,7 @@ namespace std
         namespace allocator_traits
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8564,17 +8644,17 @@ namespace std
         namespace __compressed_pair
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
-                internal global::std.__1.basic_string.__rep.Internal __first_;
+                internal global::std.__1.basic_string.__rep.__Internal __first_;
             }
         }
 
         namespace __pointer_type
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8582,7 +8662,7 @@ namespace std
         namespace __const_pointer
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8590,7 +8670,7 @@ namespace std
         namespace __void_pointer
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8598,7 +8678,7 @@ namespace std
         namespace pointer_traits
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
 
@@ -8606,7 +8686,7 @@ namespace std
             public unsafe static partial class __nat
             {
                 [StructLayout(LayoutKind.Explicit, Size = 0)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                 }
             }
@@ -8615,7 +8695,7 @@ namespace std
         namespace __const_void_pointer
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8623,7 +8703,7 @@ namespace std
         namespace __alloc_traits_difference_type
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8631,7 +8711,7 @@ namespace std
         namespace __size_type
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8639,7 +8719,7 @@ namespace std
         namespace __propagate_on_container_copy_assignment
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8647,7 +8727,7 @@ namespace std
         namespace __propagate_on_container_move_assignment
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8655,7 +8735,7 @@ namespace std
         namespace __propagate_on_container_swap
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8663,7 +8743,7 @@ namespace std
         namespace auto_ptr
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -8671,7 +8751,7 @@ namespace std
         public unsafe partial class __destruct_n
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public ulong size;
@@ -8681,7 +8761,7 @@ namespace std
         public unsafe partial class bad_weak_ptr
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vptr_exception;
@@ -8691,7 +8771,7 @@ namespace std
         public unsafe abstract partial class __shared_count
         {
             [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vptr___shared_count;
@@ -8704,7 +8784,7 @@ namespace std
         public unsafe abstract partial class __shared_weak_count
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vptr___shared_count;
@@ -8720,7 +8800,7 @@ namespace std
         public unsafe partial class __sp_mut
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __lx;
@@ -8730,7 +8810,7 @@ namespace std
         public unsafe partial class pointer_safety
         {
             [StructLayout(LayoutKind.Explicit, Size = 4)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 internal global::std.__1.pointer_safety.__lx __v_;
@@ -8749,7 +8829,7 @@ namespace std
             namespace __pointer_type
             {
                 [StructLayout(LayoutKind.Explicit, Size = 0)]
-                public unsafe partial struct Internal
+                public unsafe partial struct __Internal
                 {
                 }
             }
@@ -8764,7 +8844,7 @@ namespace std
 public unsafe partial struct sigval
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int sival_int;
@@ -8777,7 +8857,7 @@ public unsafe partial struct sigval
 public unsafe partial class sigevent
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int sigev_notify;
@@ -8786,7 +8866,7 @@ public unsafe partial class sigevent
         public int sigev_signo;
 
         [FieldOffset(8)]
-        internal global::sigval.Internal sigev_value;
+        internal global::sigval.__Internal sigev_value;
 
         [FieldOffset(16)]
         public global::System.IntPtr sigev_notify_function;
@@ -8799,7 +8879,7 @@ public unsafe partial class sigevent
 public unsafe partial class __siginfo
 {
     [StructLayout(LayoutKind.Explicit, Size = 104)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int si_signo;
@@ -8823,7 +8903,7 @@ public unsafe partial class __siginfo
         public global::System.IntPtr si_addr;
 
         [FieldOffset(32)]
-        internal global::sigval.Internal si_value;
+        internal global::sigval.__Internal si_value;
 
         [FieldOffset(40)]
         public long si_band;
@@ -8854,7 +8934,7 @@ public unsafe partial class __siginfo
 public unsafe partial struct __sigaction_u
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr __sa_handler;
@@ -8867,10 +8947,10 @@ public unsafe partial struct __sigaction_u
 public unsafe partial class __sigaction
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::__sigaction_u.Internal __sigaction_u;
+        internal global::__sigaction_u.__Internal __sigaction_u;
 
         [FieldOffset(8)]
         public global::System.IntPtr sa_tramp;
@@ -8886,10 +8966,10 @@ public unsafe partial class __sigaction
 public unsafe partial class sigaction
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::__sigaction_u.Internal __sigaction_u;
+        internal global::__sigaction_u.__Internal __sigaction_u;
 
         [FieldOffset(8)]
         public uint sa_mask;
@@ -8902,7 +8982,7 @@ public unsafe partial class sigaction
 public unsafe partial class sigvec
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr sv_handler;
@@ -8918,7 +8998,7 @@ public unsafe partial class sigvec
 public unsafe partial class sigstack
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public global::System.IntPtr ss_sp;
@@ -8931,71 +9011,71 @@ public unsafe partial class sigstack
 public unsafe partial class __darwin_mcontext32
 {
     [StructLayout(LayoutKind.Explicit, Size = 600)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::__darwin_i386_exception_state.Internal __es;
+        internal global::__darwin_i386_exception_state.__Internal __es;
 
         [FieldOffset(12)]
-        internal global::__darwin_i386_thread_state.Internal __ss;
+        internal global::__darwin_i386_thread_state.__Internal __ss;
 
         [FieldOffset(76)]
-        internal global::__darwin_i386_float_state.Internal __fs;
+        internal global::__darwin_i386_float_state.__Internal __fs;
     }
 }
 
 public unsafe partial class __darwin_mcontext_avx32
 {
     [StructLayout(LayoutKind.Explicit, Size = 792)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::__darwin_i386_exception_state.Internal __es;
+        internal global::__darwin_i386_exception_state.__Internal __es;
 
         [FieldOffset(12)]
-        internal global::__darwin_i386_thread_state.Internal __ss;
+        internal global::__darwin_i386_thread_state.__Internal __ss;
 
         [FieldOffset(76)]
-        internal global::__darwin_i386_avx_state.Internal __fs;
+        internal global::__darwin_i386_avx_state.__Internal __fs;
     }
 }
 
 public unsafe partial class __darwin_mcontext64
 {
     [StructLayout(LayoutKind.Explicit, Size = 712)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::__darwin_x86_exception_state64.Internal __es;
+        internal global::__darwin_x86_exception_state64.__Internal __es;
 
         [FieldOffset(16)]
-        internal global::__darwin_x86_thread_state64.Internal __ss;
+        internal global::__darwin_x86_thread_state64.__Internal __ss;
 
         [FieldOffset(184)]
-        internal global::__darwin_x86_float_state64.Internal __fs;
+        internal global::__darwin_x86_float_state64.__Internal __fs;
     }
 }
 
 public unsafe partial class __darwin_mcontext_avx64
 {
     [StructLayout(LayoutKind.Explicit, Size = 1032)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::__darwin_x86_exception_state64.Internal __es;
+        internal global::__darwin_x86_exception_state64.__Internal __es;
 
         [FieldOffset(16)]
-        internal global::__darwin_x86_thread_state64.Internal __ss;
+        internal global::__darwin_x86_thread_state64.__Internal __ss;
 
         [FieldOffset(184)]
-        internal global::__darwin_x86_avx_state64.Internal __fs;
+        internal global::__darwin_x86_avx_state64.__Internal __fs;
     }
 }
 
 public unsafe partial class __darwin_i386_thread_state
 {
     [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint __eax;
@@ -9050,7 +9130,7 @@ public unsafe partial class __darwin_i386_thread_state
 public unsafe partial class __darwin_fp_control
 {
     [StructLayout(LayoutKind.Explicit, Size = 2)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ushort __invalid;
@@ -9090,7 +9170,7 @@ public unsafe partial class __darwin_fp_control
 public unsafe partial class __darwin_fp_status
 {
     [StructLayout(LayoutKind.Explicit, Size = 2)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ushort __invalid;
@@ -9139,7 +9219,7 @@ public unsafe partial class __darwin_fp_status
 public unsafe partial class __darwin_mmst_reg
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte __mmst_reg[10];
@@ -9194,7 +9274,7 @@ public unsafe partial class __darwin_mmst_reg
 public unsafe partial class __darwin_xmm_reg
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed sbyte __xmm_reg[16];
@@ -9249,7 +9329,7 @@ public unsafe partial class __darwin_xmm_reg
 public unsafe partial class __darwin_i386_float_state
 {
     [StructLayout(LayoutKind.Explicit, Size = 524)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed int __fpu_reserved[2];
@@ -9258,10 +9338,10 @@ public unsafe partial class __darwin_i386_float_state
         public int __dummy___fpu_reserved_1;
 
         [FieldOffset(8)]
-        internal global::__darwin_fp_control.Internal __fpu_fcw;
+        internal global::__darwin_fp_control.__Internal __fpu_fcw;
 
         [FieldOffset(10)]
-        internal global::__darwin_fp_status.Internal __fpu_fsw;
+        internal global::__darwin_fp_status.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
         public byte __fpu_ftw;
@@ -9297,52 +9377,52 @@ public unsafe partial class __darwin_i386_float_state
         public uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm0;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm0;
 
         [FieldOffset(56)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm1;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm1;
 
         [FieldOffset(72)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm2;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm2;
 
         [FieldOffset(88)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm3;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm3;
 
         [FieldOffset(104)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm4;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm4;
 
         [FieldOffset(120)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm5;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm5;
 
         [FieldOffset(136)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm6;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm6;
 
         [FieldOffset(152)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm7;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm7;
 
         [FieldOffset(168)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm0;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm0;
 
         [FieldOffset(184)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm1;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm1;
 
         [FieldOffset(200)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm2;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm2;
 
         [FieldOffset(216)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm3;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm3;
 
         [FieldOffset(232)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm4;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm4;
 
         [FieldOffset(248)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm5;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm5;
 
         [FieldOffset(264)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm6;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm6;
 
         [FieldOffset(280)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm7;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm7;
 
         [FieldOffset(296)]
         public fixed sbyte __fpu_rsrv4[224];
@@ -10024,7 +10104,7 @@ public unsafe partial class __darwin_i386_float_state
 public unsafe partial class __darwin_i386_avx_state
 {
     [StructLayout(LayoutKind.Explicit, Size = 716)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed int __fpu_reserved[2];
@@ -10033,10 +10113,10 @@ public unsafe partial class __darwin_i386_avx_state
         public int __dummy___fpu_reserved_1;
 
         [FieldOffset(8)]
-        internal global::__darwin_fp_control.Internal __fpu_fcw;
+        internal global::__darwin_fp_control.__Internal __fpu_fcw;
 
         [FieldOffset(10)]
-        internal global::__darwin_fp_status.Internal __fpu_fsw;
+        internal global::__darwin_fp_status.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
         public byte __fpu_ftw;
@@ -10072,52 +10152,52 @@ public unsafe partial class __darwin_i386_avx_state
         public uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm0;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm0;
 
         [FieldOffset(56)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm1;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm1;
 
         [FieldOffset(72)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm2;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm2;
 
         [FieldOffset(88)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm3;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm3;
 
         [FieldOffset(104)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm4;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm4;
 
         [FieldOffset(120)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm5;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm5;
 
         [FieldOffset(136)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm6;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm6;
 
         [FieldOffset(152)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm7;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm7;
 
         [FieldOffset(168)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm0;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm0;
 
         [FieldOffset(184)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm1;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm1;
 
         [FieldOffset(200)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm2;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm2;
 
         [FieldOffset(216)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm3;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm3;
 
         [FieldOffset(232)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm4;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm4;
 
         [FieldOffset(248)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm5;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm5;
 
         [FieldOffset(264)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm6;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm6;
 
         [FieldOffset(280)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm7;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm7;
 
         [FieldOffset(296)]
         public fixed sbyte __fpu_rsrv4[224];
@@ -10987,35 +11067,35 @@ public unsafe partial class __darwin_i386_avx_state
         public sbyte __dummy___avx_reserved1_63;
 
         [FieldOffset(588)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh0;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh0;
 
         [FieldOffset(604)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh1;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh1;
 
         [FieldOffset(620)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh2;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh2;
 
         [FieldOffset(636)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh3;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh3;
 
         [FieldOffset(652)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh4;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh4;
 
         [FieldOffset(668)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh5;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh5;
 
         [FieldOffset(684)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh6;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh6;
 
         [FieldOffset(700)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh7;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh7;
     }
 }
 
 public unsafe partial class __darwin_i386_exception_state
 {
     [StructLayout(LayoutKind.Explicit, Size = 12)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ushort __trapno;
@@ -11034,7 +11114,7 @@ public unsafe partial class __darwin_i386_exception_state
 public unsafe partial class __darwin_x86_debug_state32
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public uint __dr0;
@@ -11065,7 +11145,7 @@ public unsafe partial class __darwin_x86_debug_state32
 public unsafe partial class __darwin_x86_thread_state64
 {
     [StructLayout(LayoutKind.Explicit, Size = 168)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ulong __rax;
@@ -11135,7 +11215,7 @@ public unsafe partial class __darwin_x86_thread_state64
 public unsafe partial class __darwin_x86_float_state64
 {
     [StructLayout(LayoutKind.Explicit, Size = 524)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed int __fpu_reserved[2];
@@ -11144,10 +11224,10 @@ public unsafe partial class __darwin_x86_float_state64
         public int __dummy___fpu_reserved_1;
 
         [FieldOffset(8)]
-        internal global::__darwin_fp_control.Internal __fpu_fcw;
+        internal global::__darwin_fp_control.__Internal __fpu_fcw;
 
         [FieldOffset(10)]
-        internal global::__darwin_fp_status.Internal __fpu_fsw;
+        internal global::__darwin_fp_status.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
         public byte __fpu_ftw;
@@ -11183,76 +11263,76 @@ public unsafe partial class __darwin_x86_float_state64
         public uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm0;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm0;
 
         [FieldOffset(56)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm1;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm1;
 
         [FieldOffset(72)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm2;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm2;
 
         [FieldOffset(88)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm3;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm3;
 
         [FieldOffset(104)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm4;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm4;
 
         [FieldOffset(120)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm5;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm5;
 
         [FieldOffset(136)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm6;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm6;
 
         [FieldOffset(152)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm7;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm7;
 
         [FieldOffset(168)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm0;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm0;
 
         [FieldOffset(184)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm1;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm1;
 
         [FieldOffset(200)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm2;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm2;
 
         [FieldOffset(216)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm3;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm3;
 
         [FieldOffset(232)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm4;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm4;
 
         [FieldOffset(248)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm5;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm5;
 
         [FieldOffset(264)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm6;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm6;
 
         [FieldOffset(280)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm7;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm7;
 
         [FieldOffset(296)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm8;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm8;
 
         [FieldOffset(312)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm9;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm9;
 
         [FieldOffset(328)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm10;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm10;
 
         [FieldOffset(344)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm11;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm11;
 
         [FieldOffset(360)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm12;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm12;
 
         [FieldOffset(376)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm13;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm13;
 
         [FieldOffset(392)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm14;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm14;
 
         [FieldOffset(408)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm15;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm15;
 
         [FieldOffset(424)]
         public fixed sbyte __fpu_rsrv4[96];
@@ -11550,7 +11630,7 @@ public unsafe partial class __darwin_x86_float_state64
 public unsafe partial class __darwin_x86_avx_state64
 {
     [StructLayout(LayoutKind.Explicit, Size = 844)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public fixed int __fpu_reserved[2];
@@ -11559,10 +11639,10 @@ public unsafe partial class __darwin_x86_avx_state64
         public int __dummy___fpu_reserved_1;
 
         [FieldOffset(8)]
-        internal global::__darwin_fp_control.Internal __fpu_fcw;
+        internal global::__darwin_fp_control.__Internal __fpu_fcw;
 
         [FieldOffset(10)]
-        internal global::__darwin_fp_status.Internal __fpu_fsw;
+        internal global::__darwin_fp_status.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
         public byte __fpu_ftw;
@@ -11598,76 +11678,76 @@ public unsafe partial class __darwin_x86_avx_state64
         public uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm0;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm0;
 
         [FieldOffset(56)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm1;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm1;
 
         [FieldOffset(72)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm2;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm2;
 
         [FieldOffset(88)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm3;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm3;
 
         [FieldOffset(104)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm4;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm4;
 
         [FieldOffset(120)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm5;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm5;
 
         [FieldOffset(136)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm6;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm6;
 
         [FieldOffset(152)]
-        internal global::__darwin_mmst_reg.Internal __fpu_stmm7;
+        internal global::__darwin_mmst_reg.__Internal __fpu_stmm7;
 
         [FieldOffset(168)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm0;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm0;
 
         [FieldOffset(184)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm1;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm1;
 
         [FieldOffset(200)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm2;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm2;
 
         [FieldOffset(216)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm3;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm3;
 
         [FieldOffset(232)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm4;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm4;
 
         [FieldOffset(248)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm5;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm5;
 
         [FieldOffset(264)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm6;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm6;
 
         [FieldOffset(280)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm7;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm7;
 
         [FieldOffset(296)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm8;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm8;
 
         [FieldOffset(312)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm9;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm9;
 
         [FieldOffset(328)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm10;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm10;
 
         [FieldOffset(344)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm11;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm11;
 
         [FieldOffset(360)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm12;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm12;
 
         [FieldOffset(376)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm13;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm13;
 
         [FieldOffset(392)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm14;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm14;
 
         [FieldOffset(408)]
-        internal global::__darwin_xmm_reg.Internal __fpu_xmm15;
+        internal global::__darwin_xmm_reg.__Internal __fpu_xmm15;
 
         [FieldOffset(424)]
         public fixed sbyte __fpu_rsrv4[96];
@@ -12153,59 +12233,59 @@ public unsafe partial class __darwin_x86_avx_state64
         public sbyte __dummy___avx_reserved1_63;
 
         [FieldOffset(588)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh0;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh0;
 
         [FieldOffset(604)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh1;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh1;
 
         [FieldOffset(620)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh2;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh2;
 
         [FieldOffset(636)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh3;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh3;
 
         [FieldOffset(652)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh4;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh4;
 
         [FieldOffset(668)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh5;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh5;
 
         [FieldOffset(684)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh6;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh6;
 
         [FieldOffset(700)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh7;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh7;
 
         [FieldOffset(716)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh8;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh8;
 
         [FieldOffset(732)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh9;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh9;
 
         [FieldOffset(748)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh10;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh10;
 
         [FieldOffset(764)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh11;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh11;
 
         [FieldOffset(780)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh12;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh12;
 
         [FieldOffset(796)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh13;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh13;
 
         [FieldOffset(812)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh14;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh14;
 
         [FieldOffset(828)]
-        internal global::__darwin_xmm_reg.Internal __fpu_ymmh15;
+        internal global::__darwin_xmm_reg.__Internal __fpu_ymmh15;
     }
 }
 
 public unsafe partial class __darwin_x86_exception_state64
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ushort __trapno;
@@ -12224,7 +12304,7 @@ public unsafe partial class __darwin_x86_exception_state64
 public unsafe partial class __darwin_x86_debug_state64
 {
     [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ulong __dr0;
@@ -12255,13 +12335,13 @@ public unsafe partial class __darwin_x86_debug_state64
 public unsafe partial class rusage
 {
     [StructLayout(LayoutKind.Explicit, Size = 144)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::timeval.Internal ru_utime;
+        internal global::timeval.__Internal ru_utime;
 
         [FieldOffset(16)]
-        internal global::timeval.Internal ru_stime;
+        internal global::timeval.__Internal ru_stime;
 
         [FieldOffset(32)]
         public long ru_maxrss;
@@ -12310,7 +12390,7 @@ public unsafe partial class rusage
 public unsafe partial class rlimit
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public ulong rlim_cur;
@@ -12330,22 +12410,22 @@ public enum idtype_t : uint
 public unsafe partial struct wait
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int w_status;
 
         [FieldOffset(0)]
-        internal global::wait._.Internal w_T;
+        internal global::wait._.__Internal w_T;
 
         [FieldOffset(0)]
-        internal global::wait.__.Internal w_S;
+        internal global::wait.__.__Internal w_S;
     }
 
     public unsafe partial class _
     {
         [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public uint w_Termsig;
@@ -12364,7 +12444,7 @@ public unsafe partial struct wait
     public unsafe partial class __
     {
         [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public uint w_Stopval;
@@ -12381,7 +12461,7 @@ public unsafe partial struct wait
 public unsafe partial class div_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public int quot;
@@ -12394,7 +12474,7 @@ public unsafe partial class div_t
 public unsafe partial class ldiv_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long quot;
@@ -12407,7 +12487,7 @@ public unsafe partial class ldiv_t
 public unsafe partial class lldiv_t
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct Internal
+    public partial struct __Internal
     {
         [FieldOffset(0)]
         public long quot;
@@ -12431,10 +12511,18 @@ namespace std
             memory_order_seq_cst = 5
         }
 
+        namespace atomic
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
         public unsafe partial class atomic_flag
         {
             [StructLayout(LayoutKind.Explicit, Size = 1)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public byte __a_;
@@ -12450,7 +12538,7 @@ namespace std
         public unsafe partial class __rs_default
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -12458,7 +12546,7 @@ namespace std
         public unsafe partial class __return_temporary_buffer
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
         }
@@ -12477,7 +12565,7 @@ namespace std
     public unsafe partial class logic_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12490,7 +12578,7 @@ namespace std
     public unsafe partial class runtime_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12503,7 +12591,7 @@ namespace std
     public unsafe partial class domain_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12516,7 +12604,7 @@ namespace std
     public unsafe partial class invalid_argument
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12529,7 +12617,7 @@ namespace std
     public unsafe partial class length_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12542,7 +12630,7 @@ namespace std
     public unsafe partial class out_of_range
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12555,7 +12643,7 @@ namespace std
     public unsafe partial class range_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12568,7 +12656,7 @@ namespace std
     public unsafe partial class overflow_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12581,7 +12669,7 @@ namespace std
     public unsafe partial class underflow_error
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct Internal
+        public partial struct __Internal
         {
             [FieldOffset(0)]
             public global::System.IntPtr vptr_exception;
@@ -12599,7 +12687,7 @@ namespace std
         namespace __split_buffer_common
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -12613,7 +12701,7 @@ namespace std
         namespace __vector_base_common
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -12621,7 +12709,7 @@ namespace std
         namespace __vector_base
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __begin_;
@@ -12630,14 +12718,14 @@ namespace std
                 public global::System.IntPtr __end_;
 
                 [FieldOffset(16)]
-                internal global::std.__1.__compressed_pair.Internal __end_cap_;
+                internal global::std.__1.__compressed_pair.__Internal __end_cap_;
             }
         }
 
         namespace vector
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __begin_;
@@ -12646,7 +12734,7 @@ namespace std
                 public global::System.IntPtr __end_;
 
                 [FieldOffset(16)]
-                internal global::std.__1.__compressed_pair.Internal __end_cap_;
+                internal global::std.__1.__compressed_pair.__Internal __end_cap_;
             }
         }
     }
@@ -12659,23 +12747,23 @@ namespace std
         namespace __tree
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __begin_node_;
 
                 [FieldOffset(8)]
-                internal global::std.__1.__compressed_pair.Internal __pair1_;
+                internal global::std.__1.__compressed_pair.__Internal __pair1_;
 
                 [FieldOffset(16)]
-                internal global::std.__1.__compressed_pair.Internal __pair3_;
+                internal global::std.__1.__compressed_pair.__Internal __pair3_;
             }
         }
 
         namespace __tree_node_base
         {
             [StructLayout(LayoutKind.Explicit, Size = 32)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __left_;
@@ -12694,7 +12782,7 @@ namespace std
         namespace __tree_end_node
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public unsafe partial struct Internal_Ptr
+            public unsafe partial struct __Internal_Ptr
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr __left_;
@@ -12710,7 +12798,7 @@ namespace std
         public unsafe partial class bad_function_call
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public partial struct Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
                 public global::System.IntPtr vptr_exception;
@@ -12734,17 +12822,17 @@ namespace std
         namespace map
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
-                internal global::std.__1.__tree.Internal __tree_;
+                internal global::std.__1.__tree.__Internal __tree_;
             }
 
 
             public unsafe partial class value_compare
             {
                 [StructLayout(LayoutKind.Explicit, Size = 0)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                 }
             }
@@ -12753,7 +12841,7 @@ namespace std
         namespace __map_value_compare
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -12771,7 +12859,7 @@ namespace std
         namespace char_traits
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }
@@ -12779,10 +12867,10 @@ namespace std
         public unsafe partial class basic_string : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
-                internal global::std.__1.__compressed_pair.Internal __r_;
+                internal global::std.__1.__compressed_pair.__Internal __r_;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -12824,25 +12912,25 @@ namespace std
             public unsafe partial class __rep
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::std.__1.basic_string.__rep._.Internal _;
+                    internal global::std.__1.basic_string.__rep._.__Internal _;
                 }
 
                 public unsafe partial struct _
                 {
                     [StructLayout(LayoutKind.Explicit, Size = 24)]
-                    public partial struct Internal
+                    public partial struct __Internal
                     {
                         [FieldOffset(0)]
-                        internal global::std.__1.basic_string.__long.Internal __l;
+                        internal global::std.__1.basic_string.__long.__Internal __l;
 
                         [FieldOffset(0)]
-                        internal global::std.__1.basic_string.__short.Internal __s;
+                        internal global::std.__1.basic_string.__short.__Internal __s;
 
                         [FieldOffset(0)]
-                        internal global::std.__1.basic_string.__raw.Internal __r;
+                        internal global::std.__1.basic_string.__raw.__Internal __r;
                     }
                 }
             }
@@ -12850,7 +12938,7 @@ namespace std
             public unsafe partial class __long
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                     [FieldOffset(0)]
                     public ulong __cap_;
@@ -12866,10 +12954,10 @@ namespace std
             public unsafe partial class __short
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::std.__1.basic_string.__short._.Internal _;
+                    internal global::std.__1.basic_string.__short._.__Internal _;
 
                     [FieldOffset(1)]
                     public fixed sbyte __data_[23];
@@ -12944,7 +13032,7 @@ namespace std
                 public unsafe partial struct _
                 {
                     [StructLayout(LayoutKind.Explicit, Size = 1)]
-                    public partial struct Internal
+                    public partial struct __Internal
                     {
                         [FieldOffset(0)]
                         public byte __size_;
@@ -12958,7 +13046,7 @@ namespace std
             public unsafe partial class __raw
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                     [FieldOffset(0)]
                     public fixed ulong __words[3];
@@ -12974,13 +13062,13 @@ namespace std
             public unsafe partial struct __ulx
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public partial struct Internal
+                public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::std.__1.basic_string.__long.Internal __lx;
+                    internal global::std.__1.basic_string.__long.__Internal __lx;
 
                     [FieldOffset(0)]
-                    internal global::std.__1.basic_string.__short.Internal __lxx;
+                    internal global::std.__1.basic_string.__short.__Internal __lxx;
                 }
             }
 
@@ -12997,19 +13085,19 @@ namespace std
                 return new basic_string(native.ToPointer(), skipVTables);
             }
 
-            public static basic_string __CreateInstance(basic_string.Internal native, bool skipVTables = false)
+            public static basic_string __CreateInstance(basic_string.__Internal native, bool skipVTables = false)
             {
                 return new basic_string(native, skipVTables);
             }
 
-            private static void* __CopyValue(basic_string.Internal native)
+            private static void* __CopyValue(basic_string.__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(24);
-                *(basic_string.Internal*) ret = native;
+                *(basic_string.__Internal*) ret = native;
                 return ret.ToPointer();
             }
 
-            private basic_string(basic_string.Internal native, bool skipVTables = false)
+            private basic_string(basic_string.__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -13033,14 +13121,14 @@ namespace std
                 global::std.__1.basic_string __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (disposing)
-                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    __Internal.dtor_0((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }
 
             public string c_str()
             {
-                var __ret = Internal.c_str_0((__Instance + __PointerAdjustment));
+                var __ret = __Internal.c_str_0((__Instance + __PointerAdjustment));
                 return Marshal.PtrToStringAnsi(__ret);
             }
         }
@@ -13049,7 +13137,7 @@ namespace std
         public unsafe partial class __long
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -13058,7 +13146,7 @@ namespace std
         public unsafe partial class __short
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -13067,7 +13155,7 @@ namespace std
         public unsafe partial struct __ulx
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -13076,7 +13164,7 @@ namespace std
         public unsafe partial class __raw
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -13085,7 +13173,7 @@ namespace std
         public unsafe partial class __rep
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct Internal
+            public partial struct __Internal
             {
             }
 
@@ -13093,7 +13181,7 @@ namespace std
         namespace __basic_string_common
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct Internal
+            public unsafe partial struct __Internal
             {
             }
         }

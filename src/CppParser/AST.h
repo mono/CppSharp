@@ -714,6 +714,13 @@ public:
 
 class AccessSpecifierDecl;
 
+enum class RefQualifierKind
+{
+    None,
+    LValue,
+    RValue
+};
+
 class CS_API Method : public Function
 {
 public:
@@ -733,6 +740,7 @@ public:
     bool IsMoveConstructor;
 
     QualifiedType ConversionType;
+    RefQualifierKind RefQualifier;
 };
 
 class CS_API Enumeration : public DeclarationContext
