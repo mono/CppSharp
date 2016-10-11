@@ -116,11 +116,8 @@ namespace CppSharp
             }
         }
 
-        /// Gets the system include folders for the given Visual Studio version.
-        public static List<string> GetSystemIncludes(VisualStudioVersion vsVersion)
+        public static ToolchainVersion GetVSToolchain(VisualStudioVersion vsVersion)
         {
-            var includes = new List<string>();
-
             List<ToolchainVersion> vsSdks;
             GetVisualStudioSdks(out vsSdks);
 
@@ -132,10 +129,19 @@ namespace CppSharp
                 : vsSdks.Find(version =>
                     (int)version.Version == GetVisualStudioVersion(vsVersion));
 
+            return vsSdk;
+        }
+
+        /// Gets the system include folders for the given Visual Studio version.
+        public static List<string> GetSystemIncludes(VisualStudioVersion vsVersion)
+        {
+            var vsSdk = GetVSToolchain(vsVersion);
+
             var vsDir = vsSdk.Directory;
             vsDir = vsDir.Substring(0, vsDir.LastIndexOf(@"\Common7\IDE",
                 StringComparison.Ordinal));
 
+            var includes = new List<string>();
             includes.Add(Path.Combine(vsDir, @"VC\include"));
 
             // Check VCVarsQueryRegistry.bat to see which Windows SDK version
