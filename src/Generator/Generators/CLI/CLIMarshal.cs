@@ -20,7 +20,7 @@ namespace CppSharp.Generators.CLI
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CLIMarshalToManaged(Context);
@@ -155,7 +155,7 @@ namespace CppSharp.Generators.CLI
             }
 
             TypeMap typeMap = null;
-            Context.Context.TypeDatabase.FindTypeMap(pointee, out typeMap);
+            Context.Context.TypeMaps.FindTypeMap(pointee, out typeMap);
 
             Class @class;
             if (pointee.TryGetClass(out @class) && typeMap == null)
@@ -237,7 +237,7 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = typedef;
                 typeMap.CLIMarshalToManaged(Context);
@@ -262,7 +262,7 @@ namespace CppSharp.Generators.CLI
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToManaged(Context);
@@ -426,7 +426,7 @@ namespace CppSharp.Generators.CLI
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CLIMarshalToNative(Context);
@@ -611,7 +611,7 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return typeMap.IsValueType;
@@ -647,7 +647,7 @@ namespace CppSharp.Generators.CLI
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToNative(Context);
@@ -693,7 +693,7 @@ namespace CppSharp.Generators.CLI
         private void MarshalRefClass(Class @class)
         {
             TypeMap typeMap;
-            if (Context.Context.TypeDatabase.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return;

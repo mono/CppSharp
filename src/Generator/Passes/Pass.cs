@@ -15,7 +15,7 @@ namespace CppSharp.Passes
         public IDiagnostics Diagnostics { get { return Context.Diagnostics; } }
         public DriverOptions Options { get { return Context.Options; } }
         public ASTContext ASTContext { get { return Context.ASTContext; } }
-        public TypeMapDatabase TypeDatabase { get { return Context.TypeDatabase; } }
+        public TypeMapDatabase TypeDatabase { get { return Context.TypeMaps; } }
 
         public bool ClearVisitedDeclarations = false;
 

@@ -28,7 +28,7 @@ namespace CppSharp.Generators.CLI
         public BindingContext Context { get; private set; }
 
         public DriverOptions Options { get { return Context.Options; } }
-        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeDatabase; } }
+        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeMaps; } }
 
         public CLITypePrinter(BindingContext context)
         {

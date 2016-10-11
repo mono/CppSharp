@@ -432,11 +432,11 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
             System.Type typeMap = null;
-            if (Context.TypeDatabase.TypeMaps.ContainsKey(@class.Name))
+            if (Context.TypeMaps.TypeMaps.ContainsKey(@class.Name))
             {
-                typeMap = Context.TypeDatabase.TypeMaps[@class.Name];
+                typeMap = Context.TypeMaps.TypeMaps[@class.Name];
                 // disable the type map for the mapped class itself so that operator params are not mapped
-                Context.TypeDatabase.TypeMaps.Remove(@class.Name);
+                Context.TypeMaps.TypeMaps.Remove(@class.Name);
             }
 
             PushBlock(CSharpBlockKind.Class);
@@ -506,7 +506,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             if (typeMap != null)
-                Context.TypeDatabase.TypeMaps.Add(@class.Name, typeMap);
+                Context.TypeMaps.TypeMaps.Add(@class.Name, typeMap);
         }
 
         private void GenerateClassMarshals(Class @class)
@@ -760,7 +760,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var @base in @class.Bases.Where(b => b.Class != null))
             {
                 TypeMap typeMap;
-                if ((!Context.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
+                if ((!Context.TypeMaps.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
                     continue;
 
@@ -2682,7 +2682,7 @@ namespace CppSharp.Generators.CSharp
 
                 TypeMap typeMap;
                 string construct = null;
-                if (Context.TypeDatabase.FindTypeMap(retClass, out typeMap))
+                if (Context.TypeMaps.FindTypeMap(retClass, out typeMap))
                     construct = typeMap.CSharpConstruct();
 
                 if (construct == null)

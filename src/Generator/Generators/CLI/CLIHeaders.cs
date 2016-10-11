@@ -52,7 +52,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeDatabase,
+            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps,
                 Context.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
@@ -131,7 +131,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeDatabase,
+            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps,
                 Context.Options);
             typeReferenceCollector.Process(TranslationUnit);
 

@@ -70,7 +70,7 @@ namespace CppSharp.Generators.CSharp
         public BindingContext Context { get; set; }
 
         public DriverOptions Options { get { return Context.Options; } }
-        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeDatabase; } }
+        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeMaps; } }
 
         public CSharpTypePrinter(BindingContext context)
         {

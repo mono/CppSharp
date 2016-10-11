@@ -17,7 +17,7 @@ namespace CppSharp.Generators
         public ParserTargetInfo TargetInfo { get; set; }
 
         public SymbolContext Symbols { get; private set; }
-        public TypeMapDatabase TypeDatabase { get; private set; }
+        public TypeMapDatabase TypeMaps { get; private set; }
 
         public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
         public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
@@ -36,8 +36,8 @@ namespace CppSharp.Generators
             Symbols = new SymbolContext();
             Delegates = new Dictionary<Function, DelegatesPass.DelegateDefinition>();
 
-            TypeDatabase = new TypeMapDatabase();
-            TypeDatabase.SetupTypeMaps(Options.GeneratorKind);
+            TypeMaps = new TypeMapDatabase();
+            TypeMaps.SetupTypeMaps(Options.GeneratorKind);
 
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);

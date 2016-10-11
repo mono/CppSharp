@@ -60,7 +60,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.IncludesForwardReferences);
 
-            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeDatabase, Context.Options);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps, Context.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
