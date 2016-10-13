@@ -26,31 +26,37 @@ namespace CppSharp.AST
             TranslationUnits = new List<TranslationUnit>();
         }
 
-        /// Finds an existing module or creates a new one given a file path.
-        public TranslationUnit FindOrCreateModule(string file)
+        static private string NormalizeTranslationUnitFilePath(string name)
         {
-            if (!file.StartsWith("<"))
-            {
-                try
-                {
-                    file = Path.GetFullPath(file);
-                }
-                catch (ArgumentException)
-                {
-                    // Normalization errors are expected when dealing with virtual
-                    // compiler files like <built-in>.
-                }
-            }
-            
-            var module = TranslationUnits.Find(m => m.FilePath.Equals(file));
+            if (name.StartsWith("<"))
+                return name;
 
-            if (module == null)
+            try
             {
-                module = new TranslationUnit(file);
-                TranslationUnits.Add(module);
+                name = Path.GetFullPath(name);
+            }
+            catch (ArgumentException)
+            {
+                // Normalization errors are expected when dealing with virtual
+                // compiler files like <built-in>.
             }
 
-            return module;
+            return name;
+        }
+
+        /// Finds an existing or creates a new one translation unit given a path.
+        public TranslationUnit FindOrCreateTranslationUnit(string file)
+        {
+            file = NormalizeTranslationUnitFilePath(file);
+            var translationUnit = TranslationUnits.Find(m => m.FilePath.Equals(file));
+
+            if (translationUnit == null)
+            {
+                translationUnit = new TranslationUnit(file);
+                TranslationUnits.Add(translationUnit);
+            }
+
+            return translationUnit;
         }
 
         /// Finds an existing enum in the library modules.
