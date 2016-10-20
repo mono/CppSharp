@@ -16,7 +16,7 @@ Check out the Getting started guide for build instructions.
 
 The driver is responsible for setting up the needed context for the rest of
 the tool and for implementing the main logic for parsing the user-provided headers,
-processing the declarations adn then calling the language-specific generator to
+processing the declarations and then calling the language-specific generator to
 generate the bindings.
 
 
