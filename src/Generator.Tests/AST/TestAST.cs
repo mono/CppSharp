@@ -417,5 +417,12 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(template.Specializations.Last().Visit(cppTypePrinter),
                 Is.EqualTo("TestSpecializationArguments<const TestASTEnumItemByName>"));
         }
-    }
+
+        [Test]
+        public void TestLayoutBase()
+        {
+            var @class = AstContext.FindCompleteClass("TestComments");
+            Assert.That(@class.Layout.Bases.Count, Is.EqualTo(0));
+        }
+	}
 }

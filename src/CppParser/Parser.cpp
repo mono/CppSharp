@@ -102,12 +102,15 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     auto CXXRD = dyn_cast<CXXRecordDecl>(RD);
 
     auto Parent = static_cast<AST::Class*>(
-        WalkDeclaration(RD, /*IgnoreSystemDecls =*/false));
+        WalkDeclaration(RD, /*CanBeDefinition =*/false));
 
-    LayoutBase LayoutBase;
-    LayoutBase.Offset = Offset.getQuantity();
-    LayoutBase.Class = Parent;
-    Class->Layout->Bases.push_back(LayoutBase);
+    if (Class != Parent)
+    {
+        LayoutBase LayoutBase;
+        LayoutBase.Offset = Offset.getQuantity();
+        LayoutBase.Class = Parent;
+        Class->Layout->Bases.push_back(LayoutBase);
+    }
 
     // Dump bases.
     if (CXXRD) {
