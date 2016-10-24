@@ -262,6 +262,11 @@ long Proprietor::prop()
     return m_property;
 }
 
+const Baz& Proprietor::covariant()
+{
+    return Baz();
+}
+
 Bar::Items Proprietor::items() const
 {
     return _items;

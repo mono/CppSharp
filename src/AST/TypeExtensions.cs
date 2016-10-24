@@ -258,6 +258,39 @@
             return finalPointee;
         }
 
+        /// <summary>
+        /// If t is a pointer type the type pointed to by t will be returned.
+        /// Otherwise the default qualified type.
+        /// </summary>
+        public static QualifiedType GetQualifiedPointee(this Type t)
+        {
+            var ptr = t as PointerType;
+            if (ptr != null)
+                return ptr.QualifiedPointee;
+            var memberPtr = t as MemberPointerType;
+            if (memberPtr != null)
+                return memberPtr.QualifiedPointee;
+            return new QualifiedType();
+        }
+
+        /// <summary>
+        /// If t is a pointer type the type pointed to by t will be returned
+        /// after fully dereferencing it. Otherwise the default qualified type.
+        /// For example int** -> int.
+        /// </summary>
+        public static QualifiedType GetFinalQualifiedPointee(this Type t)
+        {
+            var finalPointee = t.GetQualifiedPointee();
+            var pointee = finalPointee;
+            while (pointee.Type != null)
+            {
+                pointee = pointee.Type.GetQualifiedPointee();
+                if (pointee.Type != null)
+                    finalPointee = pointee;
+            }
+            return finalPointee;
+        }
+
         public static PointerType GetFinalPointer(this Type t)
         {
             var type = t as PointerType;

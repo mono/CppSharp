@@ -122,7 +122,8 @@ namespace CppSharp.Generators.CLI
             if (pointee.IsPrimitiveType(out primitive))
             {
                 var returnVarName = Context.ReturnVarName;
-                if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
+                if (pointer.GetFinalQualifiedPointee().Qualifiers.IsConst !=
+                    Context.ReturnType.Qualifiers.IsConst)
                 {
                     var nativeTypePrinter = new CppTypePrinter { PrintTypeQualifiers = false };
                     var returnType = Context.ReturnType.Type.Desugar();
@@ -559,7 +560,8 @@ namespace CppSharp.Generators.CLI
             if (finalPointee.IsPrimitiveType())
             {
                 var cppTypePrinter = new CppTypePrinter();
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                var cppTypeName = pointer.Visit(cppTypePrinter,
+                    pointer.GetFinalQualifiedPointee().Qualifiers);
 
                 Context.Return.Write("({0})", cppTypeName);
                 Context.Return.Write(Context.Parameter.Name);

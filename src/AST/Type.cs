@@ -324,7 +324,7 @@ namespace CppSharp.AST
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
-            return visitor.VisitPointerType(this, QualifiedPointee.Qualifiers);
+            return visitor.VisitPointerType(this, quals);
         }
 
         public override object Clone()

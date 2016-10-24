@@ -77,7 +77,7 @@ namespace CppSharp.AST
         public static bool CanOverride(this Method @override, Method method)
         {
             return (method.OriginalName == @override.OriginalName &&
-                method.ReturnType.ResolvesTo(@override.ReturnType) &&
+                method.OriginalReturnType.ResolvesTo(@override.OriginalReturnType) &&
                 method.Parameters.SequenceEqual(@override.Parameters, ParameterTypeComparer.Instance)) ||
                 (@override.IsDestructor && method.IsDestructor && method.IsVirtual);
         }

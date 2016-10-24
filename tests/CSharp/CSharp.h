@@ -144,6 +144,8 @@ public:
     virtual int parent();
     virtual int parent() const;
 
+    virtual const Foo& covariant() = 0;
+
 protected:
     AbstractProprietor();
     AbstractProprietor(int i);
@@ -159,6 +161,8 @@ public:
     virtual void setValue(int value);
 
     virtual long prop();
+
+    virtual const Baz& covariant();
 
     Bar::Items items() const;
     void setItems(const Bar::Items& value);
