@@ -377,7 +377,7 @@ namespace CppSharp.Passes
         private bool IsTypeComplete(Type type)
         {
             TypeMap typeMap;
-            if (TypeDatabase.FindTypeMap(type, out typeMap) && !typeMap.IsIgnored)
+            if (TypeMaps.FindTypeMap(type, out typeMap) && !typeMap.IsIgnored)
                 return true;
 
             var desugared = type.Desugar();
@@ -394,7 +394,7 @@ namespace CppSharp.Passes
 
         private bool IsTypeIgnored(Type type)
         {
-            var checker = new TypeIgnoreChecker(TypeDatabase);
+            var checker = new TypeIgnoreChecker(TypeMaps);
             type.Visit(checker);
 
             return checker.IsIgnored;
@@ -407,7 +407,7 @@ namespace CppSharp.Passes
                 return true;
 
             TypeMap typeMap;
-            return TypeDatabase.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
+            return TypeMaps.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
         }
 
         #endregion

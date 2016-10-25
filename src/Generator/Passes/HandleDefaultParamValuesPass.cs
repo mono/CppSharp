@@ -144,7 +144,7 @@ namespace CppSharp.Passes
             var typePrinter = new CSharpTypePrinter(Context);
             typePrinter.PushMarshalKind(CSharpMarshalKind.DefaultExpression);
             var typePrinterResult = type.Visit(typePrinter).Type;
-            if (TypeDatabase.FindTypeMap(decl, type, out typeMap))
+            if (TypeMaps.FindTypeMap(decl, type, out typeMap))
             {
                 var typeInSignature = typeMap.CSharpSignatureType(
                     typePrinter.TypePrinterContext).SkipPointerRefs().Desugar();
@@ -292,7 +292,7 @@ namespace CppSharp.Passes
             TypeMap typeMap;
             if ((function.Parameters.Count == 0 ||
                  HasSingleZeroArgExpression(function)) &&
-                TypeDatabase.FindTypeMap(desugared, out typeMap))
+                TypeMaps.FindTypeMap(desugared, out typeMap))
             {
                 var typeInSignature = typeMap.CSharpSignatureType(new CSharpTypePrinterContext
                 {
