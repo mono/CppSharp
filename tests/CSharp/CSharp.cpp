@@ -1221,3 +1221,21 @@ void HasMissingObjectOnVirtualCall::setMissingObjectOnVirtualCall(MissingObjectO
 {
     stackOverflowOnVirtualCall = value;
 }
+
+ImplementsAbstractsFromPrimaryAndSecondary::ImplementsAbstractsFromPrimaryAndSecondary()
+{
+}
+
+ImplementsAbstractsFromPrimaryAndSecondary::~ImplementsAbstractsFromPrimaryAndSecondary()
+{
+}
+
+int ImplementsAbstractsFromPrimaryAndSecondary::abstractInPrimaryBase()
+{
+    return 101;
+}
+
+int ImplementsAbstractsFromPrimaryAndSecondary::abstractInSecondaryBase()
+{
+    return 5;
+}

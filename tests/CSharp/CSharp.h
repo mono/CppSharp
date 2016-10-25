@@ -1091,3 +1091,24 @@ public:
 private:
     MissingObjectOnVirtualCall* stackOverflowOnVirtualCall;
 };
+
+class DLL_API AbstractPrimaryBase
+{
+public:
+    virtual int abstractInPrimaryBase() = 0;
+};
+
+class DLL_API AbstractSecondaryBase
+{
+public:
+    virtual int abstractInSecondaryBase() = 0;
+};
+
+class DLL_API ImplementsAbstractsFromPrimaryAndSecondary : public AbstractPrimaryBase, public AbstractSecondaryBase
+{
+public:
+    ImplementsAbstractsFromPrimaryAndSecondary();
+    ~ImplementsAbstractsFromPrimaryAndSecondary();
+    virtual int abstractInPrimaryBase();
+    virtual int abstractInSecondaryBase();
+};
