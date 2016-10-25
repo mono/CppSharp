@@ -17,7 +17,6 @@ namespace CppSharp
             Modules = new List<Module> { SystemModule };
 
             GeneratorKind = GeneratorKind.CSharp;
-            GeneratePartialClasses = true;
             GenerateClassMarshals = false;
             OutputInteropIncludes = true;
             MaxIndent = 80;
@@ -90,7 +89,6 @@ namespace CppSharp
 
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
-        public bool GeneratePartialClasses;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
         public bool GenerateInlines;

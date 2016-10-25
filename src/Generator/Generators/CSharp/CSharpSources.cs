@@ -723,8 +723,7 @@ namespace CppSharp.Generators.CSharp
                 Write("static ");
 
             // This token needs to directly precede the "class" token.
-            if (Options.GeneratePartialClasses)
-                Write("partial ");
+            Write("partial ");
 
             Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
             Write("{0}", Helpers.SafeIdentifier(@class.Name));
