@@ -92,11 +92,10 @@ namespace CppSharp.AST
                 return string.Format("{0} (*)({1})", returnType.Visit(this), args);
             }
 
-            var qual = PrintTypeQualifiers &&
-                pointer.GetFinalQualifiedPointee().Qualifiers.IsConst ? "const " : string.Empty;
-            var pointeeType = pointee.Visit(this, quals);
+            var qual = PrintTypeQualifiers && quals.IsConst ? " const" : string.Empty;
+            var pointeeType = pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
-            return string.Format("{0}{1}{2}", qual, pointeeType, mod);
+            return string.Format("{0}{1}{2}", pointeeType, mod, qual);
         }
 
         public virtual string VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
@@ -106,7 +105,8 @@ namespace CppSharp.AST
 
         public virtual string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
-            return VisitPrimitiveType(builtin.Type);
+            var qual = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
+            return string.Format("{0}{1}", qual, VisitPrimitiveType(builtin.Type));
         }
 
         public virtual string VisitPrimitiveType(PrimitiveType primitive)

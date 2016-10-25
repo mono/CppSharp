@@ -410,6 +410,18 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
+        public void TestPrintingConstPointerWithConstType()
+        {
+            var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var builtin = new BuiltinType(PrimitiveType.Char);
+            var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
+            var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });
+            var type = pointer.Visit(cppTypePrinter);
+            Assert.AreEqual(type, "const char* const");
+        }
+
+        [Test]
         public void TestPrintingSpecializationWithConstValue()
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
