@@ -33,7 +33,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsFalse(@enum2.IsFlags);
 
             passBuilder.AddPass(new CheckFlagEnumsPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.IsTrue(@enum.IsFlags);
             Assert.IsFalse(@enum2.IsFlags);
@@ -47,7 +47,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass(new FunctionToInstanceMethodPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.IsNotNull(c.Method("Start"));
         }
@@ -61,7 +61,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass(new FunctionToStaticMethodPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.IsFalse(AstContext.Function("FooStart").IsGenerated);
             Assert.IsNotNull(c.Method("Start"));
@@ -75,13 +75,13 @@ namespace CppSharp.Generator.Tests.Passes
             var c = AstContext.Class("TestRename");
 
             passBuilder.AddPass(new FieldToPropertyPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             var method = c.Method("lowerCaseMethod");
             var property = c.Properties.Find(p => p.Name == "lowerCaseField");
 
             passBuilder.RenameDeclsUpperCase(RenameTargets.Any);
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
             Assert.That(property.Name, Is.EqualTo("LowerCaseField"));
@@ -99,7 +99,7 @@ namespace CppSharp.Generator.Tests.Passes
 
             passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
         }
@@ -108,7 +108,7 @@ namespace CppSharp.Generator.Tests.Passes
         public void TestUnnamedEnumSupport()
         {
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             var unnamedEnum1 = AstContext.FindEnum("Unnamed_Enum_1").Single();
             var unnamedEnum2 = AstContext.FindEnum("Unnamed_Enum_2").Single();
@@ -128,7 +128,7 @@ namespace CppSharp.Generator.Tests.Passes
         public void TestUniqueNamesAcrossTranslationUnits()
         {
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             var unnamedEnum1 = AstContext.GetEnumWithMatchingItem("UnnamedEnumA1");
             var unnamedEnum2 = AstContext.GetEnumWithMatchingItem("UnnamedEnumB1");
@@ -158,7 +158,7 @@ namespace CppSharp.Generator.Tests.Passes
             const string className = "TestReadOnlyProperties";
             passBuilder.AddPass(new FieldToPropertyPass());
             passBuilder.AddPass(new GetterSetterToPropertyPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
             AstContext.SetPropertyAsReadOnly(className, "readOnlyProperty");
             Assert.IsFalse(AstContext.FindClass(className).First().Properties.Find(
                 m => m.Name == "readOnlyProperty").HasSetter);
@@ -171,7 +171,7 @@ namespace CppSharp.Generator.Tests.Passes
         public void TestCheckAmbiguousFunctionsPass()
         {
             passBuilder.AddPass(new CheckAmbiguousFunctions());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
             var @class = AstContext.FindClass("TestCheckAmbiguousFunctionsPass").FirstOrDefault();
             Assert.IsNotNull(@class);
             var overloads = @class.Methods.Where(m => m.Name == "Method");
@@ -204,7 +204,7 @@ namespace CppSharp.Generator.Tests.Passes
             var method = c.Method("beInternal");
             Assert.AreEqual(method.Access, AccessSpecifier.Public);
             passBuilder.AddPass(new CheckMacroPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
             Assert.AreEqual(method.Access, AccessSpecifier.Internal);
         }
 
@@ -217,7 +217,7 @@ namespace CppSharp.Generator.Tests.Passes
         public void TestAbstractOperator()
         {
             passBuilder.AddPass(new CheckOperatorsOverloadsPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             var @class = AstContext.FindDecl<Class>("ClassWithAbstractOperator").First();
             Assert.AreEqual(@class.Operators.First().GenerationKind, GenerationKind.None);

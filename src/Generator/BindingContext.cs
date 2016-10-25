@@ -50,7 +50,7 @@ namespace CppSharp.Generators
                     Diagnostics.Debug("Pass '{0}'", pass);
 
                     Diagnostics.PushIndent();
-                    pass.VisitLibrary(ASTContext);
+                    pass.VisitASTContext(ASTContext);
                     Diagnostics.PopIndent();
                 });
         }

@@ -37,7 +37,7 @@ namespace CppSharp.Tests
         {
             new CaseRenamePass(
                 RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate | RenameTargets.Variable,
-                RenameCasePattern.UpperCamelCase).VisitLibrary(driver.Context.ASTContext);
+                RenameCasePattern.UpperCamelCase).VisitASTContext(driver.Context.ASTContext);
         }
     }
 

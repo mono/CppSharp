@@ -317,8 +317,8 @@ namespace CppSharp.Generator.Tests.AST
         {
             var bindingContext = new BindingContext(new TextDiagnosticPrinter(), new DriverOptions(),
                 new ParserOptions());
-            new CleanUnitPass { Context = bindingContext }.VisitLibrary(AstContext);
-            new CheckAmbiguousFunctions { Context = bindingContext }.VisitLibrary(AstContext);
+            new CleanUnitPass { Context = bindingContext }.VisitASTContext(AstContext);
+            new CheckAmbiguousFunctions { Context = bindingContext }.VisitASTContext(AstContext);
             Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);
         }
 

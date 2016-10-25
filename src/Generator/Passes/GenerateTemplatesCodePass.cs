@@ -8,9 +8,9 @@ namespace CppSharp.Passes
 {
     public class GenerateTemplatesCodePass : TranslationUnitPass
     {
-        public override bool VisitLibrary(ASTContext context)
+        public override bool VisitASTContext(ASTContext context)
         {
-            base.VisitLibrary(context);
+            base.VisitASTContext(context);
             WriteTemplateInstantiations();
             return true;
         }

@@ -19,7 +19,7 @@ namespace CppSharp.Passes
 
         public bool ClearVisitedDeclarations = false;
 
-        public virtual bool VisitLibrary(ASTContext context)
+        public virtual bool VisitASTContext(ASTContext context)
         {
             foreach (var unit in context.TranslationUnits)
                 VisitTranslationUnit(unit);

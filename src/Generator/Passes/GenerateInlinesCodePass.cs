@@ -6,7 +6,7 @@ namespace CppSharp.Passes
 {
     public class GenerateInlinesCodePass : TranslationUnitPass
     {
-        public override bool VisitLibrary(ASTContext context)
+        public override bool VisitASTContext(ASTContext context)
         {
             WriteInlinesIncludes();
             return true;

@@ -35,7 +35,7 @@ namespace CppSharp.Passes
             VisitOptions.VisitTemplateArguments = false;
         }
 
-        public override bool VisitLibrary(ASTContext context)
+        public override bool VisitASTContext(ASTContext context)
         {
             foreach (var library in Options.Modules.SelectMany(m => m.Libraries))
                 libsDelegates[library] = new Dictionary<string, DelegateDefinition>();
@@ -45,7 +45,7 @@ namespace CppSharp.Passes
             if (unit == null)
                 return false;
 
-            var result = base.VisitLibrary(context);
+            var result = base.VisitASTContext(context);
 
             foreach (var module in Options.Modules.Where(m => namespacesDelegates.ContainsKey(m)))
                 module.Units.Last(u => u.HasDeclarations).Declarations.Add(namespacesDelegates[module]);

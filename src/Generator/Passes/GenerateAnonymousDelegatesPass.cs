@@ -26,9 +26,9 @@ namespace CppSharp.Passes
         /// </summary>
         private readonly Dictionary<string, List<Typedef>> allTypedefs = new Dictionary<string, List<Typedef>>();
 
-        public override bool VisitLibrary(ASTContext context)
+        public override bool VisitASTContext(ASTContext context)
         {
-            bool result = base.VisitLibrary(context);
+            bool result = base.VisitASTContext(context);
 
             foreach (var typedef in allTypedefs)
             {
