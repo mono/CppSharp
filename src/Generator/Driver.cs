@@ -322,7 +322,7 @@ namespace CppSharp
                 }
             }
 
-            if (Options.GenerateInterfacesForMultipleInheritance)
+            if (Options.IsCSharpGenerator)
             {
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());

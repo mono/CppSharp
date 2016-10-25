@@ -91,7 +91,6 @@ namespace CppSharp
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
-        public bool GenerateInterfacesForMultipleInheritance;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
         public bool GenerateInlines;
