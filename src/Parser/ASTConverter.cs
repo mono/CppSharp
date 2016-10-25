@@ -882,10 +882,7 @@ namespace CppSharp
 
         bool CheckForDuplicates(Declaration decl)
         {
-            if (decl.OriginalPtr.ToPointer() == (void*) (0x1))
-                return false;
-
-            return !(decl is PreprocessedEntity);
+            return decl.OriginalPtr.ToPointer() != (void*)(0x1);
         }
 
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
