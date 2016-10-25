@@ -1640,7 +1640,8 @@ namespace CppSharp
             return _decl;
         }
 
-        private void VisitClassTemplateSpecialization(ClassTemplateSpecialization decl, AST.ClassTemplateSpecialization _decl)
+        private void VisitClassTemplateSpecialization(ClassTemplateSpecialization decl,
+            AST.ClassTemplateSpecialization _decl)
         {
             VisitClass(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
@@ -1664,7 +1665,8 @@ namespace CppSharp
             return _arg;
         }
 
-        private AST.TemplateArgument.ArgumentKind VisitTemplateArgumentKind(TemplateArgument.ArgumentKind argumentKind)
+        private AST.TemplateArgument.ArgumentKind VisitTemplateArgumentKind(
+            TemplateArgument.ArgumentKind argumentKind)
         {
             switch (argumentKind)
             {
@@ -1689,7 +1691,8 @@ namespace CppSharp
             }
         }
 
-        private AST.TemplateSpecializationKind VisitSpecializationKind(TemplateSpecializationKind templateSpecializationKind)
+        private AST.TemplateSpecializationKind VisitSpecializationKind(
+            TemplateSpecializationKind templateSpecializationKind)
         {
             switch (templateSpecializationKind)
             {
@@ -1728,7 +1731,8 @@ namespace CppSharp
             return _decl;
         }
 
-        private AST.FunctionTemplateSpecialization VisitFunctionTemplateSpecialization(FunctionTemplateSpecialization spec)
+        private AST.FunctionTemplateSpecialization VisitFunctionTemplateSpecialization(
+            FunctionTemplateSpecialization spec)
         {
             if (FunctionTemplateSpecializations.ContainsKey(spec.__Instance))
                 return FunctionTemplateSpecializations[spec.__Instance];
@@ -1768,7 +1772,8 @@ namespace CppSharp
             return _decl;
         }
 
-        private void VisitVarTemplateSpecialization(VarTemplateSpecialization decl, AST.VarTemplateSpecialization _decl)
+        private void VisitVarTemplateSpecialization(VarTemplateSpecialization decl,
+            AST.VarTemplateSpecialization _decl)
         {
             VisitVariable(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
