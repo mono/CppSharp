@@ -396,8 +396,8 @@ namespace CppSharp.Generator.Tests.AST
         public void TestCompletionOfClassTemplates()
         {
             var templates = AstContext.FindDecl<ClassTemplate>("ForwardedTemplate").ToList();
-            var template = templates.Single(
-                t => t.DebugText == "template <typename T>\r\nclass ForwardedTemplate\r\n{\r\n}");
+            var template = templates.Single(t => t.DebugText.Replace("\r", string.Empty) ==
+                "template <typename T>\r\nclass ForwardedTemplate\r\n{\r\n}".Replace("\r", string.Empty));
             Assert.IsFalse(template.IsIncomplete);
         }
 
