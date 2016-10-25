@@ -143,7 +143,6 @@ namespace CppSharp
         public bool UnityBuild { get; set; }
 
         public string IncludePrefix;
-        public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;
         public int MaxIndent;
         public string CommentPrefix;
