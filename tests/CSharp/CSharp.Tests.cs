@@ -647,6 +647,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractInPrimaryBase, Is.EqualTo(101));
             Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractInSecondaryBase, Is.EqualTo(5));
+            Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractReturnsFieldInPrimaryBase, Is.EqualTo(201));
+            Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractReturnsFieldInSecondaryBase, Is.EqualTo(202));
         }
     }
 
