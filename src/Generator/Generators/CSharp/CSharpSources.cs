@@ -2513,12 +2513,7 @@ namespace CppSharp.Generators.CSharp
         private void GetVirtualCallDelegate(Method method, Class @class,
             out string delegateId)
         {
-            Function @virtual = method;
-            if (method.OriginalFunction != null &&
-                !((Class) method.OriginalFunction.Namespace).IsInterface)
-                @virtual = method.OriginalFunction;
-
-            var i = VTables.GetVTableIndex(@virtual, @class);
+            var i = VTables.GetVTableIndex(method.OriginalFunction ?? method, @class);
             int vtableIndex = 0;
             if (Context.ParserOptions.IsMicrosoftAbi)
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
@@ -2531,7 +2526,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
             }
 
-            var @delegate = GetVTableMethodDelegateName(@virtual);
+            var @delegate = GetVTableMethodDelegateName(method.OriginalFunction ?? method);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",

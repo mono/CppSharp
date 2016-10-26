@@ -164,16 +164,11 @@ namespace CppSharp.Passes
         {
             foreach (var method in @interface.Methods)
             {
-                var existingImpl = @class.Methods.FirstOrDefault(
-                    m => m.OriginalName == method.OriginalName &&
-                    m.Parameters.Where(p => !p.Ignore).SequenceEqual(
-                        method.Parameters.Where(p => !p.Ignore),
-                        ParameterTypeComparer.Instance));
-                if (existingImpl != null)
-                {
-                    existingImpl.OriginalFunction = method;
+                if (@class.Methods.Any(m => m.OriginalName == method.OriginalName &&
+                        m.Parameters.Where(p => !p.Ignore).SequenceEqual(
+                            method.Parameters.Where(p => !p.Ignore),
+                            ParameterTypeComparer.Instance)))
                     continue;
-                }
                 var impl = new Method(method)
                     {
                         Namespace = @class,

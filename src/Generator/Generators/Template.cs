@@ -306,8 +306,8 @@ namespace CppSharp.Generators
 
         public string Generate()
         {
-            if (Options.IsCSharpGenerator && Options.CompileCode)
-                return RootBlock.GenerateUnformatted(Options).ToString();
+            //if (Options.IsCSharpGenerator && Options.CompileCode)
+            //    return RootBlock.GenerateUnformatted(Options).ToString();
             return RootBlock.Generate(Options);
         }
 

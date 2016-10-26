@@ -1095,28 +1095,20 @@ private:
 class DLL_API AbstractPrimaryBase
 {
 public:
-    virtual ~AbstractPrimaryBase();
     virtual int abstractInPrimaryBase() = 0;
-    virtual int abstractReturnsFieldInPrimaryBase() = 0;
 };
 
 class DLL_API AbstractSecondaryBase
 {
 public:
-    virtual ~AbstractSecondaryBase();
     virtual int abstractInSecondaryBase() = 0;
-    virtual int abstractReturnsFieldInSecondaryBase() = 0;
 };
 
 class DLL_API ImplementsAbstractsFromPrimaryAndSecondary : public AbstractPrimaryBase, public AbstractSecondaryBase
 {
 public:
     ImplementsAbstractsFromPrimaryAndSecondary();
-    virtual ~ImplementsAbstractsFromPrimaryAndSecondary();
+    ~ImplementsAbstractsFromPrimaryAndSecondary();
     virtual int abstractInPrimaryBase();
     virtual int abstractInSecondaryBase();
-    virtual int abstractReturnsFieldInPrimaryBase();
-    virtual int abstractReturnsFieldInSecondaryBase();
-private:
-    int field;
 };

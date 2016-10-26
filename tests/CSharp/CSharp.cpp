@@ -1222,15 +1222,7 @@ void HasMissingObjectOnVirtualCall::setMissingObjectOnVirtualCall(MissingObjectO
     stackOverflowOnVirtualCall = value;
 }
 
-AbstractPrimaryBase::~AbstractPrimaryBase()
-{
-}
-
-AbstractSecondaryBase::~AbstractSecondaryBase()
-{
-}
-
-ImplementsAbstractsFromPrimaryAndSecondary::ImplementsAbstractsFromPrimaryAndSecondary() : field(200)
+ImplementsAbstractsFromPrimaryAndSecondary::ImplementsAbstractsFromPrimaryAndSecondary()
 {
 }
 
@@ -1246,14 +1238,4 @@ int ImplementsAbstractsFromPrimaryAndSecondary::abstractInPrimaryBase()
 int ImplementsAbstractsFromPrimaryAndSecondary::abstractInSecondaryBase()
 {
     return 5;
-}
-
-int ImplementsAbstractsFromPrimaryAndSecondary::abstractReturnsFieldInPrimaryBase()
-{
-    return field + 1;
-}
-
-int ImplementsAbstractsFromPrimaryAndSecondary::abstractReturnsFieldInSecondaryBase()
-{
-    return field + 2;
 }
