@@ -2513,7 +2513,12 @@ namespace CppSharp.Generators.CSharp
         private void GetVirtualCallDelegate(Method method, Class @class,
             out string delegateId)
         {
-            var i = VTables.GetVTableIndex(method.OriginalFunction ?? method, @class);
+            Function @virtual = method;
+            if (method.OriginalFunction != null &&
+                !((Class) method.OriginalFunction.Namespace).IsInterface)
+                @virtual = method.OriginalFunction;
+
+            var i = VTables.GetVTableIndex(@virtual, @class);
             int vtableIndex = 0;
             if (Context.ParserOptions.IsMicrosoftAbi)
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
@@ -2526,7 +2531,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
             }
 
-            var @delegate = GetVTableMethodDelegateName(method.OriginalFunction ?? method);
+            var @delegate = GetVTableMethodDelegateName(@virtual);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
@@ -2823,11 +2828,14 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        private static string GetInstanceParam(Function function)
+        private string GetInstanceParam(Function function)
         {
             var from = (Class) function.Namespace;
-            var to = function.OriginalFunction == null ? @from.BaseClass :
-                (Class) function.OriginalFunction.Namespace;
+            var to = function.OriginalFunction == null ||
+                // we don't need to offset the instance with Itanium if there's an existing interface impl
+                (Context.ParserOptions.IsItaniumLikeAbi &&
+                 !((Class) function.OriginalNamespace).IsInterface) ?
+                @from.BaseClass : (Class) function.OriginalFunction.Namespace;
 
             var baseOffset = 0u;
             if (to != null)

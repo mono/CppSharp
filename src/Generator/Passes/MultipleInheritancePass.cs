@@ -160,15 +160,20 @@ namespace CppSharp.Passes
             return interfaceProperty;
         }
 
-        private static void ImplementInterfaceMethods(Class @class, Class @interface)
+        private void ImplementInterfaceMethods(Class @class, Class @interface)
         {
             foreach (var method in @interface.Methods)
             {
-                if (@class.Methods.Any(m => m.OriginalName == method.OriginalName &&
-                        m.Parameters.Where(p => !p.Ignore).SequenceEqual(
-                            method.Parameters.Where(p => !p.Ignore),
-                            ParameterTypeComparer.Instance)))
+                var existingImpl = @class.Methods.FirstOrDefault(
+                    m => m.OriginalName == method.OriginalName &&
+                    m.Parameters.Where(p => !p.Ignore).SequenceEqual(
+                        method.Parameters.Where(p => !p.Ignore),
+                        ParameterTypeComparer.Instance));
+                if (existingImpl != null)
+                {
+                    existingImpl.OriginalFunction = method;
                     continue;
+                }
                 var impl = new Method(method)
                     {
                         Namespace = @class,
