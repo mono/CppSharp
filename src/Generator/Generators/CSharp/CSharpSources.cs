@@ -248,8 +248,10 @@ namespace CppSharp.Generators.CSharp
                     GenerateClassTemplateSpecializationInternal(@class);
             }
 
-            if (context.HasFunctions || (!(context is Class) && context.Variables.Any(
-                v => v.IsGenerated && v.Access == AccessSpecifier.Public)))
+            if (context.Functions.Any(f => f.IsGenerated) ||
+                (!(context is Class) &&
+                context.Variables.Any(
+                    v => v.IsGenerated && v.Access == AccessSpecifier.Public)))
             {
                 PushBlock(CSharpBlockKind.Functions);
                 var parentName = Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);

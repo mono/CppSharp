@@ -13,3 +13,8 @@ namespace DelegateNamespace
 
     void DLL_API f4(void (*)());
 }
+
+namespace AnotherUnit
+{
+    void DLL_API f();
+}
