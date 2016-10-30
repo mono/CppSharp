@@ -2524,7 +2524,7 @@ namespace CppSharp.Generators.CSharp
             int vtableIndex = 0;
             if (Context.ParserOptions.IsMicrosoftAbi)
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
-                    v => v.Layout.Components.Any(c => c.Method.OriginalPtr == method.OriginalPtr)).First());
+                    v => v.Layout.Components.Any(c => c.Method == @virtual)).First());
             WriteLine("var {0} = *(void**) ((IntPtr) __OriginalVTables[{1}] + {2} * {3});",
                 Helpers.SlotIdentifier, vtableIndex, i, Context.TargetInfo.PointerWidth / 8);
             if (method.IsDestructor && @class.IsAbstract)
