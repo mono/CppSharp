@@ -95,17 +95,11 @@ namespace CppSharp.Generators.CLI
                 GenerateClass(@class);
             }
 
-            if (@namespace.HasFunctions)
+            // Generate all the function declarations for the module.
+            foreach (var function in @namespace.Functions.Where(f => f.IsGenerated))
             {
-                // Generate all the function declarations for the module.
-                foreach (var function in @namespace.Functions)
-                {
-                    if (!function.IsGenerated)
-                        continue;
-
-                    GenerateFunction(function, @namespace);
-                    NewLine();
-                }
+                GenerateFunction(function, @namespace);
+                NewLine();
             }
 
             if (Options.GenerateFunctionTemplates)

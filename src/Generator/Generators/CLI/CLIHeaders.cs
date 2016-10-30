@@ -177,7 +177,7 @@ namespace CppSharp.Generators.CLI
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            if (decl.HasFunctions)
+            if (decl.Functions.Any(f => f.IsGenerated))
                 GenerateFunctions(decl);
 
             foreach (var childNamespace in decl.Namespaces)
