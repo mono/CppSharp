@@ -19,7 +19,6 @@ namespace CppSharp
             GeneratorKind = GeneratorKind.CSharp;
             GenerateClassMarshals = false;
             OutputInteropIncludes = true;
-            MaxIndent = 80;
             CommentPrefix = "///";
 
             Encoding = Encoding.ASCII;
@@ -31,7 +30,6 @@ namespace CppSharp
 
         // General options
         public bool Quiet;
-        public bool ShowHelpText;
         public bool OutputDebug;
 
         /// <summary>
@@ -58,7 +56,6 @@ namespace CppSharp
         // Parser options
         public List<string> Headers { get { return MainModule.Headers; } }
         public bool IgnoreParseWarnings;
-        public bool IgnoreParseErrors;
 
         // Library options
         public List<string> Libraries { get { return MainModule.Libraries; } }
@@ -91,7 +88,6 @@ namespace CppSharp
         public bool GenerateFunctionTemplates;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
-        public bool GenerateInlines;
         public bool UseHeaderDirectories;
 
         /// <summary>
@@ -144,7 +140,6 @@ namespace CppSharp
 
         public string IncludePrefix;
         public Func<TranslationUnit, string> GenerateName;
-        public int MaxIndent;
         public string CommentPrefix;
 
         public Encoding Encoding { get; set; }
