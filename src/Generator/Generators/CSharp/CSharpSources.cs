@@ -3129,7 +3129,11 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             if (function.OriginalFunction != null)
-                function = function.OriginalFunction;
+            {
+                var @class = function.OriginalNamespace as Class;
+                if (@class != null && @class.IsInterface)
+                    function = function.OriginalFunction;
+            }
 
             PushBlock(CSharpBlockKind.InternalsClassMethod);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
