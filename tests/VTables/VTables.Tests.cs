@@ -5,10 +5,13 @@ using VTables;
 
 public class FooDerived : Foo
 {
-    public override int vfoo()
+    public override int vfoo
     {
-        Console.WriteLine("Hello from FooDerived");
-        return 10;
+        get
+        {
+            Console.WriteLine("Hello from FooDerived");
+            return 10;
+        }
     }
 }
 
@@ -34,8 +37,8 @@ public class VTablesTests : GeneratorTestFixture
     public void TestFoo()
     {
         var foo = new Foo();
-        Assert.That(foo.vfoo(), Is.EqualTo(5));
-        Assert.That(foo.Vbar(), Is.EqualTo(5));
+        Assert.That(foo.vfoo, Is.EqualTo(5));
+        Assert.That(foo.Vbar, Is.EqualTo(5));
         Assert.That(foo.CallFoo(), Is.EqualTo(7));
         Assert.That(foo.CallVirtualWithParameter(6514), Is.EqualTo(6514 + 1));
 
@@ -57,13 +60,13 @@ public class VTablesTests : GeneratorTestFixture
     {
         // Virtual Functions Object Slicing case
         // See http://stackoverflow.com/questions/3479712/virtual-functions-object-slicing
-        var baseVirtual = BaseClassVirtual.GetBase();
+        var baseVirtual = BaseClassVirtual.Base;
         TestVirtualFunction(baseVirtual, 5);
 
         BaseClassVirtual baseClass = new DerivedClassVirtual();
         TestVirtualFunction(baseClass, 10);
 
-        var basePtr = BaseClassVirtual.GetBasePtr();
+        var basePtr = BaseClassVirtual.BasePtr;
         TestVirtualFunction(basePtr, 10);
 
         var managed = new ManagedDerivedClassVirtual();

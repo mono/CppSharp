@@ -150,7 +150,6 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Options.GeneratePropertiesAdvanced = true;
             driver.Context.TranslationUnitPasses.AddPass(new TestAttributesPass());
             driver.Context.TranslationUnitPasses.AddPass(new CheckMacroPass());
             driver.Options.MarshalCharAsManagedChar = true;

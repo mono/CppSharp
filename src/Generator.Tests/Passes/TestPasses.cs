@@ -162,9 +162,9 @@ namespace CppSharp.Generator.Tests.Passes
             AstContext.SetPropertyAsReadOnly(className, "readOnlyProperty");
             Assert.IsFalse(AstContext.FindClass(className).First().Properties.Find(
                 m => m.Name == "readOnlyProperty").HasSetter);
-            AstContext.SetPropertyAsReadOnly(className, "ReadOnlyPropertyMethod");
+            AstContext.SetPropertyAsReadOnly(className, "readOnlyPropertyMethod");
             Assert.IsFalse(AstContext.FindClass(className).First().Properties.Find(
-                m => m.Name == "ReadOnlyPropertyMethod").HasSetter);
+                m => m.Name == "readOnlyPropertyMethod").HasSetter);
         }
 
         [Test]

@@ -397,7 +397,7 @@ namespace CppSharp
 
             for (uint i = 0; i < Context.TranslationUnitsCount; ++i)
             {
-                var unit = Context.getTranslationUnits(i);
+                var unit = Context.GetTranslationUnits(i);
                 var _unit = declConverter.Visit(unit) as AST.TranslationUnit;
                 _ctx.TranslationUnits.Add(_unit);
                 declConverter.VisitDeclContext(unit, _unit);
@@ -496,7 +496,7 @@ namespace CppSharp
 
             for (uint i = 0; i < type.ParametersCount; ++i)
             {
-                var param = type.getParameters(i);
+                var param = type.GetParameters(i);
                 var _param = declConverter.Visit(param) as AST.Parameter;
                 _type.Parameters.Add(_param);
             }
@@ -607,7 +607,7 @@ namespace CppSharp
 
             for (uint i = 0; i < type.ArgumentsCount; ++i)
             {
-                var arg = type.getArguments(i);
+                var arg = type.GetArguments(i);
                 var _arg = VisitTemplateArgument(arg);
                 _type.Arguments.Add(_arg);
             }
@@ -627,7 +627,7 @@ namespace CppSharp
 
             for (uint i = 0; i < type.ArgumentsCount; ++i)
             {
-                var arg = type.getArguments(i);
+                var arg = type.GetArguments(i);
                 var _arg = VisitTemplateArgument(arg);
                 _type.Arguments.Add(_arg);
             }
@@ -900,7 +900,7 @@ namespace CppSharp
             _decl.Access = VisitAccessSpecifier(decl.Access);
             _decl.Name = decl.Name;
             _decl.USR = decl.USR;
-            _decl.Namespace = Visit(decl._Namespace) as AST.DeclarationContext;
+            _decl.Namespace = Visit(decl.Namespace) as AST.DeclarationContext;
             _decl.Location = new SourceLocation(decl.Location.ID);
             _decl.LineNumberStart = decl.LineNumberStart;
             _decl.LineNumberEnd = decl.LineNumberEnd;
@@ -915,7 +915,7 @@ namespace CppSharp
 
             for (uint i = 0; i < decl.PreprocessedEntitiesCount; ++i)
             {
-                var entity = decl.getPreprocessedEntities(i);
+                var entity = decl.GetPreprocessedEntities(i);
                 var _entity = VisitPreprocessedEntity(entity);
                 _decl.PreprocessedEntities.Add(_entity);
             }
@@ -931,7 +931,7 @@ namespace CppSharp
 
             for (uint i = 0; i < ctx.NamespacesCount; ++i)
             {
-                var decl = ctx.getNamespaces(i);
+                var decl = ctx.GetNamespaces(i);
                 var _decl = Visit(decl) as AST.Namespace;
                 namespaces.Add(decl, _decl);
                 _ctx.Namespaces.Add(_decl);
@@ -939,28 +939,28 @@ namespace CppSharp
 
             for (uint i = 0; i < ctx.EnumsCount; ++i)
             {
-                var decl = ctx.getEnums(i);
+                var decl = ctx.GetEnums(i);
                 var _decl = Visit(decl) as AST.Enumeration;
                 _ctx.Enums.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.FunctionsCount; ++i)
             {
-                var decl = ctx.getFunctions(i);
+                var decl = ctx.GetFunctions(i);
                 var _decl = Visit(decl) as AST.Function;
                 _ctx.Functions.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.TemplatesCount; ++i)
             {
-                var decl = ctx.getTemplates(i);
+                var decl = ctx.GetTemplates(i);
                 var _decl = Visit(decl) as AST.Template;
                 _ctx.Templates.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.ClassesCount; ++i)
             {
-                var decl = ctx.getClasses(i);
+                var decl = ctx.GetClasses(i);
                 var _decl = Visit(decl) as AST.Class;
                 if (!_decl.IsIncomplete)
                     _ctx.Classes.Add(_decl);
@@ -968,28 +968,28 @@ namespace CppSharp
 
             for (uint i = 0; i < ctx.TypedefsCount; ++i)
             {
-                var decl = ctx.getTypedefs(i);
+                var decl = ctx.GetTypedefs(i);
                 var _decl = Visit(decl) as AST.TypedefDecl;
                 _ctx.Typedefs.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.TypeAliasesCount; ++i)
             {
-                var decl = ctx.getTypeAliases(i);
+                var decl = ctx.GetTypeAliases(i);
                 var _decl = Visit(decl) as AST.TypeAlias;
                 _ctx.Typedefs.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.VariablesCount; ++i)
             {
-                var decl = ctx.getVariables(i);
+                var decl = ctx.GetVariables(i);
                 var _decl = Visit(decl) as AST.Variable;
                 _ctx.Variables.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.FriendsCount; ++i)
             {
-                var decl = ctx.getFriends(i);
+                var decl = ctx.GetFriends(i);
                 var _decl = Visit(decl) as AST.Friend;
                 _ctx.Declarations.Add(_decl);
             }
@@ -1012,7 +1012,7 @@ namespace CppSharp
 
             for (uint i = 0; i < decl.MacrosCount; ++i)
             {
-                var macro = decl.getMacros(i);
+                var macro = decl.GetMacros(i);
                 var _macro = VisitMacroDefinition(macro);
                 _unit.Macros.Add(_macro);
             }
@@ -1082,7 +1082,7 @@ namespace CppSharp
                     var callExpr = CallExpr.__CreateInstance(statement.__Instance);
                     for (uint i = 0; i < callExpr.ArgumentsCount; i++)
                     {
-                        var argument = VisitStatement(callExpr.getArguments(i));
+                        var argument = VisitStatement(callExpr.GetArguments(i));
                         callExpression.Arguments.Add(argument);
                     }
                     expression = callExpression;
@@ -1100,7 +1100,7 @@ namespace CppSharp
                     var constructorExpr = CXXConstructExpr.__CreateInstance(statement.__Instance);
                     for (uint i = 0; i < constructorExpr.ArgumentsCount; i++)
                     {
-                        var argument = VisitStatement(constructorExpr.getArguments(i));
+                        var argument = VisitStatement(constructorExpr.GetArguments(i));
                         constructorExpression.Arguments.Add(argument);
                     }
                     expression = constructorExpression;
@@ -1135,7 +1135,7 @@ namespace CppSharp
 
             for (uint i = 0; i < function.ParametersCount; ++i)
             {
-                var param = function.getParameters(i);
+                var param = function.GetParameters(i);
                 var _param = Visit(param) as AST.Parameter;
                 _function.Parameters.Add(_param);
             }
@@ -1338,7 +1338,7 @@ namespace CppSharp
 
             for (uint i = 0; i < decl.ItemsCount; ++i)
             {
-                var item = decl.getItems(i);
+                var item = decl.GetItems(i);
                 var _item = Visit(item) as AST.Enumeration.Item;
                 _enum.AddItem(_item);
             }
@@ -1419,28 +1419,28 @@ namespace CppSharp
 
             for (uint i = 0; i < @class.BasesCount; ++i)
             {
-                var @base = @class.getBases(i);
+                var @base = @class.GetBases(i);
                 var _base = VisitBaseClassSpecifier(@base);
                 _class.Bases.Add(_base);
             }
 
             for (uint i = 0; i < @class.FieldsCount; ++i)
             {
-                var field = @class.getFields(i);
+                var field = @class.GetFields(i);
                 var _field = Visit(field) as AST.Field;
                 _class.Fields.Add(_field);
             }
 
             for (uint i = 0; i < @class.MethodsCount; ++i)
             {
-                var method = @class.getMethods(i);
+                var method = @class.GetMethods(i);
                 var _method = Visit(method) as AST.Method;
                 _class.Methods.Add(_method);
             }
 
             for (uint i = 0; i < @class.SpecifiersCount; ++i)
             {
-                var spec = @class.getSpecifiers(i);
+                var spec = @class.GetSpecifiers(i);
                 var _spec = Visit(spec) as AST.AccessSpecifierDecl;
                 _class.Specifiers.Add(_spec);
             }
@@ -1482,14 +1482,14 @@ namespace CppSharp
 
             for (uint i = 0; i < layout.VFTablesCount; ++i)
             {
-                var vftableInfo = layout.getVFTables(i);
+                var vftableInfo = layout.GetVFTables(i);
                 var _vftableInfo = VisitVFTableInfo(vftableInfo);
                 _layout.VFTables.Add(_vftableInfo);
             }
 
             for (uint i = 0; i < layout.FieldsCount; i++)
             {
-                var field = layout.getFields(i);
+                var field = layout.GetFields(i);
                 var _field = new AST.LayoutField();
                 _field.Offset = field.Offset;
                 _field.Name = field.Name;
@@ -1500,7 +1500,7 @@ namespace CppSharp
 
             for (uint i = 0; i < layout.BasesCount; i++)
             {
-                var @base = layout.getBases(i);
+                var @base = layout.GetBases(i);
                 var _base = new AST.LayoutBase();
                 _base.Offset = @base.Offset;
                 _base.Class = (AST.Class) Visit(@base.Class);
@@ -1550,7 +1550,7 @@ namespace CppSharp
 
             for (uint i = 0; i < layout.ComponentsCount; ++i)
             {
-                var component = layout.getComponents(i);
+                var component = layout.GetComponents(i);
                 var _component = VisitVTableComponent(component);
                 _layout.Components.Add(_component);
             }
@@ -1605,7 +1605,7 @@ namespace CppSharp
 
             for (uint i = 0; i < template.ParametersCount; ++i)
             {
-                var param = template.getParameters(i);
+                var param = template.GetParameters(i);
                 var _param = Visit(param);
                 _template.Parameters.Add(_param);
             }
@@ -1625,7 +1625,7 @@ namespace CppSharp
             VisitTemplate(decl, _decl);
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
-                var spec = decl.getSpecializations(i);
+                var spec = decl.GetSpecializations(i);
                 var _spec = (AST.ClassTemplateSpecialization)Visit(spec);
                 _decl.Specializations.Add(_spec);
             }
@@ -1648,7 +1648,7 @@ namespace CppSharp
             _decl.TemplatedDecl = (AST.ClassTemplate)Visit(decl.TemplatedDecl);
             for (uint i = 0; i < decl.ArgumentsCount; ++i)
             {
-                var arg = decl.getArguments(i);
+                var arg = decl.GetArguments(i);
                 var _arg = VisitTemplateArgument(arg);
                 _decl.Arguments.Add(_arg);
             }
@@ -1725,7 +1725,7 @@ namespace CppSharp
             VisitTemplate(decl, _decl);
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
-                var _spec = VisitFunctionTemplateSpecialization(decl.getSpecializations(i));
+                var _spec = VisitFunctionTemplateSpecialization(decl.GetSpecializations(i));
                 _decl.Specializations.Add(_spec);
             }
             return _decl;
@@ -1743,7 +1743,7 @@ namespace CppSharp
             _spec.SpecializationKind = VisitSpecializationKind(spec.SpecializationKind);
             for (uint i = 0; i < spec.ArgumentsCount; ++i)
             {
-                var _arg = VisitTemplateArgument(spec.getArguments(i));
+                var _arg = VisitTemplateArgument(spec.GetArguments(i));
                 _spec.Arguments.Add(_arg);
             }
             FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
@@ -1757,7 +1757,7 @@ namespace CppSharp
             VisitTemplate(decl, _decl);
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
-                var spec = decl.getSpecializations(i);
+                var spec = decl.GetSpecializations(i);
                 var _spec = (AST.VarTemplateSpecialization)Visit(spec);
                 _decl.Specializations.Add(_spec);
             }
@@ -1780,7 +1780,7 @@ namespace CppSharp
             _decl.TemplatedDecl = (AST.VarTemplate)Visit(decl.TemplatedDecl);
             for (uint i = 0; i < decl.ArgumentsCount; ++i)
             {
-                var arg = decl.getArguments(i);
+                var arg = decl.GetArguments(i);
                 var _arg = VisitTemplateArgument(arg);
                 _decl.Arguments.Add(_arg);
             }
@@ -1905,7 +1905,7 @@ namespace CppSharp
         {
             var fullComment = new AST.FullComment();
             for (uint i = 0; i < comment.BlocksCount; i++)
-                fullComment.Blocks.Add((AST.BlockContentComment) Visit(comment.getBlocks(i)));
+                fullComment.Blocks.Add((AST.BlockContentComment) Visit(comment.GetBlocks(i)));
             return fullComment;
         }
 
@@ -1940,7 +1940,7 @@ namespace CppSharp
         {
             var paramCommandComment = new AST.TParamCommandComment();
             for (uint i = 0; i < comment.PositionCount; i++)
-                paramCommandComment.Position.Add(comment.getPosition(i));
+                paramCommandComment.Position.Add(comment.GetPosition(i));
             VisitBlockCommandComment(paramCommandComment, comment);
             return paramCommandComment;
         }
@@ -1949,7 +1949,7 @@ namespace CppSharp
         {
             var verbatimBlockComment = new AST.VerbatimBlockComment();
             for (uint i = 0; i < comment.LinesCount; i++)
-                verbatimBlockComment.Lines.Add((AST.VerbatimBlockLineComment) Visit(comment.getLines(i)));
+                verbatimBlockComment.Lines.Add((AST.VerbatimBlockLineComment) Visit(comment.GetLines(i)));
             VisitBlockCommandComment(verbatimBlockComment, comment);
             return verbatimBlockComment;
         }
@@ -1965,7 +1965,7 @@ namespace CppSharp
         {
             var paragraphComment = new AST.ParagraphComment();
             for (uint i = 0; i < comment.ContentCount; i++)
-                paragraphComment.Content.Add((AST.InlineContentComment) Visit(comment.getContent(i)));
+                paragraphComment.Content.Add((AST.InlineContentComment) Visit(comment.GetContent(i)));
             paragraphComment.IsWhitespace = comment.IsWhitespace;
             return paragraphComment;
         }
@@ -1976,7 +1976,7 @@ namespace CppSharp
             for (uint i = 0; i < comment.AttributesCount; i++)
             {
                 var attribute = new AST.HTMLStartTagComment.Attribute();
-                var _attribute = comment.getAttributes(i);
+                var _attribute = comment.GetAttributes(i);
                 attribute.Name = _attribute.Name;
                 attribute.Value = _attribute.Value;
                 htmlStartTagComment.Attributes.Add(attribute);
@@ -2011,7 +2011,7 @@ namespace CppSharp
             inlineCommandComment.CommandId = comment.CommandId;
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
-                var argument = new AST.InlineCommandComment.Argument { Text = comment.getArguments(i).Text };
+                var argument = new AST.InlineCommandComment.Argument { Text = comment.GetArguments(i).Text };
                 inlineCommandComment.Arguments.Add(argument);
             }
             return inlineCommandComment;
@@ -2029,7 +2029,7 @@ namespace CppSharp
                 blockCommandComment.ParagraphComment = (AST.ParagraphComment) Visit(comment.ParagraphComment);
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
-                var argument = new AST.BlockCommandComment.Argument { Text = comment.getArguments(i).Text };
+                var argument = new AST.BlockCommandComment.Argument { Text = comment.GetArguments(i).Text };
                 blockCommandComment.Arguments.Add(argument);
             }
         }

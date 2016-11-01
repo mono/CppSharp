@@ -16,7 +16,7 @@ public class StandardLibTests : GeneratorTestFixture
         var sum = vectors.SumIntVector(new List<int> { 1, 2, 3 });
         Assert.AreEqual(sum, 6);
 
-        var list = vectors.GetIntVector();
+        var list = vectors.IntVector;
         Assert.True(list.SequenceEqual(new List<int> { 2, 3, 4 }));
 
         var ptrList = vectors.IntPtrVector;

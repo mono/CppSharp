@@ -46,7 +46,7 @@ namespace CppSharp.Utils
                 parserOptions.TargetTriple = Environment.Is64BitProcess ? "x86_64-apple-darwin" : "i686-apple-darwin";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
-            parserOptions.addIncludeDirs(path);
+            parserOptions.AddIncludeDirs(path);
 
             driver.Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");

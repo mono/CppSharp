@@ -602,8 +602,8 @@ int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
 // Tests variables
 struct DLL_API TestVariables
 {
-	static int VALUE;
-	void SetValue(int value = VALUE);
+    static int VALUE;
+    void SetValue(int value = VALUE);
 };
 
 int TestVariables::VALUE;

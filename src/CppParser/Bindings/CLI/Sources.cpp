@@ -19,6 +19,12 @@ CppSharp::Parser::SourceLocation::SourceLocation(unsigned int ID)
     this->ID = _native.ID;
 }
 
+CppSharp::Parser::SourceLocation::operator CppSharp::Parser::SourceLocation(unsigned int ID)
+{
+    auto __ret = (::CppSharp::CppParser::SourceLocation) ID;
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&__ret);
+}
+
 unsigned int CppSharp::Parser::SourceLocation::ID::get()
 {
     return __ID;

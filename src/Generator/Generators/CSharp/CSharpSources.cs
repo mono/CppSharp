@@ -1345,7 +1345,7 @@ namespace CppSharp.Generators.CSharp
         {
             var isIndexer = prop.Parameters.Count != 0;
             if (!isIndexer)
-                return prop.Name;
+                return Helpers.SafeIdentifier(prop.Name);
 
             var @params = prop.Parameters.Select(param => {
                 var p = new Parameter(param);
@@ -3184,7 +3184,7 @@ namespace CppSharp.Generators.CSharp
                 var framework = libName + ".framework";
                 for (uint i = 0; i < Context.ParserOptions.LibraryDirsCount; i++)
                 {
-                    var libDir = Context.ParserOptions.getLibraryDirs(i);
+                    var libDir = Context.ParserOptions.GetLibraryDirs(i);
                     if (Path.GetFileName(libDir) == framework && File.Exists(Path.Combine(libDir, libName)))
                     {
                         libName = string.Format("@executable_path/../Frameworks/{0}/{1}", framework, libName);

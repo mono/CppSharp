@@ -8,13 +8,13 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
 }
 
-namespace std
+namespace Std
 {
-    public unsafe partial class __true_type
+    public unsafe partial class TrueType
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -22,7 +22,7 @@ namespace std
         }
     }
 
-    namespace __truth_type
+    namespace TruthType
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -30,7 +30,7 @@ namespace std
         }
     }
 
-    namespace __is_void
+    namespace IsVoid
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -38,7 +38,7 @@ namespace std
         }
     }
 
-    namespace __is_integer
+    namespace IsInteger
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -46,7 +46,7 @@ namespace std
         }
     }
 
-    namespace __is_floating
+    namespace IsFloating
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -54,7 +54,7 @@ namespace std
         }
     }
 
-    namespace __is_pointer
+    namespace IsPointer
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -62,7 +62,7 @@ namespace std
         }
     }
 
-    namespace __is_char
+    namespace IsChar
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -70,7 +70,7 @@ namespace std
         }
     }
 
-    namespace __is_byte
+    namespace IsByte
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -78,269 +78,7 @@ namespace std
         }
     }
 
-    public unsafe partial class __false_type
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-}
-
-namespace __gnu_cxx
-{
-    namespace __add_unsigned
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __remove_unsigned
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __promote
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-}
-
-namespace __gnu_cxx
-{
-}
-
-namespace std
-{
-}
-
-namespace std
-{
-    namespace integral_constant
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_void_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_integral_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_floating_point_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_pointer_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace is_lvalue_reference
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace is_rvalue_reference
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_member_object_pointer_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_member_function_pointer_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_null_pointer_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __is_member_pointer_helper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace remove_reference
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __make_unsigned
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    namespace __make_signed
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __failure_type
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_is_destructible_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_is_nt_destructible_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_is_default_constructible_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_is_static_castable_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_is_direct_constructible_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_is_nary_constructible_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_common_type_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __do_member_type_wrapper
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __result_of_memfun_ref_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __result_of_memfun_deref_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __result_of_memobj_ref_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __result_of_memobj_deref_impl
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class __result_of_other_impl
+    public unsafe partial class FalseType
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -349,9 +87,271 @@ namespace std
     }
 }
 
-namespace std
+namespace GnuCxx
 {
-    namespace pair
+    namespace AddUnsigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace RemoveUnsigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace Promote
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+}
+
+namespace GnuCxx
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+    namespace IntegralConstant
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsVoidHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsIntegralHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsFloatingPointHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsPointerHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsLvalueReference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsRvalueReference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsMemberObjectPointerHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsMemberFunctionPointerHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsNullPointerHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace IsMemberPointerHelper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace RemoveReference
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace MakeUnsigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    namespace MakeSigned
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class FailureType
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoIsDestructibleImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoIsNtDestructibleImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoIsDefaultConstructibleImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoIsStaticCastableImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoIsDirectConstructibleImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoIsNaryConstructibleImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoCommonTypeImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class DoMemberTypeWrapper
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class ResultOfMemfunRefImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class ResultOfMemfunDerefImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class ResultOfMemobjRefImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class ResultOfMemobjDerefImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class ResultOfOtherImpl
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+        }
+    }
+}
+
+namespace Std
+{
+    namespace Pair
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public unsafe partial struct __Internal_Ptr
@@ -364,7 +364,7 @@ namespace std
         }
     }
 
-    public unsafe partial class piecewise_construct_t
+    public unsafe partial class PiecewiseConstructT
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -373,9 +373,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace iterator_traits
+    namespace IteratorTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -383,7 +383,7 @@ namespace std
         }
     }
 
-    namespace iterator
+    namespace Iterator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -391,7 +391,7 @@ namespace std
         }
     }
 
-    public unsafe partial class input_iterator_tag
+    public unsafe partial class InputIteratorTag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -399,7 +399,7 @@ namespace std
         }
     }
 
-    public unsafe partial class output_iterator_tag
+    public unsafe partial class OutputIteratorTag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -407,7 +407,7 @@ namespace std
         }
     }
 
-    public unsafe partial class forward_iterator_tag
+    public unsafe partial class ForwardIteratorTag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -415,7 +415,7 @@ namespace std
         }
     }
 
-    public unsafe partial class bidirectional_iterator_tag
+    public unsafe partial class BidirectionalIteratorTag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -423,7 +423,7 @@ namespace std
         }
     }
 
-    public unsafe partial class random_access_iterator_tag
+    public unsafe partial class RandomAccessIteratorTag
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -432,13 +432,13 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    namespace pointer_traits
+    namespace PointerTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -447,19 +447,19 @@ namespace std
     }
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
-    namespace __ops
+    namespace Ops
     {
-        public unsafe partial class _Iter_less_iter
+        public unsafe partial class IterLessIter
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -467,7 +467,7 @@ namespace __gnu_cxx
             }
         }
 
-        public unsafe partial class _Iter_less_val
+        public unsafe partial class IterLessVal
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -475,7 +475,7 @@ namespace __gnu_cxx
             }
         }
 
-        public unsafe partial class _Val_less_iter
+        public unsafe partial class ValLessIter
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -483,7 +483,7 @@ namespace __gnu_cxx
             }
         }
 
-        public unsafe partial class _Iter_equal_to_iter
+        public unsafe partial class IterEqualToIter
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -491,7 +491,7 @@ namespace __gnu_cxx
             }
         }
 
-        public unsafe partial class _Iter_equal_to_val
+        public unsafe partial class IterEqualToVal
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -501,9 +501,9 @@ namespace __gnu_cxx
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __copy_move
+    namespace CopyMove
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -511,7 +511,7 @@ namespace std
         }
     }
 
-    namespace __copy_move_backward
+    namespace CopyMoveBackward
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -519,7 +519,7 @@ namespace std
         }
     }
 
-    namespace __equal
+    namespace Equal
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -527,7 +527,7 @@ namespace std
         }
     }
 
-    namespace __lc_rai
+    namespace LcRai
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -535,7 +535,7 @@ namespace std
         }
     }
 
-    namespace __lexicographical_compare
+    namespace LexicographicalCompare
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -544,9 +544,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    public unsafe partial class exception
+    public unsafe partial class Exception
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
@@ -556,7 +556,7 @@ namespace std
         }
     }
 
-    public unsafe partial class bad_exception
+    public unsafe partial class BadException
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
@@ -567,11 +567,11 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __exception_ptr
+    namespace ExceptionPtr
     {
-        public unsafe partial class exception_ptr
+        public unsafe partial class ExceptionPtr
         {
             [StructLayout(LayoutKind.Explicit, Size = 8)]
             public partial struct __Internal
@@ -583,7 +583,7 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
     public unsafe partial class nested_exception
     {
@@ -594,14 +594,14 @@ namespace std
             public global::System.IntPtr vptr_nested_exception;
 
             [FieldOffset(8)]
-            internal global::std.__exception_ptr.exception_ptr.__Internal _M_ptr;
+            internal global::Std.ExceptionPtr.ExceptionPtr.__Internal _M_ptr;
         }
     }
 }
 
-namespace std
+namespace Std
 {
-    public unsafe partial class bad_alloc
+    public unsafe partial class BadAlloc
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
@@ -611,7 +611,7 @@ namespace std
         }
     }
 
-    public unsafe partial class bad_array_new_length
+    public unsafe partial class BadArrayNewLength
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
@@ -621,7 +621,7 @@ namespace std
         }
     }
 
-    public unsafe partial class nothrow_t
+    public unsafe partial class NothrowT
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -630,9 +630,9 @@ namespace std
     }
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
-    namespace new_allocator
+    namespace NewAllocator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -640,7 +640,7 @@ namespace __gnu_cxx
         }
 
 
-        public unsafe partial class rebind
+        public unsafe partial class Rebind
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -650,17 +650,17 @@ namespace __gnu_cxx
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    public unsafe partial class allocator : IDisposable
+    public unsafe partial class Allocator : IDisposable
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -679,43 +679,43 @@ namespace std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, allocator>();
+        public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
-        public static allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        public static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
-            return new allocator(native.ToPointer(), skipVTables);
+            return new Allocator(native.ToPointer(), skipVTables);
         }
 
-        public static allocator __CreateInstance(allocator.__Internal native, bool skipVTables = false)
+        public static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
         {
-            return new allocator(native, skipVTables);
+            return new Allocator(native, skipVTables);
         }
 
-        private static void* __CopyValue(allocator.__Internal native)
+        private static void* __CopyValue(Allocator.__Internal native)
         {
             var ret = Marshal.AllocHGlobal(0);
-            *(allocator.__Internal*) ret = native;
+            *(Allocator.__Internal*) ret = native;
             return ret.ToPointer();
         }
 
-        private allocator(allocator.__Internal native, bool skipVTables = false)
+        private Allocator(Allocator.__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
             NativeToManagedMap[__Instance] = this;
         }
 
-        protected allocator(void* native, bool skipVTables = false)
+        protected Allocator(void* native, bool skipVTables = false)
         {
             if (native == null)
                 return;
             __Instance = new global::System.IntPtr(native);
         }
 
-        public allocator()
+        public Allocator()
         {
             __Instance = Marshal.AllocHGlobal(0);
             __ownsNativeInstance = true;
@@ -730,7 +730,7 @@ namespace std
 
         public virtual void Dispose(bool disposing)
         {
-            global::std.allocator __dummy;
+            global::Std.Allocator __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (disposing)
                 __Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -740,7 +740,7 @@ namespace std
     }
 
 
-    public unsafe partial class rebind
+    public unsafe partial class Rebind
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -749,9 +749,9 @@ namespace std
     }
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
-    namespace __alloc_traits
+    namespace AllocTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -759,7 +759,7 @@ namespace __gnu_cxx
         }
 
 
-        public unsafe static partial class rebind
+        public unsafe static partial class Rebind
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -769,9 +769,9 @@ namespace __gnu_cxx
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace allocator_traits
+    namespace AllocatorTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -779,7 +779,7 @@ namespace std
         }
 
 
-        public unsafe static partial class __allocate_helper
+        public unsafe static partial class AllocateHelper
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -788,7 +788,7 @@ namespace std
 
         }
 
-        public unsafe static partial class __construct_helper
+        public unsafe static partial class ConstructHelper
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -797,7 +797,7 @@ namespace std
 
         }
 
-        public unsafe static partial class __destroy_helper
+        public unsafe static partial class DestroyHelper
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -806,7 +806,7 @@ namespace std
 
         }
 
-        public unsafe static partial class __maxsize_helper
+        public unsafe static partial class MaxsizeHelper
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -815,7 +815,7 @@ namespace std
 
         }
 
-        public unsafe static partial class __select_helper
+        public unsafe static partial class SelectHelper
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -825,9 +825,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace _Destroy_aux
+    namespace DestroyAux
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -836,9 +836,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __uninitialized_copy
+    namespace UninitializedCopy
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -846,7 +846,7 @@ namespace std
         }
     }
 
-    namespace __uninitialized_fill
+    namespace UninitializedFill
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -854,7 +854,7 @@ namespace std
         }
     }
 
-    namespace __uninitialized_fill_n
+    namespace UninitializedFillN
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -862,7 +862,7 @@ namespace std
         }
     }
 
-    namespace __uninitialized_default_1
+    namespace UninitializedDefault1
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -870,7 +870,7 @@ namespace std
         }
     }
 
-    namespace __uninitialized_default_n_1
+    namespace UninitializedDefaultN1
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -879,19 +879,19 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace _Vector_base
+    namespace VectorBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Vector_base._Vector_impl.__Internal _M_impl;
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
 
-        public unsafe partial class _Vector_impl
+        public unsafe partial class VectorImpl
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -900,30 +900,30 @@ namespace std
         }
     }
 
-    namespace vector
+    namespace Vector
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Vector_base._Vector_impl.__Internal _M_impl;
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
     [Flags]
-    public enum S_word_bit : uint
+    public enum SWordBit : uint
     {
         _S_word_bit = 64
     }
 
-    public unsafe partial class _Bit_reference
+    public unsafe partial class BitReference
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -936,7 +936,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Bit_iterator_base
+    public unsafe partial class BitIteratorBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -949,7 +949,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Bit_iterator
+    public unsafe partial class BitIterator
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -962,7 +962,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Bit_const_iterator
+    public unsafe partial class BitConstIterator
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -976,9 +976,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __hash_base
+    namespace HashBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -986,7 +986,7 @@ namespace std
         }
     }
 
-    namespace __is_fast_hash
+    namespace IsFastHash
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -994,7 +994,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Hash_impl
+    public unsafe partial class HashImpl
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -1002,7 +1002,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Fnv_hash_impl
+    public unsafe partial class FnvHashImpl
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -1011,13 +1011,13 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    namespace binary_function
+    namespace BinaryFunction
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -1025,7 +1025,7 @@ namespace std
         }
     }
 
-    namespace less
+    namespace Less
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -1034,29 +1034,29 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    public enum _Rb_tree_color : uint
+    public enum RbTreeColor : uint
     {
         _S_red = 0,
         _S_black = 1
     }
 
-    namespace _Rb_tree
+    namespace RbTree
     {
         [StructLayout(LayoutKind.Explicit, Size = 48)]
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Rb_tree._Rb_tree_impl.__Internal _M_impl;
+            internal global::Std.RbTree.RbTreeImpl.__Internal _M_impl;
         }
 
 
-        public unsafe partial class _Reuse_or_alloc_node
+        public unsafe partial class ReuseOrAllocNode
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -1065,7 +1065,7 @@ namespace std
 
         }
 
-        public unsafe partial class _Alloc_node
+        public unsafe partial class AllocNode
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -1074,7 +1074,7 @@ namespace std
 
         }
 
-        public unsafe partial class _Rb_tree_impl
+        public unsafe partial class RbTreeImpl
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -1083,13 +1083,13 @@ namespace std
         }
     }
 
-    public unsafe partial class _Rb_tree_node_base
+    public unsafe partial class RbTreeNodeBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::std._Rb_tree_color _M_color;
+            public global::Std.RbTreeColor _M_color;
 
             [FieldOffset(8)]
             public global::System.IntPtr _M_parent;
@@ -1103,23 +1103,23 @@ namespace std
     }
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
 }
 
-namespace std
+namespace Std
 {
-    namespace map
+    namespace Map
     {
         [StructLayout(LayoutKind.Explicit, Size = 48)]
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std._Rb_tree.__Internal _M_t;
+            internal global::Std.RbTree.__Internal _M_t;
         }
 
 
-        public unsafe partial class value_compare
+        public unsafe partial class ValueCompare
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -1129,9 +1129,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace tuple
+    namespace Tuple
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -1139,7 +1139,7 @@ namespace std
         }
     }
 
-    public unsafe partial class _Swallow_assign
+    public unsafe partial class SwallowAssign
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -1148,16 +1148,16 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace rel_ops
+    namespace RelOps
     {
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace _Build_index_tuple
+    namespace BuildIndexTuple
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -1166,22 +1166,22 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    namespace __cxx11
+    namespace Cxx11
     {
     }
 
-    namespace __cxx11
+    namespace Cxx11
     {
     }
 }
 
-public unsafe partial class __mbstate_t
+public unsafe partial class MbstateT
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
     public partial struct __Internal
@@ -1190,7 +1190,7 @@ public unsafe partial class __mbstate_t
         public int __count;
 
         [FieldOffset(4)]
-        internal global::__mbstate_t._.__Internal __value;
+        internal global::MbstateT._.__Internal __value;
     }
 
     public unsafe partial struct _
@@ -1216,7 +1216,7 @@ public unsafe partial class __mbstate_t
     }
 }
 
-public unsafe partial class __locale_struct
+public unsafe partial class LocaleStruct
 {
     [StructLayout(LayoutKind.Explicit, Size = 232)]
     public partial struct __Internal
@@ -1310,7 +1310,7 @@ public unsafe partial class __locale_struct
     }
 }
 
-public enum __codecvt_result : uint
+public enum CodecvtResult : uint
 {
     __codecvt_ok = 0,
     __codecvt_partial = 1,
@@ -1318,7 +1318,7 @@ public enum __codecvt_result : uint
     __codecvt_noconv = 3
 }
 
-public unsafe partial class _G_fpos_t
+public unsafe partial class GFposT
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -1327,11 +1327,11 @@ public unsafe partial class _G_fpos_t
         public long __pos;
 
         [FieldOffset(8)]
-        internal global::__mbstate_t.__Internal __state;
+        internal global::MbstateT.__Internal __state;
     }
 }
 
-public unsafe partial class _G_fpos64_t
+public unsafe partial class GFpos64T
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -1340,11 +1340,11 @@ public unsafe partial class _G_fpos64_t
         public long __pos;
 
         [FieldOffset(8)]
-        internal global::__mbstate_t.__Internal __state;
+        internal global::MbstateT.__Internal __state;
     }
 }
 
-public unsafe partial class _IO_marker
+public unsafe partial class IOMarker
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
     public partial struct __Internal
@@ -1511,7 +1511,7 @@ public unsafe partial class _IO_FILE
     }
 }
 
-public unsafe partial class _IO_cookie_io_functions_t
+public unsafe partial class IOCookieIoFunctionsT
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
     public partial struct __Internal
@@ -1530,13 +1530,13 @@ public unsafe partial class _IO_cookie_io_functions_t
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    namespace char_traits
+    namespace CharTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -1545,11 +1545,11 @@ namespace std
     }
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
 }
 
-public unsafe partial class lconv
+public unsafe partial class Lconv
 {
     [StructLayout(LayoutKind.Explicit, Size = 96)]
     public partial struct __Internal
@@ -1628,14 +1628,14 @@ public unsafe partial class lconv
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __cxx11
+    namespace Cxx11
     {
     }
 }
 
-public unsafe partial class __fsid_t
+public unsafe partial class FsidT
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
     public partial struct __Internal
@@ -1665,16 +1665,16 @@ public enum IS : uint
     _ISalnum = 8
 }
 
-namespace std
+namespace Std
 {
-    namespace __cxx11
+    namespace Cxx11
     {
     }
 }
 
-namespace __cxxabiv1
+namespace Cxxabiv1
 {
-    public unsafe abstract partial class __forced_unwind
+    public unsafe abstract partial class ForcedUnwind
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
@@ -1685,11 +1685,11 @@ namespace __cxxabiv1
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-public unsafe partial class timespec
+public unsafe partial class Timespec
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -1702,7 +1702,7 @@ public unsafe partial class timespec
     }
 }
 
-public unsafe partial class timeval
+public unsafe partial class Timeval
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -1715,7 +1715,7 @@ public unsafe partial class timeval
     }
 }
 
-public unsafe partial class timex
+public unsafe partial class Timex
 {
     [StructLayout(LayoutKind.Explicit, Size = 208)]
     public partial struct __Internal
@@ -1748,7 +1748,7 @@ public unsafe partial class timex
         public long tolerance;
 
         [FieldOffset(72)]
-        internal global::timeval.__Internal time;
+        internal global::Timeval.__Internal time;
 
         [FieldOffset(88)]
         public long tick;
@@ -1815,7 +1815,7 @@ public unsafe partial class timex
     }
 }
 
-public unsafe partial class tm
+public unsafe partial class Tm
 {
     [StructLayout(LayoutKind.Explicit, Size = 56)]
     public partial struct __Internal
@@ -1855,20 +1855,20 @@ public unsafe partial class tm
     }
 }
 
-public unsafe partial class itimerspec
+public unsafe partial class Itimerspec
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::timespec.__Internal it_interval;
+        internal global::Timespec.__Internal it_interval;
 
         [FieldOffset(16)]
-        internal global::timespec.__Internal it_value;
+        internal global::Timespec.__Internal it_value;
     }
 }
 
-public unsafe partial class sched_param
+public unsafe partial class SchedParam
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
     public partial struct __Internal
@@ -1888,7 +1888,7 @@ public unsafe partial class __sched_param
     }
 }
 
-public unsafe partial class cpu_set_t
+public unsafe partial class CpuSetT
 {
     [StructLayout(LayoutKind.Explicit, Size = 128)]
     public partial struct __Internal
@@ -1943,7 +1943,7 @@ public unsafe partial class cpu_set_t
     }
 }
 
-public unsafe partial struct pthread_attr_t
+public unsafe partial struct PthreadAttrT
 {
     [StructLayout(LayoutKind.Explicit, Size = 56)]
     public partial struct __Internal
@@ -2121,7 +2121,7 @@ public unsafe partial struct pthread_attr_t
     }
 }
 
-public unsafe partial class __pthread_internal_list
+public unsafe partial class PthreadInternalList
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -2134,13 +2134,13 @@ public unsafe partial class __pthread_internal_list
     }
 }
 
-public unsafe partial struct pthread_mutex_t
+public unsafe partial struct PthreadMutexT
 {
     [StructLayout(LayoutKind.Explicit, Size = 40)]
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::pthread_mutex_t.__pthread_mutex_s.__Internal __data;
+        internal global::PthreadMutexT.PthreadMutexS.__Internal __data;
 
         [FieldOffset(0)]
         public fixed sbyte __size[40];
@@ -2266,7 +2266,7 @@ public unsafe partial struct pthread_mutex_t
         public long __align;
     }
 
-    public unsafe partial class __pthread_mutex_s
+    public unsafe partial class PthreadMutexS
     {
         [StructLayout(LayoutKind.Explicit, Size = 40)]
         public partial struct __Internal
@@ -2293,12 +2293,12 @@ public unsafe partial struct pthread_mutex_t
             public short __elision;
 
             [FieldOffset(24)]
-            internal global::__pthread_internal_list.__Internal __list;
+            internal global::PthreadInternalList.__Internal __list;
         }
     }
 }
 
-public unsafe partial struct pthread_mutexattr_t
+public unsafe partial struct PthreadMutexattrT
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
     public partial struct __Internal
@@ -2320,13 +2320,13 @@ public unsafe partial struct pthread_mutexattr_t
     }
 }
 
-public unsafe partial struct pthread_cond_t
+public unsafe partial struct PthreadCondT
 {
     [StructLayout(LayoutKind.Explicit, Size = 48)]
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::pthread_cond_t._.__Internal __data;
+        internal global::PthreadCondT._.__Internal __data;
 
         [FieldOffset(0)]
         public fixed sbyte __size[48];
@@ -2508,7 +2508,7 @@ public unsafe partial struct pthread_cond_t
     }
 }
 
-public unsafe partial struct pthread_condattr_t
+public unsafe partial struct PthreadCondattrT
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
     public partial struct __Internal
@@ -2530,13 +2530,13 @@ public unsafe partial struct pthread_condattr_t
     }
 }
 
-public unsafe partial struct pthread_rwlock_t
+public unsafe partial struct PthreadRwlockT
 {
     [StructLayout(LayoutKind.Explicit, Size = 56)]
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        internal global::pthread_rwlock_t._.__Internal __data;
+        internal global::PthreadRwlockT._.__Internal __data;
 
         [FieldOffset(0)]
         public fixed sbyte __size[56];
@@ -2772,7 +2772,7 @@ public unsafe partial struct pthread_rwlock_t
     }
 }
 
-public unsafe partial struct pthread_rwlockattr_t
+public unsafe partial struct PthreadRwlockattrT
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
     public partial struct __Internal
@@ -2806,7 +2806,7 @@ public unsafe partial struct pthread_rwlockattr_t
     }
 }
 
-public unsafe partial struct pthread_barrier_t
+public unsafe partial struct PthreadBarrierT
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
     public partial struct __Internal
@@ -2912,7 +2912,7 @@ public unsafe partial struct pthread_barrier_t
     }
 }
 
-public unsafe partial struct pthread_barrierattr_t
+public unsafe partial struct PthreadBarrierattrT
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
     public partial struct __Internal
@@ -3006,7 +3006,7 @@ public enum PTHREAD_CANCEL_ : uint
     PTHREAD_CANCEL_ASYNCHRONOUS = 1
 }
 
-public unsafe partial class _pthread_cleanup_buffer
+public unsafe partial class PthreadCleanupBuffer
 {
     [StructLayout(LayoutKind.Explicit, Size = 32)]
     public partial struct __Internal
@@ -3025,7 +3025,7 @@ public unsafe partial class _pthread_cleanup_buffer
     }
 }
 
-public unsafe partial class __pthread_unwind_buf_t
+public unsafe partial class PthreadUnwindBufT
 {
     [StructLayout(LayoutKind.Explicit, Size = 104)]
     public partial struct __Internal
@@ -3081,7 +3081,7 @@ public unsafe partial class __pthread_unwind_buf_t
     }
 }
 
-public unsafe partial class __pthread_cleanup_frame
+public unsafe partial class PthreadCleanupFrame
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
     public partial struct __Internal
@@ -3100,23 +3100,23 @@ public unsafe partial class __pthread_cleanup_frame
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __cxx11
+    namespace Cxx11
     {
-        public unsafe partial class basic_string : IDisposable
+        public unsafe partial class BasicString : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 32)]
             public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
-                internal global::std.__cxx11.basic_string._Alloc_hider.__Internal _M_dataplus;
+                internal global::Std.Cxx11.BasicString.AllocHider.__Internal _M_dataplus;
 
                 [FieldOffset(8)]
                 public ulong _M_string_length;
 
                 [FieldOffset(16)]
-                internal global::std.__cxx11.basic_string._.__Internal _;
+                internal global::Std.Cxx11.BasicString._.__Internal _;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -3126,15 +3126,15 @@ namespace std
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE5c_strEv")]
-                internal static extern global::System.IntPtr c_str_0(global::System.IntPtr instance);
+                internal static extern global::System.IntPtr CStr_0(global::System.IntPtr instance);
             }
 
-            internal enum S_local_capacity : uint
+            internal enum SLocalCapacity : uint
             {
                 _S_local_capacity = 15
             }
 
-            public unsafe partial class _Alloc_hider
+            public unsafe partial class AllocHider
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public partial struct __Internal
@@ -3205,36 +3205,36 @@ namespace std
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, basic_string> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, basic_string>();
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            public static basic_string __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            public static BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new basic_string(native.ToPointer(), skipVTables);
+                return new BasicString(native.ToPointer(), skipVTables);
             }
 
-            public static basic_string __CreateInstance(basic_string.__Internal native, bool skipVTables = false)
+            public static BasicString __CreateInstance(BasicString.__Internal native, bool skipVTables = false)
             {
-                return new basic_string(native, skipVTables);
+                return new BasicString(native, skipVTables);
             }
 
-            private static void* __CopyValue(basic_string.__Internal native)
+            private static void* __CopyValue(BasicString.__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(32);
-                *(basic_string.__Internal*) ret = native;
+                *(BasicString.__Internal*) ret = native;
                 return ret.ToPointer();
             }
 
-            private basic_string(basic_string.__Internal native, bool skipVTables = false)
+            private BasicString(BasicString.__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected basic_string(void* native, bool skipVTables = false)
+            protected BasicString(void* native, bool skipVTables = false)
             {
                 if (native == null)
                     return;
@@ -3248,7 +3248,7 @@ namespace std
 
             public virtual void Dispose(bool disposing)
             {
-                global::std.__cxx11.basic_string __dummy;
+                global::Std.Cxx11.BasicString __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (disposing)
                     __Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -3256,15 +3256,15 @@ namespace std
                     Marshal.FreeHGlobal(__Instance);
             }
 
-            public string c_str()
+            public string CStr()
             {
-                var __ret = __Internal.c_str_0((__Instance + __PointerAdjustment));
+                var __ret = __Internal.CStr_0((__Instance + __PointerAdjustment));
                 return Marshal.PtrToStringAnsi(__ret);
             }
         }
 
 
-        public unsafe partial class _Alloc_hider
+        public unsafe partial class AllocHider
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -3283,18 +3283,18 @@ namespace std
     }
 }
 
-namespace __gnu_cxx
+namespace GnuCxx
 {
 }
 
-public enum idtype_t : uint
+public enum IdtypeT : uint
 {
     P_ALL = 0,
     P_PID = 1,
     P_PGID = 2
 }
 
-public unsafe partial struct wait
+public unsafe partial struct Wait
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
     public partial struct __Internal
@@ -3303,10 +3303,10 @@ public unsafe partial struct wait
         public int w_status;
 
         [FieldOffset(0)]
-        internal global::wait._.__Internal __wait_terminated;
+        internal global::Wait._.__Internal __wait_terminated;
 
         [FieldOffset(0)]
-        internal global::wait.__.__Internal __wait_stopped;
+        internal global::Wait.__.__Internal __wait_stopped;
     }
 
     public unsafe partial class _
@@ -3345,7 +3345,7 @@ public unsafe partial struct wait
     }
 }
 
-public unsafe partial class div_t
+public unsafe partial class DivT
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
     public partial struct __Internal
@@ -3358,7 +3358,7 @@ public unsafe partial class div_t
     }
 }
 
-public unsafe partial class ldiv_t
+public unsafe partial class LdivT
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -3371,7 +3371,7 @@ public unsafe partial class ldiv_t
     }
 }
 
-public unsafe partial class lldiv_t
+public unsafe partial class LldivT
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -3384,7 +3384,7 @@ public unsafe partial class lldiv_t
     }
 }
 
-public unsafe partial class random_data
+public unsafe partial class RandomData
 {
     [StructLayout(LayoutKind.Explicit, Size = 48)]
     public partial struct __Internal
@@ -3412,7 +3412,7 @@ public unsafe partial class random_data
     }
 }
 
-public unsafe partial class drand48_data
+public unsafe partial class Drand48Data
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
     public partial struct __Internal
@@ -3446,7 +3446,7 @@ public unsafe partial class drand48_data
     }
 }
 
-public unsafe partial class __sigset_t
+public unsafe partial class SigsetT
 {
     [StructLayout(LayoutKind.Explicit, Size = 128)]
     public partial struct __Internal
@@ -3501,7 +3501,7 @@ public unsafe partial class __sigset_t
     }
 }
 
-public unsafe partial class fd_set
+public unsafe partial class FdSet
 {
     [StructLayout(LayoutKind.Explicit, Size = 128)]
     public partial struct __Internal
@@ -3556,26 +3556,26 @@ public unsafe partial class fd_set
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __cxx11
+    namespace Cxx11
     {
     }
 
-    namespace __cxx11
+    namespace Cxx11
     {
     }
 }
 
-namespace std
+namespace Std
 {
-    public unsafe partial class __cow_string
+    public unsafe partial class CowString
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std.__cow_string._.__Internal _;
+            internal global::Std.CowString._.__Internal _;
         }
 
         public unsafe partial struct _
@@ -3613,7 +3613,7 @@ namespace std
         }
     }
 
-    public unsafe partial class logic_error
+    public unsafe partial class LogicError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3622,11 +3622,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class domain_error
+    public unsafe partial class DomainError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3635,11 +3635,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class invalid_argument
+    public unsafe partial class InvalidArgument
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3648,11 +3648,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class length_error
+    public unsafe partial class LengthError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3661,11 +3661,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class out_of_range
+    public unsafe partial class OutOfRange
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3674,11 +3674,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class runtime_error
+    public unsafe partial class RuntimeError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3687,11 +3687,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class range_error
+    public unsafe partial class RangeError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3700,11 +3700,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class overflow_error
+    public unsafe partial class OverflowError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3713,11 +3713,11 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 
-    public unsafe partial class underflow_error
+    public unsafe partial class UnderflowError
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -3726,14 +3726,14 @@ namespace std
             public global::System.IntPtr vptr_exception;
 
             [FieldOffset(8)]
-            internal global::std.__cow_string.__Internal _M_msg;
+            internal global::Std.CowString.__Internal _M_msg;
         }
     }
 }
 
-namespace std
+namespace Std
 {
-    public unsafe partial class allocator_arg_t
+    public unsafe partial class AllocatorArgT
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -3741,7 +3741,7 @@ namespace std
         }
     }
 
-    public unsafe partial class __uses_alloc_base
+    public unsafe partial class UsesAllocBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -3749,16 +3749,16 @@ namespace std
         }
     }
 
-    public unsafe partial class __uses_alloc0
+    public unsafe partial class UsesAlloc0
     {
         [StructLayout(LayoutKind.Explicit, Size = 1)]
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::std.__uses_alloc0._Sink.__Internal _M_a;
+            internal global::Std.UsesAlloc0.Sink.__Internal _M_a;
         }
 
-        public unsafe partial class _Sink
+        public unsafe partial class Sink
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -3768,24 +3768,24 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
     namespace _V2
     {
     }
 }
 
-namespace std
+namespace Std
 {
 }
 
-namespace std
+namespace Std
 {
-    namespace __uninitialized_construct_buf_dispatch
+    namespace UninitializedConstructBufDispatch
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -3794,15 +3794,15 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
     [Flags]
-    public enum S_threshold : uint
+    public enum SThreshold : uint
     {
         _S_threshold = 16
     }
 
-    public enum S_chunk_size : uint
+    public enum SChunkSize : uint
     {
         _S_chunk_size = 7
     }
@@ -3812,9 +3812,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    public enum float_round_style
+    public enum FloatRoundStyle
     {
         round_indeterminate = -1,
         round_toward_zero = 0,
@@ -3823,14 +3823,14 @@ namespace std
         round_toward_neg_infinity = 3
     }
 
-    public enum float_denorm_style
+    public enum FloatDenormStyle
     {
         denorm_indeterminate = -1,
         denorm_absent = 0,
         denorm_present = 1
     }
 
-    namespace numeric_limits
+    namespace NumericLimits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
@@ -3838,7 +3838,7 @@ namespace std
         }
     }
 
-    public unsafe partial class __numeric_limits_base
+    public unsafe partial class NumericLimitsBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
@@ -3847,9 +3847,9 @@ namespace std
     }
 }
 
-namespace std
+namespace Std
 {
-    namespace __detail
+    namespace Detail
     {
     }
 }

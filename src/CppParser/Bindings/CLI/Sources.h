@@ -29,6 +29,8 @@ namespace CppSharp
                 void set(unsigned int);
             }
 
+            static operator CppSharp::Parser::SourceLocation(unsigned int ID);
+
             private:
             unsigned int __ID;
         };

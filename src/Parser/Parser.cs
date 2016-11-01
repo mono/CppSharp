@@ -54,7 +54,7 @@ namespace CppSharp
         {
             var options = file.Options;
             options.ASTContext = ASTContext;
-            options.addSourceFiles(file.Path);
+            options.AddSourceFiles(file.Path);
 
             var result = Parser.ClangParser.ParseHeader(options);
             SourcesParsed(new[] { file }, result);
@@ -71,7 +71,7 @@ namespace CppSharp
             options.ASTContext = ASTContext;
 
             foreach (var file in files)
-                options.addSourceFiles(file.Path);
+                options.AddSourceFiles(file.Path);
             using (var result = Parser.ClangParser.ParseHeader(options))
                 SourcesParsed(files, result);
         }
@@ -123,12 +123,12 @@ namespace CppSharp
 
             for (uint i = 0; i < library.SymbolsCount; ++i)
             {
-                var symbol = library.getSymbols(i);
+                var symbol = library.GetSymbols(i);
                 newLibrary.Symbols.Add(symbol);
             }
             for (uint i = 0; i < library.DependenciesCount; i++)
             {
-                newLibrary.Dependencies.Add(library.getDependencies(i));
+                newLibrary.Dependencies.Add(library.GetDependencies(i));
             }
 
             return newLibrary;

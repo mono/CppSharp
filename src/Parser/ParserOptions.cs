@@ -22,30 +22,30 @@ namespace CppSharp.Parser
             Abi = CppAbi.Microsoft;
             ToolSetToUse = MSVCToolchain.GetCLVersion(vsVersion) * 10000000;
 
-            addArguments("-fms-extensions");
-            addArguments("-fms-compatibility");
-            addArguments("-fdelayed-template-parsing");
+            AddArguments("-fms-extensions");
+            AddArguments("-fms-compatibility");
+            AddArguments("-fdelayed-template-parsing");
 
             var includes = MSVCToolchain.GetSystemIncludes(vsVersion);
             foreach (var include in includes)
-                addSystemIncludeDirs(include);
+                AddSystemIncludeDirs(include);
         }
 
         public void SetupXcode()
         {
             var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
-            addSystemIncludeDirs(builtinsPath);
+            AddSystemIncludeDirs(builtinsPath);
 
             var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
-            addSystemIncludeDirs(cppIncPath);
+            AddSystemIncludeDirs(cppIncPath);
 
             var includePath = XcodeToolchain.GetXcodeIncludesFolder();
-            addSystemIncludeDirs(includePath);
+            AddSystemIncludeDirs(includePath);
 
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
 
-            addArguments("-stdlib=libc++");
+            AddArguments("-stdlib=libc++");
         }
 
         public void SetupIncludes()

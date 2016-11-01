@@ -76,8 +76,8 @@ namespace CppSharp
                 SetupLinuxOptions(parserOptions);
 
             var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
-            parserOptions.addIncludeDirs(basePath);
-            parserOptions.addLibraryDirs(".");
+            parserOptions.AddIncludeDirs(basePath);
+            parserOptions.AddLibraryDirs(".");
 
             options.OutputDir = Path.Combine(GetSourceDirectory("src"), "CppParser",
                 "Bindings", Kind.ToString());
@@ -122,9 +122,9 @@ namespace CppSharp
             };
 
             foreach (var dir in systemIncludeDirs)
-                options.addSystemIncludeDirs(Path.Combine(headersPath, dir));
+                options.AddSystemIncludeDirs(Path.Combine(headersPath, dir));
 
-            options.addDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
+            options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
 
         private static void SetupMacOptions(ParserOptions options)
@@ -144,23 +144,22 @@ namespace CppSharp
                     Console.WriteLine(header);
 
                 foreach (var header in headersPaths)
-                    options.addSystemIncludeDirs(header);
+                    options.AddSystemIncludeDirs(header);
             }
 
             var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
                 "osx");
 
-            options.addSystemIncludeDirs(Path.Combine(headersPath, "include"));
-            options.addSystemIncludeDirs(Path.Combine(headersPath, "clang", "4.2", "include"));
-            options.addSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
-            options.addArguments("-stdlib=libc++");
+            options.AddSystemIncludeDirs(Path.Combine(headersPath, "include"));
+            options.AddSystemIncludeDirs(Path.Combine(headersPath, "clang", "4.2", "include"));
+            options.AddSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
+            options.AddArguments("-stdlib=libc++");
         }
 
         public void SetupPasses(Driver driver)
         {
             driver.AddTranslationUnitPass(new CheckMacroPass());
             driver.AddTranslationUnitPass(new IgnoreStdFieldsPass());
-            driver.AddTranslationUnitPass(new GetterSetterToPropertyPass());
         }
 
         public void Preprocess(Driver driver, ASTContext ctx)
@@ -170,6 +169,10 @@ namespace CppSharp
 
         public void Postprocess(Driver driver, ASTContext ctx)
         {
+            new CaseRenamePass(
+                RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate |
+                RenameTargets.Field | RenameTargets.Variable,
+                RenameCasePattern.UpperCamelCase).VisitASTContext(driver.Context.ASTContext);
         }
 
         public static void Main(string[] args)

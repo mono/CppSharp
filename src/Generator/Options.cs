@@ -89,20 +89,6 @@ namespace CppSharp
         public bool UseHeaderDirectories;
 
         /// <summary>
-        /// If set to true the generator will use GetterSetterToPropertyPass to
-        /// convert matching getter/setter pairs to properties.
-        /// </summary>
-        public bool GenerateProperties;
-
-        /// <summary>
-        /// If set to true the generator will use GetterSetterToPropertyAdvancedPass to
-        /// convert matching getter/setter pairs to properties. This pass has slightly
-        /// different semantics from GetterSetterToPropertyPass, it will more agressively
-        /// try to match for matching properties.
-        /// </summary>
-        public bool GeneratePropertiesAdvanced;
-
-        /// <summary>
         /// If set to true the CLI generator will use ObjectOverridesPass to create
         /// Equals, GetHashCode and (if the insertion operator &lt;&lt; is overloaded) ToString
         /// methods.

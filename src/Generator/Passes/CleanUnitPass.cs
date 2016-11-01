@@ -40,7 +40,7 @@ namespace CppSharp.Passes
 
             for (uint i = 0; i < Context.ParserOptions.IncludeDirsCount; ++i)
             {
-                var path = Context.ParserOptions.getIncludeDirs(i);
+                var path = Context.ParserOptions.GetIncludeDirs(i);
 
                 int idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
                 if (idx == -1)

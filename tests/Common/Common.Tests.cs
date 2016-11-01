@@ -10,7 +10,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestCodeGeneration()
     {
-        Assert.That(new ChangedAccessOfInheritedProperty().Property, Is.EqualTo(2));
+        Assert.That(new ChangedAccessOfInheritedProperty().property, Is.EqualTo(2));
         Foo.NestedAbstract a;
         var renamedEmptyEnum = Foo.RenamedEmptyEnum.EmptyEnum1;
         using (var foo = new Foo())
@@ -215,9 +215,9 @@ public class CommonTests : GeneratorTestFixture
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();
-        var abstractFoo = returnsAbstractFoo.Foo;
+        var abstractFoo = returnsAbstractFoo.foo;
         Assert.AreEqual(abstractFoo.pureFunction(1), 5);
-        Assert.AreEqual(abstractFoo.pureFunction1(), 10);
+        Assert.AreEqual(abstractFoo.pureFunction1, 10);
         var ok = false;
         Assert.AreEqual(abstractFoo.pureFunction2(ref ok), 15);
     }
@@ -263,7 +263,7 @@ public class CommonTests : GeneratorTestFixture
     public void TestMethodWithFixedInstance()
     {
         var bar = new Bar2 { A = 1, B = 2, C = 3 };
-        Foo2 foo = bar.needFixedInstance();
+        Foo2 foo = bar.needFixedInstance;
         Assert.AreEqual(foo.A, 1);
         Assert.AreEqual(foo.B, 2);
         Assert.AreEqual(foo.C, 3);
@@ -318,8 +318,8 @@ public class CommonTests : GeneratorTestFixture
     {
         Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
         Assert.That(TestStaticClass.OneTwoThree, Is.EqualTo(123));
-        Assert.That(TestStaticClassDerived.Foo(), Is.EqualTo(0));
-        TestNotStaticClass.StaticFunction();
+        Assert.That(TestStaticClassDerived.Foo, Is.EqualTo(0));
+        TestNotStaticClass.StaticFunction.GetHashCode();
     }
 
     [Test]
@@ -386,7 +386,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestFunctions()
     {
-        var ret = common.Function();
+        var ret = common.Function;
         Assert.That(ret, Is.EqualTo(5));
 
         common.FuncWithTypeAlias(0);
@@ -403,9 +403,9 @@ public class CommonTests : GeneratorTestFixture
 
         // Test getter/setter property
         prop.Field = 20;
-        Assert.That(prop.FieldValue, Is.EqualTo(20));
-        prop.FieldValue = 10;
-        Assert.That(prop.FieldValue, Is.EqualTo(10));
+        Assert.That(prop.fieldValue, Is.EqualTo(20));
+        prop.fieldValue = 10;
+        Assert.That(prop.fieldValue, Is.EqualTo(10));
     }
 
     [Test]
@@ -413,7 +413,7 @@ public class CommonTests : GeneratorTestFixture
     {
         // Test field property
         var @var = new TestVariables();
-        @var.Value = 10;
+        @var.SetValue(10);
         Assert.That(TestVariables.VALUE, Is.EqualTo(10));
     }
 
@@ -438,8 +438,8 @@ public class CommonTests : GeneratorTestFixture
     public unsafe void TestGetterSetterToProperties()
     {
         var @class = new TestGetterSetterToProperties();
-        Assert.That(@class.Width, Is.EqualTo(640));
-        Assert.That(@class.Height, Is.EqualTo(480));
+        Assert.That(@class.width, Is.EqualTo(640));
+        Assert.That(@class.height, Is.EqualTo(480));
     }
 
     [Test]
@@ -455,14 +455,14 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public unsafe void TestDecltype()
     {
-        var ret = common.TestDecltype();
+        var ret = common.TestDecltype;
         Assert.AreEqual(0, ret);
     }
 
     [Test]
     public unsafe void TestNullPtrType()
     {
-        var ret = common.TestNullPtrTypeRet();
+        var ret = common.TestNullPtrTypeRet;
         Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
     }
 
@@ -496,7 +496,7 @@ public class CommonTests : GeneratorTestFixture
     public void TestGetAnonymousDelegate()
     {
         var testDelegates = new TestDelegates();
-        var @delegate = testDelegates.MarshalAnonymousDelegate4();
+        var @delegate = testDelegates.MarshalAnonymousDelegate4;
         int value = @delegate.Invoke(1);
         Assert.AreEqual(2, value);
     }
@@ -543,8 +543,8 @@ public class CommonTests : GeneratorTestFixture
     {
         HasFriend h1 = 5;
         HasFriend h2 = 10;
-        Assert.AreEqual(15, (h1 + h2).M);
-        Assert.AreEqual(-5, (h1 - h2).M);
+        Assert.AreEqual(15, (h1 + h2).m);
+        Assert.AreEqual(-5, (h1 - h2).m);
     }
 
     [Test]
@@ -564,7 +564,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestMarshallingEmptyType()
     {
-        var empty = new ReturnsEmpty().Empty;
+        var empty = new ReturnsEmpty().empty;
     }
 
     [Test]
@@ -584,7 +584,7 @@ public class CommonTests : GeneratorTestFixture
     {
         using (var hasVirtualReturningHasProblematicFields = new HasVirtualReturningHasProblematicFields())
         {
-            var hasProblematicFields = hasVirtualReturningHasProblematicFields.returnsProblematicFields();
+            var hasProblematicFields = hasVirtualReturningHasProblematicFields.returnsProblematicFields;
             Assert.That(hasProblematicFields.b, Is.EqualTo(false));
             hasProblematicFields.b = true;
             Assert.That(hasProblematicFields.b, Is.EqualTo(true));
@@ -623,7 +623,7 @@ public class CommonTests : GeneratorTestFixture
         using (var nonTrivialDtor = new NonTrivialDtor())
         {
         }
-        Assert.IsTrue(NonTrivialDtor.DtorCalled);
+        Assert.IsTrue(NonTrivialDtor.dtorCalled);
     }
 
     [Test]

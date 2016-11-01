@@ -63,7 +63,7 @@ namespace CppSharp
 
             if (Options.NoGenIncludeDirs != null)
                 foreach (var incDir in Options.NoGenIncludeDirs)
-                    ParserOptions.addIncludeDirs(incDir);
+                    ParserOptions.AddIncludeDirs(incDir);
         }
 
         public void Setup()
@@ -102,7 +102,7 @@ namespace CppSharp
 
             for (uint i = 0; i < result.DiagnosticsCount; ++i)
             {
-                var diag = result.getDiagnostics(i);
+                var diag = result.GetDiagnostics(i);
 
                 if (Options.IgnoreParseWarnings
                     && diag.Level == ParserDiagnosticLevel.Warning)
@@ -142,54 +142,54 @@ namespace CppSharp
 
             for (uint i = 0; i < ParserOptions.ArgumentsCount; ++i)
             {
-                var arg = ParserOptions.getArguments(i);
-                options.addArguments(arg);
+                var arg = ParserOptions.GetArguments(i);
+                options.AddArguments(arg);
             }
 
             for (uint i = 0; i < ParserOptions.IncludeDirsCount; ++i)
             {
-                var include = ParserOptions.getIncludeDirs(i);
-                options.addIncludeDirs(include);
+                var include = ParserOptions.GetIncludeDirs(i);
+                options.AddIncludeDirs(include);
             }
 
             for (uint i = 0; i < ParserOptions.SystemIncludeDirsCount; ++i)
             {
-                var include = ParserOptions.getSystemIncludeDirs(i);
-                options.addSystemIncludeDirs(include);
+                var include = ParserOptions.GetSystemIncludeDirs(i);
+                options.AddSystemIncludeDirs(include);
             }
 
             for (uint i = 0; i < ParserOptions.DefinesCount; ++i)
             {
-                var define = ParserOptions.getDefines(i);
-                options.addDefines(define);
+                var define = ParserOptions.GetDefines(i);
+                options.AddDefines(define);
             }
 
             for (uint i = 0; i < ParserOptions.UndefinesCount; ++i)
             {
-                var define = ParserOptions.getUndefines(i);
-                options.addUndefines(define);
+                var define = ParserOptions.GetUndefines(i);
+                options.AddUndefines(define);
             }
 
             for (uint i = 0; i < ParserOptions.LibraryDirsCount; ++i)
             {
-                var lib = ParserOptions.getLibraryDirs(i);
-                options.addLibraryDirs(lib);
+                var lib = ParserOptions.GetLibraryDirs(i);
+                options.AddLibraryDirs(lib);
             }
 
             foreach (var module in Options.Modules.Where(
                 m => file == null || m.Headers.Contains(file.Path)))
             {
                 foreach (var include in module.IncludeDirs)
-                    options.addIncludeDirs(include);
+                    options.AddIncludeDirs(include);
 
                 foreach (var define in module.Defines)
-                    options.addDefines(define);
+                    options.AddDefines(define);
 
                 foreach (var undefine in module.Undefines)
-                    options.addUndefines(undefine);
+                    options.AddUndefines(undefine);
 
                 foreach (var libraryDir in module.LibraryDirs)
-                    options.addLibraryDirs(libraryDir);
+                    options.AddLibraryDirs(libraryDir);
             }
 
             return options;
@@ -242,7 +242,7 @@ namespace CppSharp
             foreach (var module in Options.Modules)
             {
                 foreach (var libraryDir in module.LibraryDirs)
-                    ParserOptions.addLibraryDirs(libraryDir);
+                    ParserOptions.AddLibraryDirs(libraryDir);
 
                 foreach (var library in module.Libraries)
                 {
@@ -330,11 +330,7 @@ namespace CppSharp
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new DelegatesPass());
 
-            if (Options.GenerateProperties)
-                TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
-
-            if (Options.GeneratePropertiesAdvanced)
-                TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
+            TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
         }
 
         public void ProcessCode()

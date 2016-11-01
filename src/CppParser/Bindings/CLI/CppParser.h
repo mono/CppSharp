@@ -90,53 +90,6 @@ namespace CppSharp
 
             ~CppParserOptions();
 
-            property unsigned int ArgumentsCount
-            {
-                unsigned int get();
-            }
-
-            property System::String^ LibraryFile
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
-            property unsigned int SourceFilesCount
-            {
-                unsigned int get();
-            }
-
-            property unsigned int IncludeDirsCount
-            {
-                unsigned int get();
-            }
-
-            property unsigned int SystemIncludeDirsCount
-            {
-                unsigned int get();
-            }
-
-            property unsigned int DefinesCount
-            {
-                unsigned int get();
-            }
-
-            property unsigned int UndefinesCount
-            {
-                unsigned int get();
-            }
-
-            property unsigned int LibraryDirsCount
-            {
-                unsigned int get();
-            }
-
-            property System::String^ TargetTriple
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
             property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
                 CppSharp::Parser::AST::ASTContext^ get();
@@ -191,47 +144,94 @@ namespace CppSharp
                 void set(CppSharp::Parser::ParserTargetInfo^);
             }
 
-            System::String^ getArguments(unsigned int i);
+            property System::String^ LibraryFile
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
 
-            void addArguments(System::String^ s);
+            property System::String^ TargetTriple
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
 
-            void clearArguments();
+            property unsigned int ArgumentsCount
+            {
+                unsigned int get();
+            }
 
-            System::String^ getSourceFiles(unsigned int i);
+            property unsigned int SourceFilesCount
+            {
+                unsigned int get();
+            }
 
-            void addSourceFiles(System::String^ s);
+            property unsigned int IncludeDirsCount
+            {
+                unsigned int get();
+            }
 
-            void clearSourceFiles();
+            property unsigned int SystemIncludeDirsCount
+            {
+                unsigned int get();
+            }
 
-            System::String^ getIncludeDirs(unsigned int i);
+            property unsigned int DefinesCount
+            {
+                unsigned int get();
+            }
 
-            void addIncludeDirs(System::String^ s);
+            property unsigned int UndefinesCount
+            {
+                unsigned int get();
+            }
 
-            void clearIncludeDirs();
+            property unsigned int LibraryDirsCount
+            {
+                unsigned int get();
+            }
 
-            System::String^ getSystemIncludeDirs(unsigned int i);
+            System::String^ GetArguments(unsigned int i);
 
-            void addSystemIncludeDirs(System::String^ s);
+            void AddArguments(System::String^ s);
 
-            void clearSystemIncludeDirs();
+            void ClearArguments();
 
-            System::String^ getDefines(unsigned int i);
+            System::String^ GetSourceFiles(unsigned int i);
 
-            void addDefines(System::String^ s);
+            void AddSourceFiles(System::String^ s);
 
-            void clearDefines();
+            void ClearSourceFiles();
 
-            System::String^ getUndefines(unsigned int i);
+            System::String^ GetIncludeDirs(unsigned int i);
 
-            void addUndefines(System::String^ s);
+            void AddIncludeDirs(System::String^ s);
 
-            void clearUndefines();
+            void ClearIncludeDirs();
 
-            System::String^ getLibraryDirs(unsigned int i);
+            System::String^ GetSystemIncludeDirs(unsigned int i);
 
-            void addLibraryDirs(System::String^ s);
+            void AddSystemIncludeDirs(System::String^ s);
 
-            void clearLibraryDirs();
+            void ClearSystemIncludeDirs();
+
+            System::String^ GetDefines(unsigned int i);
+
+            void AddDefines(System::String^ s);
+
+            void ClearDefines();
+
+            System::String^ GetUndefines(unsigned int i);
+
+            void AddUndefines(System::String^ s);
+
+            void ClearUndefines();
+
+            System::String^ GetLibraryDirs(unsigned int i);
+
+            void AddLibraryDirs(System::String^ s);
+
+            void ClearLibraryDirs();
 
             protected:
             bool __ownsNativeInstance;
@@ -256,18 +256,6 @@ namespace CppSharp
 
             ~ParserDiagnostic();
 
-            property System::String^ FileName
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
-            property System::String^ Message
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
             property CppSharp::Parser::ParserDiagnosticLevel Level
             {
                 CppSharp::Parser::ParserDiagnosticLevel get();
@@ -284,6 +272,18 @@ namespace CppSharp
             {
                 int get();
                 void set(int);
+            }
+
+            property System::String^ FileName
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
+
+            property System::String^ Message
+            {
+                System::String^ get();
+                void set(System::String^);
             }
 
             protected:
@@ -309,11 +309,6 @@ namespace CppSharp
 
             ~ParserResult();
 
-            property unsigned int DiagnosticsCount
-            {
-                unsigned int get();
-            }
-
             property CppSharp::Parser::ParserResultKind Kind
             {
                 CppSharp::Parser::ParserResultKind get();
@@ -332,11 +327,16 @@ namespace CppSharp
                 void set(CppSharp::Parser::AST::NativeLibrary^);
             }
 
-            CppSharp::Parser::ParserDiagnostic^ getDiagnostics(unsigned int i);
+            property unsigned int DiagnosticsCount
+            {
+                unsigned int get();
+            }
 
-            void addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
+            CppSharp::Parser::ParserDiagnostic^ GetDiagnostics(unsigned int i);
 
-            void clearDiagnostics();
+            void AddDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
+
+            void ClearDiagnostics();
 
             protected:
             bool __ownsNativeInstance;
