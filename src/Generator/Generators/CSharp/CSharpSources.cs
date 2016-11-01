@@ -489,11 +489,6 @@ namespace CppSharp.Generators.CSharp
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
 
-                if (Options.GenerateClassMarshals)
-                {
-                    GenerateClassMarshals(@class);
-                }
-
                 GenerateClassConstructors(@class);
 
                 GenerateClassMethods(@class.Methods);
@@ -509,25 +504,6 @@ namespace CppSharp.Generators.CSharp
 
             if (typeMap != null)
                 Context.TypeMaps.TypeMaps.Add(@class.Name, typeMap);
-        }
-
-        private void GenerateClassMarshals(Class @class)
-        {
-            WriteLine("int CppSharp.Runtime.ICppMarshal.NativeDataSize");
-            WriteStartBraceIndent();
-            WriteLine("get {{ return {0}; }}", @class.Layout.DataSize);
-            WriteCloseBraceIndent();
-            NewLine();
-
-            WriteLine("void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)");
-            WriteStartBraceIndent();
-            WriteCloseBraceIndent();
-            NewLine();
-
-            WriteLine("void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)");
-            WriteStartBraceIndent();
-            WriteCloseBraceIndent();
-            NewLine();
         }
 
         private void GenerateInterface(Class @class)
@@ -744,11 +720,6 @@ namespace CppSharp.Generators.CSharp
             {
                 if (@class.IsRefType)
                     bases.Add("IDisposable");
-
-                if (Options.GenerateClassMarshals)
-                {
-                    bases.Add("CppSharp.Runtime.ICppMarshal");
-                }
             }
 
             if (bases.Count > 0 && !@class.IsStatic)

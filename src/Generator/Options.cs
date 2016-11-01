@@ -17,7 +17,6 @@ namespace CppSharp
             Modules = new List<Module> { SystemModule };
 
             GeneratorKind = GeneratorKind.CSharp;
-            GenerateClassMarshals = false;
             OutputInteropIncludes = true;
             CommentPrefix = "///";
 
@@ -87,7 +86,6 @@ namespace CppSharp
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
         public bool GenerateInternalImports;
-        public bool GenerateClassMarshals;
         public bool UseHeaderDirectories;
 
         /// <summary>
