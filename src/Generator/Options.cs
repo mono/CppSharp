@@ -103,13 +103,6 @@ namespace CppSharp
         public bool GeneratePropertiesAdvanced;
 
         /// <summary>
-        /// If set to true the generator will use ConstructorToConversionOperatorPass to
-        /// create implicit and explicit conversion operators out of single argument
-        /// constructors.
-        /// </summary>
-        public bool GenerateConversionOperators;
-
-        /// <summary>
         /// If set to true the CLI generator will use ObjectOverridesPass to create
         /// Equals, GetHashCode and (if the insertion operator &lt;&lt; is overloaded) ToString
         /// methods.

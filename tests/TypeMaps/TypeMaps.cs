@@ -17,7 +17,6 @@ namespace CppSharp.Tests
         {
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateProperties = true;
-            driver.Options.GenerateConversionOperators = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)

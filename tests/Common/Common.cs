@@ -63,7 +63,6 @@ namespace CppSharp.Tests
         {
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateProperties = true;
-            driver.Options.GenerateConversionOperators = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
         }
 
