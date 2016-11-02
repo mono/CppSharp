@@ -171,7 +171,8 @@ namespace CppSharp.Passes
                         ParameterTypeComparer.Instance));
                 if (existingImpl != null)
                 {
-                    existingImpl.OriginalFunction = method;
+                    if (existingImpl.OriginalFunction == null)
+                        existingImpl.OriginalFunction = method;
                     continue;
                 }
                 var impl = new Method(method)

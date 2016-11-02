@@ -2804,10 +2804,11 @@ namespace CppSharp.Generators.CSharp
         private string GetInstanceParam(Function function)
         {
             var from = (Class) function.Namespace;
-            var to = function.OriginalFunction == null ||
+            var to = (function.OriginalFunction == null ||
                 // we don't need to offset the instance with Itanium if there's an existing interface impl
                 (Context.ParserOptions.IsItaniumLikeAbi &&
-                 !((Class) function.OriginalNamespace).IsInterface) ?
+                 !((Class) function.OriginalNamespace).IsInterface)) &&
+                 function.SynthKind != FunctionSynthKind.AbstractImplCall ?
                 @from.BaseClass : (Class) function.OriginalFunction.Namespace;
 
             var baseOffset = 0u;
