@@ -22,7 +22,9 @@ namespace CppSharp.Passes
 
             if (Options.GenerateDefaultValuesForArguments)
             {
-                var nonDefaultParams = @params.Count(p => p.DefaultArgument == null);
+                var nonDefaultParams = @params.Count(p => p.DefaultArgument == null ||
+                    (p.DefaultArgument.Class == StatementClass.Call &&
+                     p.DefaultArgument.Declaration.Ignore));
                 if (nonDefaultParams > 1)
                     return false;   
             }

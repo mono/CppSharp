@@ -476,6 +476,10 @@ MethodsWithDefaultValues::MethodsWithDefaultValues(double d, QList<QColor> list)
 {
 }
 
+MethodsWithDefaultValues::MethodsWithDefaultValues(QRect* pointer, float f, int i)
+{
+}
+
 void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
 {
 }
