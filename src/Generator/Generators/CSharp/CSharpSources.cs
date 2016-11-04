@@ -434,11 +434,17 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
             System.Type typeMap = null;
-            if (Context.TypeMaps.TypeMaps.ContainsKey(@class.Name))
+            string key = string.Empty;
+            foreach (var name in new[] { @class.OriginalName, @class.QualifiedOriginalName })
             {
-                typeMap = Context.TypeMaps.TypeMaps[@class.Name];
-                // disable the type map for the mapped class itself so that operator params are not mapped
-                Context.TypeMaps.TypeMaps.Remove(@class.Name);
+                if (Context.TypeMaps.TypeMaps.ContainsKey(name))
+                {
+                    key = name;
+                    typeMap = Context.TypeMaps.TypeMaps[key];
+                    // disable the type map for the mapped class itself so that operator params are not mapped
+                    Context.TypeMaps.TypeMaps.Remove(key);
+                    break;
+                }
             }
 
             PushBlock(CSharpBlockKind.Class);
@@ -503,7 +509,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             if (typeMap != null)
-                Context.TypeMaps.TypeMaps.Add(@class.Name, typeMap);
+                Context.TypeMaps.TypeMaps.Add(key, typeMap);
         }
 
         private void GenerateInterface(Class @class)
