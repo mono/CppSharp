@@ -186,7 +186,7 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            return pointer.Pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         private string MarshalStringToManaged(string varName, BuiltinType type)
@@ -600,7 +600,7 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            return pointer.Pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         private string MarshalStringToUnmanaged(string varName)

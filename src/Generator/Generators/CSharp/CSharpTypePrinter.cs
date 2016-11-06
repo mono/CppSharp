@@ -311,7 +311,7 @@ namespace CppSharp.Generators.CSharp
                 var param = TypePrinterContext.Parameter;
                 bool isRefParam = param != null && (param.IsOut || param.IsInOut);
                 if (isManagedContext && isRefParam)
-                    return pointee.Visit(this, quals);
+                    return pointer.QualifiedPointee.Visit(this);
 
                 if (pointee.IsPrimitiveType(PrimitiveType.Void))
                     return IntPtrType;
@@ -322,7 +322,7 @@ namespace CppSharp.Generators.CSharp
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types
                 // like string* for const char **.
                 allowStrings = isRefParam;
-                var result = pointee.Visit(this, quals);
+                var result = pointer.QualifiedPointee.Visit(this);
                 allowStrings = true;
 
                 return !isRefParam && result.Type == IntPtrType ? "void**" : result + "*";
@@ -335,9 +335,9 @@ namespace CppSharp.Generators.CSharp
                 var param = TypePrinterContext.Parameter;
                 if (isManagedContext && param != null && (param.IsOut || param.IsInOut)
                     && pointee == finalPointee)
-                    return pointee.Visit(this, quals);
+                    return pointer.QualifiedPointee.Visit(this);
 
-                return pointee.Visit(this, quals) + "*";
+                return pointer.QualifiedPointee.Visit(this) + "*";
             }
 
             Class @class;
@@ -348,7 +348,7 @@ namespace CppSharp.Generators.CSharp
                 return IntPtrType;
             }
 
-            return pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         public CSharpTypePrinterResult VisitMemberPointerType(MemberPointerType member,

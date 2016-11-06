@@ -161,12 +161,12 @@ namespace CppSharp.Generators.CLI
                 var param = TypePrinterContext.Parameter;
                 bool isRefParam = param != null && (param.IsOut || param.IsInOut);
                 if (isRefParam)
-                    return pointee.Visit(this, quals);
+                    return pointer.QualifiedPointee.Visit(this);
 
                 if (pointee.IsPrimitiveType(PrimitiveType.Void))
                     return "::System::IntPtr";
 
-                var result = pointee.Visit(this, quals);
+                var result = pointer.QualifiedPointee.Visit(this);
                 return !isRefParam && result == "::System::IntPtr" ? "void**" : result + "*";
             }
 
@@ -184,13 +184,13 @@ namespace CppSharp.Generators.CLI
                 return string.Format("{0}*", typeName);
             }
 
-            return pointer.Pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         public string VisitMemberPointerType(MemberPointerType member,
                                              TypeQualifiers quals)
         {
-            return member.Pointee.Visit(this);
+            return member.QualifiedPointee.Visit(this);
         }
 
         public string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)

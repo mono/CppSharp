@@ -167,7 +167,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            return pointer.Pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         private string MarshalStringToManaged(string varName, BuiltinType type)
@@ -553,22 +553,21 @@ namespace CppSharp.Generators.CLI
             {
                 if (Context.Function == null)
                     Context.Return.Write("&");
-                return pointee.Visit(this, quals);
+                return pointer.QualifiedPointee.Visit(this);
             }
 
             var finalPointee = pointer.GetFinalPointee();
             if (finalPointee.IsPrimitiveType())
             {
                 var cppTypePrinter = new CppTypePrinter();
-                var cppTypeName = pointer.Visit(cppTypePrinter,
-                    pointer.GetFinalQualifiedPointee().Qualifiers);
+                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 Context.Return.Write("({0})", cppTypeName);
                 Context.Return.Write(Context.Parameter.Name);
                 return true;
             }
 
-            return pointer.Pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,
