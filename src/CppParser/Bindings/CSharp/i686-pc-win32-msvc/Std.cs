@@ -295,28 +295,6 @@ namespace RealType
     }
 }
 
-public unsafe partial class Exception
-{
-    [StructLayout(LayoutKind.Explicit, Size = 32)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        public int type;
-
-        [FieldOffset(4)]
-        public global::System.IntPtr name;
-
-        [FieldOffset(8)]
-        public double arg1;
-
-        [FieldOffset(16)]
-        public double arg2;
-
-        [FieldOffset(24)]
-        public double retval;
-    }
-}
-
 public unsafe partial class Complex
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
@@ -6504,19 +6482,6 @@ public unsafe partial class StdTypeInfoData
 
         [FieldOffset(4)]
         public fixed sbyte _DecoratedName[1];
-    }
-}
-
-public unsafe partial class TypeInfo
-{
-    [StructLayout(LayoutKind.Explicit, Size = 12)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        public global::System.IntPtr vfptr_type_info;
-
-        [FieldOffset(4)]
-        internal global::StdTypeInfoData.__Internal _Data;
     }
 }
 
