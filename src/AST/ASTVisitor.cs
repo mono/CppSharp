@@ -113,7 +113,7 @@ namespace CppSharp.AST
             if (pointer.Pointee == null)
                 return false;
 
-            return pointer.Pointee.Visit(this, quals);
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         public virtual bool VisitMemberPointerType(MemberPointerType member,
