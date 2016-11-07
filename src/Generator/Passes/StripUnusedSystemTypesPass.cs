@@ -17,8 +17,6 @@ namespace CppSharp.Passes
             VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitNamespaceEnums = false;
             VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
             VisitOptions.VisitNamespaceVariables = false;
             VisitOptions.VisitTemplateArguments = false;
         }
@@ -40,9 +38,17 @@ namespace CppSharp.Passes
 
         public override bool VisitFieldDecl(Field field)
         {
-            var result = base.VisitFieldDecl(field);
-
             var desugared = field.Type.Desugar();
+
+            if (TryMarkType(desugared))
+                return true;
+
+            var arrayType = desugared as ArrayType;
+            return arrayType != null && TryMarkType(arrayType.Type.Desugar());
+        }
+
+        private bool TryMarkType(Type desugared)
+        {
             var tagType = desugared as TagType;
             if (tagType != null)
             {
@@ -56,18 +62,18 @@ namespace CppSharp.Passes
                 {
                     MarkAsUsed(tagType.Declaration);
                 }
-            }
-            else
-            {
-                var template = desugared as TemplateSpecializationType;
-                if (template != null)
-                {
-                    MarkAsUsed(template.Template);
-                    MarkAsUsed(template.Template.TemplatedDecl);
-                }
+                return true;
             }
 
-            return result;
+            var templateType = desugared as TemplateSpecializationType;
+            if (templateType != null)
+            {
+                MarkAsUsed(templateType.Template);
+                MarkAsUsed(templateType.Template.TemplatedDecl);
+                return true;
+            }
+
+            return false;
         }
 
         private void MarkAsUsed(Declaration declaration)
