@@ -27,7 +27,7 @@ namespace CppSharp.Passes
         {
             // we need this one for marshalling std::string
             foreach (var allocator in context.FindClass("allocator", false, true).Where(
-                a => a.Namespace.Name == "std"))
+                a => a.TranslationUnit.IsSystemHeader))
                 usedStdTypes.Add(allocator);
 
             var result = base.VisitASTContext(context);

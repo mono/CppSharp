@@ -139,6 +139,87 @@ namespace Std
 {
     namespace __1
     {
+        public unsafe partial class Allocator : IDisposable
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
+                internal static extern void ctor_0(global::System.IntPtr instance);
+            }
+
+            public global::System.IntPtr __Instance { get; protected set; }
+
+            protected int __PointerAdjustment;
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
+            protected void*[] __OriginalVTables;
+
+            protected bool __ownsNativeInstance;
+
+            public static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            {
+                return new Allocator(native.ToPointer(), skipVTables);
+            }
+
+            public static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
+            {
+                return new Allocator(native, skipVTables);
+            }
+
+            private static void* __CopyValue(Allocator.__Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(0);
+                *(Allocator.__Internal*) ret = native;
+                return ret.ToPointer();
+            }
+
+            private Allocator(Allocator.__Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
+            {
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+            }
+
+            protected Allocator(void* native, bool skipVTables = false)
+            {
+                if (native == null)
+                    return;
+                __Instance = new global::System.IntPtr(native);
+            }
+
+            public Allocator()
+            {
+                __Instance = Marshal.AllocHGlobal(0);
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                __Internal.ctor_0((__Instance + __PointerAdjustment));
+            }
+
+            public void Dispose()
+            {
+                Dispose(disposing: true);
+            }
+
+            public virtual void Dispose(bool disposing)
+            {
+                global::Std.__1.Allocator __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance)
+                    Marshal.FreeHGlobal(__Instance);
+            }
+        }
+
+
+        public unsafe partial class Rebind
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public partial struct __Internal
+            {
+            }
+
+        }
         namespace CompressedPair
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]

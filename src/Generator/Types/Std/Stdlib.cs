@@ -67,7 +67,7 @@ namespace CppSharp.Types.Std
                 ctx.Return.Write("*({0}*) ", basicString.Visit(typePrinter));
             typePrinter.PopContext();
             var allocator = ctx.Context.ASTContext.FindClass("allocator", false, true).First(
-                a => a.IsDependent);
+                a => a.IsDependent && a.TranslationUnit.IsSystemHeader);
             if (type.IsPointer() || (type.IsReference() && ctx.Declaration is Field))
             {
                 ctx.Return.Write("new {0}({1}, new {2}()).{3}",
