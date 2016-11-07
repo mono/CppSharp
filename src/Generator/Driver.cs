@@ -331,6 +331,7 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new DelegatesPass());
 
             TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
+            TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());
         }
 
         public void ProcessCode()
