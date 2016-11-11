@@ -526,9 +526,11 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestEqualityOperator()
     {
+#pragma warning disable 1718 // Comparison made to same variable; did you mean to compare something else?
+
         using (var foo = new Foo { A = 5, B = 5.5f })
         {
-            Assert.IsTrue(foo.Equals(foo));
+            Assert.IsTrue(foo == foo);
             using (var notEqual = new Foo { A = 5, B = 5.6f })
             {
                 Assert.IsTrue(notEqual != foo);
@@ -536,12 +538,14 @@ public class CommonTests : GeneratorTestFixture
             Assert.IsTrue(foo != null);
         }
         var bar = new Bar { A = 5, B = 5.5f };
-        Assert.IsTrue(bar.Equals(bar));
+        Assert.IsTrue(bar == bar);
         Assert.IsFalse(new Bar { A = 5, B = 5.6f } == bar);
         using (var differentConstOverloads = new DifferentConstOverloads())
         {
             Assert.IsTrue(differentConstOverloads != null);
         }
+
+#pragma warning restore 1718
     }
 
     [Test]
