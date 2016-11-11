@@ -522,7 +522,7 @@ public class CommonTests : GeneratorTestFixture
     {
         using (var foo = new Foo { A = 5, B = 5.5f })
         {
-            Assert.IsTrue(foo == foo);
+            Assert.IsTrue(foo.Equals(foo));
             using (var notEqual = new Foo { A = 5, B = 5.6f })
             {
                 Assert.IsTrue(notEqual != foo);
@@ -530,7 +530,7 @@ public class CommonTests : GeneratorTestFixture
             Assert.IsTrue(foo != null);
         }
         var bar = new Bar { A = 5, B = 5.5f };
-        Assert.IsTrue(bar == bar);
+        Assert.IsTrue(bar.Equals(bar));
         Assert.IsFalse(new Bar { A = 5, B = 5.6f } == bar);
         using (var differentConstOverloads = new DifferentConstOverloads())
         {
