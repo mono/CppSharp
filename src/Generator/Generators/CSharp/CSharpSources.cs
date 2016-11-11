@@ -3171,14 +3171,12 @@ namespace CppSharp.Generators.CSharp
 
             string libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
-            if (Options.CheckSymbols)
-            {
-                NativeLibrary library;
-                Context.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
+            NativeLibrary library;
+            Context.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
 
-                if (library != null)
-                    libName = Path.GetFileNameWithoutExtension(library.FileName);
-            }
+            if (library != null)
+                libName = Path.GetFileNameWithoutExtension(library.FileName);
+
             if (Options.StripLibPrefix && libName != null && libName.Length > 3 &&
                 libName.StartsWith("lib", StringComparison.Ordinal))
             {
