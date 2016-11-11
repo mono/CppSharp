@@ -1,6 +1,6 @@
 #include "CSharp.h"
 
-Foo::Foo(char* name)
+Foo::Foo(const char* name)
 {
     A = 10;
     P = 50;
@@ -264,7 +264,8 @@ long Proprietor::prop()
 
 const Baz& Proprietor::covariant()
 {
-    return Baz();
+    static Baz baz;
+    return baz;
 }
 
 Bar::Items Proprietor::items() const
@@ -459,7 +460,7 @@ MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int b
 {
 }
 
-char* MethodsWithDefaultValues::stringConstant = "test";
+const char* MethodsWithDefaultValues::stringConstant = "test";
 int MethodsWithDefaultValues::intConstant = 5;
 
 MethodsWithDefaultValues::MethodsWithDefaultValues(Foo foo)

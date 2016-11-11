@@ -19,6 +19,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestUncompilableCode()
     {
+#pragma warning disable 0168 // warning CS0168: The variable `foo' is declared but never used
+#pragma warning disable 0219 // warning CS0219: The variable `foo' is assigned but its value is never used
+
         ALLCAPS_UNDERSCORES a;
         using (var testRenaming = new TestRenaming())
         {
@@ -63,6 +66,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             int i = typeMappedWithOperator | 5;
         }
+
+#pragma warning restore 0168
+#pragma warning restore 0219        
     }
 
     [Test]

@@ -1079,7 +1079,7 @@ public:
     DerivedFromTemplateInstantiationWithVirtual();
 };
 
-typedef DLL_API union
+typedef union
 {
     int c;
 } union_t;

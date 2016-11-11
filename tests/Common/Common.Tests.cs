@@ -10,6 +10,9 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestCodeGeneration()
     {
+#pragma warning disable 0168 // warning CS0168: The variable `foo' is declared but never used
+#pragma warning disable 0219 // warning CS0219: The variable `foo' is assigned but its value is never used
+
         Assert.That(new ChangedAccessOfInheritedProperty().property, Is.EqualTo(2));
         Foo.NestedAbstract a;
         var renamedEmptyEnum = Foo.RenamedEmptyEnum.EmptyEnum1;
@@ -31,6 +34,9 @@ public class CommonTests : GeneratorTestFixture
         using (var hasProtectedEnum = new HasProtectedEnum())
         {
         }
+
+#pragma warning restore 0168
+#pragma warning restore 0219
     }
 
     [Test]

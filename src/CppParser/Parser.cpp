@@ -386,6 +386,8 @@ void Parser::SetupHeader()
     case llvm::Triple::Linux:
       TC = new clang::driver::toolchains::Linux(D, Target, Args);
       break;
+    default:
+      break;
     }
 
     if (TC && !Opts->NoStandardIncludes) {
@@ -2738,6 +2740,8 @@ static clang::TypeLoc DesugarTypeLoc(const clang::TypeLoc& Loc)
         auto PTL = Loc.getAs<ParenTypeLoc>();
         return PTL.getInnerLoc();
     }
+    default:
+        break;
     }
 
     return Loc;
@@ -3546,7 +3550,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         Typedef->QualifiedType = GetQualifiedType(TD->getUnderlyingType(), &TTL);
         AST::TypedefDecl* Existing;
         // if the typedef was added along the way, the just created one is useless, delete it
-        if (Existing = NS->FindTypedef(Name, /*Create=*/false))
+        if ((Existing = NS->FindTypedef(Name, /*Create=*/false)))
             delete Typedef;
         else
             NS->Typedefs.push_back(Existing = Typedef);
@@ -3570,7 +3574,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         // see above the case for "Typedef"
         TypeAlias->QualifiedType = GetQualifiedType(TD->getUnderlyingType(), &TTL);
         AST::TypeAlias* Existing;
-        if (Existing = NS->FindTypeAlias(Name, /*Create=*/false))
+        if ((Existing = NS->FindTypeAlias(Name, /*Create=*/false)))
             delete TypeAlias;
         else
             NS->TypeAliases.push_back(Existing = TypeAlias);

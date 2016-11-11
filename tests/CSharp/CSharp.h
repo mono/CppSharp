@@ -7,7 +7,7 @@
 class DLL_API Foo
 {
 public:
-    Foo(char* name = 0);
+    Foo(const char* name = 0);
     Foo(int a, int p = 0);
     int method();
     int operator[](int i) const;
@@ -382,7 +382,7 @@ public:
         QMargins(int left, int top, int right, int bottom);
     };
 
-    static char* stringConstant;
+    static const char* stringConstant;
     static int intConstant;
 
     MethodsWithDefaultValues(Foo foo = Foo());
