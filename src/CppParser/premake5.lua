@@ -20,7 +20,10 @@ project "CppSharp.CppParser"
 
   if os.getenv("APPVEYOR") then
     linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
-  end    
+  end
+
+  configuration "linux"
+    defines { "_GLIBCXX_USE_CXX11_ABI=0" }
 
   configuration "*"
   
