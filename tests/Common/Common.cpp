@@ -234,40 +234,40 @@ void Hello::EnumOutRef(int value, CS_OUT Enum& e)
 
 void Hello::EnumInOut(CS_IN_OUT Enum* e)
 {
-	if (*e == Enum::E)
-		*e = Enum::F;
+        if (*e == Enum::E)
+                *e = Enum::F;
 }
 
 void Hello::EnumInOutRef(CS_IN_OUT Enum& e)
 {
-	if (e == Enum::E)
-		e = Enum::F;
+        if (e == Enum::E)
+                e = Enum::F;
 }
 
 void Hello::StringOut(CS_OUT const char** str)
 {
-	*str = "HelloStringOut";
+        *str = "HelloStringOut";
 }
 
 void Hello::StringOutRef(CS_OUT const char*& str)
 {
-	str = "HelloStringOutRef";
+        str = "HelloStringOutRef";
 }
 
 void Hello::StringInOut(CS_IN_OUT const char** str)
 {
-	if (strcmp(*str, "Hello") == 0)
-		*str = "StringInOut";
-	else
-		*str = "Failed";
+        if (strcmp(*str, "Hello") == 0)
+                *str = "StringInOut";
+        else
+                *str = "Failed";
 }
 
 void Hello::StringInOutRef(CS_IN_OUT const char*& str)
 {
-	if (strcmp(str, "Hello") == 0)
-		str = "StringInOutRef";
-	else
-		str = "Failed";
+        if (strcmp(str, "Hello") == 0)
+                str = "StringInOutRef";
+        else
+                str = "Failed";
 }
 
 void Hello::StringTypedef(const TypedefChar* str)
@@ -428,6 +428,11 @@ void DelegateNamespace::f2(void (*)())
 std::string HasStdString::testStdString(std::string s)
 {
     return s + "_test";
+}
+
+std::string& HasStdString::getStdString()
+{
+    return s;
 }
 
 TypeMappedIndex::TypeMappedIndex()

@@ -92,13 +92,13 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
-            var type = ctx.ReturnType.Type;
+            var type = ctx.ReturnType.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
             Declaration c_str = basicString.Methods.FirstOrDefault(m => m.OriginalName == "c_str");
             if (!c_str.IsGenerated)
                 c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
-            if (type.IsPointer() || ctx.Declaration is Field)
+            if (type.IsAddress() || ctx.Declaration is Field)
             {
                 ctx.Return.Write("{0}.{1}({2}).{3}{4}",
                     basicString.Visit(typePrinter), Helpers.CreateInstanceIdentifier,

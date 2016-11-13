@@ -315,7 +315,7 @@ DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
 // Not a valid operator overload for Foo2 in managed code - comparison operators need to return bool.
 DLL_API int operator==(const Foo2& a, const Foo2& b)
 {
-	return 0;
+        return 0;
 }
 
 // Tests delegates
@@ -381,13 +381,13 @@ struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);
 
-	static int GetOneTwoThree();
+        static int GetOneTwoThree();
 
 protected:
 
-	static int _Mult(int a, int b);
+        static int _Mult(int a, int b);
 
-	static int GetFourFiveSix();
+        static int GetFourFiveSix();
 
 private:
     TestStaticClass();
@@ -414,9 +414,9 @@ int TestStaticClassDerived::Foo() { return 0; }
 class DLL_API TestNotStaticClass
 {
 public:
-	static TestNotStaticClass StaticFunction();
+        static TestNotStaticClass StaticFunction();
 private:
-	TestNotStaticClass();
+        TestNotStaticClass();
 };
 
 TestNotStaticClass::TestNotStaticClass()
@@ -425,7 +425,7 @@ TestNotStaticClass::TestNotStaticClass()
 
 TestNotStaticClass TestNotStaticClass::StaticFunction()
 {
-	return TestNotStaticClass();
+        return TestNotStaticClass();
 }
 
 class HasIgnoredField
@@ -473,8 +473,8 @@ struct EmptyNamedNestedEnum
 typedef unsigned long foo_t;
 typedef struct DLL_API SomeStruct
 {
-	SomeStruct();
-	foo_t p;
+        SomeStruct();
+        foo_t p;
 } SomeStruct;
 
 SomeStruct::SomeStruct() : p(1) {}
@@ -485,11 +485,11 @@ class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 
 namespace SomeNamespace
 {
-	class DLL_API AbstractClass
-	{
-	public:
-		virtual void AbstractMethod() = 0;
-	};
+        class DLL_API AbstractClass
+        {
+        public:
+                virtual void AbstractMethod() = 0;
+        };
 }
 
 // Test operator overloads
@@ -498,11 +498,11 @@ class DLL_API ClassWithOverloadedOperators
 public:
     ClassWithOverloadedOperators();
 
-	operator char();
-	operator int();
-	operator short();
+        operator char();
+        operator int();
+        operator short();
 
-	virtual bool operator<(const ClassWithOverloadedOperators &other) const;
+        virtual bool operator<(const ClassWithOverloadedOperators &other) const;
 };
 
 ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
@@ -627,7 +627,7 @@ class DLL_API TestFixedArrays
 {
 public:
     TestFixedArrays();
-    VoidPtrRetFunctionTypedef Array[10];    
+    VoidPtrRetFunctionTypedef Array[10];
 };
 
 TestFixedArrays::TestFixedArrays() {}
@@ -655,7 +655,7 @@ int TestGetterSetterToProperties::getWidth() { return 640; }
 int TestGetterSetterToProperties::getHeight() { return 480; }
 
 // Tests conversion operators of classes
-class DLL_API ClassA 
+class DLL_API ClassA
 {
 public:
     ClassA(int value);
@@ -759,6 +759,7 @@ class DLL_API HasStdString
 public:
     std::string testStdString(std::string s);
     std::string s;
+    std::string& getStdString();
 };
 
 class DLL_API InternalCtorAmbiguity
@@ -832,10 +833,10 @@ void DLL_API funcTryRefTypeOut(CS_OUT RefTypeClassPassTry classTry);
 #define CS_VALUE_TYPE
 struct CS_VALUE_TYPE ValueTypeArrays
 {
-	float firstValueTypeArrray[ARRAY_LENGTH];
-	int secondValueTypeArray[ARRAY_LENGTH];
-	char thirdValueTypeArray[ARRAY_LENGTH];
-	size_t size;
+        float firstValueTypeArrray[ARRAY_LENGTH];
+        int secondValueTypeArray[ARRAY_LENGTH];
+        char thirdValueTypeArray[ARRAY_LENGTH];
+        size_t size;
 };
 
 class DLL_API HasVirtualProperty
@@ -1070,7 +1071,7 @@ void TemplateWithVirtual<T>::v()
 
 template <typename T>
 int FunctionTemplateWithDependentTypeDefaultExpr(size_t size = sizeof(T)) {
-	return size;
+        return size;
 }
 
 class DLL_API DerivedFromTemplateInstantiationWithVirtual : public TemplateWithVirtual<int>

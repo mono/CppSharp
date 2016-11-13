@@ -665,6 +665,8 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(hasStdString.testStdString(t), Is.EqualTo(t + "_test"));
             hasStdString.s = t;
             Assert.That(hasStdString.s, Is.EqualTo(t));
+            Assert.That(hasStdString.stdString, Is.EqualTo(t));
+            Assert.That(hasStdString.stdString, Is.EqualTo(t));
         }
     }
 
