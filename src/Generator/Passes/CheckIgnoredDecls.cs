@@ -389,7 +389,7 @@ namespace CppSharp.Passes
 
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
-            return !decl.IsIncomplete;
+            return !decl.IsIncomplete || decl.CompleteDeclaration != null;
         }
 
         private bool IsTypeIgnored(Type type)
