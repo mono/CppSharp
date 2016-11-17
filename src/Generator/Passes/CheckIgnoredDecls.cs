@@ -84,7 +84,8 @@ namespace CppSharp.Passes
             type.TryGetDeclaration(out decl);
             string msg = "internal";
             if (!(type is FunctionType) && (decl == null ||
-                (decl.GenerationKind != GenerationKind.Internal &&!HasInvalidType(type, out msg))))
+                (decl.GenerationKind != GenerationKind.Internal &&
+                 !HasInvalidType(type, field.TranslationUnit.Module, out msg))))
                 return false;
 
             field.GenerationKind = GenerationKind.Internal;
@@ -105,10 +106,10 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(function) || function.IsSynthetized)
                 return false;
 
-            var ret = function.ReturnType;
+            var ret = function.OriginalReturnType;
 
             string msg;
-            if (HasInvalidType(ret.Type, out msg))
+            if (HasInvalidType(ret.Type, function.TranslationUnit.Module, out msg))
             {
                 function.ExplicitlyIgnore();
                 Diagnostics.Debug("Function '{0}' was ignored due to {1} return decl",
@@ -126,7 +127,7 @@ namespace CppSharp.Passes
                     return false;
                 }
 
-                if (HasInvalidType(param.Type, out msg))
+                if (HasInvalidType(param.Type, function.TranslationUnit.Module, out msg))
                 {
                     function.ExplicitlyIgnore();
                     Diagnostics.Debug("Function '{0}' was ignored due to {1} param",
@@ -222,7 +223,7 @@ namespace CppSharp.Passes
                 return false;
 
             string msg;
-            if (HasInvalidType(typedef.Type, out msg))
+            if (HasInvalidType(typedef.Type, typedef.TranslationUnit.Module, out msg))
             {
                 typedef.ExplicitlyIgnore();
                 Diagnostics.Debug("Typedef '{0}' was ignored due to {1} type",
@@ -247,7 +248,7 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            if (HasInvalidType(property.Type, out msg))
+            if (HasInvalidType(property.Type, property.TranslationUnit.Module, out msg))
             {
                 property.ExplicitlyIgnore();
                 Diagnostics.Debug("Property '{0}' was ignored due to {1} type",
@@ -272,7 +273,7 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            if (HasInvalidType(variable.Type, out msg))
+            if (HasInvalidType(variable.Type, variable.TranslationUnit.Module, out msg))
             {
                 variable.ExplicitlyIgnore();
                 Diagnostics.Debug("Variable '{0}' was ignored due to {1} type",
@@ -307,7 +308,7 @@ namespace CppSharp.Passes
                     return false;
                 }
 
-                if (HasInvalidType(param.Type, out msg))
+                if (HasInvalidType(param.Type, @event.TranslationUnit.Module, out msg))
                 {
                     @event.ExplicitlyIgnore();
                     Diagnostics.Debug("Event '{0}' was ignored due to {1} param",
@@ -326,7 +327,7 @@ namespace CppSharp.Passes
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
         /// </remarks>
-        private bool HasInvalidType(Type type, out string msg)
+        private bool HasInvalidType(Type type, Module module, out string msg)
         {
             if (type == null)
             {
@@ -343,6 +344,13 @@ namespace CppSharp.Passes
             if (IsTypeIgnored(type))
             {
                 msg = "ignored";
+                return true;
+            }
+
+            if (Options.Modules.All(m => m == Options.SystemModule || m.Libraries.Count > 0) &&
+                module != Options.SystemModule && IsTypeExternal(module, type))
+            {
+                msg = "external";
                 return true;
             }
 
@@ -390,6 +398,23 @@ namespace CppSharp.Passes
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
             return !decl.IsIncomplete || decl.CompleteDeclaration != null;
+        }
+
+        private bool IsTypeExternal(Module module, Type type)
+        {
+            Declaration declaration;
+            if ((type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
+            {
+                declaration = declaration.CompleteDeclaration ?? declaration;
+                if (declaration.TranslationUnit.Module.Libraries.Any(l =>
+                        Context.Symbols.Libraries.First(
+                            lib => lib.FileName == l).Dependencies.Any(
+                                module.Libraries.Contains)))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool IsTypeIgnored(Type type)
