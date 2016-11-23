@@ -2491,6 +2491,10 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         auto RepTy = TP->getReplacementType();
         TPT->Replacement = GetQualifiedType(RepTy, &Next);
+        TPT->ReplacedParameter = (TemplateParameterType*)
+            WalkType(clang::QualType(TP->getReplacedParameter(), 0), 0);
+        TPT->ReplacedParameter->Parameter = WalkTypeTemplateParameter(
+            TP->getReplacedParameter()->getDecl());
 
         Ty = TPT;
         break;
@@ -2765,7 +2769,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->IsDependent = FD->isDependentContext();
     F->IsPure = FD->isPure();
     F->IsDeleted = FD->isDeleted();
-    if (auto InstantiatedFrom = FD->getInstantiatedFromMemberFunction())
+    if (auto InstantiatedFrom = FD->getTemplateInstantiationPattern())
         F->InstantiatedFrom = static_cast<Function*>(WalkDeclaration(InstantiatedFrom));
 
     auto CC = FT->getCallConv();

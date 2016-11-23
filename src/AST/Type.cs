@@ -825,6 +825,8 @@ namespace CppSharp.AST
     {
         public QualifiedType Replacement;
 
+        public TemplateParameterType ReplacedParameter { get; set; }
+
         public TemplateParameterSubstitutionType()
         {
         }

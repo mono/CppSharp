@@ -2285,7 +2285,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterSubstitutionType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -2296,6 +2296,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     public global::CppSharp.Parser.AST.QualifiedType.__Internal Replacement;
+
+                    [FieldOffset(16)]
+                    public global::System.IntPtr ReplacedParameter;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2320,7 +2323,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(TemplateParameterSubstitutionType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(20);
                     global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2344,7 +2347,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2353,7 +2356,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2372,6 +2375,24 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*) __Instance)->Replacement = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.TemplateParameterType ReplacedParameter
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.TemplateParameterType __result0;
+                        if (((__Internal*) __Instance)->ReplacedParameter == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.TemplateParameterType.NativeToManagedMap.ContainsKey(((__Internal*) __Instance)->ReplacedParameter))
+                            __result0 = (global::CppSharp.Parser.AST.TemplateParameterType) global::CppSharp.Parser.AST.TemplateParameterType.NativeToManagedMap[((__Internal*) __Instance)->ReplacedParameter];
+                        else __result0 = global::CppSharp.Parser.AST.TemplateParameterType.__CreateInstance(((__Internal*) __Instance)->ReplacedParameter);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((__Internal*) __Instance)->ReplacedParameter = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }

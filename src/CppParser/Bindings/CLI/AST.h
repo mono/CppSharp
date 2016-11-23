@@ -898,6 +898,12 @@ namespace CppSharp
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
                 }
+
+                property CppSharp::Parser::AST::TemplateParameterType^ ReplacedParameter
+                {
+                    CppSharp::Parser::AST::TemplateParameterType^ get();
+                    void set(CppSharp::Parser::AST::TemplateParameterType^);
+                }
             };
 
             public ref class InjectedClassNameType : CppSharp::Parser::AST::Type

@@ -964,6 +964,62 @@ public unsafe partial struct PthreadRwlockT
     }
 }
 
+public unsafe partial class PthreadUnwindBufT
+{
+    [StructLayout(LayoutKind.Explicit, Size = 104)]
+    public partial struct __Internal
+    {
+        [FieldOffset(0)]
+        public fixed byte __cancel_jmp_buf[72];
+
+        [FieldOffset(72)]
+        public void* __pad;
+
+        [FieldOffset(80)]
+        public global::System.IntPtr __dummy___pad_1;
+
+        [FieldOffset(88)]
+        public global::System.IntPtr __dummy___pad_2;
+
+        [FieldOffset(96)]
+        public global::System.IntPtr __dummy___pad_3;
+    }
+
+    public unsafe partial class _
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 72)]
+        public partial struct __Internal
+        {
+            [FieldOffset(0)]
+            public fixed long __cancel_jmp_buf[8];
+
+            [FieldOffset(8)]
+            public long __dummy___cancel_jmp_buf_1;
+
+            [FieldOffset(16)]
+            public long __dummy___cancel_jmp_buf_2;
+
+            [FieldOffset(24)]
+            public long __dummy___cancel_jmp_buf_3;
+
+            [FieldOffset(32)]
+            public long __dummy___cancel_jmp_buf_4;
+
+            [FieldOffset(40)]
+            public long __dummy___cancel_jmp_buf_5;
+
+            [FieldOffset(48)]
+            public long __dummy___cancel_jmp_buf_6;
+
+            [FieldOffset(56)]
+            public long __dummy___cancel_jmp_buf_7;
+
+            [FieldOffset(64)]
+            public int __mask_was_saved;
+        }
+    }
+}
+
 namespace Std
 {
     namespace Cxx11

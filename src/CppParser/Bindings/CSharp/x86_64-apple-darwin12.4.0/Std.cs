@@ -3584,6 +3584,16 @@ namespace Std
                 internal global::Std.__1.CompressedPair.__Internal __pair3_;
             }
         }
+
+        namespace TreeEndNode
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
+            public unsafe partial struct __Internal_Ptr
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr __left_;
+            }
+        }
     }
 }
 
@@ -3889,10 +3899,13 @@ namespace Std
                     Marshal.FreeHGlobal(__Instance);
             }
 
-            public string CStr()
+            public string CStr
             {
-                var __ret = __Internal.CStr_0((__Instance + __PointerAdjustment));
-                return Marshal.PtrToStringAnsi(__ret);
+                get
+                {
+                    var __ret = __Internal.CStr_0((__Instance + __PointerAdjustment));
+                    return Marshal.PtrToStringAnsi(__ret);
+                }
             }
         }
 

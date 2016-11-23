@@ -655,6 +655,7 @@ namespace CppSharp
         {
             var _type = new AST.TemplateParameterSubstitutionType();
             _type.Replacement = VisitQualified(type.Replacement);
+            _type.ReplacedParameter = (AST.TemplateParameterType) Visit(type.ReplacedParameter);
             VisitType(type, _type);
             return _type;
         }

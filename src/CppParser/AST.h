@@ -227,6 +227,7 @@ class CS_API TemplateParameterSubstitutionType : public Type
 public:
     DECLARE_TYPE_KIND(TemplateParameterSubstitution)
     QualifiedType Replacement;
+    TemplateParameterType* ReplacedParameter;
 };
 
 class Class;

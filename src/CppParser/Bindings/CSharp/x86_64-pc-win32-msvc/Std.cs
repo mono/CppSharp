@@ -624,6 +624,10 @@ namespace Std
 
 namespace Std
 {
+}
+
+namespace Std
+{
     namespace TreeVal
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
@@ -792,6 +796,16 @@ public unsafe partial class Cvtvec
 
         [FieldOffset(43)]
         public byte __dummy__Isleadbyte_31;
+    }
+}
+
+namespace Std
+{
+    [Flags]
+    public enum CodecvtMode
+    {
+        _Consume_header = 4,
+        _Generate_header = 2
     }
 }
 

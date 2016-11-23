@@ -1000,6 +1000,16 @@ void CppSharp::Parser::AST::TemplateParameterSubstitutionType::Replacement::set(
     ((::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)NativePtr)->Replacement = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::TemplateParameterType^ CppSharp::Parser::AST::TemplateParameterSubstitutionType::ReplacedParameter::get()
+{
+    return (((::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)NativePtr)->ReplacedParameter == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateParameterType((::CppSharp::CppParser::AST::TemplateParameterType*)((::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)NativePtr)->ReplacedParameter);
+}
+
+void CppSharp::Parser::AST::TemplateParameterSubstitutionType::ReplacedParameter::set(CppSharp::Parser::AST::TemplateParameterType^ value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)NativePtr)->ReplacedParameter = (::CppSharp::CppParser::AST::TemplateParameterType*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType(::CppSharp::CppParser::AST::InjectedClassNameType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

@@ -170,7 +170,7 @@ TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParamete
 TemplateParameterType::~TemplateParameterType() {}
 
 TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
-    : Type(TypeKind::TemplateParameterSubstitution) {}
+    : Type(TypeKind::TemplateParameterSubstitution), ReplacedParameter(0) {}
 
 InjectedClassNameType::InjectedClassNameType()
     : Type(TypeKind::InjectedClassName)
