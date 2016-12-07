@@ -45,7 +45,7 @@ namespace CppSharp.Passes
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
                 var result = parameter.DefaultArgument.String;
-                if (PrintExpression(parameter.Type, parameter.DefaultArgument, ref result) == null)
+                if (PrintExpression(function, parameter.Type, parameter.DefaultArgument, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                 if (string.IsNullOrEmpty(result))
                 {
@@ -62,16 +62,26 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool? PrintExpression(Type type, Expression expression, ref string result)
+        private bool? PrintExpression(Function function, Type type, Expression expression, ref string result)
         {
             var desugared = type.Desugar();
 
             // constants are obtained through dynamic calls at present so they are not compile-time values in target languages
             if (expression.Declaration is Variable ||
                 (!Options.MarshalCharAsManagedChar &&
-                 desugared.IsPrimitiveType(PrimitiveType.UChar)) ||
-                type.IsPrimitiveTypeConvertibleToRef())
+                 desugared.IsPrimitiveType(PrimitiveType.UChar)))
                 return null;
+
+            if (desugared.IsPrimitiveTypeConvertibleToRef())
+            {
+                var method = function as Method;
+                if (method != null && method.IsConstructor)
+                {
+                    result = string.Empty;
+                    return false;
+                }
+                return null;
+            }
 
             if (CheckForDefaultPointer(desugared, ref result))
                 return true;
@@ -186,8 +196,8 @@ namespace CppSharp.Passes
                 {
                     var argument = ctor.Arguments[i];
                     var argResult = argument.String;
-                    expressionSupported &= PrintExpression(method.Parameters[i].Type.Desugar(),
-                        argument, ref argResult) ?? false;
+                    expressionSupported &= PrintExpression(method,
+                        method.Parameters[i].Type.Desugar(), argument, ref argResult) ?? false;
                     argsBuilder.Append(argResult);
                     if (i < ctor.Arguments.Count - 1)
                         argsBuilder.Append(", ");

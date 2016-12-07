@@ -473,6 +473,10 @@ MethodsWithDefaultValues::MethodsWithDefaultValues(int a)
     m_foo.A = a;
 }
 
+MethodsWithDefaultValues::MethodsWithDefaultValues(float a, int* b)
+{
+}
+
 MethodsWithDefaultValues::MethodsWithDefaultValues(double d, QList<QColor> list)
 {
 }
