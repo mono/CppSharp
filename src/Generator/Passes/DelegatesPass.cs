@@ -53,36 +53,6 @@ namespace CppSharp.Passes
             return result;
         }
 
-        public override bool VisitClassDecl(Class @class)
-        {
-            if (!base.VisitClassDecl(@class))
-                return false;
-
-            // dependent types with virtuals have no own virtual layouts
-            // so virtuals are considered different objects in template instantiations
-            // therefore the method itself won't be visited, so let's visit it through the v-table
-            if (Context.ParserOptions.IsMicrosoftAbi)
-            {
-                foreach (var method in from vfTable in @class.Layout.VFTables
-                                       from component in vfTable.Layout.Components
-                                       where component.Method != null
-                                       select component.Method)
-                    VisitMethodDecl(method);
-            }
-            else
-            {
-                if (@class.Layout.Layout == null)
-                    return false;
-
-                foreach (var method in from component in @class.Layout.Layout.Components
-                                       where component.Method != null
-                                       select component.Method)
-                    VisitMethodDecl(method);
-            }
-
-            return true;
-        }
-
         public override bool VisitMethodDecl(Method method)
         {
             if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)

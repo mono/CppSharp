@@ -330,6 +330,7 @@ namespace CppSharp.Passes
         {
             VisitOptions.VisitClassFields = false;
             VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitClassMethods = false;
             VisitOptions.VisitNamespaceEnums = false;
             VisitOptions.VisitNamespaceTemplates = false;
             VisitOptions.VisitNamespaceTypedefs = false;
@@ -341,15 +342,8 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (VisitDeclarationContext(@class))
-            {
-                if (VisitOptions.VisitClassBases)
-                    foreach (var baseClass in @class.Bases)
-                        if (baseClass.IsClass)
-                            VisitClassDecl(baseClass.Class);
-
+            if (base.VisitClassDecl(@class))
                 new PropertyGenerator(@class).GenerateProperties();
-            }
             return false;
         }
     }
