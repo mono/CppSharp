@@ -473,7 +473,7 @@ MethodsWithDefaultValues::MethodsWithDefaultValues(int a)
     m_foo.A = a;
 }
 
-MethodsWithDefaultValues::MethodsWithDefaultValues(float a, int* b)
+MethodsWithDefaultValues::MethodsWithDefaultValues(float a, Zero b)
 {
 }
 

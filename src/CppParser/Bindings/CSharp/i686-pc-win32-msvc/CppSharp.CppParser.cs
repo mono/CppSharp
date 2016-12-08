@@ -337,8 +337,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public Type(global::CppSharp.Parser.AST.Type _0)
@@ -3601,8 +3600,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -4268,8 +4266,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(128);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public Declaration(global::CppSharp.Parser.AST.Declaration _0)
@@ -4521,8 +4518,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -4536,8 +4532,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetUSR_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetUSR_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -4551,8 +4546,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetDebugText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetDebugText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -4890,8 +4884,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(248);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public DeclarationContext(global::CppSharp.Parser.AST.DeclarationContext _0)
@@ -5346,8 +5339,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(136);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public TypedefNameDecl(global::CppSharp.Parser.AST.TypedefNameDecl _0)
@@ -5991,8 +5983,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetString_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetString_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -6223,8 +6214,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetOpcodeStr_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetOpcodeStr_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -7130,8 +7120,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetMangled_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetMangled_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -7145,8 +7134,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetSignature_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetSignature_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -7835,8 +7823,7 @@ namespace CppSharp
 
                         set
                         {
-                            var __arg0 = value;
-                            __Internal.SetExpression_0((__Instance + __PointerAdjustment), __arg0);
+                            __Internal.SetExpression_0((__Instance + __PointerAdjustment), value);
                         }
                     }
                 }
@@ -8163,8 +8150,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetMangled_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetMangled_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -9367,8 +9353,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(144);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public Template()
@@ -9722,8 +9707,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(140);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public TemplateParameter(global::CppSharp.Parser.AST.TemplateParameter _0)
@@ -12550,8 +12534,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -12565,8 +12548,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetExpression_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetExpression_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -12722,8 +12704,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -12737,8 +12718,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -13001,8 +12981,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetFileName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetFileName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -13180,8 +13159,7 @@ namespace CppSharp
 
                 public void AddSymbols(string s)
                 {
-                    var __arg0 = s;
-                    __Internal.AddSymbols_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.AddSymbols_0((__Instance + __PointerAdjustment), s);
                 }
 
                 public void ClearSymbols()
@@ -13197,8 +13175,7 @@ namespace CppSharp
 
                 public void AddDependencies(string s)
                 {
-                    var __arg0 = s;
-                    __Internal.AddDependencies_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.AddDependencies_0((__Instance + __PointerAdjustment), s);
                 }
 
                 public void ClearDependencies()
@@ -13229,8 +13206,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetFileName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetFileName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -13467,8 +13443,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = kind;
-                    __Internal.ctor_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
                 }
 
                 public Comment(global::CppSharp.Parser.AST.Comment _0)
@@ -13583,8 +13558,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = Kind;
-                    __Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
                 }
 
                 public BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment _0)
@@ -13822,8 +13796,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = Kind;
-                    __Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
                 }
 
                 public InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment _0)
@@ -14190,8 +14163,7 @@ namespace CppSharp
 
                         set
                         {
-                            var __arg0 = value;
-                            __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                            __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                         }
                     }
                 }
@@ -14244,8 +14216,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = Kind;
-                    __Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
                 }
 
                 public BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment _0)
@@ -14734,8 +14705,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -15014,8 +14984,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -15201,8 +15170,7 @@ namespace CppSharp
 
                         set
                         {
-                            var __arg0 = value;
-                            __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                            __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                         }
                     }
                 }
@@ -15402,8 +15370,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    var __arg0 = Kind;
-                    __Internal.ctor_1((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
                 }
 
                 public HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment _0)
@@ -15614,8 +15581,7 @@ namespace CppSharp
 
                         set
                         {
-                            var __arg0 = value;
-                            __Internal.SetName_0((__Instance + __PointerAdjustment), __arg0);
+                            __Internal.SetName_0((__Instance + __PointerAdjustment), value);
                         }
                     }
 
@@ -15629,8 +15595,7 @@ namespace CppSharp
 
                         set
                         {
-                            var __arg0 = value;
-                            __Internal.SetValue_0((__Instance + __PointerAdjustment), __arg0);
+                            __Internal.SetValue_0((__Instance + __PointerAdjustment), value);
                         }
                     }
                 }
@@ -15729,8 +15694,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetTagName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetTagName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -15858,8 +15822,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetTagName_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetTagName_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -15978,8 +15941,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -16151,8 +16113,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
 
@@ -16166,8 +16127,7 @@ namespace CppSharp
 
                     set
                     {
-                        var __arg0 = value;
-                        __Internal.SetBriefText_0((__Instance + __PointerAdjustment), __arg0);
+                        __Internal.SetBriefText_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }
@@ -17012,8 +16972,7 @@ namespace CppSharp
 
                 set
                 {
-                    var __arg0 = value;
-                    __Internal.SetABI_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.SetABI_0((__Instance + __PointerAdjustment), value);
                 }
             }
         }
@@ -17381,8 +17340,7 @@ namespace CppSharp
 
             public void AddArguments(string s)
             {
-                var __arg0 = s;
-                __Internal.AddArguments_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddArguments_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearArguments()
@@ -17398,8 +17356,7 @@ namespace CppSharp
 
             public void AddSourceFiles(string s)
             {
-                var __arg0 = s;
-                __Internal.AddSourceFiles_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddSourceFiles_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearSourceFiles()
@@ -17415,8 +17372,7 @@ namespace CppSharp
 
             public void AddIncludeDirs(string s)
             {
-                var __arg0 = s;
-                __Internal.AddIncludeDirs_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddIncludeDirs_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearIncludeDirs()
@@ -17432,8 +17388,7 @@ namespace CppSharp
 
             public void AddSystemIncludeDirs(string s)
             {
-                var __arg0 = s;
-                __Internal.AddSystemIncludeDirs_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddSystemIncludeDirs_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearSystemIncludeDirs()
@@ -17449,8 +17404,7 @@ namespace CppSharp
 
             public void AddDefines(string s)
             {
-                var __arg0 = s;
-                __Internal.AddDefines_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddDefines_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearDefines()
@@ -17466,8 +17420,7 @@ namespace CppSharp
 
             public void AddUndefines(string s)
             {
-                var __arg0 = s;
-                __Internal.AddUndefines_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddUndefines_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearUndefines()
@@ -17483,8 +17436,7 @@ namespace CppSharp
 
             public void AddLibraryDirs(string s)
             {
-                var __arg0 = s;
-                __Internal.AddLibraryDirs_0((__Instance + __PointerAdjustment), __arg0);
+                __Internal.AddLibraryDirs_0((__Instance + __PointerAdjustment), s);
             }
 
             public void ClearLibraryDirs()
@@ -17629,8 +17581,7 @@ namespace CppSharp
 
                 set
                 {
-                    var __arg0 = value;
-                    __Internal.SetLibraryFile_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.SetLibraryFile_0((__Instance + __PointerAdjustment), value);
                 }
             }
 
@@ -17644,8 +17595,7 @@ namespace CppSharp
 
                 set
                 {
-                    var __arg0 = value;
-                    __Internal.SetTargetTriple_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.SetTargetTriple_0((__Instance + __PointerAdjustment), value);
                 }
             }
 
@@ -17891,8 +17841,7 @@ namespace CppSharp
 
                 set
                 {
-                    var __arg0 = value;
-                    __Internal.SetFileName_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.SetFileName_0((__Instance + __PointerAdjustment), value);
                 }
             }
 
@@ -17906,8 +17855,7 @@ namespace CppSharp
 
                 set
                 {
-                    var __arg0 = value;
-                    __Internal.SetMessage_0((__Instance + __PointerAdjustment), __arg0);
+                    __Internal.SetMessage_0((__Instance + __PointerAdjustment), value);
                 }
             }
         }

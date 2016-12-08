@@ -2861,7 +2861,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var param = paramInfo.Param;
                 if (!(param.IsOut || param.IsInOut)) continue;
-                if (param.Type.IsPrimitiveTypeConvertibleToRef())
+                if (param.Type.Desugar().IsPrimitiveTypeConvertibleToRef())
                     continue;
 
                 var nativeVarName = paramInfo.Name;
@@ -2916,13 +2916,9 @@ namespace CppSharp.Generators.CSharp
         private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
-            PrimitiveType primitive;
             // Do not delete instance in MS ABI.
-            var name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : param.Name;
-            if (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char)
-            {
-                return new ParamMarshal { Name = name, Param = param };
-            }
+            var name = param.Name;
+            param.Name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : name;
 
             var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };
@@ -2961,7 +2957,12 @@ namespace CppSharp.Generators.CSharp
             if (paramMarshal.HasUsingBlock)
                 PushIndent();
 
-            WriteLine("var {0} = {1};", argName, marshal.Context.Return);
+            if (marshal.Context.Return.ToString() == param.Name)
+                paramMarshal.Name = param.Name;
+            else
+                WriteLine("var {0} = {1};", argName, marshal.Context.Return);
+
+            param.Name = name;
 
             return paramMarshal;
         }

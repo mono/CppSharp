@@ -384,10 +384,11 @@ public:
 
     static const char* stringConstant;
     static int intConstant;
+    typedef int* Zero;
 
     MethodsWithDefaultValues(Foo foo = Foo());
     MethodsWithDefaultValues(int a);
-    MethodsWithDefaultValues(float a, int* b = 0);
+    MethodsWithDefaultValues(float a, Zero b = 0);
     MethodsWithDefaultValues(double d, QList<QColor> list = QList<QColor>());
     MethodsWithDefaultValues(QRect* pointer, float f = 1, int i = std::numeric_limits<double>::infinity());
     void defaultPointer(Foo* ptr = 0);

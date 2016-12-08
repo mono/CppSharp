@@ -1,5 +1,6 @@
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
@@ -14,7 +15,7 @@ namespace CppSharp.Passes
                 return false;
 
             foreach (var param in function.Parameters.Where(
-                p => !p.IsOut && p.Type.IsPrimitiveTypeConvertibleToRef()))
+                p => !p.IsOut && p.Type.Desugar().IsPrimitiveTypeConvertibleToRef()))
                 param.Usage = ParameterUsage.InOut;
 
             return true;
