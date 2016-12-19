@@ -1448,18 +1448,14 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
             WriteLine("_Thunks = new void*[{0}];", wrappedEntries.Count);
 
-            var uniqueEntries = new HashSet<VTableComponent>();
-
             for (int i = 0; i < wrappedEntries.Count; i++)
             {
                 var entry = wrappedEntries[i];
                 var method = entry.Method;
                 var name = GetVTableMethodDelegateName(method);
-                var instance = name + "Instance";
-                if (uniqueEntries.Add(entry))
-                    WriteLine("{0} += {1}Hook;", instance, name);
-                WriteLine("_Thunks[{0}] = Marshal.GetFunctionPointerForDelegate({1}).ToPointer();",
-                    i, instance);
+                WriteLine($@"_Thunks[{i}] = Marshal.GetFunctionPointerForDelegate(new {
+                    GetDelegateName(method, @class.TranslationUnit.Module.OutputNamespace)
+                    }({name}Hook)).ToPointer();");
             }
             WriteCloseBraceIndent();
 
@@ -1499,19 +1495,20 @@ namespace CppSharp.Generators.CSharp
                 AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly);
         }
 
-        private void SaveOriginalVTablePointers(Class @class)
+        private void SaveOriginalVTablePointers(Class @class, bool cast = false)
         {
             var suffix = Helpers.GetSuffixForInternal(@class);
+            var pointer = cast ? $@"(({Helpers.InternalStruct}{
+                Helpers.GetSuffixForInternal(@class)}*) native)" : "native";
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
-                        @class.Layout.VTablePointers.Select(v => string.Format(
-                            "(({0}{1}*) native)->{2}.ToPointer()",
-                                Helpers.InternalStruct, suffix, v.Name))));
+                        @class.Layout.VTablePointers.Select(v => 
+                            $"{pointer}->{v.Name}.ToPointer()")));
             else
                 WriteLine(
-                    "__OriginalVTables = new void*[] {{ (({0}{1}*) native)->{2}.ToPointer() }};",
-                    Helpers.InternalStruct, suffix, @class.Layout.VTablePointers[0].Name);
+                    $@"__OriginalVTables = new void*[] {{ {pointer}->{
+                        @class.Layout.VTablePointers[0].Name}.ToPointer() }};");
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1725,11 +1722,6 @@ namespace CppSharp.Generators.CSharp
             var @params = GatherInternalParams(method, out retType);
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
-
-            WriteLine("private static {0} {1}Instance;",
-                GetDelegateName(method, @class.TranslationUnit.Module.OutputNamespace),
-                vTableMethodDelegateName);
-            NewLine();
 
             WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateName,
                 string.Join(", ", @params));
@@ -2071,7 +2063,7 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 if (@class.IsAbstractImpl || hasVTables)
-                    SaveOriginalVTablePointers(@class);
+                    SaveOriginalVTablePointers(@class, true);
 
                 if (setupVTables)
                 {
