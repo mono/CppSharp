@@ -1448,14 +1448,18 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
             WriteLine("_Thunks = new void*[{0}];", wrappedEntries.Count);
 
+            var uniqueEntries = new HashSet<VTableComponent>();
+
             for (int i = 0; i < wrappedEntries.Count; i++)
             {
                 var entry = wrappedEntries[i];
                 var method = entry.Method;
                 var name = GetVTableMethodDelegateName(method);
-                WriteLine($@"_Thunks[{i}] = Marshal.GetFunctionPointerForDelegate(new {
-                    GetDelegateName(method, @class.TranslationUnit.Module.OutputNamespace)
-                    }({name}Hook)).ToPointer();");
+                var instance = name + "Instance";
+                if (uniqueEntries.Add(entry))
+                    WriteLine("{0} += {1}Hook;", instance, name);
+                WriteLine("_Thunks[{0}] = Marshal.GetFunctionPointerForDelegate({1}).ToPointer();",
+                    i, instance);
             }
             WriteCloseBraceIndent();
 
@@ -1722,6 +1726,11 @@ namespace CppSharp.Generators.CSharp
             var @params = GatherInternalParams(method, out retType);
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
+
+            WriteLine("private static {0} {1}Instance;",
+                GetDelegateName(method, @class.TranslationUnit.Module.OutputNamespace),
+                vTableMethodDelegateName);
+            NewLine();
 
             WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateName,
                 string.Join(", ", @params));
