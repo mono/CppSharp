@@ -409,10 +409,9 @@ namespace CppSharp.Passes
                 if (declaration.TranslationUnit.Module.Libraries.Any(l =>
                         Context.Symbols.Libraries.First(
                             lib => lib.FileName == l).Dependencies.Any(
-                                module.Libraries.Contains)))
-                {
+                                d => module != declaration.TranslationUnit.Module &&
+                                    module.Libraries.Contains(d))))
                     return true;
-                }
             }
             return false;
         }
