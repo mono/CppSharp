@@ -9,13 +9,14 @@ namespace CppSharp
     {
         public void Setup(Driver driver)
         {
-            var parserOptions = driver.ParserOptions;
             var options = driver.Options;
             options.LibraryName = "SDL";
             options.Headers.Add("SDL.h");
+            options.OutputDir = "SDL";
+
+            var parserOptions = driver.ParserOptions;
             var sdlPath = Path.Combine(GetExamplesDirectory("SDL"), "SDL-2.0/include");
             parserOptions.AddIncludeDirs(sdlPath);
-            options.OutputDir = "SDL";
         }
 
         public void SetupPasses(Driver driver)
