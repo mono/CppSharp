@@ -383,13 +383,14 @@ namespace CppSharp
 
         public void CompileCode(AST.Module module)
         {
-            var assemblyFile = string.IsNullOrEmpty(module.LibraryName) ?
-                "out.dll" : module.LibraryName + ".dll";
+            var assemblyFile = Path.Combine(Options.OutputDir,
+                string.IsNullOrEmpty(module.LibraryName) ?
+                    "out.dll" : module.LibraryName + ".dll");
 
-            var docFile = Path.ChangeExtension(Path.GetFileName(assemblyFile), ".xml");
+            var docFile = Path.ChangeExtension(assemblyFile, ".xml");
 
             var compilerOptions = new StringBuilder();
-            compilerOptions.Append(" /doc:" + docFile);
+            compilerOptions.Append($" /doc:\"{docFile}\"");
             compilerOptions.Append(" /debug:pdbonly");
             compilerOptions.Append(" /unsafe");
 
@@ -404,7 +405,7 @@ namespace CppSharp
 
             if (module != Options.SystemModule)
                 compilerParameters.ReferencedAssemblies.Add(
-                    string.Format("{0}.dll", Options.SystemModule.LibraryName));
+                    Path.Combine(Options.OutputDir, $"{Options.SystemModule.LibraryName}.dll"));
             // add a reference to System.Core
             compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
 
