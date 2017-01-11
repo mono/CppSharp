@@ -151,7 +151,7 @@ namespace CppSharp.AST
                 FunctionType func;
                 return decl.Type.IsPointerTo(out func) ? VisitDeclaration(decl) : decl.Type.Visit(this);
             }
-            return GetDeclName(typedef.Declaration);
+            return GetDeclName(typedef.Declaration, PrintScopeKind);
         }
 
         public virtual string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
@@ -290,9 +290,9 @@ namespace CppSharp.AST
             throw new System.NotImplementedException();
         }
 
-        public virtual string GetDeclName(Declaration declaration)
+        public virtual string GetDeclName(Declaration declaration, CppTypePrintScopeKind scope)
         {
-            switch (PrintScopeKind)
+            switch (scope)
             {
             case CppTypePrintScopeKind.Local:
                 return PrintLogicalNames ? declaration.LogicalOriginalName
@@ -301,8 +301,8 @@ namespace CppSharp.AST
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
             case CppTypePrintScopeKind.GlobalQualified:
-                return "::" + (PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
-                    : declaration.QualifiedOriginalName);
+                var qualifier = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : string.Empty;
+                return qualifier + GetDeclName(declaration, CppTypePrintScopeKind.Qualified);
             }
 
             throw new NotSupportedException();
@@ -310,7 +310,7 @@ namespace CppSharp.AST
 
         public virtual string VisitDeclaration(Declaration decl)
         {
-            return GetDeclName(decl);
+            return GetDeclName(decl, PrintScopeKind);
         }
 
         public virtual string VisitClassDecl(Class @class)
