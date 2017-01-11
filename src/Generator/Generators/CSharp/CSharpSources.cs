@@ -2656,7 +2656,6 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     var @class = retClass.OriginalClass ?? retClass;
-                    var specialization = @class as ClassTemplateSpecialization;
                     WriteLine("var {0} = new {1}.{2}{3}();", Helpers.ReturnIdentifier,
                         @class.Visit(TypePrinter), Helpers.InternalStruct,
                         Helpers.GetSuffixForInternal(@class));
