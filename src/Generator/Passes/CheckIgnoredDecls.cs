@@ -403,16 +403,22 @@ namespace CppSharp.Passes
         private bool IsTypeExternal(Module module, Type type)
         {
             Declaration declaration;
-            if ((type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
-            {
-                declaration = declaration.CompleteDeclaration ?? declaration;
-                if (declaration.TranslationUnit.Module.Libraries.Any(l =>
-                        Context.Symbols.Libraries.First(
-                            lib => lib.FileName == l).Dependencies.Any(
-                                d => module != declaration.TranslationUnit.Module &&
-                                    module.Libraries.Contains(d))))
-                    return true;
-            }
+            if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
+                return false;
+
+            declaration = declaration.CompleteDeclaration ?? declaration;
+            if (declaration.Namespace == null || declaration.TranslationUnit.Module == null)
+                return false;
+
+            // Check if there’s another module which wraps libraries with dependencies on
+            // the ones in the current module.
+            if (declaration.TranslationUnit.Module.Libraries.Any(l =>
+                    Context.Symbols.Libraries.First(
+                        lib => lib.FileName == l).Dependencies.Any(
+                            d => module != declaration.TranslationUnit.Module &&
+                                module.Libraries.Contains(d))))
+                return true;
+
             return false;
         }
 
