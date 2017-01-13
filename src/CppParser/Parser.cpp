@@ -1202,7 +1202,11 @@ ClassTemplate* Parser::WalkClassTemplate(const clang::ClassTemplateDecl* TD)
 
 TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(const clang::TemplateTemplateParmDecl* TTP)
 {
-    auto TP = new TemplateTemplateParameter();
+    auto TP = WalkedTemplateTemplateParameters[TTP];
+    if (TP)
+        return TP;
+
+    TP = new TemplateTemplateParameter();
     HandleDeclaration(TTP, TP);
     TP->Parameters = WalkTemplateParameterList(TTP->getTemplateParameters());
     TP->IsParameterPack = TTP->isParameterPack();
@@ -1213,6 +1217,7 @@ TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(const clang::Te
         auto TD = WalkDeclaration(TTP->getTemplatedDecl(), /*IgnoreSystemDecls=*/false);
         TP->TemplatedDecl = TD;
     }
+    WalkedTemplateTemplateParameters[TTP] = TP;
     return TP;
 }
 
@@ -1220,7 +1225,11 @@ TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(const clang::Te
 
 TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTypeParmDecl* TTPD)
 {
-    auto TP = new CppSharp::CppParser::TypeTemplateParameter();
+    auto TP = WalkedTypeTemplateParameters[TTPD];
+    if (TP)
+        return TP;
+
+    TP = new CppSharp::CppParser::TypeTemplateParameter();
     TP->Name = GetDeclName(TTPD);
     HandleDeclaration(TTPD, TP);
     if (TTPD->hasDefaultArgument())
@@ -1228,6 +1237,7 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTy
     TP->Depth = TTPD->getDepth();
     TP->Index = TTPD->getIndex();
     TP->IsParameterPack = TTPD->isParameterPack();
+    WalkedTypeTemplateParameters[TTPD] = TP;
     return TP;
 }
 
@@ -1235,7 +1245,11 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTy
 
 NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonTypeTemplateParmDecl* NTTPD)
 {
-    auto NTP = new CppSharp::CppParser::NonTypeTemplateParameter();
+    auto NTP = WalkedNonTypeTemplateParameters[NTTPD];
+    if (NTP)
+        return NTP;
+
+    NTP = new CppSharp::CppParser::NonTypeTemplateParameter();
     NTP->Name = GetDeclName(NTTPD);
     HandleDeclaration(NTTPD, NTP);
     if (NTTPD->hasDefaultArgument())
@@ -1243,6 +1257,7 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
     NTP->Depth = NTTPD->getDepth();
     NTP->Index = NTTPD->getIndex();
     NTP->IsParameterPack = NTTPD->isParameterPack();
+    WalkedNonTypeTemplateParameters[NTTPD] = NTP;
     return NTP;
 }
 

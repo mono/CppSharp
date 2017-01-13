@@ -145,6 +145,9 @@ private:
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;
     clang::CodeGen::CodeGenTypes* CodeGenTypes;
+    std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> WalkedTypeTemplateParameters;
+    std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> WalkedTemplateTemplateParameters;
+    std::unordered_map<const clang::NonTypeTemplateParmDecl*, NonTypeTemplateParameter*> WalkedNonTypeTemplateParameters;
 
     ParserResultKind ReadSymbols(llvm::StringRef File,
                                  llvm::object::basic_symbol_iterator Begin,
