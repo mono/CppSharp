@@ -802,26 +802,6 @@ namespace CppSharp.Generators.CSharp
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
-
-            // Workaround a bug in Mono when handling fixed arrays in P/Invoke declarations.
-            // https://bugzilla.xamarin.com/show_bug.cgi?id=33571
-            if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
-                arrayType.Size > 0)
-            {
-                for (var i = 1; i < arrayType.Size; ++i)
-                {
-                    var dummy = new LayoutField
-                    {
-                        Offset = (uint) (field.Offset + i * arrayType.ElementSize / 8),
-                        QualifiedType = new QualifiedType(arrayType.Type),
-                        Name = string.Format("{0}_{1}_{2}", Helpers.DummyIdentifier,
-                            safeIdentifier, i),
-                        FieldPtr = field.FieldPtr
-                    };
-
-                    GenerateClassInternalsField(dummy);
-                }
-            }
         }
 
         private void GenerateClassField(Field field, bool @public = false)
@@ -1499,19 +1479,20 @@ namespace CppSharp.Generators.CSharp
                 AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly);
         }
 
-        private void SaveOriginalVTablePointers(Class @class)
+        private void SaveOriginalVTablePointers(Class @class, bool cast = false)
         {
             var suffix = Helpers.GetSuffixForInternal(@class);
+            var pointer = cast ? $@"(({Helpers.InternalStruct}{
+                Helpers.GetSuffixForInternal(@class)}*) native)" : "native";
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
-                        @class.Layout.VTablePointers.Select(v => string.Format(
-                            "(({0}{1}*) native)->{2}.ToPointer()",
-                                Helpers.InternalStruct, suffix, v.Name))));
+                        @class.Layout.VTablePointers.Select(v => 
+                            $"{pointer}->{v.Name}.ToPointer()")));
             else
                 WriteLine(
-                    "__OriginalVTables = new void*[] {{ (({0}{1}*) native)->{2}.ToPointer() }};",
-                    Helpers.InternalStruct, suffix, @class.Layout.VTablePointers[0].Name);
+                    $@"__OriginalVTables = new void*[] {{ {pointer}->{
+                        @class.Layout.VTablePointers[0].Name}.ToPointer() }};");
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -2071,7 +2052,7 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 if (@class.IsAbstractImpl || hasVTables)
-                    SaveOriginalVTablePointers(@class);
+                    SaveOriginalVTablePointers(@class, true);
 
                 if (setupVTables)
                 {
@@ -2675,7 +2656,6 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     var @class = retClass.OriginalClass ?? retClass;
-                    var specialization = @class as ClassTemplateSpecialization;
                     WriteLine("var {0} = new {1}.{2}{3}();", Helpers.ReturnIdentifier,
                         @class.Visit(TypePrinter), Helpers.InternalStruct,
                         Helpers.GetSuffixForInternal(@class));

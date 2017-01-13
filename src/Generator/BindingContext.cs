@@ -24,8 +24,6 @@ namespace CppSharp.Generators
 
         public Dictionary<Function, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
 
-        private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
-
         public BindingContext(IDiagnostics diagnostics, DriverOptions options,
             ParserOptions parserOptions = null)
         {
