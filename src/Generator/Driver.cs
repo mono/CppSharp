@@ -15,6 +15,7 @@ using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Parser;
 using CppSharp.Utils;
+using EinarEgilsson.Utilities.InjectModuleInitializer;
 
 namespace CppSharp
 {
@@ -439,6 +440,14 @@ namespace CppSharp
             HasCompilationErrors = errors.Count > 0;
             if (!HasCompilationErrors)
             {
+                var injector = new Injector();
+                injector.ReadAssembly(assemblyFile);
+                var moduleInitializer = injector.GetModuleInitializer();
+                if (moduleInitializer != null)
+                {
+                    injector.InjectInitializer(moduleInitializer);
+                    injector.WriteAssembly(assemblyFile, null);
+                }
                 Diagnostics.Message("Compilation succeeded.");
                 var wrapper = Path.Combine(outputDir, assemblyFile);
                 foreach (var library in module.Libraries)
