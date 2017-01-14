@@ -39,6 +39,7 @@ code or add scripting support to a native codebase.
  * Support for C++ standard library types (work-in-progress)
  * Strongly-typed customization APIs and type maps
  * Default values of parameters (for target languages which support them)
+ * Option to automatically add a module initializer with the C# generator
 
 ### AST 
 
