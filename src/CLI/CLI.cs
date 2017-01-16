@@ -23,19 +23,23 @@ namespace CppSharp
             var optionSet = new Mono.Options.OptionSet()
             {
                 { "I=", "the {PATH} of a folder to search for include files", i => { AddIncludeDirs(i); } },
-                { "l=", "{LIBRARY} that includes the definitions for the generated source code", l => _options.Libraries.Add(l) },
+                { "l=", "{LIBRARY} that that contains the symbols of the generated code", l => _options.Libraries.Add(l) },
                 { "L=", "the {PATH} of a folder to search for additional libraries", l => _options.LibraryDirs.Add(l) },
                 { "D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v) },
-                { "o=|outputdir=", "the {PATH} for the destination folder that will contain the generated code", od => _options.OutputDir = od },
+
+                { "o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v) },
                 { "on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => _options.OutputNamespace = on },
-                { "iln=|inputlibraryname=", "the {NAME} of the shared library that contains the actual definitions (without extension)", iln => _options.InputLibraryName = iln },
-                { "isln=|inputsharedlibraryname=", "the full {NAME} of the shared library that contains the actual definitions (with extension)", isln => _options.InputSharedLibraryName = isln },
+
+                { "iln=|inputlibraryname=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => _options.InputLibraryName = iln },
+
                 { "g=|gen=|generator=", "the {TYPE} of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g); } },
                 { "p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p); } },
                 { "a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a); } },
+
                 { "c++11", "enables GCC C++ 11 compilation (valid only for Linux platform)", cpp11 => { _options.Cpp11ABI = (cpp11 != null); } },
                 { "cs|checksymbols", "enable the symbol check for the generated code", cs => { _options.CheckSymbols = (cs != null); } },
                 { "ub|unitybuild", "enable unity build", ub => { _options.UnityBuild = (ub != null); } },
+
                 { "h|help", "shows the help", hl => { showHelp = (hl != null); } },
             };
 
@@ -71,6 +75,35 @@ namespace CppSharp
             Console.WriteLine("Options:");
             options.WriteOptionDescriptions(Console.Out);
             Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Useful informations:");
+            Console.WriteLine(" - the options 'iln' (same as 'inputlibraryname') and 'l' have a similar meaning. Both of them are used to tell");
+            Console.WriteLine("   the generator which library has to be used to P/Invoke the functions from your native code.");
+            Console.WriteLine("   The difference is that if you want to generate the bindings for more than one library within a single managed");
+            Console.WriteLine("   file you need to use the 'l' option to specify the names of all the libraries that contain the symbols to be loaded");
+            Console.WriteLine("   and you MUST set the 'cs' ('checksymbols') flag to let the generator automatically understand which library");
+            Console.WriteLine("   to use to P/Invoke. This can be also used if you plan to generate the bindings for only one library.");
+            Console.WriteLine("   If you specify the 'iln' (or 'inputlibraryname') options, this option's value will be used for all the P/Invokes");
+            Console.WriteLine("   that the generator will create.");
+            Console.WriteLine(" - If you specify the 'unitybuild' option then the generator will output a file for each given header file that will");
+            Console.WriteLine("   contain only the bindings for that header file.");
+        }
+
+        static void HandleOutputArg(String arg)
+        {
+            try
+            {
+                String dir = System.IO.Path.GetDirectoryName(arg);
+                String file = System.IO.Path.GetFileNameWithoutExtension(arg);
+
+                _options.OutputDir = dir;
+                _options.OutputFileName = file;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Output error: " + e.Message);
+                Environment.Exit(0);
+            }
         }
 
         static void AddDefine(String name, String value)

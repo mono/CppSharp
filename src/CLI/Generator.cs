@@ -46,8 +46,14 @@ namespace CppSharp
             if (_options.OutputNamespace == String.Empty)
                 throw new NotSupportedException("Output namespace is empty");
 
-            if (_options.InputLibraryName == String.Empty)
-                throw new NotSupportedException("Input library name is empty");
+            if (_options.OutputFileName == String.Empty)
+                throw new NotSupportedException("Output not specified");
+
+            if(_options.InputLibraryName == String.Empty && _options.CheckSymbols == false)
+                throw new NotSupportedException("Input library name not specified and check symbols not enabled. Either set the input library name or the check symbols flag");
+
+            if(_options.InputLibraryName == String.Empty && _options.CheckSymbols == true && _options.Libraries.Count == 0)
+                throw new NotSupportedException("Input library name not specified and check symbols is enabled but no libraries were given. Either set the input library name or add at least one library");
 
             if (_options.Architecture == TargetArchitecture.x64)
                 _triple = "x86_64-";
@@ -81,10 +87,10 @@ namespace CppSharp
             parserOptions.Abi = _abi;
 
             var options = driver.Options;
-            options.LibraryName = _options.InputLibraryName;
+            options.LibraryName = _options.OutputFileName;
 
-            if(_options.InputSharedLibraryName != String.Empty)
-                options.SharedLibraryName = _options.InputSharedLibraryName;
+            if(_options.InputLibraryName != String.Empty)
+                options.SharedLibraryName = _options.InputLibraryName;
 
             options.GeneratorKind = _options.Kind;
             options.Headers.AddRange(_options.HeaderFiles);

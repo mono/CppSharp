@@ -44,11 +44,11 @@ namespace CppSharp
         private String _outputNamespace = "";
         public String OutputNamespace { get { return _outputNamespace; } set { _outputNamespace = value; } }
 
+        private String _outputFileName = "";
+        public String OutputFileName { get { return _outputFileName; } set { _outputFileName = value; } }
+
         private String _inputLibraryName = "";
         public String InputLibraryName { get { return _inputLibraryName; } set { _inputLibraryName = value; } }
-
-        private String _inputSharedLibraryName = "";
-        public String InputSharedLibraryName { get { return _inputSharedLibraryName; } set { _inputSharedLibraryName = value; } }
 
         private String _triple = "";
         public String Triple { get { return _triple; } set { _triple = value; } }
