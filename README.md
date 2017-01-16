@@ -1,13 +1,15 @@
-CppSharp is a collection of libraries for working with C++ code from
-high-level languages.
+CppSharp is a tool and set of libraries to turn existing native C/C++ libraries
+into libraries that can be consumed by other languages (such as C#).
 
-It has multiple use cases, from parsing C++ code to automatically generating
-bindings for wrapping C/C++ native code allowing interoperability with
-high-level languages. The supported target languages at present are C#
-(hence the name of the project) and C++/CLI.
+It is a tool that takes C/C++ header and library files and generates the 
+necessary glue to surface the native API as a managed API. Such an API can be
+used to consume an existing native library in your high-level code or add
+scripting support to a native codebase.
 
-This can be used to consume an existing native library in your high-level
-code or add scripting support to a native codebase.
+The supported target languages at present are C# and C++/CLI.
+
+It can also be used as a library to parse native code into a syntax tree with a
+rich declaration and type information model.
 
 1. [Libraries](#libraries)
 2. [Documentation](#documentation)
@@ -28,24 +30,11 @@ code or add scripting support to a native codebase.
 
 ## Libraries
 
-### Generator
- 
- * Multiple backends: C++/CLI and C# P/Invoke
- * Multiple ABIs: Itanium, MS, ARM, iOS and iOS64
- * Multiple platforms: Windows, OS X and Linux
- * Virtual table overriding support
- * Multiple inheritance support
- * Easily extensible semantics via user passes 
- * Support for C++ standard library types (work-in-progress)
- * Strongly-typed customization APIs and type maps
- * Default values of parameters (for target languages which support them)
- * Option to automatically add a module initializer with the C# generator
-
 ### AST 
 
-Mirrors the Clang's C++ AST and type system classes in C# APIs.
+Mirrors the Clang's C/C++ AST and type system classes in C# APIs.
 
-Check out [_Clang's AST introduction docs_](http://clang.llvm.org/docs/IntroductionToTheClangAST.html) for more details about its architecture. 
+Check out [_Clang's AST introduction docs_](http://clang.llvm.org/docs/IntroductionToTheClangAST.html) for more details about its architecture.
  
  * C++ declarations
  * C++ types
@@ -55,13 +44,28 @@ Check out [_Clang's AST introduction docs_](http://clang.llvm.org/docs/Introduct
 
 ### Parser
 
-Provides APIs for parsing C++ source code.
+Provides APIs for parsing of C/C++ source code into a syntax tree.
 
-* Parsing of C++ source code
+* Parsing of C/C++ source code
 * Parsing of libraries archives symbols
 * Parsing of shared libraries symbols 
 * Based on the very accurate Clang C++ parser.
+
+### Generator
+
+Generates the glue binding code from a syntax tree of the native code.
  
+ * Multiple backends: C++/CLI and C# (P/Invoke)
+ * Multiple ABIs: Itanium, MS, ARM, iOS
+ * Multiple platforms: Windows, OS X and Linux
+ * Multiple runtimes: .NET and Mono
+ * C++ virtual methods overriding from managed code
+ * C++ multiple inheritance by translating to C# interfaces
+ * C++ standard library types (work-in-progress)
+ * C++ default parameter values
+ * C/C++ semantic comments (Doxygen) to C# comments
+ * Extensible bindings semantics via user passes and type mapping 
+
 ## Documentation
 
 Please see the following resources for more information:
