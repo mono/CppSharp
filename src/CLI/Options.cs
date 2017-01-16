@@ -35,8 +35,8 @@ namespace CppSharp
         private List<String> _libraries = new List<string>();
         public List<String> Libraries { get { return _libraries; } set { _libraries = value; } }
 
-        private List<String> _defines = new List<string>();
-        public List<String> Defines { get { return _defines; } set { _defines = value; } }
+        private Dictionary<String, String> _defines = new Dictionary<String, String>();
+        public Dictionary<String, String> Defines { get { return _defines; } set { _defines = value; } }
 
         private String _outputDir = "";
         public String OutputDir { get { return _outputDir; } set { _outputDir = value; } }
@@ -62,9 +62,6 @@ namespace CppSharp
         private GeneratorKind _kind = GeneratorKind.CSharp;
         public GeneratorKind Kind { get { return _kind; } set { _kind = value; } }
         
-        //private bool _verbose = false;
-        //public bool Verbose { get { return _verbose; } set { _verbose = value; } }
-
         private bool _checkSymbols = false;
         public bool CheckSymbols { get { return _checkSymbols; } set { _checkSymbols = value; } }
 

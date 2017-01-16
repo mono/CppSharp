@@ -98,20 +98,20 @@ namespace CppSharp
 
             if (_triple.Contains("linux"))
                 SetupLinuxOptions(parserOptions);
-
-            Console.WriteLine("\n\nAdding " + (_options.IncludeDirs.Count) + " include dirs\n\n");
-
+            
             foreach (String s in _options.IncludeDirs)
-            {
                 parserOptions.AddIncludeDirs(s);
-                Console.WriteLine("Add include: " + s);
-            }
 
             foreach (String s in _options.LibraryDirs)
                 parserOptions.AddLibraryDirs(s);
 
-            foreach (String s in _options.Defines)
-                parserOptions.AddDefines(s);
+            foreach (KeyValuePair<String, String> d in _options.Defines)
+            {
+                if(d.Value == null || d.Value == String.Empty)
+                    parserOptions.AddDefines(d.Key);
+                else
+                    parserOptions.AddDefines(d.Key + "=" + d.Value);
+            }
 
             options.OutputDir = _options.OutputDir;
             options.OutputNamespace = _options.OutputNamespace;
