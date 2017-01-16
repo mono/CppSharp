@@ -9,6 +9,7 @@ project "CppSharp.CLI"
   links
   {
     "System",
+    "System.Core",
     "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
