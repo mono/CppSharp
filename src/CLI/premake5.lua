@@ -2,7 +2,7 @@ project "CppSharp.CLI"
 
   SetupManagedProject()
 
-  kind "SharedLib"
+  kind "ConsoleApp"
   language "C#"
 
   files { "**.cs" }
