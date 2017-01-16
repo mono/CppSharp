@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -41,11 +40,10 @@ namespace CppSharp.Tests
 
             driver.Generator.OnUnitGenerated += o =>
             {
-                var firstBlock = o.Templates[0].RootBlock.Blocks[1];
-                firstBlock.Text.StringBuilder.Append($@"using System.Runtime.CompilerServices;{
-                    Environment.NewLine}{
-                    Environment.NewLine}[assembly:InternalsVisibleTo(""NamespacesDerived.CSharp"")]{
-                    Environment.NewLine}");
+                Block firstBlock = o.Templates[0].RootBlock.Blocks[1];
+                firstBlock.WriteLine("using System.Runtime.CompilerServices;");
+                firstBlock.NewLine();
+                firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"NamespacesDerived.CSharp\")]");
             };
         }
     }

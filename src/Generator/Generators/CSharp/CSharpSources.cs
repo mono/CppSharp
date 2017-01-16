@@ -167,20 +167,7 @@ namespace CppSharp.Generators.CSharp
 
             var module = TranslationUnits.Count == 0 ?
                 Context.Options.SystemModule : TranslationUnit.Module;
-            var hasInternalsVisibleTo = false;
-            if (Context.Options.DoAllModulesHaveLibraries())
-            {
-                foreach (var library in from m in Options.Modules
-                                        where m.Dependencies.Contains(module)
-                                        select m.LibraryName)
-                {
-                    WriteLine($"[assembly:InternalsVisibleTo(\"{library}\")]");
-                    if (!hasInternalsVisibleTo)
-                        hasInternalsVisibleTo = true;
-                }
-            }
-            if (hasInternalsVisibleTo)
-                NewLine();
+            AddInternalsVisibleTo(module);
 
             if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
@@ -199,6 +186,21 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+        }
+
+        private void AddInternalsVisibleTo(Module module)
+        {
+            if (!Context.Options.DoAllModulesHaveLibraries())
+                return;
+
+            foreach (var library in from m in Options.Modules
+                                    where m.Dependencies.Contains(module)
+                                    select m.LibraryName)
+            {
+                WriteLine($"[assembly:InternalsVisibleTo(\"{library}\")]");
+                NeedNewLine();
+            }
+            NewLineIfNeeded();
         }
 
         public void GenerateHeader()
