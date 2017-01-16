@@ -49,6 +49,7 @@ public:
     void* ptr;
     static const int unsafe;
     static const char charArray[];
+    static int readWrite;
 
     const char* GetANSI();
 
@@ -68,6 +69,7 @@ public:
 
 // HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp
 const int Foo::unsafe = 10;
+int Foo::readWrite = 15;
 const char Foo::charArray[] = "abc";
 
 struct DLL_API Bar

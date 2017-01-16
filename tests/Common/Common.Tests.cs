@@ -648,6 +648,14 @@ public class CommonTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestStaticFields()
+    {
+        Assert.That(Foo.readWrite, Is.EqualTo(15));
+        Foo.readWrite = 25;
+        Assert.That(Foo.readWrite, Is.EqualTo(25));
+    }
+
     [Test, Ignore("We need symbols for std::string to invoke and auto-compilation of exported templates is not added yet.")]
     public void TestStdString()
     {

@@ -841,11 +841,6 @@ namespace CppSharp.Generators.CSharp
             Class @class, bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
         {
-            if (!(decl is Function || decl is Field) )
-            {
-                return;
-            }
-
             PushBlock(CSharpBlockKind.Method);
             Write("set");
 
@@ -905,9 +900,8 @@ namespace CppSharp.Generators.CSharp
                         GenerateInternalFunctionCall(function, new List<Parameter> { param });
                     }
                 }
-                WriteCloseBraceIndent();
             }
-            else
+            else if (decl is Field)
             {
                 var field = decl as Field;
                 if (WrapSetterArrayOfPointers(decl.Name, field.Type))
@@ -957,9 +951,49 @@ namespace CppSharp.Generators.CSharp
 
                 if ((arrayType != null && @class.IsValueType) || ctx.HasCodeBlock)
                     WriteCloseBraceIndent();
-
-                WriteCloseBraceIndent();
             }
+            else if (decl is Variable)
+            {
+                NewLine();
+                WriteStartBraceIndent();
+                var var = decl as Variable;
+
+                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
+                var location = $@"CppSharp.SymbolResolver.ResolveSymbol(""{
+                    GetLibraryOf(decl)}"", ""{var.Mangled}"")";
+
+                string ptr = Generator.GeneratedIdentifier("ptr");
+                var arrayType = decl.Type as ArrayType;
+                var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
+                if (isRefTypeArray)
+                    WriteLine($@"var {ptr} = {
+                        (arrayType.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                         arrayType.QualifiedType.Qualifiers.IsConst ?
+                            string.Empty : "(byte*)")}{location};");
+                else
+                    WriteLine($"var {ptr} = ({var.Type}*){location};");
+
+                TypePrinter.PopContext();
+
+                ctx.Kind = CSharpMarshalKind.Variable;
+                ctx.ReturnType = new QualifiedType(var.Type);
+
+                var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+                decl.CSharpMarshalToNative(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                if (ctx.HasCodeBlock)
+                    PushIndent();
+
+                WriteLine($"*{ptr} = {marshal.Context.Return};", marshal.Context.Return);
+
+                if (ctx.HasCodeBlock)
+                    WriteCloseBraceIndent();
+            }
+            WriteCloseBraceIndent();
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -1371,7 +1405,8 @@ namespace CppSharp.Generators.CSharp
 
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
 
-            if (!variable.QualifiedType.Qualifiers.IsConst)
+            if (!variable.QualifiedType.Qualifiers.IsConst &&
+                !(variable.Type.Desugar() is ArrayType))
                 GeneratePropertySetter(variable, @class);
 
             WriteCloseBraceIndent();

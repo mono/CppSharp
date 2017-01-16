@@ -14,7 +14,8 @@ namespace CppSharp.Generators.CSharp
         NativeField,
         GenericDelegate,
         DefaultExpression,
-        VTableReturnValue
+        VTableReturnValue,
+        Variable
     }
 
     public class CSharpMarshalContext : MarshalContext
@@ -591,7 +592,8 @@ namespace CppSharp.Generators.CSharp
                         typePrinter.PopContext();
                     }
                     if (marshalAsString && (Context.Kind == CSharpMarshalKind.NativeField ||
-                        Context.Kind == CSharpMarshalKind.VTableReturnValue))
+                        Context.Kind == CSharpMarshalKind.VTableReturnValue ||
+                        Context.Kind == CSharpMarshalKind.Variable))
                         Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
                     else
                         Context.Return.Write(Context.Parameter.Name);
