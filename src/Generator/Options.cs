@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -39,8 +40,8 @@ namespace CppSharp
         /// </summary>
         public bool DryRun;
 
-        public Module SystemModule { get; private set; }
-        public List<Module> Modules { get; private set; }
+        public Module SystemModule { get; }
+        public List<Module> Modules { get; }
 
         public Module MainModule
         {
@@ -53,11 +54,11 @@ namespace CppSharp
         }
 
         // Parser options
-        public List<string> Headers { get { return MainModule.Headers; } }
+        public List<string> Headers => MainModule.Headers;
         public bool IgnoreParseWarnings;
 
         // Library options
-        public List<string> Libraries { get { return MainModule.Libraries; } }
+        public List<string> Libraries => MainModule.Libraries;
         public bool CheckSymbols;
 
         public string SharedLibraryName
@@ -133,15 +134,9 @@ namespace CppSharp
             set { MainModule.TemplatesLibraryName = value; }
         }
 
-        public bool IsCSharpGenerator
-        {
-            get { return GeneratorKind == GeneratorKind.CSharp; }
-        }
+        public bool IsCSharpGenerator => GeneratorKind == GeneratorKind.CSharp;
 
-        public bool IsCLIGenerator
-        {
-            get { return GeneratorKind == GeneratorKind.CLI; }
-        }
+        public bool IsCLIGenerator => GeneratorKind == GeneratorKind.CLI;
 
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
@@ -156,7 +151,10 @@ namespace CppSharp
         /// <summary>
         /// C# end only: force patching of the virtual entries of the functions in this list.
         /// </summary>
-        public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; private set; }
+        public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; }
+
+        public bool DoAllModulesHaveLibraries() =>
+            Modules.All(m => m == SystemModule || m.Libraries.Count > 0);
     }
 
     public class InvalidOptionException : Exception

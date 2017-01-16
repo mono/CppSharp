@@ -223,19 +223,23 @@ namespace CppSharp
 
         public void SortModulesByDependencies()
         {
-            if (Options.Modules.All(m => m.Libraries.Any() || m == Options.SystemModule))
+            if (!Options.DoAllModulesHaveLibraries())
+                return;
+
+            var sortedModules = Options.Modules.TopologicalSort(m =>
             {
-                var sortedModules = Options.Modules.TopologicalSort(m =>
-                {
-                    return from library in Context.Symbols.Libraries
-                           where m.Libraries.Contains(library.FileName)
-                           from module in Options.Modules
-                           where library.Dependencies.Intersect(module.Libraries).Any()
-                           select module;
-                });
-                Options.Modules.Clear();
-                Options.Modules.AddRange(sortedModules);
-            }
+                var dependencies = (from library in Context.Symbols.Libraries
+                                    where m.Libraries.Contains(library.FileName)
+                                    from module in Options.Modules
+                                    where library.Dependencies.Intersect(module.Libraries).Any()
+                                    select module).ToList();
+                if (m != Options.SystemModule)
+                    m.Dependencies.Add(Options.SystemModule);
+                m.Dependencies.AddRange(dependencies);
+                return dependencies;
+            });
+            Options.Modules.Clear();
+            Options.Modules.AddRange(sortedModules);
         }
 
         public bool ParseLibraries()
@@ -384,9 +388,7 @@ namespace CppSharp
 
         public void CompileCode(AST.Module module)
         {
-            var assemblyFile = Path.Combine(Options.OutputDir,
-                string.IsNullOrEmpty(module.LibraryName) ?
-                    "out.dll" : module.LibraryName + ".dll");
+            var assemblyFile = Path.Combine(Options.OutputDir, module.LibraryName + ".dll");
 
             var docFile = Path.ChangeExtension(assemblyFile, ".xml");
 
@@ -421,7 +423,7 @@ namespace CppSharp
                          !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
                     .Select(l => libraryMappings[l])).ToArray());
 
-            Diagnostics.Message("Compiling {0}...", module.LibraryName);
+            Diagnostics.Message($"Compiling {module.LibraryName}...");
             CompilerResults compilerResults;
             using (var codeProvider = new CSharpCodeProvider(
                 new Dictionary<string, string> {
@@ -440,18 +442,30 @@ namespace CppSharp
             HasCompilationErrors = errors.Count > 0;
             if (!HasCompilationErrors)
             {
-                var injector = new Injector();
-                injector.ReadAssembly(assemblyFile);
-                var moduleInitializer = injector.GetModuleInitializer();
-                if (moduleInitializer != null)
-                {
-                    injector.InjectInitializer(moduleInitializer);
-                    injector.WriteAssembly(assemblyFile, null);
-                }
+                InjectModuleInitializer(assemblyFile);
                 Diagnostics.Message("Compilation succeeded.");
                 var wrapper = Path.Combine(outputDir, assemblyFile);
                 foreach (var library in module.Libraries)
                     libraryMappings[library] = wrapper;
+            }
+        }
+
+        /// <summary>
+        /// Injects a module initializer, if any, i.e. code executed right after an
+        /// assembly is loaded and before any other code in it.
+        /// <para>The run-time supports it but C# does not so we inject it in the
+        /// compiled assembly by manually adding IL instructions.</para>
+        /// </summary>
+        /// <param name="assemblyFile">The assembly to inject a module initializer to.</param>
+        private static void InjectModuleInitializer(string assemblyFile)
+        {
+            var injector = new Injector();
+            injector.ReadAssembly(assemblyFile);
+            var moduleInitializer = injector.GetModuleInitializer();
+            if (moduleInitializer != null)
+            {
+                injector.InjectInitializer(moduleInitializer);
+                injector.WriteAssembly(assemblyFile, null);
             }
         }
 

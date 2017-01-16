@@ -4,28 +4,16 @@ namespace CppSharp.AST
 {
     public class Module
     {
-        public Module()
-        {
-            IncludeDirs = new List<string>();
-            Headers = new List<string>();
-            LibraryDirs = new List<string>();
-            Libraries = new List<string>();
-            Defines = new List<string>();
-            Undefines = new List<string>();
-            Units = new List<TranslationUnit>();
-            CodeFiles = new List<string>();
-        }
-
-        public List<string> IncludeDirs { get; private set; }
-        public List<string> Headers { get; private set; }
-        public List<string> LibraryDirs { get; set; }
-        public List<string> Libraries { get; private set; }
-        public List<string> Defines { get; set; }
-        public List<string> Undefines { get; set; }
+        public List<string> IncludeDirs { get; } = new List<string>();
+        public List<string> Headers { get; } = new List<string>();
+        public List<string> LibraryDirs { get; } = new List<string>();
+        public List<string> Libraries { get; } = new List<string>();
+        public List<string> Defines { get; } = new List<string>();
+        public List<string> Undefines { get; } = new List<string>();
         public string OutputNamespace { get; set; }
-
-        public List<TranslationUnit> Units { get; private set; }
-        public List<string> CodeFiles { get; private set; }
+        public List<TranslationUnit> Units { get; } = new List<TranslationUnit>();
+        public List<string> CodeFiles { get; } = new List<string>();
+        public List<Module> Dependencies { get; } = new List<Module>();
 
         public string SharedLibraryName
         {
@@ -73,6 +61,8 @@ namespace CppSharp.AST
         }
 
         public string LibraryName { get; set; }
+
+        public override string ToString() => LibraryName;
 
         private string sharedLibraryName;
         private string inlinesLibraryName;

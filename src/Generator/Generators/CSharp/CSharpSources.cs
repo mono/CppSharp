@@ -157,6 +157,8 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
+            if (Context.Options.DoAllModulesHaveLibraries())
+                WriteLine("using System.Runtime.CompilerServices;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
                 WriteLine(string.Format("using {0};", customUsingStatement));
@@ -165,6 +167,21 @@ namespace CppSharp.Generators.CSharp
 
             var module = TranslationUnits.Count == 0 ?
                 Context.Options.SystemModule : TranslationUnit.Module;
+            var hasInternalsVisibleTo = false;
+            if (Context.Options.DoAllModulesHaveLibraries())
+            {
+                foreach (var library in from m in Options.Modules
+                                        where m.Dependencies.Contains(module)
+                                        select m.LibraryName)
+                {
+                    WriteLine($"[assembly:InternalsVisibleTo(\"{library}\")]");
+                    if (!hasInternalsVisibleTo)
+                        hasInternalsVisibleTo = true;
+                }
+            }
+            if (hasInternalsVisibleTo)
+                NewLine();
+
             if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 PushBlock(CSharpBlockKind.Namespace);
@@ -471,7 +488,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         WriteLine("private {0}.{1} {2};", @class.Name, Helpers.InternalStruct,
                             Helpers.InstanceField);
-                        WriteLine("public {0}.{1} {2} {{ get {{ return {3}; }} }}", @class.Name,
+                        WriteLine("internal {0}.{1} {2} {{ get {{ return {3}; }} }}", @class.Name,
                             Helpers.InternalStruct, Helpers.InstanceIdentifier, Helpers.InstanceField);
                     }
                     else
@@ -488,7 +505,7 @@ namespace CppSharp.Generators.CSharp
                         // use interfaces if any - derived types with a secondary base this class must be compatible with the map
                         var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
                         WriteLine(
-                            "public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
+                            "internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
                             @interface != null ? @interface.Name : @class.Name);
                         WriteLine("protected void*[] __OriginalVTables;");
                     }
@@ -2008,7 +2025,7 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
+                WriteLine("internal static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     @class.Name, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
@@ -2080,7 +2097,7 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0} {1}({0}.{2}{3} native, bool skipVTables = false)",
+                WriteLine("internal static {0} {1}({0}.{2}{3} native, bool skipVTables = false)",
                     className, Helpers.CreateInstanceIdentifier,
                     Helpers.InternalStruct, internalSuffix);
                 WriteStartBraceIndent();

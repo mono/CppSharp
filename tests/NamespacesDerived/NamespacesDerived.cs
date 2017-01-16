@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -37,12 +38,20 @@ namespace CppSharp.Tests
             new CaseRenamePass(
                 RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate | RenameTargets.Variable,
                 RenameCasePattern.UpperCamelCase).VisitASTContext(driver.Context.ASTContext);
+
+            driver.Generator.OnUnitGenerated += o =>
+            {
+                var firstBlock = o.Templates[0].RootBlock.Blocks[1];
+                firstBlock.Text.StringBuilder.Append($@"using System.Runtime.CompilerServices;{
+                    Environment.NewLine}{
+                    Environment.NewLine}[assembly:InternalsVisibleTo(""NamespacesDerived.CSharp"")]{
+                    Environment.NewLine}");
+            };
         }
     }
 
     public class NamespacesDerived
     {
-
         public static void Main(string[] args)
         {
             ConsoleDriver.Run(new NamespacesDerivedTests(GeneratorKind.CSharp));

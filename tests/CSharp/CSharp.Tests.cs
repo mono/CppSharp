@@ -320,17 +320,23 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         IntPtr native1;
         IntPtr native2;
+        var hasVirtualDtor1Map = (IDictionary<IntPtr, HasVirtualDtor1>) typeof(
+            HasVirtualDtor1).GetField("NativeToManagedMap",
+            BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+        var hasVirtualDtor2Map = (IDictionary<IntPtr, HasVirtualDtor2>) typeof(
+            HasVirtualDtor2).GetField("NativeToManagedMap",
+            BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
         using (var testNativeToManagedMap = new TestNativeToManagedMap())
         {
             var hasVirtualDtor2 = testNativeToManagedMap.HasVirtualDtor2;
             native2 = hasVirtualDtor2.__Instance;
             native1 = hasVirtualDtor2.HasVirtualDtor1.__Instance;
-            Assert.IsTrue(HasVirtualDtor2.NativeToManagedMap.ContainsKey(native2));
-            Assert.IsTrue(HasVirtualDtor1.NativeToManagedMap.ContainsKey(native1));
+            Assert.IsTrue(hasVirtualDtor1Map.ContainsKey(native1));
+            Assert.IsTrue(hasVirtualDtor2Map.ContainsKey(native2));
             Assert.AreSame(hasVirtualDtor2, testNativeToManagedMap.HasVirtualDtor2);
         }
-        Assert.IsFalse(HasVirtualDtor2.NativeToManagedMap.ContainsKey(native2));
-        Assert.IsFalse(HasVirtualDtor1.NativeToManagedMap.ContainsKey(native1));
+        Assert.IsFalse(hasVirtualDtor1Map.ContainsKey(native1));
+        Assert.IsFalse(hasVirtualDtor2Map.ContainsKey(native2));
     }
 
     [Test]
@@ -338,12 +344,15 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (var testNativeToManagedMap = new TestNativeToManagedMap())
         {
+            var quxMap = (IDictionary<IntPtr, IQux>) typeof(
+                Qux).GetField("NativeToManagedMap",
+                BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
             var bar = new Bar();
             testNativeToManagedMap.PropertyWithNoVirtualDtor = bar;
             Assert.AreSame(bar, testNativeToManagedMap.PropertyWithNoVirtualDtor);
-            Assert.IsTrue(Qux.NativeToManagedMap.ContainsKey(bar.__Instance));
+            Assert.IsTrue(quxMap.ContainsKey(bar.__Instance));
             bar.Dispose();
-            Assert.IsFalse(Qux.NativeToManagedMap.ContainsKey(bar.__Instance));
+            Assert.IsFalse(quxMap.ContainsKey(bar.__Instance));
         }
     }
 

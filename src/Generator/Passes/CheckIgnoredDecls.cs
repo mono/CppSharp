@@ -347,7 +347,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            if (Options.Modules.All(m => m == Options.SystemModule || m.Libraries.Count > 0) &&
+            if (Options.DoAllModulesHaveLibraries() &&
                 module != Options.SystemModule && IsTypeExternal(module, type))
             {
                 msg = "external";
@@ -410,16 +410,7 @@ namespace CppSharp.Passes
             if (declaration.Namespace == null || declaration.TranslationUnit.Module == null)
                 return false;
 
-            // Check if there’s another module which wraps libraries with dependencies on
-            // the ones in the current module.
-            if (declaration.TranslationUnit.Module.Libraries.Any(l =>
-                    Context.Symbols.Libraries.First(
-                        lib => lib.FileName == l).Dependencies.Any(
-                            d => module != declaration.TranslationUnit.Module &&
-                                module.Libraries.Contains(d))))
-                return true;
-
-            return false;
+            return declaration.TranslationUnit.Module.Dependencies.Contains(module);
         }
 
         private bool IsTypeIgnored(Type type)

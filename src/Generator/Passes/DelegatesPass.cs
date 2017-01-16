@@ -122,7 +122,8 @@ namespace CppSharp.Passes
                                     ReturnType = method.ReturnType
                                 }))),
                     Namespace = namespaceDelegates,
-                    IsSynthetized = true
+                    IsSynthetized = true,
+                    Access = AccessSpecifier.Private
                 };
 
             Generator.CurrentOutputNamespace = module.OutputNamespace;
