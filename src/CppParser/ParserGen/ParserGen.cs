@@ -158,7 +158,6 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
-            driver.AddTranslationUnitPass(new CheckMacroPass());
             driver.AddTranslationUnitPass(new IgnoreStdFieldsPass());
         }
 

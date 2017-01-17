@@ -67,7 +67,6 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
-            driver.AddTranslationUnitPass(new CheckMacroPass());
             ctx.SetClassAsValueType("Bar");
             ctx.SetClassAsValueType("Bar2");
             ctx.IgnoreClassWithName("IgnoredType");

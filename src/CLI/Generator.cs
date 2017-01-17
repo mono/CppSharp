@@ -186,8 +186,6 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
-            driver.AddTranslationUnitPass(new CheckMacroPass());
-
             driver.Context.TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any);
             driver.Context.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
             driver.Context.TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
