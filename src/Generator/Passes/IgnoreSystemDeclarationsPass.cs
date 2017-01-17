@@ -55,7 +55,6 @@ namespace CppSharp.Passes
                     {
                         foreach (var method in specialization.Methods.Where(m => m.OriginalName != "c_str"))
                             method.ExplicitlyIgnore();
-                        var l = specialization.Methods.Where(m => m.IsConstructor && m.Parameters.Count == 2).ToList();
                         var ctor = specialization.Methods.Single(m => m.IsConstructor && m.Parameters.Count == 2 &&
                             m.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
                             !m.Parameters[1].Type.Desugar().IsPrimitiveType());

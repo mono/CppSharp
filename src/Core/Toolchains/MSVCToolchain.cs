@@ -209,7 +209,6 @@ namespace CppSharp
         private static IEnumerable<string> GetIncludeDirsFromWindowsSdks(
             int windowsSdkMajorVer, List<ToolchainVersion> windowsSdks)
         {
-            var includes = new List<string>();
             var majorWindowsSdk = windowsSdks.Find(
                 version => (int) Math.Floor(version.Version) == windowsSdkMajorVer);
             var windowsSdkDirs = majorWindowsSdk.Directory != null ?

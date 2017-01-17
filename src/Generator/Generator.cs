@@ -88,7 +88,6 @@ namespace CppSharp.Generators
         {
             foreach (var unit in units)
             {
-                var includeDir = Path.GetDirectoryName(unit.FilePath);
                 var templates = Generate(new[] { unit });
                 if (templates.Count == 0)
                     return;

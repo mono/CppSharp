@@ -1526,7 +1526,6 @@ namespace CppSharp.Generators.CSharp
 
         private void SaveOriginalVTablePointers(Class @class, bool cast = false)
         {
-            var suffix = Helpers.GetSuffixForInternal(@class);
             var pointer = cast ? $@"(({Helpers.InternalStruct}{
                 Helpers.GetSuffixForInternal(@class)}*) native)" : "native";
             if (Context.ParserOptions.IsMicrosoftAbi)
