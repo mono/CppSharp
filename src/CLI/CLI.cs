@@ -10,63 +10,115 @@ namespace CppSharp
     class CLI
     {
         private static Options _options = new Options();
-        private static List<string> _assemblies;
 
         static void AddIncludeDirs(String dir)
         {
             _options.IncludeDirs.Add(dir);
         }
 
-        static void ParseCommandLineArgs(string[] args)
+        static bool ParseCommandLineArgs(string[] args)
         {
-            var showHelp = args.Length == 0;
+            var showHelp = false;
 
             var optionSet = new Mono.Options.OptionSet()
             {
-                { "h|header=", "the path to an header file to generate source from", h => _options.HeaderFiles.Add(h) },
-                { "pa|path=", "the path of a folder whose files will generate code (can append a filter at the end like '<path>/*.hpp'", pa => { GetFilesFromPath(pa); } },
-                { "inc|includedir=", "the path of a folder to search for include files", i => { AddIncludeDirs(i); } },
-                { "l|library=", "the path of a library that includes the definitions for the generated source code", l => _options.Libraries.Add(l) },
-                { "ld|librarydir=", "the path of a folder to search for additional libraries", l => _options.LibraryDirs.Add(l) },
-                { "d|define=", "a define to add for the parse of the given header files", d => _options.Defines.Add(d) },
-                { "od|outputdir=", "the path for the destination folder that will contain the generated code", od => _options.OutputDir = od },
-                { "on|outputnamespace=", "the namespace that will be used for the generated code", on => _options.OutputNamespace = on },
-                { "iln|inputlibraryname=", "the name of the shared library that contains the actual definitions (without extension)", iln => _options.InputLibraryName = iln },
-                { "isln|inputsharedlibraryname=", "the full name of the shared library that contains the actual definitions (with extension)", isln => _options.InputSharedLibraryName = isln },
-                { "gen|generator=", "the type of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g); } },
-                { "p|platform=", "the platform that the generated code will target: 'win', 'osx', 'linux'", p => { GetDestinationPlatform(p); } },
-                { "a|arch=", "the architecture that the generated code will target: 'x86', 'x64'", a => { GetDestinationArchitecture(a); } },
+                { "I=", "the {PATH} of a folder to search for include files", i => { AddIncludeDirs(i); } },
+                { "l=", "{LIBRARY} that that contains the symbols of the generated code", l => _options.Libraries.Add(l) },
+                { "L=", "the {PATH} of a folder to search for additional libraries", l => _options.LibraryDirs.Add(l) },
+                { "D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v) },
+
+                { "o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v) },
+                { "on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => _options.OutputNamespace = on },
+
+                { "iln=|inputlibraryname=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => _options.InputLibraryName = iln },
+
+                { "g=|gen=|generator=", "the {TYPE} of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g); } },
+                { "p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p); } },
+                { "a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a); } },
+
                 { "c++11", "enables GCC C++ 11 compilation (valid only for Linux platform)", cpp11 => { _options.Cpp11ABI = (cpp11 != null); } },
                 { "cs|checksymbols", "enable the symbol check for the generated code", cs => { _options.CheckSymbols = (cs != null); } },
                 { "ub|unitybuild", "enable unity build", ub => { _options.UnityBuild = (ub != null); } },
-                { "help", "shows the help", hl => { showHelp = (hl != null); } }
+
+                { "h|help", "shows the help", hl => { showHelp = (hl != null); } },
             };
-            
+
+            List<String> additionalArguments = null;
+
             try
             {
-                _assemblies = optionSet.Parse(args);
+                additionalArguments = optionSet.Parse(args);
             }
             catch (Mono.Options.OptionException e)
             {
                 Console.WriteLine(e.Message);
-                Environment.Exit(0);
+                return false;
+            }
+                        
+            if (showHelp || additionalArguments != null && additionalArguments.Count == 0)
+            {
+                ShowHelp(optionSet);
+                return false;
             }
 
-            if (showHelp)
-            {
-                // Print usage and exit.
-                Console.WriteLine("{0} [options]+", AppDomain.CurrentDomain.FriendlyName);
-                Console.WriteLine("Generates target language bindings for interop with unmanaged code.");
-                Console.WriteLine();
-                optionSet.WriteOptionDescriptions(Console.Out);
-                Environment.Exit(0);
-            }
+            foreach(String s in additionalArguments)
+                HandleAdditionalArgument(s);
 
-            if (_assemblies == null)
+            return true;
+        }
+
+        static void ShowHelp(Mono.Options.OptionSet options)
+        {
+            Console.WriteLine("Usage: {0} [options]+", AppDomain.CurrentDomain.FriendlyName);
+            Console.WriteLine("Generates target language bindings to interop with unmanaged code.");
+            Console.WriteLine();
+            Console.WriteLine("Options:");
+            options.WriteOptionDescriptions(Console.Out);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Useful informations:");
+            Console.WriteLine(" - the options 'iln' (same as 'inputlibraryname') and 'l' have a similar meaning. Both of them are used to tell");
+            Console.WriteLine("   the generator which library has to be used to P/Invoke the functions from your native code.");
+            Console.WriteLine("   The difference is that if you want to generate the bindings for more than one library within a single managed");
+            Console.WriteLine("   file you need to use the 'l' option to specify the names of all the libraries that contain the symbols to be loaded");
+            Console.WriteLine("   and you MUST set the 'cs' ('checksymbols') flag to let the generator automatically understand which library");
+            Console.WriteLine("   to use to P/Invoke. This can be also used if you plan to generate the bindings for only one library.");
+            Console.WriteLine("   If you specify the 'iln' (or 'inputlibraryname') options, this option's value will be used for all the P/Invokes");
+            Console.WriteLine("   that the generator will create.");
+            Console.WriteLine(" - If you specify the 'unitybuild' option then the generator will output a file for each given header file that will");
+            Console.WriteLine("   contain only the bindings for that header file.");
+        }
+
+        static void HandleOutputArg(String arg)
+        {
+            try
             {
-                Console.WriteLine("Invalid arguments.");
+                String dir = System.IO.Path.GetDirectoryName(arg);
+                String file = System.IO.Path.GetFileNameWithoutExtension(arg);
+
+                _options.OutputDir = dir;
+                _options.OutputFileName = file;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Output error: " + e.Message);
                 Environment.Exit(0);
             }
+        }
+
+        static void AddDefine(String name, String value)
+        {
+            if (name == null)
+                throw new Mono.Options.OptionException("Invalid definition name for option -D.", "-D");
+            _options.Defines.Add(name, value);
+        }
+
+        static void HandleAdditionalArgument(String args)
+        {
+            if (System.IO.Directory.Exists(args))
+                GetFilesFromPath(args);
+            else if (System.IO.File.Exists(args))
+                _options.HeaderFiles.Add(args);
         }
 
         static void GetFilesFromPath(String path)
@@ -115,10 +167,10 @@ namespace CppSharp
             {
                 case "csharp":
                     _options.Kind = CppSharp.Generators.GeneratorKind.CSharp;
-                    break;
+                    return;
                 case "cli":
                     _options.Kind = CppSharp.Generators.GeneratorKind.CLI;
-                    break;
+                    return;
             }
 
             throw new NotSupportedException("Unknown generator kind: " + generator);
@@ -130,13 +182,13 @@ namespace CppSharp
             {
                 case "win":
                     _options.Platform = TargetPlatform.Windows;
-                    break;
+                    return;
                 case "osx":
                     _options.Platform = TargetPlatform.MacOS;
-                    break;
+                    return;
                 case "linux":
                     _options.Platform = TargetPlatform.Linux;
-                    break;
+                    return;
             }
 
             throw new NotSupportedException("Unknown target platform: " + platform);
@@ -148,10 +200,10 @@ namespace CppSharp
             {
                 case "x86":
                     _options.Architecture = TargetArchitecture.x86;
-                    break;
+                    return;
                 case "x64":
-                    _options.Architecture = TargetArchitecture.x64; 
-                    break;
+                    _options.Architecture = TargetArchitecture.x64;
+                    return;
             }
 
             throw new NotSupportedException("Unknown target architecture: " + architecture);
@@ -159,17 +211,17 @@ namespace CppSharp
 
         static void Main(string[] args)
         {
-            ParseCommandLineArgs(args);
-
-            Generator gen = new Generator(_options);
-
             try
             {
+                if (ParseCommandLineArgs(args) == false)
+                    return;
+
+                Generator gen = new Generator(_options);
                 gen.Run();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
     }
