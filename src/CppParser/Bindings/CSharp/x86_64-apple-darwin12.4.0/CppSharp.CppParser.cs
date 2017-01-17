@@ -7,6 +7,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("CppSharp.Parser")]
 
 namespace CppSharp
 {
@@ -296,17 +299,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static Type __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static Type __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Type(native.ToPointer(), skipVTables);
                 }
 
-                public static Type __CreateInstance(Type.__Internal native, bool skipVTables = false)
+                internal static Type __CreateInstance(Type.__Internal native, bool skipVTables = false)
                 {
                     return new Type(native, skipVTables);
                 }
@@ -419,17 +422,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static TypeQualifiers __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static TypeQualifiers __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypeQualifiers(native.ToPointer(), skipVTables);
                 }
 
-                public static TypeQualifiers __CreateInstance(TypeQualifiers.__Internal native, bool skipVTables = false)
+                internal static TypeQualifiers __CreateInstance(TypeQualifiers.__Internal native, bool skipVTables = false)
                 {
                     return new TypeQualifiers(native, skipVTables);
                 }
@@ -548,17 +551,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static QualifiedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static QualifiedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new QualifiedType(native.ToPointer(), skipVTables);
                 }
 
-                public static QualifiedType __CreateInstance(QualifiedType.__Internal native, bool skipVTables = false)
+                internal static QualifiedType __CreateInstance(QualifiedType.__Internal native, bool skipVTables = false)
                 {
                     return new QualifiedType(native, skipVTables);
                 }
@@ -670,12 +673,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new TagType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TagType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TagType(native.ToPointer(), skipVTables);
                 }
 
-                public static TagType __CreateInstance(TagType.__Internal native, bool skipVTables = false)
+                internal static TagType __CreateInstance(TagType.__Internal native, bool skipVTables = false)
                 {
                     return new TagType(native, skipVTables);
                 }
@@ -785,12 +788,12 @@ namespace CppSharp
                     Incomplete = 3
                 }
 
-                public static new ArrayType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new ArrayType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ArrayType(native.ToPointer(), skipVTables);
                 }
 
-                public static ArrayType __CreateInstance(ArrayType.__Internal native, bool skipVTables = false)
+                internal static ArrayType __CreateInstance(ArrayType.__Internal native, bool skipVTables = false)
                 {
                     return new ArrayType(native, skipVTables);
                 }
@@ -948,12 +951,12 @@ namespace CppSharp
                     internal static extern uint GetParametersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new FunctionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new FunctionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new FunctionType(native.ToPointer(), skipVTables);
                 }
 
-                public static FunctionType __CreateInstance(FunctionType.__Internal native, bool skipVTables = false)
+                internal static FunctionType __CreateInstance(FunctionType.__Internal native, bool skipVTables = false)
                 {
                     return new FunctionType(native, skipVTables);
                 }
@@ -1108,12 +1111,12 @@ namespace CppSharp
                     RVReference = 3
                 }
 
-                public static new PointerType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new PointerType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new PointerType(native.ToPointer(), skipVTables);
                 }
 
-                public static PointerType __CreateInstance(PointerType.__Internal native, bool skipVTables = false)
+                internal static PointerType __CreateInstance(PointerType.__Internal native, bool skipVTables = false)
                 {
                     return new PointerType(native, skipVTables);
                 }
@@ -1214,12 +1217,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new MemberPointerType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new MemberPointerType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new MemberPointerType(native.ToPointer(), skipVTables);
                 }
 
-                public static MemberPointerType __CreateInstance(MemberPointerType.__Internal native, bool skipVTables = false)
+                internal static MemberPointerType __CreateInstance(MemberPointerType.__Internal native, bool skipVTables = false)
                 {
                     return new MemberPointerType(native, skipVTables);
                 }
@@ -1307,12 +1310,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new TypedefType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TypedefType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypedefType(native.ToPointer(), skipVTables);
                 }
 
-                public static TypedefType __CreateInstance(TypedefType.__Internal native, bool skipVTables = false)
+                internal static TypedefType __CreateInstance(TypedefType.__Internal native, bool skipVTables = false)
                 {
                     return new TypedefType(native, skipVTables);
                 }
@@ -1408,12 +1411,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new AttributedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new AttributedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new AttributedType(native.ToPointer(), skipVTables);
                 }
 
-                public static AttributedType __CreateInstance(AttributedType.__Internal native, bool skipVTables = false)
+                internal static AttributedType __CreateInstance(AttributedType.__Internal native, bool skipVTables = false)
                 {
                     return new AttributedType(native, skipVTables);
                 }
@@ -1520,12 +1523,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new DecayedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new DecayedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new DecayedType(native.ToPointer(), skipVTables);
                 }
 
-                public static DecayedType __CreateInstance(DecayedType.__Internal native, bool skipVTables = false)
+                internal static DecayedType __CreateInstance(DecayedType.__Internal native, bool skipVTables = false)
                 {
                     return new DecayedType(native, skipVTables);
                 }
@@ -1657,17 +1660,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static TemplateArgument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static TemplateArgument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TemplateArgument(native.ToPointer(), skipVTables);
                 }
 
-                public static TemplateArgument __CreateInstance(TemplateArgument.__Internal native, bool skipVTables = false)
+                internal static TemplateArgument __CreateInstance(TemplateArgument.__Internal native, bool skipVTables = false)
                 {
                     return new TemplateArgument(native, skipVTables);
                 }
@@ -1836,12 +1839,12 @@ namespace CppSharp
                     internal static extern uint GetArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TemplateSpecializationType(native.ToPointer(), skipVTables);
                 }
 
-                public static TemplateSpecializationType __CreateInstance(TemplateSpecializationType.__Internal native, bool skipVTables = false)
+                internal static TemplateSpecializationType __CreateInstance(TemplateSpecializationType.__Internal native, bool skipVTables = false)
                 {
                     return new TemplateSpecializationType(native, skipVTables);
                 }
@@ -2014,12 +2017,12 @@ namespace CppSharp
                     internal static extern uint GetArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new DependentTemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new DependentTemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new DependentTemplateSpecializationType(native.ToPointer(), skipVTables);
                 }
 
-                public static DependentTemplateSpecializationType __CreateInstance(DependentTemplateSpecializationType.__Internal native, bool skipVTables = false)
+                internal static DependentTemplateSpecializationType __CreateInstance(DependentTemplateSpecializationType.__Internal native, bool skipVTables = false)
                 {
                     return new DependentTemplateSpecializationType(native, skipVTables);
                 }
@@ -2160,12 +2163,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TemplateParameterType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TemplateParameterType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TemplateParameterType(native.ToPointer(), skipVTables);
                 }
 
-                public static TemplateParameterType __CreateInstance(TemplateParameterType.__Internal native, bool skipVTables = false)
+                internal static TemplateParameterType __CreateInstance(TemplateParameterType.__Internal native, bool skipVTables = false)
                 {
                     return new TemplateParameterType(native, skipVTables);
                 }
@@ -2310,12 +2313,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TemplateParameterSubstitutionType(native.ToPointer(), skipVTables);
                 }
 
-                public static TemplateParameterSubstitutionType __CreateInstance(TemplateParameterSubstitutionType.__Internal native, bool skipVTables = false)
+                internal static TemplateParameterSubstitutionType __CreateInstance(TemplateParameterSubstitutionType.__Internal native, bool skipVTables = false)
                 {
                     return new TemplateParameterSubstitutionType(native, skipVTables);
                 }
@@ -2424,12 +2427,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new InjectedClassNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new InjectedClassNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new InjectedClassNameType(native.ToPointer(), skipVTables);
                 }
 
-                public static InjectedClassNameType __CreateInstance(InjectedClassNameType.__Internal native, bool skipVTables = false)
+                internal static InjectedClassNameType __CreateInstance(InjectedClassNameType.__Internal native, bool skipVTables = false)
                 {
                     return new InjectedClassNameType(native, skipVTables);
                 }
@@ -2535,12 +2538,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new DependentNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new DependentNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new DependentNameType(native.ToPointer(), skipVTables);
                 }
 
-                public static DependentNameType __CreateInstance(DependentNameType.__Internal native, bool skipVTables = false)
+                internal static DependentNameType __CreateInstance(DependentNameType.__Internal native, bool skipVTables = false)
                 {
                     return new DependentNameType(native, skipVTables);
                 }
@@ -2625,12 +2628,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new PackExpansionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new PackExpansionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new PackExpansionType(native.ToPointer(), skipVTables);
                 }
 
-                public static PackExpansionType __CreateInstance(PackExpansionType.__Internal native, bool skipVTables = false)
+                internal static PackExpansionType __CreateInstance(PackExpansionType.__Internal native, bool skipVTables = false)
                 {
                     return new PackExpansionType(native, skipVTables);
                 }
@@ -2708,12 +2711,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new UnaryTransformType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new UnaryTransformType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new UnaryTransformType(native.ToPointer(), skipVTables);
                 }
 
-                public static UnaryTransformType __CreateInstance(UnaryTransformType.__Internal native, bool skipVTables = false)
+                internal static UnaryTransformType __CreateInstance(UnaryTransformType.__Internal native, bool skipVTables = false)
                 {
                     return new UnaryTransformType(native, skipVTables);
                 }
@@ -2817,12 +2820,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new VectorType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VectorType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VectorType(native.ToPointer(), skipVTables);
                 }
 
-                public static VectorType __CreateInstance(VectorType.__Internal native, bool skipVTables = false)
+                internal static VectorType __CreateInstance(VectorType.__Internal native, bool skipVTables = false)
                 {
                     return new VectorType(native, skipVTables);
                 }
@@ -2923,12 +2926,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new BuiltinType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new BuiltinType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new BuiltinType(native.ToPointer(), skipVTables);
                 }
 
-                public static BuiltinType __CreateInstance(BuiltinType.__Internal native, bool skipVTables = false)
+                internal static BuiltinType __CreateInstance(BuiltinType.__Internal native, bool skipVTables = false)
                 {
                     return new BuiltinType(native, skipVTables);
                 }
@@ -3019,17 +3022,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static VTableComponent __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static VTableComponent __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VTableComponent(native.ToPointer(), skipVTables);
                 }
 
-                public static VTableComponent __CreateInstance(VTableComponent.__Internal native, bool skipVTables = false)
+                internal static VTableComponent __CreateInstance(VTableComponent.__Internal native, bool skipVTables = false)
                 {
                     return new VTableComponent(native, skipVTables);
                 }
@@ -3176,17 +3179,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static VTableLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static VTableLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VTableLayout(native.ToPointer(), skipVTables);
                 }
 
-                public static VTableLayout __CreateInstance(VTableLayout.__Internal native, bool skipVTables = false)
+                internal static VTableLayout __CreateInstance(VTableLayout.__Internal native, bool skipVTables = false)
                 {
                     return new VTableLayout(native, skipVTables);
                 }
@@ -3311,17 +3314,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static VFTableInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static VFTableInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VFTableInfo(native.ToPointer(), skipVTables);
                 }
 
-                public static VFTableInfo __CreateInstance(VFTableInfo.__Internal native, bool skipVTables = false)
+                internal static VFTableInfo __CreateInstance(VFTableInfo.__Internal native, bool skipVTables = false)
                 {
                     return new VFTableInfo(native, skipVTables);
                 }
@@ -3480,17 +3483,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static LayoutField __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static LayoutField __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new LayoutField(native.ToPointer(), skipVTables);
                 }
 
-                public static LayoutField __CreateInstance(LayoutField.__Internal native, bool skipVTables = false)
+                internal static LayoutField __CreateInstance(LayoutField.__Internal native, bool skipVTables = false)
                 {
                     return new LayoutField(native, skipVTables);
                 }
@@ -3634,17 +3637,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static LayoutBase __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static LayoutBase __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new LayoutBase(native.ToPointer(), skipVTables);
                 }
 
-                public static LayoutBase __CreateInstance(LayoutBase.__Internal native, bool skipVTables = false)
+                internal static LayoutBase __CreateInstance(LayoutBase.__Internal native, bool skipVTables = false)
                 {
                     return new LayoutBase(native, skipVTables);
                 }
@@ -3850,17 +3853,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static ClassLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static ClassLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ClassLayout(native.ToPointer(), skipVTables);
                 }
 
-                public static ClassLayout __CreateInstance(ClassLayout.__Internal native, bool skipVTables = false)
+                internal static ClassLayout __CreateInstance(ClassLayout.__Internal native, bool skipVTables = false)
                 {
                     return new ClassLayout(native, skipVTables);
                 }
@@ -4224,17 +4227,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static Declaration __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static Declaration __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Declaration(native.ToPointer(), skipVTables);
                 }
 
-                public static Declaration __CreateInstance(Declaration.__Internal native, bool skipVTables = false)
+                internal static Declaration __CreateInstance(Declaration.__Internal native, bool skipVTables = false)
                 {
                     return new Declaration(native, skipVTables);
                 }
@@ -4844,12 +4847,12 @@ namespace CppSharp
                     internal static extern uint GetFriendsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new DeclarationContext __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new DeclarationContext __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new DeclarationContext(native.ToPointer(), skipVTables);
                 }
 
-                public static DeclarationContext __CreateInstance(DeclarationContext.__Internal native, bool skipVTables = false)
+                internal static DeclarationContext __CreateInstance(DeclarationContext.__Internal native, bool skipVTables = false)
                 {
                     return new DeclarationContext(native, skipVTables);
                 }
@@ -5299,12 +5302,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TypedefNameDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TypedefNameDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypedefNameDecl(native.ToPointer(), skipVTables);
                 }
 
-                public static TypedefNameDecl __CreateInstance(TypedefNameDecl.__Internal native, bool skipVTables = false)
+                internal static TypedefNameDecl __CreateInstance(TypedefNameDecl.__Internal native, bool skipVTables = false)
                 {
                     return new TypedefNameDecl(native, skipVTables);
                 }
@@ -5457,12 +5460,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TypedefDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TypedefDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypedefDecl(native.ToPointer(), skipVTables);
                 }
 
-                public static TypedefDecl __CreateInstance(TypedefDecl.__Internal native, bool skipVTables = false)
+                internal static TypedefDecl __CreateInstance(TypedefDecl.__Internal native, bool skipVTables = false)
                 {
                     return new TypedefDecl(native, skipVTables);
                 }
@@ -5600,12 +5603,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TypeAlias __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TypeAlias __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypeAlias(native.ToPointer(), skipVTables);
                 }
 
-                public static TypeAlias __CreateInstance(TypeAlias.__Internal native, bool skipVTables = false)
+                internal static TypeAlias __CreateInstance(TypeAlias.__Internal native, bool skipVTables = false)
                 {
                     return new TypeAlias(native, skipVTables);
                 }
@@ -5758,12 +5761,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Friend __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Friend __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Friend(native.ToPointer(), skipVTables);
                 }
 
-                public static Friend __CreateInstance(Friend.__Internal native, bool skipVTables = false)
+                internal static Friend __CreateInstance(Friend.__Internal native, bool skipVTables = false)
                 {
                     return new Friend(native, skipVTables);
                 }
@@ -5879,17 +5882,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static Statement __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static Statement __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Statement(native.ToPointer(), skipVTables);
                 }
 
-                public static Statement __CreateInstance(Statement.__Internal native, bool skipVTables = false)
+                internal static Statement __CreateInstance(Statement.__Internal native, bool skipVTables = false)
                 {
                     return new Statement(native, skipVTables);
                 }
@@ -6012,12 +6015,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Expression __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Expression __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Expression(native.ToPointer(), skipVTables);
                 }
 
-                public static Expression __CreateInstance(Expression.__Internal native, bool skipVTables = false)
+                internal static Expression __CreateInstance(Expression.__Internal native, bool skipVTables = false)
                 {
                     return new Expression(native, skipVTables);
                 }
@@ -6112,12 +6115,12 @@ namespace CppSharp
                     internal static extern void SetOpcodeStr_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new BinaryOperator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new BinaryOperator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new BinaryOperator(native.ToPointer(), skipVTables);
                 }
 
-                public static BinaryOperator __CreateInstance(BinaryOperator.__Internal native, bool skipVTables = false)
+                internal static BinaryOperator __CreateInstance(BinaryOperator.__Internal native, bool skipVTables = false)
                 {
                     return new BinaryOperator(native, skipVTables);
                 }
@@ -6266,12 +6269,12 @@ namespace CppSharp
                     internal static extern uint GetArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new CallExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new CallExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new CallExpr(native.ToPointer(), skipVTables);
                 }
 
-                public static CallExpr __CreateInstance(CallExpr.__Internal native, bool skipVTables = false)
+                internal static CallExpr __CreateInstance(CallExpr.__Internal native, bool skipVTables = false)
                 {
                     return new CallExpr(native, skipVTables);
                 }
@@ -6403,12 +6406,12 @@ namespace CppSharp
                     internal static extern uint GetArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new CXXConstructExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new CXXConstructExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new CXXConstructExpr(native.ToPointer(), skipVTables);
                 }
 
-                public static CXXConstructExpr __CreateInstance(CXXConstructExpr.__Internal native, bool skipVTables = false)
+                internal static CXXConstructExpr __CreateInstance(CXXConstructExpr.__Internal native, bool skipVTables = false)
                 {
                     return new CXXConstructExpr(native, skipVTables);
                 }
@@ -6579,12 +6582,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Parameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Parameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Parameter(native.ToPointer(), skipVTables);
                 }
 
-                public static Parameter __CreateInstance(Parameter.__Internal native, bool skipVTables = false)
+                internal static Parameter __CreateInstance(Parameter.__Internal native, bool skipVTables = false)
                 {
                     return new Parameter(native, skipVTables);
                 }
@@ -6868,12 +6871,12 @@ namespace CppSharp
                     internal static extern uint GetParametersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new Function __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Function __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Function(native.ToPointer(), skipVTables);
                 }
 
-                public static Function __CreateInstance(Function.__Internal native, bool skipVTables = false)
+                internal static Function __CreateInstance(Function.__Internal native, bool skipVTables = false)
                 {
                     return new Function(native, skipVTables);
                 }
@@ -7294,12 +7297,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Method __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Method __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Method(native.ToPointer(), skipVTables);
                 }
 
-                public static Method __CreateInstance(Method.__Internal native, bool skipVTables = false)
+                internal static Method __CreateInstance(Method.__Internal native, bool skipVTables = false)
                 {
                     return new Method(native, skipVTables);
                 }
@@ -7735,12 +7738,12 @@ namespace CppSharp
                         internal static extern void SetExpression_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                     }
 
-                    public static new Item __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    internal static new Item __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
                         return new Item(native.ToPointer(), skipVTables);
                     }
 
-                    public static Item __CreateInstance(Item.__Internal native, bool skipVTables = false)
+                    internal static Item __CreateInstance(Item.__Internal native, bool skipVTables = false)
                     {
                         return new Item(native, skipVTables);
                     }
@@ -7827,12 +7830,12 @@ namespace CppSharp
                     }
                 }
 
-                public static new Enumeration __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Enumeration __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Enumeration(native.ToPointer(), skipVTables);
                 }
 
-                public static Enumeration __CreateInstance(Enumeration.__Internal native, bool skipVTables = false)
+                internal static Enumeration __CreateInstance(Enumeration.__Internal native, bool skipVTables = false)
                 {
                     return new Enumeration(native, skipVTables);
                 }
@@ -8062,12 +8065,12 @@ namespace CppSharp
                     internal static extern void SetMangled_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new Variable __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Variable __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Variable(native.ToPointer(), skipVTables);
                 }
 
-                public static Variable __CreateInstance(Variable.__Internal native, bool skipVTables = false)
+                internal static Variable __CreateInstance(Variable.__Internal native, bool skipVTables = false)
                 {
                     return new Variable(native, skipVTables);
                 }
@@ -8185,17 +8188,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static BaseClassSpecifier __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static BaseClassSpecifier __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new BaseClassSpecifier(native.ToPointer(), skipVTables);
                 }
 
-                public static BaseClassSpecifier __CreateInstance(BaseClassSpecifier.__Internal native, bool skipVTables = false)
+                internal static BaseClassSpecifier __CreateInstance(BaseClassSpecifier.__Internal native, bool skipVTables = false)
                 {
                     return new BaseClassSpecifier(native, skipVTables);
                 }
@@ -8392,12 +8395,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Field __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Field __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Field(native.ToPointer(), skipVTables);
                 }
 
-                public static Field __CreateInstance(Field.__Internal native, bool skipVTables = false)
+                internal static Field __CreateInstance(Field.__Internal native, bool skipVTables = false)
                 {
                     return new Field(native, skipVTables);
                 }
@@ -8586,12 +8589,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new AccessSpecifierDecl(native.ToPointer(), skipVTables);
                 }
 
-                public static AccessSpecifierDecl __CreateInstance(AccessSpecifierDecl.__Internal native, bool skipVTables = false)
+                internal static AccessSpecifierDecl __CreateInstance(AccessSpecifierDecl.__Internal native, bool skipVTables = false)
                 {
                     return new AccessSpecifierDecl(native, skipVTables);
                 }
@@ -8878,12 +8881,12 @@ namespace CppSharp
                     internal static extern uint GetSpecifiersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new Class __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Class __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Class(native.ToPointer(), skipVTables);
                 }
 
-                public static Class __CreateInstance(Class.__Internal native, bool skipVTables = false)
+                internal static Class __CreateInstance(Class.__Internal native, bool skipVTables = false)
                 {
                     return new Class(native, skipVTables);
                 }
@@ -9313,12 +9316,12 @@ namespace CppSharp
                     internal static extern uint GetParametersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new Template __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Template __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Template(native.ToPointer(), skipVTables);
                 }
 
-                public static Template __CreateInstance(Template.__Internal native, bool skipVTables = false)
+                internal static Template __CreateInstance(Template.__Internal native, bool skipVTables = false)
                 {
                     return new Template(native, skipVTables);
                 }
@@ -9521,12 +9524,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TypeAliasTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TypeAliasTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypeAliasTemplate(native.ToPointer(), skipVTables);
                 }
 
-                public static TypeAliasTemplate __CreateInstance(TypeAliasTemplate.__Internal native, bool skipVTables = false)
+                internal static TypeAliasTemplate __CreateInstance(TypeAliasTemplate.__Internal native, bool skipVTables = false)
                 {
                     return new TypeAliasTemplate(native, skipVTables);
                 }
@@ -9667,12 +9670,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                public static TemplateParameter __CreateInstance(TemplateParameter.__Internal native, bool skipVTables = false)
+                internal static TemplateParameter __CreateInstance(TemplateParameter.__Internal native, bool skipVTables = false)
                 {
                     return new TemplateParameter(native, skipVTables);
                 }
@@ -9863,12 +9866,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TemplateTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TemplateTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TemplateTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                public static TemplateTemplateParameter __CreateInstance(TemplateTemplateParameter.__Internal native, bool skipVTables = false)
+                internal static TemplateTemplateParameter __CreateInstance(TemplateTemplateParameter.__Internal native, bool skipVTables = false)
                 {
                     return new TemplateTemplateParameter(native, skipVTables);
                 }
@@ -10051,12 +10054,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TypeTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TypeTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TypeTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                public static TypeTemplateParameter __CreateInstance(TypeTemplateParameter.__Internal native, bool skipVTables = false)
+                internal static TypeTemplateParameter __CreateInstance(TypeTemplateParameter.__Internal native, bool skipVTables = false)
                 {
                     return new TypeTemplateParameter(native, skipVTables);
                 }
@@ -10222,12 +10225,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new NonTypeTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new NonTypeTemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new NonTypeTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                public static NonTypeTemplateParameter __CreateInstance(NonTypeTemplateParameter.__Internal native, bool skipVTables = false)
+                internal static NonTypeTemplateParameter __CreateInstance(NonTypeTemplateParameter.__Internal native, bool skipVTables = false)
                 {
                     return new NonTypeTemplateParameter(native, skipVTables);
                 }
@@ -10445,12 +10448,12 @@ namespace CppSharp
                     internal static extern uint GetSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new ClassTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new ClassTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ClassTemplate(native.ToPointer(), skipVTables);
                 }
 
-                public static ClassTemplate __CreateInstance(ClassTemplate.__Internal native, bool skipVTables = false)
+                internal static ClassTemplate __CreateInstance(ClassTemplate.__Internal native, bool skipVTables = false)
                 {
                     return new ClassTemplate(native, skipVTables);
                 }
@@ -10719,12 +10722,12 @@ namespace CppSharp
                     internal static extern uint GetArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ClassTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                public static ClassTemplateSpecialization __CreateInstance(ClassTemplateSpecialization.__Internal native, bool skipVTables = false)
+                internal static ClassTemplateSpecialization __CreateInstance(ClassTemplateSpecialization.__Internal native, bool skipVTables = false)
                 {
                     return new ClassTemplateSpecialization(native, skipVTables);
                 }
@@ -11000,12 +11003,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ClassTemplatePartialSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                public static ClassTemplatePartialSpecialization __CreateInstance(ClassTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
+                internal static ClassTemplatePartialSpecialization __CreateInstance(ClassTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
                 {
                     return new ClassTemplatePartialSpecialization(native, skipVTables);
                 }
@@ -11166,12 +11169,12 @@ namespace CppSharp
                     internal static extern uint GetSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new FunctionTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new FunctionTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new FunctionTemplate(native.ToPointer(), skipVTables);
                 }
 
-                public static FunctionTemplate __CreateInstance(FunctionTemplate.__Internal native, bool skipVTables = false)
+                internal static FunctionTemplate __CreateInstance(FunctionTemplate.__Internal native, bool skipVTables = false)
                 {
                     return new FunctionTemplate(native, skipVTables);
                 }
@@ -11320,17 +11323,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new FunctionTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                public static FunctionTemplateSpecialization __CreateInstance(FunctionTemplateSpecialization.__Internal native, bool skipVTables = false)
+                internal static FunctionTemplateSpecialization __CreateInstance(FunctionTemplateSpecialization.__Internal native, bool skipVTables = false)
                 {
                     return new FunctionTemplateSpecialization(native, skipVTables);
                 }
@@ -11570,12 +11573,12 @@ namespace CppSharp
                     internal static extern uint GetSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new VarTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VarTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VarTemplate(native.ToPointer(), skipVTables);
                 }
 
-                public static VarTemplate __CreateInstance(VarTemplate.__Internal native, bool skipVTables = false)
+                internal static VarTemplate __CreateInstance(VarTemplate.__Internal native, bool skipVTables = false)
                 {
                     return new VarTemplate(native, skipVTables);
                 }
@@ -11775,12 +11778,12 @@ namespace CppSharp
                     internal static extern uint GetArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new VarTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VarTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VarTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                public static VarTemplateSpecialization __CreateInstance(VarTemplateSpecialization.__Internal native, bool skipVTables = false)
+                internal static VarTemplateSpecialization __CreateInstance(VarTemplateSpecialization.__Internal native, bool skipVTables = false)
                 {
                     return new VarTemplateSpecialization(native, skipVTables);
                 }
@@ -11987,12 +11990,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new VarTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VarTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VarTemplatePartialSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                public static VarTemplatePartialSpecialization __CreateInstance(VarTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
+                internal static VarTemplatePartialSpecialization __CreateInstance(VarTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
                 {
                     return new VarTemplatePartialSpecialization(native, skipVTables);
                 }
@@ -12160,12 +12163,12 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Namespace __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new Namespace __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Namespace(native.ToPointer(), skipVTables);
                 }
 
-                public static Namespace __CreateInstance(Namespace.__Internal native, bool skipVTables = false)
+                internal static Namespace __CreateInstance(Namespace.__Internal native, bool skipVTables = false)
                 {
                     return new Namespace(native, skipVTables);
                 }
@@ -12266,17 +12269,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static PreprocessedEntity __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static PreprocessedEntity __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new PreprocessedEntity(native.ToPointer(), skipVTables);
                 }
 
-                public static PreprocessedEntity __CreateInstance(PreprocessedEntity.__Internal native, bool skipVTables = false)
+                internal static PreprocessedEntity __CreateInstance(PreprocessedEntity.__Internal native, bool skipVTables = false)
                 {
                     return new PreprocessedEntity(native, skipVTables);
                 }
@@ -12433,12 +12436,12 @@ namespace CppSharp
                     internal static extern void SetExpression_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new MacroDefinition __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new MacroDefinition __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new MacroDefinition(native.ToPointer(), skipVTables);
                 }
 
-                public static MacroDefinition __CreateInstance(MacroDefinition.__Internal native, bool skipVTables = false)
+                internal static MacroDefinition __CreateInstance(MacroDefinition.__Internal native, bool skipVTables = false)
                 {
                     return new MacroDefinition(native, skipVTables);
                 }
@@ -12611,12 +12614,12 @@ namespace CppSharp
                     internal static extern void SetText_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new MacroExpansion __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new MacroExpansion __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new MacroExpansion(native.ToPointer(), skipVTables);
                 }
 
-                public static MacroExpansion __CreateInstance(MacroExpansion.__Internal native, bool skipVTables = false)
+                internal static MacroExpansion __CreateInstance(MacroExpansion.__Internal native, bool skipVTables = false)
                 {
                     return new MacroExpansion(native, skipVTables);
                 }
@@ -12869,12 +12872,12 @@ namespace CppSharp
                     internal static extern uint GetMacrosCount_0(global::System.IntPtr instance);
                 }
 
-                public static new TranslationUnit __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TranslationUnit __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TranslationUnit(native.ToPointer(), skipVTables);
                 }
 
-                public static TranslationUnit __CreateInstance(TranslationUnit.__Internal native, bool skipVTables = false)
+                internal static TranslationUnit __CreateInstance(TranslationUnit.__Internal native, bool skipVTables = false)
                 {
                     return new TranslationUnit(native, skipVTables);
                 }
@@ -13080,17 +13083,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static NativeLibrary __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static NativeLibrary __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new NativeLibrary(native.ToPointer(), skipVTables);
                 }
 
-                public static NativeLibrary __CreateInstance(NativeLibrary.__Internal native, bool skipVTables = false)
+                internal static NativeLibrary __CreateInstance(NativeLibrary.__Internal native, bool skipVTables = false)
                 {
                     return new NativeLibrary(native, skipVTables);
                 }
@@ -13275,17 +13278,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static ASTContext __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static ASTContext __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ASTContext(native.ToPointer(), skipVTables);
                 }
 
-                public static ASTContext __CreateInstance(ASTContext.__Internal native, bool skipVTables = false)
+                internal static ASTContext __CreateInstance(ASTContext.__Internal native, bool skipVTables = false)
                 {
                     return new ASTContext(native, skipVTables);
                 }
@@ -13401,17 +13404,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static Comment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static Comment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new Comment(native.ToPointer(), skipVTables);
                 }
 
-                public static Comment __CreateInstance(Comment.__Internal native, bool skipVTables = false)
+                internal static Comment __CreateInstance(Comment.__Internal native, bool skipVTables = false)
                 {
                     return new Comment(native, skipVTables);
                 }
@@ -13509,12 +13512,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new BlockContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new BlockContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new BlockContentComment(native.ToPointer(), skipVTables);
                 }
 
-                public static BlockContentComment __CreateInstance(BlockContentComment.__Internal native, bool skipVTables = false)
+                internal static BlockContentComment __CreateInstance(BlockContentComment.__Internal native, bool skipVTables = false)
                 {
                     return new BlockContentComment(native, skipVTables);
                 }
@@ -13622,12 +13625,12 @@ namespace CppSharp
                     internal static extern uint GetBlocksCount_0(global::System.IntPtr instance);
                 }
 
-                public static new FullComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new FullComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new FullComment(native.ToPointer(), skipVTables);
                 }
 
-                public static FullComment __CreateInstance(FullComment.__Internal native, bool skipVTables = false)
+                internal static FullComment __CreateInstance(FullComment.__Internal native, bool skipVTables = false)
                 {
                     return new FullComment(native, skipVTables);
                 }
@@ -13747,12 +13750,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new InlineContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new InlineContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new InlineContentComment(native.ToPointer(), skipVTables);
                 }
 
-                public static InlineContentComment __CreateInstance(InlineContentComment.__Internal native, bool skipVTables = false)
+                internal static InlineContentComment __CreateInstance(InlineContentComment.__Internal native, bool skipVTables = false)
                 {
                     return new InlineContentComment(native, skipVTables);
                 }
@@ -13876,12 +13879,12 @@ namespace CppSharp
                     internal static extern uint GetContentCount_0(global::System.IntPtr instance);
                 }
 
-                public static new ParagraphComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new ParagraphComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ParagraphComment(native.ToPointer(), skipVTables);
                 }
 
-                public static ParagraphComment __CreateInstance(ParagraphComment.__Internal native, bool skipVTables = false)
+                internal static ParagraphComment __CreateInstance(ParagraphComment.__Internal native, bool skipVTables = false)
                 {
                     return new ParagraphComment(native, skipVTables);
                 }
@@ -14082,17 +14085,17 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     protected int __PointerAdjustment;
-                    public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
+                    internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
                     protected void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
-                    public static Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    internal static Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
                         return new Argument(native.ToPointer(), skipVTables);
                     }
 
-                    public static Argument __CreateInstance(Argument.__Internal native, bool skipVTables = false)
+                    internal static Argument __CreateInstance(Argument.__Internal native, bool skipVTables = false)
                     {
                         return new Argument(native, skipVTables);
                     }
@@ -14167,12 +14170,12 @@ namespace CppSharp
                     }
                 }
 
-                public static new BlockCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new BlockCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new BlockCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                public static BlockCommandComment __CreateInstance(BlockCommandComment.__Internal native, bool skipVTables = false)
+                internal static BlockCommandComment __CreateInstance(BlockCommandComment.__Internal native, bool skipVTables = false)
                 {
                     return new BlockCommandComment(native, skipVTables);
                 }
@@ -14352,12 +14355,12 @@ namespace CppSharp
                     InOut = 2
                 }
 
-                public static new ParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new ParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new ParamCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                public static ParamCommandComment __CreateInstance(ParamCommandComment.__Internal native, bool skipVTables = false)
+                internal static ParamCommandComment __CreateInstance(ParamCommandComment.__Internal native, bool skipVTables = false)
                 {
                     return new ParamCommandComment(native, skipVTables);
                 }
@@ -14499,12 +14502,12 @@ namespace CppSharp
                     internal static extern uint GetPositionCount_0(global::System.IntPtr instance);
                 }
 
-                public static new TParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TParamCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                public static TParamCommandComment __CreateInstance(TParamCommandComment.__Internal native, bool skipVTables = false)
+                internal static TParamCommandComment __CreateInstance(TParamCommandComment.__Internal native, bool skipVTables = false)
                 {
                     return new TParamCommandComment(native, skipVTables);
                 }
@@ -14630,12 +14633,12 @@ namespace CppSharp
                     internal static extern void SetText_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VerbatimBlockLineComment(native.ToPointer(), skipVTables);
                 }
 
-                public static VerbatimBlockLineComment __CreateInstance(VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
+                internal static VerbatimBlockLineComment __CreateInstance(VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
                 {
                     return new VerbatimBlockLineComment(native, skipVTables);
                 }
@@ -14765,12 +14768,12 @@ namespace CppSharp
                     internal static extern uint GetLinesCount_0(global::System.IntPtr instance);
                 }
 
-                public static new VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VerbatimBlockComment(native.ToPointer(), skipVTables);
                 }
 
-                public static VerbatimBlockComment __CreateInstance(VerbatimBlockComment.__Internal native, bool skipVTables = false)
+                internal static VerbatimBlockComment __CreateInstance(VerbatimBlockComment.__Internal native, bool skipVTables = false)
                 {
                     return new VerbatimBlockComment(native, skipVTables);
                 }
@@ -14909,12 +14912,12 @@ namespace CppSharp
                     internal static extern void SetText_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new VerbatimLineComment(native.ToPointer(), skipVTables);
                 }
 
-                public static VerbatimLineComment __CreateInstance(VerbatimLineComment.__Internal native, bool skipVTables = false)
+                internal static VerbatimLineComment __CreateInstance(VerbatimLineComment.__Internal native, bool skipVTables = false)
                 {
                     return new VerbatimLineComment(native, skipVTables);
                 }
@@ -15089,17 +15092,17 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     protected int __PointerAdjustment;
-                    public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
+                    internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
                     protected void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
-                    public static Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    internal static Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
                         return new Argument(native.ToPointer(), skipVTables);
                     }
 
-                    public static Argument __CreateInstance(Argument.__Internal native, bool skipVTables = false)
+                    internal static Argument __CreateInstance(Argument.__Internal native, bool skipVTables = false)
                     {
                         return new Argument(native, skipVTables);
                     }
@@ -15174,12 +15177,12 @@ namespace CppSharp
                     }
                 }
 
-                public static new InlineCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new InlineCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new InlineCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                public static InlineCommandComment __CreateInstance(InlineCommandComment.__Internal native, bool skipVTables = false)
+                internal static InlineCommandComment __CreateInstance(InlineCommandComment.__Internal native, bool skipVTables = false)
                 {
                     return new InlineCommandComment(native, skipVTables);
                 }
@@ -15321,12 +15324,12 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new HTMLTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new HTMLTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new HTMLTagComment(native.ToPointer(), skipVTables);
                 }
 
-                public static HTMLTagComment __CreateInstance(HTMLTagComment.__Internal native, bool skipVTables = false)
+                internal static HTMLTagComment __CreateInstance(HTMLTagComment.__Internal native, bool skipVTables = false)
                 {
                     return new HTMLTagComment(native, skipVTables);
                 }
@@ -15500,17 +15503,17 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     protected int __PointerAdjustment;
-                    public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute>();
+                    internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute>();
                     protected void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
-                    public static Attribute __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    internal static Attribute __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
                         return new Attribute(native.ToPointer(), skipVTables);
                     }
 
-                    public static Attribute __CreateInstance(Attribute.__Internal native, bool skipVTables = false)
+                    internal static Attribute __CreateInstance(Attribute.__Internal native, bool skipVTables = false)
                     {
                         return new Attribute(native, skipVTables);
                     }
@@ -15599,12 +15602,12 @@ namespace CppSharp
                     }
                 }
 
-                public static new HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new HTMLStartTagComment(native.ToPointer(), skipVTables);
                 }
 
-                public static HTMLStartTagComment __CreateInstance(HTMLStartTagComment.__Internal native, bool skipVTables = false)
+                internal static HTMLStartTagComment __CreateInstance(HTMLStartTagComment.__Internal native, bool skipVTables = false)
                 {
                     return new HTMLStartTagComment(native, skipVTables);
                 }
@@ -15747,12 +15750,12 @@ namespace CppSharp
                     internal static extern void SetTagName_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new HTMLEndTagComment(native.ToPointer(), skipVTables);
                 }
 
-                public static HTMLEndTagComment __CreateInstance(HTMLEndTagComment.__Internal native, bool skipVTables = false)
+                internal static HTMLEndTagComment __CreateInstance(HTMLEndTagComment.__Internal native, bool skipVTables = false)
                 {
                     return new HTMLEndTagComment(native, skipVTables);
                 }
@@ -15866,12 +15869,12 @@ namespace CppSharp
                     internal static extern void SetText_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
-                public static new TextComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new TextComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new TextComment(native.ToPointer(), skipVTables);
                 }
 
-                public static TextComment __CreateInstance(TextComment.__Internal native, bool skipVTables = false)
+                internal static TextComment __CreateInstance(TextComment.__Internal native, bool skipVTables = false)
                 {
                     return new TextComment(native, skipVTables);
                 }
@@ -16001,17 +16004,17 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
+                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                public static RawComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static RawComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
                     return new RawComment(native.ToPointer(), skipVTables);
                 }
 
-                public static RawComment __CreateInstance(RawComment.__Internal native, bool skipVTables = false)
+                internal static RawComment __CreateInstance(RawComment.__Internal native, bool skipVTables = false)
                 {
                     return new RawComment(native, skipVTables);
                 }
@@ -16163,14 +16166,14 @@ namespace CppSharp
             }
 
             private SourceLocation.__Internal __instance;
-            public SourceLocation.__Internal __Instance { get { return __instance; } }
+            internal SourceLocation.__Internal __Instance { get { return __instance; } }
 
-            public static SourceLocation __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static SourceLocation __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new SourceLocation(native.ToPointer(), skipVTables);
             }
 
-            public static SourceLocation __CreateInstance(SourceLocation.__Internal native, bool skipVTables = false)
+            internal static SourceLocation __CreateInstance(SourceLocation.__Internal native, bool skipVTables = false)
             {
                 return new SourceLocation(native, skipVTables);
             }
@@ -16397,17 +16400,17 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
+            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            public static ParserTargetInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static ParserTargetInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new ParserTargetInfo(native.ToPointer(), skipVTables);
             }
 
-            public static ParserTargetInfo __CreateInstance(ParserTargetInfo.__Internal native, bool skipVTables = false)
+            internal static ParserTargetInfo __CreateInstance(ParserTargetInfo.__Internal native, bool skipVTables = false)
             {
                 return new ParserTargetInfo(native, skipVTables);
             }
@@ -17261,17 +17264,17 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions>();
+            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            public static CppParserOptions __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static CppParserOptions __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new CppParserOptions(native.ToPointer(), skipVTables);
             }
 
-            public static CppParserOptions __CreateInstance(CppParserOptions.__Internal native, bool skipVTables = false)
+            internal static CppParserOptions __CreateInstance(CppParserOptions.__Internal native, bool skipVTables = false)
             {
                 return new CppParserOptions(native, skipVTables);
             }
@@ -17721,17 +17724,17 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic>();
+            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            public static ParserDiagnostic __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static ParserDiagnostic __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new ParserDiagnostic(native.ToPointer(), skipVTables);
             }
 
-            public static ParserDiagnostic __CreateInstance(ParserDiagnostic.__Internal native, bool skipVTables = false)
+            internal static ParserDiagnostic __CreateInstance(ParserDiagnostic.__Internal native, bool skipVTables = false)
             {
                 return new ParserDiagnostic(native, skipVTables);
             }
@@ -17918,17 +17921,17 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult>();
+            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            public static ParserResult __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static ParserResult __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new ParserResult(native.ToPointer(), skipVTables);
             }
 
-            public static ParserResult __CreateInstance(ParserResult.__Internal native, bool skipVTables = false)
+            internal static ParserResult __CreateInstance(ParserResult.__Internal native, bool skipVTables = false)
             {
                 return new ParserResult(native, skipVTables);
             }
@@ -18096,17 +18099,17 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser>();
+            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            public static ClangParser __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static ClangParser __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new ClangParser(native.ToPointer(), skipVTables);
             }
 
-            public static ClangParser __CreateInstance(ClangParser.__Internal native, bool skipVTables = false)
+            internal static ClangParser __CreateInstance(ClangParser.__Internal native, bool skipVTables = false)
             {
                 return new ClangParser(native, skipVTables);
             }

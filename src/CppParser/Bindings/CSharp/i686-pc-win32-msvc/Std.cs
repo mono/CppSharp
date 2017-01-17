@@ -7,6 +7,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("CppSharp.Parser.CSharp")]
 
 namespace Std
 {
@@ -400,17 +403,17 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
+        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
-        public static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
             return new Allocator(native.ToPointer(), skipVTables);
         }
 
-        public static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
+        internal static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
         {
             return new Allocator(native, skipVTables);
         }
@@ -496,17 +499,17 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
+        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
-        public static BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
             return new BasicString(native.ToPointer(), skipVTables);
         }
 
-        public static BasicString __CreateInstance(BasicString.__Internal native, bool skipVTables = false)
+        internal static BasicString __CreateInstance(BasicString.__Internal native, bool skipVTables = false)
         {
             return new BasicString(native, skipVTables);
         }
@@ -690,99 +693,6 @@ public unsafe partial class Cvtvec
 
         [FieldOffset(12)]
         public fixed byte _Isleadbyte[32];
-
-        [FieldOffset(13)]
-        public byte __dummy__Isleadbyte_1;
-
-        [FieldOffset(14)]
-        public byte __dummy__Isleadbyte_2;
-
-        [FieldOffset(15)]
-        public byte __dummy__Isleadbyte_3;
-
-        [FieldOffset(16)]
-        public byte __dummy__Isleadbyte_4;
-
-        [FieldOffset(17)]
-        public byte __dummy__Isleadbyte_5;
-
-        [FieldOffset(18)]
-        public byte __dummy__Isleadbyte_6;
-
-        [FieldOffset(19)]
-        public byte __dummy__Isleadbyte_7;
-
-        [FieldOffset(20)]
-        public byte __dummy__Isleadbyte_8;
-
-        [FieldOffset(21)]
-        public byte __dummy__Isleadbyte_9;
-
-        [FieldOffset(22)]
-        public byte __dummy__Isleadbyte_10;
-
-        [FieldOffset(23)]
-        public byte __dummy__Isleadbyte_11;
-
-        [FieldOffset(24)]
-        public byte __dummy__Isleadbyte_12;
-
-        [FieldOffset(25)]
-        public byte __dummy__Isleadbyte_13;
-
-        [FieldOffset(26)]
-        public byte __dummy__Isleadbyte_14;
-
-        [FieldOffset(27)]
-        public byte __dummy__Isleadbyte_15;
-
-        [FieldOffset(28)]
-        public byte __dummy__Isleadbyte_16;
-
-        [FieldOffset(29)]
-        public byte __dummy__Isleadbyte_17;
-
-        [FieldOffset(30)]
-        public byte __dummy__Isleadbyte_18;
-
-        [FieldOffset(31)]
-        public byte __dummy__Isleadbyte_19;
-
-        [FieldOffset(32)]
-        public byte __dummy__Isleadbyte_20;
-
-        [FieldOffset(33)]
-        public byte __dummy__Isleadbyte_21;
-
-        [FieldOffset(34)]
-        public byte __dummy__Isleadbyte_22;
-
-        [FieldOffset(35)]
-        public byte __dummy__Isleadbyte_23;
-
-        [FieldOffset(36)]
-        public byte __dummy__Isleadbyte_24;
-
-        [FieldOffset(37)]
-        public byte __dummy__Isleadbyte_25;
-
-        [FieldOffset(38)]
-        public byte __dummy__Isleadbyte_26;
-
-        [FieldOffset(39)]
-        public byte __dummy__Isleadbyte_27;
-
-        [FieldOffset(40)]
-        public byte __dummy__Isleadbyte_28;
-
-        [FieldOffset(41)]
-        public byte __dummy__Isleadbyte_29;
-
-        [FieldOffset(42)]
-        public byte __dummy__Isleadbyte_30;
-
-        [FieldOffset(43)]
-        public byte __dummy__Isleadbyte_31;
     }
 }
 

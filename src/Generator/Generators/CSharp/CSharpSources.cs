@@ -153,21 +153,27 @@ namespace CppSharp.Generators.CSharp
         {
             GenerateHeader();
 
+            var module = TranslationUnits.Count == 0 ?
+                Context.Options.SystemModule : TranslationUnit.Module;
+
             PushBlock(CSharpBlockKind.Usings);
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
-            if (Context.Options.DoAllModulesHaveLibraries())
+            var internalsVisibleTo = (from m in Options.Modules
+                                      where m.Dependencies.Contains(module)
+                                      select m.LibraryName).ToList();
+            if (internalsVisibleTo.Any())
                 WriteLine("using System.Runtime.CompilerServices;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
                 WriteLine(string.Format("using {0};", customUsingStatement));
             }
             PopBlock(NewLineKind.BeforeNextBlock);
-
-            var module = TranslationUnits.Count == 0 ?
-                Context.Options.SystemModule : TranslationUnit.Module;
-            AddInternalsVisibleTo(module);
+            foreach (var library in internalsVisibleTo)
+                WriteLine($"[assembly:InternalsVisibleTo(\"{library}\")]");
+            if (internalsVisibleTo.Any())
+                NewLine();
 
             if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
@@ -186,21 +192,6 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-        }
-
-        private void AddInternalsVisibleTo(Module module)
-        {
-            if (!Context.Options.DoAllModulesHaveLibraries())
-                return;
-
-            foreach (var library in from m in Options.Modules
-                                    where m.Dependencies.Contains(module)
-                                    select m.LibraryName)
-            {
-                WriteLine($"[assembly:InternalsVisibleTo(\"{library}\")]");
-                NeedNewLine();
-            }
-            NewLineIfNeeded();
         }
 
         public void GenerateHeader()

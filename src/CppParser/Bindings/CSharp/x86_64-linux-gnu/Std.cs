@@ -7,6 +7,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("CppSharp.Parser.CSharp")]
 
 namespace Std
 {
@@ -53,17 +56,17 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
+        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
-        public static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
             return new Allocator(native.ToPointer(), skipVTables);
         }
 
-        public static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
+        internal static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
         {
             return new Allocator(native, skipVTables);
         }
@@ -303,15 +306,6 @@ public unsafe partial class MbstateT
 
             [FieldOffset(0)]
             public fixed sbyte __wchb[4];
-
-            [FieldOffset(1)]
-            public sbyte __dummy___wchb_1;
-
-            [FieldOffset(2)]
-            public sbyte __dummy___wchb_2;
-
-            [FieldOffset(3)]
-            public sbyte __dummy___wchb_3;
         }
     }
 }
@@ -366,123 +360,6 @@ public unsafe partial struct PthreadMutexT
         [FieldOffset(0)]
         public fixed sbyte __size[40];
 
-        [FieldOffset(1)]
-        public sbyte __dummy___size_1;
-
-        [FieldOffset(2)]
-        public sbyte __dummy___size_2;
-
-        [FieldOffset(3)]
-        public sbyte __dummy___size_3;
-
-        [FieldOffset(4)]
-        public sbyte __dummy___size_4;
-
-        [FieldOffset(5)]
-        public sbyte __dummy___size_5;
-
-        [FieldOffset(6)]
-        public sbyte __dummy___size_6;
-
-        [FieldOffset(7)]
-        public sbyte __dummy___size_7;
-
-        [FieldOffset(8)]
-        public sbyte __dummy___size_8;
-
-        [FieldOffset(9)]
-        public sbyte __dummy___size_9;
-
-        [FieldOffset(10)]
-        public sbyte __dummy___size_10;
-
-        [FieldOffset(11)]
-        public sbyte __dummy___size_11;
-
-        [FieldOffset(12)]
-        public sbyte __dummy___size_12;
-
-        [FieldOffset(13)]
-        public sbyte __dummy___size_13;
-
-        [FieldOffset(14)]
-        public sbyte __dummy___size_14;
-
-        [FieldOffset(15)]
-        public sbyte __dummy___size_15;
-
-        [FieldOffset(16)]
-        public sbyte __dummy___size_16;
-
-        [FieldOffset(17)]
-        public sbyte __dummy___size_17;
-
-        [FieldOffset(18)]
-        public sbyte __dummy___size_18;
-
-        [FieldOffset(19)]
-        public sbyte __dummy___size_19;
-
-        [FieldOffset(20)]
-        public sbyte __dummy___size_20;
-
-        [FieldOffset(21)]
-        public sbyte __dummy___size_21;
-
-        [FieldOffset(22)]
-        public sbyte __dummy___size_22;
-
-        [FieldOffset(23)]
-        public sbyte __dummy___size_23;
-
-        [FieldOffset(24)]
-        public sbyte __dummy___size_24;
-
-        [FieldOffset(25)]
-        public sbyte __dummy___size_25;
-
-        [FieldOffset(26)]
-        public sbyte __dummy___size_26;
-
-        [FieldOffset(27)]
-        public sbyte __dummy___size_27;
-
-        [FieldOffset(28)]
-        public sbyte __dummy___size_28;
-
-        [FieldOffset(29)]
-        public sbyte __dummy___size_29;
-
-        [FieldOffset(30)]
-        public sbyte __dummy___size_30;
-
-        [FieldOffset(31)]
-        public sbyte __dummy___size_31;
-
-        [FieldOffset(32)]
-        public sbyte __dummy___size_32;
-
-        [FieldOffset(33)]
-        public sbyte __dummy___size_33;
-
-        [FieldOffset(34)]
-        public sbyte __dummy___size_34;
-
-        [FieldOffset(35)]
-        public sbyte __dummy___size_35;
-
-        [FieldOffset(36)]
-        public sbyte __dummy___size_36;
-
-        [FieldOffset(37)]
-        public sbyte __dummy___size_37;
-
-        [FieldOffset(38)]
-        public sbyte __dummy___size_38;
-
-        [FieldOffset(39)]
-        public sbyte __dummy___size_39;
-
         [FieldOffset(0)]
         public long __align;
     }
@@ -529,147 +406,6 @@ public unsafe partial struct PthreadCondT
 
         [FieldOffset(0)]
         public fixed sbyte __size[48];
-
-        [FieldOffset(1)]
-        public sbyte __dummy___size_1;
-
-        [FieldOffset(2)]
-        public sbyte __dummy___size_2;
-
-        [FieldOffset(3)]
-        public sbyte __dummy___size_3;
-
-        [FieldOffset(4)]
-        public sbyte __dummy___size_4;
-
-        [FieldOffset(5)]
-        public sbyte __dummy___size_5;
-
-        [FieldOffset(6)]
-        public sbyte __dummy___size_6;
-
-        [FieldOffset(7)]
-        public sbyte __dummy___size_7;
-
-        [FieldOffset(8)]
-        public sbyte __dummy___size_8;
-
-        [FieldOffset(9)]
-        public sbyte __dummy___size_9;
-
-        [FieldOffset(10)]
-        public sbyte __dummy___size_10;
-
-        [FieldOffset(11)]
-        public sbyte __dummy___size_11;
-
-        [FieldOffset(12)]
-        public sbyte __dummy___size_12;
-
-        [FieldOffset(13)]
-        public sbyte __dummy___size_13;
-
-        [FieldOffset(14)]
-        public sbyte __dummy___size_14;
-
-        [FieldOffset(15)]
-        public sbyte __dummy___size_15;
-
-        [FieldOffset(16)]
-        public sbyte __dummy___size_16;
-
-        [FieldOffset(17)]
-        public sbyte __dummy___size_17;
-
-        [FieldOffset(18)]
-        public sbyte __dummy___size_18;
-
-        [FieldOffset(19)]
-        public sbyte __dummy___size_19;
-
-        [FieldOffset(20)]
-        public sbyte __dummy___size_20;
-
-        [FieldOffset(21)]
-        public sbyte __dummy___size_21;
-
-        [FieldOffset(22)]
-        public sbyte __dummy___size_22;
-
-        [FieldOffset(23)]
-        public sbyte __dummy___size_23;
-
-        [FieldOffset(24)]
-        public sbyte __dummy___size_24;
-
-        [FieldOffset(25)]
-        public sbyte __dummy___size_25;
-
-        [FieldOffset(26)]
-        public sbyte __dummy___size_26;
-
-        [FieldOffset(27)]
-        public sbyte __dummy___size_27;
-
-        [FieldOffset(28)]
-        public sbyte __dummy___size_28;
-
-        [FieldOffset(29)]
-        public sbyte __dummy___size_29;
-
-        [FieldOffset(30)]
-        public sbyte __dummy___size_30;
-
-        [FieldOffset(31)]
-        public sbyte __dummy___size_31;
-
-        [FieldOffset(32)]
-        public sbyte __dummy___size_32;
-
-        [FieldOffset(33)]
-        public sbyte __dummy___size_33;
-
-        [FieldOffset(34)]
-        public sbyte __dummy___size_34;
-
-        [FieldOffset(35)]
-        public sbyte __dummy___size_35;
-
-        [FieldOffset(36)]
-        public sbyte __dummy___size_36;
-
-        [FieldOffset(37)]
-        public sbyte __dummy___size_37;
-
-        [FieldOffset(38)]
-        public sbyte __dummy___size_38;
-
-        [FieldOffset(39)]
-        public sbyte __dummy___size_39;
-
-        [FieldOffset(40)]
-        public sbyte __dummy___size_40;
-
-        [FieldOffset(41)]
-        public sbyte __dummy___size_41;
-
-        [FieldOffset(42)]
-        public sbyte __dummy___size_42;
-
-        [FieldOffset(43)]
-        public sbyte __dummy___size_43;
-
-        [FieldOffset(44)]
-        public sbyte __dummy___size_44;
-
-        [FieldOffset(45)]
-        public sbyte __dummy___size_45;
-
-        [FieldOffset(46)]
-        public sbyte __dummy___size_46;
-
-        [FieldOffset(47)]
-        public sbyte __dummy___size_47;
 
         [FieldOffset(0)]
         public long __align;
@@ -718,171 +454,6 @@ public unsafe partial struct PthreadRwlockT
         [FieldOffset(0)]
         public fixed sbyte __size[56];
 
-        [FieldOffset(1)]
-        public sbyte __dummy___size_1;
-
-        [FieldOffset(2)]
-        public sbyte __dummy___size_2;
-
-        [FieldOffset(3)]
-        public sbyte __dummy___size_3;
-
-        [FieldOffset(4)]
-        public sbyte __dummy___size_4;
-
-        [FieldOffset(5)]
-        public sbyte __dummy___size_5;
-
-        [FieldOffset(6)]
-        public sbyte __dummy___size_6;
-
-        [FieldOffset(7)]
-        public sbyte __dummy___size_7;
-
-        [FieldOffset(8)]
-        public sbyte __dummy___size_8;
-
-        [FieldOffset(9)]
-        public sbyte __dummy___size_9;
-
-        [FieldOffset(10)]
-        public sbyte __dummy___size_10;
-
-        [FieldOffset(11)]
-        public sbyte __dummy___size_11;
-
-        [FieldOffset(12)]
-        public sbyte __dummy___size_12;
-
-        [FieldOffset(13)]
-        public sbyte __dummy___size_13;
-
-        [FieldOffset(14)]
-        public sbyte __dummy___size_14;
-
-        [FieldOffset(15)]
-        public sbyte __dummy___size_15;
-
-        [FieldOffset(16)]
-        public sbyte __dummy___size_16;
-
-        [FieldOffset(17)]
-        public sbyte __dummy___size_17;
-
-        [FieldOffset(18)]
-        public sbyte __dummy___size_18;
-
-        [FieldOffset(19)]
-        public sbyte __dummy___size_19;
-
-        [FieldOffset(20)]
-        public sbyte __dummy___size_20;
-
-        [FieldOffset(21)]
-        public sbyte __dummy___size_21;
-
-        [FieldOffset(22)]
-        public sbyte __dummy___size_22;
-
-        [FieldOffset(23)]
-        public sbyte __dummy___size_23;
-
-        [FieldOffset(24)]
-        public sbyte __dummy___size_24;
-
-        [FieldOffset(25)]
-        public sbyte __dummy___size_25;
-
-        [FieldOffset(26)]
-        public sbyte __dummy___size_26;
-
-        [FieldOffset(27)]
-        public sbyte __dummy___size_27;
-
-        [FieldOffset(28)]
-        public sbyte __dummy___size_28;
-
-        [FieldOffset(29)]
-        public sbyte __dummy___size_29;
-
-        [FieldOffset(30)]
-        public sbyte __dummy___size_30;
-
-        [FieldOffset(31)]
-        public sbyte __dummy___size_31;
-
-        [FieldOffset(32)]
-        public sbyte __dummy___size_32;
-
-        [FieldOffset(33)]
-        public sbyte __dummy___size_33;
-
-        [FieldOffset(34)]
-        public sbyte __dummy___size_34;
-
-        [FieldOffset(35)]
-        public sbyte __dummy___size_35;
-
-        [FieldOffset(36)]
-        public sbyte __dummy___size_36;
-
-        [FieldOffset(37)]
-        public sbyte __dummy___size_37;
-
-        [FieldOffset(38)]
-        public sbyte __dummy___size_38;
-
-        [FieldOffset(39)]
-        public sbyte __dummy___size_39;
-
-        [FieldOffset(40)]
-        public sbyte __dummy___size_40;
-
-        [FieldOffset(41)]
-        public sbyte __dummy___size_41;
-
-        [FieldOffset(42)]
-        public sbyte __dummy___size_42;
-
-        [FieldOffset(43)]
-        public sbyte __dummy___size_43;
-
-        [FieldOffset(44)]
-        public sbyte __dummy___size_44;
-
-        [FieldOffset(45)]
-        public sbyte __dummy___size_45;
-
-        [FieldOffset(46)]
-        public sbyte __dummy___size_46;
-
-        [FieldOffset(47)]
-        public sbyte __dummy___size_47;
-
-        [FieldOffset(48)]
-        public sbyte __dummy___size_48;
-
-        [FieldOffset(49)]
-        public sbyte __dummy___size_49;
-
-        [FieldOffset(50)]
-        public sbyte __dummy___size_50;
-
-        [FieldOffset(51)]
-        public sbyte __dummy___size_51;
-
-        [FieldOffset(52)]
-        public sbyte __dummy___size_52;
-
-        [FieldOffset(53)]
-        public sbyte __dummy___size_53;
-
-        [FieldOffset(54)]
-        public sbyte __dummy___size_54;
-
-        [FieldOffset(55)]
-        public sbyte __dummy___size_55;
-
         [FieldOffset(0)]
         public long __align;
     }
@@ -922,24 +493,6 @@ public unsafe partial struct PthreadRwlockT
             [FieldOffset(33)]
             public fixed byte __pad1[7];
 
-            [FieldOffset(34)]
-            public byte __dummy___pad1_1;
-
-            [FieldOffset(35)]
-            public byte __dummy___pad1_2;
-
-            [FieldOffset(36)]
-            public byte __dummy___pad1_3;
-
-            [FieldOffset(37)]
-            public byte __dummy___pad1_4;
-
-            [FieldOffset(38)]
-            public byte __dummy___pad1_5;
-
-            [FieldOffset(39)]
-            public byte __dummy___pad1_6;
-
             [FieldOffset(40)]
             public ulong __pad2;
 
@@ -959,15 +512,6 @@ public unsafe partial class PthreadUnwindBufT
 
         [FieldOffset(72)]
         public void* __pad;
-
-        [FieldOffset(80)]
-        public global::System.IntPtr __dummy___pad_1;
-
-        [FieldOffset(88)]
-        public global::System.IntPtr __dummy___pad_2;
-
-        [FieldOffset(96)]
-        public global::System.IntPtr __dummy___pad_3;
     }
 
     public unsafe partial class _
@@ -977,27 +521,6 @@ public unsafe partial class PthreadUnwindBufT
         {
             [FieldOffset(0)]
             public fixed long __cancel_jmp_buf[8];
-
-            [FieldOffset(8)]
-            public long __dummy___cancel_jmp_buf_1;
-
-            [FieldOffset(16)]
-            public long __dummy___cancel_jmp_buf_2;
-
-            [FieldOffset(24)]
-            public long __dummy___cancel_jmp_buf_3;
-
-            [FieldOffset(32)]
-            public long __dummy___cancel_jmp_buf_4;
-
-            [FieldOffset(40)]
-            public long __dummy___cancel_jmp_buf_5;
-
-            [FieldOffset(48)]
-            public long __dummy___cancel_jmp_buf_6;
-
-            [FieldOffset(56)]
-            public long __dummy___cancel_jmp_buf_7;
 
             [FieldOffset(64)]
             public int __mask_was_saved;
@@ -1071,17 +594,17 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
+        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
-        public static BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
             return new BasicString(native.ToPointer(), skipVTables);
         }
 
-        public static BasicString __CreateInstance(BasicString.__Internal native, bool skipVTables = false)
+        internal static BasicString __CreateInstance(BasicString.__Internal native, bool skipVTables = false)
         {
             return new BasicString(native, skipVTables);
         }
@@ -1233,99 +756,6 @@ namespace Std
 
                 [FieldOffset(0)]
                 public fixed sbyte _M_bytes[32];
-
-                [FieldOffset(1)]
-                public sbyte __dummy__M_bytes_1;
-
-                [FieldOffset(2)]
-                public sbyte __dummy__M_bytes_2;
-
-                [FieldOffset(3)]
-                public sbyte __dummy__M_bytes_3;
-
-                [FieldOffset(4)]
-                public sbyte __dummy__M_bytes_4;
-
-                [FieldOffset(5)]
-                public sbyte __dummy__M_bytes_5;
-
-                [FieldOffset(6)]
-                public sbyte __dummy__M_bytes_6;
-
-                [FieldOffset(7)]
-                public sbyte __dummy__M_bytes_7;
-
-                [FieldOffset(8)]
-                public sbyte __dummy__M_bytes_8;
-
-                [FieldOffset(9)]
-                public sbyte __dummy__M_bytes_9;
-
-                [FieldOffset(10)]
-                public sbyte __dummy__M_bytes_10;
-
-                [FieldOffset(11)]
-                public sbyte __dummy__M_bytes_11;
-
-                [FieldOffset(12)]
-                public sbyte __dummy__M_bytes_12;
-
-                [FieldOffset(13)]
-                public sbyte __dummy__M_bytes_13;
-
-                [FieldOffset(14)]
-                public sbyte __dummy__M_bytes_14;
-
-                [FieldOffset(15)]
-                public sbyte __dummy__M_bytes_15;
-
-                [FieldOffset(16)]
-                public sbyte __dummy__M_bytes_16;
-
-                [FieldOffset(17)]
-                public sbyte __dummy__M_bytes_17;
-
-                [FieldOffset(18)]
-                public sbyte __dummy__M_bytes_18;
-
-                [FieldOffset(19)]
-                public sbyte __dummy__M_bytes_19;
-
-                [FieldOffset(20)]
-                public sbyte __dummy__M_bytes_20;
-
-                [FieldOffset(21)]
-                public sbyte __dummy__M_bytes_21;
-
-                [FieldOffset(22)]
-                public sbyte __dummy__M_bytes_22;
-
-                [FieldOffset(23)]
-                public sbyte __dummy__M_bytes_23;
-
-                [FieldOffset(24)]
-                public sbyte __dummy__M_bytes_24;
-
-                [FieldOffset(25)]
-                public sbyte __dummy__M_bytes_25;
-
-                [FieldOffset(26)]
-                public sbyte __dummy__M_bytes_26;
-
-                [FieldOffset(27)]
-                public sbyte __dummy__M_bytes_27;
-
-                [FieldOffset(28)]
-                public sbyte __dummy__M_bytes_28;
-
-                [FieldOffset(29)]
-                public sbyte __dummy__M_bytes_29;
-
-                [FieldOffset(30)]
-                public sbyte __dummy__M_bytes_30;
-
-                [FieldOffset(31)]
-                public sbyte __dummy__M_bytes_31;
             }
         }
 
@@ -1342,51 +772,6 @@ namespace Std
 
                 [FieldOffset(16)]
                 public fixed sbyte _M_local_buf[16];
-
-                [FieldOffset(17)]
-                public sbyte __dummy__M_local_buf_1;
-
-                [FieldOffset(18)]
-                public sbyte __dummy__M_local_buf_2;
-
-                [FieldOffset(19)]
-                public sbyte __dummy__M_local_buf_3;
-
-                [FieldOffset(20)]
-                public sbyte __dummy__M_local_buf_4;
-
-                [FieldOffset(21)]
-                public sbyte __dummy__M_local_buf_5;
-
-                [FieldOffset(22)]
-                public sbyte __dummy__M_local_buf_6;
-
-                [FieldOffset(23)]
-                public sbyte __dummy__M_local_buf_7;
-
-                [FieldOffset(24)]
-                public sbyte __dummy__M_local_buf_8;
-
-                [FieldOffset(25)]
-                public sbyte __dummy__M_local_buf_9;
-
-                [FieldOffset(26)]
-                public sbyte __dummy__M_local_buf_10;
-
-                [FieldOffset(27)]
-                public sbyte __dummy__M_local_buf_11;
-
-                [FieldOffset(28)]
-                public sbyte __dummy__M_local_buf_12;
-
-                [FieldOffset(29)]
-                public sbyte __dummy__M_local_buf_13;
-
-                [FieldOffset(30)]
-                public sbyte __dummy__M_local_buf_14;
-
-                [FieldOffset(31)]
-                public sbyte __dummy__M_local_buf_15;
             }
         }
     }

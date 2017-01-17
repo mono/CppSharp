@@ -55,7 +55,8 @@ namespace CppSharp
             parserOptions.Abi = Abi;
 
             var options = driver.Options;
-            options.LibraryName = "CppSharp.CppParser";
+            options.LibraryName = "CppSharp.Parser" +
+                (driver.Options.IsCSharpGenerator ? ".CSharp" : ".CLI");
             options.SharedLibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
             options.Headers.AddRange(new[]
@@ -164,6 +165,19 @@ namespace CppSharp
         public void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
+
+            if (driver.Options.IsCSharpGenerator)
+            {
+                driver.Generator.OnUnitGenerated += o =>
+                {
+                    if (o.TranslationUnit.Module == driver.Options.SystemModule)
+                        return;
+                    Block firstBlock = o.Templates[0].RootBlock.Blocks[1];
+                    firstBlock.WriteLine("using System.Runtime.CompilerServices;");
+                    firstBlock.NewLine();
+                    firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"CppSharp.Parser\")]");
+                };
+            }
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
