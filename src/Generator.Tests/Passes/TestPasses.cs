@@ -203,7 +203,6 @@ namespace CppSharp.Generator.Tests.Passes
             var c = AstContext.Class("TestMethodAsInternal");
             var method = c.Method("beInternal");
             Assert.AreEqual(method.Access, AccessSpecifier.Public);
-            passBuilder.AddPass(new CheckMacroPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
             Assert.AreEqual(method.Access, AccessSpecifier.Internal);
         }
