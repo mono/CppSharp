@@ -15,7 +15,8 @@ namespace CppSharp.Generators
         CSharp = 2,
         C,
         CPlusPlus,
-        ObjectiveC
+        ObjectiveC,
+        Java
     }
 
     /// <summary>
