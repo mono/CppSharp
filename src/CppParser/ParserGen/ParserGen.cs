@@ -182,10 +182,6 @@ namespace CppSharp
 
         public void Postprocess(Driver driver, ASTContext ctx)
         {
-            new CaseRenamePass(
-                RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate |
-                RenameTargets.Field | RenameTargets.Variable,
-                RenameCasePattern.UpperCamelCase).VisitASTContext(driver.Context.ASTContext);
         }
 
         public static void Main(string[] args)

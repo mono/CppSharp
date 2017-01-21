@@ -23,6 +23,6 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestStdString()
     {
-        Assert.AreEqual("test_test", new Date(0, 0, 0).testStdString("test"));
+        Assert.AreEqual("test_test", new Date(0, 0, 0).TestStdString("test"));
     }
 }

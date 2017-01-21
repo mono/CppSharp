@@ -83,11 +83,20 @@ namespace CppSharp.Passes
             }
             if (decl is Parameter) return true;
             if (decl is Enumeration) return true;
-            if (decl is Property) return true;
+            var property = decl as Property;
+            if (property != null) return !property.IsIndexer;
             if (decl is Event) return true;
             if (decl is TypedefDecl) return true;
             if (decl is Namespace && !(decl is TranslationUnit)) return true;
             if (decl is Variable) return true;
+            var field = decl as Field;
+            if (field != null)
+            {
+                var fieldProperty = ((Class) field.Namespace).Properties.FirstOrDefault(
+                    p => p.Field == field);
+                return (fieldProperty != null &&
+                    fieldProperty.IsInRefTypeAndBackedByValueClassField());
+            }
             return false;
         }
 
