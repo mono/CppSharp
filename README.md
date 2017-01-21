@@ -11,22 +11,26 @@ The supported target languages at present are C# and C++/CLI.
 It can also be used as a library to parse native code into a syntax tree with a
 rich declaration and type information model.
 
+## Releases/Build Status
+
+|Windows 64-bit|Windows 32-bit| windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
+|---------------------------|---------------------------|---------------------------|-----------------------------|-----------------------------|
+| [![NuGet][1]][2] | [![GitHub release][3]][4] | [![windows-vs-x86][5]][6] | [![linux-gcc-x86_64][7]][8] | [![osx-clang-x86][7]][8]
+
+[1]: https://img.shields.io/nuget/v/CppSharp.svg
+[2]: https://www.nuget.org/packages/CppSharp/
+[3]: https://img.shields.io/github/release/mono/CppSharp.svg
+[4]: https://github.com/mono/CppSharp/releases
+[5]: https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true
+[6]: https://ci.appveyor.com/project/tritao/CppSharp/branch/master
+[7]: https://travis-ci.org/mono/CppSharp.svg?branch=master
+[8]: https://travis-ci.org/mono/CppSharp
+
 1. [Libraries](#libraries)
 2. [Documentation](#documentation)
 3. [Community](#community)
 4. [Support](#support)
 5. [Users](#users)
-
-## Build Status
-
-| windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
-|---------------------------|-----------------------------|-----------------------------|
-| [![windows-vs-x86][1]][2] | [![linux-gcc-x86_64][3]][4] | [![osx-clang-x86][3]][4]
-
-[1]: https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true
-[2]: https://ci.appveyor.com/project/tritao/CppSharp/branch/master
-[3]: https://travis-ci.org/mono/CppSharp.svg?branch=master
-[4]: https://travis-ci.org/mono/CppSharp
 
 ## Libraries
 
