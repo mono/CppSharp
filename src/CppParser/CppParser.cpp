@@ -12,14 +12,14 @@ namespace CppSharp { namespace CppParser {
 
 CppParserOptions::CppParserOptions()
     : ASTContext(0)
-    , ToolSetToUse(0)
-    , Abi(CppAbi::Itanium)
-    , NoStandardIncludes(false)
-    , NoBuiltinIncludes(false)
-    , MicrosoftMode(false)
-    , Verbose(false)
-    , LanguageVersion(CppParser::LanguageVersion::GNUPlusPlus11)
-    , TargetInfo(0)
+    , toolSetToUse(0)
+    , abi(CppAbi::Itanium)
+    , noStandardIncludes(false)
+    , noBuiltinIncludes(false)
+    , microsoftMode(false)
+    , verbose(false)
+    , languageVersion(CppParser::LanguageVersion::GNUPlusPlus11)
+    , targetInfo(0)
 {
 }
 
@@ -36,22 +36,22 @@ DEF_STRING(ParserTargetInfo, ABI)
 
 ParserResult::ParserResult()
     : ASTContext(0)
-    , Library(0)
-    , CodeParser(0)
+    , library(0)
+    , codeParser(0)
 {
 }
 
 ParserResult::ParserResult(const ParserResult& rhs)
-    : Kind(rhs.Kind)
+    : kind(rhs.kind)
     , Diagnostics(rhs.Diagnostics)
     , ASTContext(rhs.ASTContext)
-    , Library(rhs.Library)
-    , CodeParser(rhs.CodeParser)
+    , library(rhs.library)
+    , codeParser(rhs.codeParser)
 {}
 
 ParserResult::~ParserResult()
 {
-    delete CodeParser;
+    delete codeParser;
 }
 
 ParserDiagnostic::ParserDiagnostic() {}
@@ -59,9 +59,9 @@ ParserDiagnostic::ParserDiagnostic() {}
 ParserDiagnostic::ParserDiagnostic(const ParserDiagnostic& rhs)
     : FileName(rhs.FileName)
     , Message(rhs.Message)
-    , Level(rhs.Level)
-    , LineNumber(rhs.LineNumber)
-    , ColumnNumber(rhs.ColumnNumber)
+    , level(rhs.level)
+    , lineNumber(rhs.lineNumber)
+    , columnNumber(rhs.columnNumber)
 {}
 
 DEF_STRING(ParserDiagnostic, FileName)

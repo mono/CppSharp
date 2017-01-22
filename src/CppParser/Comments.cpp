@@ -38,9 +38,9 @@ RawComment* Parser::WalkRawComment(const clang::RawComment* RC)
 {
     using namespace clang;
 
-    auto& SM = C->getSourceManager();
+    auto& SM = c->getSourceManager();
     auto Comment = new RawComment();
-    Comment->Kind = ConvertRawCommentKind(RC->getKind());
+    Comment->kind = ConvertRawCommentKind(RC->getKind());
     Comment->Text = RC->getRawText(SM);
     Comment->BriefText = RC->getBriefText(*AST);
 
@@ -84,13 +84,13 @@ ConvertParamPassDirection(clang::comments::ParamCommandComment::PassDirection Di
 static void HandleInlineContent(const clang::comments::InlineContentComment *CK,
     InlineContentComment* IC)
 {
-    IC->HasTrailingNewline = CK->hasTrailingNewline();
+    IC->hasTrailingNewline = CK->hasTrailingNewline();
 }
 
 static void HandleBlockCommand(const clang::comments::BlockCommandComment *CK,
                                BlockCommandComment* BC)
 {
-    BC->CommandId = CK->getCommandID();
+    BC->commandId = CK->getCommandID();
     for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++I)
     {
         auto Arg = BlockCommandComment::Argument();
@@ -127,7 +127,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto BC = new BlockCommandComment();
         _Comment = BC;
         HandleBlockCommand(CK, BC);
-        BC->ParagraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
+        BC->paragraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
         break;
     }
     case Comment::ParamCommandCommentKind:
@@ -136,10 +136,10 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto PC = new ParamCommandComment();
         _Comment = PC;
         HandleBlockCommand(CK, PC);
-        PC->Direction = ConvertParamPassDirection(CK->getDirection());
+        PC->direction = ConvertParamPassDirection(CK->getDirection());
         if (CK->isParamIndexValid() && !CK->isVarArgParam())
-            PC->ParamIndex = CK->getParamIndex();
-        PC->ParagraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
+            PC->paramIndex = CK->getParamIndex();
+        PC->paragraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
         break;
     }
     case Comment::TParamCommandCommentKind:
@@ -152,7 +152,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         if (CK->isPositionValid())
             for (unsigned I = 0, E = CK->getDepth(); I != E; ++I)
                 TC->Position.push_back(CK->getIndex(I));
-        TC->ParagraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
+        TC->paragraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
         break;
     }
     case Comment::VerbatimBlockCommentKind:
@@ -185,7 +185,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
             auto Content = ConvertCommentBlock(*I);
             PC->Content.push_back(static_cast<InlineContentComment*>(Content));
         }
-        PC->IsWhitespace = CK->isWhitespace();
+        PC->isWhitespace = CK->isWhitespace();
         break;
     }
     case Comment::HTMLStartTagCommentKind:
@@ -229,8 +229,8 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto IC = new InlineCommandComment();
         _Comment = IC;
         HandleInlineContent(CK, IC);
-        IC->CommandId = CK->getCommandID();
-        IC->CommentRenderKind = ConvertRenderKind(CK->getRenderKind());
+        IC->commandId = CK->getCommandID();
+        IC->commentRenderKind = ConvertRenderKind(CK->getRenderKind());
         for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++I)
         {
             auto Arg = InlineCommandComment::Argument();
@@ -265,11 +265,11 @@ void Parser::HandleComments(const clang::Decl* D, Declaration* Decl)
         return;
 
     auto RawComment = WalkRawComment(RC);
-    Decl->Comment = RawComment;
+    Decl->comment = RawComment;
 
-    if (clang::comments::FullComment* FC = RC->parse(*AST, &C->getPreprocessor(), D))
+    if (clang::comments::FullComment* FC = RC->parse(*AST, &c->getPreprocessor(), D))
     {
         auto CB = static_cast<FullComment*>(ConvertCommentBlock(FC));
-        RawComment->FullCommentBlock = CB;
+        RawComment->fullCommentBlock = CB;
     }
 }

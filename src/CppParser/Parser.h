@@ -138,16 +138,16 @@ private:
     void HandleComments(const clang::Decl* D, Declaration* Decl);
     void HandleDiagnostics(ParserResult* res);
 
-    int Index;
-    ASTContext* Lib;
-    CppParserOptions* Opts;
-    std::unique_ptr<clang::CompilerInstance> C;
+    int index;
+    CppSharp::CppParser::AST::ASTContext* lib;
+    CppParserOptions* opts;
+    std::unique_ptr<clang::CompilerInstance> c;
     clang::ASTContext* AST;
-    clang::TargetCXXABI::Kind TargetABI;
-    clang::CodeGen::CodeGenTypes* CodeGenTypes;
-    std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> WalkedTypeTemplateParameters;
-    std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> WalkedTemplateTemplateParameters;
-    std::unordered_map<const clang::NonTypeTemplateParmDecl*, NonTypeTemplateParameter*> WalkedNonTypeTemplateParameters;
+    clang::TargetCXXABI::Kind targetABI;
+    clang::CodeGen::CodeGenTypes* codeGenTypes;
+    std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> walkedTypeTemplateParameters;
+    std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> walkedTemplateTemplateParameters;
+    std::unordered_map<const clang::NonTypeTemplateParmDecl*, NonTypeTemplateParameter*> walkedNonTypeTemplateParameters;
 
     ParserResultKind ReadSymbols(llvm::StringRef File,
                                  llvm::object::basic_symbol_iterator Begin,

@@ -62,17 +62,17 @@ struct CS_API CppParserOptions
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
-    int ToolSetToUse;
+    int toolSetToUse;
     STRING(TargetTriple)
-    CppAbi Abi;
+    CppAbi abi;
 
-    bool NoStandardIncludes;
-    bool NoBuiltinIncludes;
-    bool MicrosoftMode;
-    bool Verbose;
-    LanguageVersion LanguageVersion;
+    bool noStandardIncludes;
+    bool noBuiltinIncludes;
+    bool microsoftMode;
+    bool verbose;
+    LanguageVersion languageVersion;
 
-    ParserTargetInfo* TargetInfo;
+    ParserTargetInfo* targetInfo;
 };
 
 enum class ParserDiagnosticLevel
@@ -91,9 +91,9 @@ struct CS_API ParserDiagnostic
 
     STRING(FileName)
     STRING(Message)
-    ParserDiagnosticLevel Level;
-    int LineNumber;
-    int ColumnNumber;
+    ParserDiagnosticLevel level;
+    int lineNumber;
+    int columnNumber;
 };
 
 enum class ParserResultKind
@@ -111,12 +111,12 @@ struct CS_API ParserResult
     ParserResult(const ParserResult&);
     ~ParserResult();
 
-    ParserResultKind Kind;
+    ParserResultKind kind;
     VECTOR(ParserDiagnostic, Diagnostics)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
-    CppSharp::CppParser::AST::NativeLibrary* Library;
-    Parser* CodeParser;
+    NativeLibrary* library;
+    Parser* codeParser;
 };
 
 enum class SourceLocationKind

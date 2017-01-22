@@ -191,82 +191,82 @@ void CppSharp::Parser::CppParserOptions::ASTContext::set(CppSharp::Parser::AST::
 
 int CppSharp::Parser::CppParserOptions::ToolSetToUse::get()
 {
-    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->ToolSetToUse;
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->toolSetToUse;
 }
 
 void CppSharp::Parser::CppParserOptions::ToolSetToUse::set(int value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->ToolSetToUse = value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->toolSetToUse = value;
 }
 
 CppSharp::Parser::AST::CppAbi CppSharp::Parser::CppParserOptions::Abi::get()
 {
-    return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Abi;
+    return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->abi;
 }
 
 void CppSharp::Parser::CppParserOptions::Abi::set(CppSharp::Parser::AST::CppAbi value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Abi = (::CppSharp::CppParser::AST::CppAbi)value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->abi = (::CppSharp::CppParser::AST::CppAbi)value;
 }
 
 bool CppSharp::Parser::CppParserOptions::NoStandardIncludes::get()
 {
-    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->NoStandardIncludes;
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->noStandardIncludes;
 }
 
 void CppSharp::Parser::CppParserOptions::NoStandardIncludes::set(bool value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->NoStandardIncludes = value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->noStandardIncludes = value;
 }
 
 bool CppSharp::Parser::CppParserOptions::NoBuiltinIncludes::get()
 {
-    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->NoBuiltinIncludes;
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->noBuiltinIncludes;
 }
 
 void CppSharp::Parser::CppParserOptions::NoBuiltinIncludes::set(bool value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->NoBuiltinIncludes = value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->noBuiltinIncludes = value;
 }
 
 bool CppSharp::Parser::CppParserOptions::MicrosoftMode::get()
 {
-    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->MicrosoftMode;
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->microsoftMode;
 }
 
 void CppSharp::Parser::CppParserOptions::MicrosoftMode::set(bool value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->MicrosoftMode = value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->microsoftMode = value;
 }
 
 bool CppSharp::Parser::CppParserOptions::Verbose::get()
 {
-    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Verbose;
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->verbose;
 }
 
 void CppSharp::Parser::CppParserOptions::Verbose::set(bool value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Verbose = value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->verbose = value;
 }
 
 CppSharp::Parser::LanguageVersion CppSharp::Parser::CppParserOptions::LanguageVersion::get()
 {
-    return (CppSharp::Parser::LanguageVersion)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->LanguageVersion;
+    return (CppSharp::Parser::LanguageVersion)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->languageVersion;
 }
 
 void CppSharp::Parser::CppParserOptions::LanguageVersion::set(CppSharp::Parser::LanguageVersion value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->LanguageVersion = (::CppSharp::CppParser::LanguageVersion)value;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->languageVersion = (::CppSharp::CppParser::LanguageVersion)value;
 }
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::CppParserOptions::TargetInfo::get()
 {
-    return (((::CppSharp::CppParser::CppParserOptions*)NativePtr)->TargetInfo == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->TargetInfo);
+    return (((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo);
 }
 
 void CppSharp::Parser::CppParserOptions::TargetInfo::set(CppSharp::Parser::ParserTargetInfo^ value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->TargetInfo = (::CppSharp::CppParser::ParserTargetInfo*)value->NativePtr;
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo = (::CppSharp::CppParser::ParserTargetInfo*)value->NativePtr;
 }
 
 System::String^ CppSharp::Parser::CppParserOptions::LibraryFile::get()
@@ -382,32 +382,32 @@ void CppSharp::Parser::ParserDiagnostic::__Instance::set(System::IntPtr object)
 
 CppSharp::Parser::ParserDiagnosticLevel CppSharp::Parser::ParserDiagnostic::Level::get()
 {
-    return (CppSharp::Parser::ParserDiagnosticLevel)((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->Level;
+    return (CppSharp::Parser::ParserDiagnosticLevel)((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->level;
 }
 
 void CppSharp::Parser::ParserDiagnostic::Level::set(CppSharp::Parser::ParserDiagnosticLevel value)
 {
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->Level = (::CppSharp::CppParser::ParserDiagnosticLevel)value;
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->level = (::CppSharp::CppParser::ParserDiagnosticLevel)value;
 }
 
 int CppSharp::Parser::ParserDiagnostic::LineNumber::get()
 {
-    return ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->LineNumber;
+    return ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->lineNumber;
 }
 
 void CppSharp::Parser::ParserDiagnostic::LineNumber::set(int value)
 {
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->LineNumber = value;
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->lineNumber = value;
 }
 
 int CppSharp::Parser::ParserDiagnostic::ColumnNumber::get()
 {
-    return ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->ColumnNumber;
+    return ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->columnNumber;
 }
 
 void CppSharp::Parser::ParserDiagnostic::ColumnNumber::set(int value)
 {
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->ColumnNumber = value;
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->columnNumber = value;
 }
 
 System::String^ CppSharp::Parser::ParserDiagnostic::FileName::get()
@@ -501,12 +501,12 @@ void CppSharp::Parser::ParserResult::__Instance::set(System::IntPtr object)
 
 CppSharp::Parser::ParserResultKind CppSharp::Parser::ParserResult::Kind::get()
 {
-    return (CppSharp::Parser::ParserResultKind)((::CppSharp::CppParser::ParserResult*)NativePtr)->Kind;
+    return (CppSharp::Parser::ParserResultKind)((::CppSharp::CppParser::ParserResult*)NativePtr)->kind;
 }
 
 void CppSharp::Parser::ParserResult::Kind::set(CppSharp::Parser::ParserResultKind value)
 {
-    ((::CppSharp::CppParser::ParserResult*)NativePtr)->Kind = (::CppSharp::CppParser::ParserResultKind)value;
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->kind = (::CppSharp::CppParser::ParserResultKind)value;
 }
 
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserResult::ASTContext::get()
@@ -521,12 +521,12 @@ void CppSharp::Parser::ParserResult::ASTContext::set(CppSharp::Parser::AST::ASTC
 
 CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::ParserResult::Library::get()
 {
-    return (((::CppSharp::CppParser::ParserResult*)NativePtr)->Library == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)((::CppSharp::CppParser::ParserResult*)NativePtr)->Library);
+    return (((::CppSharp::CppParser::ParserResult*)NativePtr)->library == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)((::CppSharp::CppParser::ParserResult*)NativePtr)->library);
 }
 
 void CppSharp::Parser::ParserResult::Library::set(CppSharp::Parser::AST::NativeLibrary^ value)
 {
-    ((::CppSharp::CppParser::ParserResult*)NativePtr)->Library = (::CppSharp::CppParser::AST::NativeLibrary*)value->NativePtr;
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->library = (::CppSharp::CppParser::AST::NativeLibrary*)value->NativePtr;
 }
 
 unsigned int CppSharp::Parser::ParserResult::DiagnosticsCount::get()
