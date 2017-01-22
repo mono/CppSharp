@@ -759,6 +759,8 @@ class DLL_API HasStdString
 {
     // test if these are ignored with the C# back-end
 public:
+    HasStdString();
+    ~HasStdString();
     std::string testStdString(std::string s);
     std::string s;
     std::string& getStdString();

@@ -24,15 +24,12 @@ CppParserOptions::CppParserOptions()
 }
 
 DEF_VECTOR_STRING(CppParserOptions, Arguments)
-DEF_STRING(CppParserOptions, LibraryFile)
 DEF_VECTOR_STRING(CppParserOptions, SourceFiles)
 DEF_VECTOR_STRING(CppParserOptions, IncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, SystemIncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, Defines)
 DEF_VECTOR_STRING(CppParserOptions, Undefines)
 DEF_VECTOR_STRING(CppParserOptions, LibraryDirs)
-DEF_STRING(CppParserOptions, TargetTriple)
-DEF_STRING(ParserTargetInfo, ABI)
 
 ParserResult::ParserResult()
     : ASTContext(0)
@@ -57,15 +54,12 @@ ParserResult::~ParserResult()
 ParserDiagnostic::ParserDiagnostic() {}
 
 ParserDiagnostic::ParserDiagnostic(const ParserDiagnostic& rhs)
-    : FileName(rhs.FileName)
-    , Message(rhs.Message)
+    : fileName(rhs.fileName)
+    , message(rhs.message)
     , level(rhs.level)
     , lineNumber(rhs.lineNumber)
     , columnNumber(rhs.columnNumber)
 {}
-
-DEF_STRING(ParserDiagnostic, FileName)
-DEF_STRING(ParserDiagnostic, Message)
 
 DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
 

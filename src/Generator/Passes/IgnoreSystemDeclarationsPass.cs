@@ -65,7 +65,7 @@ namespace CppSharp.Passes
                     break;
                 case "allocator":
                     foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
-                        foreach (var method in specialization.Methods.Where(m => !m.IsConstructor || m.Parameters.Any()))
+                        foreach (var method in specialization.Methods)
                             method.ExplicitlyIgnore();
                     break;
             }

@@ -11,6 +11,8 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.Parser.CSharp")]
 
+[assembly:InternalsVisibleTo("CppSharp.CppParser")]
+
 namespace Std
 {
 }
@@ -142,24 +144,15 @@ namespace Std
 {
     namespace __1
     {
-        public unsafe partial class Allocator : IDisposable
+        public unsafe partial struct Allocator
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public unsafe partial struct __Internal
             {
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
-                internal static extern void ctor_0(global::System.IntPtr instance);
             }
 
-            public global::System.IntPtr __Instance { get; protected set; }
-
-            protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
-            protected void*[] __OriginalVTables;
-
-            protected bool __ownsNativeInstance;
+            private Allocator.__Internal __instance;
+            internal Allocator.__Internal __Instance { get { return __instance; } }
 
             internal static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
@@ -171,46 +164,15 @@ namespace Std
                 return new Allocator(native, skipVTables);
             }
 
-            private static void* __CopyValue(Allocator.__Internal native)
-            {
-                var ret = Marshal.AllocHGlobal(0);
-                *(Allocator.__Internal*) ret = native;
-                return ret.ToPointer();
-            }
-
             private Allocator(Allocator.__Internal native, bool skipVTables = false)
-                : this(__CopyValue(native), skipVTables)
+                : this()
             {
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
+                __instance = native;
             }
 
-            protected Allocator(void* native, bool skipVTables = false)
+            private Allocator(void* native, bool skipVTables = false) : this()
             {
-                if (native == null)
-                    return;
-                __Instance = new global::System.IntPtr(native);
-            }
-
-            public Allocator()
-            {
-                __Instance = Marshal.AllocHGlobal(0);
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
-                __Internal.ctor_0((__Instance + __PointerAdjustment));
-            }
-
-            public void Dispose()
-            {
-                Dispose(disposing: true);
-            }
-
-            public virtual void Dispose(bool disposing)
-            {
-                global::Std.__1.Allocator __dummy;
-                NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                __instance = *(__Internal*) native;
             }
         }
 
@@ -1264,12 +1226,17 @@ namespace Std
                 internal global::Std.__1.CompressedPair.__Internal __r_;
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                [DllImport("libc++", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2EPKcRKS4_")]
+                internal static extern void ctor_7(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string __s, global::System.IntPtr __a);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("libc++", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
                 internal static extern void dtor_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                [DllImport("libc++", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
                 internal static extern global::System.IntPtr CStr_0(global::System.IntPtr instance);
             }
@@ -1428,6 +1395,16 @@ namespace Std
                 if (native == null)
                     return;
                 __Instance = new global::System.IntPtr(native);
+            }
+
+            public BasicString(string __s, global::Std.__1.Allocator __a)
+            {
+                __Instance = Marshal.AllocHGlobal(24);
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                var ____arg1 = __a.__Instance;
+                var __arg1 = new global::System.IntPtr(&____arg1);
+                __Internal.ctor_7((__Instance + __PointerAdjustment), __s, __arg1);
             }
 
             public void Dispose()

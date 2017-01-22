@@ -55,8 +55,7 @@ namespace CppSharp
             parserOptions.Abi = Abi;
 
             var options = driver.Options;
-            options.LibraryName = "CppSharp.Parser" +
-                (driver.Options.IsCSharpGenerator ? ".CSharp" : ".CLI");
+            options.LibraryName = "CppSharp.CppParser";
             options.SharedLibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
             options.Headers.AddRange(new[]
@@ -159,7 +158,6 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
-            driver.AddTranslationUnitPass(new IgnoreStdFieldsPass());
         }
 
         public void Preprocess(Driver driver, ASTContext ctx)
@@ -170,12 +168,18 @@ namespace CppSharp
             {
                 driver.Generator.OnUnitGenerated += o =>
                 {
-                    if (o.TranslationUnit.Module == driver.Options.SystemModule)
-                        return;
                     Block firstBlock = o.Templates[0].RootBlock.Blocks[1];
-                    firstBlock.WriteLine("using System.Runtime.CompilerServices;");
-                    firstBlock.NewLine();
-                    firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"CppSharp.Parser\")]");
+                    if (o.TranslationUnit.Module == driver.Options.SystemModule)
+                    {
+                        firstBlock.NewLine();
+                        firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"CppSharp.Parser.CSharp\")]");
+                    }
+                    else
+                    {
+                        firstBlock.WriteLine("using System.Runtime.CompilerServices;");
+                        firstBlock.NewLine();
+                        firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"CppSharp.Parser\")]");
+                    }
                 };
             }
         }
@@ -231,42 +235,6 @@ namespace CppSharp
                      CppAbi.Itanium, isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
-        }
-    }
-
-    public class IgnoreStdFieldsPass : TranslationUnitPass
-    {
-        public override bool VisitFieldDecl(Field field)
-        {
-            if (!field.IsGenerated)
-                return false;
-
-            if (!IsStdType(field.QualifiedType)) return false;
-
-            field.ExplicitlyIgnore();
-            return true;
-        }
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            if (function.GenerationKind == GenerationKind.None)
-                return false;
-
-            if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))
-            {
-                function.ExplicitlyIgnore();
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool IsStdType(QualifiedType type)
-        {
-            var typePrinter = new CppTypePrinter();
-            var typeName = type.Visit(typePrinter);
-
-            return typeName.Contains("std::");
         }
     }
 }

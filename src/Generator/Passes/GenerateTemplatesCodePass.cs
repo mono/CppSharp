@@ -54,7 +54,9 @@ namespace CppSharp.Passes
                         cppBuilder.AppendFormat("#include <{0}>\n", header);
                 foreach (var templateInstantiation in templateInstantiations[module])
                     cppBuilder.AppendFormat("\ntemplate class {0}{1};",
-                        Platform.IsWindows ? "__declspec(dllexport) " : string.Empty, templateInstantiation);
+                        Context.ParserOptions.TargetTriple.Contains("win32") ||
+                        Context.ParserOptions.TargetTriple.Contains("win64") ?
+                        "__declspec(dllexport) " : string.Empty, templateInstantiation);
                 var cpp = string.Format("{0}.cpp", module.TemplatesLibraryName);
                 Directory.CreateDirectory(Options.OutputDir);
                 var path = Path.Combine(Options.OutputDir, cpp);

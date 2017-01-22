@@ -3192,7 +3192,8 @@ namespace CppSharp.Generators.CSharp
         private string GetLibraryOf(Declaration declaration)
         {
             if (declaration.TranslationUnit.IsSystemHeader)
-                return Context.Options.SystemModule.TemplatesLibraryName;
+                return Context.ParserOptions.TargetTriple.Contains("apple") ? "libc++" :
+                    Context.Options.SystemModule.TemplatesLibraryName;
 
             string libName = declaration.TranslationUnit.Module.SharedLibraryName;
 

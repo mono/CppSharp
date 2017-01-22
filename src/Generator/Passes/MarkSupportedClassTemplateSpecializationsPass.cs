@@ -16,6 +16,8 @@ namespace CppSharp.Passes
                 if (IsSupportedStdSpecialization(specialization))
                 {
                     MarkForGeneration(specialization);
+                    if (specialization.Name == "allocator")
+                        specialization.Type = ClassType.ValueType;
                     @class.GenerationKind = GenerationKind.Generate;
                 }
             }

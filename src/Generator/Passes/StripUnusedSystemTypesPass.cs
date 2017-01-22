@@ -27,6 +27,9 @@ namespace CppSharp.Passes
             foreach (var allocator in context.FindClass("allocator", false, true).Where(
                 a => a.TranslationUnit.IsSystemHeader))
                 usedStdTypes.Add(allocator);
+            foreach (var basicString in context.FindClass("basic_string", false, true).Where(
+                a => a.TranslationUnit.IsSystemHeader))
+                usedStdTypes.Add(basicString);
 
             var result = base.VisitASTContext(context);
 

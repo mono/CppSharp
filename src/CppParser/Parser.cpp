@@ -88,7 +88,7 @@ LayoutField Parser::WalkVTablePointer(Class* Class,
 {
     LayoutField LayoutField;
     LayoutField.offset = Offset.getQuantity();
-    LayoutField.Name = prefix + "_" + Class->Name;
+    LayoutField.name = prefix + "_" + Class->name;
     LayoutField.qualifiedType = GetQualifiedType(c->getASTContext().VoidPtrTy);
     return LayoutField;
 }
@@ -171,7 +171,7 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
         auto F = WalkFieldCXX(Field, Parent);
         LayoutField LayoutField;
         LayoutField.offset = FieldOffset.getQuantity();
-        LayoutField.Name = F->Name;
+        LayoutField.name = F->name;
         LayoutField.qualifiedType = GetQualifiedType(Field->getType());
         LayoutField.fieldPtr = (void*)Field;
         Class->layout->Fields.push_back(LayoutField);
@@ -302,8 +302,8 @@ void Parser::SetupHeader()
     targetABI = ConvertToClangTargetCXXABI(opts->abi);
 
     TO->Triple = llvm::sys::getDefaultTargetTriple();
-    if (!opts->TargetTriple.empty())
-        TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
+    if (!opts->targetTriple.empty())
+        TO->Triple = llvm::Triple::normalize(opts->targetTriple);
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     if (!TI)
@@ -1065,7 +1065,7 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->Name = CTS->getName();
+    TS->name = CTS->getName();
     TS->templatedDecl = CT;
     TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations.push_back(TS);
@@ -1120,7 +1120,7 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->Name = CTS->getName();
+    TS->name = CTS->getName();
     TS->templatedDecl = CT;
     TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations.push_back(TS);
@@ -1182,7 +1182,7 @@ ClassTemplate* Parser::WalkClassTemplate(const clang::ClassTemplateDecl* TD)
     CT = new ClassTemplate();
     HandleDeclaration(TD, CT);
 
-    CT->Name = GetDeclName(TD);
+    CT->name = GetDeclName(TD);
     CT->_namespace = NS;
     NS->Templates.push_back(CT);
 
@@ -1230,7 +1230,7 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTy
         return TP;
 
     TP = new CppSharp::CppParser::TypeTemplateParameter();
-    TP->Name = GetDeclName(TTPD);
+    TP->name = GetDeclName(TTPD);
     HandleDeclaration(TTPD, TP);
     if (TTPD->hasDefaultArgument())
         TP->defaultArgument = GetQualifiedType(TTPD->getDefaultArgument());
@@ -1250,7 +1250,7 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
         return NTP;
 
     NTP = new CppSharp::CppParser::NonTypeTemplateParameter();
-    NTP->Name = GetDeclName(NTTPD);
+    NTP->name = GetDeclName(NTTPD);
     HandleDeclaration(NTTPD, NTP);
     if (NTTPD->hasDefaultArgument())
         NTP->defaultArgument = WalkExpression(NTTPD->getDefaultArgument());
@@ -1382,7 +1382,7 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
     TA = new TypeAliasTemplate();
     HandleDeclaration(TD, TA);
 
-    TA->Name = GetDeclName(TD);
+    TA->name = GetDeclName(TD);
     TA->TemplatedDecl = WalkDeclaration(TD->getTemplatedDecl());
     TA->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
@@ -1417,7 +1417,7 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     FT = new FunctionTemplate();
     HandleDeclaration(TD, FT);
 
-    FT->Name = GetDeclName(TD);
+    FT->name = GetDeclName(TD);
     FT->_namespace = NS;
     FT->TemplatedDecl = Function;
     FT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
@@ -1462,7 +1462,7 @@ VarTemplate* Parser::WalkVarTemplate(const clang::VarTemplateDecl* TD)
     VT = new VarTemplate();
     HandleDeclaration(TD, VT);
 
-    VT->Name = GetDeclName(TD);
+    VT->name = GetDeclName(TD);
     VT->_namespace = NS;
     NS->Templates.push_back(VT);
 
@@ -1490,7 +1490,7 @@ Parser::WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl
     auto NS = GetNamespace(VTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->Name = VTS->getName();
+    TS->name = VTS->getName();
     TS->templatedDecl = VT;
     TS->specializationKind = WalkTemplateSpecializationKind(VTS->getSpecializationKind());
     VT->Specializations.push_back(TS);
@@ -1530,7 +1530,7 @@ Parser::WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpec
     auto NS = GetNamespace(VTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->Name = VTS->getName();
+    TS->name = VTS->getName();
     TS->templatedDecl = VT;
     TS->specializationKind = WalkTemplateSpecializationKind(VTS->getSpecializationKind());
     VT->Specializations.push_back(TS);
@@ -1699,7 +1699,7 @@ Field* Parser::WalkFieldCXX(const clang::FieldDecl* FD, Class* Class)
     HandleDeclaration(FD, F);
 
     F->_namespace = Class;
-    F->Name = FD->getName();
+    F->name = FD->getName();
     auto TL = FD->getTypeSourceInfo()->getTypeLoc();
     F->qualifiedType = GetQualifiedType(FD->getType(), &TL);
     F->access = ConvertToAccess(FD->getAccess());
@@ -2316,13 +2316,13 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
                 auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
-                FA->Name = PVD->getNameAsString();
+                FA->name = PVD->getNameAsString();
                 FA->qualifiedType = GetQualifiedType(PVD->getOriginalType(), &PTL);
             }
             else
             {
                 auto Arg = FP->getParamType(i);
-                FA->Name = "";
+                FA->name = "";
                 FA->qualifiedType = GetQualifiedType(Arg);
 
                 // In this case we have no valid value to use as a pointer so
@@ -2459,7 +2459,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TPT = new CppSharp::CppParser::TemplateParameterType();
 
         if (auto Ident = TP->getIdentifier())
-            TPT->parameter->Name = Ident->getName();
+            TPT->parameter->name = Ident->getName();
 
         TypeLoc UTL, ETL, ITL, Next;
 
@@ -2655,7 +2655,7 @@ Enumeration* Parser::WalkEnum(const clang::EnumDecl* ED)
         else
         {
             E = new Enumeration();
-            E->Name = Name;
+            E->name = Name;
             E->_namespace = NS;
             NS->Enums.push_back(E);
         }
@@ -2692,7 +2692,7 @@ Enumeration::Item* Parser::WalkEnumItem(clang::EnumConstantDecl* ECD)
     auto EnumItem = new Enumeration::Item();
     HandleDeclaration(ECD, EnumItem);
 
-    EnumItem->Name = ECD->getNameAsString();
+    EnumItem->name = ECD->getNameAsString();
     auto Value = ECD->getInitVal();
     EnumItem->value = Value.isSigned() ? Value.getSExtValue()
         : Value.getZExtValue();
@@ -2700,7 +2700,7 @@ Enumeration::Item* Parser::WalkEnumItem(clang::EnumConstantDecl* ECD)
 
     std::string Text;
     if (GetDeclText(ECD->getSourceRange(), Text))
-        EnumItem->Expression = Text;
+        EnumItem->expression = Text;
 
     return EnumItem;
 }
@@ -2777,7 +2777,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
 
-    F->Name = FD->getNameAsString();
+    F->name = FD->getNameAsString();
     F->_namespace = NS;
     F->isVariadic = FD->isVariadic();
     F->isInline = FD->isInlined();
@@ -2790,7 +2790,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     auto CC = FT->getCallConv();
     F->callingConvention = ConvertCallConv(CC);
 
-    F->OperatorKind = GetOperatorKindFromDecl(FD->getDeclName());
+    F->operatorKind = GetOperatorKindFromDecl(FD->getDeclName());
 
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())
@@ -2814,7 +2814,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->returnType = GetQualifiedType(FD->getReturnType(), &RTL);
 
     const auto& Mangled = GetDeclMangledName(FD);
-    F->Mangled = Mangled;
+    F->mangled = Mangled;
 
     clang::SourceLocation ParamStartLoc = FD->getLocStart();
     clang::SourceLocation ResultLoc;
@@ -2844,12 +2844,12 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     std::string Sig;
     if (GetDeclText(Range, Sig))
-        F->Signature = Sig;
+        F->signature = Sig;
 
     for (const auto& VD : FD->parameters())
     {
         auto P = new Parameter();
-        P->Name = VD->getNameAsString();
+        P->name = VD->getNameAsString();
 
         TypeLoc PTL;
         if (auto TSI = VD->getTypeSourceInfo())
@@ -2996,14 +2996,14 @@ void Parser::WalkVariable(const clang::VarDecl* VD, Variable* Var)
 {
     HandleDeclaration(VD, Var);
 
-    Var->Name = VD->getName();
+    Var->name = VD->getName();
     Var->access = ConvertToAccess(VD->getAccess());
 
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
     Var->qualifiedType = GetQualifiedType(VD->getType(), &TL);
 
     auto Mangled = GetDeclMangledName(VD);
-    Var->Mangled = Mangled;
+    Var->mangled = Mangled;
 }
 
 Variable* Parser::WalkVariable(const clang::VarDecl *VD)
@@ -3106,7 +3106,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         std::string Text;
         GetDeclText(PPEntity->getSourceRange(), Text);
 
-        static_cast<MacroExpansion*>(Entity)->Text = Text;
+        static_cast<MacroExpansion*>(Entity)->text = Text;
         break;
     }
     case clang::PreprocessedEntity::MacroDefinitionKind:
@@ -3150,8 +3150,8 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         Definition->lineNumberEnd = SM.getExpansionLineNumber(MD->getLocation());
         Entity = Definition;
 
-        Definition->Name = II->getName().trim();
-        Definition->Expression = Expression.trim();
+        Definition->name = II->getName().trim();
+        Definition->expression = Expression.trim();
     }
     case clang::PreprocessedEntity::InclusionDirectiveKind:
         // nothing to be done for InclusionDirectiveKind
@@ -3328,7 +3328,7 @@ void Parser::HandleOriginalText(const clang::Decl* D, Declaration* Decl)
     auto DeclText = clang::Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
     
     if (!Invalid)
-        Decl->DebugText = DeclText;
+        Decl->debugText = DeclText;
 }
 
 void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
@@ -3738,8 +3738,8 @@ void Parser::HandleDiagnostics(ParserResult* res)
         auto FileName = Source.getFilename(Source.getFileLoc(Diag.Location));
 
         auto PDiag = ParserDiagnostic();
-        PDiag.FileName = FileName.str();
-        PDiag.Message = Diag.Message.str();
+        PDiag.fileName = FileName.str();
+        PDiag.message = Diag.Message.str();
         PDiag.lineNumber = 0;
         PDiag.columnNumber = 0;
 
@@ -3889,7 +3889,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 {
     auto LibName = File;
     NativeLib = new NativeLibrary();
-    NativeLib->FileName = LibName;
+    NativeLib->fileName = LibName;
 
     for(auto it = Archive->symbol_begin(); it != Archive->symbol_end(); ++it)
     {
@@ -3926,7 +3926,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
 {
     auto LibName = File;
     NativeLib = new NativeLibrary();
-    NativeLib->FileName = LibName;
+    NativeLib->fileName = LibName;
     NativeLib->archType = ConvertArchType(ObjectFile->getArch());
 
     if (ObjectFile->isELF())
@@ -4015,7 +4015,7 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
 {
     auto LibName = File;
     NativeLib = new NativeLibrary();
-    NativeLib->FileName = LibName;
+    NativeLib->fileName = LibName;
 
     for (auto it = Begin; it != End; ++it)
     {
@@ -4099,7 +4099,7 @@ ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)
 
     auto res = new ParserResult();
     res->codeParser = new Parser(Opts);
-    return res->codeParser->ParseLibrary(Opts->LibraryFile, res);
+    return res->codeParser->ParseLibrary(Opts->libraryFile, res);
 }
 
 ParserTargetInfo* ClangParser::GetTargetInfo(CppParserOptions* Opts)

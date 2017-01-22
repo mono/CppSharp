@@ -86,7 +86,6 @@ namespace CppSharp.Types.Std
                 ctx.Return.Write("{0}.{1}", varBasicString, Helpers.InstanceIdentifier);
                 ctx.Cleanup.WriteLine("{0}.Dispose({1});", varBasicString,
                     type.IsPointer() ? "true" : "false");
-                ctx.Cleanup.WriteLine("{0}.Dispose();", varAllocator);
             }
         }
 

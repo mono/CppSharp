@@ -31,7 +31,7 @@ struct CS_API ParserTargetInfo
     ParserTargetInfo();
     ~ParserTargetInfo();
 
-    STRING(ABI);
+    std::string ABI;
 
     ParserIntType char16Type;
     ParserIntType char32Type;

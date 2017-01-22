@@ -362,7 +362,7 @@ public:
     LayoutField(const LayoutField& other);
     ~LayoutField();
     unsigned offset;
-    STRING(Name)
+    std::string name;
     QualifiedType qualifiedType;
     void* fieldPtr;
 };
@@ -459,9 +459,9 @@ public:
     SourceLocation location;
     int lineNumberStart;
     int lineNumberEnd;
-    STRING(Name)
-    STRING(USR)
-    STRING(DebugText)
+    std::string name;
+    std::string USR;
+    std::string debugText;
     bool isIncomplete;
     bool isDependent;
     bool isImplicit;
@@ -581,7 +581,7 @@ public:
     Statement(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
     StatementClass _class;
     Declaration* decl;
-    STRING(String)
+    std::string string;
 };
 
 class CS_API Expression : public Statement
@@ -597,7 +597,7 @@ public:
     ~BinaryOperator();
     Expression* LHS;
     Expression* RHS;
-    STRING(OpcodeStr)
+    std::string opcodeStr;
 };
 
 class CS_API CallExpr : public Expression
@@ -704,9 +704,9 @@ public:
     bool isInline;
     bool isPure;
     bool isDeleted;
-    CXXOperatorKind OperatorKind;
-    STRING(Mangled)
-    STRING(Signature)
+    CXXOperatorKind operatorKind;
+    std::string mangled;
+    std::string signature;
     CallingConvention callingConvention;
     VECTOR(Parameter*, Parameters)
     FunctionTemplateSpecialization* specializationInfo;
@@ -757,7 +757,7 @@ public:
         Item(const Item&);
         ~Item();
 
-        STRING(Expression)
+        std::string expression;
         uint64_t value;
     };
 
@@ -781,7 +781,7 @@ class CS_API Variable : public Declaration
 public:
     DECLARE_DECL_KIND(Variable, Variable)
     ~Variable();
-    STRING(Mangled)
+    std::string mangled;
     QualifiedType qualifiedType;
 };
 
@@ -1033,8 +1033,8 @@ class CS_API MacroDefinition : public PreprocessedEntity
 public:
     MacroDefinition();
     ~MacroDefinition();
-    STRING(Name)
-    STRING(Expression)
+    std::string name;
+    std::string expression;
     int lineNumberStart;
     int lineNumberEnd;
 };
@@ -1044,8 +1044,8 @@ class CS_API MacroExpansion : public PreprocessedEntity
 public:
     MacroExpansion();
     ~MacroExpansion();
-    STRING(Name)
-    STRING(Text)
+    std::string name;
+    std::string text;
     MacroDefinition* definition;
 };
 
@@ -1054,7 +1054,7 @@ class CS_API TranslationUnit : public Namespace
 public:
     TranslationUnit();
     ~TranslationUnit();
-    STRING(FileName)
+    std::string fileName;
     bool isSystemHeader;
     VECTOR(MacroDefinition*, Macros)
 };
@@ -1071,7 +1071,7 @@ class CS_API NativeLibrary
 public:
     NativeLibrary();
     ~NativeLibrary();
-    STRING(FileName)
+    std::string fileName;
     ArchType archType;
     VECTOR_STRING(Symbols)
     VECTOR_STRING(Dependencies)
@@ -1156,7 +1156,7 @@ public:
     public:
         Argument();
         Argument(const Argument&);
-        STRING(Text)
+        std::string text;
     };
     BlockCommandComment();
     BlockCommandComment(CommentKind Kind);
@@ -1191,7 +1191,7 @@ class CS_API VerbatimBlockLineComment : public Comment
 {
 public:
     VerbatimBlockLineComment();
-    STRING(Text)
+    std::string text;
 };
 
 class CS_API VerbatimBlockComment : public BlockCommandComment
@@ -1206,7 +1206,7 @@ class CS_API VerbatimLineComment : public BlockCommandComment
 {
 public:
     VerbatimLineComment();
-    STRING(Text)
+    std::string text;
 };
 
 class CS_API InlineCommandComment : public InlineContentComment
@@ -1224,7 +1224,7 @@ public:
     public:
         Argument();
         Argument(const Argument&);
-        STRING(Text)
+        std::string text;
     };
     InlineCommandComment();
     unsigned commandId;
@@ -1247,11 +1247,11 @@ public:
     public:
         Attribute();
         Attribute(const Attribute&);
-        STRING(Name)
-        STRING(Value)
+        std::string name;
+        std::string value;
     };
     HTMLStartTagComment();
-    STRING(TagName)
+    std::string tagName;
     VECTOR(Attribute, Attributes)
 };
 
@@ -1259,14 +1259,14 @@ class CS_API HTMLEndTagComment : public HTMLTagComment
 {
 public:
     HTMLEndTagComment();
-    STRING(TagName)
+    std::string tagName;
 };
 
 class CS_API TextComment : public InlineContentComment
 {
 public:
     TextComment();
-    STRING(Text)
+    std::string text;
 };
 
 enum class RawCommentKind
@@ -1287,8 +1287,8 @@ public:
     RawComment();
     ~RawComment();
     RawCommentKind kind;
-    STRING(Text)
-    STRING(BriefText)
+    std::string text;
+    std::string briefText;
     FullComment* fullCommentBlock;
 };
 

@@ -11,6 +11,8 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.Parser.CSharp")]
 
+[assembly:InternalsVisibleTo("CppSharp.CppParser")]
+
 namespace Std
 {
     public unsafe partial class Lockit
@@ -389,24 +391,15 @@ namespace Std
 
 namespace Std
 {
-    public unsafe partial class Allocator : IDisposable
+    public unsafe partial struct Allocator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                EntryPoint="??0?$allocator@D@std@@QAE@XZ")]
-            internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
         }
 
-        public global::System.IntPtr __Instance { get; protected set; }
-
-        protected int __PointerAdjustment;
-        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
-        protected void*[] __OriginalVTables;
-
-        protected bool __ownsNativeInstance;
+        private Allocator.__Internal __instance;
+        internal Allocator.__Internal __Instance { get { return __instance; } }
 
         internal static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
@@ -418,46 +411,15 @@ namespace Std
             return new Allocator(native, skipVTables);
         }
 
-        private static void* __CopyValue(Allocator.__Internal native)
-        {
-            var ret = Marshal.AllocHGlobal(0);
-            *(Allocator.__Internal*) ret = native;
-            return ret.ToPointer();
-        }
-
         private Allocator(Allocator.__Internal native, bool skipVTables = false)
-            : this(__CopyValue(native), skipVTables)
+            : this()
         {
-            __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
+            __instance = native;
         }
 
-        protected Allocator(void* native, bool skipVTables = false)
+        private Allocator(void* native, bool skipVTables = false) : this()
         {
-            if (native == null)
-                return;
-            __Instance = new global::System.IntPtr(native);
-        }
-
-        public Allocator()
-        {
-            __Instance = Marshal.AllocHGlobal(0);
-            __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
-            __Internal.ctor_0((__Instance + __PointerAdjustment));
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-        }
-
-        public virtual void Dispose(bool disposing)
-        {
-            global::Std.Allocator __dummy;
-            NativeToManagedMap.TryRemove(__Instance, out __dummy);
-            if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+            __instance = *(__Internal*) native;
         }
     }
 
@@ -484,6 +446,11 @@ namespace Std
         {
             [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
+
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                EntryPoint="??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@PBDABV?$allocator@D@1@@Z")]
+            internal static extern global::System.IntPtr ctor_9(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string _Ptr, global::System.IntPtr _Al);
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -533,6 +500,16 @@ namespace Std
             if (native == null)
                 return;
             __Instance = new global::System.IntPtr(native);
+        }
+
+        public BasicString(string _Ptr, global::Std.Allocator _Al)
+        {
+            __Instance = Marshal.AllocHGlobal(24);
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+            var ____arg1 = _Al.__Instance;
+            var __arg1 = new global::System.IntPtr(&____arg1);
+            __Internal.ctor_9((__Instance + __PointerAdjustment), _Ptr, __arg1);
         }
 
         public void Dispose()

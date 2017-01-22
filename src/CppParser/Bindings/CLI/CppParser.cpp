@@ -179,6 +179,170 @@ void CppSharp::Parser::CppParserOptions::__Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::CppParserOptions*)object.ToPointer();
 }
 
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::Arguments::get()
+{
+    auto _tmp__Arguments = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Arguments)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__Arguments->Add(_marshalElement);
+    }
+    return _tmp__Arguments;
+}
+
+void CppSharp::Parser::CppParserOptions::Arguments::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Arguments = _tmpvalue;
+}
+
+System::String^ CppSharp::Parser::CppParserOptions::LibraryFile::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::CppParserOptions*)NativePtr)->libraryFile);
+}
+
+void CppSharp::Parser::CppParserOptions::LibraryFile::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->libraryFile = clix::marshalString<clix::E_UTF8>(value);
+}
+
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::SourceFiles::get()
+{
+    auto _tmp__SourceFiles = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->SourceFiles)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__SourceFiles->Add(_marshalElement);
+    }
+    return _tmp__SourceFiles;
+}
+
+void CppSharp::Parser::CppParserOptions::SourceFiles::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->SourceFiles = _tmpvalue;
+}
+
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::IncludeDirs::get()
+{
+    auto _tmp__IncludeDirs = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->IncludeDirs)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__IncludeDirs->Add(_marshalElement);
+    }
+    return _tmp__IncludeDirs;
+}
+
+void CppSharp::Parser::CppParserOptions::IncludeDirs::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->IncludeDirs = _tmpvalue;
+}
+
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::SystemIncludeDirs::get()
+{
+    auto _tmp__SystemIncludeDirs = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->SystemIncludeDirs)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__SystemIncludeDirs->Add(_marshalElement);
+    }
+    return _tmp__SystemIncludeDirs;
+}
+
+void CppSharp::Parser::CppParserOptions::SystemIncludeDirs::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->SystemIncludeDirs = _tmpvalue;
+}
+
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::Defines::get()
+{
+    auto _tmp__Defines = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Defines)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__Defines->Add(_marshalElement);
+    }
+    return _tmp__Defines;
+}
+
+void CppSharp::Parser::CppParserOptions::Defines::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Defines = _tmpvalue;
+}
+
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::Undefines::get()
+{
+    auto _tmp__Undefines = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Undefines)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__Undefines->Add(_marshalElement);
+    }
+    return _tmp__Undefines;
+}
+
+void CppSharp::Parser::CppParserOptions::Undefines::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->Undefines = _tmpvalue;
+}
+
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::LibraryDirs::get()
+{
+    auto _tmp__LibraryDirs = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->LibraryDirs)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__LibraryDirs->Add(_marshalElement);
+    }
+    return _tmp__LibraryDirs;
+}
+
+void CppSharp::Parser::CppParserOptions::LibraryDirs::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->LibraryDirs = _tmpvalue;
+}
+
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::CppParserOptions::ASTContext::get()
 {
     return (((::CppSharp::CppParser::CppParserOptions*)NativePtr)->ASTContext == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->ASTContext);
@@ -197,6 +361,16 @@ int CppSharp::Parser::CppParserOptions::ToolSetToUse::get()
 void CppSharp::Parser::CppParserOptions::ToolSetToUse::set(int value)
 {
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->toolSetToUse = value;
+}
+
+System::String^ CppSharp::Parser::CppParserOptions::TargetTriple::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetTriple);
+}
+
+void CppSharp::Parser::CppParserOptions::TargetTriple::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetTriple = clix::marshalString<clix::E_UTF8>(value);
 }
 
 CppSharp::Parser::AST::CppAbi CppSharp::Parser::CppParserOptions::Abi::get()
@@ -267,34 +441,6 @@ CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::CppParserOptions::TargetIn
 void CppSharp::Parser::CppParserOptions::TargetInfo::set(CppSharp::Parser::ParserTargetInfo^ value)
 {
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo = (::CppSharp::CppParser::ParserTargetInfo*)value->NativePtr;
-}
-
-System::String^ CppSharp::Parser::CppParserOptions::LibraryFile::get()
-{
-    auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getLibraryFile();
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
-}
-
-void CppSharp::Parser::CppParserOptions::LibraryFile::set(System::String^ s)
-{
-    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto __arg0 = ___arg0.c_str();
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->setLibraryFile(__arg0);
-}
-
-System::String^ CppSharp::Parser::CppParserOptions::TargetTriple::get()
-{
-    auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getTargetTriple();
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
-}
-
-void CppSharp::Parser::CppParserOptions::TargetTriple::set(System::String^ s)
-{
-    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto __arg0 = ___arg0.c_str();
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->setTargetTriple(__arg0);
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
@@ -380,6 +526,26 @@ void CppSharp::Parser::ParserDiagnostic::__Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::ParserDiagnostic*)object.ToPointer();
 }
 
+System::String^ CppSharp::Parser::ParserDiagnostic::FileName::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->fileName);
+}
+
+void CppSharp::Parser::ParserDiagnostic::FileName::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->fileName = clix::marshalString<clix::E_UTF8>(value);
+}
+
+System::String^ CppSharp::Parser::ParserDiagnostic::Message::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->message);
+}
+
+void CppSharp::Parser::ParserDiagnostic::Message::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->message = clix::marshalString<clix::E_UTF8>(value);
+}
+
 CppSharp::Parser::ParserDiagnosticLevel CppSharp::Parser::ParserDiagnostic::Level::get()
 {
     return (CppSharp::Parser::ParserDiagnosticLevel)((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->level;
@@ -408,34 +574,6 @@ int CppSharp::Parser::ParserDiagnostic::ColumnNumber::get()
 void CppSharp::Parser::ParserDiagnostic::ColumnNumber::set(int value)
 {
     ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->columnNumber = value;
-}
-
-System::String^ CppSharp::Parser::ParserDiagnostic::FileName::get()
-{
-    auto __ret = ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->getFileName();
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
-}
-
-void CppSharp::Parser::ParserDiagnostic::FileName::set(System::String^ s)
-{
-    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto __arg0 = ___arg0.c_str();
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->setFileName(__arg0);
-}
-
-System::String^ CppSharp::Parser::ParserDiagnostic::Message::get()
-{
-    auto __ret = ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->getMessage();
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
-}
-
-void CppSharp::Parser::ParserDiagnostic::Message::set(System::String^ s)
-{
-    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto __arg0 = ___arg0.c_str();
-    ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->setMessage(__arg0);
 }
 
 CppSharp::Parser::ParserResult::ParserResult(::CppSharp::CppParser::ParserResult* native)
@@ -507,6 +645,29 @@ CppSharp::Parser::ParserResultKind CppSharp::Parser::ParserResult::Kind::get()
 void CppSharp::Parser::ParserResult::Kind::set(CppSharp::Parser::ParserResultKind value)
 {
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->kind = (::CppSharp::CppParser::ParserResultKind)value;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ CppSharp::Parser::ParserResult::Diagnostics::get()
+{
+    auto _tmp__Diagnostics = gcnew System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>();
+    for(auto _element : ((::CppSharp::CppParser::ParserResult*)NativePtr)->Diagnostics)
+    {
+        auto ___element = new ::CppSharp::CppParser::ParserDiagnostic(_element);
+        auto _marshalElement = (___element == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)___element);
+        _tmp__Diagnostics->Add(_marshalElement);
+    }
+    return _tmp__Diagnostics;
+}
+
+void CppSharp::Parser::ParserResult::Diagnostics::set(System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::ParserDiagnostic>();
+    for each(CppSharp::Parser::ParserDiagnostic^ _element in value)
+    {
+        auto _marshalElement = *(::CppSharp::CppParser::ParserDiagnostic*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->Diagnostics = _tmpvalue;
 }
 
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserResult::ASTContext::get()
