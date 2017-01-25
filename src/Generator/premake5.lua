@@ -5,13 +5,8 @@ project "CppSharp.Generator"
   kind "SharedLib"
   language "C#"
 
-  files   { "**.cs", "**verbs.txt", path.join(depsdir, "InjectModuleInitializer", "**.cs")  }
+  files   { "**.cs", "**verbs.txt" }
   excludes { "Filter.cs" }
-
-  libdirs 
-  {
-    depsdir .. "/Mono.Cecil"
-  }
 
   links
   {
@@ -19,9 +14,7 @@ project "CppSharp.Generator"
   	"System.Core",
   	"CppSharp",
   	"CppSharp.AST",
-  	"CppSharp.Parser",
-  	"Mono.Cecil",
-  	"Mono.Cecil.Pdb"
+  	"CppSharp.Parser"
   }
 
   SetupParser()

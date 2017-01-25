@@ -132,7 +132,7 @@ namespace CppSharp
         public static IEnumerable<Type> FindDerivedTypes(this Assembly assembly,
                                                          Type baseType)
         {
-            return assembly.GetExportedTypes().Where(baseType.IsAssignableFrom);
+            return assembly.GetTypes().Where(baseType.IsAssignableFrom);
         }
     }
 

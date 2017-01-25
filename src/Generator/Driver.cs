@@ -15,7 +15,6 @@ using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Parser;
 using CppSharp.Utils;
-using EinarEgilsson.Utilities.InjectModuleInitializer;
 
 namespace CppSharp
 {
@@ -449,30 +448,10 @@ namespace CppSharp
             HasCompilationErrors = errors.Count > 0;
             if (!HasCompilationErrors)
             {
-                InjectModuleInitializer(assemblyFile);
                 Diagnostics.Message("Compilation succeeded.");
                 var wrapper = Path.Combine(outputDir, assemblyFile);
                 foreach (var library in module.Libraries)
                     libraryMappings[library] = wrapper;
-            }
-        }
-
-        /// <summary>
-        /// Injects a module initializer, if any, i.e. code executed right after an
-        /// assembly is loaded and before any other code in it.
-        /// <para>The run-time supports it but C# does not so we inject it in the
-        /// compiled assembly by manually adding IL instructions.</para>
-        /// </summary>
-        /// <param name="assemblyFile">The assembly to inject a module initializer to.</param>
-        private static void InjectModuleInitializer(string assemblyFile)
-        {
-            var injector = new Injector();
-            injector.ReadAssembly(assemblyFile);
-            var moduleInitializer = injector.GetModuleInitializer();
-            if (moduleInitializer != null)
-            {
-                injector.InjectInitializer(moduleInitializer);
-                injector.WriteAssembly(assemblyFile, null);
             }
         }
 
