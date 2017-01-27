@@ -1949,6 +1949,21 @@ clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Cl
     return TL;
 }
 
+static FriendKind ConvertFriendKind(clang::Decl::FriendObjectKind FK)
+{
+    using namespace clang;
+
+    switch (FK)
+    {
+    case Decl::FriendObjectKind::FOK_Declared:
+        return FriendKind::Declared;
+    case Decl::FriendObjectKind::FOK_Undeclared:
+        return FriendKind::Undeclared;
+    default:
+        return FriendKind::None;
+    }
+}
+
 static CallingConvention ConvertCallConv(clang::CallingConv CC)
 {
     using namespace clang;
@@ -1965,6 +1980,33 @@ static CallingConvention ConvertCallConv(clang::CallingConv CC)
         return CallingConvention::ThisCall;
     default:
         return CallingConvention::Unknown;
+    }
+}
+
+static ExceptionSpecType ConvertExceptionType(clang::ExceptionSpecificationType EST)
+{
+    using namespace clang;
+
+    switch (EST)
+    {
+    case ExceptionSpecificationType::EST_BasicNoexcept:
+        return ExceptionSpecType::BasicNoexcept;
+    case ExceptionSpecificationType::EST_ComputedNoexcept:
+        return ExceptionSpecType::ComputedNoexcept;
+    case ExceptionSpecificationType::EST_Dynamic:
+        return ExceptionSpecType::Dynamic;
+    case ExceptionSpecificationType::EST_DynamicNone:
+        return ExceptionSpecType::DynamicNone;
+    case ExceptionSpecificationType::EST_MSAny:
+        return ExceptionSpecType::MSAny;
+    case ExceptionSpecificationType::EST_Unevaluated:
+        return ExceptionSpecType::Unevaluated;
+    case ExceptionSpecificationType::EST_Uninstantiated:
+        return ExceptionSpecType::Uninstantiated;
+    case ExceptionSpecificationType::EST_Unparsed:
+        return ExceptionSpecType::Unparsed;
+    default:
+        return ExceptionSpecType::None;
     }
 }
 
@@ -2287,6 +2329,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         FunctionProtoTypeLoc FTL;
         TypeLoc RL;
         TypeLoc Next;
+        clang::SourceLocation ParamStartLoc;
         if (LocValid)
         {
             while (!TL->isNull() && TL->getTypeLocClass() != TypeLoc::FunctionProto)
@@ -2299,28 +2342,26 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             {
                 FTL = TL->getAs<FunctionProtoTypeLoc>();
                 RL = FTL.getReturnLoc();
+                ParamStartLoc = FTL.getLParenLoc();
             }
         }
 
         auto F = new FunctionType();
         F->returnType = GetQualifiedType(FP->getReturnType(), &RL);
         F->callingConvention = ConvertCallConv(FP->getCallConv());
+        F->exceptionSpecType = ConvertExceptionType(FP->getExceptionSpecType());
 
         for (unsigned i = 0; i < FP->getNumParams(); ++i)
         {
-            auto FA = new Parameter();
             if (FTL && FTL.getParam(i))
             {
                 auto PVD = FTL.getParam(i);
-                HandleDeclaration(PVD, FA);
-
-                auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
-
-                FA->Name = PVD->getNameAsString();
-                FA->qualifiedType = GetQualifiedType(PVD->getOriginalType(), &PTL);
+                auto FA = WalkParameter(PVD, ParamStartLoc);
+                F->Parameters.push_back(FA);
             }
             else
             {
+                auto FA = new Parameter();
                 auto Arg = FP->getParamType(i);
                 FA->Name = "";
                 FA->qualifiedType = GetQualifiedType(Arg);
@@ -2329,8 +2370,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
                 // use a special value known to the managed side to make sure
                 // it gets ignored.
                 FA->originalPtr = IgnorePtr;
+                F->Parameters.push_back(FA);
             }
-            F->Parameters.push_back(FA);
         }
 
         Ty = F;
@@ -2766,6 +2807,36 @@ static clang::TypeLoc DesugarTypeLoc(const clang::TypeLoc& Loc)
     return Loc;
 }
 
+Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
+    const clang::SourceLocation& ParamStartLoc)
+{
+    auto P = new Parameter();
+    P->Name = PVD->getNameAsString();
+
+    clang::TypeLoc PTL;
+    if (auto TSI = PVD->getTypeSourceInfo())
+        PTL = PVD->getTypeSourceInfo()->getTypeLoc();
+
+    auto paramRange = PVD->getSourceRange();
+    paramRange.setBegin(ParamStartLoc);
+
+    HandlePreprocessedEntities(P, paramRange, MacroLocation::FunctionParameters);
+
+    P->qualifiedType = GetQualifiedType(PVD->getOriginalType(), &PTL);
+    P->hasDefaultValue = PVD->hasDefaultArg();
+    P->index = PVD->getFunctionScopeIndex();
+    if (PVD->hasDefaultArg() && !PVD->hasUnparsedDefaultArg())
+    {
+        if (PVD->hasUninstantiatedDefaultArg())
+            P->defaultArgument = WalkExpression(PVD->getUninstantiatedDefaultArg());
+        else
+            P->defaultArgument = WalkExpression(PVD->getDefaultArg());
+    }
+    HandleDeclaration(PVD, P);
+
+    return P;
+}
+
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
                           bool IsDependent)
 {
@@ -2779,6 +2850,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     F->Name = FD->getNameAsString();
     F->_namespace = NS;
+    F->isConstExpr = FD->isConstexpr();
     F->isVariadic = FD->isVariadic();
     F->isInline = FD->isInlined();
     F->isDependent = FD->isDependentContext();
@@ -2787,10 +2859,12 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     if (auto InstantiatedFrom = FD->getTemplateInstantiationPattern())
         F->instantiatedFrom = static_cast<Function*>(WalkDeclaration(InstantiatedFrom));
 
+    auto FK = FD->getFriendObjectKind();
+    F->friendKind = ConvertFriendKind(FK);
     auto CC = FT->getCallConv();
     F->callingConvention = ConvertCallConv(CC);
 
-    F->OperatorKind = GetOperatorKindFromDecl(FD->getDeclName());
+    F->operatorKind = GetOperatorKindFromDecl(FD->getDeclName());
 
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())
@@ -2799,6 +2873,8 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
         auto FTL = Loc.getAs<FunctionTypeLoc>();
         if (FTL)
         {
+            F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
+
             RTL = FTL.getReturnLoc();
 
             auto& SM = c->getSourceManager();
@@ -2848,31 +2924,8 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     for (const auto& VD : FD->parameters())
     {
-        auto P = new Parameter();
-        P->Name = VD->getNameAsString();
-
-        TypeLoc PTL;
-        if (auto TSI = VD->getTypeSourceInfo())
-            PTL = VD->getTypeSourceInfo()->getTypeLoc();
-
-        auto paramRange = VD->getSourceRange();
-        paramRange.setBegin(ParamStartLoc);
-
-        HandlePreprocessedEntities(P, paramRange, MacroLocation::FunctionParameters);
-
-        P->qualifiedType = GetQualifiedType(VD->getOriginalType(), &PTL);
-        P->hasDefaultValue = VD->hasDefaultArg();
+        auto P = WalkParameter(VD, ParamStartLoc);
         P->_namespace = NS;
-        P->index = VD->getFunctionScopeIndex();
-        if (VD->hasDefaultArg() && !VD->hasUnparsedDefaultArg())
-        {
-            if (VD->hasUninstantiatedDefaultArg())
-                P->defaultArgument = WalkExpression(VD->getUninstantiatedDefaultArg());
-            else
-                P->defaultArgument = WalkExpression(VD->getDefaultArg());
-        }
-        HandleDeclaration(VD, P);
-
         F->Parameters.push_back(P);
 
         ParamStartLoc = VD->getLocEnd();
@@ -3190,7 +3243,7 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl)
     }
 }
 
-AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
+AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
 {
     using namespace clang;
 
@@ -3253,7 +3306,7 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
         }
         auto ConstructorExpression = new AST::CXXConstructExpr(GetStringFromStatement(Expr),
             WalkDeclaration(ConstructorExpr->getConstructor()));
-        for (clang::Expr* arg : ConstructorExpr->arguments())
+        for (auto arg : ConstructorExpr->arguments())
         {
             ConstructorExpression->Arguments.push_back(WalkExpression(arg));
         }

@@ -493,6 +493,7 @@ namespace CppSharp
             _type.ReturnType = VisitQualified(type.ReturnType);
             _type.CallingConvention = DeclConverter.VisitCallingConvention(
                 type.CallingConvention);
+            _type.ExceptionSpecType = VisitExceptionSpecType(type.ExceptionSpecType);
 
             for (uint i = 0; i < type.ParametersCount; ++i)
             {
@@ -527,6 +528,34 @@ namespace CppSharp
                     return AST.PointerType.TypeModifier.RVReference;
                 default:
                     throw new ArgumentOutOfRangeException("modifier");
+            }
+        }
+
+        private static AST.ExceptionSpecType VisitExceptionSpecType(
+            ExceptionSpecType exceptionSpecType)
+        {
+            switch (exceptionSpecType)
+            {
+                case ExceptionSpecType.None:
+                    return AST.ExceptionSpecType.None;
+                case ExceptionSpecType.DynamicNone:
+                    return AST.ExceptionSpecType.DynamicNone;
+                case ExceptionSpecType.Dynamic:
+                    return AST.ExceptionSpecType.Dynamic;
+                case ExceptionSpecType.MSAny:
+                    return AST.ExceptionSpecType.MSAny;
+                case ExceptionSpecType.BasicNoexcept:
+                    return AST.ExceptionSpecType.BasicNoexcept;
+                case ExceptionSpecType.ComputedNoexcept:
+                    return AST.ExceptionSpecType.ComputedNoexcept;
+                case ExceptionSpecType.Unevaluated:
+                    return AST.ExceptionSpecType.Unevaluated;
+                case ExceptionSpecType.Uninstantiated:
+                    return AST.ExceptionSpecType.Uninstantiated;
+                case ExceptionSpecType.Unparsed:
+                    return AST.ExceptionSpecType.Unparsed;
+                default:
+                    throw new ArgumentOutOfRangeException("exceptionSpecType");
             }
         }
 
@@ -1123,16 +1152,19 @@ namespace CppSharp
             _function.ReturnType = typeConverter.VisitQualified(function.ReturnType);
             _function.IsReturnIndirect = function.IsReturnIndirect;
             _function.HasThisReturn = function.HasThisReturn;
+            _function.IsConstExpr = function.IsConstExpr;
             _function.IsVariadic = function.IsVariadic;
             _function.IsInline = function.IsInline;
             _function.IsPure = function.IsPure;
             _function.IsDeleted = function.IsDeleted;
+            _function.FriendKind = VisitFriendKind(function.FriendKind);
             _function.OperatorKind = VisitCXXOperatorKind(function.OperatorKind);
             _function.Mangled = function.Mangled;
             _function.Signature = function.Signature;
             _function.CallingConvention = VisitCallingConvention(function.CallingConvention);
             if (function.InstantiatedFrom != null)
                 _function.InstantiatedFrom = (AST.Function) Visit(function.InstantiatedFrom);
+            _function.FunctionType = typeConverter.VisitQualified(function.QualifiedType);
 
             for (uint i = 0; i < function.ParametersCount; ++i)
             {
@@ -1306,7 +1338,7 @@ namespace CppSharp
             }
         }
 
-        static internal AST.CallingConvention VisitCallingConvention(CallingConvention callingConvention)
+        internal static AST.CallingConvention VisitCallingConvention(CallingConvention callingConvention)
         {
             switch (callingConvention)
             {
@@ -1324,6 +1356,21 @@ namespace CppSharp
                     return AST.CallingConvention.Unknown;
                 default:
                     throw new ArgumentOutOfRangeException("callingConvention");
+            }
+        }
+
+        private static AST.FriendKind VisitFriendKind(FriendKind friendKind)
+        {
+            switch (friendKind)
+            {
+                case FriendKind.None:
+                    return AST.FriendKind.None;
+                case FriendKind.Declared:
+                    return AST.FriendKind.Declared;
+                case FriendKind.Undeclared:
+                    return AST.FriendKind.Undeclared;
+                default:
+                    throw new ArgumentOutOfRangeException("friendKind");
             }
         }
 

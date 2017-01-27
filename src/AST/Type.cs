@@ -222,6 +222,19 @@ namespace CppSharp.AST
         }
     }
 
+    public enum ExceptionSpecType
+    {
+        None,
+        DynamicNone,
+        Dynamic,
+        MSAny,
+        BasicNoexcept,
+        ComputedNoexcept,
+        Unevaluated,
+        Uninstantiated,
+        Unparsed
+    }
+
     /// <summary>
     /// Represents an C/C++ function type.
     /// </summary>
@@ -234,6 +247,8 @@ namespace CppSharp.AST
         public List<Parameter> Parameters;
 
         public CallingConvention CallingConvention { get; set; }
+
+        public ExceptionSpecType ExceptionSpecType { get; set; }
 
         public FunctionType()
         {

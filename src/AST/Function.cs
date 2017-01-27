@@ -116,14 +116,19 @@ namespace CppSharp.AST
         AdjustedMethod
     }
 
+    public enum FriendKind
+    {
+        None,
+        Declared,
+        Undeclared
+    }
+
     public class Function : Declaration, ITypedDecl, IMangledDecl
     {
         public Function()
         {
             Parameters = new List<Parameter>();
             CallingConvention = CallingConvention.Default;
-            IsVariadic = false;
-            IsInline = false;
             Signature = string.Empty;
             Index = null;
         }
@@ -158,14 +163,15 @@ namespace CppSharp.AST
         public bool HasThisReturn { get; set; }
 
         public List<Parameter> Parameters { get; set; }
+        public bool IsConstExpr { get; set; }
         public bool IsVariadic { get; set; }
         public bool IsInline { get; set; }
         public bool IsPure { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsAmbiguous { get; set; }
-
+        public FriendKind FriendKind { get; set; }
         public CXXOperatorKind OperatorKind { get; set; }
-        public bool IsOperator { get { return OperatorKind != CXXOperatorKind.None; } }
+        public bool IsOperator => OperatorKind != CXXOperatorKind.None;
 
         public CallingConvention CallingConvention { get; set; }
 
@@ -173,25 +179,15 @@ namespace CppSharp.AST
 
         public Function InstantiatedFrom { get; set; }
 
-        public bool IsThisCall
-        {
-            get { return CallingConvention == CallingConvention.ThisCall; }
-        }
+        public QualifiedType FunctionType { get; set; }
 
-        public bool IsStdCall
-        {
-            get { return CallingConvention == CallingConvention.StdCall; }
-        }
+        public bool IsThisCall => CallingConvention == CallingConvention.ThisCall;
 
-        public bool IsFastCall
-        {
-            get { return CallingConvention == CallingConvention.FastCall; }
-        }
+        public bool IsStdCall => CallingConvention == CallingConvention.StdCall;
 
-        public bool IsCCall
-        {
-            get { return CallingConvention == CallingConvention.C; }
-        }
+        public bool IsFastCall => CallingConvention == CallingConvention.FastCall;
+
+        public bool IsCCall => CallingConvention == CallingConvention.C;
 
         public bool HasIndirectReturnTypeParameter
         {
@@ -224,7 +220,7 @@ namespace CppSharp.AST
         }
 
         public FunctionSynthKind SynthKind { get; set; }
-        public bool IsSynthetized { get { return SynthKind != FunctionSynthKind.None; } }
+        public bool IsSynthetized => SynthKind != FunctionSynthKind.None;
         public bool IsNonMemberOperator { get; set; }
 
         public Function OriginalFunction { get; set; }
@@ -243,7 +239,7 @@ namespace CppSharp.AST
             return visitor.VisitFunctionDecl(this);
         }
 
-        public Type Type { get { return ReturnType.Type; } }
+        public Type Type => ReturnType.Type;
         public QualifiedType QualifiedType { get { return ReturnType; } }
 
         public FunctionType GetFunctionType()

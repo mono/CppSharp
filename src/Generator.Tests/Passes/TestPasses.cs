@@ -208,7 +208,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.AreEqual(method.Access, AccessSpecifier.Internal);
         }
 
-        private string TypePrinterDelegate(CppSharp.AST.Type type)
+        private string TypePrinterDelegate(Type type)
         {
             return type.Visit(new CSharpTypePrinter(Driver.Context)).Type;
         }

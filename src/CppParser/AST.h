@@ -103,13 +103,27 @@ enum class CallingConvention
     Unknown
 };
 
+enum class ExceptionSpecType
+{
+    None,
+    DynamicNone,
+    Dynamic,
+    MSAny,
+    BasicNoexcept,
+    ComputedNoexcept,
+    Unevaluated,
+    Uninstantiated,
+    Unparsed
+};
+
 class CS_API FunctionType : public Type
 {
 public:
-    ~FunctionType();
     DECLARE_TYPE_KIND(Function)
+    ~FunctionType();
     QualifiedType returnType;
     CallingConvention callingConvention;
+    ExceptionSpecType exceptionSpecType;
     VECTOR(Parameter*, Parameters)
 };
 
@@ -690,6 +704,13 @@ enum class CXXOperatorKind
 
 class FunctionTemplateSpecialization;
 
+enum class FriendKind
+{
+    None,
+    Declared,
+    Undeclared
+};
+
 class CS_API Function : public Declaration
 {
 public:
@@ -700,17 +721,20 @@ public:
     bool isReturnIndirect;
 	bool hasThisReturn;
 
+    bool isConstExpr;
     bool isVariadic;
     bool isInline;
     bool isPure;
     bool isDeleted;
-    CXXOperatorKind OperatorKind;
+    FriendKind friendKind;
+    CXXOperatorKind operatorKind;
     STRING(Mangled)
     STRING(Signature)
     CallingConvention callingConvention;
     VECTOR(Parameter*, Parameters)
     FunctionTemplateSpecialization* specializationInfo;
     Function* instantiatedFrom;
+    QualifiedType qualifiedType;
 };
 
 class AccessSpecifierDecl;

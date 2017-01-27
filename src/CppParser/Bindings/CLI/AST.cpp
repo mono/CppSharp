@@ -394,6 +394,16 @@ void CppSharp::Parser::AST::FunctionType::CallingConvention::set(CppSharp::Parse
     ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->callingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
 }
 
+CppSharp::Parser::AST::ExceptionSpecType CppSharp::Parser::AST::FunctionType::ExceptionSpecType::get()
+{
+    return (CppSharp::Parser::AST::ExceptionSpecType)((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->exceptionSpecType;
+}
+
+void CppSharp::Parser::AST::FunctionType::ExceptionSpecType::set(CppSharp::Parser::AST::ExceptionSpecType value)
+{
+    ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->exceptionSpecType = (::CppSharp::CppParser::AST::ExceptionSpecType)value;
+}
+
 unsigned int CppSharp::Parser::AST::FunctionType::ParametersCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->getParametersCount();
@@ -3006,6 +3016,16 @@ void CppSharp::Parser::AST::Function::HasThisReturn::set(bool value)
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->hasThisReturn = value;
 }
 
+bool CppSharp::Parser::AST::Function::IsConstExpr::get()
+{
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->isConstExpr;
+}
+
+void CppSharp::Parser::AST::Function::IsConstExpr::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->isConstExpr = value;
+}
+
 bool CppSharp::Parser::AST::Function::IsVariadic::get()
 {
     return ((::CppSharp::CppParser::AST::Function*)NativePtr)->isVariadic;
@@ -3046,14 +3066,24 @@ void CppSharp::Parser::AST::Function::IsDeleted::set(bool value)
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->isDeleted = value;
 }
 
+CppSharp::Parser::AST::FriendKind CppSharp::Parser::AST::Function::FriendKind::get()
+{
+    return (CppSharp::Parser::AST::FriendKind)((::CppSharp::CppParser::AST::Function*)NativePtr)->friendKind;
+}
+
+void CppSharp::Parser::AST::Function::FriendKind::set(CppSharp::Parser::AST::FriendKind value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->friendKind = (::CppSharp::CppParser::AST::FriendKind)value;
+}
+
 CppSharp::Parser::AST::CXXOperatorKind CppSharp::Parser::AST::Function::OperatorKind::get()
 {
-    return (CppSharp::Parser::AST::CXXOperatorKind)((::CppSharp::CppParser::AST::Function*)NativePtr)->OperatorKind;
+    return (CppSharp::Parser::AST::CXXOperatorKind)((::CppSharp::CppParser::AST::Function*)NativePtr)->operatorKind;
 }
 
 void CppSharp::Parser::AST::Function::OperatorKind::set(CppSharp::Parser::AST::CXXOperatorKind value)
 {
-    ((::CppSharp::CppParser::AST::Function*)NativePtr)->OperatorKind = (::CppSharp::CppParser::AST::CXXOperatorKind)value;
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->operatorKind = (::CppSharp::CppParser::AST::CXXOperatorKind)value;
 }
 
 CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::Function::CallingConvention::get()
@@ -3084,6 +3114,16 @@ CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::Function::InstantiatedFr
 void CppSharp::Parser::AST::Function::InstantiatedFrom::set(CppSharp::Parser::AST::Function^ value)
 {
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->instantiatedFrom = (::CppSharp::CppParser::AST::Function*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Function::QualifiedType::get()
+{
+    return (&((::CppSharp::CppParser::AST::Function*)NativePtr)->qualifiedType == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::Function*)NativePtr)->qualifiedType);
+}
+
+void CppSharp::Parser::AST::Function::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
 System::String^ CppSharp::Parser::AST::Function::Mangled::get()

@@ -110,7 +110,7 @@ private:
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
-    AST::Expression* WalkExpression(clang::Expr* Expression);
+    AST::Expression* WalkExpression(const clang::Expr* Expression);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
 
     // Clang helpers
@@ -119,6 +119,8 @@ private:
     std::string GetDeclMangledName(const clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
     bool CanCheckCodeGenInfo(clang::Sema & S, const clang::Type * Ty);
+    Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
+        const clang::SourceLocation& ParamStartLoc);
     void WalkFunction(const clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(Declaration* Decl);

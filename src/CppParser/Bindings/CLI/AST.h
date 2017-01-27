@@ -18,6 +18,8 @@ namespace CppSharp
             enum struct CommentKind;
             enum struct CppAbi;
             enum struct DeclarationKind;
+            enum struct ExceptionSpecType;
+            enum struct FriendKind;
             enum struct MacroLocation;
             enum struct PrimitiveType;
             enum struct RawCommentKind;
@@ -226,6 +228,13 @@ namespace CppSharp
                 VerbatimBlockLineComment = 14
             };
 
+            public enum struct FriendKind
+            {
+                None = 0,
+                Declared = 1,
+                Undeclared = 2
+            };
+
             public enum struct CXXOperatorKind
             {
                 None = 0,
@@ -370,6 +379,19 @@ namespace CppSharp
                 LongDouble = 21,
                 Float128 = 22,
                 IntPtr = 23
+            };
+
+            public enum struct ExceptionSpecType
+            {
+                None = 0,
+                DynamicNone = 1,
+                Dynamic = 2,
+                MSAny = 3,
+                BasicNoexcept = 4,
+                ComputedNoexcept = 5,
+                Unevaluated = 6,
+                Uninstantiated = 7,
+                Unparsed = 8
             };
 
             public enum struct ArchType
@@ -578,6 +600,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::CallingConvention get();
                     void set(CppSharp::Parser::AST::CallingConvention);
+                }
+
+                property CppSharp::Parser::AST::ExceptionSpecType ExceptionSpecType
+                {
+                    CppSharp::Parser::AST::ExceptionSpecType get();
+                    void set(CppSharp::Parser::AST::ExceptionSpecType);
                 }
 
                 property unsigned int ParametersCount
@@ -1854,6 +1882,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsConstExpr
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property bool IsVariadic
                 {
                     bool get();
@@ -1878,6 +1912,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property CppSharp::Parser::AST::FriendKind FriendKind
+                {
+                    CppSharp::Parser::AST::FriendKind get();
+                    void set(CppSharp::Parser::AST::FriendKind);
+                }
+
                 property CppSharp::Parser::AST::CXXOperatorKind OperatorKind
                 {
                     CppSharp::Parser::AST::CXXOperatorKind get();
@@ -1900,6 +1940,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Function^ get();
                     void set(CppSharp::Parser::AST::Function^);
+                }
+
+                property CppSharp::Parser::AST::QualifiedType^ QualifiedType
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
                 property System::String^ Mangled

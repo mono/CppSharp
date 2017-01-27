@@ -11,6 +11,8 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.Parser.CSharp")]
 
+[assembly:InternalsVisibleTo("CppSharp.CppParser")]
+
 namespace Std
 {
     public unsafe partial class Lockit

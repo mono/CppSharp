@@ -435,5 +435,21 @@ namespace CppSharp.Generator.Tests.AST
             var @class = AstContext.FindCompleteClass("TestComments");
             Assert.That(@class.Layout.Bases.Count, Is.EqualTo(0));
         }
-	}
+
+        [Test]
+        public void TestFunctionSpecifications()
+        {
+            var constExprNoExcept = AstContext.FindFunction("constExprNoExcept").First();
+            Assert.IsTrue(constExprNoExcept.IsConstExpr);
+            var functionType = (FunctionType) constExprNoExcept.FunctionType.Type;
+            Assert.That(functionType.ExceptionSpecType,
+                Is.EqualTo(ExceptionSpecType.BasicNoexcept));
+
+            var regular = AstContext.FindFunction("testSignature").First();
+            Assert.IsFalse(regular.IsConstExpr);
+            var regularFunctionType = (FunctionType) regular.FunctionType.Type;
+            Assert.That(regularFunctionType.ExceptionSpecType,
+                Is.EqualTo(ExceptionSpecType.None));
+        }
+    }
 }

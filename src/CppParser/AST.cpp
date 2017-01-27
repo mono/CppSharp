@@ -66,7 +66,12 @@ TagType::TagType() : Type(TypeKind::Tag) {}
 
 ArrayType::ArrayType() : Type(TypeKind::Array) {}
 
-FunctionType::FunctionType() : Type(TypeKind::Function) {}
+FunctionType::FunctionType()
+    : Type(TypeKind::Function)
+    , callingConvention(CallingConvention::Default)
+    , exceptionSpecType(ExceptionSpecType::None)
+{
+}
 
 FunctionType::~FunctionType() {}
 
@@ -625,6 +630,14 @@ Parameter::~Parameter()
 Function::Function() 
     : Declaration(DeclarationKind::Function)
     , isReturnIndirect(false)
+    , isConstExpr(false)
+    , isVariadic(false)
+    , isInline(false)
+    , isPure(false)
+    , isDeleted(false)
+    , friendKind(FriendKind::None)
+    , operatorKind(CXXOperatorKind::None)
+    , callingConvention(CallingConvention::Default)
     , specializationInfo(0)
     , instantiatedFrom(0)
 {
