@@ -6,108 +6,111 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
     class Generator : ILibrary
     {
-        private Options _options;
-
-        private String _triple = "";
-        private CppAbi _abi = CppAbi.Microsoft;
+        private Options options = null;
+        private string triple = "";
+        private CppAbi abi = CppAbi.Microsoft;
 
         public Generator(Options options)
         {
             if (options == null)
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
 
-            _options = options;
+            this.options = options;
         }
 
-        public bool ValidateOptions(List<String> messages)
+        public bool ValidateOptions(List<string> messages)
         {
-            if (Platform.IsWindows && _options.Platform != TargetPlatform.Windows)
+            if (Platform.IsWindows && options.Platform != TargetPlatform.Windows)
             {
                 messages.Add("Cannot create bindings for a platform other that Windows from a Windows running machine");
                 return false;
             }
-            else if (Platform.IsMacOS && _options.Platform != TargetPlatform.MacOS)
+            else if (Platform.IsMacOS && options.Platform != TargetPlatform.MacOS)
             {
                 messages.Add("Cannot create bindings for a platform other that MacOS from a MacOS running machine");
                 return false;
             }
-            else if (Platform.IsLinux && _options.Platform != TargetPlatform.Linux)
+            else if (Platform.IsLinux && options.Platform != TargetPlatform.Linux)
             {
                 messages.Add("Cannot create bindings for a platform other that Linux from a Linux running machine");
                 return false;
             }
 
-            if (_options.Platform != TargetPlatform.Windows && _options.Kind != GeneratorKind.CSharp)
+            if (options.Platform != TargetPlatform.Windows && options.Kind != GeneratorKind.CSharp)
             {
                 messages.Add("Cannot create bindings for languages other than C# from a non Windows machine");
                 return false;
             }
 
-            if (_options.Platform == TargetPlatform.Linux && _options.Architecture != TargetArchitecture.x64)
+            if (options.Platform == TargetPlatform.Linux && options.Architecture != TargetArchitecture.x64)
             {
                 messages.Add("Cannot create bindings for architectures other than x64 for Linux machines");
                 return false;
             }
 
-            if (_options.HeaderFiles.Count == 0)
+            if (options.HeaderFiles.Count == 0)
             {
                 messages.Add("No source header file has been given to generate bindings from");
                 return false;
             }
 
-            if (_options.OutputNamespace == String.Empty)
+            if (string.IsNullOrEmpty(options.OutputNamespace))
             {
                 messages.Add("Output namespace is empty");
                 return false;
             }
 
-            if (_options.OutputFileName == String.Empty)
+            if (string.IsNullOrEmpty(options.OutputFileName))
             {
                 messages.Add("Output not specified");
                 return false;
             }
 
-            if (_options.InputLibraryName == String.Empty && _options.CheckSymbols == false)
+            if (string.IsNullOrEmpty(options.InputLibraryName) && !options.CheckSymbols)
             {
                 messages.Add("Input library name not specified and check symbols not enabled. Either set the input library name or the check symbols flag");
                 return false;
             }
 
-            if (_options.InputLibraryName == String.Empty && _options.CheckSymbols == true && _options.Libraries.Count == 0)
+            if (string.IsNullOrEmpty(options.InputLibraryName) && options.CheckSymbols && options.Libraries.Count == 0)
             {
                 messages.Add("Input library name not specified and check symbols is enabled but no libraries were given. Either set the input library name or add at least one library");
                 return false;
             }
+            
+            StringBuilder tripleBuilder = new StringBuilder();
+            if (options.Architecture == TargetArchitecture.x64)
+                tripleBuilder.Append("x86_64-");
+            else if(options.Architecture == TargetArchitecture.x86)
+                tripleBuilder.Append("i686-");
 
-            if (_options.Architecture == TargetArchitecture.x64)
-                _triple = "x86_64-";
-            else if(_options.Architecture == TargetArchitecture.x86)
-                _triple = "i686-";
+            if (options.Platform == TargetPlatform.Windows)
+            {
+                tripleBuilder.Append("pc-win32-msvc");
+                abi = CppAbi.Microsoft;
+            }
+            else if (options.Platform == TargetPlatform.MacOS)
+            {
+                tripleBuilder.Append("apple-darwin12.4.0");
+                abi = CppAbi.Itanium;
+            }
+            else if (options.Platform == TargetPlatform.Linux)
+            {
+                tripleBuilder.Append("linux-gnu");
+                abi = CppAbi.Itanium;
 
-            if (_options.Platform == TargetPlatform.Windows)
-            {
-                _triple += "pc-win32-msvc";
-                _abi = CppAbi.Microsoft;
+                if(options.Cpp11ABI)
+                    tripleBuilder.Append("-cxx11abi");
             }
-            else if (_options.Platform == TargetPlatform.MacOS)
-            {
-                _triple += "apple-darwin12.4.0";
-                _abi = CppAbi.Itanium;
-            }
-            else if (_options.Platform == TargetPlatform.Linux)
-            {
-                _triple += "linux-gnu";
-                _abi = CppAbi.Itanium;
 
-                if(_options.Cpp11ABI)
-                    _triple += "-cxx11abi";
-            }
+            triple = tripleBuilder.ToString();
 
             return true;
         }
@@ -115,52 +118,52 @@ namespace CppSharp
         public void Setup(Driver driver)
         {
             var parserOptions = driver.ParserOptions;
-            parserOptions.TargetTriple = _triple;
-            parserOptions.Abi = _abi;
+            parserOptions.TargetTriple = triple;
+            parserOptions.Abi = abi;
 
-            var options = driver.Options;
-            options.LibraryName = _options.OutputFileName;
+            var driverOptions = driver.Options;
+            driverOptions.LibraryName = options.OutputFileName;
 
-            if(_options.InputLibraryName != String.Empty)
-                options.SharedLibraryName = _options.InputLibraryName;
+            if(!string.IsNullOrEmpty(options.InputLibraryName))
+                driverOptions.SharedLibraryName = options.InputLibraryName;
 
-            options.GeneratorKind = _options.Kind;
-            options.Headers.AddRange(_options.HeaderFiles);
-            options.Libraries.AddRange(_options.Libraries);
+            driverOptions.GeneratorKind = options.Kind;
+            driverOptions.Headers.AddRange(options.HeaderFiles);
+            driverOptions.Libraries.AddRange(options.Libraries);
 
-            if (_abi == CppAbi.Microsoft)
+            if (abi == CppAbi.Microsoft)
                 parserOptions.MicrosoftMode = true;
 
-            if (_triple.Contains("apple"))
+            if (triple.Contains("apple"))
                 SetupMacOptions(parserOptions);
 
-            if (_triple.Contains("linux"))
+            if (triple.Contains("linux"))
                 SetupLinuxOptions(parserOptions);
             
-            foreach (String s in _options.IncludeDirs)
+            foreach (string s in options.IncludeDirs)
                 parserOptions.AddIncludeDirs(s);
 
-            foreach (String s in _options.LibraryDirs)
+            foreach (string s in options.LibraryDirs)
                 parserOptions.AddLibraryDirs(s);
 
-            foreach (KeyValuePair<String, String> d in _options.Defines)
+            foreach (KeyValuePair<string, string> d in options.Defines)
             {
-                if(d.Value == null || d.Value == String.Empty)
+                if(string.IsNullOrEmpty(d.Value))
                     parserOptions.AddDefines(d.Key);
                 else
                     parserOptions.AddDefines(d.Key + "=" + d.Value);
             }
 
-            options.OutputDir = _options.OutputDir;
-            options.OutputNamespace = _options.OutputNamespace;
-            options.CheckSymbols = _options.CheckSymbols;
-            options.UnityBuild = _options.UnityBuild;
+            driverOptions.OutputDir = options.OutputDir;
+            driverOptions.OutputNamespace = options.OutputNamespace;
+            driverOptions.CheckSymbols = options.CheckSymbols;
+            driverOptions.UnityBuild = options.UnityBuild;
         }
 
-        private void SetupLinuxOptions(ParserOptions options)
+        private void SetupLinuxOptions(ParserOptions parserOptions)
         {
-            options.MicrosoftMode = false;
-            options.NoBuiltinIncludes = true;
+            parserOptions.MicrosoftMode = false;
+            parserOptions.NoBuiltinIncludes = true;
 
             var headersPath = string.Empty;
 
@@ -183,9 +186,9 @@ namespace CppSharp
             };
 
             foreach (var dir in systemIncludeDirs)
-                options.AddSystemIncludeDirs(Path.Combine(headersPath, dir));
+                parserOptions.AddSystemIncludeDirs(Path.Combine(headersPath, dir));
 
-            options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (_options.Cpp11ABI ? "1" : "0"));
+            parserOptions.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (options.Cpp11ABI ? "1" : "0"));
         }
 
         private static void SetupMacOptions(ParserOptions options)
@@ -237,51 +240,52 @@ namespace CppSharp
 
         public void Run()
         {
-            String message = "Generating the ";
+            StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.Append("Generating the ");
 
-            switch(_options.Kind)
+            switch(options.Kind)
             {
                 case GeneratorKind.CLI:
-                    message += "C++/CLI";
+                    messageBuilder.Append("C++/CLI");
                     break;
                 case GeneratorKind.CSharp:
-                    message += "C#";
+                    messageBuilder.Append("C#");
                     break;
             }
 
-            message += " parser bindings for ";
+            messageBuilder.Append(" parser bindings for ");
             
-            switch (_options.Platform)
+            switch (options.Platform)
             {
                 case TargetPlatform.Linux:
-                    message += "Linux";
+                    messageBuilder.Append("Linux");
                     break;
                 case TargetPlatform.MacOS:
-                    message += "OSX";
+                    messageBuilder.Append("OSX");
                     break;
                 case TargetPlatform.Windows:
-                    message += "Windows";
+                    messageBuilder.Append("Windows");
                     break;
             }
 
-            message += " ";
+            messageBuilder.Append(" ");
 
-            switch (_options.Architecture)
+            switch (options.Architecture)
             {
                 case TargetArchitecture.x86:
-                    message += "x86";
+                    messageBuilder.Append("x86");
                     break;
                 case TargetArchitecture.x64:
-                    message += "x64";
+                    messageBuilder.Append("x64");
                     break;
             }
 
-            if(_options.Cpp11ABI)
-                message += " (GCC C++11 ABI)";
+            if(options.Cpp11ABI)
+                messageBuilder.Append(" (GCC C++11 ABI)");
 
-            message += "...";
+            messageBuilder.Append("...");
 
-            Console.WriteLine(message);
+            Console.WriteLine(messageBuilder.ToString());
 
             ConsoleDriver.Run(this);
 
