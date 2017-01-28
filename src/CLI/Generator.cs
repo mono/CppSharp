@@ -25,35 +25,65 @@ namespace CppSharp
             _options = options;
         }
 
-        public void ValidateOptions()
+        public bool ValidateOptions(List<String> messages)
         {
             if (Platform.IsWindows && _options.Platform != TargetPlatform.Windows)
-                throw new NotSupportedException("Cannot create bindings for a platform other that Windows from a Windows running machine");
+            {
+                messages.Add("Cannot create bindings for a platform other that Windows from a Windows running machine");
+                return false;
+            }
             else if (Platform.IsMacOS && _options.Platform != TargetPlatform.MacOS)
-                throw new NotSupportedException("Cannot create bindings for a platform other that MacOS from a MacOS running machine");
+            {
+                messages.Add("Cannot create bindings for a platform other that MacOS from a MacOS running machine");
+                return false;
+            }
             else if (Platform.IsUnixPlatform && _options.Platform != TargetPlatform.Linux)
-                throw new NotSupportedException("Cannot create bindings for a platform other that Linux from a Linux running machine");
+            {
+                messages.Add("Cannot create bindings for a platform other that Linux from a Linux running machine");
+                return false;
+            }
 
-            if(_options.Platform != TargetPlatform.Windows && _options.Kind != GeneratorKind.CSharp)
-                throw new NotSupportedException("Cannot create bindings for languages other than C# from a non Windows machine");
+            if (_options.Platform != TargetPlatform.Windows && _options.Kind != GeneratorKind.CSharp)
+            {
+                messages.Add("Cannot create bindings for languages other than C# from a non Windows machine");
+                return false;
+            }
 
-            if(_options.Platform == TargetPlatform.Linux && _options.Architecture != TargetArchitecture.x64)
-                throw new NotSupportedException("Cannot create bindings for architectures other than x64 for Linux machines");
+            if (_options.Platform == TargetPlatform.Linux && _options.Architecture != TargetArchitecture.x64)
+            {
+                messages.Add("Cannot create bindings for architectures other than x64 for Linux machines");
+                return false;
+            }
 
-            if(_options.HeaderFiles.Count == 0)
-                throw new NotSupportedException("No source header file has been given");
+            if (_options.HeaderFiles.Count == 0)
+            {
+                messages.Add("No source header file has been given to generate bindings from");
+                return false;
+            }
 
             if (_options.OutputNamespace == String.Empty)
-                throw new NotSupportedException("Output namespace is empty");
+            {
+                messages.Add("Output namespace is empty");
+                return false;
+            }
 
             if (_options.OutputFileName == String.Empty)
-                throw new NotSupportedException("Output not specified");
+            {
+                messages.Add("Output not specified");
+                return false;
+            }
 
-            if(_options.InputLibraryName == String.Empty && _options.CheckSymbols == false)
-                throw new NotSupportedException("Input library name not specified and check symbols not enabled. Either set the input library name or the check symbols flag");
+            if (_options.InputLibraryName == String.Empty && _options.CheckSymbols == false)
+            {
+                messages.Add("Input library name not specified and check symbols not enabled. Either set the input library name or the check symbols flag");
+                return false;
+            }
 
-            if(_options.InputLibraryName == String.Empty && _options.CheckSymbols == true && _options.Libraries.Count == 0)
-                throw new NotSupportedException("Input library name not specified and check symbols is enabled but no libraries were given. Either set the input library name or add at least one library");
+            if (_options.InputLibraryName == String.Empty && _options.CheckSymbols == true && _options.Libraries.Count == 0)
+            {
+                messages.Add("Input library name not specified and check symbols is enabled but no libraries were given. Either set the input library name or add at least one library");
+                return false;
+            }
 
             if (_options.Architecture == TargetArchitecture.x64)
                 _triple = "x86_64-";
@@ -78,6 +108,8 @@ namespace CppSharp
                 if(_options.Cpp11ABI)
                     _triple += "-cxx11abi";
             }
+
+            return true;
         }
 
         public void Setup(Driver driver)
@@ -205,8 +237,6 @@ namespace CppSharp
 
         public void Run()
         {
-            ValidateOptions();
-
             String message = "Generating the ";
 
             switch(_options.Kind)
