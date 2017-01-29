@@ -3154,6 +3154,20 @@ void CppSharp::Parser::AST::Function::Signature::set(System::String^ s)
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->setSignature(__arg0);
 }
 
+System::String^ CppSharp::Parser::AST::Function::InlinedBody::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getInlinedBody();
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::AST::Function::InlinedBody::set(System::String^ s)
+{
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->setInlinedBody(__arg0);
+}
+
 unsigned int CppSharp::Parser::AST::Function::ParametersCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getParametersCount();

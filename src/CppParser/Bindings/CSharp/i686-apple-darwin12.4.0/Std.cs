@@ -120,6 +120,9 @@ namespace Std
 
 namespace Std
 {
+    namespace __1
+    {
+    }
 }
 
 namespace Std
