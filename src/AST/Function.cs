@@ -226,8 +226,8 @@ namespace CppSharp.AST
         public Function OriginalFunction { get; set; }
 
         public string Mangled { get; set; }
-
         public string Signature { get; set; }
+        public string Body { get; set; }
 
         /// <summary>
         /// Keeps an index that de-duplicates native names in the C# backend.

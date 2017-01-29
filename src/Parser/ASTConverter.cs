@@ -1163,6 +1163,7 @@ namespace CppSharp
             _function.OperatorKind = VisitCXXOperatorKind(function.OperatorKind);
             _function.Mangled = function.Mangled;
             _function.Signature = function.Signature;
+            _function.Body = function.Body;
             _function.CallingConvention = VisitCallingConvention(function.CallingConvention);
             if (function.InstantiatedFrom != null)
                 _function.InstantiatedFrom = (AST.Function) Visit(function.InstantiatedFrom);

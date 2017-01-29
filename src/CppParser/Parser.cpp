@@ -690,10 +690,9 @@ VTableLayout Parser::WalkVTableLayout(const clang::VTableLayout& VTLayout)
 {
     auto Layout = VTableLayout();
 
-    for (auto I = VTLayout.vtable_component_begin(),
-              E = VTLayout.vtable_component_end(); I != E; ++I)
+    for (const auto& VTC : VTLayout.vtable_components())
     {
-        auto VTComponent = WalkVTableComponent(*I);
+        auto VTComponent = WalkVTableComponent(VTC);
         Layout.Components.push_back(VTComponent);
     }
 
@@ -717,11 +716,9 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
         C->layout->ABI = CppAbi::Microsoft;
         MicrosoftVTableContext VTContext(*AST);
 
-        auto VFPtrs = VTContext.getVFPtrOffsets(RD);
-        for (auto I = VFPtrs.begin(), E = VFPtrs.end(); I != E; ++I)
+        const auto& VFPtrs = VTContext.getVFPtrOffsets(RD);
+        for (const auto& VFPtrInfo : VFPtrs)
         {
-            auto& VFPtrInfo = *I;
-
             VFTableInfo Info;
             Info.VFPtrOffset = VFPtrInfo->NonVirtualOffset.getQuantity();
             Info.VFPtrFullOffset = VFPtrInfo->FullOffsetInMDC.getQuantity();
@@ -2902,6 +2899,9 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     const auto& Mangled = GetDeclMangledName(FD);
     F->Mangled = Mangled;
 
+    const auto& Body = GetFunctionBody(FD);
+    F->Body = Body;
+
     clang::SourceLocation ParamStartLoc = FD->getLocStart();
     clang::SourceLocation ResultLoc;
 
@@ -3347,6 +3347,18 @@ std::string Parser::GetStringFromStatement(const clang::Stmt* Statement)
     std::string s;
     llvm::raw_string_ostream as(s);
     Statement->printPretty(as, 0, Policy);
+    return as.str();
+}
+
+std::string Parser::GetFunctionBody(const clang::FunctionDecl* FD)
+{
+    if (!FD->getBody())
+        return "";
+
+    clang::PrintingPolicy Policy(c->getLangOpts());
+    std::string s;
+    llvm::raw_string_ostream as(s);
+    FD->getBody()->printPretty(as, 0, Policy);
     return as.str();
 }
 
@@ -3900,7 +3912,7 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, P
     clang::DiagnosticConsumer* client = c->getDiagnostics().getClient();
     client->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
 
-    ParseAST(c->getSema(), /*PrintStats=*/false, /*SkipFunctionBodies=*/true);
+    ParseAST(c->getSema());
 
     client->EndSourceFile();
 

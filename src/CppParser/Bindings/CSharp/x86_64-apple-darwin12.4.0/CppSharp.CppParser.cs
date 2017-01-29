@@ -6756,7 +6756,7 @@ namespace CppSharp
 
             public unsafe partial class Function : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 312)]
+                [StructLayout(LayoutKind.Explicit, Size = 336)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -6847,18 +6847,21 @@ namespace CppSharp
                     public global::Std.__1.BasicString.__Internal Signature;
 
                     [FieldOffset(248)]
+                    public global::Std.__1.BasicString.__Internal Body;
+
+                    [FieldOffset(272)]
                     public global::CppSharp.Parser.AST.CallingConvention callingConvention;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(280)]
                     internal global::Std.__1.Vector.__Internal Parameters;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(304)]
                     public global::System.IntPtr specializationInfo;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(312)]
                     public global::System.IntPtr instantiatedFrom;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(320)]
                     public global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6913,6 +6916,16 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function7getBodyEv")]
+                    internal static extern global::System.IntPtr Body_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function7setBodyEPKc")]
+                    internal static extern void SetBody_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST8Function18getParametersCountEv")]
                     internal static extern uint GetParametersCount_0(global::System.IntPtr instance);
                 }
@@ -6929,7 +6942,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(Function.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(312);
+                    var ret = Marshal.AllocHGlobal(336);
                     global::CppSharp.Parser.AST.Function.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6953,7 +6966,7 @@ namespace CppSharp
                 public Function()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(312);
+                    __Instance = Marshal.AllocHGlobal(336);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -6962,7 +6975,7 @@ namespace CppSharp
                 public Function(global::CppSharp.Parser.AST.Function _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(312);
+                    __Instance = Marshal.AllocHGlobal(336);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -7225,6 +7238,20 @@ namespace CppSharp
                     }
                 }
 
+                public string Body
+                {
+                    get
+                    {
+                        var __ret = __Internal.Body_0((__Instance + __PointerAdjustment));
+                        return Marshal.PtrToStringAnsi(__ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetBody_0((__Instance + __PointerAdjustment), value);
+                    }
+                }
+
                 public uint ParametersCount
                 {
                     get
@@ -7237,7 +7264,7 @@ namespace CppSharp
 
             public unsafe partial class Method : global::CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 352)]
+                [StructLayout(LayoutKind.Explicit, Size = 376)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -7328,51 +7355,54 @@ namespace CppSharp
                     public global::Std.__1.BasicString.__Internal Signature;
 
                     [FieldOffset(248)]
+                    public global::Std.__1.BasicString.__Internal Body;
+
+                    [FieldOffset(272)]
                     public global::CppSharp.Parser.AST.CallingConvention callingConvention;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(280)]
                     internal global::Std.__1.Vector.__Internal Parameters;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(304)]
                     public global::System.IntPtr specializationInfo;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(312)]
                     public global::System.IntPtr instantiatedFrom;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(320)]
                     public global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(336)]
                     public byte isVirtual;
 
-                    [FieldOffset(313)]
+                    [FieldOffset(337)]
                     public byte isStatic;
 
-                    [FieldOffset(314)]
+                    [FieldOffset(338)]
                     public byte isConst;
 
-                    [FieldOffset(315)]
+                    [FieldOffset(339)]
                     public byte isExplicit;
 
-                    [FieldOffset(316)]
+                    [FieldOffset(340)]
                     public byte isOverride;
 
-                    [FieldOffset(320)]
+                    [FieldOffset(344)]
                     public global::CppSharp.Parser.AST.CXXMethodKind methodKind;
 
-                    [FieldOffset(324)]
+                    [FieldOffset(348)]
                     public byte isDefaultConstructor;
 
-                    [FieldOffset(325)]
+                    [FieldOffset(349)]
                     public byte isCopyConstructor;
 
-                    [FieldOffset(326)]
+                    [FieldOffset(350)]
                     public byte isMoveConstructor;
 
-                    [FieldOffset(328)]
+                    [FieldOffset(352)]
                     public global::CppSharp.Parser.AST.QualifiedType.__Internal conversionType;
 
-                    [FieldOffset(344)]
+                    [FieldOffset(368)]
                     public global::CppSharp.Parser.AST.RefQualifierKind refQualifier;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7403,7 +7433,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(Method.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(352);
+                    var ret = Marshal.AllocHGlobal(376);
                     global::CppSharp.Parser.AST.Method.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7427,7 +7457,7 @@ namespace CppSharp
                 public Method()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(352);
+                    __Instance = Marshal.AllocHGlobal(376);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -7436,7 +7466,7 @@ namespace CppSharp
                 public Method(global::CppSharp.Parser.AST.Method _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(352);
+                    __Instance = Marshal.AllocHGlobal(376);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))

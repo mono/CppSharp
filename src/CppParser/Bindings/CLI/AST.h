@@ -1961,6 +1961,12 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
+                property System::String^ Body
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
                 property unsigned int ParametersCount
                 {
                     unsigned int get();

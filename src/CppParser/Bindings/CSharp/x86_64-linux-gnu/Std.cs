@@ -174,6 +174,19 @@ namespace Std
             public uint _M_offset;
         }
     }
+
+    public unsafe partial class BitConstIterator
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        public partial struct __Internal
+        {
+            [FieldOffset(0)]
+            public global::System.IntPtr _M_p;
+
+            [FieldOffset(8)]
+            public uint _M_offset;
+        }
+    }
 }
 
 namespace Std
