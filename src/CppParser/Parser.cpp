@@ -1443,6 +1443,16 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
     //    FTS->Arguments = WalkTemplateArgumentList(FTSI->TemplateArguments, TALI);
     FTS->_template = WalkFunctionTemplate(FTSI->getTemplate());
     FTS->_template->Specializations.push_back(FTS);
+    if (auto TSA = FTSI->TemplateArguments)
+    {
+        if (auto TSAW = FTSI->TemplateArgumentsAsWritten)
+        {
+            if (TSA->size() == TSAW->NumTemplateArgs)
+            {
+                FTS->Arguments = WalkTemplateArgumentList(TSA, TSAW);
+            }
+        }
+    }
 
     return FTS;
 }

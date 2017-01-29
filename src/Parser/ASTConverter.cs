@@ -1167,6 +1167,9 @@ namespace CppSharp
             if (function.InstantiatedFrom != null)
                 _function.InstantiatedFrom = (AST.Function) Visit(function.InstantiatedFrom);
             _function.FunctionType = typeConverter.VisitQualified(function.QualifiedType);
+            if (function.SpecializationInfo != null)
+                _function.SpecializationInfo = VisitFunctionTemplateSpecialization(
+                    function.SpecializationInfo);
 
             for (uint i = 0; i < function.ParametersCount; ++i)
             {
@@ -1788,6 +1791,7 @@ namespace CppSharp
                 return FunctionTemplateSpecializations[spec.__Instance];
 
             var _spec = new AST.FunctionTemplateSpecialization();
+            FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
             _spec.Template = (AST.FunctionTemplate)Visit(spec.Template);
             _spec.SpecializedFunction = (AST.Function)Visit(spec.SpecializedFunction);
             _spec.SpecializationKind = VisitSpecializationKind(spec.SpecializationKind);
@@ -1796,7 +1800,6 @@ namespace CppSharp
                 var _arg = VisitTemplateArgument(spec.GetArguments(i));
                 _spec.Arguments.Add(_arg);
             }
-            FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
             NativeObjects.Add(spec);
             return _spec;
         }
