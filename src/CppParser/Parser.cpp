@@ -2860,6 +2860,14 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->isConstExpr = FD->isConstexpr();
     F->isVariadic = FD->isVariadic();
     F->isInline = FD->isInlined();
+    for (const auto& R : FD->redecls())
+    {
+        if (R->isInlined())
+        {
+            F->isInline = true;
+            break;
+        }
+    }
     F->isDependent = FD->isDependentContext();
     F->isPure = FD->isPure();
     F->isDeleted = FD->isDeleted();
@@ -3912,7 +3920,7 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, P
     clang::DiagnosticConsumer* client = c->getDiagnostics().getClient();
     client->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
 
-    ParseAST(c->getSema());
+    ParseAST(c->getSema(), /*PrintStats=*/false, /*SkipFunctionBodies=*/true);
 
     client->EndSourceFile();
 
