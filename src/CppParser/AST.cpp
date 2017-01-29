@@ -647,6 +647,7 @@ Function::~Function() {}
 
 DEF_STRING(Function, Mangled)
 DEF_STRING(Function, Signature)
+DEF_STRING(Function, InlinedBody)
 DEF_VECTOR(Function, Parameter*, Parameters)
 
 Method::Method() 

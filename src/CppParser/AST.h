@@ -731,6 +731,7 @@ public:
     CXXOperatorKind operatorKind;
     STRING(Mangled)
     STRING(Signature)
+    STRING(InlinedBody)
     CallingConvention callingConvention;
     VECTOR(Parameter*, Parameters)
     FunctionTemplateSpecialization* specializationInfo;

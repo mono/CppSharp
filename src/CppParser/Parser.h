@@ -112,6 +112,7 @@ private:
         clang::PreprocessedEntity* PPEntity);
     AST::Expression* WalkExpression(const clang::Expr* Expression);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
+    std::string GetFunctionBody(const clang::FunctionDecl* FD);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
