@@ -290,6 +290,7 @@ enum class PrimitiveType
     Bool,
     WideChar,
     Char,
+    SChar,
     UChar,
     Char16,
     Char32,

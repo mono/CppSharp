@@ -730,6 +730,8 @@ namespace CppSharp
                     return AST.PrimitiveType.Char;
                 case PrimitiveType.UChar:
                     return AST.PrimitiveType.UChar;
+                case PrimitiveType.SChar:
+                    return AST.PrimitiveType.SChar;
                 case PrimitiveType.Char16:
                     return AST.PrimitiveType.Char16;
                 case PrimitiveType.Char32:

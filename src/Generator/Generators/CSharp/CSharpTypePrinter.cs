@@ -582,6 +582,7 @@ namespace CppSharp.Generators.CSharp
                         ContextKind != CSharpTypePrinterContextKind.Native
                         ? "char"
                         : "sbyte";
+                case PrimitiveType.SChar: return "sbyte";
                 case PrimitiveType.UChar: return "byte";
                 case PrimitiveType.Short:
                 case PrimitiveType.UShort:

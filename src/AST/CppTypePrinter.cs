@@ -119,6 +119,7 @@ namespace CppSharp.AST
                 case PrimitiveType.Char32: return "char32_t";
                 case PrimitiveType.WideChar: return "wchar_t";
                 case PrimitiveType.Char: return "char";
+                case PrimitiveType.SChar: return "signed char";
                 case PrimitiveType.UChar: return "unsigned char";
                 case PrimitiveType.Short: return "short";
                 case PrimitiveType.UShort: return "unsigned short";

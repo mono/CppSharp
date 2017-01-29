@@ -1112,6 +1112,7 @@ namespace CppSharp.AST
         Bool,
         WideChar,
         Char,
+        SChar,
         UChar,
         Char16,
         Char32,
@@ -1131,7 +1132,7 @@ namespace CppSharp.AST
         LongDouble,
         Float128,
         IntPtr,
-        UIntPtr,
+        UIntPtr
     }
 
     /// <summary>
