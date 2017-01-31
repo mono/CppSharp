@@ -37,7 +37,7 @@ namespace CppSharp
                 messages.Add("Cannot create bindings for a platform other that MacOS from a MacOS running machine");
                 return false;
             }
-            else if (Platform.IsUnixPlatform && _options.Platform != TargetPlatform.Linux)
+            else if (Platform.IsLinux && _options.Platform != TargetPlatform.Linux)
             {
                 messages.Add("Cannot create bindings for a platform other that Linux from a Linux running machine");
                 return false;
