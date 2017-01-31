@@ -30,7 +30,7 @@ namespace CppSharp
             {
                 foreach (var block in template.FindBlocks(CLIBlockKind.MethodBody))
                 {
-                    var method = block.Declaration as Method;
+                    var method = block.Object as Method;
                     VisitMethod(method, block);
                 }
                 if (needsStreamInclude)
