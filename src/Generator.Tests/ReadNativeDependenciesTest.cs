@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CppSharp.Utils;
 using NUnit.Framework;
 using CppSharp.Parser;
@@ -42,7 +42,7 @@ namespace CppSharp.Generator.Tests
             parserOptions.AddLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
             driverOptions.Libraries.Add(library);
-            var driver = new Driver(driverOptions, new TextDiagnosticPrinter())
+            var driver = new Driver(driverOptions, new ConsoleDiagnostics())
             {
                 ParserOptions = parserOptions
             };

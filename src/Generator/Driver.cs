@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Globalization;
@@ -474,7 +474,7 @@ namespace CppSharp
         {
             var options = new DriverOptions();
 
-            var Log = new TextDiagnosticPrinter();
+            var Log = new ConsoleDiagnostics();
             var driver = new Driver(options, Log);
 
             library.Setup(driver);

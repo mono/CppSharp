@@ -99,12 +99,12 @@ namespace CppSharp
         }
     }
 
-    public class TextDiagnosticPrinter : IDiagnostics
+    public class ConsoleDiagnostics : IDiagnostics
     {
         public Stack<int> Indents;
         public DiagnosticKind Level { get; set; }
 
-        public TextDiagnosticPrinter()
+        public ConsoleDiagnostics()
         {
             Indents = new Stack<int>();
             Level = DiagnosticKind.Message;

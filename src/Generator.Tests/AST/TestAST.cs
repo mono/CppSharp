@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using CppSharp.Passes;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -315,7 +315,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestAmbiguity()
         {
-            var bindingContext = new BindingContext(new TextDiagnosticPrinter(), new DriverOptions(),
+            var bindingContext = new BindingContext(new ConsoleDiagnostics(), new DriverOptions(),
                 new ParserOptions());
             new CleanUnitPass { Context = bindingContext }.VisitASTContext(AstContext);
             new CheckAmbiguousFunctions { Context = bindingContext }.VisitASTContext(AstContext);

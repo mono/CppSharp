@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CppSharp.AST;
 using CppSharp.Utils;
 using CppSharp.Parser;
@@ -22,7 +22,7 @@ namespace CppSharp.Generator.Tests
 
             Options.Headers.AddRange(files);
 
-            Driver = new Driver(Options, new TextDiagnosticPrinter())
+            Driver = new Driver(Options, new ConsoleDiagnostics())
             {
                 ParserOptions = this.ParserOptions
             };
