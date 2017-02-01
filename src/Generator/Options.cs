@@ -60,6 +60,8 @@ namespace CppSharp
         /// </summary>
         public bool UnityBuild { get; set; }
 
+        #region Module options
+
         public Module SystemModule { get; }
         public List<Module> Modules { get; }
 
@@ -75,9 +77,7 @@ namespace CppSharp
 
         public List<string> Headers => MainModule.Headers;
 
-        // Library options
         public List<string> Libraries => MainModule.Libraries;
-        public bool CheckSymbols;
 
         public string SharedLibraryName
         {
@@ -85,22 +85,38 @@ namespace CppSharp
             set { MainModule.SharedLibraryName = value; }
         }
 
-        // Generator options
-        public GeneratorKind GeneratorKind;
-
         public string OutputNamespace
         {
             get { return MainModule.OutputNamespace; }
             set { MainModule.OutputNamespace = value; }
         }
 
-        public string OutputDir;
-
         public string LibraryName
         {
             get { return MainModule.LibraryName; }
             set { MainModule.LibraryName = value; }
         }
+
+        public string InlinesLibraryName
+        {
+            get { return MainModule.InlinesLibraryName; }
+            set { MainModule.InlinesLibraryName = value; }
+        }
+
+        public string TemplatesLibraryName
+        {
+            get { return MainModule.TemplatesLibraryName; }
+            set { MainModule.TemplatesLibraryName = value; }
+        }
+
+        #endregion
+
+        // Generator options
+        public GeneratorKind GeneratorKind;
+
+        public bool CheckSymbols;
+
+        public string OutputDir;
 
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
@@ -134,18 +150,6 @@ namespace CppSharp
         public string CommentPrefix;
 
         public Encoding Encoding { get; set; }
-
-        public string InlinesLibraryName
-        {
-            get { return MainModule.InlinesLibraryName; }
-            set { MainModule.InlinesLibraryName = value; }
-        }
-
-        public string TemplatesLibraryName
-        {
-            get { return MainModule.TemplatesLibraryName; }
-            set { MainModule.TemplatesLibraryName = value; }
-        }
 
         public bool IsCSharpGenerator => GeneratorKind == GeneratorKind.CSharp;
 
