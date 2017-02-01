@@ -34,7 +34,6 @@ namespace CppSharp
         /// Set to true to enable quiet output mode.
         /// </summary>
         public bool Quiet;
-        public bool OutputDebug;
 
         /// <summary>
         /// Set to true to enable verbose output mode.
@@ -96,6 +95,12 @@ namespace CppSharp
         public bool GenerateFunctionTemplates;
         public bool GenerateInternalImports;
         public bool UseHeaderDirectories;
+
+        /// <summary>
+        /// If set to true, the generated code will be generated with extra
+        /// debug output.
+        /// </summary>
+        public bool GenerateDebugOutput;
 
         /// <summary>
         /// If set to true the CLI generator will use ObjectOverridesPass to create

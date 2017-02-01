@@ -143,7 +143,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateDebug(Declaration decl)
         {
-            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+            if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 
