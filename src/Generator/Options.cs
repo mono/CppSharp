@@ -29,8 +29,17 @@ namespace CppSharp
         }
 
         // General options
+
+        /// <summary>
+        /// Set to true to enable quiet output mode.
+        /// </summary>
         public bool Quiet;
         public bool OutputDebug;
+
+        /// <summary>
+        /// Set to true to enable verbose output mode.
+        /// </summary>
+        public bool Verbose;
 
         /// <summary>
         /// Set to true to simulate generating without actually writing
@@ -55,7 +64,6 @@ namespace CppSharp
 
         // Parser options
         public List<string> Headers => MainModule.Headers;
-        public bool IgnoreParseWarnings;
 
         // Library options
         public List<string> Libraries => MainModule.Libraries;

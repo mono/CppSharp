@@ -102,8 +102,8 @@ namespace CppSharp
             {
                 var diag = result.GetDiagnostics(i);
 
-                if (Options.IgnoreParseWarnings
-                    && diag.Level == ParserDiagnosticLevel.Warning)
+                if (diag.Level == ParserDiagnosticLevel.Warning &&
+                    !Options.Verbose)
                     continue;
 
                 if (diag.Level == ParserDiagnosticLevel.Note)
