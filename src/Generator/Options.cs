@@ -42,11 +42,23 @@ namespace CppSharp
 
         /// <summary>
         /// Set to true to simulate generating without actually writing
-        /// any output to disk. This can be useful to activate while
-        /// debugging the parser generator so generator bugs do not get
-        /// in the way while iterating.
+        /// any output to disk.
         /// </summary>
         public bool DryRun;
+
+        /// <summary>
+        /// Whether the generated code should be automatically compiled.
+        /// </summary>
+        public bool CompileCode;
+
+        // Parser options
+
+        /// <summary>
+        /// If this option is off (the default), each header is parsed separately
+        /// which is much slower but safer because of a clean state of the preprocessor
+        /// for each header.
+        /// </summary>
+        public bool UnityBuild { get; set; }
 
         public Module SystemModule { get; }
         public List<Module> Modules { get; }
@@ -61,7 +73,6 @@ namespace CppSharp
             }
         }
 
-        // Parser options
         public List<string> Headers => MainModule.Headers;
 
         // Library options
@@ -104,8 +115,8 @@ namespace CppSharp
 
         /// <summary>
         /// If set to true the CLI generator will use ObjectOverridesPass to create
-        /// Equals, GetHashCode and (if the insertion operator &lt;&lt; is overloaded) ToString
-        /// methods.
+        /// Equals, GetHashCode and (if the insertion operator &lt;&lt; is overloaded)
+        /// ToString methods.
         /// </summary>
         public bool GenerateObjectOverrides;
 
@@ -113,21 +124,10 @@ namespace CppSharp
         public List<string> NoGenIncludeDirs;
 
         /// <summary>
-        /// Whether the generated C# code should be automatically compiled.
-        /// </summary>
-        public bool CompileCode;
-
-        /// <summary>
         /// Enable this option to enable generation of finalizers.
         /// Works in both CLI and C# backends.
         /// </summary>
         public bool GenerateFinalizers;
-
-        /// <summary>
-        /// If this option is off (the default), each header is parsed separately which is much slower
-        /// but safer because of a clean state of the preprocessor for each header.
-        /// </summary>
-        public bool UnityBuild { get; set; }
 
         public string IncludePrefix;
         public Func<TranslationUnit, string> GenerateName;
