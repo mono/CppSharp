@@ -2844,6 +2844,22 @@ Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
     return P;
 }
 
+void Parser::SetBody(const clang::FunctionDecl* FD, Function* F)
+{
+    F->Body = GetFunctionBody(FD);
+    F->isInline = FD->isInlined();
+    if (!F->Body.empty() && F->isInline)
+        return;
+    for (const auto& R : FD->redecls())
+    {
+        if (F->Body.empty())
+            F->Body = GetFunctionBody(R);
+        F->isInline |= R->isInlined();
+        if (!F->Body.empty() && F->isInline)
+            break;
+    }
+}
+
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
                           bool IsDependent)
 {
@@ -2859,18 +2875,10 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->_namespace = NS;
     F->isConstExpr = FD->isConstexpr();
     F->isVariadic = FD->isVariadic();
-    F->isInline = FD->isInlined();
-    for (const auto& R : FD->redecls())
-    {
-        if (R->isInlined())
-        {
-            F->isInline = true;
-            break;
-        }
-    }
     F->isDependent = FD->isDependentContext();
     F->isPure = FD->isPure();
     F->isDeleted = FD->isDeleted();
+    SetBody(FD, F);
     if (auto InstantiatedFrom = FD->getTemplateInstantiationPattern())
         F->instantiatedFrom = static_cast<Function*>(WalkDeclaration(InstantiatedFrom));
 
@@ -3920,7 +3928,7 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, P
     clang::DiagnosticConsumer* client = c->getDiagnostics().getClient();
     client->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
 
-    ParseAST(c->getSema(), /*PrintStats=*/false, /*SkipFunctionBodies=*/true);
+    ParseAST(c->getSema());
 
     client->EndSourceFile();
 
