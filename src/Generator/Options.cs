@@ -28,7 +28,7 @@ namespace CppSharp
             ExplicitlyPatchedVirtualFunctions = new HashSet<string>();
         }
 
-        // General options
+        #region General options
 
         /// <summary>
         /// Set to true to enable quiet output mode.
@@ -51,7 +51,9 @@ namespace CppSharp
         /// </summary>
         public bool CompileCode;
 
-        // Parser options
+        #endregion
+
+        #region Parser options
 
         /// <summary>
         /// If this option is off (the default), each header is parsed separately
@@ -59,6 +61,8 @@ namespace CppSharp
         /// for each header.
         /// </summary>
         public bool UnityBuild { get; set; }
+
+        #endregion
 
         #region Module options
 
@@ -109,9 +113,15 @@ namespace CppSharp
             set { MainModule.TemplatesLibraryName = value; }
         }
 
+        public bool DoAllModulesHaveLibraries() =>
+            Modules.All(m => m == SystemModule || m.Libraries.Count > 0);
+
         #endregion
 
-        // Generator options
+        #endregion
+
+        #region Generator options
+
         public GeneratorKind GeneratorKind;
 
         public bool CheckSymbols;
@@ -170,8 +180,6 @@ namespace CppSharp
         /// </summary>
         public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; }
 
-        public bool DoAllModulesHaveLibraries() =>
-            Modules.All(m => m == SystemModule || m.Libraries.Count > 0);
     }
 
     public class InvalidOptionException : Exception
