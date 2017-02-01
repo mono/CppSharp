@@ -22,7 +22,7 @@ namespace CppSharp.Generator.Tests
 
             Options.Headers.AddRange(files);
 
-            Driver = new Driver(Options, new ConsoleDiagnostics())
+            Driver = new Driver(Options)
             {
                 ParserOptions = this.ParserOptions
             };

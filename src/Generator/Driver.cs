@@ -20,7 +20,6 @@ namespace CppSharp
 {
     public class Driver
     {
-        public IDiagnostics Diagnostics { get; private set; }
         public DriverOptions Options { get; private set; }
         public ParserOptions ParserOptions { get; set; }
         public Project Project { get; private set; }
@@ -29,10 +28,9 @@ namespace CppSharp
 
         public bool HasCompilationErrors { get; set; }
 
-        public Driver(DriverOptions options, IDiagnostics diagnostics)
+        public Driver(DriverOptions options)
         {
             Options = options;
-            Diagnostics = diagnostics;
             Project = new Project();
             ParserOptions = new ParserOptions();
         }
@@ -70,7 +68,7 @@ namespace CppSharp
         {
             ValidateOptions();
             ParserOptions.SetupIncludes();
-            Context = new BindingContext(Diagnostics, Options, ParserOptions);
+            Context = new BindingContext(Options, ParserOptions);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 
@@ -473,31 +471,29 @@ namespace CppSharp
         public static void Run(ILibrary library)
         {
             var options = new DriverOptions();
-
-            var Log = new ConsoleDiagnostics();
-            var driver = new Driver(options, Log);
+            var driver = new Driver(options);
 
             library.Setup(driver);
 
             driver.Setup();
 
             if(driver.ParserOptions.Verbose)
-                Log.Level = DiagnosticKind.Debug;
+                Diagnostics.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)
-                Log.Message("Parsing libraries...");
+                Diagnostics.Message("Parsing libraries...");
 
             if (!driver.ParseLibraries())
                 return;
 
             if (!options.Quiet)
-                Log.Message("Parsing code...");
+                Diagnostics.Message("Parsing code...");
 
             driver.BuildParseOptions();
 
             if (!driver.ParseCode())
             {
-                Log.Error("CppSharp has encountered an error while parsing code.");
+                Diagnostics.Error("CppSharp has encountered an error while parsing code.");
                 return;
             }
 
@@ -505,7 +501,7 @@ namespace CppSharp
             options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
 
             if (!options.Quiet)
-                Log.Message("Processing code...");
+                Diagnostics.Message("Processing code...");
 
             library.Preprocess(driver, driver.Context.ASTContext);
 
@@ -515,7 +511,7 @@ namespace CppSharp
             library.Postprocess(driver, driver.Context.ASTContext);
 
             if (!options.Quiet)
-                Log.Message("Generating code...");
+                Diagnostics.Message("Generating code...");
 
             var outputs = driver.GenerateCode();
 

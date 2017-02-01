@@ -8,8 +8,6 @@ namespace CppSharp.Generators
 {
     public class BindingContext
     {
-        public IDiagnostics Diagnostics { get; set; }
-
         public DriverOptions Options { get; private set; }
         public ParserOptions ParserOptions { get; set; }
 
@@ -24,11 +22,9 @@ namespace CppSharp.Generators
 
         public Dictionary<Function, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
 
-        public BindingContext(IDiagnostics diagnostics, DriverOptions options,
-            ParserOptions parserOptions = null)
+        public BindingContext(DriverOptions options, ParserOptions parserOptions = null)
         {
             Options = options;
-            Diagnostics = diagnostics;
             ParserOptions = parserOptions;
 
             Symbols = new SymbolContext();

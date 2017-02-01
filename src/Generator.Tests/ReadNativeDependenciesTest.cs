@@ -42,7 +42,7 @@ namespace CppSharp.Generator.Tests
             parserOptions.AddLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
             driverOptions.Libraries.Add(library);
-            var driver = new Driver(driverOptions, new ConsoleDiagnostics())
+            var driver = new Driver(driverOptions)
             {
                 ParserOptions = parserOptions
             };

@@ -36,10 +36,27 @@ namespace CppSharp
         void PopIndent();
     }
 
-    public static class DiagnosticExtensions
+    public static class Diagnostics
     {
-        public static void Debug(this IDiagnostics consumer,
-            string msg, params object[] args)
+        public static IDiagnostics Implementation { get; set; } = new ConsoleDiagnostics();
+
+        public static DiagnosticKind Level
+        {
+            get { return Implementation.Level; }
+            set { Implementation.Level = value; }
+        }
+
+        public static void PushIndent(int level = 4)
+        {
+            Implementation.PushIndent(level);
+        }
+
+        public static void PopIndent()
+        {
+            Implementation.PopIndent();
+        }
+
+        public static void Debug(string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
             {
@@ -47,11 +64,10 @@ namespace CppSharp
                 Message = string.Format(msg, args)
             };
 
-            consumer.Emit(diagInfo);
+            Implementation.Emit(diagInfo);
         }
 
-        public static void Message(this IDiagnostics consumer,
-            string msg, params object[] args)
+        public static void Message(string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
                 {
@@ -59,11 +75,10 @@ namespace CppSharp
                     Message = string.Format(msg, args)
                 };
 
-            consumer.Emit(diagInfo);
+            Implementation.Emit(diagInfo);
         }
 
-        public static void Warning(this IDiagnostics consumer,
-            string msg, params object[] args)
+        public static void Warning(string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
             {
@@ -71,11 +86,10 @@ namespace CppSharp
                 Message = string.Format(msg, args)
             };
 
-            consumer.Emit(diagInfo);
+            Implementation.Emit(diagInfo);
         }
 
-        public static void Error(this IDiagnostics consumer,
-            string msg, params object[] args)
+        public static void Error(string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
             {
@@ -83,19 +97,7 @@ namespace CppSharp
                 Message = string.Format(msg, args)
             };
 
-            consumer.Emit(diagInfo);
-        }
-
-        public static void Error(this IDiagnostics consumer,
-            string msg)
-        {
-            var diagInfo = new DiagnosticInfo
-            {
-                Kind = DiagnosticKind.Error,
-                Message = msg
-            };
-
-            consumer.Emit(diagInfo);
+            Implementation.Emit(diagInfo);
         }
     }
 

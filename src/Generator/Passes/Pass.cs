@@ -12,7 +12,6 @@ namespace CppSharp.Passes
     {
         public BindingContext Context { get; set; }
 
-        public IDiagnostics Diagnostics { get { return Context.Diagnostics; } }
         public DriverOptions Options { get { return Context.Options; } }
         public ASTContext ASTContext { get { return Context.ASTContext; } }
         public TypeMapDatabase TypeMaps { get { return Context.TypeMaps; } }

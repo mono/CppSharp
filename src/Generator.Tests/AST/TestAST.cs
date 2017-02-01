@@ -315,7 +315,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestAmbiguity()
         {
-            var bindingContext = new BindingContext(new ConsoleDiagnostics(), new DriverOptions(),
+            var bindingContext = new BindingContext(new DriverOptions(),
                 new ParserOptions());
             new CleanUnitPass { Context = bindingContext }.VisitASTContext(AstContext);
             new CheckAmbiguousFunctions { Context = bindingContext }.VisitASTContext(AstContext);

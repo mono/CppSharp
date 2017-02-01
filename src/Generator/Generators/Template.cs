@@ -7,7 +7,6 @@ namespace CppSharp.Generators
     {
         public BindingContext Context { get; private set; }
 
-        public IDiagnostics Log { get { return Context.Diagnostics; } }
         public DriverOptions Options { get { return Context.Options; } }
 
         public List<TranslationUnit> TranslationUnits { get; private set; }
