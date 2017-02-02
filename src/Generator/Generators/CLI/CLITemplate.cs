@@ -124,7 +124,7 @@ namespace CppSharp.Generators.CLI
 
             PushBlock(BlockKind.BlockComment);
             WriteLine("/// <summary>");
-            WriteLine(comment);
+            WriteLine("/// {0}", comment);
             WriteLine("/// </summary>");
             PopBlock();
         }
