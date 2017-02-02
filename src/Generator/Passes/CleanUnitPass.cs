@@ -26,7 +26,11 @@ namespace CppSharp.Passes
             if (unit.IsSystemHeader)
                 return Options.SystemModule;
 
-            var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
+            var includeDir = Path.GetDirectoryName(unit.FilePath);
+            if (string.IsNullOrWhiteSpace(includeDir))
+                includeDir = ".";
+            includeDir = Path.GetFullPath(includeDir);
+
             return Options.Modules.FirstOrDefault(
                 m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
                 Options.MainModule;
