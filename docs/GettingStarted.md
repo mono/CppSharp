@@ -4,8 +4,11 @@ From an higher level overview, CppSharp will take a bunch of user-provided C/C++
 headers and generate either C++/CLI or C# code that can be compiled into a
 regular .NET assembly.
 
-To get started you can either compile from source or get one of the pre-compiled binary
-releases from the [releases archive](https://github.com/mono/CppSharp/releases).
+To get started you can either compile from source or get one of the pre-compiled
+binary releases (only provided for Windows, at the moment):
+
+* [GitHub releases](https://github.com/mono/CppSharp/releases)
+* [NuGet packages](https://www.nuget.org/packages/CppSharp/)
 
 # Building from source
 
