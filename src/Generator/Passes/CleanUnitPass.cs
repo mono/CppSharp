@@ -11,21 +11,25 @@ namespace CppSharp.Passes
             if (!base.VisitTranslationUnit(unit))
                 return false;
 
-            if (unit.IsSystemHeader)
-            {
-                unit.Module = Options.SystemModule;
-            }
-            else
-            {
-                var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
-                unit.Module = Options.Modules.FirstOrDefault(
-                    m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
-                    Options.MainModule;
-            }
+            unit.Module = GetModule(unit);
             unit.Module.Units.Add(unit);
-            // Try to get an include path that works from the original include directories paths
+
+            // Try to get an include path that works from the original include
+            // directories paths
             unit.IncludePath = GetIncludePath(unit.FilePath);
+
             return true;
+        }
+
+        Module GetModule(TranslationUnit unit)
+        {
+            if (unit.IsSystemHeader)
+                return Options.SystemModule;
+
+            var includeDir = Path.GetFullPath(Path.GetDirectoryName(unit.FilePath));
+            return Options.Modules.FirstOrDefault(
+                m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
+                Options.MainModule;
         }
 
         public override bool VisitDeclarationContext(DeclarationContext context)
