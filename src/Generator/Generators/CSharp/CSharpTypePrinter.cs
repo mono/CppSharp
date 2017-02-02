@@ -840,7 +840,7 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitVectorType(VectorType vectorType, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return vectorType.ElementType.Visit(this);
         }
 
         public CSharpTypePrinterResult VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
