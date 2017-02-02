@@ -15,6 +15,11 @@ namespace CppSharp.Generators
 
         public abstract string FileExtension { get; }
 
+        protected Template(BindingContext context, TranslationUnit unit)
+            : this(context, new List<TranslationUnit> { unit })
+        {
+        }
+
         protected Template(BindingContext context, IEnumerable<TranslationUnit> units)
         {
             Context = context;
