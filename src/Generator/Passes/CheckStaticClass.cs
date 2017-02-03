@@ -22,23 +22,34 @@ namespace CppSharp.Passes
             if (Options.IsCSharpGenerator)
             {
                 // C# cannot have protected members in static classes.
-                var @class = decl.Namespace as Class;
-                if (    decl.Access == AccessSpecifier.Protected && 
-                        decl.GenerationKind == GenerationKind.Generate &&
-                        @class != null && 
-                        @class.IsStatic)
-                {
-                    // By setting it to private it will appear
-                    // as an internal in the final C# wrapper.
-                    decl.Access = AccessSpecifier.Private;
-
-                    // We need to explicity set the generation else the
-                    // now private declaration will get filtered out later.
-                    decl.GenerationKind = GenerationKind.Generate;
-                }
+                if (IsProtectedClassMember(decl) && decl.IsGenerated)
+                    SetDeclarationAccessToPrivate(decl);
             }
 
             return true;
+        }
+
+        static bool IsProtectedClassMember(Declaration decl)
+        {
+            if (decl.Access != AccessSpecifier.Protected)
+                return false;
+            
+            var @class = decl.Namespace as Class;
+            if (@class == null || !@class.IsStatic)
+                return false;
+
+            return true;
+        }
+
+        static void SetDeclarationAccessToPrivate(Declaration decl)
+        {
+            // By setting it to private it will appear
+            // as an internal in the final C# wrapper.
+            decl.Access = AccessSpecifier.Private;
+
+            // We need to explicity set the generation else the
+            // now private declaration will get filtered out later.
+            decl.GenerationKind = GenerationKind.Generate;
         }
 
         static bool ReturnsClassInstance(Function function)
