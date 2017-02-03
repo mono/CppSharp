@@ -127,10 +127,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinter TypePrinter { get; private set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; private set; }
 
-        public override string FileExtension
-        {
-            get { return "cs"; }
-        }
+        public override string FileExtension => "cs";
 
         public CSharpSources(BindingContext context, IEnumerable<TranslationUnit> units,
             CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)

@@ -4,7 +4,6 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
-using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
@@ -13,12 +12,12 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public class CLIHeaders : CLITemplate
     {
-        public override string FileExtension { get { return "h"; } }
-
         public CLIHeaders(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
         }
+
+        public override string FileExtension => "h";
 
         public override void Process()
         {

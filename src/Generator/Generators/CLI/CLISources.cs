@@ -6,7 +6,6 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
-using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
@@ -19,8 +18,9 @@ namespace CppSharp.Generators.CLI
         public CLISources(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
-            
         }
+
+        public override string FileExtension { get { return "cpp"; } }
 
         public override void Process()
         {
@@ -1228,7 +1228,5 @@ namespace CppSharp.Generators.CLI
                 }).ToList();
             Write(string.Join(", ", names));
         }
-
-        public override string FileExtension { get { return "cpp"; } }
     }
 }
