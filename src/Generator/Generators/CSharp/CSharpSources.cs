@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -122,7 +122,7 @@ namespace CppSharp.Generators.CSharp
         public const int Finalizer = FIRST + 19;
     }
 
-    public class CSharpSources : Template
+    public class CSharpSources : CodeTemplate
     {
         public CSharpTypePrinter TypePrinter { get; private set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; private set; }

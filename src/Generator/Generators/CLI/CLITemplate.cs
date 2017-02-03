@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CppSharp.AST;
 
@@ -55,7 +55,7 @@ namespace CppSharp.Generators.CLI
     /// for source (CLISources) and header (CLIHeaders)
     /// files.
     /// </summary>
-    public abstract class CLITemplate : Template
+    public abstract class CLITemplate : CodeTemplate
     {
         public CLITypePrinter TypePrinter { get; set; }
 

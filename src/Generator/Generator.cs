@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
@@ -31,7 +31,7 @@ namespace CppSharp.Generators
         /// <summary>
         /// Text templates with generated output.
         /// </summary>
-        public List<Template> Templates;
+        public List<CodeTemplate> Templates;
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ namespace CppSharp.Generators
         /// <summary>
         /// Generates the outputs for a given translation unit.
         /// </summary>
-        public abstract List<Template> Generate(IEnumerable<TranslationUnit> units);
+        public abstract List<CodeTemplate> Generate(IEnumerable<TranslationUnit> units);
 
         protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);
 

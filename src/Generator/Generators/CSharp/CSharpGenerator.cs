@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Passes;
 
@@ -15,9 +15,9 @@ namespace CppSharp.Generators.CSharp
             expressionPrinter = new CSharpExpressionPrinter(typePrinter);
         }
 
-        public override List<Template> Generate(IEnumerable<TranslationUnit> units)
+        public override List<CodeTemplate> Generate(IEnumerable<TranslationUnit> units)
         {
-            var outputs = new List<Template>();
+            var outputs = new List<CodeTemplate>();
 
             var template = new CSharpSources(Context, units, typePrinter, expressionPrinter);
             outputs.Add(template);
