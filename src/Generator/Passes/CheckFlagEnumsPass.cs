@@ -2,6 +2,10 @@
 
 namespace CppSharp.Passes
 {
+    /// <summary>
+    /// Checks for enumerations that should be treated as a collection
+    /// of flags (and annotated with the .NET [Flags] when generated).
+    /// </summary>
     public class CheckFlagEnumsPass : TranslationUnitPass
     {
         static bool IsFlagEnum(Enumeration @enum)
