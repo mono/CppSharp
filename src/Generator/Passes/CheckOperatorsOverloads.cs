@@ -61,31 +61,31 @@ namespace CppSharp.Passes
                     continue;
 
                 if (@operator.OperatorKind == CXXOperatorKind.Subscript)
-                {
                     CreateIndexer(@class, @operator);
-                }
                 else
+                    CreateOperator(@class, @operator);
+            }
+        }
+
+        private static void CreateOperator(Class @class, Method @operator)
+        {
+            if (@operator.IsStatic)
+                @operator.Parameters = @operator.Parameters.Skip(1).ToList();
+
+            if (@operator.ConversionType.Type == null || @operator.Parameters.Count == 0)
+            {
+                var type = new PointerType
                 {
-                    // Handle missing operator parameters
-                    if (@operator.IsStatic)
-                        @operator.Parameters = @operator.Parameters.Skip(1).ToList();
+                    QualifiedPointee = new QualifiedType(new TagType(@class)),
+                    Modifier = PointerType.TypeModifier.LVReference
+                };
 
-                    if (@operator.ConversionType.Type == null || @operator.Parameters.Count == 0)
-                    {
-                        var type = new PointerType
-                        {
-                            QualifiedPointee = new QualifiedType(new TagType(@class)),
-                            Modifier = PointerType.TypeModifier.LVReference
-                        };
-
-                        @operator.Parameters.Insert(0, new Parameter
-                        {
-                            Name = Generator.GeneratedIdentifier("op"),
-                            QualifiedType = new QualifiedType(type),
-                            Kind = ParameterKind.OperatorParameter
-                        });
-                    }
-                }
+                @operator.Parameters.Insert(0, new Parameter
+                {
+                    Name = Generator.GeneratedIdentifier("op"),
+                    QualifiedType = new QualifiedType(type),
+                    Kind = ParameterKind.OperatorParameter
+                });
             }
         }
 
