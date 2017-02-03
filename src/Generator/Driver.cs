@@ -328,8 +328,6 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
 
-            TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
-
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new DelegatesPass());
 
