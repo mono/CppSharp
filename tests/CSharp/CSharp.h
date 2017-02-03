@@ -1123,3 +1123,22 @@ public:
 private:
     int field;
 };
+
+class DLL_API HasBaseSetter
+{
+public:
+    HasBaseSetter();
+    ~HasBaseSetter();
+    virtual void setBaseSetter(int value);
+};
+
+class DLL_API HasGetterAndOverriddenSetter : public HasBaseSetter
+{
+public:
+    HasGetterAndOverriddenSetter();
+    ~HasGetterAndOverriddenSetter();
+    void setBaseSetter(int value);
+    int baseSetter();
+protected:
+    int field;
+};

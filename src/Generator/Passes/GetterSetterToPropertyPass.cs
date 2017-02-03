@@ -152,10 +152,6 @@ namespace CppSharp.Passes
                 if (getter.IsOverride || (setter != null && setter.IsOverride))
                 {
                     var baseVirtualProperty = type.GetBaseProperty(property, getTopmost: true);
-                    if (baseVirtualProperty == null && type.GetBaseMethod(getter, getTopmost: true).IsGenerated)
-                        throw new Exception(string.Format(
-                            "Property {0} has a base property null but its getter has a generated base method.",
-                            getter.QualifiedOriginalName));
                     if (baseVirtualProperty != null && !baseVirtualProperty.IsVirtual)
                     {
                         // the only way the above can happen is if we are generating properties in abstract implementations
@@ -166,7 +162,7 @@ namespace CppSharp.Passes
                             "Base of property {0} is not virtual while the getter is.",
                             getter.QualifiedOriginalName));
                     }
-                    if (baseVirtualProperty != null && baseVirtualProperty.SetMethod == null)
+                    if (baseVirtualProperty == null || baseVirtualProperty.SetMethod == null)
                         setter = null;
                 }
                 property.GetMethod = getter;

@@ -1266,3 +1266,33 @@ int ImplementsAbstractsFromPrimaryAndSecondary::abstractReturnsFieldInSecondaryB
 {
     return field + 2;
 }
+
+HasBaseSetter::HasBaseSetter()
+{
+}
+
+HasBaseSetter::~HasBaseSetter()
+{
+}
+
+void HasBaseSetter::setBaseSetter(int value)
+{
+}
+
+HasGetterAndOverriddenSetter::HasGetterAndOverriddenSetter()
+{
+}
+
+HasGetterAndOverriddenSetter::~HasGetterAndOverriddenSetter()
+{
+}
+
+int HasGetterAndOverriddenSetter::baseSetter()
+{
+    return field;
+}
+
+void HasGetterAndOverriddenSetter::setBaseSetter(int value)
+{
+    field = value;
+}

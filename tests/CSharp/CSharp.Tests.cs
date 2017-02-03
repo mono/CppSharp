@@ -667,6 +667,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestOverriddenSetterOnly()
+    {
+        using (var hasGetterAndOverriddenSetter = new HasGetterAndOverriddenSetter())
+        {
+            const int value = 5;
+            hasGetterAndOverriddenSetter.SetBaseSetter(value);
+            Assert.That(hasGetterAndOverriddenSetter.BaseSetter, Is.EqualTo(value));
+        }
+    }
+
     private class OverrideVirtualWithString : HasVirtualTakesReturnsProblematicTypes
     {
         public override string VirtualTakesAndReturnsString(string c)
