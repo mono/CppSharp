@@ -253,7 +253,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (!@class.IsDependent)
                 {
-                    GenerateClass(@class);
+                    @class.Visit(this);
                     continue;
                 }
 
@@ -355,7 +355,7 @@ namespace CppSharp.Generators.CSharp
                 if (specialization.Ignore)
                     GenerateClassInternals(specialization);
                 else
-                    GenerateClass(specialization);
+                    specialization.Visit(this);
             }
 
             foreach (var nestedClass in classTemplate.Classes)
@@ -441,10 +441,10 @@ namespace CppSharp.Generators.CSharp
 
         #region Classes
 
-        public void GenerateClass(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             if (@class.IsIncomplete)
-                return;
+                return false;
 
             foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
                 GenerateClassTemplateSpecializationInternal(nestedTemplate);
@@ -476,7 +476,7 @@ namespace CppSharp.Generators.CSharp
                 if (!@class.IsAbstractImpl)
                     GenerateClassInternals(@class);
 
-                @class.Visit(this);
+                VisitDeclContext(@class);
 
                 if (@class.IsDependent || !@class.IsGenerated)
                     goto exit;
@@ -527,6 +527,8 @@ namespace CppSharp.Generators.CSharp
 
             if (typeMap != null)
                 Context.TypeMaps.TypeMaps.Add(key, typeMap);
+
+            return true;
         }
 
         private void GenerateInterface(Class @class)
