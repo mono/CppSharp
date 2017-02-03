@@ -39,14 +39,23 @@ namespace CppSharp.Generators
 
         #region Visitor methods
 
-        public bool VisitDeclaration(Declaration decl)
+        public virtual bool VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
 
+        public virtual bool VisitDeclContext(DeclarationContext context)
+        {
+            foreach (var decl in context.Declarations)
+                if (!decl.IsGenerated)
+                    decl.Visit(this);
+
+            return true;
+        }
+
         public virtual bool VisitClassDecl(Class @class)
         {
-            throw new NotImplementedException();
+            return VisitDeclContext(@class);
         }
 
         public virtual bool VisitFieldDecl(Field field)
@@ -101,7 +110,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitNamespace(Namespace @namespace)
         {
-            throw new NotImplementedException();
+            return VisitDeclContext(@namespace);
         }
 
         public virtual bool VisitEvent(Event @event)

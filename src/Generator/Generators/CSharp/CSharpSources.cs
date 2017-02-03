@@ -183,9 +183,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             foreach (var unit in TranslationUnits)
-            {
-                GenerateDeclContext(unit);
-            }
+                unit.Visit(this);
 
             if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
@@ -206,7 +204,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock();
         }
 
-        private void GenerateDeclContext(DeclarationContext context)
+        public override bool VisitDeclContext(DeclarationContext context)
         {
             var isNamespace = context is Namespace;
             var isTranslationUnit = context is TranslationUnit;
@@ -306,13 +304,15 @@ namespace CppSharp.Generators.CSharp
             }
 
             foreach(var childNamespace in context.Namespaces)
-                GenerateDeclContext(childNamespace);
+                childNamespace.Visit(this);
 
             if (shouldGenerateNamespace)
             {
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+
+            return true;
         }
 
         private void GenerateClassTemplateSpecializationInternal(Class classTemplate)
@@ -469,7 +469,8 @@ namespace CppSharp.Generators.CSharp
             {
                 if (!@class.IsAbstractImpl)
                     GenerateClassInternals(@class);
-                GenerateDeclContext(@class);
+
+                @class.Visit(this);
 
                 if (@class.IsDependent || !@class.IsGenerated)
                     goto exit;
