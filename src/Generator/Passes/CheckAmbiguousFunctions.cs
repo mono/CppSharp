@@ -105,22 +105,22 @@ namespace CppSharp.Passes
         {
             var method1 = function as Method;
             var method2 = overload as Method;
-            if (method1 != null && method2 != null)
+            if (method1 == null || method2 == null)
+                return false;
+
+            var sameParams = method1.Parameters.SequenceEqual(method2.Parameters,
+                ParameterTypeComparer.Instance);
+
+            if (method1.IsConst && !method2.IsConst && sameParams)
             {
-                var sameParams = method1.Parameters.SequenceEqual(method2.Parameters,
-                    ParameterTypeComparer.Instance);
+                method1.ExplicitlyIgnore();
+                return true;
+            }
 
-                if (method1.IsConst && !method2.IsConst && sameParams)
-                {
-                    method1.ExplicitlyIgnore();
-                    return true;
-                }
-
-                if (method2.IsConst && !method1.IsConst && sameParams)
-                {
-                    method2.ExplicitlyIgnore();
-                    return true;
-                }
+            if (method2.IsConst && !method1.IsConst && sameParams)
+            {
+                method2.ExplicitlyIgnore();
+                return true;
             }
 
             return false;
