@@ -6,6 +6,7 @@ namespace CppSharp
     public enum TargetPlatform
     {
         Windows,
+        Linux,
         Android,
         MacOS,
         iOS,

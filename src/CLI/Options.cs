@@ -8,13 +8,6 @@ using CppSharp.Generators;
 
 namespace CppSharp
 {
-    enum TargetPlatform
-    {
-        Windows,
-        MacOS,
-        Linux
-    }
-
     enum TargetArchitecture
     {
         x86,
