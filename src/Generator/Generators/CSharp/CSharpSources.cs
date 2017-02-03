@@ -160,18 +160,20 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
+
             var internalsVisibleTo = (from m in Options.Modules
                                       where m.Dependencies.Contains(module)
                                       select m.LibraryName).ToList();
             if (internalsVisibleTo.Any())
                 WriteLine("using System.Runtime.CompilerServices;");
+
             foreach (var customUsingStatement in Options.DependentNameSpaces)
-            {
-                WriteLine(string.Format("using {0};", customUsingStatement));
-            }
+                WriteLine("using {0};", customUsingStatement);
             PopBlock(NewLineKind.BeforeNextBlock);
+
             foreach (var library in internalsVisibleTo)
                 WriteLine($"[assembly:InternalsVisibleTo(\"{library}\")]");
+
             if (internalsVisibleTo.Any())
                 NewLine();
 
@@ -242,16 +244,19 @@ namespace CppSharp.Generators.CSharp
                     GenerateInterface(@class);
                     continue;
                 }
+
                 var specialization = @class as ClassTemplateSpecialization;
                 if (specialization != null &&
                     specialization.SpecializationKind ==
                         TemplateSpecializationKind.ExplicitInstantiationDeclaration)
                     continue;
+
                 if (!@class.IsDependent)
                 {
                     GenerateClass(@class);
                     continue;
                 }
+
                 if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
             }
@@ -377,6 +382,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateComment(decl.Comment);
                 GenerateDebug(decl);
             }
+
             foreach (Attribute attribute in decl.Attributes)
                 WriteLine("[{0}({1})]", attribute.Type.FullName, attribute.Value);
         }
