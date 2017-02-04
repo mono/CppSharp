@@ -40,8 +40,8 @@ namespace CppSharp.AST
 
         public virtual string VisitTagType(TagType tag, TypeQualifiers quals)
         {
-            var qual = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
-            return string.Format("{0}{1}", qual, tag.Declaration.Visit(this));
+            var qual = GetStringQuals(quals);
+            return $"{qual} {tag.Declaration.Visit(this)}";
         }
 
         public virtual string VisitArrayType(ArrayType array, TypeQualifiers quals)
@@ -92,10 +92,11 @@ namespace CppSharp.AST
                 return string.Format("{0} (*)({1})", returnType.Visit(this), args);
             }
 
-            var qual = PrintTypeQualifiers && quals.IsConst ? " const" : string.Empty;
+            var qual = GetStringQuals(quals);
             var pointeeType = pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
-            return string.Format("{0}{1}{2}", pointeeType, mod, qual);
+            return $@"{pointeeType}{mod}{(
+                string.IsNullOrEmpty(qual) ? string.Empty : " ")}{qual}";
         }
 
         public virtual string VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
@@ -105,8 +106,8 @@ namespace CppSharp.AST
 
         public virtual string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
-            var qual = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
-            return string.Format("{0}{1}", qual, VisitPrimitiveType(builtin.Type));
+            var qual = GetStringQuals(quals);
+            return $"{qual} {VisitPrimitiveType(builtin.Type)}";
         }
 
         public virtual string VisitPrimitiveType(PrimitiveType primitive)
@@ -146,13 +147,11 @@ namespace CppSharp.AST
 
         public virtual string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            if (ResolveTypedefs)
-            {
-                var decl = typedef.Declaration;
-                FunctionType func;
-                return decl.Type.IsPointerTo(out func) ? VisitDeclaration(decl) : decl.Type.Visit(this);
-            }
-            return GetDeclName(typedef.Declaration, PrintScopeKind);
+            FunctionType func;
+            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
+                return typedef.Declaration.Type.Visit(this);
+            var qual = GetStringQuals(quals);
+            return $"{qual} {typedef.Declaration.Visit(this)}";
         }
 
         public virtual string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
@@ -350,7 +349,11 @@ namespace CppSharp.AST
 
         public virtual string VisitTypedefDecl(TypedefDecl typedef)
         {
-            return VisitDeclaration(typedef);
+            if (ResolveTypedefs)
+                return typedef.Type.Visit(this);
+            var originalNamespace = typedef.OriginalNamespace.Visit(this);
+            return originalNamespace == "::" ? typedef.OriginalName :
+                $"{originalNamespace}::{typedef.OriginalName}";
         }
 
         public virtual string VisitTypeAliasDecl(TypeAlias typeAlias)
@@ -454,6 +457,19 @@ namespace CppSharp.AST
         public virtual string VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template)
         {
             throw new NotImplementedException();
+        }
+
+        private string GetStringQuals(TypeQualifiers quals)
+        {
+            var stringQuals = new List<string>();
+            if (PrintTypeQualifiers)
+            {
+                if (quals.IsConst)
+                    stringQuals.Add("const");
+                if (quals.IsVolatile)
+                    stringQuals.Add("volatile");
+            }
+            return string.Join(" ", stringQuals);
         }
     }
 }

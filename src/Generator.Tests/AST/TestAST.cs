@@ -417,7 +417,7 @@ namespace CppSharp.Generator.Tests.AST
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
             var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });
             var type = pointer.Visit(cppTypePrinter);
-            Assert.AreEqual(type, "const char* const");
+            Assert.That(type, Is.EqualTo("const char* const"));
         }
 
         [Test]
@@ -461,6 +461,16 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(functionWithSpecInfo.SpecializationInfo.Arguments.Count, Is.EqualTo(2));
             foreach (var arg in functionWithSpecInfo.SpecializationInfo.Arguments)
                 Assert.That(arg.Type, Is.EqualTo(@float));
+        }
+
+        [Test]
+        public void TestVolatile()
+        {
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var builtin = new BuiltinType(PrimitiveType.Char);
+            var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true, IsVolatile = true });
+            var type = pointee.Visit(cppTypePrinter);
+            Assert.That(type, Is.EqualTo("const volatile char"));
         }
     }
 }
