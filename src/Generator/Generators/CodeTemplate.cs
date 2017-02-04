@@ -6,13 +6,13 @@ namespace CppSharp.Generators
 {
     public abstract class CodeTemplate : BlockGenerator, IDeclVisitor<bool>
     {
-        public BindingContext Context { get; private set; }
+        public BindingContext Context { get; }
 
-        public DriverOptions Options { get { return Context.Options; } }
+        public DriverOptions Options => Context.Options;
 
-        public List<TranslationUnit> TranslationUnits { get; private set; }
+        public List<TranslationUnit> TranslationUnits { get; }
 
-        public TranslationUnit TranslationUnit { get { return TranslationUnits[0]; } }
+        public TranslationUnit TranslationUnit => TranslationUnits[0];
 
         public abstract string FileExtension { get; }
 
@@ -29,7 +29,7 @@ namespace CppSharp.Generators
 
         public abstract void Process();
 
-        public new string Generate()
+        public override string Generate()
         {
             if (Options.IsCSharpGenerator && Options.CompileCode)
                 return base.GenerateUnformatted();

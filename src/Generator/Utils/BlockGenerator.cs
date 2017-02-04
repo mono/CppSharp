@@ -288,7 +288,7 @@ namespace CppSharp
             ActiveBlock = RootBlock;
         }
 
-        public string Generate()
+        public virtual string Generate()
         {
             return RootBlock.Generate();
         }
