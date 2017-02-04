@@ -51,7 +51,7 @@ namespace CppSharp.AST
             DefaultArgument = p.DefaultArgument;
         }
 
-        public Type Type { get { return QualifiedType.Type; } }
+        public Type Type => QualifiedType.Type;
         public QualifiedType QualifiedType { get; set; }
         public bool IsIndirect { get; set; }
         public uint Index { get; set; }
@@ -62,14 +62,11 @@ namespace CppSharp.AST
 
         public Expression DefaultArgument { get; set; }
 
-        public bool IsIn { get { return Usage == ParameterUsage.In; } }
-        public bool IsOut { get { return Usage == ParameterUsage.Out; } }
-        public bool IsInOut { get { return Usage == ParameterUsage.InOut; } }
+        public bool IsIn => Usage == ParameterUsage.In;
+        public bool IsOut => Usage == ParameterUsage.Out;
+        public bool IsInOut => Usage == ParameterUsage.InOut;
 
-        public bool IsSynthetized
-        {
-            get { return Kind != ParameterKind.Regular; }
-        }
+        public bool IsSynthetized => Kind != ParameterKind.Regular;
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
@@ -240,44 +237,6 @@ namespace CppSharp.AST
         }
 
         public Type Type => ReturnType.Type;
-        public QualifiedType QualifiedType { get { return ReturnType; } }
-
-        public FunctionType GetFunctionType()
-        {
-            var functionType = new FunctionType
-                                {
-                                    CallingConvention = this.CallingConvention,
-                                    ReturnType = this.ReturnType
-                                };
-
-            functionType.Parameters.AddRange(Parameters);
-            ReplaceIndirectReturnParamWithRegular(functionType);
-
-            return functionType;
-        }
-
-        static void ReplaceIndirectReturnParamWithRegular(FunctionType functionType)
-        {
-            for (var i = functionType.Parameters.Count - 1; i >= 0; i--)
-            {
-                var parameter = functionType.Parameters[i];
-                if (parameter.Kind != ParameterKind.IndirectReturnType)
-                    continue;
-
-                var ptrType = new PointerType
-                    {
-                        QualifiedPointee = new QualifiedType(parameter.Type)
-                    };
-
-                var retParam = new Parameter
-                    {
-                        Name = parameter.Name,
-                        QualifiedType = new QualifiedType(ptrType)
-                    };
-
-                functionType.Parameters.RemoveAt(i);
-                functionType.Parameters.Insert(i, retParam);
-            }
-        }
+        public QualifiedType QualifiedType => ReturnType;
     }
 }
