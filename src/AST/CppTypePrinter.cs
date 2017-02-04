@@ -41,7 +41,8 @@ namespace CppSharp.AST
         public virtual string VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var qual = GetStringQuals(quals);
-            return $"{qual} {tag.Declaration.Visit(this)}";
+            return $@"{qual}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{
+                tag.Declaration.Visit(this)}";
         }
 
         public virtual string VisitArrayType(ArrayType array, TypeQualifiers quals)
@@ -107,7 +108,8 @@ namespace CppSharp.AST
         public virtual string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             var qual = GetStringQuals(quals);
-            return $"{qual} {VisitPrimitiveType(builtin.Type)}";
+            return $@"{qual}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{
+                VisitPrimitiveType(builtin.Type)}";
         }
 
         public virtual string VisitPrimitiveType(PrimitiveType primitive)
@@ -151,7 +153,8 @@ namespace CppSharp.AST
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
                 return typedef.Declaration.Type.Visit(this);
             var qual = GetStringQuals(quals);
-            return $"{qual} {typedef.Declaration.Visit(this)}";
+            return $@"{qual}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{
+                typedef.Declaration.Visit(this)}";
         }
 
         public virtual string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)

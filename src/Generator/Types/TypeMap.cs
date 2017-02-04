@@ -180,6 +180,14 @@ namespace CppSharp.Types
                 return true;
             }
 
+            typePrinter.ResolveTypedefs = true;
+            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+            typePrinter.ResolveTypedefs = false;
+
             typePrinter.PrintScopeKind = CppTypePrintScopeKind.Local;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
