@@ -27,7 +27,9 @@ namespace CppSharp.Passes
             var mangledDecl = decl as IMangledDecl;
             var method = decl as Method;
             if (decl.IsGenerated && mangledDecl != null &&
-                !(method != null && (method.IsPure || method.IsSynthetized)) &&
+                // virtual functions cannot really be inlined and
+                // we don't need their symbols anyway as we call them through the v-table
+                !(method != null && (method.IsVirtual || method.IsSynthetized)) &&
                 !VisitMangledDeclaration(mangledDecl))
             {
                 decl.ExplicitlyIgnore();
