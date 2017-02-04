@@ -35,10 +35,7 @@ namespace CppSharp.Passes
                 return false;
             
             var @class = decl.Namespace as Class;
-            if (@class == null || !@class.IsStatic)
-                return false;
-
-            return true;
+            return @class != null && @class.IsStatic;
         }
 
         static void SetDeclarationAccessToPrivate(Declaration decl)
