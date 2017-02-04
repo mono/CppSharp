@@ -25,7 +25,7 @@ namespace CppSharp.Passes
                 if (wait != value)
                 {
                     wait = value;
-                    if (!wait)
+                    if (!wait && manualResetEvent != null)
                     {
                         manualResetEvent.Set();
                         manualResetEvent.Dispose();
