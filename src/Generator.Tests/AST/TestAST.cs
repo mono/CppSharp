@@ -451,5 +451,16 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(regularFunctionType.ExceptionSpecType,
                 Is.EqualTo(ExceptionSpecType.None));
         }
+
+        [Test]
+        public void TestFunctionSpecializationInfo()
+        {
+            var functionWithSpecInfo = AstContext.FindFunction(
+                "functionWithSpecInfo").First(f => !f.IsDependent);
+            var @float = new QualifiedType(new BuiltinType(PrimitiveType.Float));
+            Assert.That(functionWithSpecInfo.SpecializationInfo.Arguments.Count, Is.EqualTo(2));
+            foreach (var arg in functionWithSpecInfo.SpecializationInfo.Arguments)
+                Assert.That(arg.Type, Is.EqualTo(@float));
+        }
     }
 }

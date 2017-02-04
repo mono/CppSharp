@@ -158,3 +158,9 @@ typedef ForwardedTemplate<long> l;
 template class TestSpecializationArguments<const TestASTEnumItemByName>;
 
 constexpr void constExprNoExcept() noexcept;
+
+template <typename T1, typename T2>
+bool functionWithSpecInfo(const T1& t11, const T1& t12, const T2& t2);
+
+template<>
+bool functionWithSpecInfo(const float& t11, const float& t12, const float& t2);

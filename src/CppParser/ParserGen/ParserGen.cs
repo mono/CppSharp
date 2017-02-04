@@ -39,7 +39,7 @@ namespace CppSharp
                 var path = Path.Combine(directory.FullName, dir);
 
                 if (Directory.Exists(path) &&
-                    Directory.Exists(Path.Combine(directory.FullName, "patches")))
+                    Directory.Exists(Path.Combine(directory.FullName, "deps")))
                     return path;
 
                 directory = directory.Parent;
