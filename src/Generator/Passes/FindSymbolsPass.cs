@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Threading;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -14,6 +15,34 @@ namespace CppSharp.Passes
             VisitOptions.VisitNamespaceTypedefs = false;
             VisitOptions.VisitTemplateArguments = false;
             VisitOptions.VisitClassFields = false;
+        }
+
+        public bool Wait
+        {
+            get { return wait; }
+            set
+            {
+                if (wait != value)
+                {
+                    wait = value;
+                    if (!wait)
+                    {
+                        manualResetEvent.Set();
+                        manualResetEvent.Dispose();
+                        manualResetEvent = null;
+                    }
+                }
+            }
+        }
+
+        public override bool VisitASTContext(ASTContext context)
+        {
+            if (Wait)
+            {
+                manualResetEvent = new ManualResetEvent(false);
+                manualResetEvent.WaitOne();
+            }
+            return base.VisitASTContext(context);
         }
 
         public override bool VisitDeclaration(Declaration decl)
@@ -52,5 +81,8 @@ namespace CppSharp.Passes
             mangledDecl.Mangled = symbol;
             return true;
         }
+
+        private bool wait;
+        private ManualResetEvent manualResetEvent;
     }
 }
