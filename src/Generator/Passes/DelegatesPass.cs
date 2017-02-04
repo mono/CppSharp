@@ -20,9 +20,9 @@ namespace CppSharp.Passes
                 Signature = signature;
             }
 
-            public string Namespace { get; private set; }
+            public string Namespace { get; }
 
-            public string Signature { get; private set; }
+            public string Signature { get; }
         }
 
         public DelegatesPass()
@@ -37,8 +37,8 @@ namespace CppSharp.Passes
 
         public override bool VisitASTContext(ASTContext context)
         {
-            foreach (var library in Options.Modules.SelectMany(m => m.Libraries))
-                libsDelegates[library] = new Dictionary<string, DelegateDefinition>();
+            foreach (var module in Options.Modules)
+                libsDelegates[module] = new Dictionary<string, DelegateDefinition>();
 
             var unit = context.TranslationUnits.GetGenerated().LastOrDefault();
 
@@ -48,7 +48,7 @@ namespace CppSharp.Passes
             var result = base.VisitASTContext(context);
 
             foreach (var module in Options.Modules.Where(m => namespacesDelegates.ContainsKey(m)))
-                module.Units.Last(u => u.HasDeclarations).Declarations.Add(namespacesDelegates[module]);
+                namespacesDelegates[module].Namespace.Declarations.Add(namespacesDelegates[module]);
 
             return result;
         }
@@ -100,10 +100,20 @@ namespace CppSharp.Passes
             }
             else
             {
+                Namespace parent = null;
+                if (string.IsNullOrEmpty(module.OutputNamespace))
+                {
+                    var group = module.Units.SelectMany(u => u.Declarations).OfType<Namespace>(
+                        ).GroupBy(d => d.Name).Where(g => g.Any(d => d.HasDeclarations)).ToList();
+                    if (group.Count == 1)
+                        parent = group.Last().Last();
+                }
+                if (parent == null)
+                    parent = module.Units.Last();
                 namespaceDelegates = new Namespace
                 {
                     Name = DelegatesNamespace,
-                    Namespace = module.Units.Last()
+                    Namespace = parent
                 };
                 namespacesDelegates.Add(module, namespaceDelegates);
             }
@@ -126,10 +136,9 @@ namespace CppSharp.Passes
                     Access = AccessSpecifier.Private
                 };
 
-            Generator.CurrentOutputNamespace = module.OutputNamespace;
             var delegateString = @delegate.Visit(TypePrinter).Type;
             var existingDelegate = GetExistingDelegate(
-                method.TranslationUnit.Module.Libraries, delegateString);
+                method.TranslationUnit.Module, delegateString);
 
             if (existingDelegate != null)
             {
@@ -140,24 +149,22 @@ namespace CppSharp.Passes
             existingDelegate = new DelegateDefinition(module.OutputNamespace, delegateString);
             Context.Delegates.Add(method, existingDelegate);
 
-            foreach (var library in module.Libraries)
-                libsDelegates[library].Add(delegateString, existingDelegate);
+            libsDelegates[module].Add(delegateString, existingDelegate);
 
             namespaceDelegates.Declarations.Add(@delegate);
 
             return true;
         }
 
-        private DelegateDefinition GetExistingDelegate(IList<string> libraries, string delegateString)
+        private DelegateDefinition GetExistingDelegate(Module module, string delegateString)
         {
-            if (libraries.Count == 0)
+            if (module.Libraries.Count == 0)
                 return Context.Delegates.Values.FirstOrDefault(t => t.Signature == delegateString);
 
             DelegateDefinition @delegate = null;
-            if (libraries.Union(
-                Context.Symbols.Libraries.Where(l => libraries.Contains(l.FileName)).SelectMany(
-                    l => l.Dependencies)).Any(l => libsDelegates.ContainsKey(l) &&
-                        libsDelegates[l].TryGetValue(delegateString, out @delegate)))
+            if (new[] { module }.Union(module.Dependencies).Any(
+                m => libsDelegates.ContainsKey(m) && libsDelegates[m].TryGetValue(
+                    delegateString, out @delegate)))
                 return @delegate;
 
             return null;
@@ -165,8 +172,6 @@ namespace CppSharp.Passes
 
         private string GenerateDelegateSignature(IEnumerable<Parameter> @params, QualifiedType returnType)
         {
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-            CSharpTypePrinter.AppendGlobal = false;
             var typesBuilder = new StringBuilder();
             if (!returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
@@ -186,8 +191,6 @@ namespace CppSharp.Passes
             else
                 delegateName = "Func_" + delegateName;
 
-            TypePrinter.PopContext();
-            CSharpTypePrinter.AppendGlobal = true;
             return delegateName;
         }
 
@@ -197,7 +200,7 @@ namespace CppSharp.Passes
             {
                 if (typePrinter == null)
                 {
-                    typePrinter = new CSharpTypePrinter(Context);
+                    typePrinter = new CSharpTypePrinter(Context) { FullyQualify = false };
                     typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                     typePrinter.PushMarshalKind(CSharpMarshalKind.GenericDelegate);
                 }
@@ -207,7 +210,7 @@ namespace CppSharp.Passes
 
         private Dictionary<Module, Namespace> namespacesDelegates = new Dictionary<Module, Namespace>();
         private CSharpTypePrinter typePrinter;
-        private static readonly Dictionary<string, Dictionary<string, DelegateDefinition>> libsDelegates =
-            new Dictionary<string, Dictionary<string, DelegateDefinition>>();
+        private static readonly Dictionary<Module, Dictionary<string, DelegateDefinition>> libsDelegates =
+            new Dictionary<Module, Dictionary<string, DelegateDefinition>>();
     }
 }

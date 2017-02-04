@@ -34,10 +34,7 @@ namespace CppSharp.Generators.CSharp
             return new CSharpTypePrinterResult {Type = type};
         }
 
-        public override string ToString()
-        {
-            return Type;
-        }
+        public override string ToString() => Type;
     }
 
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
@@ -45,32 +42,21 @@ namespace CppSharp.Generators.CSharp
     {
         public const string IntPtrType = "global::System.IntPtr";
 
-        public static bool AppendGlobal { get; set; }
-
-        static CSharpTypePrinter()
-        {
-            AppendGlobal = true;
-        }
+        public bool FullyQualify { get; set; } = true;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
         private readonly Stack<CSharpMarshalKind> marshalKinds;
 
-        public CSharpTypePrinterContextKind ContextKind
-        {
-            get { return contexts.Peek(); }
-        }
+        public CSharpTypePrinterContextKind ContextKind => contexts.Peek();
 
-        public CSharpMarshalKind MarshalKind
-        {
-            get { return marshalKinds.Peek(); }
-        }
+        public CSharpMarshalKind MarshalKind => marshalKinds.Peek();
 
         public CSharpTypePrinterContext TypePrinterContext;
 
         public BindingContext Context { get; set; }
 
-        public DriverOptions Options { get { return Context.Options; } }
-        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeMaps; } }
+        public DriverOptions Options => Context.Options;
+        public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;
 
         public CSharpTypePrinter(BindingContext context)
         {
@@ -88,20 +74,14 @@ namespace CppSharp.Generators.CSharp
             contexts.Push(contextKind);
         }
 
-        public CSharpTypePrinterContextKind PopContext()
-        {
-            return contexts.Pop();
-        }
+        public CSharpTypePrinterContextKind PopContext() => contexts.Pop();
 
         public void PushMarshalKind(CSharpMarshalKind marshalKind)
         {
             marshalKinds.Push(marshalKind);
         }
 
-        public CSharpMarshalKind PopMarshalKind()
-        {
-            return marshalKinds.Pop();
-        }
+        public CSharpMarshalKind PopMarshalKind() => marshalKinds.Pop();
 
         public CSharpTypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
@@ -726,10 +706,10 @@ namespace CppSharp.Generators.CSharp
 
             names.Reverse();
             var isInCurrentOutputNamespace = names[0] == Generator.CurrentOutputNamespace;
-            if (isInCurrentOutputNamespace)
+            if (isInCurrentOutputNamespace || !FullyQualify)
                 names.RemoveAt(0);
 
-            return (isInCurrentOutputNamespace || !AppendGlobal ?
+            return (isInCurrentOutputNamespace || !FullyQualify ?
                 string.Empty : "global::") + string.Join(".", names);
         }
 
