@@ -12,7 +12,7 @@ osis()
 osis Darwin &&
 {
 	wget -O mono.pkg http://download.mono-project.com/archive/4.2.1/macos-10-x86/MonoFramework-MDK-4.2.1.102.macos10.xamarin.x86.pkg
-	sudo installer -pkg \"mono.pkg\" -target /	
+	sudo installer -pkg mono.pkg -target /	
 }
 
 osis Linux &&
