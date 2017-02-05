@@ -55,7 +55,7 @@ namespace CppSharp.Generators.CLI
     /// for source (CLISources) and header (CLIHeaders)
     /// files.
     /// </summary>
-    public abstract class CLITemplate : CodeTemplate
+    public abstract class CLITemplate : CodeGenerator
     {
         public CLITypePrinter TypePrinter { get; set; }
 

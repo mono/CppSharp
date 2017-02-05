@@ -29,9 +29,9 @@ namespace CppSharp.Generators
         public TranslationUnit TranslationUnit;
 
         /// <summary>
-        /// Text templates with generated output.
+        /// Code generators with generated output.
         /// </summary>
-        public List<CodeTemplate> Templates;
+        public List<CodeGenerator> Templates;
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ namespace CppSharp.Generators
         /// <summary>
         /// Generates the outputs for a given translation unit.
         /// </summary>
-        public abstract List<CodeTemplate> Generate(IEnumerable<TranslationUnit> units);
+        public abstract List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units);
 
         protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);
 

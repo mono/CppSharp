@@ -15,9 +15,9 @@ namespace CppSharp.Generators.CSharp
             expressionPrinter = new CSharpExpressionPrinter(typePrinter);
         }
 
-        public override List<CodeTemplate> Generate(IEnumerable<TranslationUnit> units)
+        public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
-            var outputs = new List<CodeTemplate>();
+            var outputs = new List<CodeGenerator>();
 
             var template = new CSharpSources(Context, units, typePrinter, expressionPrinter);
             outputs.Add(template);

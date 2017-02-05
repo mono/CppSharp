@@ -4,7 +4,7 @@ using CppSharp.AST;
 
 namespace CppSharp.Generators
 {
-    public abstract class CodeTemplate : BlockGenerator, IDeclVisitor<bool>
+    public abstract class CodeGenerator : BlockGenerator, IDeclVisitor<bool>
     {
         public BindingContext Context { get; }
 
@@ -16,12 +16,12 @@ namespace CppSharp.Generators
 
         public abstract string FileExtension { get; }
 
-        protected CodeTemplate(BindingContext context, TranslationUnit unit)
+        protected CodeGenerator(BindingContext context, TranslationUnit unit)
             : this(context, new List<TranslationUnit> { unit })
         {
         }
 
-        protected CodeTemplate(BindingContext context, IEnumerable<TranslationUnit> units)
+        protected CodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
         {
             Context = context;
             TranslationUnits = new List<TranslationUnit>(units);

@@ -122,7 +122,7 @@ namespace CppSharp.Generators.CSharp
         public const int Finalizer = FIRST + 19;
     }
 
-    public class CSharpSources : CodeTemplate
+    public class CSharpSources : CodeGenerator
     {
         public CSharpTypePrinter TypePrinter { get; private set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; private set; }

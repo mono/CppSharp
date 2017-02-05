@@ -16,9 +16,9 @@ namespace CppSharp.Generators.CLI
             typePrinter = new CLITypePrinter(context);
         }
 
-        public override List<CodeTemplate> Generate(IEnumerable<TranslationUnit> units)
+        public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
-            var outputs = new List<CodeTemplate>();
+            var outputs = new List<CodeGenerator>();
 
             var header = new CLIHeaders(Context, units);
             outputs.Add(header);
