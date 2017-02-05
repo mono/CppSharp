@@ -144,7 +144,7 @@ namespace CppSharp
                     messages.Add(String.Format("File {0} doesn't exist. Not adding to the list of files to generate bindings from.", args));
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 messages.Add(String.Format("Error while looking for files inside path {0}. Ignoring.", args));
             }
@@ -183,7 +183,7 @@ namespace CppSharp
                         options.HeaderFiles.Add(s);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 messages.Add(String.Format("Error while looking for files inside path {0}. Ignoring.", path));
             }
