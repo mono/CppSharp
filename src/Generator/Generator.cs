@@ -31,7 +31,7 @@ namespace CppSharp.Generators
         /// <summary>
         /// Code generators with generated output.
         /// </summary>
-        public List<CodeGenerator> Templates;
+        public List<CodeGenerator> Outputs;
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ namespace CppSharp.Generators
                 var output = new GeneratorOutput
                 {
                     TranslationUnit = unit,
-                    Templates = templates
+                    Outputs = templates
                 };
 
                 outputs.Add(output);
@@ -122,9 +122,9 @@ namespace CppSharp.Generators
                         FilePath = string.Format("{0}.cs", module.LibraryName),
                         Module = module
                     },
-                    Templates = Generate(module.Units.GetGenerated())
+                    Outputs = Generate(module.Units.GetGenerated())
                 };
-                output.Templates[0].Process();
+                output.Outputs[0].Process();
                 outputs.Add(output);
 
                 OnUnitGenerated(output);

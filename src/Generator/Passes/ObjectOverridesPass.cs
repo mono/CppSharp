@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
@@ -26,7 +26,7 @@ namespace CppSharp
         private void OnUnitGenerated(GeneratorOutput output)
         {
             needsStreamInclude = false;
-            foreach (var template in output.Templates)
+            foreach (var template in output.Outputs)
             {
                 foreach (var block in template.FindBlocks(CLIBlockKind.MethodBody))
                 {

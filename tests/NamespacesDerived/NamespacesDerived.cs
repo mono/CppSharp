@@ -36,7 +36,7 @@ namespace CppSharp.Tests
         {
             driver.Generator.OnUnitGenerated += o =>
             {
-                Block firstBlock = o.Templates[0].RootBlock.Blocks[1];
+                Block firstBlock = o.Outputs[0].RootBlock.Blocks[1];
                 firstBlock.WriteLine("using System.Runtime.CompilerServices;");
                 firstBlock.NewLine();
                 firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"NamespacesDerived.CSharp\")]");

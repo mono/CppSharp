@@ -373,7 +373,7 @@ namespace CppSharp
                 if (Options.GenerateName != null)
                     fileBase = Options.GenerateName(output.TranslationUnit);
 
-                foreach (var template in output.Templates)
+                foreach (var template in output.Outputs)
                 {
                     var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
 

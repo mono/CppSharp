@@ -7,7 +7,7 @@ using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
-    public class InlinesCodeGenerator : CodeTemplate
+    public class InlinesCodeGenerator : CodeGenerator
     {
         public override string FileExtension => "cpp";
 

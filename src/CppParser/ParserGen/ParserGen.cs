@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -168,7 +168,7 @@ namespace CppSharp
             {
                 driver.Generator.OnUnitGenerated += o =>
                 {
-                    Block firstBlock = o.Templates[0].RootBlock.Blocks[1];
+                    Block firstBlock = o.Outputs[0].RootBlock.Blocks[1];
                     if (o.TranslationUnit.Module == driver.Options.SystemModule)
                     {
                         firstBlock.NewLine();
