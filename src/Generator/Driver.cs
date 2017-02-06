@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Reflection;
-using Microsoft.CSharp;
+using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
-using CppSharp.Passes;
-using CppSharp.Types;
 using CppSharp.Parser;
+using CppSharp.Passes;
 using CppSharp.Utils;
+using Microsoft.CSharp;
 
 namespace CppSharp
 {

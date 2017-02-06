@@ -4,10 +4,9 @@ using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
-using CppSharp.Passes;
-using CppSharp.Types;
-using CppAbi = CppSharp.Parser.AST.CppAbi;
 using CppSharp.Parser;
+using CppSharp.Passes;
+using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
