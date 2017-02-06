@@ -298,11 +298,17 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(88, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
+        static string StripWindowsNewLines(string text)
+        {
+            return text.ReplaceLineBreaks(string.Empty);
+        }
+
         [Test]
         public void TestSignature()
         {
             Assert.AreEqual("void testSignature()", AstContext.FindFunction("testSignature").Single().Signature);
-            Assert.AreEqual("void testImpl()\r\n{\r\n}", AstContext.FindFunction("testImpl").Single().Signature);
+            Assert.AreEqual("void testImpl(){}",
+                StripWindowsNewLines(AstContext.FindFunction("testImpl").Single().Signature));
             Assert.AreEqual("void testConstSignature() const",
                 AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignature").Signature);
             Assert.AreEqual("void testConstSignatureWithTrailingMacro() const",
