@@ -501,9 +501,9 @@ namespace CppSharp.Generators.CSharp
 
                         // use interfaces if any - derived types with a secondary base this class must be compatible with the map
                         var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
-                        WriteLine(
-                            "internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
+                        var dict = string.Format("global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>",
                             @interface != null ? @interface.Name : @class.Name);
+                        WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
                         WriteLine("protected void*[] __OriginalVTables;");
                     }
                     PopBlock(NewLineKind.BeforeNextBlock);
