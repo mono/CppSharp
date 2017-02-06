@@ -221,15 +221,16 @@ namespace CppSharp.Passes
 
             var expansion = expansions.FirstOrDefault(
                 e => e.Text.StartsWith(Prefix + "_CONSTRAINT", StringComparison.Ordinal));
-            if (expansion != null)
+
+            if (expansion == null)
+                return;
+
+            var args = GetArguments(expansion.Text);
+            for (var i = 0; i < template.Parameters.Count && i < args.Length; ++i)
             {
-                var args = GetArguments(expansion.Text);
-                for (var i = 0; i < template.Parameters.Count && i < args.Length; ++i)
-                {
-                    var templateParam = template.Parameters[i] as TypeTemplateParameter;
-                    if (templateParam != null)
-                        templateParam.Constraint = args[i];
-                }
+                var templateParam = template.Parameters[i] as TypeTemplateParameter;
+                if (templateParam != null)
+                    templateParam.Constraint = args[i];
             }
         }
 
