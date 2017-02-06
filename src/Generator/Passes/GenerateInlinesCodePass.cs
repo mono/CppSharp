@@ -46,16 +46,8 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionDecl(function) || !NeedsSymbol(function))
                 return false;
 
-            InlinesCodeGenerator inlinesCodeGenerator;
             var module = function.TranslationUnit.Module;
-            if (inlinesCodeGenerators.ContainsKey(module))
-                inlinesCodeGenerator = inlinesCodeGenerators[module];
-            else
-            {
-                inlinesCodeGenerators[module] = inlinesCodeGenerator =
-                    new InlinesCodeGenerator(Context, module.Units);
-                inlinesCodeGenerator.Process();
-            }
+            var inlinesCodeGenerator = GetInlinesCodeGenerator(module);
 
             if (module == Options.SystemModule)
                 return false;
@@ -75,6 +67,18 @@ namespace CppSharp.Passes
                 // we cannot handle nested anonymous types
                 (!(function.Namespace is Class) || !string.IsNullOrEmpty(function.Namespace.OriginalName)) &&
                 !Context.Symbols.FindSymbol(ref mangled);
+        }
+
+        InlinesCodeGenerator GetInlinesCodeGenerator(Module module)
+        {
+            if (inlinesCodeGenerators.ContainsKey(module))
+                return inlinesCodeGenerators[module];
+            
+            var inlinesCodeGenerator = new InlinesCodeGenerator(Context, module.Units);
+            inlinesCodeGenerators[module] = inlinesCodeGenerator;
+            inlinesCodeGenerator.Process();
+
+            return inlinesCodeGenerator;
         }
 
         private Dictionary<Module, InlinesCodeGenerator> inlinesCodeGenerators =
