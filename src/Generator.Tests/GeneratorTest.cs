@@ -86,7 +86,8 @@ namespace CppSharp.Utils
 
         static string GetOutputDirectory()
         {
-            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+            string exePath = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+            var directory = Directory.GetParent(exePath);
 
             while (directory != null)
             {
