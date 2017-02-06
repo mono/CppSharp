@@ -304,12 +304,9 @@ namespace CppSharp.Passes
 
         private static void LoadVerbs()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetAssembly(typeof(GetterSetterToPropertyPass));
             using (var resourceStream = GetResourceStream(assembly))
             {
-                if (resourceStream == null)
-                    throw new Exception("Cannot find embedded verbs data resource.");
-
                 using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
@@ -318,11 +315,16 @@ namespace CppSharp.Passes
 
         private static Stream GetResourceStream(Assembly assembly)
         {
-            var stream = assembly.GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt");
-            // HACK: a bug in premake for OS X causes resources to be embedded with an incorrect location
-            return stream ?? assembly.GetManifestResourceStream("verbs.txt");
-        }
+            var resources = assembly.GetManifestResourceNames();
 
+            if (resources.Count() == 0)
+                throw new Exception("Cannot find embedded verbs data resource.");
+
+            // We are relying on this fact that there is only one resource embedded.
+            // Before we loaded the resource by name but found out that naming was
+            // different between different platforms and/or build systems.
+            return assembly.GetManifestResourceStream(resources[0]);
+        }
 
         public GetterSetterToPropertyPass()
         {
