@@ -174,21 +174,19 @@ namespace CppSharp.Passes
         {
             var @class = method.Namespace as Class;
 
-            if (method.IsVirtual)
-            {
-                Class ignoredBase;
-                if (HasIgnoredBaseClass(method, @class, out ignoredBase))
-                {
-                    Diagnostics.Debug(
-                        "Virtual method '{0}' was ignored due to ignored base '{1}'",
-                        method.QualifiedOriginalName, ignoredBase.Name);
+            if (!method.IsVirtual)
+                return true;
 
-                    method.ExplicitlyIgnore();
-                    return false;
-                }
-            }
+            Class ignoredBase;
+            if (!HasIgnoredBaseClass(method, @class, out ignoredBase))
+                return true;
 
-            return true;
+            Diagnostics.Debug(
+                "Virtual method '{0}' was ignored due to ignored base '{1}'",
+                method.QualifiedOriginalName, ignoredBase.Name);
+
+            method.ExplicitlyIgnore();
+            return false;
         }
 
         static bool HasIgnoredBaseClass(INamedDecl @override, Class @class,
