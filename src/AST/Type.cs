@@ -715,7 +715,7 @@ namespace CppSharp.AST
 
             return Arguments.SequenceEqual(type.Arguments) &&
                 ((Template != null && Template.Name == type.Template.Name) ||
-                Desugared == type.Desugared);
+                (Desugared.Type != null && Desugared == type.Desugared));
         }
 
         public override int GetHashCode()
