@@ -1,12 +1,10 @@
+using System;
 using System.Linq;
-using CppSharp.Passes;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using NUnit.Framework;
 using CppSharp.Generators.CSharp;
-using System;
-using CppSharp.Generators;
-using CppSharp.Parser;
+using CppSharp.Passes;
+using NUnit.Framework;
 
 namespace CppSharp.Generator.Tests.AST
 {
@@ -321,10 +319,8 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestAmbiguity()
         {
-            var bindingContext = new BindingContext(new DriverOptions(),
-                new ParserOptions());
-            new CleanUnitPass { Context = bindingContext }.VisitASTContext(AstContext);
-            new CheckAmbiguousFunctions { Context = bindingContext }.VisitASTContext(AstContext);
+            new CleanUnitPass { Context = Driver.Context }.VisitASTContext(AstContext);
+            new CheckAmbiguousFunctions { Context = Driver.Context }.VisitASTContext(AstContext);
             Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);
         }
 
