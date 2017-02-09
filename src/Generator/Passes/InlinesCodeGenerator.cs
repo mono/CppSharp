@@ -62,7 +62,10 @@ namespace CppSharp.Passes
         {
             string wrapper = GetWrapper(method.TranslationUnit.Module);
             if (Options.CheckSymbols)
+            {
                 method.Mangled = wrapper;
+                method.CallingConvention = CallingConvention.C;
+            }
 
             int i = 0;
             foreach (var param in method.Parameters.Where(
@@ -110,7 +113,10 @@ namespace CppSharp.Passes
         {
             string wrapper = GetWrapper(method.TranslationUnit.Module);
             if (Options.CheckSymbols)
+            {
                 method.Mangled = wrapper;
+                method.CallingConvention = CallingConvention.C;
+            }
 
             bool isProtected = method.Access == AccessSpecifier.Protected;
             string @namespace = method.Namespace.Visit(cppTypePrinter);
