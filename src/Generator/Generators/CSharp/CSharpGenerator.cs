@@ -7,19 +7,17 @@ namespace CppSharp.Generators.CSharp
     public class CSharpGenerator : Generator
     {
         private readonly CSharpTypePrinter typePrinter;
-        private readonly CSharpExpressionPrinter expressionPrinter;
 
         public CSharpGenerator(BindingContext context) : base(context)
         {
             typePrinter = new CSharpTypePrinter(context);
-            expressionPrinter = new CSharpExpressionPrinter(typePrinter);
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<CodeGenerator>();
 
-            var gen = new CSharpSources(Context, units, typePrinter, expressionPrinter);
+            var gen = new CSharpSources(Context, units);
             outputs.Add(gen);
 
             return outputs;

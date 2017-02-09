@@ -124,17 +124,16 @@ namespace CppSharp.Generators.CSharp
 
     public class CSharpSources : CodeGenerator
     {
-        public CSharpTypePrinter TypePrinter { get; private set; }
-        public CSharpExpressionPrinter ExpressionPrinter { get; private set; }
+        public CSharpTypePrinter TypePrinter { get; protected set; }
+        public CSharpExpressionPrinter ExpressionPrinter { get; protected set; }
 
         public override string FileExtension => "cs";
 
-        public CSharpSources(BindingContext context, IEnumerable<TranslationUnit> units,
-            CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
+        public CSharpSources(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
-            TypePrinter = typePrinter;
-            ExpressionPrinter = expressionPrinter;
+            TypePrinter = new CSharpTypePrinter(context);
+            ExpressionPrinter = new CSharpExpressionPrinter(TypePrinter);
         }
 
         #region Identifiers
