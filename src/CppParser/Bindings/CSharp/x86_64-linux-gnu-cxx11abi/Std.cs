@@ -58,7 +58,7 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
@@ -618,7 +618,7 @@ namespace Std
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;

@@ -320,7 +320,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -443,7 +443,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -572,7 +572,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -1697,7 +1697,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -3059,7 +3059,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -3216,7 +3216,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -3351,7 +3351,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -3520,7 +3520,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutField>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -3674,7 +3674,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LayoutBase>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -3890,7 +3890,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -4264,7 +4264,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -5919,7 +5919,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -8312,7 +8312,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -11447,7 +11447,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -12393,7 +12393,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, PreprocessedEntity>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -13207,7 +13207,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -13402,7 +13402,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -13528,7 +13528,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -14209,7 +14209,7 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     protected int __PointerAdjustment;
-                    internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
+                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
                     protected void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
@@ -15216,7 +15216,7 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     protected int __PointerAdjustment;
-                    internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
+                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
                     protected void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
@@ -15627,7 +15627,7 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     protected int __PointerAdjustment;
-                    internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute>();
+                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute>();
                     protected void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
@@ -16128,7 +16128,7 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
                 protected void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
@@ -16524,7 +16524,7 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
@@ -17388,7 +17388,7 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, CppParserOptions>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
@@ -17848,7 +17848,7 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
@@ -18045,7 +18045,7 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
@@ -18223,7 +18223,7 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
