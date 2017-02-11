@@ -61,8 +61,7 @@ namespace CppSharp
 
         static void ShowHelp()
         {
-            String appName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-            appName = Path.GetFileName(appName);
+            string appName = Platform.IsWindows ? "CppSharp.CLI.exe" : "CppSharp.CLI";
 
             Console.WriteLine();
             Console.WriteLine("Usage: {0} [OPTIONS]+ [FILES]+", appName);
