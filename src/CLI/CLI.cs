@@ -10,7 +10,7 @@ namespace CppSharp
         private static OptionSet optionSet = new OptionSet();
         private static Options options = new Options();
         
-        static bool ParseCommandLineArgs(string[] args, List<String> messages, ref bool helpShown)
+        static bool ParseCommandLineArgs(string[] args, List<string> messages, ref bool helpShown)
         {
             var showHelp = false;
 
@@ -34,7 +34,7 @@ namespace CppSharp
 
             optionSet.Add("h|help", "shows the help", hl => { showHelp = (hl != null); });
 
-            List<String> additionalArguments = null;
+            List<string> additionalArguments = null;
 
             try
             {
@@ -53,7 +53,7 @@ namespace CppSharp
                 return false;
             }
 
-            foreach(String s in additionalArguments)
+            foreach(string s in additionalArguments)
                 HandleAdditionalArgument(s, messages);
 
             return true;
@@ -90,20 +90,20 @@ namespace CppSharp
             Console.WriteLine("   contain only the bindings for that header file.");
         }
 
-        static void AddIncludeDirs(String dir, List<String> messages)
+        static void AddIncludeDirs(string dir, List<string> messages)
         {
             if (Directory.Exists(dir))
                 options.IncludeDirs.Add(dir);
             else
-                messages.Add(String.Format("Directory {0} doesn't exist. Not adding as include directory.", dir));
+                messages.Add(string.Format("Directory {0} doesn't exist. Not adding as include directory.", dir));
         }
 
-        static void HandleOutputArg(String arg, List<String> messages)
+        static void HandleOutputArg(string arg, List<string> messages)
         {
             try
             {
-                String dir = Path.GetDirectoryName(arg);
-                String file = Path.GetFileNameWithoutExtension(arg);
+                string dir = Path.GetDirectoryName(arg);
+                string file = Path.GetFileNameWithoutExtension(arg);
 
                 options.OutputDir = dir;
                 options.OutputFileName = file;
@@ -117,7 +117,7 @@ namespace CppSharp
             }
         }
 
-        static void AddDefine(String name, String value, List<String> messages)
+        static void AddDefine(string name, string value, List<string> messages)
         {
             if (name == null)
                 messages.Add("Invalid definition name for option -D.");
@@ -125,9 +125,9 @@ namespace CppSharp
                 options.Defines.Add(name, value);
         }
 
-        static void HandleAdditionalArgument(String args, List<String> messages)
+        static void HandleAdditionalArgument(string args, List<string> messages)
         {
-            if (Path.IsPathRooted(args) == false)
+            if (!Path.IsPathRooted(args))
                 args = Path.Combine(Directory.GetCurrentDirectory(), args);
 
             try
@@ -141,20 +141,20 @@ namespace CppSharp
                     options.HeaderFiles.Add(args);
                 else
                 {
-                    messages.Add(String.Format("File {0} doesn't exist. Not adding to the list of files to generate bindings from.", args));
+                    messages.Add(string.Format("File {0} doesn't exist. Not adding to the list of files to generate bindings from.", args));
                 }
             }
             catch(Exception)
             {
-                messages.Add(String.Format("Error while looking for files inside path {0}. Ignoring.", args));
+                messages.Add(string.Format("Error while looking for files inside path {0}. Ignoring.", args));
             }
         }
 
-        static void GetFilesFromPath(String path, List<String> messages)
+        static void GetFilesFromPath(string path, List<string> messages)
         {
             path = path.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-            String searchPattern = String.Empty;
+            string searchPattern = string.Empty;
             int lastSeparatorPosition = path.LastIndexOf(Path.AltDirectorySeparatorChar);
 
             if (lastSeparatorPosition >= 0)
@@ -168,28 +168,28 @@ namespace CppSharp
 
             try
             {
-                if (searchPattern != String.Empty)
+                if (!string.IsNullOrEmpty(searchPattern))
                 {
-                    String[] files = Directory.GetFiles(path, searchPattern);
+                    string[] files = Directory.GetFiles(path, searchPattern);
 
-                    foreach (String s in files)
+                    foreach (string s in files)
                         options.HeaderFiles.Add(s);
                 }
                 else
                 {
-                    String[] files = Directory.GetFiles(path);
+                    string[] files = Directory.GetFiles(path);
 
-                    foreach (String s in files)
+                    foreach (string s in files)
                         options.HeaderFiles.Add(s);
                 }
             }
             catch (Exception)
             {
-                messages.Add(String.Format("Error while looking for files inside path {0}. Ignoring.", path));
+                messages.Add(string.Format("Error while looking for files inside path {0}. Ignoring.", path));
             }
         }
 
-        static void GetGeneratorKind(String generator, List<String> messages)
+        static void GetGeneratorKind(string generator, List<string> messages)
         {
             switch (generator.ToLower())
             {
@@ -201,10 +201,10 @@ namespace CppSharp
                     return;
             }
 
-            messages.Add(String.Format("Unknown generator kind: {0}. Defaulting to {1}", generator, options.Kind.ToString()));
+            messages.Add(string.Format("Unknown generator kind: {0}. Defaulting to {1}", generator, options.Kind.ToString()));
         }
 
-        static void GetDestinationPlatform(String platform, List<String> messages)
+        static void GetDestinationPlatform(string platform, List<string> messages)
         {
             switch (platform.ToLower())
             {
@@ -219,10 +219,10 @@ namespace CppSharp
                     return;
             }
 
-            messages.Add(String.Format("Unknown target platform: {0}. Defaulting to {1}", platform, options.Platform.ToString()));
+            messages.Add(string.Format("Unknown target platform: {0}. Defaulting to {1}", platform, options.Platform.ToString()));
         }
 
-        static void GetDestinationArchitecture(String architecture, List<String> messages)
+        static void GetDestinationArchitecture(string architecture, List<string> messages)
         {
             switch (architecture.ToLower())
             {
@@ -234,23 +234,23 @@ namespace CppSharp
                     return;
             }
 
-            messages.Add(String.Format("Unknown target architecture: {0}. Defaulting to {1}", architecture, options.Architecture.ToString()));
+            messages.Add(string.Format("Unknown target architecture: {0}. Defaulting to {1}", architecture, options.Architecture.ToString()));
         }
 
-        static void PrintMessages(List<String> messages)
+        static void PrintMessages(List<string> messages)
         {
-            foreach (String m in messages)
+            foreach (string m in messages)
                 Console.WriteLine(m);
         }
 
         static void Main(string[] args)
         {
-            List<String> messages = new List<String>();
+            List<string> messages = new List<string>();
             bool helpShown = false;
 
             try
             {
-                if (ParseCommandLineArgs(args, messages, ref helpShown) == false)
+                if (!ParseCommandLineArgs(args, messages, ref helpShown))
                 {
                     PrintMessages(messages);
 
@@ -266,7 +266,7 @@ namespace CppSharp
 
                 if (validOptions)
                     gen.Run();
-                else if (helpShown == false)
+                else if (!helpShown)
                     ShowHelp();
             }
             catch (Exception ex)
