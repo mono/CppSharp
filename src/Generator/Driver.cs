@@ -198,6 +198,9 @@ namespace CppSharp
 
             parser.SourcesParsed += OnSourceFileParsed;
             parser.ParseProject(Project, Options.UnityBuild);
+
+            foreach (var source in Project.Sources.Where(s => s.Options != null))
+                source.Options.Dispose();
            
             Context.TargetInfo = parser.GetTargetInfo(ParserOptions);
             Context.ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
@@ -534,6 +537,7 @@ namespace CppSharp
 
             driver.Generator.Dispose();
             driver.Context.TargetInfo.Dispose();
+            driver.ParserOptions.Dispose();
         }
     }
 }

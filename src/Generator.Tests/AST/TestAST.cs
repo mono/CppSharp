@@ -22,6 +22,12 @@ namespace CppSharp.Generator.Tests.AST
             ParseLibrary("AST.h", "ASTExtensions.h");
         }
 
+        [TestFixtureTearDown]
+        public void CleanUp()
+        {
+            ParserOptions.Dispose();
+        }
+
         [Test]
         public void TestASTParameter()
         {

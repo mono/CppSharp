@@ -46,6 +46,7 @@ enum class LanguageVersion
 struct CS_API CppParserOptions
 {
     CppParserOptions();
+    ~CppParserOptions();
 
     VECTOR_STRING(Arguments)
 

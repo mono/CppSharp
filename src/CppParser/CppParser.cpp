@@ -23,6 +23,8 @@ CppParserOptions::CppParserOptions()
 {
 }
 
+CppParserOptions::~CppParserOptions() {}
+
 DEF_VECTOR_STRING(CppParserOptions, Arguments)
 DEF_STRING(CppParserOptions, LibraryFile)
 DEF_VECTOR_STRING(CppParserOptions, SourceFiles)

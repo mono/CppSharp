@@ -17217,7 +17217,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptionsC2ERKS1_")]
-                internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -17406,7 +17406,7 @@ namespace CppSharp
             private static void* __CopyValue(CppParserOptions.__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(256);
-                global::CppSharp.Parser.CppParserOptions.__Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                global::CppSharp.Parser.CppParserOptions.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
 
@@ -17440,7 +17440,7 @@ namespace CppSharp
                 if (ReferenceEquals(_0, null))
                     throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
                 var __arg0 = _0.__Instance;
-                __Internal.cctor_2((__Instance + __PointerAdjustment), __arg0);
+                __Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
             }
 
             public void Dispose()
