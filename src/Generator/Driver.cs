@@ -288,7 +288,7 @@ namespace CppSharp
             if (Options.IsCSharpGenerator)
             {
                 if (!ParserOptions.IsMicrosoftAbi)
-                    TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
+                    TranslationUnitPasses.AddPass(new GenerateInlinesPass());
                 TranslationUnitPasses.AddPass(new TrimSpecializationsPass());
                 TranslationUnitPasses.AddPass(new GenerateTemplatesCodePass());
             }
