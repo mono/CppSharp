@@ -128,7 +128,6 @@ namespace CppSharp.AST
                 return getName(this);
 
             var namespaces = GatherNamespaces(getNamespace(this));
-            namespaces.Reverse();
 
             var names = namespaces.Select(getName).ToList();
             names.Add(getName(this));
@@ -137,14 +136,14 @@ namespace CppSharp.AST
             return string.Join(QualifiedNameSeparator, names);
         }
 
-        public static List<Declaration> GatherNamespaces(DeclarationContext @namespace)
+        private static IEnumerable<Declaration> GatherNamespaces(DeclarationContext @namespace)
         {
-            var namespaces = new List<Declaration>();
+            var namespaces = new Stack<Declaration>();
 
             var currentNamespace = @namespace;
             while (currentNamespace != null)
             {
-                namespaces.Add(currentNamespace);
+                namespaces.Push(currentNamespace);
                 currentNamespace = currentNamespace.Namespace;
             }
 

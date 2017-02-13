@@ -668,7 +668,7 @@ namespace CppSharp.Generators.CSharp
 
         public string GetNestedQualifiedName(Declaration decl)
         {
-            var names = new List<string>();
+            var names = new Stack<string>();
 
             Declaration ctx;
             var specialization = decl as ClassTemplateSpecialization;
@@ -678,36 +678,36 @@ namespace CppSharp.Generators.CSharp
                 if (specialization.OriginalNamespace is Class &&
                     !(specialization.OriginalNamespace is ClassTemplateSpecialization))
                 {
-                    names.Add(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
+                    names.Push(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
                     ctx = ctx.Namespace ?? ctx;
                 }
                 else
                 {
-                    names.Add(decl.Name);
+                    names.Push(decl.Name);
                 }
             }
             else
             {
-                names.Add(decl.Name);
+                names.Push(decl.Name);
                 ctx = decl.Namespace;
             }
             if (decl is Variable && !(decl.Namespace is Class))
-                names.Add(decl.TranslationUnit.FileNameWithoutExtension);
+                names.Push(decl.TranslationUnit.FileNameWithoutExtension);
             while (!(ctx is TranslationUnit))
             {
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
-                    names.Add(ctx.Name);
+                    names.Push(ctx.Name);
 
                 ctx = ctx.Namespace;
             }
             if (!ctx.TranslationUnit.IsSystemHeader && ctx.TranslationUnit.IsValid &&
                 !string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
-                names.Add(ctx.TranslationUnit.Module.OutputNamespace);
+                names.Push(ctx.TranslationUnit.Module.OutputNamespace);
 
             names.Reverse();
-            var isInCurrentOutputNamespace = names[0] == Generator.CurrentOutputNamespace;
+            var isInCurrentOutputNamespace = names.Peek() == Generator.CurrentOutputNamespace;
             if (isInCurrentOutputNamespace || !FullyQualify)
-                names.RemoveAt(0);
+                names.Pop();
 
             return (isInCurrentOutputNamespace || !FullyQualify ?
                 string.Empty : "global::") + string.Join(".", names);
