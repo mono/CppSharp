@@ -17,7 +17,7 @@ namespace CppSharp.Generators.CSharp
         {
             var outputs = new List<CodeGenerator>();
 
-            var gen = new CSharpSources(Context, units);
+            var gen = new CSharpSources(Context, units) { TypePrinter = typePrinter };
             outputs.Add(gen);
 
             return outputs;

@@ -124,7 +124,7 @@ namespace CppSharp.Generators.CSharp
 
     public class CSharpSources : CodeGenerator
     {
-        public CSharpTypePrinter TypePrinter { get; protected set; }
+        public CSharpTypePrinter TypePrinter { get; set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; protected set; }
 
         public override string FileExtension => "cs";
