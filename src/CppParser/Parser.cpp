@@ -2654,9 +2654,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     }
     case clang::Type::Auto:
     {
-        // TODO: stubbed
         auto AT = Type->getAs<clang::AutoType>();
-        return nullptr;
+        if (AT->isSugared())
+            Ty = WalkType(AT->desugar());
+        else
+            return nullptr;
+        break;
     }
     case clang::Type::Decltype:
     {
