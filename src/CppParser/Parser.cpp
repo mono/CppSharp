@@ -2652,6 +2652,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Ty = new PackExpansionType();
         break;
     }
+    case clang::Type::Auto:
+    {
+        // TODO: stubbed
+        auto AT = Type->getAs<clang::AutoType>();
+        return nullptr;
+    }
     case clang::Type::Decltype:
     {
         auto DT = Type->getAs<clang::DecltypeType>();
