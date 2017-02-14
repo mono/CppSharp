@@ -172,6 +172,13 @@ namespace CppSharp.AST
         {
             return TemplatedDecl.ToString();
         }
+
+        public override bool Equals(object obj)
+        {
+            var temp = obj as Template;
+            if (temp == null) return false;
+            return this.QualifiedName == temp.QualifiedName && this.Namespace.QualifiedName == temp.Namespace.QualifiedName;
+        }
     }
 
     /// <summary>
