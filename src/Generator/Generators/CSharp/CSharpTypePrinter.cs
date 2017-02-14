@@ -479,11 +479,9 @@ namespace CppSharp.Generators.CSharp
             return type.Type.FullName;
         }
 
-       static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)
+        public static void GetPrimitiveTypeWidth(PrimitiveType primitive,
+            ParserTargetInfo targetInfo, out uint width, out bool signed)
         {
-            bool signed;
-            uint width;
-
             switch (primitive)
             {
                 case PrimitiveType.Short:
@@ -521,6 +519,14 @@ namespace CppSharp.Generators.CSharp
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+       static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)
+        {
+            uint width;
+            bool signed;
+
+            GetPrimitiveTypeWidth(primitive, targetInfo, out width, out signed);
 
             switch (width)
             {
