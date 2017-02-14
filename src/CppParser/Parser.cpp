@@ -3765,6 +3765,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
         break;
+    case Decl::BuiltinTemplate:
+    case Decl::ClassScopeFunctionSpecialization:
     case Decl::PragmaComment:
     case Decl::PragmaDetectMismatch:
     case Decl::Empty:
