@@ -136,7 +136,7 @@ namespace CppSharp.AST
             return string.Join(QualifiedNameSeparator, names);
         }
 
-        private static IEnumerable<Declaration> GatherNamespaces(DeclarationContext @namespace)
+        public static IEnumerable<Declaration> GatherNamespaces(DeclarationContext @namespace)
         {
             var namespaces = new Stack<Declaration>();
 
