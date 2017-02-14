@@ -127,6 +127,7 @@ namespace CppSharp.AST
             IsPOD = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();
+            templateParameters = new List<Declaration>();
             specializations = new List<ClassTemplateSpecialization>();
         }
 
@@ -219,6 +220,24 @@ namespace CppSharp.AST
         }
 
         /// <summary>
+        /// If this class is a template, this list contains all of its template parameters.
+        /// <para>
+        /// <see cref="ClassTemplate"/> cannot be relied upon to contain all of them because
+        /// ClassTemplateDecl in Clang is not a complete declaration, it only serves to forward template classes.
+        /// </para>
+        /// </summary>
+        public List<Declaration> TemplateParameters
+        {
+            get
+            {
+                if (!IsDependent)
+                    throw new InvalidOperationException(
+                        "Only dependent classes have template parameters.");
+                return templateParameters;
+            }
+        }
+
+        /// <summary>
         /// If this class is a template, this list contains all of its specializations.
         /// <see cref="ClassTemplate"/> cannot be relied upon to contain all of them because
         /// ClassTemplateDecl in Clang is not a complete declaration, it only serves to forward template classes.
@@ -274,6 +293,7 @@ namespace CppSharp.AST
             return visitor.VisitClassDecl(this);
         }
 
+        private List<Declaration> templateParameters;
         private List<ClassTemplateSpecialization> specializations;
     }
 }

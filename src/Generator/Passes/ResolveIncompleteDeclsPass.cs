@@ -28,6 +28,9 @@ namespace CppSharp.Passes
                 s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
                 template.TemplatedClass.Specializations.Add(specialization);
 
+            if (template.TemplatedClass.TemplateParameters.Count == 0)
+                template.TemplatedClass.TemplateParameters.AddRange(template.Parameters);
+
             return true;
         }
 

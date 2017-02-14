@@ -579,7 +579,8 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native)
                 return $"{GetName(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
 
-            return GetName(@class);
+            return $@"{GetName(@class)}{(@class.IsDependent ? $@"<{
+                string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>" : string.Empty)}";
         }
 
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
