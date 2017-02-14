@@ -33,11 +33,11 @@ namespace CppSharp.AST
                 if (string.IsNullOrEmpty(inlinesLibraryName))
                 {
                     if (string.IsNullOrEmpty(OutputNamespace))
-                    {
                         return string.Format("{0}-inlines", LibraryName);
-                    }
+
                     return string.Format("{0}-inlines", OutputNamespace);
                 }
+
                 return inlinesLibraryName;
             }
             set { inlinesLibraryName = value; }
@@ -50,11 +50,11 @@ namespace CppSharp.AST
                 if (string.IsNullOrEmpty(templatesLibraryName))
                 {
                     if (string.IsNullOrEmpty(OutputNamespace))
-                    {
                         return string.Format("{0}-templates", LibraryName);
-                    }
+
                     return string.Format("{0}-templates", OutputNamespace);
                 }
+
                 return templatesLibraryName;
             }
             set { templatesLibraryName = value; }

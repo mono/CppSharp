@@ -704,8 +704,10 @@ namespace CppSharp.Generators.CSharp
                 names.Push(decl.Name);
                 ctx = decl.Namespace;
             }
+
             if (decl is Variable && !(decl.Namespace is Class))
                 names.Push(decl.TranslationUnit.FileNameWithoutExtension);
+
             while (!(ctx is TranslationUnit))
             {
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
@@ -713,6 +715,7 @@ namespace CppSharp.Generators.CSharp
 
                 ctx = ctx.Namespace;
             }
+
             if (!ctx.TranslationUnit.IsSystemHeader && ctx.TranslationUnit.IsValid &&
                 !string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
                 names.Push(ctx.TranslationUnit.Module.OutputNamespace);
