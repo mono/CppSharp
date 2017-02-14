@@ -400,18 +400,12 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitTemplateSpecializationType(
             TemplateSpecializationType template, TypeQualifiers quals)
         {
-            var decl = template.Template.TemplatedDecl;
+            var decl = template.GetClassTemplateSpecialization() ??
+                template.Template.TemplatedDecl;
 
             TypeMap typeMap;
             if (!TypeMapDatabase.FindTypeMap(template, out typeMap))
-            {
-                if (ContextKind != CSharpTypePrinterContextKind.Native)
-                    return GetNestedQualifiedName(decl);
-                if (template.Desugared.Type.IsAddress())
-                    return template.Desugared.Type.ToString();
-                var specialization = template.GetClassTemplateSpecialization();
-                return specialization.Visit(this);
-            }
+                return decl.Visit(this);
 
             typeMap.Declaration = decl;
             typeMap.Type = template;
@@ -612,8 +606,8 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
         {
             if (ContextKind == CSharpTypePrinterContextKind.Native)
-                return string.Format("{0}{1}", VisitClassDecl(specialization),
-                    Helpers.GetSuffixForInternal(specialization));
+                return $@"{VisitClassDecl(specialization)}{
+                    Helpers.GetSuffixForInternal(specialization)}";
             return VisitClassDecl(specialization);
         }
 
@@ -672,7 +666,7 @@ namespace CppSharp.Generators.CSharp
 
             Declaration ctx;
             var specialization = decl as ClassTemplateSpecialization;
-            if (specialization != null)
+            if (specialization != null && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 ctx = specialization.TemplatedDecl.TemplatedClass.Namespace;
                 if (specialization.OriginalNamespace is Class &&

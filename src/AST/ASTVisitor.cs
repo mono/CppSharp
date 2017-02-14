@@ -22,6 +22,7 @@ namespace CppSharp.AST
         public bool VisitClassFields = true;
         public bool VisitClassProperties = true;
         public bool VisitClassMethods = true;
+        public bool VisitClassTemplateSpecializations { get; set; } = true;
 
         public bool VisitNamespaceEnums = true;
         public bool VisitNamespaceTemplates = true;
@@ -324,6 +325,10 @@ namespace CppSharp.AST
                 foreach (var method in methods)
                     VisitMethodDecl(method);
             }
+
+            if (@class.IsDependent && VisitOptions.VisitClassTemplateSpecializations)
+                foreach (var specialization in @class.Specializations)
+                    VisitClassTemplateSpecializationDecl(specialization);
 
             return true;
         }

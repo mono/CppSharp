@@ -331,6 +331,12 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
+        public override bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
+        {
+            Context.Return.Write("({0}) (object) ", param.ReplacedParameter.Parameter.Name);
+            return base.VisitTemplateParameterSubstitutionType(param, quals);
+        }
+
         private string HandleReturnedPointer(Class @class, string qualifiedClass)
         {
             var originalClass = @class.OriginalClass ?? @class;
@@ -495,22 +501,34 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
+            var pointee = pointer.Pointee.Desugar();
             if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef() &&
                 Context.Kind != CSharpMarshalKind.VTableReturnValue)
             {
                 var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
-                Context.SupportBefore.WriteLine("fixed ({0} {1} = &{2})",
-                    pointer, refParamPtr, Context.Parameter.Name);
-                Context.HasCodeBlock = true;
-                Context.SupportBefore.WriteStartBraceIndent();
-                Context.Return.Write(refParamPtr);
+                var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
+                if (templateSubstitution != null)
+                {
+                    var castParam = $"__{Context.Parameter.Name}{Context.ParameterIndex}";
+                    Context.SupportBefore.WriteLine(
+                        $"var {castParam} = ({templateSubstitution}) (object) {Context.Parameter.Name};");
+                    Context.SupportBefore.WriteLine($"{pointer} {refParamPtr} = &{castParam};");
+                    Context.Return.Write(refParamPtr);
+                }
+                else
+                {
+                    Context.SupportBefore.WriteLine(
+                        $"fixed ({pointer} {refParamPtr} = &{Context.Parameter.Name})");
+                    Context.HasCodeBlock = true;
+                    Context.SupportBefore.WriteStartBraceIndent();
+                    Context.Return.Write(refParamPtr);
+                }
                 return true;
             }
 
             var param = Context.Parameter;
             var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
-            var pointee = pointer.Pointee.Desugar();
             if (CSharpTypePrinter.IsConstCharString(pointee) && isRefParam)
             {
                 if (param.IsOut)
@@ -668,6 +686,15 @@ namespace CppSharp.Generators.CSharp
             return decl.Type.Visit(this);
         }
 
+        public override bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
+        {
+            var replacement = param.Replacement.Type.Desugar();
+            Class @class;
+            Context.Return.Write($@"{(replacement.TryGetClass(out @class) ?
+                string.Empty : $"({replacement}) (object) ")}");
+            return base.VisitTemplateParameterSubstitutionType(param, quals);
+        }
+
         public override bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
         {
             Context.Return.Write(param.Parameter.Name);
@@ -706,12 +733,17 @@ namespace CppSharp.Generators.CSharp
             Type type = Context.Parameter.Type.Desugar();
             string paramInstance;
             Class @interface;
-            if ((type.GetFinalPointee() ?? type).TryGetClass(out @interface) &&
+            var finalType = type.GetFinalPointee() ?? type;
+            var templateType = finalType as TemplateParameterSubstitutionType;
+            if (finalType.TryGetClass(out @interface) &&
                 @interface.IsInterface)
                 paramInstance = string.Format("{0}.__PointerTo{1}",
                     param, @interface.OriginalClass.Name);
             else
-                paramInstance = string.Format("{0}.{1}", param, Helpers.InstanceIdentifier);
+                paramInstance = $@"{
+                    (templateType != null ? $"(({@class.Visit(typePrinter)}) (object) " : string.Empty)}{
+                    param}{(templateType != null ? ")" : string.Empty)
+                    }.{Helpers.InstanceIdentifier}";
             if (type.IsAddress())
             {
                 Class decl;
@@ -747,11 +779,12 @@ namespace CppSharp.Generators.CSharp
             }
 
             var realClass = @class.OriginalClass ?? @class;
-            var qualifiedIdentifier = realClass.Visit(this.typePrinter);
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            var qualifiedIdentifier = realClass.Visit(typePrinter);
+            typePrinter.PopContext();
             Context.Return.Write(
-                "ReferenceEquals({0}, null) ? new {1}.{2}{3}() : *({1}.{2}{3}*) {4}",
-                param, qualifiedIdentifier, Helpers.InternalStruct,
-                Helpers.GetSuffixForInternal(@class), paramInstance);
+                "ReferenceEquals({0}, null) ? new {1}() : *({1}*) {2}",
+                param, qualifiedIdentifier, paramInstance);
         }
 
         private void MarshalValueClass()
