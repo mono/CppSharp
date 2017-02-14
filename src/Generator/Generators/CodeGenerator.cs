@@ -14,6 +14,9 @@ namespace CppSharp.Generators
 
         public TranslationUnit TranslationUnit => TranslationUnits[0];
 
+        public Module Module => TranslationUnits.Count == 0 ?
+            Context.Options.SystemModule : TranslationUnit.Module;
+
         public abstract string FileExtension { get; }
 
         protected CodeGenerator(BindingContext context, TranslationUnit unit)
