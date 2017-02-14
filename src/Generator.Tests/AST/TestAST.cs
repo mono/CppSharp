@@ -420,7 +420,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestPrintingConstPointerWithConstType()
         {
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
             var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });
@@ -432,7 +432,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestPrintingSpecializationWithConstValue()
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             Assert.That(template.Specializations.Last().Visit(cppTypePrinter),
                 Is.EqualTo("TestSpecializationArguments<const TestASTEnumItemByName>"));
         }
@@ -474,7 +474,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestVolatile()
         {
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true, IsVolatile = true });
             var type = pointee.Visit(cppTypePrinter);

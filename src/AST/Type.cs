@@ -28,7 +28,7 @@ namespace CppSharp.AST
 
         public string ToNativeString()
         {
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             return Visit(cppTypePrinter);
         }
 

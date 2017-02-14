@@ -232,7 +232,7 @@ namespace CppSharp.Passes
 
         private CppTypePrinter cppTypePrinter = new CppTypePrinter
         {
-            PrintScopeKind = CppTypePrintScopeKind.Qualified
+            PrintScopeKind = TypePrintScopeKind.Qualified
         };
         private int functionCount;
     }

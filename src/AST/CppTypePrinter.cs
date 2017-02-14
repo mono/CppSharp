@@ -12,7 +12,7 @@ namespace CppSharp.AST
         ObjC
     } 
 
-    public enum CppTypePrintScopeKind
+    public enum TypePrintScopeKind
     {
         Local,
         Qualified,
@@ -22,7 +22,7 @@ namespace CppSharp.AST
     public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
         public CppTypePrintFlavorKind PrintFlavorKind { get; set; }
-        public CppTypePrintScopeKind PrintScopeKind { get; set; }
+        public TypePrintScopeKind PrintScopeKind { get; set; }
         public bool PrintLogicalNames { get; set; }
         public bool PrintTypeQualifiers { get; set; }
         public bool PrintTypeModifiers { get; set; }
@@ -31,7 +31,7 @@ namespace CppSharp.AST
         public CppTypePrinter()
         {
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
-            PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
+            PrintScopeKind = TypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = true;
             PrintTypeModifiers = true;
         }
@@ -293,19 +293,19 @@ namespace CppSharp.AST
             throw new System.NotImplementedException();
         }
 
-        public virtual string GetDeclName(Declaration declaration, CppTypePrintScopeKind scope)
+        public virtual string GetDeclName(Declaration declaration, TypePrintScopeKind scope)
         {
             switch (scope)
             {
-            case CppTypePrintScopeKind.Local:
+            case TypePrintScopeKind.Local:
                 return PrintLogicalNames ? declaration.LogicalOriginalName
                     : declaration.OriginalName;
-            case CppTypePrintScopeKind.Qualified:
+            case TypePrintScopeKind.Qualified:
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
-            case CppTypePrintScopeKind.GlobalQualified:
+            case TypePrintScopeKind.GlobalQualified:
                 var qualifier = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : string.Empty;
-                return qualifier + GetDeclName(declaration, CppTypePrintScopeKind.Qualified);
+                return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
             }
 
             throw new NotSupportedException();

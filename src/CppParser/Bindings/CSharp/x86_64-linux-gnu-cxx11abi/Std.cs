@@ -68,19 +68,19 @@ namespace Std
             return new Allocator(native.ToPointer(), skipVTables);
         }
 
-        internal static Allocator __CreateInstance(Allocator.__Internal native, bool skipVTables = false)
+        internal static Allocator __CreateInstance(__Internal native, bool skipVTables = false)
         {
             return new Allocator(native, skipVTables);
         }
 
-        private static void* __CopyValue(Allocator.__Internal native)
+        private static void* __CopyValue(__Internal native)
         {
             var ret = Marshal.AllocHGlobal(0);
-            *(Allocator.__Internal*) ret = native;
+            *(__Internal*) ret = native;
             return ret.ToPointer();
         }
 
-        private Allocator(Allocator.__Internal native, bool skipVTables = false)
+        private Allocator(__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
@@ -99,7 +99,7 @@ namespace Std
             __Instance = Marshal.AllocHGlobal(0);
             __ownsNativeInstance = true;
             NativeToManagedMap[__Instance] = this;
-            __Internal.ctor_0((__Instance + __PointerAdjustment));
+            global::Std.Allocator.__Internal.ctor_0((__Instance + __PointerAdjustment));
         }
 
         public void Dispose()
@@ -112,7 +112,7 @@ namespace Std
             global::Std.Allocator __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (disposing)
-                __Internal.dtor_0((__Instance + __PointerAdjustment));
+                global::Std.Allocator.__Internal.dtor_0((__Instance + __PointerAdjustment));
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
         }
@@ -628,19 +628,19 @@ namespace Std
                 return new BasicString(native.ToPointer(), skipVTables);
             }
 
-            internal static BasicString __CreateInstance(BasicString.__Internal native, bool skipVTables = false)
+            internal static BasicString __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new BasicString(native, skipVTables);
             }
 
-            private static void* __CopyValue(BasicString.__Internal native)
+            private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(32);
-                *(BasicString.__Internal*) ret = native;
+                *(__Internal*) ret = native;
                 return ret.ToPointer();
             }
 
-            private BasicString(BasicString.__Internal native, bool skipVTables = false)
+            private BasicString(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -664,15 +664,18 @@ namespace Std
                 global::Std.Cxx11.BasicString __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (disposing)
-                    __Internal.dtor_0((__Instance + __PointerAdjustment));
+                    global::Std.Cxx11.BasicString.__Internal.dtor_0((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }
 
-            public string CStr()
+            public string CStr
             {
-                var __ret = __Internal.CStr_0((__Instance + __PointerAdjustment));
-                return Marshal.PtrToStringAnsi(__ret);
+                get
+                {
+                    var __ret = global::Std.Cxx11.BasicString.__Internal.CStr_0((__Instance + __PointerAdjustment));
+                    return Marshal.PtrToStringAnsi(__ret);
+                }
             }
         }
 

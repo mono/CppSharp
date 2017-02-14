@@ -330,19 +330,19 @@ namespace CppSharp
                     return new Type(native.ToPointer(), skipVTables);
                 }
 
-                internal static Type __CreateInstance(Type.__Internal native, bool skipVTables = false)
+                internal static Type __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Type(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Type.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    global::CppSharp.Parser.AST.Type.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Type(Type.__Internal native, bool skipVTables = false)
+                private Type(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -453,19 +453,19 @@ namespace CppSharp
                     return new TypeQualifiers(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypeQualifiers __CreateInstance(TypeQualifiers.__Internal native, bool skipVTables = false)
+                internal static TypeQualifiers __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypeQualifiers(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypeQualifiers.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(3);
-                    *(TypeQualifiers.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private TypeQualifiers(TypeQualifiers.__Internal native, bool skipVTables = false)
+                private TypeQualifiers(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -484,7 +484,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(3);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((TypeQualifiers.__Internal*) __Instance) = *((TypeQualifiers.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public TypeQualifiers()
@@ -582,19 +582,19 @@ namespace CppSharp
                     return new QualifiedType(native.ToPointer(), skipVTables);
                 }
 
-                internal static QualifiedType __CreateInstance(QualifiedType.__Internal native, bool skipVTables = false)
+                internal static QualifiedType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new QualifiedType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(QualifiedType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    *(QualifiedType.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private QualifiedType(QualifiedType.__Internal native, bool skipVTables = false)
+                private QualifiedType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -621,7 +621,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((QualifiedType.__Internal*) __Instance) = *((QualifiedType.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -699,19 +699,19 @@ namespace CppSharp
                     return new TagType(native.ToPointer(), skipVTables);
                 }
 
-                internal static TagType __CreateInstance(TagType.__Internal native, bool skipVTables = false)
+                internal static TagType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TagType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TagType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    global::CppSharp.Parser.AST.TagType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TagType(TagType.__Internal native, bool skipVTables = false)
+                private TagType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -814,19 +814,19 @@ namespace CppSharp
                     return new ArrayType(native.ToPointer(), skipVTables);
                 }
 
-                internal static ArrayType __CreateInstance(ArrayType.__Internal native, bool skipVTables = false)
+                internal static ArrayType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ArrayType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ArrayType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
-                    global::CppSharp.Parser.AST.ArrayType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ArrayType(ArrayType.__Internal native, bool skipVTables = false)
+                private ArrayType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -980,19 +980,19 @@ namespace CppSharp
                     return new FunctionType(native.ToPointer(), skipVTables);
                 }
 
-                internal static FunctionType __CreateInstance(FunctionType.__Internal native, bool skipVTables = false)
+                internal static FunctionType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new FunctionType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(FunctionType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(36);
-                    global::CppSharp.Parser.AST.FunctionType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private FunctionType(FunctionType.__Internal native, bool skipVTables = false)
+                private FunctionType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1153,19 +1153,19 @@ namespace CppSharp
                     return new PointerType(native.ToPointer(), skipVTables);
                 }
 
-                internal static PointerType __CreateInstance(PointerType.__Internal native, bool skipVTables = false)
+                internal static PointerType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new PointerType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(PointerType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    global::CppSharp.Parser.AST.PointerType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private PointerType(PointerType.__Internal native, bool skipVTables = false)
+                private PointerType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1259,19 +1259,19 @@ namespace CppSharp
                     return new MemberPointerType(native.ToPointer(), skipVTables);
                 }
 
-                internal static MemberPointerType __CreateInstance(MemberPointerType.__Internal native, bool skipVTables = false)
+                internal static MemberPointerType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new MemberPointerType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(MemberPointerType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    global::CppSharp.Parser.AST.MemberPointerType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private MemberPointerType(MemberPointerType.__Internal native, bool skipVTables = false)
+                private MemberPointerType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1352,19 +1352,19 @@ namespace CppSharp
                     return new TypedefType(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypedefType __CreateInstance(TypedefType.__Internal native, bool skipVTables = false)
+                internal static TypedefType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypedefType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypedefType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    global::CppSharp.Parser.AST.TypedefType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TypedefType(TypedefType.__Internal native, bool skipVTables = false)
+                private TypedefType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1453,19 +1453,19 @@ namespace CppSharp
                     return new AttributedType(native.ToPointer(), skipVTables);
                 }
 
-                internal static AttributedType __CreateInstance(AttributedType.__Internal native, bool skipVTables = false)
+                internal static AttributedType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new AttributedType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(AttributedType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    global::CppSharp.Parser.AST.AttributedType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private AttributedType(AttributedType.__Internal native, bool skipVTables = false)
+                private AttributedType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1565,19 +1565,19 @@ namespace CppSharp
                     return new DecayedType(native.ToPointer(), skipVTables);
                 }
 
-                internal static DecayedType __CreateInstance(DecayedType.__Internal native, bool skipVTables = false)
+                internal static DecayedType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new DecayedType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(DecayedType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.DecayedType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private DecayedType(DecayedType.__Internal native, bool skipVTables = false)
+                private DecayedType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1707,19 +1707,19 @@ namespace CppSharp
                     return new TemplateArgument(native.ToPointer(), skipVTables);
                 }
 
-                internal static TemplateArgument __CreateInstance(TemplateArgument.__Internal native, bool skipVTables = false)
+                internal static TemplateArgument __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TemplateArgument(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TemplateArgument.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    *(TemplateArgument.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private TemplateArgument(TemplateArgument.__Internal native, bool skipVTables = false)
+                private TemplateArgument(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -1746,7 +1746,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((TemplateArgument.__Internal*) __Instance) = *((TemplateArgument.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -1881,19 +1881,19 @@ namespace CppSharp
                     return new TemplateSpecializationType(native.ToPointer(), skipVTables);
                 }
 
-                internal static TemplateSpecializationType __CreateInstance(TemplateSpecializationType.__Internal native, bool skipVTables = false)
+                internal static TemplateSpecializationType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TemplateSpecializationType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TemplateSpecializationType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TemplateSpecializationType(TemplateSpecializationType.__Internal native, bool skipVTables = false)
+                private TemplateSpecializationType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2059,19 +2059,19 @@ namespace CppSharp
                     return new DependentTemplateSpecializationType(native.ToPointer(), skipVTables);
                 }
 
-                internal static DependentTemplateSpecializationType __CreateInstance(DependentTemplateSpecializationType.__Internal native, bool skipVTables = false)
+                internal static DependentTemplateSpecializationType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new DependentTemplateSpecializationType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(DependentTemplateSpecializationType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
-                    global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private DependentTemplateSpecializationType(DependentTemplateSpecializationType.__Internal native, bool skipVTables = false)
+                private DependentTemplateSpecializationType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2205,19 +2205,19 @@ namespace CppSharp
                     return new TemplateParameterType(native.ToPointer(), skipVTables);
                 }
 
-                internal static TemplateParameterType __CreateInstance(TemplateParameterType.__Internal native, bool skipVTables = false)
+                internal static TemplateParameterType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TemplateParameterType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TemplateParameterType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    global::CppSharp.Parser.AST.TemplateParameterType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TemplateParameterType(TemplateParameterType.__Internal native, bool skipVTables = false)
+                private TemplateParameterType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2355,19 +2355,19 @@ namespace CppSharp
                     return new TemplateParameterSubstitutionType(native.ToPointer(), skipVTables);
                 }
 
-                internal static TemplateParameterSubstitutionType __CreateInstance(TemplateParameterSubstitutionType.__Internal native, bool skipVTables = false)
+                internal static TemplateParameterSubstitutionType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TemplateParameterSubstitutionType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TemplateParameterSubstitutionType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.__Internal native, bool skipVTables = false)
+                private TemplateParameterSubstitutionType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2469,19 +2469,19 @@ namespace CppSharp
                     return new InjectedClassNameType(native.ToPointer(), skipVTables);
                 }
 
-                internal static InjectedClassNameType __CreateInstance(InjectedClassNameType.__Internal native, bool skipVTables = false)
+                internal static InjectedClassNameType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new InjectedClassNameType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(InjectedClassNameType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    global::CppSharp.Parser.AST.InjectedClassNameType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private InjectedClassNameType(InjectedClassNameType.__Internal native, bool skipVTables = false)
+                private InjectedClassNameType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2580,19 +2580,19 @@ namespace CppSharp
                     return new DependentNameType(native.ToPointer(), skipVTables);
                 }
 
-                internal static DependentNameType __CreateInstance(DependentNameType.__Internal native, bool skipVTables = false)
+                internal static DependentNameType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new DependentNameType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(DependentNameType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    global::CppSharp.Parser.AST.DependentNameType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private DependentNameType(DependentNameType.__Internal native, bool skipVTables = false)
+                private DependentNameType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2670,19 +2670,19 @@ namespace CppSharp
                     return new PackExpansionType(native.ToPointer(), skipVTables);
                 }
 
-                internal static PackExpansionType __CreateInstance(PackExpansionType.__Internal native, bool skipVTables = false)
+                internal static PackExpansionType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new PackExpansionType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(PackExpansionType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    global::CppSharp.Parser.AST.PackExpansionType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private PackExpansionType(PackExpansionType.__Internal native, bool skipVTables = false)
+                private PackExpansionType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2753,19 +2753,19 @@ namespace CppSharp
                     return new UnaryTransformType(native.ToPointer(), skipVTables);
                 }
 
-                internal static UnaryTransformType __CreateInstance(UnaryTransformType.__Internal native, bool skipVTables = false)
+                internal static UnaryTransformType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new UnaryTransformType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(UnaryTransformType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    global::CppSharp.Parser.AST.UnaryTransformType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private UnaryTransformType(UnaryTransformType.__Internal native, bool skipVTables = false)
+                private UnaryTransformType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2862,19 +2862,19 @@ namespace CppSharp
                     return new VectorType(native.ToPointer(), skipVTables);
                 }
 
-                internal static VectorType __CreateInstance(VectorType.__Internal native, bool skipVTables = false)
+                internal static VectorType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VectorType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VectorType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    global::CppSharp.Parser.AST.VectorType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VectorType(VectorType.__Internal native, bool skipVTables = false)
+                private VectorType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -2968,19 +2968,19 @@ namespace CppSharp
                     return new BuiltinType(native.ToPointer(), skipVTables);
                 }
 
-                internal static BuiltinType __CreateInstance(BuiltinType.__Internal native, bool skipVTables = false)
+                internal static BuiltinType __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new BuiltinType(native, skipVTables);
                 }
 
-                private static void* __CopyValue(BuiltinType.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    global::CppSharp.Parser.AST.BuiltinType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private BuiltinType(BuiltinType.__Internal native, bool skipVTables = false)
+                private BuiltinType(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -3069,19 +3069,19 @@ namespace CppSharp
                     return new VTableComponent(native.ToPointer(), skipVTables);
                 }
 
-                internal static VTableComponent __CreateInstance(VTableComponent.__Internal native, bool skipVTables = false)
+                internal static VTableComponent __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VTableComponent(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VTableComponent.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    *(VTableComponent.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private VTableComponent(VTableComponent.__Internal native, bool skipVTables = false)
+                private VTableComponent(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -3108,7 +3108,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((VTableComponent.__Internal*) __Instance) = *((VTableComponent.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -3226,19 +3226,19 @@ namespace CppSharp
                     return new VTableLayout(native.ToPointer(), skipVTables);
                 }
 
-                internal static VTableLayout __CreateInstance(VTableLayout.__Internal native, bool skipVTables = false)
+                internal static VTableLayout __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VTableLayout(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VTableLayout.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    global::CppSharp.Parser.AST.VTableLayout.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VTableLayout(VTableLayout.__Internal native, bool skipVTables = false)
+                private VTableLayout(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -3362,19 +3362,19 @@ namespace CppSharp
                     return new VFTableInfo(native.ToPointer(), skipVTables);
                 }
 
-                internal static VFTableInfo __CreateInstance(VFTableInfo.__Internal native, bool skipVTables = false)
+                internal static VFTableInfo __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VFTableInfo(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VFTableInfo.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.VFTableInfo.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VFTableInfo(VFTableInfo.__Internal native, bool skipVTables = false)
+                private VFTableInfo(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -3531,19 +3531,19 @@ namespace CppSharp
                     return new LayoutField(native.ToPointer(), skipVTables);
                 }
 
-                internal static LayoutField __CreateInstance(LayoutField.__Internal native, bool skipVTables = false)
+                internal static LayoutField __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new LayoutField(native, skipVTables);
                 }
 
-                private static void* __CopyValue(LayoutField.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(40);
-                    global::CppSharp.Parser.AST.LayoutField.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private LayoutField(LayoutField.__Internal native, bool skipVTables = false)
+                private LayoutField(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -3685,19 +3685,19 @@ namespace CppSharp
                     return new LayoutBase(native.ToPointer(), skipVTables);
                 }
 
-                internal static LayoutBase __CreateInstance(LayoutBase.__Internal native, bool skipVTables = false)
+                internal static LayoutBase __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new LayoutBase(native, skipVTables);
                 }
 
-                private static void* __CopyValue(LayoutBase.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    global::CppSharp.Parser.AST.LayoutBase.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private LayoutBase(LayoutBase.__Internal native, bool skipVTables = false)
+                private LayoutBase(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -3901,19 +3901,19 @@ namespace CppSharp
                     return new ClassLayout(native.ToPointer(), skipVTables);
                 }
 
-                internal static ClassLayout __CreateInstance(ClassLayout.__Internal native, bool skipVTables = false)
+                internal static ClassLayout __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ClassLayout(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ClassLayout.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(72);
-                    global::CppSharp.Parser.AST.ClassLayout.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ClassLayout(ClassLayout.__Internal native, bool skipVTables = false)
+                private ClassLayout(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -4275,19 +4275,19 @@ namespace CppSharp
                     return new Declaration(native.ToPointer(), skipVTables);
                 }
 
-                internal static Declaration __CreateInstance(Declaration.__Internal native, bool skipVTables = false)
+                internal static Declaration __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Declaration(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Declaration.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(128);
-                    global::CppSharp.Parser.AST.Declaration.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Declaration(Declaration.__Internal native, bool skipVTables = false)
+                private Declaration(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -4890,19 +4890,19 @@ namespace CppSharp
                     return new DeclarationContext(native.ToPointer(), skipVTables);
                 }
 
-                internal static DeclarationContext __CreateInstance(DeclarationContext.__Internal native, bool skipVTables = false)
+                internal static DeclarationContext __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new DeclarationContext(native, skipVTables);
                 }
 
-                private static void* __CopyValue(DeclarationContext.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(248);
-                    global::CppSharp.Parser.AST.DeclarationContext.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private DeclarationContext(DeclarationContext.__Internal native, bool skipVTables = false)
+                private DeclarationContext(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -5345,19 +5345,19 @@ namespace CppSharp
                     return new TypedefNameDecl(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypedefNameDecl __CreateInstance(TypedefNameDecl.__Internal native, bool skipVTables = false)
+                internal static TypedefNameDecl __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypedefNameDecl(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypedefNameDecl.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(136);
-                    global::CppSharp.Parser.AST.TypedefNameDecl.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TypedefNameDecl(TypedefNameDecl.__Internal native, bool skipVTables = false)
+                private TypedefNameDecl(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -5503,19 +5503,19 @@ namespace CppSharp
                     return new TypedefDecl(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypedefDecl __CreateInstance(TypedefDecl.__Internal native, bool skipVTables = false)
+                internal static TypedefDecl __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypedefDecl(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypedefDecl.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(136);
-                    global::CppSharp.Parser.AST.TypedefDecl.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TypedefDecl(TypedefDecl.__Internal native, bool skipVTables = false)
+                private TypedefDecl(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -5646,19 +5646,19 @@ namespace CppSharp
                     return new TypeAlias(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypeAlias __CreateInstance(TypeAlias.__Internal native, bool skipVTables = false)
+                internal static TypeAlias __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypeAlias(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypeAlias.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(140);
-                    global::CppSharp.Parser.AST.TypeAlias.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TypeAlias(TypeAlias.__Internal native, bool skipVTables = false)
+                private TypeAlias(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -5804,19 +5804,19 @@ namespace CppSharp
                     return new Friend(native.ToPointer(), skipVTables);
                 }
 
-                internal static Friend __CreateInstance(Friend.__Internal native, bool skipVTables = false)
+                internal static Friend __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Friend(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Friend.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(132);
-                    global::CppSharp.Parser.AST.Friend.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Friend(Friend.__Internal native, bool skipVTables = false)
+                private Friend(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -5930,19 +5930,19 @@ namespace CppSharp
                     return new Statement(native.ToPointer(), skipVTables);
                 }
 
-                internal static Statement __CreateInstance(Statement.__Internal native, bool skipVTables = false)
+                internal static Statement __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Statement(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Statement.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.Statement.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Statement(Statement.__Internal native, bool skipVTables = false)
+                private Statement(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -6058,19 +6058,19 @@ namespace CppSharp
                     return new Expression(native.ToPointer(), skipVTables);
                 }
 
-                internal static Expression __CreateInstance(Expression.__Internal native, bool skipVTables = false)
+                internal static Expression __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Expression(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Expression.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.Expression.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Expression(Expression.__Internal native, bool skipVTables = false)
+                private Expression(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -6158,19 +6158,19 @@ namespace CppSharp
                     return new BinaryOperator(native.ToPointer(), skipVTables);
                 }
 
-                internal static BinaryOperator __CreateInstance(BinaryOperator.__Internal native, bool skipVTables = false)
+                internal static BinaryOperator __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new BinaryOperator(native, skipVTables);
                 }
 
-                private static void* __CopyValue(BinaryOperator.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(64);
-                    global::CppSharp.Parser.AST.BinaryOperator.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private BinaryOperator(BinaryOperator.__Internal native, bool skipVTables = false)
+                private BinaryOperator(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -6312,19 +6312,19 @@ namespace CppSharp
                     return new CallExpr(native.ToPointer(), skipVTables);
                 }
 
-                internal static CallExpr __CreateInstance(CallExpr.__Internal native, bool skipVTables = false)
+                internal static CallExpr __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new CallExpr(native, skipVTables);
                 }
 
-                private static void* __CopyValue(CallExpr.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(44);
-                    global::CppSharp.Parser.AST.CallExpr.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private CallExpr(CallExpr.__Internal native, bool skipVTables = false)
+                private CallExpr(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -6449,19 +6449,19 @@ namespace CppSharp
                     return new CXXConstructExpr(native.ToPointer(), skipVTables);
                 }
 
-                internal static CXXConstructExpr __CreateInstance(CXXConstructExpr.__Internal native, bool skipVTables = false)
+                internal static CXXConstructExpr __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new CXXConstructExpr(native, skipVTables);
                 }
 
-                private static void* __CopyValue(CXXConstructExpr.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(44);
-                    global::CppSharp.Parser.AST.CXXConstructExpr.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private CXXConstructExpr(CXXConstructExpr.__Internal native, bool skipVTables = false)
+                private CXXConstructExpr(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -6625,19 +6625,19 @@ namespace CppSharp
                     return new Parameter(native.ToPointer(), skipVTables);
                 }
 
-                internal static Parameter __CreateInstance(Parameter.__Internal native, bool skipVTables = false)
+                internal static Parameter __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Parameter(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Parameter.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
-                    global::CppSharp.Parser.AST.Parameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Parameter(Parameter.__Internal native, bool skipVTables = false)
+                private Parameter(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -6936,19 +6936,19 @@ namespace CppSharp
                     return new Function(native.ToPointer(), skipVTables);
                 }
 
-                internal static Function __CreateInstance(Function.__Internal native, bool skipVTables = false)
+                internal static Function __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Function(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Function.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(256);
-                    global::CppSharp.Parser.AST.Function.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Function(Function.__Internal native, bool skipVTables = false)
+                private Function(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -7427,19 +7427,19 @@ namespace CppSharp
                     return new Method(native.ToPointer(), skipVTables);
                 }
 
-                internal static Method __CreateInstance(Method.__Internal native, bool skipVTables = false)
+                internal static Method __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Method(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Method.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(284);
-                    global::CppSharp.Parser.AST.Method.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Method(Method.__Internal native, bool skipVTables = false)
+                private Method(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -7868,19 +7868,19 @@ namespace CppSharp
                         return new Item(native.ToPointer(), skipVTables);
                     }
 
-                    internal static Item __CreateInstance(Item.__Internal native, bool skipVTables = false)
+                    internal static Item __CreateInstance(__Internal native, bool skipVTables = false)
                     {
                         return new Item(native, skipVTables);
                     }
 
-                    private static void* __CopyValue(Item.__Internal native)
+                    private static void* __CopyValue(__Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(160);
-                        global::CppSharp.Parser.AST.Enumeration.Item.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                        __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
 
-                    private Item(Item.__Internal native, bool skipVTables = false)
+                    private Item(__Internal native, bool skipVTables = false)
                         : this(__CopyValue(native), skipVTables)
                     {
                         __ownsNativeInstance = true;
@@ -7960,19 +7960,19 @@ namespace CppSharp
                     return new Enumeration(native.ToPointer(), skipVTables);
                 }
 
-                internal static Enumeration __CreateInstance(Enumeration.__Internal native, bool skipVTables = false)
+                internal static Enumeration __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Enumeration(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Enumeration.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(272);
-                    global::CppSharp.Parser.AST.Enumeration.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Enumeration(Enumeration.__Internal native, bool skipVTables = false)
+                private Enumeration(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -8195,19 +8195,19 @@ namespace CppSharp
                     return new Variable(native.ToPointer(), skipVTables);
                 }
 
-                internal static Variable __CreateInstance(Variable.__Internal native, bool skipVTables = false)
+                internal static Variable __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Variable(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Variable.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(160);
-                    global::CppSharp.Parser.AST.Variable.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Variable(Variable.__Internal native, bool skipVTables = false)
+                private Variable(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -8323,19 +8323,19 @@ namespace CppSharp
                     return new BaseClassSpecifier(native.ToPointer(), skipVTables);
                 }
 
-                internal static BaseClassSpecifier __CreateInstance(BaseClassSpecifier.__Internal native, bool skipVTables = false)
+                internal static BaseClassSpecifier __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new BaseClassSpecifier(native, skipVTables);
                 }
 
-                private static void* __CopyValue(BaseClassSpecifier.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    *(BaseClassSpecifier.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private BaseClassSpecifier(BaseClassSpecifier.__Internal native, bool skipVTables = false)
+                private BaseClassSpecifier(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -8362,7 +8362,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((BaseClassSpecifier.__Internal*) __Instance) = *((BaseClassSpecifier.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -8525,19 +8525,19 @@ namespace CppSharp
                     return new Field(native.ToPointer(), skipVTables);
                 }
 
-                internal static Field __CreateInstance(Field.__Internal native, bool skipVTables = false)
+                internal static Field __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Field(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Field.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
-                    global::CppSharp.Parser.AST.Field.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Field(Field.__Internal native, bool skipVTables = false)
+                private Field(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -8719,19 +8719,19 @@ namespace CppSharp
                     return new AccessSpecifierDecl(native.ToPointer(), skipVTables);
                 }
 
-                internal static AccessSpecifierDecl __CreateInstance(AccessSpecifierDecl.__Internal native, bool skipVTables = false)
+                internal static AccessSpecifierDecl __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new AccessSpecifierDecl(native, skipVTables);
                 }
 
-                private static void* __CopyValue(AccessSpecifierDecl.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(128);
-                    global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private AccessSpecifierDecl(AccessSpecifierDecl.__Internal native, bool skipVTables = false)
+                private AccessSpecifierDecl(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -9011,19 +9011,19 @@ namespace CppSharp
                     return new Class(native.ToPointer(), skipVTables);
                 }
 
-                internal static Class __CreateInstance(Class.__Internal native, bool skipVTables = false)
+                internal static Class __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Class(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Class.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(312);
-                    global::CppSharp.Parser.AST.Class.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Class(Class.__Internal native, bool skipVTables = false)
+                private Class(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -9446,19 +9446,19 @@ namespace CppSharp
                     return new Template(native.ToPointer(), skipVTables);
                 }
 
-                internal static Template __CreateInstance(Template.__Internal native, bool skipVTables = false)
+                internal static Template __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Template(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Template.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(144);
-                    global::CppSharp.Parser.AST.Template.__Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Template(Template.__Internal native, bool skipVTables = false)
+                private Template(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -9654,19 +9654,19 @@ namespace CppSharp
                     return new TypeAliasTemplate(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypeAliasTemplate __CreateInstance(TypeAliasTemplate.__Internal native, bool skipVTables = false)
+                internal static TypeAliasTemplate __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypeAliasTemplate(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypeAliasTemplate.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(144);
-                    global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TypeAliasTemplate(TypeAliasTemplate.__Internal native, bool skipVTables = false)
+                private TypeAliasTemplate(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -9800,19 +9800,19 @@ namespace CppSharp
                     return new TemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                internal static TemplateParameter __CreateInstance(TemplateParameter.__Internal native, bool skipVTables = false)
+                internal static TemplateParameter __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TemplateParameter(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TemplateParameter.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(140);
-                    global::CppSharp.Parser.AST.TemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TemplateParameter(TemplateParameter.__Internal native, bool skipVTables = false)
+                private TemplateParameter(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -9996,19 +9996,19 @@ namespace CppSharp
                     return new TemplateTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                internal static TemplateTemplateParameter __CreateInstance(TemplateTemplateParameter.__Internal native, bool skipVTables = false)
+                internal static TemplateTemplateParameter __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TemplateTemplateParameter(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TemplateTemplateParameter.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
-                    global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TemplateTemplateParameter(TemplateTemplateParameter.__Internal native, bool skipVTables = false)
+                private TemplateTemplateParameter(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -10184,19 +10184,19 @@ namespace CppSharp
                     return new TypeTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                internal static TypeTemplateParameter __CreateInstance(TypeTemplateParameter.__Internal native, bool skipVTables = false)
+                internal static TypeTemplateParameter __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TypeTemplateParameter(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TypeTemplateParameter.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
-                    global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TypeTemplateParameter(TypeTemplateParameter.__Internal native, bool skipVTables = false)
+                private TypeTemplateParameter(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -10355,19 +10355,19 @@ namespace CppSharp
                     return new NonTypeTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
-                internal static NonTypeTemplateParameter __CreateInstance(NonTypeTemplateParameter.__Internal native, bool skipVTables = false)
+                internal static NonTypeTemplateParameter __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new NonTypeTemplateParameter(native, skipVTables);
                 }
 
-                private static void* __CopyValue(NonTypeTemplateParameter.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(152);
-                    global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private NonTypeTemplateParameter(NonTypeTemplateParameter.__Internal native, bool skipVTables = false)
+                private NonTypeTemplateParameter(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -10578,19 +10578,19 @@ namespace CppSharp
                     return new ClassTemplate(native.ToPointer(), skipVTables);
                 }
 
-                internal static ClassTemplate __CreateInstance(ClassTemplate.__Internal native, bool skipVTables = false)
+                internal static ClassTemplate __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ClassTemplate(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ClassTemplate.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(156);
-                    global::CppSharp.Parser.AST.ClassTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ClassTemplate(ClassTemplate.__Internal native, bool skipVTables = false)
+                private ClassTemplate(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -10852,19 +10852,19 @@ namespace CppSharp
                     return new ClassTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                internal static ClassTemplateSpecialization __CreateInstance(ClassTemplateSpecialization.__Internal native, bool skipVTables = false)
+                internal static ClassTemplateSpecialization __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ClassTemplateSpecialization(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ClassTemplateSpecialization.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(332);
-                    global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ClassTemplateSpecialization(ClassTemplateSpecialization.__Internal native, bool skipVTables = false)
+                private ClassTemplateSpecialization(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -11133,19 +11133,19 @@ namespace CppSharp
                     return new ClassTemplatePartialSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                internal static ClassTemplatePartialSpecialization __CreateInstance(ClassTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
+                internal static ClassTemplatePartialSpecialization __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ClassTemplatePartialSpecialization(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ClassTemplatePartialSpecialization.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(332);
-                    global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
+                private ClassTemplatePartialSpecialization(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -11299,19 +11299,19 @@ namespace CppSharp
                     return new FunctionTemplate(native.ToPointer(), skipVTables);
                 }
 
-                internal static FunctionTemplate __CreateInstance(FunctionTemplate.__Internal native, bool skipVTables = false)
+                internal static FunctionTemplate __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new FunctionTemplate(native, skipVTables);
                 }
 
-                private static void* __CopyValue(FunctionTemplate.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(156);
-                    global::CppSharp.Parser.AST.FunctionTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private FunctionTemplate(FunctionTemplate.__Internal native, bool skipVTables = false)
+                private FunctionTemplate(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -11458,19 +11458,19 @@ namespace CppSharp
                     return new FunctionTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                internal static FunctionTemplateSpecialization __CreateInstance(FunctionTemplateSpecialization.__Internal native, bool skipVTables = false)
+                internal static FunctionTemplateSpecialization __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new FunctionTemplateSpecialization(native, skipVTables);
                 }
 
-                private static void* __CopyValue(FunctionTemplateSpecialization.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private FunctionTemplateSpecialization(FunctionTemplateSpecialization.__Internal native, bool skipVTables = false)
+                private FunctionTemplateSpecialization(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -11703,19 +11703,19 @@ namespace CppSharp
                     return new VarTemplate(native.ToPointer(), skipVTables);
                 }
 
-                internal static VarTemplate __CreateInstance(VarTemplate.__Internal native, bool skipVTables = false)
+                internal static VarTemplate __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VarTemplate(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VarTemplate.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(156);
-                    global::CppSharp.Parser.AST.VarTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VarTemplate(VarTemplate.__Internal native, bool skipVTables = false)
+                private VarTemplate(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -11908,19 +11908,19 @@ namespace CppSharp
                     return new VarTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                internal static VarTemplateSpecialization __CreateInstance(VarTemplateSpecialization.__Internal native, bool skipVTables = false)
+                internal static VarTemplateSpecialization __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VarTemplateSpecialization(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VarTemplateSpecialization.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(180);
-                    global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VarTemplateSpecialization(VarTemplateSpecialization.__Internal native, bool skipVTables = false)
+                private VarTemplateSpecialization(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -12120,19 +12120,19 @@ namespace CppSharp
                     return new VarTemplatePartialSpecialization(native.ToPointer(), skipVTables);
                 }
 
-                internal static VarTemplatePartialSpecialization __CreateInstance(VarTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
+                internal static VarTemplatePartialSpecialization __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VarTemplatePartialSpecialization(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VarTemplatePartialSpecialization.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(180);
-                    global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VarTemplatePartialSpecialization(VarTemplatePartialSpecialization.__Internal native, bool skipVTables = false)
+                private VarTemplatePartialSpecialization(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -12293,19 +12293,19 @@ namespace CppSharp
                     return new Namespace(native.ToPointer(), skipVTables);
                 }
 
-                internal static Namespace __CreateInstance(Namespace.__Internal native, bool skipVTables = false)
+                internal static Namespace __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Namespace(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Namespace.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(252);
-                    global::CppSharp.Parser.AST.Namespace.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Namespace(Namespace.__Internal native, bool skipVTables = false)
+                private Namespace(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -12404,19 +12404,19 @@ namespace CppSharp
                     return new PreprocessedEntity(native.ToPointer(), skipVTables);
                 }
 
-                internal static PreprocessedEntity __CreateInstance(PreprocessedEntity.__Internal native, bool skipVTables = false)
+                internal static PreprocessedEntity __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new PreprocessedEntity(native, skipVTables);
                 }
 
-                private static void* __CopyValue(PreprocessedEntity.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    *(PreprocessedEntity.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private PreprocessedEntity(PreprocessedEntity.__Internal native, bool skipVTables = false)
+                private PreprocessedEntity(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -12443,7 +12443,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((PreprocessedEntity.__Internal*) __Instance) = *((PreprocessedEntity.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -12566,19 +12566,19 @@ namespace CppSharp
                     return new MacroDefinition(native.ToPointer(), skipVTables);
                 }
 
-                internal static MacroDefinition __CreateInstance(MacroDefinition.__Internal native, bool skipVTables = false)
+                internal static MacroDefinition __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new MacroDefinition(native, skipVTables);
                 }
 
-                private static void* __CopyValue(MacroDefinition.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(68);
-                    global::CppSharp.Parser.AST.MacroDefinition.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private MacroDefinition(MacroDefinition.__Internal native, bool skipVTables = false)
+                private MacroDefinition(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -12744,19 +12744,19 @@ namespace CppSharp
                     return new MacroExpansion(native.ToPointer(), skipVTables);
                 }
 
-                internal static MacroExpansion __CreateInstance(MacroExpansion.__Internal native, bool skipVTables = false)
+                internal static MacroExpansion __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new MacroExpansion(native, skipVTables);
                 }
 
-                private static void* __CopyValue(MacroExpansion.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(64);
-                    global::CppSharp.Parser.AST.MacroExpansion.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private MacroExpansion(MacroExpansion.__Internal native, bool skipVTables = false)
+                private MacroExpansion(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13002,19 +13002,19 @@ namespace CppSharp
                     return new TranslationUnit(native.ToPointer(), skipVTables);
                 }
 
-                internal static TranslationUnit __CreateInstance(TranslationUnit.__Internal native, bool skipVTables = false)
+                internal static TranslationUnit __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TranslationUnit(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TranslationUnit.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(292);
-                    global::CppSharp.Parser.AST.TranslationUnit.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TranslationUnit(TranslationUnit.__Internal native, bool skipVTables = false)
+                private TranslationUnit(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13218,19 +13218,19 @@ namespace CppSharp
                     return new NativeLibrary(native.ToPointer(), skipVTables);
                 }
 
-                internal static NativeLibrary __CreateInstance(NativeLibrary.__Internal native, bool skipVTables = false)
+                internal static NativeLibrary __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new NativeLibrary(native, skipVTables);
                 }
 
-                private static void* __CopyValue(NativeLibrary.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(52);
-                    global::CppSharp.Parser.AST.NativeLibrary.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private NativeLibrary(NativeLibrary.__Internal native, bool skipVTables = false)
+                private NativeLibrary(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13413,19 +13413,19 @@ namespace CppSharp
                     return new ASTContext(native.ToPointer(), skipVTables);
                 }
 
-                internal static ASTContext __CreateInstance(ASTContext.__Internal native, bool skipVTables = false)
+                internal static ASTContext __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ASTContext(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ASTContext.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    global::CppSharp.Parser.AST.ASTContext.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ASTContext(ASTContext.__Internal native, bool skipVTables = false)
+                private ASTContext(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13539,19 +13539,19 @@ namespace CppSharp
                     return new Comment(native.ToPointer(), skipVTables);
                 }
 
-                internal static Comment __CreateInstance(Comment.__Internal native, bool skipVTables = false)
+                internal static Comment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new Comment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(Comment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(4);
-                    *(Comment.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private Comment(Comment.__Internal native, bool skipVTables = false)
+                private Comment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13578,7 +13578,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((Comment.__Internal*) __Instance) = *((Comment.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -13642,19 +13642,19 @@ namespace CppSharp
                     return new BlockContentComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static BlockContentComment __CreateInstance(BlockContentComment.__Internal native, bool skipVTables = false)
+                internal static BlockContentComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new BlockContentComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(BlockContentComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(4);
-                    *(BlockContentComment.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private BlockContentComment(BlockContentComment.__Internal native, bool skipVTables = false)
+                private BlockContentComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13694,7 +13694,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((BlockContentComment.__Internal*) __Instance) = *((BlockContentComment.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public static implicit operator global::CppSharp.Parser.AST.BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
@@ -13755,19 +13755,19 @@ namespace CppSharp
                     return new FullComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static FullComment __CreateInstance(FullComment.__Internal native, bool skipVTables = false)
+                internal static FullComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new FullComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(FullComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    global::CppSharp.Parser.AST.FullComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private FullComment(FullComment.__Internal native, bool skipVTables = false)
+                private FullComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13880,19 +13880,19 @@ namespace CppSharp
                     return new InlineContentComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static InlineContentComment __CreateInstance(InlineContentComment.__Internal native, bool skipVTables = false)
+                internal static InlineContentComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new InlineContentComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(InlineContentComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    *(InlineContentComment.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private InlineContentComment(InlineContentComment.__Internal native, bool skipVTables = false)
+                private InlineContentComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -13932,7 +13932,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((InlineContentComment.__Internal*) __Instance) = *((InlineContentComment.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public static implicit operator global::CppSharp.Parser.AST.InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
@@ -14009,19 +14009,19 @@ namespace CppSharp
                     return new ParagraphComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static ParagraphComment __CreateInstance(ParagraphComment.__Internal native, bool skipVTables = false)
+                internal static ParagraphComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ParagraphComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ParagraphComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    global::CppSharp.Parser.AST.ParagraphComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ParagraphComment(ParagraphComment.__Internal native, bool skipVTables = false)
+                private ParagraphComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -14220,19 +14220,19 @@ namespace CppSharp
                         return new Argument(native.ToPointer(), skipVTables);
                     }
 
-                    internal static Argument __CreateInstance(Argument.__Internal native, bool skipVTables = false)
+                    internal static Argument __CreateInstance(__Internal native, bool skipVTables = false)
                     {
                         return new Argument(native, skipVTables);
                     }
 
-                    private static void* __CopyValue(Argument.__Internal native)
+                    private static void* __CopyValue(__Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(24);
-                        global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                        __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
 
-                    private Argument(Argument.__Internal native, bool skipVTables = false)
+                    private Argument(__Internal native, bool skipVTables = false)
                         : this(__CopyValue(native), skipVTables)
                     {
                         __ownsNativeInstance = true;
@@ -14300,19 +14300,19 @@ namespace CppSharp
                     return new BlockCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static BlockCommandComment __CreateInstance(BlockCommandComment.__Internal native, bool skipVTables = false)
+                internal static BlockCommandComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new BlockCommandComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(BlockCommandComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    global::CppSharp.Parser.AST.BlockCommandComment.__Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private BlockCommandComment(BlockCommandComment.__Internal native, bool skipVTables = false)
+                private BlockCommandComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -14485,19 +14485,19 @@ namespace CppSharp
                     return new ParamCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static ParamCommandComment __CreateInstance(ParamCommandComment.__Internal native, bool skipVTables = false)
+                internal static ParamCommandComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new ParamCommandComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(ParamCommandComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.ParamCommandComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private ParamCommandComment(ParamCommandComment.__Internal native, bool skipVTables = false)
+                private ParamCommandComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -14632,19 +14632,19 @@ namespace CppSharp
                     return new TParamCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static TParamCommandComment __CreateInstance(TParamCommandComment.__Internal native, bool skipVTables = false)
+                internal static TParamCommandComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TParamCommandComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TParamCommandComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(36);
-                    global::CppSharp.Parser.AST.TParamCommandComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TParamCommandComment(TParamCommandComment.__Internal native, bool skipVTables = false)
+                private TParamCommandComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -14763,19 +14763,19 @@ namespace CppSharp
                     return new VerbatimBlockLineComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static VerbatimBlockLineComment __CreateInstance(VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
+                internal static VerbatimBlockLineComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VerbatimBlockLineComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VerbatimBlockLineComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
-                    global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VerbatimBlockLineComment(VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
+                private VerbatimBlockLineComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -14898,19 +14898,19 @@ namespace CppSharp
                     return new VerbatimBlockComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static VerbatimBlockComment __CreateInstance(VerbatimBlockComment.__Internal native, bool skipVTables = false)
+                internal static VerbatimBlockComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VerbatimBlockComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VerbatimBlockComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(36);
-                    global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VerbatimBlockComment(VerbatimBlockComment.__Internal native, bool skipVTables = false)
+                private VerbatimBlockComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -15042,19 +15042,19 @@ namespace CppSharp
                     return new VerbatimLineComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static VerbatimLineComment __CreateInstance(VerbatimLineComment.__Internal native, bool skipVTables = false)
+                internal static VerbatimLineComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new VerbatimLineComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(VerbatimLineComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(48);
-                    global::CppSharp.Parser.AST.VerbatimLineComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private VerbatimLineComment(VerbatimLineComment.__Internal native, bool skipVTables = false)
+                private VerbatimLineComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -15227,19 +15227,19 @@ namespace CppSharp
                         return new Argument(native.ToPointer(), skipVTables);
                     }
 
-                    internal static Argument __CreateInstance(Argument.__Internal native, bool skipVTables = false)
+                    internal static Argument __CreateInstance(__Internal native, bool skipVTables = false)
                     {
                         return new Argument(native, skipVTables);
                     }
 
-                    private static void* __CopyValue(Argument.__Internal native)
+                    private static void* __CopyValue(__Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(24);
-                        global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                        __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
 
-                    private Argument(Argument.__Internal native, bool skipVTables = false)
+                    private Argument(__Internal native, bool skipVTables = false)
                         : this(__CopyValue(native), skipVTables)
                     {
                         __ownsNativeInstance = true;
@@ -15307,19 +15307,19 @@ namespace CppSharp
                     return new InlineCommandComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static InlineCommandComment __CreateInstance(InlineCommandComment.__Internal native, bool skipVTables = false)
+                internal static InlineCommandComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new InlineCommandComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(InlineCommandComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
-                    global::CppSharp.Parser.AST.InlineCommandComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private InlineCommandComment(InlineCommandComment.__Internal native, bool skipVTables = false)
+                private InlineCommandComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -15454,19 +15454,19 @@ namespace CppSharp
                     return new HTMLTagComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static HTMLTagComment __CreateInstance(HTMLTagComment.__Internal native, bool skipVTables = false)
+                internal static HTMLTagComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new HTMLTagComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(HTMLTagComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    *(HTMLTagComment.__Internal*) ret = native;
+                    *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private HTMLTagComment(HTMLTagComment.__Internal native, bool skipVTables = false)
+                private HTMLTagComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -15506,7 +15506,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((HTMLTagComment.__Internal*) __Instance) = *((HTMLTagComment.__Internal*) _0.__Instance);
+                    *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
                 }
 
                 public static implicit operator global::CppSharp.Parser.AST.HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
@@ -15638,19 +15638,19 @@ namespace CppSharp
                         return new Attribute(native.ToPointer(), skipVTables);
                     }
 
-                    internal static Attribute __CreateInstance(Attribute.__Internal native, bool skipVTables = false)
+                    internal static Attribute __CreateInstance(__Internal native, bool skipVTables = false)
                     {
                         return new Attribute(native, skipVTables);
                     }
 
-                    private static void* __CopyValue(Attribute.__Internal native)
+                    private static void* __CopyValue(__Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(48);
-                        global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                        __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
 
-                    private Attribute(Attribute.__Internal native, bool skipVTables = false)
+                    private Attribute(__Internal native, bool skipVTables = false)
                         : this(__CopyValue(native), skipVTables)
                     {
                         __ownsNativeInstance = true;
@@ -15732,19 +15732,19 @@ namespace CppSharp
                     return new HTMLStartTagComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static HTMLStartTagComment __CreateInstance(HTMLStartTagComment.__Internal native, bool skipVTables = false)
+                internal static HTMLStartTagComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new HTMLStartTagComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(HTMLStartTagComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(44);
-                    global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private HTMLStartTagComment(HTMLStartTagComment.__Internal native, bool skipVTables = false)
+                private HTMLStartTagComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -15880,19 +15880,19 @@ namespace CppSharp
                     return new HTMLEndTagComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static HTMLEndTagComment __CreateInstance(HTMLEndTagComment.__Internal native, bool skipVTables = false)
+                internal static HTMLEndTagComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new HTMLEndTagComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(HTMLEndTagComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private HTMLEndTagComment(HTMLEndTagComment.__Internal native, bool skipVTables = false)
+                private HTMLEndTagComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -15999,19 +15999,19 @@ namespace CppSharp
                     return new TextComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static TextComment __CreateInstance(TextComment.__Internal native, bool skipVTables = false)
+                internal static TextComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new TextComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(TextComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    global::CppSharp.Parser.AST.TextComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private TextComment(TextComment.__Internal native, bool skipVTables = false)
+                private TextComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -16139,19 +16139,19 @@ namespace CppSharp
                     return new RawComment(native.ToPointer(), skipVTables);
                 }
 
-                internal static RawComment __CreateInstance(RawComment.__Internal native, bool skipVTables = false)
+                internal static RawComment __CreateInstance(__Internal native, bool skipVTables = false)
                 {
                     return new RawComment(native, skipVTables);
                 }
 
-                private static void* __CopyValue(RawComment.__Internal native)
+                private static void* __CopyValue(__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(56);
-                    global::CppSharp.Parser.AST.RawComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private RawComment(RawComment.__Internal native, bool skipVTables = false)
+                private RawComment(__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
@@ -16298,12 +16298,12 @@ namespace CppSharp
                 return new SourceLocation(native.ToPointer(), skipVTables);
             }
 
-            internal static SourceLocation __CreateInstance(SourceLocation.__Internal native, bool skipVTables = false)
+            internal static SourceLocation __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new SourceLocation(native, skipVTables);
             }
 
-            private SourceLocation(SourceLocation.__Internal native, bool skipVTables = false)
+            private SourceLocation(__Internal native, bool skipVTables = false)
                 : this()
             {
                 __instance = native;
@@ -16535,19 +16535,19 @@ namespace CppSharp
                 return new ParserTargetInfo(native.ToPointer(), skipVTables);
             }
 
-            internal static ParserTargetInfo __CreateInstance(ParserTargetInfo.__Internal native, bool skipVTables = false)
+            internal static ParserTargetInfo __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new ParserTargetInfo(native, skipVTables);
             }
 
-            private static void* __CopyValue(ParserTargetInfo.__Internal native)
+            private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(176);
-                global::CppSharp.Parser.ParserTargetInfo.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
 
-            private ParserTargetInfo(ParserTargetInfo.__Internal native, bool skipVTables = false)
+            private ParserTargetInfo(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -17399,19 +17399,19 @@ namespace CppSharp
                 return new CppParserOptions(native.ToPointer(), skipVTables);
             }
 
-            internal static CppParserOptions __CreateInstance(CppParserOptions.__Internal native, bool skipVTables = false)
+            internal static CppParserOptions __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new CppParserOptions(native, skipVTables);
             }
 
-            private static void* __CopyValue(CppParserOptions.__Internal native)
+            private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(156);
-                global::CppSharp.Parser.CppParserOptions.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
 
-            private CppParserOptions(CppParserOptions.__Internal native, bool skipVTables = false)
+            private CppParserOptions(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -17859,19 +17859,19 @@ namespace CppSharp
                 return new ParserDiagnostic(native.ToPointer(), skipVTables);
             }
 
-            internal static ParserDiagnostic __CreateInstance(ParserDiagnostic.__Internal native, bool skipVTables = false)
+            internal static ParserDiagnostic __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new ParserDiagnostic(native, skipVTables);
             }
 
-            private static void* __CopyValue(ParserDiagnostic.__Internal native)
+            private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(60);
-                global::CppSharp.Parser.ParserDiagnostic.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
 
-            private ParserDiagnostic(ParserDiagnostic.__Internal native, bool skipVTables = false)
+            private ParserDiagnostic(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -18056,19 +18056,19 @@ namespace CppSharp
                 return new ParserResult(native.ToPointer(), skipVTables);
             }
 
-            internal static ParserResult __CreateInstance(ParserResult.__Internal native, bool skipVTables = false)
+            internal static ParserResult __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new ParserResult(native, skipVTables);
             }
 
-            private static void* __CopyValue(ParserResult.__Internal native)
+            private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(28);
-                global::CppSharp.Parser.ParserResult.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                __Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
 
-            private ParserResult(ParserResult.__Internal native, bool skipVTables = false)
+            private ParserResult(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -18234,19 +18234,19 @@ namespace CppSharp
                 return new ClangParser(native.ToPointer(), skipVTables);
             }
 
-            internal static ClangParser __CreateInstance(ClangParser.__Internal native, bool skipVTables = false)
+            internal static ClangParser __CreateInstance(__Internal native, bool skipVTables = false)
             {
                 return new ClangParser(native, skipVTables);
             }
 
-            private static void* __CopyValue(ClangParser.__Internal native)
+            private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(0);
-                *(ClangParser.__Internal*) ret = native;
+                *(__Internal*) ret = native;
                 return ret.ToPointer();
             }
 
-            private ClangParser(ClangParser.__Internal native, bool skipVTables = false)
+            private ClangParser(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -18272,7 +18272,7 @@ namespace CppSharp
                 __Instance = Marshal.AllocHGlobal(0);
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                *((ClangParser.__Internal*) __Instance) = *((ClangParser.__Internal*) _0.__Instance);
+                *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
             }
 
             public void Dispose()

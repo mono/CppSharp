@@ -42,14 +42,15 @@ namespace CppSharp.Generators.CSharp
     {
         public const string IntPtrType = "global::System.IntPtr";
 
-        public bool FullyQualify { get; set; } = true;
-
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
         private readonly Stack<CSharpMarshalKind> marshalKinds;
+        private readonly Stack<TypePrintScopeKind> printScopeKinds;
 
         public CSharpTypePrinterContextKind ContextKind => contexts.Peek();
 
         public CSharpMarshalKind MarshalKind => marshalKinds.Peek();
+
+        public TypePrintScopeKind PrintScopeKind => printScopeKinds.Peek();
 
         public CSharpTypePrinterContext TypePrinterContext;
 
@@ -63,8 +64,10 @@ namespace CppSharp.Generators.CSharp
             Context = context;
             contexts = new Stack<CSharpTypePrinterContextKind>();
             marshalKinds = new Stack<CSharpMarshalKind>();
+            printScopeKinds = new Stack<TypePrintScopeKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);
             PushMarshalKind(CSharpMarshalKind.Unknown);
+            PushPrintScopeKind(TypePrintScopeKind.GlobalQualified);
 
             TypePrinterContext = new CSharpTypePrinterContext();
         }
@@ -82,6 +85,13 @@ namespace CppSharp.Generators.CSharp
         }
 
         public CSharpMarshalKind PopMarshalKind() => marshalKinds.Pop();
+
+        public void PushPrintScopeKind(TypePrintScopeKind printScopeKind)
+        {
+            printScopeKinds.Push(printScopeKind);
+        }
+
+        public TypePrintScopeKind PopPrintScopeKind() => printScopeKinds.Pop();
 
         public CSharpTypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
@@ -423,9 +433,7 @@ namespace CppSharp.Generators.CSharp
                 };
             }
 
-            return GetNestedQualifiedName(decl) +
-                (ContextKind == CSharpTypePrinterContextKind.Native ?
-                    Helpers.InternalStruct : string.Empty);
+            return decl.Visit(this);
         }
 
         public CSharpTypePrinterResult VisitDependentTemplateSpecializationType(
@@ -596,17 +604,19 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitDeclaration(Declaration decl)
         {
-            return GetNestedQualifiedName(decl);
+            return GetName(decl);
         }
 
         public CSharpTypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == CSharpTypePrinterContextKind.Native)
-                return string.Format("{0}.{1}",
-                    GetNestedQualifiedName(@class.OriginalClass ?? @class),
-                    Helpers.InternalStruct);
+            {
+                if (PrintScopeKind == TypePrintScopeKind.Local)
+                    return Helpers.InternalStruct;
 
-            return GetNestedQualifiedName(@class);
+                return $"{GetName(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
+            }
+            return GetName(@class);
         }
 
         public CSharpTypePrinterResult VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
@@ -648,17 +658,17 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
         {
-            return GetNestedQualifiedName(typedef);
+            return GetName(typedef);
         }
 
         public CSharpTypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            return GetNestedQualifiedName(typeAlias);
+            return GetName(typeAlias);
         }
 
         public CSharpTypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
-            return GetNestedQualifiedName(@enum);
+            return GetName(@enum);
         }
 
         public CSharpTypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
@@ -666,8 +676,11 @@ namespace CppSharp.Generators.CSharp
             return VisitDeclaration(item);
         }
 
-        public string GetNestedQualifiedName(Declaration decl)
+        public string GetName(Declaration decl)
         {
+            if (PrintScopeKind == TypePrintScopeKind.Local)
+                return decl.Name;
+
             var names = new Stack<string>();
 
             Declaration ctx;
@@ -706,16 +719,18 @@ namespace CppSharp.Generators.CSharp
 
             names.Reverse();
             var isInCurrentOutputNamespace = names.Peek() == Generator.CurrentOutputNamespace;
-            if (isInCurrentOutputNamespace || !FullyQualify)
+            if (isInCurrentOutputNamespace ||
+                PrintScopeKind != TypePrintScopeKind.GlobalQualified)
                 names.Pop();
 
-            return (isInCurrentOutputNamespace || !FullyQualify ?
+            return (isInCurrentOutputNamespace ||
+                PrintScopeKind != TypePrintScopeKind.GlobalQualified ?
                 string.Empty : "global::") + string.Join(".", names);
         }
 
         public CSharpTypePrinterResult VisitVariableDecl(Variable variable)
         {
-            return GetNestedQualifiedName(variable);
+            return GetName(variable);
         }
 
         public CSharpTypePrinterResult VisitClassTemplateDecl(ClassTemplate template)

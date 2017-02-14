@@ -331,6 +331,7 @@ namespace CppSharp.Passes
             VisitOptions.VisitClassFields = false;
             VisitOptions.VisitClassProperties = false;
             VisitOptions.VisitClassMethods = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitNamespaceEnums = false;
             VisitOptions.VisitNamespaceTemplates = false;
             VisitOptions.VisitNamespaceTypedefs = false;
