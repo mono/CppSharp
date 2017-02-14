@@ -487,35 +487,35 @@ namespace CppSharp.Generators.CSharp
             switch (primitive)
             {
                 case PrimitiveType.Short:
-                    width = targetInfo.ShortWidth;
+                    width = targetInfo?.ShortWidth ?? 16;
                     signed = true;
                     break;
                 case PrimitiveType.UShort:
-                    width = targetInfo.ShortWidth;
+                    width = targetInfo?.ShortWidth ?? 16;
                     signed = false;
                     break;
                 case PrimitiveType.Int:
-                    width = targetInfo.IntWidth;
+                    width = targetInfo?.IntWidth ?? 32;
                     signed = true;
                     break;
                 case PrimitiveType.UInt:
-                    width = targetInfo.IntWidth;
+                    width = targetInfo?.IntWidth ?? 32;
                     signed = false;
                     break;
                 case PrimitiveType.Long:
-                    width = targetInfo.LongWidth;
+                    width = targetInfo?.LongWidth ?? 32;
                     signed = true;
                     break;
                 case PrimitiveType.ULong:
-                    width = targetInfo.LongWidth;
+                    width = targetInfo?.LongWidth ?? 32;
                     signed = false;
                     break;
                 case PrimitiveType.LongLong:
-                    width = targetInfo.LongLongWidth;
+                    width = targetInfo?.LongLongWidth ?? 64;
                     signed = true;
                     break;
                 case PrimitiveType.ULongLong:
-                    width = targetInfo.LongLongWidth;
+                    width = targetInfo?.LongLongWidth ?? 64;
                     signed = false;
                     break;
                 default:
