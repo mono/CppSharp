@@ -28,7 +28,7 @@ namespace CppSharp.Passes
 
             if (Options.IsCSharpGenerator)
             {
-                //In C# the comparison operators, if overloaded, must be overloaded in pairs;
+                // In C# the comparison operators, if overloaded, must be overloaded in pairs;
                 // that is, if == is overloaded, != must also be overloaded. The reverse
                 // is also true, and similar for < and >, and for <= and >=.
 
