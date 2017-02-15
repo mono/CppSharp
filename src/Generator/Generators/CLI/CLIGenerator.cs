@@ -47,7 +47,7 @@ namespace CppSharp.Generators.CLI
 
         protected override string TypePrinterDelegate(Type type)
         {
-            return type.Visit(typePrinter);
+            return type.Visit(typePrinter).ToString();
         }
     }
 }

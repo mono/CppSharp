@@ -166,7 +166,7 @@ namespace CppSharp.Generators.CLI
         {
             var types = new List<string>();
             foreach (var param in parameters)
-                types.Add(TypePrinter.VisitParameter(param));
+                types.Add(TypePrinter.VisitParameter(param).ToString());
             return string.Join(", ", types);
         }
 

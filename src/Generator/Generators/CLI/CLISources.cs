@@ -1050,10 +1050,10 @@ namespace CppSharp.Generators.CLI
 
             if (needsReturn)
             {
-                var retTypeName = retType.Visit(TypePrinter);
+                var retTypeName = retType.Visit(TypePrinter).ToString();
                 var isIntPtr = retTypeName.Contains("IntPtr");
 
-                if (retType.Type.IsPointer() && (isIntPtr || retTypeName.EndsWith("^")))
+                if (retType.Type.IsPointer() && (isIntPtr || retTypeName.EndsWith("^", StringComparison.Ordinal)))
                 {
                     WriteLine("if ({0} == nullptr) return {1};",
                         returnIdentifier,

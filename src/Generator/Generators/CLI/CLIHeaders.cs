@@ -779,7 +779,7 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
-                    string.Format(TypePrinter.VisitDelegate(function),
+                    string.Format(TypePrinter.VisitDelegate(function).ToString(),
                     typedef.Name));
                 PopBlock(NewLineKind.BeforeNextBlock);
 
