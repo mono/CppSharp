@@ -1075,21 +1075,21 @@ class DLL_API MissingObjectOnVirtualCallSecondaryBase
 {
 public:
     MissingObjectOnVirtualCallSecondaryBase();
-    virtual void f();
+    virtual int f();
 };
 
 class DLL_API MissingObjectOnVirtualCall : public HasVirtualDtor1, public MissingObjectOnVirtualCallSecondaryBase
 {
 public:
     MissingObjectOnVirtualCall();
-    void f();
+    int f();
 };
 
 class DLL_API HasMissingObjectOnVirtualCall
 {
 public:
     HasMissingObjectOnVirtualCall();
-    void makeMissingObjectOnVirtualCall();
+    int makeMissingObjectOnVirtualCall();
     void setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value);
 private:
     MissingObjectOnVirtualCall* stackOverflowOnVirtualCall;

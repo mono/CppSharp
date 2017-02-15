@@ -1607,10 +1607,8 @@ namespace CppSharp.Generators.CSharp
                     return;
                 }
                 var typeFullName = TypePrinter.VisitClassDecl(@class);
-                if (!string.IsNullOrEmpty(@class.TranslationUnit.Module.OutputNamespace))
-                    typeFullName = string.Format("{0}.{1}",
-                        @class.TranslationUnit.Module.OutputNamespace, typeFullName);
-                WriteLine("SetupVTables(GetType().FullName == \"{0}\");", typeFullName);
+                WriteLine($@"SetupVTables(GetType().FullName == ""{
+                    typeFullName.Type.Replace("global::", string.Empty)}"");");
             }
         }
 

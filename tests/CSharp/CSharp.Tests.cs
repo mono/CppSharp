@@ -609,7 +609,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
-    [Test, Ignore("For no reason this doesn't work at all, and I am tired of bugs. I fixed the compilation of this thing, I have no intention of fixing it at run-time too.")]
+    [Test]
     public void TestUnicode()
     {
         using (var testString = new TestString())
@@ -650,7 +650,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             using (var missingObjectOnVirtualCall = new MissingObjectOnVirtualCall())
             {
                 hasMissingObjectOnVirtualCall.SetMissingObjectOnVirtualCall(missingObjectOnVirtualCall);
-                hasMissingObjectOnVirtualCall.MakeMissingObjectOnVirtualCall();
+                Assert.That(hasMissingObjectOnVirtualCall.MakeMissingObjectOnVirtualCall(), Is.EqualTo(15));
             }
         }
     }

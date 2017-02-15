@@ -1,4 +1,4 @@
-#include "CSharp.h"
+﻿#include "CSharp.h"
 
 Foo::Foo(const char* name)
 {
@@ -1205,25 +1205,27 @@ MissingObjectOnVirtualCallSecondaryBase::MissingObjectOnVirtualCallSecondaryBase
 {
 }
 
-void MissingObjectOnVirtualCallSecondaryBase::f()
+int MissingObjectOnVirtualCallSecondaryBase::f()
 {
+    return 5;
 }
 
 MissingObjectOnVirtualCall::MissingObjectOnVirtualCall()
 {
 }
 
-void MissingObjectOnVirtualCall::f()
+int MissingObjectOnVirtualCall::f()
 {
+    return 15;
 }
 
 HasMissingObjectOnVirtualCall::HasMissingObjectOnVirtualCall()
 {
 }
 
-void HasMissingObjectOnVirtualCall::makeMissingObjectOnVirtualCall()
+int HasMissingObjectOnVirtualCall::makeMissingObjectOnVirtualCall()
 {
-    stackOverflowOnVirtualCall->f();
+    return stackOverflowOnVirtualCall->f();
 }
 
 void HasMissingObjectOnVirtualCall::setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value)
