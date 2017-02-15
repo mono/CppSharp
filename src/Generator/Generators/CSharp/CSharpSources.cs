@@ -149,14 +149,17 @@ namespace CppSharp.Generators.CSharp
         {
             GenerateFilePreamble();
 
+            var module = TranslationUnits.Count == 0 ?
+                Context.Options.SystemModule : TranslationUnit.Module;
+
             PushBlock(CSharpBlockKind.Usings);
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
 
-            var internalsVisibleTo = from m in Options.Modules
-                                     where m.Dependencies.Contains(Module)
-                                     select m.LibraryName;
+            var internalsVisibleTo = (from m in Options.Modules
+                                      where m.Dependencies.Contains(module)
+                                      select m.LibraryName).ToList();
             if (internalsVisibleTo.Any())
                 WriteLine("using System.Runtime.CompilerServices;");
 
@@ -170,17 +173,17 @@ namespace CppSharp.Generators.CSharp
             if (internalsVisibleTo.Any())
                 NewLine();
 
-            if (!string.IsNullOrEmpty(Module.OutputNamespace))
+            if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 PushBlock(CSharpBlockKind.Namespace);
-                WriteLine("namespace {0}", Module.OutputNamespace);
+                WriteLine("namespace {0}", module.OutputNamespace);
                 WriteStartBraceIndent();
             }
 
             foreach (var unit in TranslationUnits)
                 unit.Visit(this);
 
-            if (!string.IsNullOrEmpty(Module.OutputNamespace))
+            if (!string.IsNullOrEmpty(module.OutputNamespace))
             {
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
