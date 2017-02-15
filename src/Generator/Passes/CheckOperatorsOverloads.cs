@@ -23,12 +23,12 @@ namespace CppSharp.Passes
             if (!VisitDeclarationContext(@class))
                 return false;
 
-            // Check for C++ operators that cannot be represented in C#.
+            // Check for C++ operators that cannot be represented in .NET.
             CheckInvalidOperators(@class);
 
             if (Options.IsCSharpGenerator)
             {
-                // The comparison operators, if overloaded, must be overloaded in pairs;
+                //In C# the comparison operators, if overloaded, must be overloaded in pairs;
                 // that is, if == is overloaded, != must also be overloaded. The reverse
                 // is also true, and similar for < and >, and for <= and >=.
 
