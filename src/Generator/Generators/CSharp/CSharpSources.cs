@@ -663,7 +663,7 @@ namespace CppSharp.Generators.CSharp
             return functions;
         }
 
-        private IEnumerable<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
+        private IEnumerable<string> GatherInternalParams(Function function, out TypePrinterResult retType)
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
@@ -1737,7 +1737,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("// {0}", cleanSig);
             }
 
-            CSharpTypePrinterResult retType;
+            TypePrinterResult retType;
             var @params = GatherInternalParams(method, out retType);
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
@@ -3184,7 +3184,7 @@ namespace CppSharp.Generators.CSharp
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
 
-            CSharpTypePrinterResult retType;
+            TypePrinterResult retType;
             var @params = GatherInternalParams(function, out retType);
 
             WriteLine("internal static extern {0} {1}({2});", retType,
