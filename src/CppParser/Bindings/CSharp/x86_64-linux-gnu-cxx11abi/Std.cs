@@ -58,29 +58,29 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;
-        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Allocator>();
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator>();
         protected void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
-        internal static Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static global::Std.Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
             return new Allocator(native.ToPointer(), skipVTables);
         }
 
-        internal static Allocator __CreateInstance(__Internal native, bool skipVTables = false)
+        internal static global::Std.Allocator __CreateInstance(global::Std.Allocator.__Internal native, bool skipVTables = false)
         {
             return new Allocator(native, skipVTables);
         }
 
-        private static void* __CopyValue(__Internal native)
+        private static void* __CopyValue(global::Std.Allocator.__Internal native)
         {
             var ret = Marshal.AllocHGlobal(0);
-            *(__Internal*) ret = native;
+            *(global::Std.Allocator.__Internal*) ret = native;
             return ret.ToPointer();
         }
 
-        private Allocator(__Internal native, bool skipVTables = false)
+        private Allocator(global::Std.Allocator.__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
@@ -618,29 +618,29 @@ namespace Std
             public global::System.IntPtr __Instance { get; protected set; }
 
             protected int __PointerAdjustment;
-            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BasicString>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Cxx11.BasicString> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Cxx11.BasicString>();
             protected void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
-            internal static BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            internal static global::Std.Cxx11.BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
                 return new BasicString(native.ToPointer(), skipVTables);
             }
 
-            internal static BasicString __CreateInstance(__Internal native, bool skipVTables = false)
+            internal static global::Std.Cxx11.BasicString __CreateInstance(global::Std.Cxx11.BasicString.__Internal native, bool skipVTables = false)
             {
                 return new BasicString(native, skipVTables);
             }
 
-            private static void* __CopyValue(__Internal native)
+            private static void* __CopyValue(global::Std.Cxx11.BasicString.__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(32);
-                *(__Internal*) ret = native;
+                *(global::Std.Cxx11.BasicString.__Internal*) ret = native;
                 return ret.ToPointer();
             }
 
-            private BasicString(__Internal native, bool skipVTables = false)
+            private BasicString(global::Std.Cxx11.BasicString.__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
@@ -669,13 +669,10 @@ namespace Std
                     Marshal.FreeHGlobal(__Instance);
             }
 
-            public string CStr
+            public string CStr()
             {
-                get
-                {
-                    var __ret = global::Std.Cxx11.BasicString.__Internal.CStr_0((__Instance + __PointerAdjustment));
-                    return Marshal.PtrToStringAnsi(__ret);
-                }
+                var __ret = global::Std.Cxx11.BasicString.__Internal.CStr_0((__Instance + __PointerAdjustment));
+                return Marshal.PtrToStringAnsi(__ret);
             }
         }
 
