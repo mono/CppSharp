@@ -8,6 +8,7 @@ namespace CppSharp.Passes
         public FindSymbolsPass()
         {
             VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitNamespaceEnums = false;
