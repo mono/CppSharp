@@ -139,20 +139,41 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
+        public Module Module => TranslationUnits.Count == 0 ?
+                Context.Options.SystemModule : TranslationUnit.Module;
+
         public override void Process()
         {
             GenerateFilePreamble();
 
-            var module = TranslationUnits.Count == 0 ?
-                Context.Options.SystemModule : TranslationUnit.Module;
+            GenerateUsings();
 
+            if (!string.IsNullOrEmpty(Module.OutputNamespace))
+            {
+                PushBlock(CSharpBlockKind.Namespace);
+                WriteLine("namespace {0}", Module.OutputNamespace);
+                WriteStartBraceIndent();
+            }
+
+            foreach (var unit in TranslationUnits)
+                unit.Visit(this);
+
+            if (!string.IsNullOrEmpty(Module.OutputNamespace))
+            {
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+        }
+
+        public void GenerateUsings()
+        {
             PushBlock(CSharpBlockKind.Usings);
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
 
             var internalsVisibleTo = (from m in Options.Modules
-                                      where m.Dependencies.Contains(module)
+                                      where m.Dependencies.Contains(Module)
                                       select m.LibraryName).ToList();
             if (internalsVisibleTo.Any())
                 WriteLine("using System.Runtime.CompilerServices;");
@@ -166,22 +187,6 @@ namespace CppSharp.Generators.CSharp
 
             if (internalsVisibleTo.Any())
                 NewLine();
-
-            if (!string.IsNullOrEmpty(module.OutputNamespace))
-            {
-                PushBlock(CSharpBlockKind.Namespace);
-                WriteLine("namespace {0}", module.OutputNamespace);
-                WriteStartBraceIndent();
-            }
-
-            foreach (var unit in TranslationUnits)
-                unit.Visit(this);
-
-            if (!string.IsNullOrEmpty(module.OutputNamespace))
-            {
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
         }
 
         public override bool VisitNamespace(Namespace @namespace)
