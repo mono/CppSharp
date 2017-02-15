@@ -39,8 +39,6 @@ namespace CppSharp.Generators
     /// </summary>
     public abstract class Generator : IDisposable
     {
-        public static string CurrentOutputNamespace = string.Empty;
-
         public BindingContext Context { get; private set; }
 
         protected Generator(BindingContext context)
@@ -92,7 +90,6 @@ namespace CppSharp.Generators
                 if (templates.Count == 0)
                     return;
 
-                CurrentOutputNamespace = unit.Module.OutputNamespace;
                 foreach (var template in templates)
                 {
                     template.Process();
@@ -114,7 +111,6 @@ namespace CppSharp.Generators
         {
             foreach (var module in Context.Options.Modules)
             {
-                CurrentOutputNamespace = module.OutputNamespace;
                 var output = new GeneratorOutput
                 {
                     TranslationUnit = new TranslationUnit

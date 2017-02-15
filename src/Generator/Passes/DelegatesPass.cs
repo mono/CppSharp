@@ -171,7 +171,6 @@ namespace CppSharp.Passes
                 if (typePrinter == null)
                 {
                     typePrinter = new CSharpTypePrinter(Context);
-                    typePrinter.PushPrintScopeKind(TypePrintScopeKind.Qualified);
                     typePrinter.PushContext(TypePrinterContextKind.Native);
                     typePrinter.PushMarshalKind(MarshalKind.GenericDelegate);
                 }

@@ -23,13 +23,10 @@ namespace CppSharp.Generators.CSharp
 
         private readonly Stack<TypePrinterContextKind> contexts;
         private readonly Stack<MarshalKind> marshalKinds;
-        private readonly Stack<TypePrintScopeKind> printScopeKinds;
 
         public TypePrinterContextKind ContextKind => contexts.Peek();
 
         public MarshalKind MarshalKind => marshalKinds.Peek();
-
-        public TypePrintScopeKind PrintScopeKind => printScopeKinds.Peek();
 
         public CSharpTypePrinterContext TypePrinterContext;
 
@@ -43,10 +40,8 @@ namespace CppSharp.Generators.CSharp
             Context = context;
             contexts = new Stack<TypePrinterContextKind>();
             marshalKinds = new Stack<MarshalKind>();
-            printScopeKinds = new Stack<TypePrintScopeKind>();
             PushContext(TypePrinterContextKind.Managed);
             PushMarshalKind(MarshalKind.Unknown);
-            PushPrintScopeKind(TypePrintScopeKind.GlobalQualified);
 
             TypePrinterContext = new CSharpTypePrinterContext();
         }
@@ -64,13 +59,6 @@ namespace CppSharp.Generators.CSharp
         }
 
         public MarshalKind PopMarshalKind() => marshalKinds.Pop();
-
-        public void PushPrintScopeKind(TypePrintScopeKind printScopeKind)
-        {
-            printScopeKinds.Push(printScopeKind);
-        }
-
-        public TypePrintScopeKind PopPrintScopeKind() => printScopeKinds.Pop();
 
         public override TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
@@ -589,12 +577,8 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-            {
-                if (PrintScopeKind == TypePrintScopeKind.Local)
-                    return Helpers.InternalStruct;
-
                 return $"{GetName(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
-            }
+
             return GetName(@class);
         }
 
@@ -658,9 +642,6 @@ namespace CppSharp.Generators.CSharp
 
         public string GetName(Declaration decl)
         {
-            if (PrintScopeKind == TypePrintScopeKind.Local)
-                return decl.Name;
-
             var names = new Stack<string>();
 
             Declaration ctx;
@@ -700,15 +681,7 @@ namespace CppSharp.Generators.CSharp
                 !string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
                 names.Push(ctx.TranslationUnit.Module.OutputNamespace);
 
-            names.Reverse();
-            var isInCurrentOutputNamespace = names.Peek() == Generator.CurrentOutputNamespace;
-            if (isInCurrentOutputNamespace ||
-                PrintScopeKind != TypePrintScopeKind.GlobalQualified)
-                names.Pop();
-
-            return (isInCurrentOutputNamespace ||
-                PrintScopeKind != TypePrintScopeKind.GlobalQualified ?
-                string.Empty : "global::") + string.Join(".", names);
+            return $"global::{string.Join(".", names)}";
         }
 
         public override TypePrinterResult VisitVariableDecl(Variable variable)

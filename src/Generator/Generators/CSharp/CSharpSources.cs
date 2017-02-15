@@ -489,10 +489,8 @@ namespace CppSharp.Generators.CSharp
 
                         // use interfaces if any - derived types with a secondary base this class must be compatible with the map
                         var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
-                        TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                         var dict = string.Format("global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>",
                             (@interface ?? @class).Visit(TypePrinter));
-                        TypePrinter.PopPrintScopeKind();
                         WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
                         WriteLine("protected void*[] __OriginalVTables;");
                     }
@@ -896,7 +894,6 @@ namespace CppSharp.Generators.CSharp
 
                 var arrayType = field.Type as ArrayType;
 
-                TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                 if (arrayType != null && @class.IsValueType)
                 {
                     ctx.ReturnVarName = HandleValueArray(arrayType, field);
@@ -910,7 +907,6 @@ namespace CppSharp.Generators.CSharp
                         (@class.IsValueType ? "." : "->")}{Helpers.SafeIdentifier(name)}";
                     TypePrinter.PopContext();
                 }
-                TypePrinter.PopPrintScopeKind();
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1105,7 +1101,6 @@ namespace CppSharp.Generators.CSharp
 
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
                 TypePrinter.PushContext(TypePrinterContextKind.Native);
-                TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                 var ctx = new CSharpMarshalContext(Context)
                 {
                     Kind = MarshalKind.NativeField,
@@ -1116,7 +1111,6 @@ namespace CppSharp.Generators.CSharp
                         (@class.IsValueType ? "." : "->")}{Helpers.SafeIdentifier(name)}",
                     ReturnType = decl.QualifiedType
                 };
-                TypePrinter.PopPrintScopeKind();
                 TypePrinter.PopContext();
 
                 var arrayType = field.Type as ArrayType;
@@ -1743,7 +1737,7 @@ namespace CppSharp.Generators.CSharp
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
 
             WriteLine("private static {0} {1}Instance;",
-                GetDelegateName(method, @class.TranslationUnit.Module.OutputNamespace),
+                Context.Delegates[method].Signature,
                 vTableMethodDelegateName);
             NewLine();
 
@@ -2039,7 +2033,6 @@ namespace CppSharp.Generators.CSharp
 
             var className = @class.IsAbstractImpl ? @class.BaseClass.Name : @class.Name;
 
-            TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
             var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
             if (!@class.IsAbstractImpl)
             {
@@ -2105,7 +2098,6 @@ namespace CppSharp.Generators.CSharp
                 WriteLine($"{Helpers.InstanceField} = *({@class.Visit(TypePrinter)}*) native;");
                 TypePrinter.PopContext();
             }
-            TypePrinter.PopPrintScopeKind();
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2113,7 +2105,6 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateNativeConstructorByValue(Class @class, string ctorCall)
         {
-            TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
             TypePrinter.PopContext();
@@ -2176,7 +2167,6 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            TypePrinter.PopPrintScopeKind();
         }
 
         private void GenerateClassConstructorBase(Class @class, Method method)
@@ -2535,19 +2525,8 @@ namespace CppSharp.Generators.CSharp
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
-                delegateId, GetDelegateName(method, method.TranslationUnit.Module.OutputNamespace),
+                delegateId, Context.Delegates[method].Signature,
                 Helpers.SlotIdentifier);
-        }
-
-        private string GetDelegateName(Function function, string outputNamespace)
-        {
-            var @delegate = Context.Delegates[function];
-            if (string.IsNullOrWhiteSpace(@delegate.Namespace) ||
-                outputNamespace == @delegate.Namespace)
-            {
-                return @delegate.Signature;
-            }
-            return string.Format("global::{0}.{1}", @delegate.Namespace, @delegate.Signature);
         }
 
         private void GenerateOperator(Method method)
@@ -2615,10 +2594,8 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     TypePrinter.PushContext(TypePrinterContextKind.Native);
-                    TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                     var classInternal = @class.Visit(TypePrinter);
                     TypePrinter.PopContext();
-                    TypePrinter.PopPrintScopeKind();
                     WriteLine($@"*(({classInternal}*) {Helpers.InstanceIdentifier}) = *(({
                         classInternal}*) {method.Parameters[0].Name}.{Helpers.InstanceIdentifier});");
                 }

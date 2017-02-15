@@ -40,7 +40,6 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionDecl(function) || function.Ignore)
                 return false;
 
-            Generator.CurrentOutputNamespace = function.TranslationUnit.Module.OutputNamespace;
             var overloadIndices = new List<int>(function.Parameters.Count);
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
