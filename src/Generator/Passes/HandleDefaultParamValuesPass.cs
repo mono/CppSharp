@@ -152,7 +152,7 @@ namespace CppSharp.Passes
             TypeMap typeMap;
 
             var typePrinter = new CSharpTypePrinter(Context);
-            typePrinter.PushMarshalKind(CSharpMarshalKind.DefaultExpression);
+            typePrinter.PushMarshalKind(MarshalKind.DefaultExpression);
             var typePrinterResult = type.Visit(typePrinter).Type;
             if (TypeMaps.FindTypeMap(decl, type, out typeMap))
             {
@@ -306,7 +306,7 @@ namespace CppSharp.Passes
             {
                 var typeInSignature = typeMap.CSharpSignatureType(new CSharpTypePrinterContext
                 {
-                    MarshalKind = CSharpMarshalKind.DefaultExpression,
+                    MarshalKind = MarshalKind.DefaultExpression,
                     Type = desugared
                 }).SkipPointerRefs().Desugar();
                 Enumeration @enum;

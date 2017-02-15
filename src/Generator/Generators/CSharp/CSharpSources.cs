@@ -784,7 +784,7 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("[FieldOffset({0})]", field.Offset);
 
-            TypePrinter.PushMarshalKind(CSharpMarshalKind.NativeField);
+            TypePrinter.PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
             TypePrinter.PopMarshalKind();
 
@@ -890,7 +890,7 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteStartBraceIndent();
 
-                ctx.Kind = CSharpMarshalKind.NativeField;
+                ctx.Kind = MarshalKind.NativeField;
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 ctx.Declaration = field;
 
@@ -956,7 +956,7 @@ namespace CppSharp.Generators.CSharp
 
                 TypePrinter.PopContext();
 
-                ctx.Kind = CSharpMarshalKind.Variable;
+                ctx.Kind = MarshalKind.Variable;
                 ctx.ReturnType = new QualifiedType(var.Type);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
@@ -1108,7 +1108,7 @@ namespace CppSharp.Generators.CSharp
                 TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                 var ctx = new CSharpMarshalContext(Context)
                 {
-                    Kind = CSharpMarshalKind.NativeField,
+                    Kind = MarshalKind.NativeField,
                     ArgName = decl.Name,
                     Declaration = decl,
                     ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
@@ -1683,7 +1683,7 @@ namespace CppSharp.Generators.CSharp
                     ArgName = Helpers.ReturnIdentifier,
                     Parameter = param,
                     Function = method,
-                    Kind = CSharpMarshalKind.VTableReturnValue
+                    Kind = MarshalKind.VTableReturnValue
                 };
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);

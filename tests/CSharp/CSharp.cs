@@ -86,7 +86,7 @@ namespace CppSharp.Tests
                     Type.IsAddress() ? "*" : string.Empty);
 
             return string.Format("System.Collections.Generic.{0}<{1}>",
-                ctx.MarshalKind == CSharpMarshalKind.DefaultExpression ? "List" : "IList",
+                ctx.MarshalKind == MarshalKind.DefaultExpression ? "List" : "IList",
                 ctx.GetTemplateParameterList());
         }
 

@@ -173,7 +173,7 @@ namespace CppSharp.Passes
                     typePrinter = new CSharpTypePrinter(Context);
                     typePrinter.PushPrintScopeKind(TypePrintScopeKind.Qualified);
                     typePrinter.PushContext(TypePrinterContextKind.Native);
-                    typePrinter.PushMarshalKind(CSharpMarshalKind.GenericDelegate);
+                    typePrinter.PushMarshalKind(MarshalKind.GenericDelegate);
                 }
                 return typePrinter;
             }

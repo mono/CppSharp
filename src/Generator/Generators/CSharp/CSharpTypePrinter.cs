@@ -13,7 +13,7 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinterContext : TypePrinterContext
     {
         public TypePrinterContextKind CSharpKind;
-        public CSharpMarshalKind MarshalKind;
+        public MarshalKind MarshalKind;
         public QualifiedType FullType;
     }
 
@@ -23,12 +23,12 @@ namespace CppSharp.Generators.CSharp
         public const string IntPtrType = "global::System.IntPtr";
 
         private readonly Stack<TypePrinterContextKind> contexts;
-        private readonly Stack<CSharpMarshalKind> marshalKinds;
+        private readonly Stack<MarshalKind> marshalKinds;
         private readonly Stack<TypePrintScopeKind> printScopeKinds;
 
         public TypePrinterContextKind ContextKind => contexts.Peek();
 
-        public CSharpMarshalKind MarshalKind => marshalKinds.Peek();
+        public MarshalKind MarshalKind => marshalKinds.Peek();
 
         public TypePrintScopeKind PrintScopeKind => printScopeKinds.Peek();
 
@@ -43,10 +43,10 @@ namespace CppSharp.Generators.CSharp
         {
             Context = context;
             contexts = new Stack<TypePrinterContextKind>();
-            marshalKinds = new Stack<CSharpMarshalKind>();
+            marshalKinds = new Stack<MarshalKind>();
             printScopeKinds = new Stack<TypePrintScopeKind>();
             PushContext(TypePrinterContextKind.Managed);
-            PushMarshalKind(CSharpMarshalKind.Unknown);
+            PushMarshalKind(MarshalKind.Unknown);
             PushPrintScopeKind(TypePrintScopeKind.GlobalQualified);
 
             TypePrinterContext = new CSharpTypePrinterContext();
@@ -59,12 +59,12 @@ namespace CppSharp.Generators.CSharp
 
         public TypePrinterContextKind PopContext() => contexts.Pop();
 
-        public void PushMarshalKind(CSharpMarshalKind marshalKind)
+        public void PushMarshalKind(MarshalKind marshalKind)
         {
             marshalKinds.Push(marshalKind);
         }
 
-        public CSharpMarshalKind PopMarshalKind() => marshalKinds.Pop();
+        public MarshalKind PopMarshalKind() => marshalKinds.Pop();
 
         public void PushPrintScopeKind(TypePrintScopeKind printScopeKind)
         {
@@ -111,7 +111,7 @@ namespace CppSharp.Generators.CSharp
                 PrimitiveType primitiveType;
                 if ((arrayType.IsPointerToPrimitiveType(out primitiveType) &&
                     !(arrayType is FunctionType)) || 
-                    (arrayType.IsPrimitiveType() && MarshalKind != CSharpMarshalKind.NativeField))
+                    (arrayType.IsPrimitiveType() && MarshalKind != MarshalKind.NativeField))
                 {
                     if (primitiveType == PrimitiveType.Void)
                     {
@@ -180,7 +180,7 @@ namespace CppSharp.Generators.CSharp
             var returnType = function.ReturnType;
             var args = string.Empty;
 
-            PushMarshalKind(CSharpMarshalKind.GenericDelegate);
+            PushMarshalKind(MarshalKind.GenericDelegate);
 
             if (arguments.Count > 0)
                 args = VisitParameters(function.Parameters, hasNames: false).Type;
@@ -200,7 +200,7 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrEmpty(args))
                 args = string.Format(", {0}", args);
 
-            PushMarshalKind(CSharpMarshalKind.GenericDelegate);
+            PushMarshalKind(MarshalKind.GenericDelegate);
 
             var returnTypePrinterResult = returnType.Visit(this);
 
@@ -252,7 +252,7 @@ namespace CppSharp.Generators.CSharp
 
             if (allowStrings && IsConstCharString(pointer))
             {
-                if (isManagedContext || MarshalKind == CSharpMarshalKind.GenericDelegate)
+                if (isManagedContext || MarshalKind == MarshalKind.GenericDelegate)
                     return "string";
                 if (TypePrinterContext.Parameter == null || TypePrinterContext.Parameter.Name == Helpers.ReturnIdentifier)
                     return IntPtrType;
@@ -538,7 +538,7 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Bool:
                     // returned structs must be blittable and bool isn't
-                    return MarshalKind == CSharpMarshalKind.NativeField ?
+                    return MarshalKind == MarshalKind.NativeField ?
                         "byte" : "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
