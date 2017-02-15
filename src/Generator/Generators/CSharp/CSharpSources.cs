@@ -184,8 +184,10 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public override bool VisitDeclContext(DeclarationContext context)
+        public override bool VisitNamespace(Namespace @namespace)
         {
+            var context = @namespace;
+
             var isNamespace = context is Namespace;
             var isTranslationUnit = context is TranslationUnit;
 
@@ -199,6 +201,19 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
             }
 
+            var ret = base.VisitNamespace(@namespace);
+
+            if (shouldGenerateNamespace)
+            {
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+
+            return ret;
+        }
+
+        public override bool VisitDeclContext(DeclarationContext context)
+        {
             // Generate all the enum declarations.
             foreach (var @enum in context.Enums)
             {
@@ -288,12 +303,6 @@ namespace CppSharp.Generators.CSharp
 
             foreach(var childNamespace in context.Namespaces)
                 childNamespace.Visit(this);
-
-            if (shouldGenerateNamespace)
-            {
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
 
             return true;
         }
