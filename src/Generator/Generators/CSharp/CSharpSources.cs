@@ -577,7 +577,7 @@ namespace CppSharp.Generators.CSharp
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
 
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
 
             foreach (var field in @class.Layout.Fields)
                 GenerateClassInternalsField(field);
@@ -665,7 +665,7 @@ namespace CppSharp.Generators.CSharp
 
         private IEnumerable<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
         {
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
 
             retType = function.ReturnType.CSharpType(TypePrinter);
 
@@ -904,7 +904,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     ctx.ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
                         $"(({@class.Visit(TypePrinter)}*) {Helpers.InstanceIdentifier})")}{
                         (@class.IsValueType ? "." : "->")}{Helpers.SafeIdentifier(name)}";
@@ -938,7 +938,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 var var = decl as Variable;
 
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
 
                 var location = $@"CppSharp.SymbolResolver.ResolveSymbol(""{
                     GetLibraryOf(decl)}"", ""{var.Mangled}"")";
@@ -989,7 +989,7 @@ namespace CppSharp.Generators.CSharp
             if (Context.Options.MarshalCharAsManagedChar && isChar)
             {
                 var typePrinter = new CSharpTypePrinter(Context);
-                typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                typePrinter.PushContext(TypePrinterContextKind.Native);
                 type = originalType.Visit(typePrinter).Type;
             }
             else
@@ -1104,7 +1104,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
 
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
                 TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                 var ctx = new CSharpMarshalContext(Context)
                 {
@@ -1158,7 +1158,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 var var = decl as Variable;
 
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
 
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     GetLibraryOf(decl), var.Mangled);
@@ -1442,7 +1442,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("if (__OriginalVTables != null)");
             WriteLineIndent("return;");
 
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
             WriteLine($"var native = ({@class.Visit(TypePrinter)}*) {Helpers.InstanceIdentifier}.ToPointer();");
             TypePrinter.PopContext();
             NewLine();
@@ -1516,7 +1516,7 @@ namespace CppSharp.Generators.CSharp
 
         private void SaveOriginalVTablePointers(Class @class, bool cast = false)
         {
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
             var pointer = cast ? $@"(({@class.Visit(TypePrinter)}*) native)" : "native";
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
@@ -1695,7 +1695,7 @@ namespace CppSharp.Generators.CSharp
                 if (method.HasIndirectReturnTypeParameter)
                 {
                     var retParam = method.Parameters.First(p => p.Kind == ParameterKind.IndirectReturnType);
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine("*({0}*) {1} = {2};",
                         method.OriginalReturnType.Visit(TypePrinter), retParam.Name, marshal.Context.Return);
                     TypePrinter.PopContext();
@@ -1782,7 +1782,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateEvent(Event @event)
         {
             PushBlock(CSharpBlockKind.Event, @event);
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
@@ -1850,7 +1850,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateEventRaiseWrapper(Event @event, string delegateInstance)
         {
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
@@ -1973,7 +1973,7 @@ namespace CppSharp.Generators.CSharp
                     Helpers.DummyIdentifier);
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
                 var classInternal = @class.Visit(TypePrinter);
                 TypePrinter.PopContext();
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
@@ -2101,7 +2101,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
                 WriteLine($"{Helpers.InstanceField} = *({@class.Visit(TypePrinter)}*) native;");
                 TypePrinter.PopContext();
             }
@@ -2114,7 +2114,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateNativeConstructorByValue(Class @class, string ctorCall)
         {
             TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
             var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
             TypePrinter.PopContext();
 
@@ -2141,7 +2141,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine($"{@class.Visit(TypePrinter)}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
                         @class.Visit(TypePrinter),
                         GetFunctionNativeIdentifier(copyCtorMethod));
@@ -2443,7 +2443,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("if ({0} == global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
                     WriteLineIndent("return global::System.IntPtr.Zero.GetHashCode();");
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine($@"return (*({@class.Visit(TypePrinter)}*) {
                         Helpers.InstanceIdentifier}).GetHashCode();");
                     TypePrinter.PopContext();
@@ -2614,7 +2614,7 @@ namespace CppSharp.Generators.CSharp
                     GenerateInternalFunctionCall(method);
                 else
                 {
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     TypePrinter.PushPrintScopeKind(TypePrintScopeKind.Local);
                     var classInternal = @class.Visit(TypePrinter);
                     TypePrinter.PopContext();
@@ -2643,7 +2643,7 @@ namespace CppSharp.Generators.CSharp
             string @internal = Helpers.InternalStruct;
             if (@class != null && @class is ClassTemplateSpecialization)
             {
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
                 @internal = @class.Visit(TypePrinter).Type;
                 TypePrinter.PopContext();
             }
@@ -2704,7 +2704,7 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     var @class = retClass.OriginalClass ?? retClass;
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine($"var {Helpers.ReturnIdentifier} = new {@class.Visit(TypePrinter)}();");
                     TypePrinter.PopContext();
                 }
@@ -3046,7 +3046,7 @@ namespace CppSharp.Generators.CSharp
                 var callingConvention = attributedType == null
                     ? functionType.CallingConvention
                     : ((FunctionType) attributedType.Equivalent.Type).CallingConvention;
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
                 var interopCallConv = callingConvention.ToInteropCallConv();
                 if (interopCallConv == System.Runtime.InteropServices.CallingConvention.Winapi)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");

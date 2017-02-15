@@ -605,7 +605,7 @@ namespace CppSharp.Generators.CSharp
                         Context.Context.Options.MarshalCharAsManagedChar &&
                         primitive == PrimitiveType.Char)
                     {
-                        typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                        typePrinter.PushContext(TypePrinterContextKind.Native);
                         Context.Return.Write(string.Format("({0}) ", pointer.Visit(typePrinter)));
                         typePrinter.PopContext();
                     }
@@ -779,7 +779,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var realClass = @class.OriginalClass ?? @class;
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            typePrinter.PushContext(TypePrinterContextKind.Native);
             var qualifiedIdentifier = realClass.Visit(typePrinter);
             typePrinter.PopContext();
             Context.Return.Write(

@@ -7,7 +7,9 @@ namespace CppSharp.AST
     public enum TypePrinterContextKind
     {
         Normal,
-        Template
+        Template,
+        Native,
+        Managed
     }
 
     public abstract class TypePrinterContext

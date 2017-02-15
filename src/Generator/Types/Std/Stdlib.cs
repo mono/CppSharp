@@ -49,11 +49,11 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Managed)
+            if (ctx.CSharpKind == TypePrinterContextKind.Managed)
                 return "string";
             ClassTemplateSpecialization basicString = GetBasicString(ctx.Type);
             var typePrinter = new CSharpTypePrinter(null);
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            typePrinter.PushContext(TypePrinterContextKind.Native);
             return basicString.Visit(typePrinter).Type;
         }
 
@@ -62,7 +62,7 @@ namespace CppSharp.Types.Std
             var type = ctx.Parameter.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var typePrinter = new CSharpTypePrinter(ctx.Context);
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            typePrinter.PushContext(TypePrinterContextKind.Native);
             if (!ctx.Parameter.Type.Desugar().IsAddress())
                 ctx.Return.Write("*({0}*) ", basicString.Visit(typePrinter));
             typePrinter.PopContext();
@@ -294,7 +294,7 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
+            if (ctx.CSharpKind == TypePrinterContextKind.Native)
                 return "Std.Vector";
 
             return string.Format("Std.Vector<{0}>", ctx.GetTemplateParameterList());
@@ -340,7 +340,7 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
+            if (ctx.CSharpKind == TypePrinterContextKind.Native)
                 return "Std.Map";
 
             var type = Type as TemplateSpecializationType;

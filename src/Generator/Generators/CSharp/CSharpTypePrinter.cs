@@ -10,15 +10,9 @@ using System.Text;
 
 namespace CppSharp.Generators.CSharp
 {
-    public enum CSharpTypePrinterContextKind
-    {
-        Native,
-        Managed
-    }
-
     public class CSharpTypePrinterContext : TypePrinterContext
     {
-        public CSharpTypePrinterContextKind CSharpKind;
+        public TypePrinterContextKind CSharpKind;
         public CSharpMarshalKind MarshalKind;
         public QualifiedType FullType;
     }
@@ -42,11 +36,11 @@ namespace CppSharp.Generators.CSharp
     {
         public const string IntPtrType = "global::System.IntPtr";
 
-        private readonly Stack<CSharpTypePrinterContextKind> contexts;
+        private readonly Stack<TypePrinterContextKind> contexts;
         private readonly Stack<CSharpMarshalKind> marshalKinds;
         private readonly Stack<TypePrintScopeKind> printScopeKinds;
 
-        public CSharpTypePrinterContextKind ContextKind => contexts.Peek();
+        public TypePrinterContextKind ContextKind => contexts.Peek();
 
         public CSharpMarshalKind MarshalKind => marshalKinds.Peek();
 
@@ -62,22 +56,22 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinter(BindingContext context)
         {
             Context = context;
-            contexts = new Stack<CSharpTypePrinterContextKind>();
+            contexts = new Stack<TypePrinterContextKind>();
             marshalKinds = new Stack<CSharpMarshalKind>();
             printScopeKinds = new Stack<TypePrintScopeKind>();
-            PushContext(CSharpTypePrinterContextKind.Managed);
+            PushContext(TypePrinterContextKind.Managed);
             PushMarshalKind(CSharpMarshalKind.Unknown);
             PushPrintScopeKind(TypePrintScopeKind.GlobalQualified);
 
             TypePrinterContext = new CSharpTypePrinterContext();
         }
 
-        public void PushContext(CSharpTypePrinterContextKind contextKind)
+        public void PushContext(TypePrinterContextKind contextKind)
         {
             contexts.Push(contextKind);
         }
 
-        public CSharpTypePrinterContextKind PopContext() => contexts.Pop();
+        public TypePrinterContextKind PopContext() => contexts.Pop();
 
         public void PushMarshalKind(CSharpMarshalKind marshalKind)
         {
@@ -123,7 +117,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitArrayType(ArrayType array,
             TypeQualifiers quals)
         {
-            if (ContextKind == CSharpTypePrinterContextKind.Native &&
+            if (ContextKind == TypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
                 Type arrayType = array.Type.Desugar();
@@ -187,7 +181,7 @@ namespace CppSharp.Generators.CSharp
 
             return string.Format("{0}{1}", array.Type.Visit(this),
                 array.SizeType == ArrayType.ArraySize.Constant ? "[]" :
-                   (ContextKind == CSharpTypePrinterContextKind.Managed ? "*" : string.Empty));
+                   (ContextKind == TypePrinterContextKind.Managed ? "*" : string.Empty));
 
             // C# only supports fixed arrays in unsafe sections
             // and they are constrained to a set of built-in types.
@@ -207,7 +201,7 @@ namespace CppSharp.Generators.CSharp
 
             PopMarshalKind();
 
-            if (ContextKind != CSharpTypePrinterContextKind.Managed)
+            if (ContextKind != TypePrinterContextKind.Managed)
                 return IntPtrType;
 
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
@@ -268,7 +262,7 @@ namespace CppSharp.Generators.CSharp
                 return string.Format("{0}", function.Visit(this, quals));
             }
 
-            var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
+            var isManagedContext = ContextKind == TypePrinterContextKind.Managed;
 
             if (allowStrings && IsConstCharString(pointer))
             {
@@ -333,7 +327,7 @@ namespace CppSharp.Generators.CSharp
             Class @class;
             if ((desugared.IsDependent || desugared.TryGetClass(out @class) ||
                 (desugared is ArrayType && TypePrinterContext.Parameter != null))
-                && ContextKind == CSharpTypePrinterContextKind.Native)
+                && ContextKind == TypePrinterContextKind.Native)
             {
                 return IntPtrType;
             }
@@ -386,7 +380,7 @@ namespace CppSharp.Generators.CSharp
             FunctionType func;
             if (decl.Type.IsPointerTo(out func))
             {
-                if (ContextKind == CSharpTypePrinterContextKind.Native)
+                if (ContextKind == TypePrinterContextKind.Native)
                     return IntPtrType;
                 // TODO: Use SafeIdentifier()
                 return VisitDeclaration(decl);
@@ -567,7 +561,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
                     return Options.MarshalCharAsManagedChar &&
-                        ContextKind != CSharpTypePrinterContextKind.Native
+                        ContextKind != TypePrinterContextKind.Native
                         ? "char"
                         : "sbyte";
                 case PrimitiveType.SChar: return "sbyte";
@@ -609,7 +603,7 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitClassDecl(Class @class)
         {
-            if (ContextKind == CSharpTypePrinterContextKind.Native)
+            if (ContextKind == TypePrinterContextKind.Native)
             {
                 if (PrintScopeKind == TypePrintScopeKind.Local)
                     return Helpers.InternalStruct;
@@ -621,7 +615,7 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
         {
-            if (ContextKind == CSharpTypePrinterContextKind.Native)
+            if (ContextKind == TypePrinterContextKind.Native)
                 return $@"{VisitClassDecl(specialization)}{
                     Helpers.GetSuffixForInternal(specialization)}";
             return VisitClassDecl(specialization);
@@ -685,7 +679,7 @@ namespace CppSharp.Generators.CSharp
 
             Declaration ctx;
             var specialization = decl as ClassTemplateSpecialization;
-            if (specialization != null && ContextKind == CSharpTypePrinterContextKind.Native)
+            if (specialization != null && ContextKind == TypePrinterContextKind.Native)
             {
                 ctx = specialization.TemplatedDecl.TemplatedClass.Namespace;
                 if (specialization.OriginalNamespace is Class &&
