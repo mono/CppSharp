@@ -21,8 +21,7 @@ namespace CppSharp.Generators.CLI
 
         public override void Process()
         {
-            PushBlock(BlockKind.Header);
-            PopBlock();
+            GenerateFilePreamble();
 
             PushBlock(CLIBlockKind.Includes);
             WriteLine("#pragma once");

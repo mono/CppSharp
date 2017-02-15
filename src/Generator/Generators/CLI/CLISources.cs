@@ -24,8 +24,7 @@ namespace CppSharp.Generators.CLI
 
         public override void Process()
         {
-            PushBlock(BlockKind.Header);
-            PopBlock();
+            GenerateFilePreamble();
 
             var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName)
                 .Replace('\\', '/');
