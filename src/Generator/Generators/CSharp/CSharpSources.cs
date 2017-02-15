@@ -235,28 +235,9 @@ namespace CppSharp.Generators.CSharp
             }
 
             // Generate all the struct/class declarations.
-            foreach (var @class in context.Classes.Where(c => !c.IsIncomplete))
+            foreach (var @class in context.Classes)
             {
-                if (@class.IsInterface)
-                {
-                    GenerateInterface(@class);
-                    continue;
-                }
-
-                var specialization = @class as ClassTemplateSpecialization;
-                if (specialization != null &&
-                    specialization.SpecializationKind ==
-                        TemplateSpecializationKind.ExplicitInstantiationDeclaration)
-                    continue;
-
-                if (!@class.IsDependent)
-                {
-                    @class.Visit(this);
-                    continue;
-                }
-
-                if (!(@class.Namespace is Class))
-                    GenerateClassTemplateSpecializationInternal(@class);
+                @class.Visit(this);
             }
 
             if (context.Functions.Any(f => f.IsGenerated) ||
@@ -438,8 +419,27 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsIncomplete)
                 return false;
 
-            foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
-                GenerateClassTemplateSpecializationInternal(nestedTemplate);
+            if (@class.IsInterface)
+            {
+                GenerateInterface(@class);
+                return true;
+            }
+
+            var specialization = @class as ClassTemplateSpecialization;
+            if (specialization != null && specialization.SpecializationKind ==
+                TemplateSpecializationKind.ExplicitInstantiationDeclaration)
+                return true;
+
+            if (@class.IsDependent)
+            {
+                foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
+                    GenerateClassTemplateSpecializationInternal(nestedTemplate);
+
+                if (!(@class.Namespace is Class))
+                    GenerateClassTemplateSpecializationInternal(@class);
+
+                return true;
+            }
 
             System.Type typeMap = null;
             string key = string.Empty;
