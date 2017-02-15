@@ -155,13 +155,19 @@ namespace CppSharp.Passes
             }
             if (typesBuilder.Length > 0)
                 typesBuilder.Remove(typesBuilder.Length - 1, 1);
-            var delegateName = Helpers.FormatTypesStringForIdentifier(typesBuilder);
+            var delegateName = FormatTypesStringForIdentifier(typesBuilder);
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
-                delegateName = "Action_" + delegateName;
+                delegateName.Insert(0, "Action_");
             else
-                delegateName = "Func_" + delegateName;
+                delegateName.Insert(0, "Func_");
 
-            return delegateName;
+            return delegateName.ToString();
+        }
+
+        private static StringBuilder FormatTypesStringForIdentifier(StringBuilder types)
+        {
+            return types.Replace("global::System.", string.Empty).Replace("global::", string.Empty)
+                .Replace("*", "Ptr").Replace('.', '_').Replace(' ', '_').Replace("::", "_");
         }
 
         private CSharpTypePrinter TypePrinter

@@ -67,12 +67,6 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public static string FormatTypesStringForIdentifier(StringBuilder types)
-        {
-            return types.Replace("global::System.", string.Empty).Replace("*", "Ptr")
-                .Replace('.', '_').Replace(' ', '_').Replace("::", "_").ToString();
-        }
-
         public static string GetSuffixForInternal(Declaration context)
         {
             var specialization = context as ClassTemplateSpecialization;
