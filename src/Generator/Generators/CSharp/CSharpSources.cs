@@ -222,9 +222,6 @@ namespace CppSharp.Generators.CSharp
             // Generate all the enum declarations.
             foreach (var @enum in context.Enums)
             {
-                if (@enum.IsIncomplete)
-                    continue;
-
                 GenerateEnum(@enum);
             }
 
@@ -282,8 +279,6 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var @event in context.Events)
             {
-                if (!@event.IsGenerated) continue;
-
                 GenerateEvent(@event);
             }
 
@@ -1781,6 +1776,9 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateEvent(Event @event)
         {
+            if (!@event.IsGenerated)
+                return;
+
             PushBlock(CSharpBlockKind.Event, @event);
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
@@ -3051,6 +3049,9 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateEnum(Enumeration @enum)
         {
+            if (@enum.IsIncomplete)
+                return;
+
             PushBlock(CSharpBlockKind.Enum);
             GenerateDeclarationCommon(@enum);
 
