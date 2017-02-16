@@ -223,7 +223,7 @@ namespace CppSharp.Generators.CSharp
                 @enum.Visit(this);
 
             foreach (var typedef in context.Typedefs)
-                GenerateTypedef(typedef);
+                typedef.Visit(this);
 
             foreach (var @class in context.Classes)
                 @class.Visit(this);
@@ -2999,7 +2999,7 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
-        public bool GenerateTypedef(TypedefNameDecl typedef)
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             if (!typedef.IsGenerated)
                 return false;
