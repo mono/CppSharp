@@ -23,16 +23,17 @@ namespace CppSharp.Passes
             get { return wait; }
             set
             {
-                if (wait != value)
-                {
-                    wait = value;
-                    if (!wait && manualResetEvent != null)
-                    {
-                        manualResetEvent.Set();
-                        manualResetEvent.Dispose();
-                        manualResetEvent = null;
-                    }
-                }
+                if (wait == value)
+                    return;
+
+                wait = value;
+
+                if (wait || manualResetEvent == null)
+                    return;
+
+                manualResetEvent.Set();
+                manualResetEvent.Dispose();
+                manualResetEvent = null;
             }
         }
 
