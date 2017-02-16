@@ -206,6 +206,11 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new NotImplementedException();
             }
+
+            public bool VisitTypedefNameDecl(TypedefNameDecl typedef)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 

@@ -274,6 +274,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public TypePrinterResult VisitTypedefNameDecl(TypedefNameDecl typedef)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual TypePrinterResult VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {

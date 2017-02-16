@@ -442,6 +442,11 @@ namespace CppSharp.AST
                 nonTypeTemplateParameter.DefaultArgument.String);
         }
 
+        public string VisitTypedefNameDecl(TypedefNameDecl typedef)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual string VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
         {
             throw new NotImplementedException();

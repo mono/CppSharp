@@ -2999,7 +2999,7 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
-        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        public override bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
             if (!typedef.IsGenerated)
                 return false;

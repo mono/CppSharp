@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -389,7 +390,7 @@ namespace CppSharp.AST
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
-        public virtual bool VisitTypedefDecl(TypedefDecl typedef)
+        public bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
             if (!VisitDeclaration(typedef))
                 return false;
@@ -397,12 +398,14 @@ namespace CppSharp.AST
             return typedef.Type.Visit(this, typedef.QualifiedType.Qualifiers);
         }
 
+        public virtual bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            return VisitTypedefNameDecl(typedef);
+        }
+
         public bool VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            if (!VisitDeclaration(typeAlias))
-                return false;
-
-            return typeAlias.Type.Visit(this, typeAlias.QualifiedType.Qualifiers);
+            return VisitTypedefNameDecl(typeAlias);
         }
 
         public virtual bool VisitEnumDecl(Enumeration @enum)

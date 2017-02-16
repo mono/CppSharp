@@ -90,14 +90,19 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitTypedefDecl(TypedefDecl typedef)
+        public virtual bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
             throw new NotImplementedException();
         }
 
+        public virtual bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            return VisitTypedefNameDecl(typedef);
+        }
+
         public virtual bool VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            throw new NotImplementedException();
+            return VisitTypedefNameDecl(typeAlias);
         }
 
         public virtual bool VisitEnumDecl(Enumeration @enum)
