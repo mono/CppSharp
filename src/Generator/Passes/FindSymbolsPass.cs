@@ -44,6 +44,7 @@ namespace CppSharp.Passes
                 manualResetEvent = new ManualResetEvent(false);
                 manualResetEvent.WaitOne();
             }
+
             return base.VisitASTContext(context);
         }
 
