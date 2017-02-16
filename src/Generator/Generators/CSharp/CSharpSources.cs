@@ -219,73 +219,67 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitDeclContext(DeclarationContext context)
         {
-            // Generate all the enum declarations.
             foreach (var @enum in context.Enums)
-            {
                 GenerateEnum(@enum);
-            }
 
-            // Generate all the typedef declarations.
             foreach (var typedef in context.Typedefs)
-            {
                 GenerateTypedef(typedef);
-            }
 
-            // Generate all the struct/class declarations.
             foreach (var @class in context.Classes)
-            {
                 @class.Visit(this);
-            }
-
-            if (context.Functions.Any(f => f.IsGenerated) ||
-                (!(context is Class) &&
-                context.Variables.Any(
-                    v => v.IsGenerated && v.Access == AccessSpecifier.Public)))
-            {
-                PushBlock(CSharpBlockKind.Functions);
-                var parentName = Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
-                WriteLine("public unsafe partial class {0}", parentName);
-                WriteStartBraceIndent();
-
-                PushBlock(CSharpBlockKind.InternalsClass);
-                GenerateClassInternalHead();
-                WriteStartBraceIndent();
-
-                // Generate all the internal function declarations.
-                foreach (var function in context.Functions)
-                {
-                    if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized) continue;
-
-                    GenerateInternalFunction(function);
-                }
-
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-
-                foreach (var function in context.Functions)
-                {
-                    if (!function.IsGenerated) continue;
-
-                    GenerateFunction(function, parentName);
-                }
-
-                foreach (var variable in context.Variables.Where(
-                    v => v.IsGenerated && v.Access == AccessSpecifier.Public))
-                    GenerateVariable(null, variable);
-
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
 
             foreach (var @event in context.Events)
-            {
                 GenerateEvent(@event);
-            }
+
+            GenerateNamespaceFunctionsAndVariables(context);
 
             foreach(var childNamespace in context.Namespaces)
                 childNamespace.Visit(this);
 
             return true;
+        }
+
+        void GenerateNamespaceFunctionsAndVariables(DeclarationContext context)
+        {
+            var hasGlobalVariables = !(context is Class) && context.Variables.Any(
+                v => v.IsGenerated && v.Access == AccessSpecifier.Public);
+
+            if (!context.Functions.Any(f => f.IsGenerated) && !hasGlobalVariables)
+                return;
+
+            PushBlock(CSharpBlockKind.Functions);
+            var parentName = Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+            WriteLine("public unsafe partial class {0}", parentName);
+            WriteStartBraceIndent();
+
+            PushBlock(CSharpBlockKind.InternalsClass);
+            GenerateClassInternalHead();
+            WriteStartBraceIndent();
+
+            // Generate all the internal function declarations.
+            foreach (var function in context.Functions)
+            {
+                if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized) continue;
+
+                GenerateInternalFunction(function);
+            }
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            foreach (var function in context.Functions)
+            {
+                if (!function.IsGenerated) continue;
+
+                GenerateFunction(function, parentName);
+            }
+
+            foreach (var variable in context.Variables.Where(
+                v => v.IsGenerated && v.Access == AccessSpecifier.Public))
+                GenerateVariable(null, variable);
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateClassTemplateSpecializationInternal(Class classTemplate)
