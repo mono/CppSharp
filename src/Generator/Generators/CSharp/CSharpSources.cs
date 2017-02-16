@@ -1691,7 +1691,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine("return {0};", marshal.Context.Return);                    
+                    WriteLine("return {0};", marshal.Context.Return);
                 }
             }
         }
