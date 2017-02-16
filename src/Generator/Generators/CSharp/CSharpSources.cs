@@ -362,20 +362,19 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(BlockKind.BlockComment);
                 WriteLine(comment.FullComment.CommentToString(Options.CommentPrefix));
                 PopBlock();
+                return;
             }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(comment.BriefText))
-                    return;
 
-                PushBlock(BlockKind.BlockComment);
-                WriteLine("{0} <summary>", Options.CommentPrefix);
-                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                            Environment.NewLine.ToCharArray()))
-                    WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
-                WriteLine("{0} </summary>", Options.CommentPrefix);
-                PopBlock();
-            }
+            if (string.IsNullOrWhiteSpace(comment.BriefText))
+                return;
+
+            PushBlock(BlockKind.BlockComment);
+            WriteLine("{0} <summary>", Options.CommentPrefix);
+            foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                        Environment.NewLine.ToCharArray()))
+                WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
+            WriteLine("{0} </summary>", Options.CommentPrefix);
+            PopBlock();
         }
 
         public void GenerateInlineSummary(RawComment comment)
