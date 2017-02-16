@@ -229,7 +229,7 @@ namespace CppSharp.Generators.CSharp
                 @class.Visit(this);
 
             foreach (var @event in context.Events)
-                GenerateEvent(@event);
+                @event.Visit(this);
 
             GenerateNamespaceFunctionsAndVariables(context);
 
@@ -1768,10 +1768,10 @@ namespace CppSharp.Generators.CSharp
 
         #region Events
 
-        private void GenerateEvent(Event @event)
+        public override bool VisitEvent(Event @event)
         {
             if (!@event.IsGenerated)
-                return;
+                return true;
 
             PushBlock(CSharpBlockKind.Event, @event);
             TypePrinter.PushContext(TypePrinterContextKind.Native);
@@ -1801,6 +1801,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateEventRaiseWrapper(@event, delegateInstance);
             PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
         }
 
         private void GenerateEventAdd(Event @event, string delegateRaise, string delegateName, string delegateInstance)
