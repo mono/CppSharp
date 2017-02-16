@@ -418,11 +418,11 @@ namespace CppSharp.Generators.CSharp
                 TemplateSpecializationKind.ExplicitInstantiationDeclaration)
                 return true;
 
+            foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
+                GenerateClassTemplateSpecializationInternal(nestedTemplate);
+
             if (@class.IsDependent)
             {
-                foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
-                    GenerateClassTemplateSpecializationInternal(nestedTemplate);
-
                 if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
 
