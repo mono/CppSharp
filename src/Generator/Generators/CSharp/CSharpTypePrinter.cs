@@ -591,21 +591,6 @@ namespace CppSharp.Generators.CSharp
             return VisitClassDecl(specialization);
         }
 
-        public override TypePrinterResult VisitFieldDecl(Field field)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitFunctionDecl(Function function)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitMethodDecl(Method method)
-        {
-            throw new NotImplementedException();
-        }
-
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
         {
             var paramType = parameter.Type;
@@ -689,41 +674,6 @@ namespace CppSharp.Generators.CSharp
             return GetName(variable);
         }
 
-        public override TypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitFunctionTemplateDecl(FunctionTemplate template)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitMacroDefinition(MacroDefinition macro)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitNamespace(Namespace @namespace)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitEvent(Event @event)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitProperty(Property property)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitFriend(Friend friend)
-        {
-            throw new NotImplementedException();
-        }
-
         public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
             bool hasNames)
         {
@@ -780,12 +730,6 @@ namespace CppSharp.Generators.CSharp
             return nonTypeTemplateParameter.Name;
         }
 
-        public override TypePrinterResult VisitTypeAliasTemplateDecl(
-            TypeAliasTemplate typeAliasTemplate)
-        {
-            throw new NotImplementedException();
-        }
-
         public override TypePrinterResult VisitUnaryTransformType(
             UnaryTransformType unaryTransformType, TypeQualifiers quals)
         {
@@ -798,29 +742,6 @@ namespace CppSharp.Generators.CSharp
             TypeQualifiers quals)
         {
             return vectorType.ElementType.Visit(this);
-        }
-
-        public override TypePrinterResult VisitUnsupportedType(UnsupportedType type,
-            TypeQualifiers quals)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitFunctionTemplateSpecializationDecl(
-            FunctionTemplateSpecialization specialization)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitVarTemplateDecl(VarTemplate template)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TypePrinterResult VisitVarTemplateSpecializationDecl(
-            VarTemplateSpecialization template)
-        {
-            throw new NotImplementedException();
         }
     }
 
