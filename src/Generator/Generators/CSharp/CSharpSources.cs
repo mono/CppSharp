@@ -220,7 +220,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitDeclContext(DeclarationContext context)
         {
             foreach (var @enum in context.Enums)
-                GenerateEnum(@enum);
+                @enum.Visit(this);
 
             foreach (var typedef in context.Typedefs)
                 GenerateTypedef(typedef);
@@ -3041,10 +3041,10 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public void GenerateEnum(Enumeration @enum)
+        public override bool VisitEnumDecl(Enumeration @enum)
         {
             if (@enum.IsIncomplete)
-                return;
+                return true;
 
             PushBlock(CSharpBlockKind.Enum);
             GenerateDeclarationCommon(@enum);
@@ -3085,6 +3085,8 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
 
             PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
         }
 
         public static string GetMethodIdentifier(Method method)
