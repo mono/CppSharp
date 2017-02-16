@@ -414,11 +414,6 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            var specialization = @class as ClassTemplateSpecialization;
-            if (specialization != null && specialization.SpecializationKind ==
-                TemplateSpecializationKind.ExplicitInstantiationDeclaration)
-                return true;
-
             foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
                 GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
