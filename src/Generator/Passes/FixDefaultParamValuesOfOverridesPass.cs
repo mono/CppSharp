@@ -14,8 +14,9 @@ namespace CppSharp.Passes
             {
                 var rootBaseParameter = rootBaseMethod.Parameters[i];
                 var parameter = method.Parameters[i];
-
-                if (rootBaseParameter.DefaultArgument != null)
+                if (rootBaseParameter.DefaultArgument == null)
+                    parameter.DefaultArgument = null;
+                else
                     parameter.DefaultArgument = rootBaseParameter.DefaultArgument.Clone();
             }
 
