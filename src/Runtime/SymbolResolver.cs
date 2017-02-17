@@ -20,6 +20,9 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace CppSharp
@@ -57,31 +60,27 @@ namespace CppSharp
 
         public static IntPtr LoadImage (ref string name)
         {
-            var pathvalues = Environment.GetEnvironmentVariable("PATH");
+            var pathValues = Environment.GetEnvironmentVariable("PATH");
+            var paths = new List<string>(pathValues == null ? new string[0] :
+                pathValues.Split(Path.PathSeparator));
+            paths.Insert(0, Directory.GetCurrentDirectory());
+            paths.Insert(0, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
             foreach (var format in formats)
             {
                 // Search the Current or specified directory for the library
                 string filename = string.Format(format, name);
-                string attempted = System.IO.Path.Combine(Environment.CurrentDirectory, filename);
-                if (!System.IO.File.Exists(attempted))
+                string attempted = null;
+                foreach (var path in paths)
                 {
-                    // Search the Path directories for the library
-                    if (pathvalues == null)
-                        continue;
-
-                    foreach (var path in pathvalues.Split(System.IO.Path.PathSeparator))
+                    var fullPath = Path.Combine(path, filename);
+                    if (File.Exists(fullPath))
                     {
-                        var fullPath = System.IO.Path.Combine(path, filename);
-                        if (System.IO.File.Exists(fullPath))
-                        {
-                            attempted = fullPath;
-                            break;
-                        }
-
+                        attempted = fullPath;
+                        break;
                     }
                 }
-                if (!System.IO.File.Exists(attempted))
+                if (!File.Exists(attempted))
                     continue;
 
                 var ptr = loadImage (attempted);
