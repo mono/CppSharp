@@ -550,8 +550,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         //Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
     }
 
-    // HACK: the completion of types is temporarily suspended because of problems with QtWidgets
-    [Test, Ignore]
+    [Test, Ignore("The completion of types is temporarily suspended because of problems with QtWidgets.")]
     public void TestTemplateInternals()
     {
         foreach (var internalType in new[]
