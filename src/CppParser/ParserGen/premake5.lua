@@ -6,6 +6,8 @@ project "CppSharp.Parser.Gen"
   debugdir "."
   
   files { "ParserGen.cs", "*.lua" }
+  vpaths { ["*"] = "*" }
+
   links
   {
     "CppSharp",

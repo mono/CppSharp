@@ -49,6 +49,7 @@ function SetupTestGeneratorProject(name, depends)
     kind "ConsoleApp"
     
     files { name .. ".cs" }
+    vpaths { ["*"] = "*" }
 
     dependson { name .. ".Native" }
 
@@ -93,6 +94,7 @@ function SetupTestNativeProject(name, depends)
     language "C++"
 
     files { "**.h", "**.cpp" }
+    vpaths { ["*"] = "*" }
 
     if depends ~= nil then
       links { depends .. ".Native" }
@@ -125,6 +127,7 @@ function SetupTestProjectsCSharp(name, depends)
       path.join(gendir, name, name .. ".cs"),
       path.join(gendir, name, "Std.cs")
     }
+    vpaths { ["*"] = "*" }
 
     linktable = { "CppSharp.Runtime" }
 
@@ -138,6 +141,8 @@ function SetupTestProjectsCSharp(name, depends)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
+    vpaths { ["*"] = "*" }
+
     links { name .. ".CSharp", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
@@ -171,6 +176,7 @@ function SetupTestProjectsCLI(name, extraFiles)
         files { path.join(gendir, name, file .. ".h") }
       end
     end
+    vpaths { ["*"] = "*" }
 
     includedirs { path.join(testsdir, name), incdir }
     links { name .. ".Native" }    
@@ -179,6 +185,8 @@ function SetupTestProjectsCLI(name, extraFiles)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
+    vpaths { ["*"] = "*" }
+
     links { name .. ".CLI", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
