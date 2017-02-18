@@ -15,6 +15,7 @@ addons:
     - g++-4.8
 
 install:
+  - export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/bin
   - build/InstallMono.sh
   - build/InstallNugets.sh  
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
