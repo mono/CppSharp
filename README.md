@@ -112,4 +112,6 @@ CppSharp is used by the following projects:
 
 [ChakraSharp](https://github.com/baristalabs/ChakraSharp)
 
+[FFmpeg.AutoGen](https://github.com/Ruslan-B/FFmpeg.AutoGen)
+
 Please feel free to send us a pull request adding your own projects to the list above.
