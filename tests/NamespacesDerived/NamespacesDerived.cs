@@ -1,7 +1,6 @@
 using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
-using CppSharp.Passes;
 using CppSharp.Utils;
 
 namespace CppSharp.Tests
@@ -29,6 +28,7 @@ namespace CppSharp.Tests
             if (System.Type.GetType("Mono.Runtime") == null)
                 module.SharedLibraryName += ".dll";
             module.LibraryName = @base;
+            driver.Options.Modules[1].Dependencies.Add(module);
             driver.Options.Modules.Insert(1, module);
         }
 
