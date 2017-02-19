@@ -11,11 +11,6 @@ namespace CppSharp.Generator.Tests.Passes
     {
         private PassBuilder<TranslationUnitPass> passBuilder;
 
-        [TestFixtureSetUp]
-        public void Init()
-        {
-        }
-
         [SetUp]
         public void Setup()
         {

@@ -11,7 +11,7 @@ namespace CppSharp.Generator.Tests.AST
     [TestFixture]
     public class TestAST : ASTTestFixture
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             CppSharp.AST.Type.TypePrinterDelegate = type =>
@@ -22,7 +22,7 @@ namespace CppSharp.Generator.Tests.AST
             ParseLibrary("AST.h", "ASTExtensions.h");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void CleanUp()
         {
             ParserOptions.Dispose();
