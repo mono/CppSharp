@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -388,9 +387,9 @@ namespace CppSharp
             }
         }
 
-        private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
+        private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
 
-        public void CompileCode(AST.Module module)
+        public void CompileCode(Module module)
         {
             var assemblyFile = Path.Combine(Options.OutputDir, module.LibraryName + ".dll");
 
@@ -416,16 +415,17 @@ namespace CppSharp
             // add a reference to System.Core
             compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
 
-            var location = Assembly.GetExecutingAssembly().Location;
+            var location = System.Reflection.Assembly.GetExecutingAssembly().Location;
             var outputDir = Path.GetDirectoryName(location);
             var locationRuntime = Path.Combine(outputDir, "CppSharp.Runtime.dll");
             compilerParameters.ReferencedAssemblies.Add(locationRuntime);
 
-            compilerParameters.ReferencedAssemblies.AddRange(Context.Symbols.Libraries.SelectMany(
-                lib => lib.Dependencies.Where(
-                    d => libraryMappings.ContainsKey(d) &&
-                         !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
-                    .Select(l => libraryMappings[l])).ToArray());
+            compilerParameters.ReferencedAssemblies.AddRange(
+                (from dependency in module.Dependencies
+                 where libraryMappings.ContainsKey(dependency)
+                 select libraryMappings[dependency] into reference
+                 where !compilerParameters.ReferencedAssemblies.Contains(reference)
+                 select reference).ToArray());
 
             Diagnostics.Message($"Compiling {module.LibraryName}...");
             CompilerResults compilerResults;
@@ -446,10 +446,8 @@ namespace CppSharp
             HasCompilationErrors = errors.Count > 0;
             if (!HasCompilationErrors)
             {
+                libraryMappings[module] = Path.Combine(outputDir, assemblyFile);
                 Diagnostics.Message("Compilation succeeded.");
-                var wrapper = Path.Combine(outputDir, assemblyFile);
-                foreach (var library in module.Libraries)
-                    libraryMappings[library] = wrapper;
             }
         }
 
