@@ -423,9 +423,7 @@ namespace CppSharp
             compilerParameters.ReferencedAssemblies.AddRange(
                 (from dependency in module.Dependencies
                  where libraryMappings.ContainsKey(dependency)
-                 select libraryMappings[dependency] into reference
-                 where !compilerParameters.ReferencedAssemblies.Contains(reference)
-                 select reference).ToArray());
+                 select libraryMappings[dependency]).ToArray());
 
             Diagnostics.Message($"Compiling {module.LibraryName}...");
             CompilerResults compilerResults;
