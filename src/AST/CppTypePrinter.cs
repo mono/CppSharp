@@ -316,6 +316,11 @@ namespace CppSharp.AST
             return GetDeclName(decl, PrintScopeKind);
         }
 
+        public string VisitTranslationUnit(TranslationUnit unit)
+        {
+            return VisitDeclaration(unit);
+        }
+
         public virtual string VisitClassDecl(Class @class)
         {
             return VisitDeclaration(@class);

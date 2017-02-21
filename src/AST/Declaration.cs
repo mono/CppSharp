@@ -367,6 +367,7 @@ namespace CppSharp.AST
     public interface IDeclVisitor<out T>
     {
         T VisitDeclaration(Declaration decl);
+        T VisitTranslationUnit(TranslationUnit unit);
         T VisitClassDecl(Class @class);
         T VisitFieldDecl(Field field);
         T VisitFunctionDecl(Function function);

@@ -56,6 +56,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public virtual bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            return VisitDeclContext(unit);
+        }
+
         public virtual bool VisitDeclContext(DeclarationContext context)
         {
             foreach (var decl in context.Declarations)

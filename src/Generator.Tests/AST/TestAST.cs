@@ -82,6 +82,11 @@ namespace CppSharp.Generator.Tests.AST
                 throw new System.NotImplementedException();
             }
 
+            public bool VisitTranslationUnit(TranslationUnit unit)
+            {
+                throw new System.NotImplementedException();
+            }
+
             public bool VisitClassDecl(Class @class)
             {
                 throw new System.NotImplementedException();
