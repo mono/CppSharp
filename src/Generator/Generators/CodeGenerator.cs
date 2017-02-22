@@ -16,6 +16,9 @@ namespace CppSharp.Generators
 
         public abstract string FileExtension { get; }
 
+        public virtual string FilePath =>
+            $"{TranslationUnit.FileNameWithoutExtension}.{FileExtension}";
+
         protected CodeGenerator(BindingContext context, TranslationUnit unit)
             : this(context, new List<TranslationUnit> { unit })
         {
