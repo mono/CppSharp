@@ -1,19 +1,17 @@
+using System;
 using System.Linq;
-using CppSharp.Passes;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using NUnit.Framework;
 using CppSharp.Generators.CSharp;
-using System;
-using CppSharp.Generators;
-using CppSharp.Parser;
+using CppSharp.Passes;
+using NUnit.Framework;
 
 namespace CppSharp.Generator.Tests.AST
 {
     [TestFixture]
     public class TestAST : ASTTestFixture
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             CppSharp.AST.Type.TypePrinterDelegate = type =>
@@ -22,6 +20,12 @@ namespace CppSharp.Generator.Tests.AST
                 return type.IsPrimitiveType(out primitiveType) ? primitiveType.ToString() : string.Empty;
             };
             ParseLibrary("AST.h", "ASTExtensions.h");
+        }
+
+        [OneTimeTearDown]
+        public void CleanUp()
+        {
+            ParserOptions.Dispose();
         }
 
         [Test]
@@ -74,6 +78,11 @@ namespace CppSharp.Generator.Tests.AST
         class TestVisitor : IDeclVisitor<bool>
         {
             public bool VisitDeclaration(Declaration decl)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitTranslationUnit(TranslationUnit unit)
             {
                 throw new System.NotImplementedException();
             }
@@ -202,6 +211,11 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new NotImplementedException();
             }
+
+            public bool VisitTypedefNameDecl(TypedefNameDecl typedef)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 
@@ -298,11 +312,17 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(88, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
+        static string StripWindowsNewLines(string text)
+        {
+            return text.ReplaceLineBreaks(string.Empty);
+        }
+
         [Test]
         public void TestSignature()
         {
             Assert.AreEqual("void testSignature()", AstContext.FindFunction("testSignature").Single().Signature);
-            Assert.AreEqual("void testImpl()\r\n{\r\n}", AstContext.FindFunction("testImpl").Single().Signature);
+            Assert.AreEqual("void testImpl(){}",
+                StripWindowsNewLines(AstContext.FindFunction("testImpl").Single().Signature));
             Assert.AreEqual("void testConstSignature() const",
                 AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignature").Signature);
             Assert.AreEqual("void testConstSignatureWithTrailingMacro() const",
@@ -315,10 +335,8 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestAmbiguity()
         {
-            var bindingContext = new BindingContext(new DriverOptions(),
-                new ParserOptions());
-            new CleanUnitPass { Context = bindingContext }.VisitASTContext(AstContext);
-            new CheckAmbiguousFunctions { Context = bindingContext }.VisitASTContext(AstContext);
+            new CleanUnitPass { Context = Driver.Context }.VisitASTContext(AstContext);
+            new CheckAmbiguousFunctions { Context = Driver.Context }.VisitASTContext(AstContext);
             Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);
         }
 
@@ -412,19 +430,19 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestPrintingConstPointerWithConstType()
         {
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
             var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });
             var type = pointer.Visit(cppTypePrinter);
-            Assert.AreEqual(type, "const char* const");
+            Assert.That(type, Is.EqualTo("const char* const"));
         }
 
         [Test]
         public void TestPrintingSpecializationWithConstValue()
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             Assert.That(template.Specializations.Last().Visit(cppTypePrinter),
                 Is.EqualTo("TestSpecializationArguments<const TestASTEnumItemByName>"));
         }
@@ -450,6 +468,27 @@ namespace CppSharp.Generator.Tests.AST
             var regularFunctionType = (FunctionType) regular.FunctionType.Type;
             Assert.That(regularFunctionType.ExceptionSpecType,
                 Is.EqualTo(ExceptionSpecType.None));
+        }
+
+        [Test]
+        public void TestFunctionSpecializationInfo()
+        {
+            var functionWithSpecInfo = AstContext.FindFunction(
+                "functionWithSpecInfo").First(f => !f.IsDependent);
+            var @float = new QualifiedType(new BuiltinType(PrimitiveType.Float));
+            Assert.That(functionWithSpecInfo.SpecializationInfo.Arguments.Count, Is.EqualTo(2));
+            foreach (var arg in functionWithSpecInfo.SpecializationInfo.Arguments)
+                Assert.That(arg.Type, Is.EqualTo(@float));
+        }
+
+        [Test]
+        public void TestVolatile()
+        {
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
+            var builtin = new BuiltinType(PrimitiveType.Char);
+            var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true, IsVolatile = true });
+            var type = pointee.Visit(cppTypePrinter);
+            Assert.That(type, Is.EqualTo("const volatile char"));
         }
     }
 }

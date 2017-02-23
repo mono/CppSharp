@@ -22,7 +22,7 @@ namespace CppSharp.Passes
 
             var cppTypePrinter = new CppTypePrinter
             {
-                PrintScopeKind = CppTypePrintScopeKind.Qualified,
+                PrintScopeKind = TypePrintScopeKind.Qualified,
                 PrintLogicalNames = true
             };
             foreach (var specialization in @class.Specializations.Where(s => !s.IsDependent && !s.Ignore))

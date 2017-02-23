@@ -81,12 +81,12 @@ namespace CppSharp.Tests
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
+            if (ctx.CSharpKind == TypePrinterContextKind.Native)
                 return string.Format("QList.{0}{1}", Helpers.InternalStruct,
                     Type.IsAddress() ? "*" : string.Empty);
 
             return string.Format("System.Collections.Generic.{0}<{1}>",
-                ctx.MarshalKind == CSharpMarshalKind.DefaultExpression ? "List" : "IList",
+                ctx.MarshalKind == MarshalKind.DefaultExpression ? "List" : "IList",
                 ctx.GetTemplateParameterList());
         }
 

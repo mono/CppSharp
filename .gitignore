@@ -44,6 +44,7 @@ src/generator/generator
 /build/gmake
 /build/headers
 /deps/llvm
+/deps/NUnit*
 /extra
 /site
 /wip

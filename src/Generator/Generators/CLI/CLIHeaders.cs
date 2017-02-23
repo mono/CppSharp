@@ -4,7 +4,6 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
-using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
@@ -13,17 +12,16 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public class CLIHeaders : CLITemplate
     {
-        public override string FileExtension { get { return "h"; } }
-
         public CLIHeaders(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
         }
 
+        public override string FileExtension => "h";
+
         public override void Process()
         {
-            PushBlock(BlockKind.Header);
-            PopBlock();
+            GenerateFilePreamble(CommentKind.BCPL);
 
             PushBlock(CLIBlockKind.Includes);
             WriteLine("#pragma once");
@@ -781,7 +779,7 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
-                    string.Format(TypePrinter.VisitDelegate(function),
+                    string.Format(TypePrinter.VisitDelegate(function).ToString(),
                     typedef.Name));
                 PopBlock(NewLineKind.BeforeNextBlock);
 

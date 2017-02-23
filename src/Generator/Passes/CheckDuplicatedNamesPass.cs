@@ -41,9 +41,6 @@ namespace CppSharp.Passes
 
         private bool UpdateName(Function function)
         {
-            if (function.TranslationUnit.Module != null)
-                Generator.CurrentOutputNamespace = function.TranslationUnit.Module.OutputNamespace;
-
             var @params = function.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
             // Include the conversion type in case of conversion operators

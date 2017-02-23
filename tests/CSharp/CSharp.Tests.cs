@@ -550,8 +550,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         //Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
     }
 
-    // HACK: the completion of types is temporarily suspended because of problems with QtWidgets
-    [Test, Ignore]
+    [Test, Ignore("The completion of types is temporarily suspended because of problems with QtWidgets.")]
     public void TestTemplateInternals()
     {
         foreach (var internalType in new[]
@@ -609,7 +608,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
-    [Test, Ignore("For no reason this doesn't work at all, and I am tired of bugs. I fixed the compilation of this thing, I have no intention of fixing it at run-time too.")]
+    [Test]
     public void TestUnicode()
     {
         using (var testString = new TestString())
@@ -650,7 +649,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             using (var missingObjectOnVirtualCall = new MissingObjectOnVirtualCall())
             {
                 hasMissingObjectOnVirtualCall.SetMissingObjectOnVirtualCall(missingObjectOnVirtualCall);
-                hasMissingObjectOnVirtualCall.MakeMissingObjectOnVirtualCall();
+                Assert.That(hasMissingObjectOnVirtualCall.MakeMissingObjectOnVirtualCall(), Is.EqualTo(15));
             }
         }
     }
@@ -664,6 +663,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractInSecondaryBase, Is.EqualTo(5));
             Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractReturnsFieldInPrimaryBase, Is.EqualTo(201));
             Assert.That(implementsAbstractsFromPrimaryAndSecondary.AbstractReturnsFieldInSecondaryBase, Is.EqualTo(202));
+        }
+    }
+
+    [Test]
+    public void TestOverriddenSetterOnly()
+    {
+        using (var hasGetterAndOverriddenSetter = new HasGetterAndOverriddenSetter())
+        {
+            const int value = 5;
+            hasGetterAndOverriddenSetter.SetBaseSetter(value);
+            Assert.That(hasGetterAndOverriddenSetter.BaseSetter, Is.EqualTo(value));
         }
     }
 

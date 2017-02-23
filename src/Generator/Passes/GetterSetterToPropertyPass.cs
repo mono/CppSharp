@@ -152,10 +152,6 @@ namespace CppSharp.Passes
                 if (getter.IsOverride || (setter != null && setter.IsOverride))
                 {
                     var baseVirtualProperty = type.GetBaseProperty(property, getTopmost: true);
-                    if (baseVirtualProperty == null && type.GetBaseMethod(getter, getTopmost: true).IsGenerated)
-                        throw new Exception(string.Format(
-                            "Property {0} has a base property null but its getter has a generated base method.",
-                            getter.QualifiedOriginalName));
                     if (baseVirtualProperty != null && !baseVirtualProperty.IsVirtual)
                     {
                         // the only way the above can happen is if we are generating properties in abstract implementations
@@ -166,7 +162,7 @@ namespace CppSharp.Passes
                             "Base of property {0} is not virtual while the getter is.",
                             getter.QualifiedOriginalName));
                     }
-                    if (baseVirtualProperty != null && baseVirtualProperty.SetMethod == null)
+                    if (baseVirtualProperty == null || baseVirtualProperty.SetMethod == null)
                         setter = null;
                 }
                 property.GetMethod = getter;
@@ -308,14 +304,9 @@ namespace CppSharp.Passes
 
         private static void LoadVerbs()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetAssembly(typeof(GetterSetterToPropertyPass));
             using (var resourceStream = GetResourceStream(assembly))
             {
-                // For some reason, embedded resources are not working when compiling the
-                // Premake-generated VS project files with xbuild under OSX. Workaround this for now.
-                if (resourceStream == null)
-                    return;
-
                 using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
@@ -324,16 +315,23 @@ namespace CppSharp.Passes
 
         private static Stream GetResourceStream(Assembly assembly)
         {
-            var stream = assembly.GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt");
-            // HACK: a bug in premake for OS X causes resources to be embedded with an incorrect location
-            return stream ?? assembly.GetManifestResourceStream("verbs.txt");
-        }
+            var resources = assembly.GetManifestResourceNames();
 
+            if (resources.Count() == 0)
+                throw new Exception("Cannot find embedded verbs data resource.");
+
+            // We are relying on this fact that there is only one resource embedded.
+            // Before we loaded the resource by name but found out that naming was
+            // different between different platforms and/or build systems.
+            return assembly.GetManifestResourceStream(resources[0]);
+        }
 
         public GetterSetterToPropertyPass()
         {
             VisitOptions.VisitClassFields = false;
             VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitClassMethods = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitNamespaceEnums = false;
             VisitOptions.VisitNamespaceTemplates = false;
             VisitOptions.VisitNamespaceTypedefs = false;
@@ -345,15 +343,8 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (VisitDeclarationContext(@class))
-            {
-                if (VisitOptions.VisitClassBases)
-                    foreach (var baseClass in @class.Bases)
-                        if (baseClass.IsClass)
-                            VisitClassDecl(baseClass.Class);
-
+            if (base.VisitClassDecl(@class))
                 new PropertyGenerator(@class).GenerateProperties();
-            }
             return false;
         }
     }

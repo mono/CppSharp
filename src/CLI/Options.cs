@@ -1,20 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using CppSharp.Generators;
 
 namespace CppSharp
 {
-    enum TargetPlatform
-    {
-        Windows,
-        MacOS,
-        Linux
-    }
-
     enum TargetArchitecture
     {
         x86,
@@ -23,52 +11,34 @@ namespace CppSharp
 
     class Options
     {
-        private List<String> _headerFiles = new List<string>();
-        public List<String> HeaderFiles { get { return _headerFiles; } set { _headerFiles = value; } }
+        public List<string> HeaderFiles { get; } = new List<string>();
 
-        private List<String> _includeDirs = new List<string>();
-        public List<String> IncludeDirs { get { return _includeDirs; } set { _includeDirs = value; } }
+        public List<string> IncludeDirs { get; } = new List<string>();
 
-        private List<String> _libraryDirs = new List<string>();
-        public List<String> LibraryDirs { get { return _libraryDirs; } set { _libraryDirs = value; } }
+        public List<string> LibraryDirs { get; } = new List<string>();
 
-        private List<String> _libraries = new List<string>();
-        public List<String> Libraries { get { return _libraries; } set { _libraries = value; } }
+        public List<string> Libraries { get; } = new List<string>();
 
-        private Dictionary<String, String> _defines = new Dictionary<String, String>();
-        public Dictionary<String, String> Defines { get { return _defines; } set { _defines = value; } }
+        public Dictionary<string, string> Defines { get; } = new Dictionary<string, string>();
 
-        private String _outputDir = "";
-        public String OutputDir { get { return _outputDir; } set { _outputDir = value; } }
+        public string OutputDir { get; set; }
 
-        private String _outputNamespace = "";
-        public String OutputNamespace { get { return _outputNamespace; } set { _outputNamespace = value; } }
+        public string OutputNamespace { get; set; }
 
-        private String _outputFileName = "";
-        public String OutputFileName { get { return _outputFileName; } set { _outputFileName = value; } }
+        public string OutputFileName { get; set; }
 
-        private String _inputLibraryName = "";
-        public String InputLibraryName { get { return _inputLibraryName; } set { _inputLibraryName = value; } }
-
-        private String _triple = "";
-        public String Triple { get { return _triple; } set { _triple = value; } }
-
-        private TargetPlatform _platform = TargetPlatform.Windows;
-        public TargetPlatform Platform { get { return _platform; } set { _platform = value; } }
-
-        private TargetArchitecture _architecture = TargetArchitecture.x86;
-        public TargetArchitecture Architecture { get { return _architecture; } set { _architecture = value; } }
-
-        private GeneratorKind _kind = GeneratorKind.CSharp;
-        public GeneratorKind Kind { get { return _kind; } set { _kind = value; } }
+        public string InputLibraryName { get; set; }
         
-        private bool _checkSymbols = false;
-        public bool CheckSymbols { get { return _checkSymbols; } set { _checkSymbols = value; } }
+        public TargetPlatform Platform { get; set; } = TargetPlatform.Windows;
 
-        private bool _unityBuild = false;
-        public bool UnityBuild { get { return _unityBuild; } set { _unityBuild = value; } }
+        public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x86;
 
-        private bool _cpp11ABI = false;
-        public bool Cpp11ABI { get { return _cpp11ABI; } set { _cpp11ABI = value; } }
+        public GeneratorKind Kind { get; set; } = GeneratorKind.CSharp;
+        
+        public bool CheckSymbols { get; set; }
+
+        public bool UnityBuild { get; set; }
+
+        public bool Cpp11ABI { get; set; }
     }
 }

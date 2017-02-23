@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
     /// <summary>
-    /// Raw comment kind.
+    /// Comment kind.
     /// </summary>
-    public enum RawCommentKind
+    public enum CommentKind
     {
         // Invalid comment.
         Invalid,
-        // Any normal BCPL comments.
-        OrdinaryBCPL,
-        // Any normal C comment.
-        OrdinaryC,
+        // "// stuff"
+        BCPL,
+        // "/* stuff */"
+        C,
         // "/// stuff"
         BCPLSlash,
         // "//! stuff"
@@ -25,7 +26,7 @@ namespace CppSharp.AST
         Merged
     }
 
-    public enum CommentKind
+    public enum DocumentationCommentKind
     {
         FullComment,
         BlockContentComment,
@@ -52,7 +53,7 @@ namespace CppSharp.AST
         /// <summary>
         /// Kind of the comment.
         /// </summary>
-        public RawCommentKind Kind;
+        public CommentKind Kind;
 
         /// <summary>
         /// Raw text of the comment.
@@ -69,7 +70,7 @@ namespace CppSharp.AST
         /// </summary>
         public bool IsInvalid
         {
-            get { return Kind == RawCommentKind.Invalid; }
+            get { return Kind == CommentKind.Invalid; }
         }
 
         /// <summary>
@@ -79,8 +80,8 @@ namespace CppSharp.AST
         {
             get
             {
-                return Kind == RawCommentKind.OrdinaryBCPL ||
-                       Kind == RawCommentKind.OrdinaryC;
+                return Kind == CommentKind.BCPL ||
+                       Kind == CommentKind.C;
             }
         }
 
@@ -122,9 +123,64 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class Comment
     {
-        public CommentKind Kind { get; set; }
+        public DocumentationCommentKind Kind { get; set; }
 
         public abstract void Visit<T>(ICommentVisitor<T> visitor);
+
+        public static string GetMultiLineCommentPrologue(CommentKind kind)
+        {
+            switch (kind)
+            {
+            case CommentKind.BCPL:
+            case CommentKind.BCPLExcl:
+                return "//";
+            case CommentKind.C:
+            case CommentKind.JavaDoc:
+            case CommentKind.Qt:
+                return " *";
+            case CommentKind.BCPLSlash:
+                return "///";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static string GetLineCommentPrologue(CommentKind kind)
+        {
+            switch (kind)
+            {
+            case CommentKind.BCPL:
+            case CommentKind.BCPLSlash:
+                return string.Empty;
+            case CommentKind.C:
+                return "/*";
+            case CommentKind.BCPLExcl:
+                return "//!";
+            case CommentKind.JavaDoc:
+                return "/**";
+            case CommentKind.Qt:
+                return "/*!";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static string GetLineCommentEpilogue(CommentKind kind)
+        {
+            switch (kind)
+            {
+            case CommentKind.BCPL:
+            case CommentKind.BCPLSlash:
+            case CommentKind.BCPLExcl:
+                return string.Empty;
+            case CommentKind.C:
+            case CommentKind.JavaDoc:
+            case CommentKind.Qt:
+                return " */";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
     #region Comments
@@ -180,7 +236,7 @@ namespace CppSharp.AST
 
         public BlockCommandComment()
         {
-            Kind = CommentKind.BlockCommandComment;
+            Kind = DocumentationCommentKind.BlockCommandComment;
             Arguments = new List<Argument>();
         }
 
@@ -200,7 +256,7 @@ namespace CppSharp.AST
 
         public ParamCommandComment()
         {
-            Kind = CommentKind.ParamCommandComment;
+            Kind = DocumentationCommentKind.ParamCommandComment;
         }
 
         public enum PassDirection
@@ -251,7 +307,7 @@ namespace CppSharp.AST
 
         public TParamCommandComment()
         {
-            Kind = CommentKind.TParamCommandComment;
+            Kind = DocumentationCommentKind.TParamCommandComment;
             Position = new List<uint>();
         }
   
@@ -272,7 +328,7 @@ namespace CppSharp.AST
 
         public VerbatimBlockComment()
         {
-            Kind = CommentKind.VerbatimBlockComment;
+            Kind = DocumentationCommentKind.VerbatimBlockComment;
             Lines = new List<VerbatimBlockLineComment>();
         }
 
@@ -293,7 +349,7 @@ namespace CppSharp.AST
 
         public VerbatimLineComment()
         {
-            Kind = CommentKind.VerbatimLineComment;
+            Kind = DocumentationCommentKind.VerbatimLineComment;
         }
 
         public override void Visit<T>(ICommentVisitor<T> visitor)
@@ -313,7 +369,7 @@ namespace CppSharp.AST
 
         public ParagraphComment()
         {
-            Kind = CommentKind.ParagraphComment;
+            Kind = DocumentationCommentKind.ParagraphComment;
             Content = new List<InlineContentComment>();
         }
 
@@ -330,7 +386,7 @@ namespace CppSharp.AST
     {
         protected InlineContentComment()
         {
-            Kind = CommentKind.InlineContentComment;
+            Kind = DocumentationCommentKind.InlineContentComment;
         }
 
         public bool HasTrailingNewline { get; set; }
@@ -347,7 +403,7 @@ namespace CppSharp.AST
 
         protected HTMLTagComment()
         {
-            Kind = CommentKind.HTMLTagComment;
+            Kind = DocumentationCommentKind.HTMLTagComment;
         }
     }
 
@@ -366,7 +422,7 @@ namespace CppSharp.AST
 
         public HTMLStartTagComment()
         {
-            Kind = CommentKind.HTMLStartTagComment;
+            Kind = DocumentationCommentKind.HTMLStartTagComment;
             Attributes = new List<Attribute>();
         }
 
@@ -383,7 +439,7 @@ namespace CppSharp.AST
     {
         public HTMLEndTagComment()
         {
-            Kind = CommentKind.HTMLEndTagComment;
+            Kind = DocumentationCommentKind.HTMLEndTagComment;
         }
 
         public override void Visit<T>(ICommentVisitor<T> visitor)
@@ -401,7 +457,7 @@ namespace CppSharp.AST
 
         public TextComment()
         {
-            Kind = CommentKind.TextComment;
+            Kind = DocumentationCommentKind.TextComment;
         }
 
         public override void Visit<T>(ICommentVisitor<T> visitor)
@@ -441,7 +497,7 @@ namespace CppSharp.AST
 
         public InlineCommandComment()
         {
-            Kind = CommentKind.InlineCommandComment;
+            Kind = DocumentationCommentKind.InlineCommandComment;
             Arguments = new List<Argument>();
         }
 
@@ -460,7 +516,7 @@ namespace CppSharp.AST
 
         public VerbatimBlockLineComment()
         {
-            Kind = CommentKind.VerbatimBlockLineComment;
+            Kind = DocumentationCommentKind.VerbatimBlockLineComment;
         }
 
         public override void Visit<T>(ICommentVisitor<T> visitor)

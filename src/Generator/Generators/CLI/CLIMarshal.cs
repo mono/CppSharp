@@ -377,7 +377,7 @@ namespace CppSharp.Generators.CLI
         private string ToCLITypeName(Declaration decl)
         {
             var typePrinter = new CLITypePrinter(Context.Context);
-            return typePrinter.VisitDeclaration(decl);
+            return typePrinter.VisitDeclaration(decl).ToString();
         }
 
         public override bool VisitClassTemplateDecl(ClassTemplate template)

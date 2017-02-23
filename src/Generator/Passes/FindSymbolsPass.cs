@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Threading;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -7,6 +8,7 @@ namespace CppSharp.Passes
         public FindSymbolsPass()
         {
             VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitNamespaceEnums = false;
@@ -14,6 +16,36 @@ namespace CppSharp.Passes
             VisitOptions.VisitNamespaceTypedefs = false;
             VisitOptions.VisitTemplateArguments = false;
             VisitOptions.VisitClassFields = false;
+        }
+
+        public bool Wait
+        {
+            get { return wait; }
+            set
+            {
+                if (wait == value)
+                    return;
+
+                wait = value;
+
+                if (wait || manualResetEvent == null)
+                    return;
+
+                manualResetEvent.Set();
+                manualResetEvent.Dispose();
+                manualResetEvent = null;
+            }
+        }
+
+        public override bool VisitASTContext(ASTContext context)
+        {
+            if (Wait)
+            {
+                manualResetEvent = new ManualResetEvent(false);
+                manualResetEvent.WaitOne();
+            }
+
+            return base.VisitASTContext(context);
         }
 
         public override bool VisitDeclaration(Declaration decl)
@@ -27,7 +59,9 @@ namespace CppSharp.Passes
             var mangledDecl = decl as IMangledDecl;
             var method = decl as Method;
             if (decl.IsGenerated && mangledDecl != null &&
-                !(method != null && (method.IsPure || method.IsSynthetized)) &&
+                // virtual functions cannot really be inlined and
+                // we don't need their symbols anyway as we call them through the v-table
+                !(method != null && (method.IsVirtual || method.IsSynthetized)) &&
                 !VisitMangledDeclaration(mangledDecl))
             {
                 decl.ExplicitlyIgnore();
@@ -50,5 +84,8 @@ namespace CppSharp.Passes
             mangledDecl.Mangled = symbol;
             return true;
         }
+
+        private bool wait;
+        private ManualResetEvent manualResetEvent;
     }
 }

@@ -44,6 +44,7 @@ namespace CppSharp.Generators
                     Diagnostics.Debug("Pass '{0}'", pass);
 
                     Diagnostics.PushIndent();
+                    pass.Context = this;
                     pass.VisitASTContext(ASTContext);
                     Diagnostics.PopIndent();
                 });

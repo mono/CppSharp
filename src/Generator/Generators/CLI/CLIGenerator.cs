@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CppSharp.AST;
 
 namespace CppSharp.Generators.CLI
@@ -16,9 +16,9 @@ namespace CppSharp.Generators.CLI
             typePrinter = new CLITypePrinter(context);
         }
 
-        public override List<Template> Generate(IEnumerable<TranslationUnit> units)
+        public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
-            var outputs = new List<Template>();
+            var outputs = new List<CodeGenerator>();
 
             var header = new CLIHeaders(Context, units);
             outputs.Add(header);
@@ -47,7 +47,7 @@ namespace CppSharp.Generators.CLI
 
         protected override string TypePrinterDelegate(Type type)
         {
-            return type.Visit(typePrinter);
+            return type.Visit(typePrinter).ToString();
         }
     }
 }

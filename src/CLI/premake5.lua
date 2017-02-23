@@ -6,6 +6,8 @@ project "CppSharp.CLI"
   language "C#"
 
   files { "**.cs" }
+  vpaths { ["*"] = "*" }
+
   links
   {
     "System",

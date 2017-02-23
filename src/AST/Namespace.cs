@@ -88,18 +88,17 @@ namespace CppSharp.AST
 
         public IEnumerable<DeclarationContext> GatherParentNamespaces()
         {
-            var children = new List<DeclarationContext>();
+            var children = new Stack<DeclarationContext>();
             var currentNamespace = this;
 
             while (currentNamespace != null)
             {
                 if (!(currentNamespace is TranslationUnit))
-                    children.Add(currentNamespace);
+                    children.Push(currentNamespace);
 
                 currentNamespace = currentNamespace.Namespace;
             }
 
-            children.Reverse();
             return children;
         }
 

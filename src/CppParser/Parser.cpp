@@ -1298,9 +1298,17 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
         auto TA = TAL->get(i);
-        auto ArgLoc = TALI->operator[](i);
-        auto TP = WalkTemplateArgument(TA, &ArgLoc);
-        params.push_back(TP);
+        if (TALI)
+        {
+            auto ArgLoc = TALI->operator[](i);
+            auto TP = WalkTemplateArgument(TA, &ArgLoc);
+            params.push_back(TP);
+        }
+        else
+        {
+            auto TP = WalkTemplateArgument(TA, 0);
+            params.push_back(TP);
+        }
     }
 
     return params;
@@ -1434,10 +1442,6 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
     auto FTS = new CppSharp::CppParser::FunctionTemplateSpecialization();
     FTS->specializationKind = WalkTemplateSpecializationKind(FTSI->getTemplateSpecializationKind());
     FTS->specializedFunction = Function;
-    // HACK: walking template arguments crashes when generating the parser bindings for OS X
-    // so let's disable it for function templates which we do not support yet anyway 
-    //if (auto TALI = FTSI->TemplateArgumentsAsWritten)
-    //    FTS->Arguments = WalkTemplateArgumentList(FTSI->TemplateArguments, TALI);
     FTS->_template = WalkFunctionTemplate(FTSI->getTemplate());
     FTS->_template->Specializations.push_back(FTS);
     if (auto TSA = FTSI->TemplateArguments)
@@ -1447,8 +1451,11 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
             if (TSA->size() == TSAW->NumTemplateArgs)
             {
                 FTS->Arguments = WalkTemplateArgumentList(TSA, TSAW);
+                return FTS;
             }
         }
+        FTS->Arguments = WalkTemplateArgumentList(TSA,
+            (const clang::ASTTemplateArgumentListInfo*) 0);
     }
 
     return FTS;
@@ -2645,6 +2652,15 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Ty = new PackExpansionType();
         break;
     }
+    case clang::Type::Auto:
+    {
+        auto AT = Type->getAs<clang::AutoType>();
+        if (AT->isSugared())
+            Ty = WalkType(AT->desugar());
+        else
+            return nullptr;
+        break;
+    }
     case clang::Type::Decltype:
     {
         auto DT = Type->getAs<clang::DecltypeType>();
@@ -3752,6 +3768,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
         break;
+    case Decl::BuiltinTemplate:
+    case Decl::ClassScopeFunctionSpecialization:
     case Decl::PragmaComment:
     case Decl::PragmaDetectMismatch:
     case Decl::Empty:

@@ -7,24 +7,6 @@ namespace CppSharp.AST
 {
     public static class ClassExtensions 
     {
-        public static IEnumerable<Method> FindOperator(this Class @class,
-            CXXOperatorKind kind)
-        {
-            return @class.Operators.Where(method => method.OperatorKind == kind);
-        }
-
-        public static IEnumerable<Method> FindMethodByOriginalName(this Class @class,
-            string name)
-        {
-            return @class.Methods.Where(method => method.OriginalName == name);
-        }
-
-        public static IEnumerable<Variable> FindVariableByOriginalName(this Class @class,
-            string originalName)
-        {
-            return @class.Variables.Where(v => v.OriginalName == originalName);
-        }
-
         public static IEnumerable<Function> GetFunctionOverloads(this Class @class,
             Function function)
         {

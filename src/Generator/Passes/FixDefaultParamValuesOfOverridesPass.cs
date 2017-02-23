@@ -6,24 +6,21 @@ namespace CppSharp.Passes
     {
         public override bool VisitMethodDecl(Method method)
         {
-            if (method.IsOverride && !method.IsSynthetized)
+            if (!method.IsOverride || method.IsSynthetized)
+                return true;
+
+            Method rootBaseMethod = ((Class)method.Namespace).GetBaseMethod(method);
+            for (int i = 0; i < method.Parameters.Count; i++)
             {
-                Method rootBaseMethod = ((Class) method.Namespace).GetBaseMethod(method);
-                for (int i = 0; i < method.Parameters.Count; i++)
-                {
-                    var rootBaseParameter = rootBaseMethod.Parameters[i];
-                    var parameter = method.Parameters[i];
-                    if (rootBaseParameter.DefaultArgument == null)
-                    {
-                        parameter.DefaultArgument = null;
-                    }
-                    else
-                    {
-                        parameter.DefaultArgument = rootBaseParameter.DefaultArgument.Clone();
-                    }
-                }
+                var rootBaseParameter = rootBaseMethod.Parameters[i];
+                var parameter = method.Parameters[i];
+                if (rootBaseParameter.DefaultArgument == null)
+                    parameter.DefaultArgument = null;
+                else
+                    parameter.DefaultArgument = rootBaseParameter.DefaultArgument.Clone();
             }
-            return base.VisitMethodDecl(method);
+
+            return true;
         }
     }
 }

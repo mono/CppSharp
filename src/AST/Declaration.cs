@@ -128,7 +128,6 @@ namespace CppSharp.AST
                 return getName(this);
 
             var namespaces = GatherNamespaces(getNamespace(this));
-            namespaces.Reverse();
 
             var names = namespaces.Select(getName).ToList();
             names.Add(getName(this));
@@ -137,14 +136,14 @@ namespace CppSharp.AST
             return string.Join(QualifiedNameSeparator, names);
         }
 
-        public static List<Declaration> GatherNamespaces(DeclarationContext @namespace)
+        public static IEnumerable<Declaration> GatherNamespaces(DeclarationContext @namespace)
         {
-            var namespaces = new List<Declaration>();
+            var namespaces = new Stack<Declaration>();
 
             var currentNamespace = @namespace;
             while (currentNamespace != null)
             {
-                namespaces.Add(currentNamespace);
+                namespaces.Push(currentNamespace);
                 currentNamespace = currentNamespace.Namespace;
             }
 
@@ -368,11 +367,13 @@ namespace CppSharp.AST
     public interface IDeclVisitor<out T>
     {
         T VisitDeclaration(Declaration decl);
+        T VisitTranslationUnit(TranslationUnit unit);
         T VisitClassDecl(Class @class);
         T VisitFieldDecl(Field field);
         T VisitFunctionDecl(Function function);
         T VisitMethodDecl(Method method);
         T VisitParameterDecl(Parameter parameter);
+        T VisitTypedefNameDecl(TypedefNameDecl typedef);
         T VisitTypedefDecl(TypedefDecl typedef);
         T VisitTypeAliasDecl(TypeAlias typeAlias);
         T VisitEnumDecl(Enumeration @enum);

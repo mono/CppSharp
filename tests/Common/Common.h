@@ -383,13 +383,13 @@ struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);
 
-        static int GetOneTwoThree();
+    static int GetOneTwoThree();
 
 protected:
 
-        static int _Mult(int a, int b);
+    static int _Mult(int a, int b);
 
-        static int GetFourFiveSix();
+    static int GetFourFiveSix();
 
 private:
     TestStaticClass();
@@ -416,9 +416,9 @@ int TestStaticClassDerived::Foo() { return 0; }
 class DLL_API TestNotStaticClass
 {
 public:
-        static TestNotStaticClass StaticFunction();
+    static TestNotStaticClass StaticFunction();
 private:
-        TestNotStaticClass();
+    TestNotStaticClass();
 };
 
 TestNotStaticClass::TestNotStaticClass()
@@ -427,7 +427,7 @@ TestNotStaticClass::TestNotStaticClass()
 
 TestNotStaticClass TestNotStaticClass::StaticFunction()
 {
-        return TestNotStaticClass();
+    return TestNotStaticClass();
 }
 
 class HasIgnoredField
@@ -794,9 +794,6 @@ template<typename T> class FriendTemplate
 {
     template<typename TT>
     friend FriendTemplate<TT> func(const FriendTemplate<TT>&);
-
-    friend FriendTemplate;
-    friend class FriendTemplate;
 
     template<typename TT>
     friend class FriendTemplate;

@@ -1,13 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
-using CppSharp.Passes;
-using CppSharp.Types;
-using CppAbi = CppSharp.Parser.AST.CppAbi;
 using CppSharp.Parser;
+using CppSharp.Passes;
+using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
@@ -39,7 +38,7 @@ namespace CppSharp
                 var path = Path.Combine(directory.FullName, dir);
 
                 if (Directory.Exists(path) &&
-                    Directory.Exists(Path.Combine(directory.FullName, "patches")))
+                    Directory.Exists(Path.Combine(directory.FullName, "deps")))
                     return path;
 
                 directory = directory.Parent;
@@ -168,7 +167,7 @@ namespace CppSharp
             {
                 driver.Generator.OnUnitGenerated += o =>
                 {
-                    Block firstBlock = o.Templates[0].RootBlock.Blocks[1];
+                    Block firstBlock = o.Outputs[0].RootBlock.Blocks[1];
                     if (o.TranslationUnit.Module == driver.Options.SystemModule)
                     {
                         firstBlock.NewLine();

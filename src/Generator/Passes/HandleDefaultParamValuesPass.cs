@@ -40,7 +40,6 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionDecl(function) || function.Ignore)
                 return false;
 
-            Generator.CurrentOutputNamespace = function.TranslationUnit.Module.OutputNamespace;
             var overloadIndices = new List<int>(function.Parameters.Count);
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
@@ -152,7 +151,7 @@ namespace CppSharp.Passes
             TypeMap typeMap;
 
             var typePrinter = new CSharpTypePrinter(Context);
-            typePrinter.PushMarshalKind(CSharpMarshalKind.DefaultExpression);
+            typePrinter.PushMarshalKind(MarshalKind.DefaultExpression);
             var typePrinterResult = type.Visit(typePrinter).Type;
             if (TypeMaps.FindTypeMap(decl, type, out typeMap))
             {
@@ -306,7 +305,7 @@ namespace CppSharp.Passes
             {
                 var typeInSignature = typeMap.CSharpSignatureType(new CSharpTypePrinterContext
                 {
-                    MarshalKind = CSharpMarshalKind.DefaultExpression,
+                    MarshalKind = MarshalKind.DefaultExpression,
                     Type = desugared
                 }).SkipPointerRefs().Desugar();
                 Enumeration @enum;

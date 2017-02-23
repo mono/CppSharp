@@ -28,7 +28,7 @@ namespace CppSharp.AST
 
         public string ToNativeString()
         {
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = CppTypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             return Visit(cppTypePrinter);
         }
 
@@ -715,7 +715,7 @@ namespace CppSharp.AST
 
             return Arguments.SequenceEqual(type.Arguments) &&
                 ((Template != null && Template.Name == type.Template.Name) ||
-                Desugared == type.Desugared);
+                (Desugared.Type != null && Desugared == type.Desugared));
         }
 
         public override int GetHashCode()

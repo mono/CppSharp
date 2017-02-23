@@ -23,6 +23,7 @@ namespace CppSharp.AST
         public bool VisitClassFields = true;
         public bool VisitClassProperties = true;
         public bool VisitClassMethods = true;
+        public bool VisitClassTemplateSpecializations { get; set; } = true;
 
         public bool VisitNamespaceEnums = true;
         public bool VisitNamespaceTemplates = true;
@@ -301,6 +302,14 @@ namespace CppSharp.AST
             return !AlreadyVisited(decl);
         }
 
+        public virtual bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            if (!VisitDeclaration(unit))
+                return false;
+
+            return VisitDeclarationContext(unit);
+        }
+
         public virtual bool VisitClassDecl(Class @class)
         {
             if (!VisitDeclarationContext(@class))
@@ -325,6 +334,10 @@ namespace CppSharp.AST
                 foreach (var method in methods)
                     VisitMethodDecl(method);
             }
+
+            if (@class.IsDependent && VisitOptions.VisitClassTemplateSpecializations)
+                foreach (var specialization in @class.Specializations)
+                    VisitClassTemplateSpecializationDecl(specialization);
 
             return true;
         }
@@ -385,7 +398,7 @@ namespace CppSharp.AST
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
-        public virtual bool VisitTypedefDecl(TypedefDecl typedef)
+        public bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
             if (!VisitDeclaration(typedef))
                 return false;
@@ -393,12 +406,14 @@ namespace CppSharp.AST
             return typedef.Type.Visit(this, typedef.QualifiedType.Qualifiers);
         }
 
+        public virtual bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            return VisitTypedefNameDecl(typedef);
+        }
+
         public bool VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            if (!VisitDeclaration(typeAlias))
-                return false;
-
-            return typeAlias.Type.Visit(this, typeAlias.QualifiedType.Qualifiers);
+            return VisitTypedefNameDecl(typeAlias);
         }
 
         public virtual bool VisitEnumDecl(Enumeration @enum)

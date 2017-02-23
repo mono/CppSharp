@@ -1,4 +1,0 @@
-Contains custom patches needed to get Clang correct compiling.
-
-Eventually all of these should be added to mainline Clang and we
-can remove this directory.

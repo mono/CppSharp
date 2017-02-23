@@ -55,7 +55,7 @@ public class VTablesTests : GeneratorTestFixture
         Assert.AreEqual(actual, ret);
     }
 
-    [Test]
+    [Test, Platform(Exclude = "Linux", Reason = "Virtual tables are incorrectly patched with 64-bit Itanium, see https://github.com/mono/CppSharp/issues/755.")]
     public void TestVirtualFuntionRetVal()
     {
         // Virtual Functions Object Slicing case

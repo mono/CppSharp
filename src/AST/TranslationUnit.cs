@@ -6,7 +6,7 @@ using System.IO;
 namespace CppSharp.AST
 {
     /// <summary>
-    /// Represents a parsed C++ unit.
+    /// Represents a source code unit.
     /// </summary>
     [DebuggerDisplay("File = {FileName}, Ignored = {Ignore}")]
     public class TranslationUnit : Namespace
@@ -84,5 +84,10 @@ namespace CppSharp.AST
         }
 
         private WeakReference module;
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitTranslationUnit(this);
+        }
     }
 }

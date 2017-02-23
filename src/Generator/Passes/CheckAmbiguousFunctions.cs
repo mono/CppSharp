@@ -105,22 +105,22 @@ namespace CppSharp.Passes
         {
             var method1 = function as Method;
             var method2 = overload as Method;
-            if (method1 != null && method2 != null)
+            if (method1 == null || method2 == null)
+                return false;
+
+            var sameParams = method1.Parameters.SequenceEqual(method2.Parameters,
+                ParameterTypeComparer.Instance);
+
+            if (method1.IsConst && !method2.IsConst && sameParams)
             {
-                var sameParams = method1.Parameters.SequenceEqual(method2.Parameters,
-                    ParameterTypeComparer.Instance);
+                method1.ExplicitlyIgnore();
+                return true;
+            }
 
-                if (method1.IsConst && !method2.IsConst && sameParams)
-                {
-                    method1.ExplicitlyIgnore();
-                    return true;
-                }
-
-                if (method2.IsConst && !method1.IsConst && sameParams)
-                {
-                    method2.ExplicitlyIgnore();
-                    return true;
-                }
+            if (method2.IsConst && !method1.IsConst && sameParams)
+            {
+                method2.ExplicitlyIgnore();
+                return true;
             }
 
             return false;
@@ -131,17 +131,23 @@ namespace CppSharp.Passes
         {
             var functionParams = function.Parameters.Where(
                 p => p.Kind == ParameterKind.Regular).ToList();
-            // It's difficult to handle this case for more than one parameter
+
+            // It's difficult to handle this case for more than one parameter.
             // For example, if we have:
+            //
             //     void f(float&, const int&);
             //     void f(const float&, int&);
-            // what should we do? Generate both? Generate the first one encountered?
+            //
+            // What should we do? Generate both? Generate the first one encountered?
             // Generate the one with the least amount of "complex" parameters?
-            // So let's just start with the simplest case for the time being
+            // So let's just start with the simplest case for the time being.
+            
             if (functionParams.Count != 1)
                 return false;
+
             var overloadParams = overload.Parameters.Where(
                 p => p.Kind == ParameterKind.Regular).ToList();
+
             if (overloadParams.Count != 1)
                 return false;
 

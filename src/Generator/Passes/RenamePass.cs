@@ -146,12 +146,16 @@ namespace CppSharp.Passes
             if (specialization != null)
                 declarations.RemoveAll(d => specialization.TemplatedDecl.TemplatedDecl == d);
 
+            var @class = decl.Namespace as Class;
+            if (@class != null && @class.IsDependent)
+                declarations.AddRange(@class.TemplateParameters);
+
             var result = declarations.Any(d => d != decl && d.Name == newName);
             if (result)
                 return true;
 
             if (decl is Method && decl.IsGenerated)
-                return ((Class) decl.Namespace).GetPropertyByName(newName) != null;
+                return @class.GetPropertyByName(newName) != null;
 
             var property = decl as Property;
             if (property != null && property.Field != null)

@@ -1075,21 +1075,21 @@ class DLL_API MissingObjectOnVirtualCallSecondaryBase
 {
 public:
     MissingObjectOnVirtualCallSecondaryBase();
-    virtual void f();
+    virtual int f();
 };
 
 class DLL_API MissingObjectOnVirtualCall : public HasVirtualDtor1, public MissingObjectOnVirtualCallSecondaryBase
 {
 public:
     MissingObjectOnVirtualCall();
-    void f();
+    int f();
 };
 
 class DLL_API HasMissingObjectOnVirtualCall
 {
 public:
     HasMissingObjectOnVirtualCall();
-    void makeMissingObjectOnVirtualCall();
+    int makeMissingObjectOnVirtualCall();
     void setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value);
 private:
     MissingObjectOnVirtualCall* stackOverflowOnVirtualCall;
@@ -1121,5 +1121,24 @@ public:
     virtual int abstractReturnsFieldInPrimaryBase();
     virtual int abstractReturnsFieldInSecondaryBase();
 private:
+    int field;
+};
+
+class DLL_API HasBaseSetter
+{
+public:
+    HasBaseSetter();
+    ~HasBaseSetter();
+    virtual void setBaseSetter(int value);
+};
+
+class DLL_API HasGetterAndOverriddenSetter : public HasBaseSetter
+{
+public:
+    HasGetterAndOverriddenSetter();
+    ~HasGetterAndOverriddenSetter();
+    void setBaseSetter(int value);
+    int baseSetter();
+protected:
     int field;
 };

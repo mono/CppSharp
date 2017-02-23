@@ -8,10 +8,8 @@ project "CppSharp.Parser.CSharp"
 
   dependson { "CppSharp.CppParser" }
 
-  files
-  {
-    "**.lua"
-  }
+  files { "**.lua" }
+  vpaths { ["*"] = "*" }
 
   links { "CppSharp.Runtime" }
 

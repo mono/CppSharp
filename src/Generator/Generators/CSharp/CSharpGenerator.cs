@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Passes;
 
@@ -7,20 +7,18 @@ namespace CppSharp.Generators.CSharp
     public class CSharpGenerator : Generator
     {
         private readonly CSharpTypePrinter typePrinter;
-        private readonly CSharpExpressionPrinter expressionPrinter;
 
         public CSharpGenerator(BindingContext context) : base(context)
         {
             typePrinter = new CSharpTypePrinter(context);
-            expressionPrinter = new CSharpExpressionPrinter(typePrinter);
         }
 
-        public override List<Template> Generate(IEnumerable<TranslationUnit> units)
+        public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
-            var outputs = new List<Template>();
+            var outputs = new List<CodeGenerator>();
 
-            var template = new CSharpSources(Context, units, typePrinter, expressionPrinter);
-            outputs.Add(template);
+            var gen = new CSharpSources(Context, units) { TypePrinter = typePrinter };
+            outputs.Add(gen);
 
             return outputs;
         }

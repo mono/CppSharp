@@ -110,4 +110,8 @@ CppSharp is used by the following projects:
 
 [libgd bindings](https://github.com/imazen/deprecated-gd-bindings-generator-old)
 
+[ChakraSharp](https://github.com/baristalabs/ChakraSharp)
+
+[FFmpeg.AutoGen](https://github.com/Ruslan-B/FFmpeg.AutoGen)
+
 Please feel free to send us a pull request adding your own projects to the list above.

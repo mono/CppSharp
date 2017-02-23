@@ -2,6 +2,16 @@
 
 namespace CppSharp.Generators
 {
+    public enum MarshalKind
+    {
+        Unknown,
+        NativeField,
+        GenericDelegate,
+        DefaultExpression,
+        VTableReturnValue,
+        Variable
+    }
+
     public class MarshalContext
     {
         public MarshalContext(BindingContext context)

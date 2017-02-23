@@ -1,5 +1,4 @@
-﻿using System;
-using CppSharp.AST;
+﻿using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
@@ -26,7 +25,7 @@ namespace CppSharp.Passes
     ///     as or less cv-qualification than the class type in the return type of
     ///     B::f."
     /// </summary>
-    public class CovariantTypeComparer : ITypeVisitor<bool>, IDeclVisitor<bool>
+    public class CovariantTypeComparer : TranslationUnitPass
     {
         public QualifiedType currentType;
         public Declaration currentDecl;
@@ -36,7 +35,7 @@ namespace CppSharp.Passes
             currentType = type;
         }
 
-        public bool VisitPointerType(PointerType type,
+        public override bool VisitPointerType(PointerType type,
             TypeQualifiers quals)
         {
             if (!currentType.Qualifiers.Equals(quals))
@@ -59,7 +58,7 @@ namespace CppSharp.Passes
             return stripPointee.Visit(this);
         }
 
-        public bool VisitTagType(TagType tag, TypeQualifiers quals)
+        public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             if (!currentType.Qualifiers.Equals(quals))
                 return false;
@@ -78,240 +77,11 @@ namespace CppSharp.Passes
                 (@class.HasBaseClass && IsDescendentOf(@class.BaseClass, parent));
         }
 
-        public bool VisitClassDecl(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             var currentClass = currentDecl as Class;
             return IsDescendentOf(currentClass, @class);
         }
-
-        #region Dummy implementations
-
-        public bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
-        {
-            return false;
-        }
-
-        public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitDependentTemplateSpecializationType(DependentTemplateSpecializationType template, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
-        {
-            return true;
-        }
-
-        public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitCILType(CILType type, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public bool VisitDeclaration(Declaration decl)
-        {
-            return false;
-        }
-
-        public bool VisitFieldDecl(Field field)
-        {
-            return false;
-        }
-
-        public bool VisitFunctionDecl(Function function)
-        {
-            return false;
-        }
-
-        public bool VisitMethodDecl(Method method)
-        {
-            return false;
-        }
-
-        public bool VisitParameterDecl(Parameter parameter)
-        {
-            return false;
-        }
-
-        public bool VisitTypedefDecl(TypedefDecl typedef)
-        {
-            return false;
-        }
-
-        public bool VisitTypeAliasDecl(TypeAlias typeAlias)
-        {
-            return false;
-        }
-
-        public bool VisitEnumDecl(Enumeration @enum)
-        {
-            return false;
-        }
-
-        public bool VisitEnumItemDecl(Enumeration.Item item)
-        {
-            return false;
-        }
-
-        public bool VisitVariableDecl(Variable variable)
-        {
-            return false;
-        }
-
-        public bool VisitClassTemplateDecl(ClassTemplate template)
-        {
-            return false;
-        }
-
-        public bool VisitFunctionTemplateDecl(FunctionTemplate template)
-        {
-            return false;
-        }
-
-        public bool VisitMacroDefinition(MacroDefinition macro)
-        {
-            return false;
-        }
-
-        public bool VisitNamespace(Namespace @namespace)
-        {
-            return false;
-        }
-
-        public bool VisitEvent(Event @event)
-        {
-            return false;
-        }
-
-        public bool VisitProperty(Property property)
-        {
-            return false;
-        }
-
-        public bool VisitFriend(Friend friend)
-        {
-            return false;
-        }
-
-        public bool VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
-        {
-            return false;
-        }
-
-        public bool VisitTemplateParameterDecl(TypeTemplateParameter templateParameter)
-        {
-            return false;
-        }
-
-        public bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
-        {
-            return false;
-        }
-
-        public bool VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
-        {
-            return false;
-        }
-
-        public bool VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitVarTemplateDecl(VarTemplate template)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitVarTemplateSpecializationDecl(VarTemplateSpecialization template)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 
     /// <summary>

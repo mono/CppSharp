@@ -15,7 +15,7 @@ namespace CppSharp.AST
     }
 
     /// <summary>
-    /// A library contains all the modules.
+    /// An AST context is a container for translation units.
     /// </summary>
     public class ASTContext
     {
