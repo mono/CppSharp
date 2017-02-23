@@ -40,6 +40,21 @@ namespace CppSharp.Generators
             return base.Generate();
         }
 
+        public void GenerateMultiLineComment(List<string> lines, RawCommentKind kind)
+        {
+            var lineCommentPrologue = Comment.GetLineCommentPrologue(kind);
+            if (!string.IsNullOrWhiteSpace(lineCommentPrologue))
+                WriteLine("{0}", lineCommentPrologue);
+
+            var multiLineCommentPrologue = Comment.GetMultiLineCommentPrologue(kind);
+            foreach (var line in lines)
+                WriteLine("{0} {1}", multiLineCommentPrologue, line);
+
+            var lineCommentEpilogue = Comment.GetLineCommentEpilogue(kind);
+            if (!string.IsNullOrWhiteSpace(lineCommentEpilogue))
+                WriteLine("{0}", lineCommentEpilogue);
+        }
+
         public virtual void GenerateFilePreamble()
         {
             PushBlock(BlockKind.Header);

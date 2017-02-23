@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -125,6 +126,61 @@ namespace CppSharp.AST
         public CommentKind Kind { get; set; }
 
         public abstract void Visit<T>(ICommentVisitor<T> visitor);
+
+        public static string GetMultiLineCommentPrologue(RawCommentKind kind)
+        {
+            switch (kind)
+            {
+            case RawCommentKind.OrdinaryBCPL:
+            case RawCommentKind.BCPLExcl:
+                return "//";
+            case RawCommentKind.OrdinaryC:
+            case RawCommentKind.JavaDoc:
+            case RawCommentKind.Qt:
+                return " *";
+            case RawCommentKind.BCPLSlash:
+                return "///";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static string GetLineCommentPrologue(RawCommentKind kind)
+        {
+            switch (kind)
+            {
+            case RawCommentKind.OrdinaryBCPL:
+            case RawCommentKind.BCPLSlash:
+                return string.Empty;
+            case RawCommentKind.OrdinaryC:
+                return "/*";
+            case RawCommentKind.BCPLExcl:
+                return "//!";
+            case RawCommentKind.JavaDoc:
+                return "/**";
+            case RawCommentKind.Qt:
+                return "/*!";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static string GetLineCommentEpilogue(RawCommentKind kind)
+        {
+            switch (kind)
+            {
+            case RawCommentKind.OrdinaryBCPL:
+            case RawCommentKind.BCPLSlash:
+            case RawCommentKind.BCPLExcl:
+                return string.Empty;
+            case RawCommentKind.OrdinaryC:
+            case RawCommentKind.JavaDoc:
+            case RawCommentKind.Qt:
+                return " */";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
     #region Comments
