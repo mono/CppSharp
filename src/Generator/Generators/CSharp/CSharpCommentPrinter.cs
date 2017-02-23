@@ -22,12 +22,12 @@ namespace CppSharp.Generators.CSharp
         {
             switch (comment.Kind)
             {
-                case CommentKind.FullComment:
+                case DocumentationCommentKind.FullComment:
                     var fullComment = (FullComment) comment;
                     foreach (var block in fullComment.Blocks)
                         block.GetCommentSections(sections);
                     break;
-                case CommentKind.BlockCommandComment:
+                case DocumentationCommentKind.BlockCommandComment:
                     var blockCommandComment = (BlockCommandComment) comment;
                     if (blockCommandComment.CommandKind == CommentCommandKind.Return &&
                         blockCommandComment.ParagraphComment != null)
@@ -36,7 +36,7 @@ namespace CppSharp.Generators.CSharp
                         blockCommandComment.ParagraphComment.GetCommentSections(sections);
                     }
                     break;
-                case CommentKind.ParamCommandComment:
+                case DocumentationCommentKind.ParamCommandComment:
                     var paramCommandComment = (ParamCommandComment) comment;
                     var param = new Section(CommentElement.Param);
                     sections.Add(param);
@@ -47,13 +47,13 @@ namespace CppSharp.Generators.CSharp
                         foreach (var inlineContentComment in paramCommandComment.ParagraphComment.Content)
                             inlineContentComment.GetCommentSections(sections);
                     break;
-                case CommentKind.TParamCommandComment:
+                case DocumentationCommentKind.TParamCommandComment:
                     break;
-                case CommentKind.VerbatimBlockComment:
+                case DocumentationCommentKind.VerbatimBlockComment:
                     break;
-                case CommentKind.VerbatimLineComment:
+                case DocumentationCommentKind.VerbatimLineComment:
                     break;
-                case CommentKind.ParagraphComment:
+                case DocumentationCommentKind.ParagraphComment:
                     var summaryParagraph = sections.Count == 1;
                     var paragraphComment = (ParagraphComment) comment;
                     foreach (var inlineContentComment in paragraphComment.Content)
@@ -65,24 +65,24 @@ namespace CppSharp.Generators.CSharp
                         sections.Add(new Section(CommentElement.Remarks));
                     }
                     break;
-                case CommentKind.HTMLTagComment:
+                case DocumentationCommentKind.HTMLTagComment:
                     break;
-                case CommentKind.HTMLStartTagComment:
+                case DocumentationCommentKind.HTMLStartTagComment:
                     break;
-                case CommentKind.HTMLEndTagComment:
+                case DocumentationCommentKind.HTMLEndTagComment:
                     break;
-                case CommentKind.TextComment:
+                case DocumentationCommentKind.TextComment:
                     var section = sections.Last();
                     section.Lines.Add(GetText(comment,
                         section.Type == CommentElement.Returns || section.Type == CommentElement.Param));
                     if (sections.Count == 1)
                         sections.Add(new Section(CommentElement.Remarks));
                     break;
-                case CommentKind.InlineContentComment:
+                case DocumentationCommentKind.InlineContentComment:
                     break;
-                case CommentKind.InlineCommandComment:
+                case DocumentationCommentKind.InlineCommandComment:
                     break;
-                case CommentKind.VerbatimBlockLineComment:
+                case DocumentationCommentKind.VerbatimBlockLineComment:
                     break;
             }
         }
