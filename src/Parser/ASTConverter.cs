@@ -894,9 +894,9 @@ namespace CppSharp
                 case RawCommentKind.Invalid:
                     return AST.CommentKind.Invalid;
                 case RawCommentKind.OrdinaryBCPL:
-                    return AST.CommentKind.OrdinaryBCPL;
+                    return AST.CommentKind.BCPL;
                 case RawCommentKind.OrdinaryC:
-                    return AST.CommentKind.OrdinaryC;
+                    return AST.CommentKind.C;
                 case RawCommentKind.BCPLSlash:
                     return AST.CommentKind.BCPLSlash;
                 case RawCommentKind.BCPLExcl:

@@ -24,7 +24,7 @@ namespace CppSharp.Generators.CLI
 
         public override void Process()
         {
-            GenerateFilePreamble(CommentKind.OrdinaryBCPL);
+            GenerateFilePreamble(CommentKind.BCPL);
 
             var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName)
                 .Replace('\\', '/');

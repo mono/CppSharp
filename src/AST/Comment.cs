@@ -10,10 +10,10 @@ namespace CppSharp.AST
     {
         // Invalid comment.
         Invalid,
-        // Any normal BCPL comments.
-        OrdinaryBCPL,
-        // Any normal C comment.
-        OrdinaryC,
+        // "// stuff"
+        BCPL,
+        // "/* stuff */"
+        C,
         // "/// stuff"
         BCPLSlash,
         // "//! stuff"
@@ -80,8 +80,8 @@ namespace CppSharp.AST
         {
             get
             {
-                return Kind == CommentKind.OrdinaryBCPL ||
-                       Kind == CommentKind.OrdinaryC;
+                return Kind == CommentKind.BCPL ||
+                       Kind == CommentKind.C;
             }
         }
 
@@ -131,10 +131,10 @@ namespace CppSharp.AST
         {
             switch (kind)
             {
-            case CommentKind.OrdinaryBCPL:
+            case CommentKind.BCPL:
             case CommentKind.BCPLExcl:
                 return "//";
-            case CommentKind.OrdinaryC:
+            case CommentKind.C:
             case CommentKind.JavaDoc:
             case CommentKind.Qt:
                 return " *";
@@ -149,10 +149,10 @@ namespace CppSharp.AST
         {
             switch (kind)
             {
-            case CommentKind.OrdinaryBCPL:
+            case CommentKind.BCPL:
             case CommentKind.BCPLSlash:
                 return string.Empty;
-            case CommentKind.OrdinaryC:
+            case CommentKind.C:
                 return "/*";
             case CommentKind.BCPLExcl:
                 return "//!";
@@ -169,11 +169,11 @@ namespace CppSharp.AST
         {
             switch (kind)
             {
-            case CommentKind.OrdinaryBCPL:
+            case CommentKind.BCPL:
             case CommentKind.BCPLSlash:
             case CommentKind.BCPLExcl:
                 return string.Empty;
-            case CommentKind.OrdinaryC:
+            case CommentKind.C:
             case CommentKind.JavaDoc:
             case CommentKind.Qt:
                 return " */";
