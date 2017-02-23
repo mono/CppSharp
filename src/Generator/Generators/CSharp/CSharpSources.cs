@@ -3191,20 +3191,22 @@ namespace CppSharp.Generators.CSharp
             if (libName == null)
                 libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
+            var targetTriple = Context.ParserOptions.TargetTriple;
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
+            else if ((targetTriple.Contains("win32") || targetTriple.Contains("win64")) &&
+                libName.Contains('.') && Path.GetExtension(libName) != ".dll")
+                libName += ".dll";
 
-            if (Platform.IsMacOS)
+            if (targetTriple.Contains("apple") || targetTriple.Contains("darwin") ||
+                targetTriple.Contains("osx"))
             {
                 var framework = libName + ".framework";
                 for (uint i = 0; i < Context.ParserOptions.LibraryDirsCount; i++)
                 {
                     var libDir = Context.ParserOptions.GetLibraryDirs(i);
                     if (Path.GetFileName(libDir) == framework && File.Exists(Path.Combine(libDir, libName)))
-                    {
-                        libName = string.Format("@executable_path/../Frameworks/{0}/{1}", framework, libName);
-                        break;
-                    }
+                        return $"@executable_path/../Frameworks/{framework}/{libName}";
                 }
             }
 
