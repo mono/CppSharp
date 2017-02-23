@@ -144,7 +144,7 @@ namespace CppSharp.Generators.CSharp
 
         public override void Process()
         {
-            GenerateFilePreamble(RawCommentKind.OrdinaryBCPL);
+            GenerateFilePreamble(CommentKind.OrdinaryBCPL);
 
             GenerateUsings();
 

@@ -40,7 +40,7 @@ namespace CppSharp.Generators
             return base.Generate();
         }
 
-        public void GenerateMultiLineComment(List<string> lines, RawCommentKind kind)
+        public void GenerateMultiLineComment(List<string> lines, CommentKind kind)
         {
             var lineCommentPrologue = Comment.GetLineCommentPrologue(kind);
             if (!string.IsNullOrWhiteSpace(lineCommentPrologue))
@@ -55,7 +55,7 @@ namespace CppSharp.Generators
                 WriteLine("{0}", lineCommentEpilogue);
         }
 
-        public virtual void GenerateFilePreamble(RawCommentKind kind)
+        public virtual void GenerateFilePreamble(CommentKind kind)
         {
             var lines = new List<string>
             {

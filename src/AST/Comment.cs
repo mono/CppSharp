@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace CppSharp.AST
 {
     /// <summary>
-    /// Raw comment kind.
+    /// Comment kind.
     /// </summary>
-    public enum RawCommentKind
+    public enum CommentKind
     {
         // Invalid comment.
         Invalid,
@@ -53,7 +53,7 @@ namespace CppSharp.AST
         /// <summary>
         /// Kind of the comment.
         /// </summary>
-        public RawCommentKind Kind;
+        public CommentKind Kind;
 
         /// <summary>
         /// Raw text of the comment.
@@ -70,7 +70,7 @@ namespace CppSharp.AST
         /// </summary>
         public bool IsInvalid
         {
-            get { return Kind == RawCommentKind.Invalid; }
+            get { return Kind == CommentKind.Invalid; }
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace CppSharp.AST
         {
             get
             {
-                return Kind == RawCommentKind.OrdinaryBCPL ||
-                       Kind == RawCommentKind.OrdinaryC;
+                return Kind == CommentKind.OrdinaryBCPL ||
+                       Kind == CommentKind.OrdinaryC;
             }
         }
 
@@ -127,55 +127,55 @@ namespace CppSharp.AST
 
         public abstract void Visit<T>(ICommentVisitor<T> visitor);
 
-        public static string GetMultiLineCommentPrologue(RawCommentKind kind)
+        public static string GetMultiLineCommentPrologue(CommentKind kind)
         {
             switch (kind)
             {
-            case RawCommentKind.OrdinaryBCPL:
-            case RawCommentKind.BCPLExcl:
+            case CommentKind.OrdinaryBCPL:
+            case CommentKind.BCPLExcl:
                 return "//";
-            case RawCommentKind.OrdinaryC:
-            case RawCommentKind.JavaDoc:
-            case RawCommentKind.Qt:
+            case CommentKind.OrdinaryC:
+            case CommentKind.JavaDoc:
+            case CommentKind.Qt:
                 return " *";
-            case RawCommentKind.BCPLSlash:
+            case CommentKind.BCPLSlash:
                 return "///";
             default:
                 throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static string GetLineCommentPrologue(RawCommentKind kind)
+        public static string GetLineCommentPrologue(CommentKind kind)
         {
             switch (kind)
             {
-            case RawCommentKind.OrdinaryBCPL:
-            case RawCommentKind.BCPLSlash:
+            case CommentKind.OrdinaryBCPL:
+            case CommentKind.BCPLSlash:
                 return string.Empty;
-            case RawCommentKind.OrdinaryC:
+            case CommentKind.OrdinaryC:
                 return "/*";
-            case RawCommentKind.BCPLExcl:
+            case CommentKind.BCPLExcl:
                 return "//!";
-            case RawCommentKind.JavaDoc:
+            case CommentKind.JavaDoc:
                 return "/**";
-            case RawCommentKind.Qt:
+            case CommentKind.Qt:
                 return "/*!";
             default:
                 throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static string GetLineCommentEpilogue(RawCommentKind kind)
+        public static string GetLineCommentEpilogue(CommentKind kind)
         {
             switch (kind)
             {
-            case RawCommentKind.OrdinaryBCPL:
-            case RawCommentKind.BCPLSlash:
-            case RawCommentKind.BCPLExcl:
+            case CommentKind.OrdinaryBCPL:
+            case CommentKind.BCPLSlash:
+            case CommentKind.BCPLExcl:
                 return string.Empty;
-            case RawCommentKind.OrdinaryC:
-            case RawCommentKind.JavaDoc:
-            case RawCommentKind.Qt:
+            case CommentKind.OrdinaryC:
+            case CommentKind.JavaDoc:
+            case CommentKind.Qt:
                 return " */";
             default:
                 throw new ArgumentOutOfRangeException();

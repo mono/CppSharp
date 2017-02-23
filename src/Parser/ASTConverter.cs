@@ -887,26 +887,26 @@ namespace CppSharp
             return _rawComment;
         }
 
-        private AST.RawCommentKind ConvertRawCommentKind(RawCommentKind kind)
+        private AST.CommentKind ConvertRawCommentKind(RawCommentKind kind)
         {
             switch (kind)
             {
                 case RawCommentKind.Invalid:
-                    return AST.RawCommentKind.Invalid;
+                    return AST.CommentKind.Invalid;
                 case RawCommentKind.OrdinaryBCPL:
-                    return AST.RawCommentKind.OrdinaryBCPL;
+                    return AST.CommentKind.OrdinaryBCPL;
                 case RawCommentKind.OrdinaryC:
-                    return AST.RawCommentKind.OrdinaryC;
+                    return AST.CommentKind.OrdinaryC;
                 case RawCommentKind.BCPLSlash:
-                    return AST.RawCommentKind.BCPLSlash;
+                    return AST.CommentKind.BCPLSlash;
                 case RawCommentKind.BCPLExcl:
-                    return AST.RawCommentKind.BCPLExcl;
+                    return AST.CommentKind.BCPLExcl;
                 case RawCommentKind.JavaDoc:
-                    return AST.RawCommentKind.JavaDoc;
+                    return AST.CommentKind.JavaDoc;
                 case RawCommentKind.Qt:
-                    return AST.RawCommentKind.Qt;
+                    return AST.CommentKind.Qt;
                 case RawCommentKind.Merged:
-                    return AST.RawCommentKind.Merged;
+                    return AST.CommentKind.Merged;
                 default:
                     throw new ArgumentOutOfRangeException("kind");
             }
