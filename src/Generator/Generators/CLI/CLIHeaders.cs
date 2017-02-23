@@ -21,7 +21,7 @@ namespace CppSharp.Generators.CLI
 
         public override void Process()
         {
-            GenerateFilePreamble();
+            GenerateFilePreamble(RawCommentKind.OrdinaryBCPL);
 
             PushBlock(CLIBlockKind.Includes);
             WriteLine("#pragma once");
