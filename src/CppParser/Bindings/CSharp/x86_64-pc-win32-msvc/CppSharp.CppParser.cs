@@ -337,7 +337,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Type.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(8);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Type.__Internal)));
                     global::CppSharp.Parser.AST.Type.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -358,7 +358,7 @@ namespace CppSharp
 
                 public Type(global::CppSharp.Parser.AST.TypeKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Type.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -366,7 +366,7 @@ namespace CppSharp
 
                 public Type(global::CppSharp.Parser.AST.Type _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Type.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -460,7 +460,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypeQualifiers.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(3);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal)));
                     *(global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -481,7 +481,7 @@ namespace CppSharp
 
                 public TypeQualifiers(global::CppSharp.Parser.AST.TypeQualifiers _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(3);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) _0.__Instance);
@@ -489,7 +489,7 @@ namespace CppSharp
 
                 public TypeQualifiers()
                 {
-                    __Instance = Marshal.AllocHGlobal(3);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
@@ -589,7 +589,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.QualifiedType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.QualifiedType.__Internal)));
                     *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -610,7 +610,7 @@ namespace CppSharp
 
                 public QualifiedType()
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.QualifiedType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -618,7 +618,7 @@ namespace CppSharp
 
                 public QualifiedType(global::CppSharp.Parser.AST.QualifiedType _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.QualifiedType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.QualifiedType.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.QualifiedType.__Internal*) _0.__Instance);
@@ -706,7 +706,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TagType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TagType.__Internal)));
                     global::CppSharp.Parser.AST.TagType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -730,7 +730,7 @@ namespace CppSharp
                 public TagType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TagType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -739,7 +739,7 @@ namespace CppSharp
                 public TagType(global::CppSharp.Parser.AST.TagType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TagType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -821,7 +821,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ArrayType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ArrayType.__Internal)));
                     global::CppSharp.Parser.AST.ArrayType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -845,7 +845,7 @@ namespace CppSharp
                 public ArrayType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ArrayType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -854,7 +854,7 @@ namespace CppSharp
                 public ArrayType(global::CppSharp.Parser.AST.ArrayType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ArrayType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -987,7 +987,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.FunctionType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(56);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionType.__Internal)));
                     global::CppSharp.Parser.AST.FunctionType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1011,7 +1011,7 @@ namespace CppSharp
                 public FunctionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1020,7 +1020,7 @@ namespace CppSharp
                 public FunctionType(global::CppSharp.Parser.AST.FunctionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -1160,7 +1160,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.PointerType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PointerType.__Internal)));
                     global::CppSharp.Parser.AST.PointerType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1184,7 +1184,7 @@ namespace CppSharp
                 public PointerType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PointerType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1193,7 +1193,7 @@ namespace CppSharp
                 public PointerType(global::CppSharp.Parser.AST.PointerType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PointerType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -1266,7 +1266,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.MemberPointerType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal)));
                     global::CppSharp.Parser.AST.MemberPointerType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1290,7 +1290,7 @@ namespace CppSharp
                 public MemberPointerType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1299,7 +1299,7 @@ namespace CppSharp
                 public MemberPointerType(global::CppSharp.Parser.AST.MemberPointerType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -1359,7 +1359,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypedefType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefType.__Internal)));
                     global::CppSharp.Parser.AST.TypedefType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1383,7 +1383,7 @@ namespace CppSharp
                 public TypedefType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1392,7 +1392,7 @@ namespace CppSharp
                 public TypedefType(global::CppSharp.Parser.AST.TypedefType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -1460,7 +1460,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.AttributedType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.AttributedType.__Internal)));
                     global::CppSharp.Parser.AST.AttributedType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1484,7 +1484,7 @@ namespace CppSharp
                 public AttributedType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.AttributedType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1493,7 +1493,7 @@ namespace CppSharp
                 public AttributedType(global::CppSharp.Parser.AST.AttributedType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.AttributedType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -1572,7 +1572,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.DecayedType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(56);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DecayedType.__Internal)));
                     global::CppSharp.Parser.AST.DecayedType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1596,7 +1596,7 @@ namespace CppSharp
                 public DecayedType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DecayedType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1605,7 +1605,7 @@ namespace CppSharp
                 public DecayedType(global::CppSharp.Parser.AST.DecayedType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DecayedType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -1714,7 +1714,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TemplateArgument.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal)));
                     *(global::CppSharp.Parser.AST.TemplateArgument.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -1735,7 +1735,7 @@ namespace CppSharp
 
                 public TemplateArgument()
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1743,7 +1743,7 @@ namespace CppSharp
 
                 public TemplateArgument(global::CppSharp.Parser.AST.TemplateArgument _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) _0.__Instance);
@@ -1888,7 +1888,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(56);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal)));
                     global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1912,7 +1912,7 @@ namespace CppSharp
                 public TemplateSpecializationType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -1921,7 +1921,7 @@ namespace CppSharp
                 public TemplateSpecializationType(global::CppSharp.Parser.AST.TemplateSpecializationType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2066,7 +2066,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(48);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal)));
                     global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2090,7 +2090,7 @@ namespace CppSharp
                 public DependentTemplateSpecializationType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2099,7 +2099,7 @@ namespace CppSharp
                 public DependentTemplateSpecializationType(global::CppSharp.Parser.AST.DependentTemplateSpecializationType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2212,7 +2212,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TemplateParameterType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal)));
                     global::CppSharp.Parser.AST.TemplateParameterType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2236,7 +2236,7 @@ namespace CppSharp
                 public TemplateParameterType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2245,7 +2245,7 @@ namespace CppSharp
                 public TemplateParameterType(global::CppSharp.Parser.AST.TemplateParameterType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2362,7 +2362,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal)));
                     global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2386,7 +2386,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2395,7 +2395,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2476,7 +2476,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal)));
                     global::CppSharp.Parser.AST.InjectedClassNameType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2500,7 +2500,7 @@ namespace CppSharp
                 public InjectedClassNameType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2509,7 +2509,7 @@ namespace CppSharp
                 public InjectedClassNameType(global::CppSharp.Parser.AST.InjectedClassNameType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2587,7 +2587,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.DependentNameType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DependentNameType.__Internal)));
                     global::CppSharp.Parser.AST.DependentNameType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2611,7 +2611,7 @@ namespace CppSharp
                 public DependentNameType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DependentNameType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2620,7 +2620,7 @@ namespace CppSharp
                 public DependentNameType(global::CppSharp.Parser.AST.DependentNameType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DependentNameType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2677,7 +2677,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.PackExpansionType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(8);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal)));
                     global::CppSharp.Parser.AST.PackExpansionType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2701,7 +2701,7 @@ namespace CppSharp
                 public PackExpansionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2710,7 +2710,7 @@ namespace CppSharp
                 public PackExpansionType(global::CppSharp.Parser.AST.PackExpansionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2760,7 +2760,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.UnaryTransformType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal)));
                     global::CppSharp.Parser.AST.UnaryTransformType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2784,7 +2784,7 @@ namespace CppSharp
                 public UnaryTransformType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2793,7 +2793,7 @@ namespace CppSharp
                 public UnaryTransformType(global::CppSharp.Parser.AST.UnaryTransformType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2869,7 +2869,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VectorType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VectorType.__Internal)));
                     global::CppSharp.Parser.AST.VectorType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2893,7 +2893,7 @@ namespace CppSharp
                 public VectorType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VectorType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -2902,7 +2902,7 @@ namespace CppSharp
                 public VectorType(global::CppSharp.Parser.AST.VectorType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VectorType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -2975,7 +2975,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.BuiltinType.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(12);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BuiltinType.__Internal)));
                     global::CppSharp.Parser.AST.BuiltinType.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2999,7 +2999,7 @@ namespace CppSharp
                 public BuiltinType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BuiltinType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3008,7 +3008,7 @@ namespace CppSharp
                 public BuiltinType(global::CppSharp.Parser.AST.BuiltinType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BuiltinType.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -3076,7 +3076,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VTableComponent.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VTableComponent.__Internal)));
                     *(global::CppSharp.Parser.AST.VTableComponent.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -3097,7 +3097,7 @@ namespace CppSharp
 
                 public VTableComponent()
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VTableComponent.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3105,7 +3105,7 @@ namespace CppSharp
 
                 public VTableComponent(global::CppSharp.Parser.AST.VTableComponent _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VTableComponent.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) _0.__Instance);
@@ -3233,7 +3233,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VTableLayout.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VTableLayout.__Internal)));
                     global::CppSharp.Parser.AST.VTableLayout.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3254,7 +3254,7 @@ namespace CppSharp
 
                 public VTableLayout()
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VTableLayout.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3262,7 +3262,7 @@ namespace CppSharp
 
                 public VTableLayout(global::CppSharp.Parser.AST.VTableLayout _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VTableLayout.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -3369,7 +3369,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VFTableInfo.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal)));
                     global::CppSharp.Parser.AST.VFTableInfo.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3390,7 +3390,7 @@ namespace CppSharp
 
                 public VFTableInfo()
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3398,7 +3398,7 @@ namespace CppSharp
 
                 public VFTableInfo(global::CppSharp.Parser.AST.VFTableInfo _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -3538,7 +3538,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.LayoutField.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(64);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.LayoutField.__Internal)));
                     global::CppSharp.Parser.AST.LayoutField.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3559,7 +3559,7 @@ namespace CppSharp
 
                 public LayoutField()
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.LayoutField.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3567,7 +3567,7 @@ namespace CppSharp
 
                 public LayoutField(global::CppSharp.Parser.AST.LayoutField other)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.LayoutField.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(other, null))
@@ -3692,7 +3692,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.LayoutBase.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.LayoutBase.__Internal)));
                     global::CppSharp.Parser.AST.LayoutBase.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3713,7 +3713,7 @@ namespace CppSharp
 
                 public LayoutBase()
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.LayoutBase.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3721,7 +3721,7 @@ namespace CppSharp
 
                 public LayoutBase(global::CppSharp.Parser.AST.LayoutBase other)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.LayoutBase.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(other, null))
@@ -3908,7 +3908,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ClassLayout.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(128);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassLayout.__Internal)));
                     global::CppSharp.Parser.AST.ClassLayout.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3929,7 +3929,7 @@ namespace CppSharp
 
                 public ClassLayout()
                 {
-                    __Instance = Marshal.AllocHGlobal(128);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassLayout.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -3937,7 +3937,7 @@ namespace CppSharp
 
                 public ClassLayout(global::CppSharp.Parser.AST.ClassLayout _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(128);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassLayout.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -4282,7 +4282,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Declaration.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(192);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Declaration.__Internal)));
                     global::CppSharp.Parser.AST.Declaration.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4303,7 +4303,7 @@ namespace CppSharp
 
                 public Declaration(global::CppSharp.Parser.AST.DeclarationKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(192);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Declaration.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -4311,7 +4311,7 @@ namespace CppSharp
 
                 public Declaration(global::CppSharp.Parser.AST.Declaration _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(192);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Declaration.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -4897,7 +4897,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.DeclarationContext.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(432);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal)));
                     global::CppSharp.Parser.AST.DeclarationContext.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4921,7 +4921,7 @@ namespace CppSharp
                 public DeclarationContext(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(432);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -4930,7 +4930,7 @@ namespace CppSharp
                 public DeclarationContext(global::CppSharp.Parser.AST.DeclarationContext _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(432);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -5352,7 +5352,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(208);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal)));
                     global::CppSharp.Parser.AST.TypedefNameDecl.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5376,7 +5376,7 @@ namespace CppSharp
                 public TypedefNameDecl(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(208);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -5385,7 +5385,7 @@ namespace CppSharp
                 public TypedefNameDecl(global::CppSharp.Parser.AST.TypedefNameDecl _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(208);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -5510,7 +5510,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypedefDecl.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(208);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal)));
                     global::CppSharp.Parser.AST.TypedefDecl.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5534,7 +5534,7 @@ namespace CppSharp
                 public TypedefDecl()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(208);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -5543,7 +5543,7 @@ namespace CppSharp
                 public TypedefDecl(global::CppSharp.Parser.AST.TypedefDecl _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(208);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -5653,7 +5653,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypeAlias.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(216);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeAlias.__Internal)));
                     global::CppSharp.Parser.AST.TypeAlias.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5677,7 +5677,7 @@ namespace CppSharp
                 public TypeAlias()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(216);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeAlias.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -5686,7 +5686,7 @@ namespace CppSharp
                 public TypeAlias(global::CppSharp.Parser.AST.TypeAlias _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(216);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeAlias.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -5811,7 +5811,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Friend.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(200);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Friend.__Internal)));
                     global::CppSharp.Parser.AST.Friend.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5835,7 +5835,7 @@ namespace CppSharp
                 public Friend()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(200);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Friend.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -5844,7 +5844,7 @@ namespace CppSharp
                 public Friend(global::CppSharp.Parser.AST.Friend _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(200);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Friend.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -5937,7 +5937,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Statement.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(48);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Statement.__Internal)));
                     global::CppSharp.Parser.AST.Statement.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5958,7 +5958,7 @@ namespace CppSharp
 
                 public Statement(global::CppSharp.Parser.AST.Statement _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Statement.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6065,7 +6065,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Expression.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(48);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Expression.__Internal)));
                     global::CppSharp.Parser.AST.Expression.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6089,7 +6089,7 @@ namespace CppSharp
                 public Expression(global::CppSharp.Parser.AST.Expression _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Expression.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6165,7 +6165,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.BinaryOperator.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(96);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal)));
                     global::CppSharp.Parser.AST.BinaryOperator.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6189,7 +6189,7 @@ namespace CppSharp
                 public BinaryOperator(global::CppSharp.Parser.AST.BinaryOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(96);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6319,7 +6319,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.CallExpr.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(72);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.CallExpr.__Internal)));
                     global::CppSharp.Parser.AST.CallExpr.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6343,7 +6343,7 @@ namespace CppSharp
                 public CallExpr(global::CppSharp.Parser.AST.CallExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(72);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.CallExpr.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6456,7 +6456,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(72);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal)));
                     global::CppSharp.Parser.AST.CXXConstructExpr.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6480,7 +6480,7 @@ namespace CppSharp
                 public CXXConstructExpr(global::CppSharp.Parser.AST.CXXConstructExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(72);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6632,7 +6632,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Parameter.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(224);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Parameter.__Internal)));
                     global::CppSharp.Parser.AST.Parameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6656,7 +6656,7 @@ namespace CppSharp
                 public Parameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Parameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -6665,7 +6665,7 @@ namespace CppSharp
                 public Parameter(global::CppSharp.Parser.AST.Parameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Parameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6943,7 +6943,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Function.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(384);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Function.__Internal)));
                     global::CppSharp.Parser.AST.Function.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6967,7 +6967,7 @@ namespace CppSharp
                 public Function()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(384);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Function.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -6976,7 +6976,7 @@ namespace CppSharp
                 public Function(global::CppSharp.Parser.AST.Function _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(384);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Function.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -7434,7 +7434,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Method.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(424);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Method.__Internal)));
                     global::CppSharp.Parser.AST.Method.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7458,7 +7458,7 @@ namespace CppSharp
                 public Method()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(424);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Method.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -7467,7 +7467,7 @@ namespace CppSharp
                 public Method(global::CppSharp.Parser.AST.Method _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(424);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Method.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -7875,7 +7875,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(global::CppSharp.Parser.AST.Enumeration.Item.__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(232);
+                        var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal)));
                         global::CppSharp.Parser.AST.Enumeration.Item.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -7899,7 +7899,7 @@ namespace CppSharp
                     public Item()
                         : this((void*) null)
                     {
-                        __Instance = Marshal.AllocHGlobal(232);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -7908,7 +7908,7 @@ namespace CppSharp
                     public Item(global::CppSharp.Parser.AST.Enumeration.Item _0)
                         : this((void*) null)
                     {
-                        __Instance = Marshal.AllocHGlobal(232);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
@@ -7967,7 +7967,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Enumeration.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(480);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Enumeration.__Internal)));
                     global::CppSharp.Parser.AST.Enumeration.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7991,7 +7991,7 @@ namespace CppSharp
                 public Enumeration()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(480);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Enumeration.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -8000,7 +8000,7 @@ namespace CppSharp
                 public Enumeration(global::CppSharp.Parser.AST.Enumeration _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(480);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Enumeration.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -8202,7 +8202,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Variable.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(240);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Variable.__Internal)));
                     global::CppSharp.Parser.AST.Variable.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8226,7 +8226,7 @@ namespace CppSharp
                 public Variable()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(240);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Variable.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -8235,7 +8235,7 @@ namespace CppSharp
                 public Variable(global::CppSharp.Parser.AST.Variable _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(240);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Variable.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -8330,7 +8330,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal)));
                     *(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -8351,7 +8351,7 @@ namespace CppSharp
 
                 public BaseClassSpecifier()
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -8359,7 +8359,7 @@ namespace CppSharp
 
                 public BaseClassSpecifier(global::CppSharp.Parser.AST.BaseClassSpecifier _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) _0.__Instance);
@@ -8532,7 +8532,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Field.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(224);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Field.__Internal)));
                     global::CppSharp.Parser.AST.Field.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8556,7 +8556,7 @@ namespace CppSharp
                 public Field()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Field.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -8565,7 +8565,7 @@ namespace CppSharp
                 public Field(global::CppSharp.Parser.AST.Field _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Field.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -8726,7 +8726,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(192);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal)));
                     global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8750,7 +8750,7 @@ namespace CppSharp
                 public AccessSpecifierDecl()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(192);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -8759,7 +8759,7 @@ namespace CppSharp
                 public AccessSpecifierDecl(global::CppSharp.Parser.AST.AccessSpecifierDecl _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(192);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -9018,7 +9018,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Class.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(552);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Class.__Internal)));
                     global::CppSharp.Parser.AST.Class.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -9042,7 +9042,7 @@ namespace CppSharp
                 public Class()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(552);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Class.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -9051,7 +9051,7 @@ namespace CppSharp
                 public Class(global::CppSharp.Parser.AST.Class _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(552);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Class.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -9453,7 +9453,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Template.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(224);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Template.__Internal)));
                     global::CppSharp.Parser.AST.Template.__Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -9477,7 +9477,7 @@ namespace CppSharp
                 public Template(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Template.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -9486,7 +9486,7 @@ namespace CppSharp
                 public Template()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Template.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_1((__Instance + __PointerAdjustment));
@@ -9495,7 +9495,7 @@ namespace CppSharp
                 public Template(global::CppSharp.Parser.AST.Template _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Template.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -9661,7 +9661,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(224);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal)));
                     global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -9685,7 +9685,7 @@ namespace CppSharp
                 public TypeAliasTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -9694,7 +9694,7 @@ namespace CppSharp
                 public TypeAliasTemplate(global::CppSharp.Parser.AST.TypeAliasTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -9807,7 +9807,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TemplateParameter.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(208);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal)));
                     global::CppSharp.Parser.AST.TemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -9831,7 +9831,7 @@ namespace CppSharp
                 public TemplateParameter(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(208);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -9840,7 +9840,7 @@ namespace CppSharp
                 public TemplateParameter(global::CppSharp.Parser.AST.TemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(208);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -10003,7 +10003,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(232);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal)));
                     global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10027,7 +10027,7 @@ namespace CppSharp
                 public TemplateTemplateParameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(232);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -10036,7 +10036,7 @@ namespace CppSharp
                 public TemplateTemplateParameter(global::CppSharp.Parser.AST.TemplateTemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(232);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -10191,7 +10191,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(224);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal)));
                     global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10215,7 +10215,7 @@ namespace CppSharp
                 public TypeTemplateParameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -10224,7 +10224,7 @@ namespace CppSharp
                 public TypeTemplateParameter(global::CppSharp.Parser.AST.TypeTemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -10362,7 +10362,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(224);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal)));
                     global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10386,7 +10386,7 @@ namespace CppSharp
                 public NonTypeTemplateParameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -10395,7 +10395,7 @@ namespace CppSharp
                 public NonTypeTemplateParameter(global::CppSharp.Parser.AST.NonTypeTemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(224);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -10585,7 +10585,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ClassTemplate.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(248);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal)));
                     global::CppSharp.Parser.AST.ClassTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10609,7 +10609,7 @@ namespace CppSharp
                 public ClassTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(248);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -10618,7 +10618,7 @@ namespace CppSharp
                 public ClassTemplate(global::CppSharp.Parser.AST.ClassTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(248);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -10859,7 +10859,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(592);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal)));
                     global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10883,7 +10883,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(592);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -10892,7 +10892,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization(global::CppSharp.Parser.AST.ClassTemplateSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(592);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -11140,7 +11140,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(592);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal)));
                     global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11164,7 +11164,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(592);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -11173,7 +11173,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(592);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -11306,7 +11306,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.FunctionTemplate.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(248);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal)));
                     global::CppSharp.Parser.AST.FunctionTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11330,7 +11330,7 @@ namespace CppSharp
                 public FunctionTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(248);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -11339,7 +11339,7 @@ namespace CppSharp
                 public FunctionTemplate(global::CppSharp.Parser.AST.FunctionTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(248);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -11465,7 +11465,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(48);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal)));
                     global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11486,7 +11486,7 @@ namespace CppSharp
 
                 public FunctionTemplateSpecialization()
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -11494,7 +11494,7 @@ namespace CppSharp
 
                 public FunctionTemplateSpecialization(global::CppSharp.Parser.AST.FunctionTemplateSpecialization _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -11710,7 +11710,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VarTemplate.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(248);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplate.__Internal)));
                     global::CppSharp.Parser.AST.VarTemplate.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11734,7 +11734,7 @@ namespace CppSharp
                 public VarTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(248);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -11743,7 +11743,7 @@ namespace CppSharp
                 public VarTemplate(global::CppSharp.Parser.AST.VarTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(248);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplate.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -11915,7 +11915,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(280);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal)));
                     global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11939,7 +11939,7 @@ namespace CppSharp
                 public VarTemplateSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(280);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -11948,7 +11948,7 @@ namespace CppSharp
                 public VarTemplateSpecialization(global::CppSharp.Parser.AST.VarTemplateSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(280);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12127,7 +12127,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(280);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal)));
                     global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12151,7 +12151,7 @@ namespace CppSharp
                 public VarTemplatePartialSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(280);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12160,7 +12160,7 @@ namespace CppSharp
                 public VarTemplatePartialSpecialization(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(280);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12300,7 +12300,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Namespace.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(440);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Namespace.__Internal)));
                     global::CppSharp.Parser.AST.Namespace.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12324,7 +12324,7 @@ namespace CppSharp
                 public Namespace()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(440);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Namespace.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12333,7 +12333,7 @@ namespace CppSharp
                 public Namespace(global::CppSharp.Parser.AST.Namespace _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(440);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Namespace.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12411,7 +12411,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal)));
                     *(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -12432,7 +12432,7 @@ namespace CppSharp
 
                 public PreprocessedEntity()
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12440,7 +12440,7 @@ namespace CppSharp
 
                 public PreprocessedEntity(global::CppSharp.Parser.AST.PreprocessedEntity _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) _0.__Instance);
@@ -12573,7 +12573,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.MacroDefinition.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(96);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal)));
                     global::CppSharp.Parser.AST.MacroDefinition.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12597,7 +12597,7 @@ namespace CppSharp
                 public MacroDefinition()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(96);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12606,7 +12606,7 @@ namespace CppSharp
                 public MacroDefinition(global::CppSharp.Parser.AST.MacroDefinition _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(96);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12751,7 +12751,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.MacroExpansion.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(96);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal)));
                     global::CppSharp.Parser.AST.MacroExpansion.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12775,7 +12775,7 @@ namespace CppSharp
                 public MacroExpansion()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(96);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12784,7 +12784,7 @@ namespace CppSharp
                 public MacroExpansion(global::CppSharp.Parser.AST.MacroExpansion _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(96);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -13009,7 +13009,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TranslationUnit.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(504);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal)));
                     global::CppSharp.Parser.AST.TranslationUnit.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13033,7 +13033,7 @@ namespace CppSharp
                 public TranslationUnit()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(504);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -13042,7 +13042,7 @@ namespace CppSharp
                 public TranslationUnit(global::CppSharp.Parser.AST.TranslationUnit _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(504);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -13225,7 +13225,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.NativeLibrary.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(88);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal)));
                     global::CppSharp.Parser.AST.NativeLibrary.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13246,7 +13246,7 @@ namespace CppSharp
 
                 public NativeLibrary()
                 {
-                    __Instance = Marshal.AllocHGlobal(88);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -13254,7 +13254,7 @@ namespace CppSharp
 
                 public NativeLibrary(global::CppSharp.Parser.AST.NativeLibrary _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(88);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -13420,7 +13420,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ASTContext.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ASTContext.__Internal)));
                     global::CppSharp.Parser.AST.ASTContext.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13441,7 +13441,7 @@ namespace CppSharp
 
                 public ASTContext()
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ASTContext.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -13449,7 +13449,7 @@ namespace CppSharp
 
                 public ASTContext(global::CppSharp.Parser.AST.ASTContext _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ASTContext.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -13546,7 +13546,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.Comment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(4);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Comment.__Internal)));
                     *(global::CppSharp.Parser.AST.Comment.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -13567,7 +13567,7 @@ namespace CppSharp
 
                 public Comment(global::CppSharp.Parser.AST.CommentKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Comment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment), kind);
@@ -13575,7 +13575,7 @@ namespace CppSharp
 
                 public Comment(global::CppSharp.Parser.AST.Comment _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.Comment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Comment.__Internal*) _0.__Instance);
@@ -13649,7 +13649,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.BlockContentComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(4);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal)));
                     *(global::CppSharp.Parser.AST.BlockContentComment.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -13673,7 +13673,7 @@ namespace CppSharp
                 public BlockContentComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -13682,7 +13682,7 @@ namespace CppSharp
                 public BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
@@ -13691,7 +13691,7 @@ namespace CppSharp
                 public BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) _0.__Instance);
@@ -13762,7 +13762,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.FullComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FullComment.__Internal)));
                     global::CppSharp.Parser.AST.FullComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13786,7 +13786,7 @@ namespace CppSharp
                 public FullComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FullComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -13795,7 +13795,7 @@ namespace CppSharp
                 public FullComment(global::CppSharp.Parser.AST.FullComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.FullComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -13887,7 +13887,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.InlineContentComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(8);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal)));
                     *(global::CppSharp.Parser.AST.InlineContentComment.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -13911,7 +13911,7 @@ namespace CppSharp
                 public InlineContentComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -13920,7 +13920,7 @@ namespace CppSharp
                 public InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
@@ -13929,7 +13929,7 @@ namespace CppSharp
                 public InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) _0.__Instance);
@@ -14016,7 +14016,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ParagraphComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(32);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal)));
                     global::CppSharp.Parser.AST.ParagraphComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14040,7 +14040,7 @@ namespace CppSharp
                 public ParagraphComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14049,7 +14049,7 @@ namespace CppSharp
                 public ParagraphComment(global::CppSharp.Parser.AST.ParagraphComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -14227,7 +14227,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(32);
+                        var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal)));
                         global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -14248,7 +14248,7 @@ namespace CppSharp
 
                     public Argument()
                     {
-                        __Instance = Marshal.AllocHGlobal(32);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14256,7 +14256,7 @@ namespace CppSharp
 
                     public Argument(global::CppSharp.Parser.AST.BlockCommandComment.Argument _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(32);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
@@ -14307,7 +14307,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal)));
                     global::CppSharp.Parser.AST.BlockCommandComment.__Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14331,7 +14331,7 @@ namespace CppSharp
                 public BlockCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14340,7 +14340,7 @@ namespace CppSharp
                 public BlockCommandComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
@@ -14349,7 +14349,7 @@ namespace CppSharp
                 public BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -14492,7 +14492,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(48);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal)));
                     global::CppSharp.Parser.AST.ParamCommandComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14516,7 +14516,7 @@ namespace CppSharp
                 public ParamCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14525,7 +14525,7 @@ namespace CppSharp
                 public ParamCommandComment(global::CppSharp.Parser.AST.ParamCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -14639,7 +14639,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(64);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal)));
                     global::CppSharp.Parser.AST.TParamCommandComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14663,7 +14663,7 @@ namespace CppSharp
                 public TParamCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14672,7 +14672,7 @@ namespace CppSharp
                 public TParamCommandComment(global::CppSharp.Parser.AST.TParamCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -14770,7 +14770,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal)));
                     global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14794,7 +14794,7 @@ namespace CppSharp
                 public VerbatimBlockLineComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14803,7 +14803,7 @@ namespace CppSharp
                 public VerbatimBlockLineComment(global::CppSharp.Parser.AST.VerbatimBlockLineComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -14905,7 +14905,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(64);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal)));
                     global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14929,7 +14929,7 @@ namespace CppSharp
                 public VerbatimBlockComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -14938,7 +14938,7 @@ namespace CppSharp
                 public VerbatimBlockComment(global::CppSharp.Parser.AST.VerbatimBlockComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -15049,7 +15049,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(72);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal)));
                     global::CppSharp.Parser.AST.VerbatimLineComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15073,7 +15073,7 @@ namespace CppSharp
                 public VerbatimLineComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(72);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15082,7 +15082,7 @@ namespace CppSharp
                 public VerbatimLineComment(global::CppSharp.Parser.AST.VerbatimLineComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(72);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -15234,7 +15234,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(32);
+                        var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal)));
                         global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -15255,7 +15255,7 @@ namespace CppSharp
 
                     public Argument()
                     {
-                        __Instance = Marshal.AllocHGlobal(32);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15263,7 +15263,7 @@ namespace CppSharp
 
                     public Argument(global::CppSharp.Parser.AST.InlineCommandComment.Argument _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(32);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
@@ -15314,7 +15314,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal)));
                     global::CppSharp.Parser.AST.InlineCommandComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15338,7 +15338,7 @@ namespace CppSharp
                 public InlineCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15347,7 +15347,7 @@ namespace CppSharp
                 public InlineCommandComment(global::CppSharp.Parser.AST.InlineCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -15461,7 +15461,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(8);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal)));
                     *(global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -15485,7 +15485,7 @@ namespace CppSharp
                 public HTMLTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15494,7 +15494,7 @@ namespace CppSharp
                 public HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_1((__Instance + __PointerAdjustment), Kind);
@@ -15503,7 +15503,7 @@ namespace CppSharp
                 public HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) _0.__Instance);
@@ -15645,7 +15645,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(64);
+                        var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal)));
                         global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -15666,7 +15666,7 @@ namespace CppSharp
 
                     public Attribute()
                     {
-                        __Instance = Marshal.AllocHGlobal(64);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15674,7 +15674,7 @@ namespace CppSharp
 
                     public Attribute(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(64);
+                        __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal)));
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         if (ReferenceEquals(_0, null))
@@ -15739,7 +15739,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(64);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal)));
                     global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15763,7 +15763,7 @@ namespace CppSharp
                 public HTMLStartTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15772,7 +15772,7 @@ namespace CppSharp
                 public HTMLStartTagComment(global::CppSharp.Parser.AST.HTMLStartTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(64);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -15887,7 +15887,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal)));
                     global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15911,7 +15911,7 @@ namespace CppSharp
                 public HTMLEndTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -15920,7 +15920,7 @@ namespace CppSharp
                 public HTMLEndTagComment(global::CppSharp.Parser.AST.HTMLEndTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -16006,7 +16006,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.TextComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(40);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TextComment.__Internal)));
                     global::CppSharp.Parser.AST.TextComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -16030,7 +16030,7 @@ namespace CppSharp
                 public TextComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TextComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -16039,7 +16039,7 @@ namespace CppSharp
                 public TextComment(global::CppSharp.Parser.AST.TextComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.TextComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -16146,7 +16146,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(global::CppSharp.Parser.AST.RawComment.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(80);
+                    var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.RawComment.__Internal)));
                     global::CppSharp.Parser.AST.RawComment.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -16167,7 +16167,7 @@ namespace CppSharp
 
                 public RawComment()
                 {
-                    __Instance = Marshal.AllocHGlobal(80);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.RawComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -16175,7 +16175,7 @@ namespace CppSharp
 
                 public RawComment(global::CppSharp.Parser.AST.RawComment _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(80);
+                    __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.AST.RawComment.__Internal)));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -16542,7 +16542,7 @@ namespace CppSharp
 
             private static void* __CopyValue(global::CppSharp.Parser.ParserTargetInfo.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(184);
+                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserTargetInfo.__Internal)));
                 global::CppSharp.Parser.ParserTargetInfo.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -16563,7 +16563,7 @@ namespace CppSharp
 
             public ParserTargetInfo()
             {
-                __Instance = Marshal.AllocHGlobal(184);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserTargetInfo.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -16571,7 +16571,7 @@ namespace CppSharp
 
             public ParserTargetInfo(global::CppSharp.Parser.ParserTargetInfo _0)
             {
-                __Instance = Marshal.AllocHGlobal(184);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserTargetInfo.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
@@ -17406,7 +17406,7 @@ namespace CppSharp
 
             private static void* __CopyValue(global::CppSharp.Parser.CppParserOptions.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(272);
+                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.CppParserOptions.__Internal)));
                 global::CppSharp.Parser.CppParserOptions.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -17427,7 +17427,7 @@ namespace CppSharp
 
             public CppParserOptions()
             {
-                __Instance = Marshal.AllocHGlobal(272);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.CppParserOptions.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -17435,7 +17435,7 @@ namespace CppSharp
 
             public CppParserOptions(global::CppSharp.Parser.CppParserOptions _0)
             {
-                __Instance = Marshal.AllocHGlobal(272);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.CppParserOptions.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
@@ -17866,7 +17866,7 @@ namespace CppSharp
 
             private static void* __CopyValue(global::CppSharp.Parser.ParserDiagnostic.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(80);
+                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserDiagnostic.__Internal)));
                 global::CppSharp.Parser.ParserDiagnostic.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -17887,7 +17887,7 @@ namespace CppSharp
 
             public ParserDiagnostic()
             {
-                __Instance = Marshal.AllocHGlobal(80);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserDiagnostic.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -17895,7 +17895,7 @@ namespace CppSharp
 
             public ParserDiagnostic(global::CppSharp.Parser.ParserDiagnostic _0)
             {
-                __Instance = Marshal.AllocHGlobal(80);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserDiagnostic.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
@@ -18063,7 +18063,7 @@ namespace CppSharp
 
             private static void* __CopyValue(global::CppSharp.Parser.ParserResult.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(56);
+                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserResult.__Internal)));
                 global::CppSharp.Parser.ParserResult.__Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -18084,7 +18084,7 @@ namespace CppSharp
 
             public ParserResult()
             {
-                __Instance = Marshal.AllocHGlobal(56);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserResult.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 __Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -18092,7 +18092,7 @@ namespace CppSharp
 
             public ParserResult(global::CppSharp.Parser.ParserResult _0)
             {
-                __Instance = Marshal.AllocHGlobal(56);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ParserResult.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
@@ -18241,7 +18241,7 @@ namespace CppSharp
 
             private static void* __CopyValue(global::CppSharp.Parser.ClangParser.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(0);
+                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ClangParser.__Internal)));
                 *(global::CppSharp.Parser.ClangParser.__Internal*) ret = native;
                 return ret.ToPointer();
             }
@@ -18262,14 +18262,14 @@ namespace CppSharp
 
             public ClangParser()
             {
-                __Instance = Marshal.AllocHGlobal(0);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ClangParser.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
             public ClangParser(global::CppSharp.Parser.ClangParser _0)
             {
-                __Instance = Marshal.AllocHGlobal(0);
+                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::CppSharp.Parser.ClangParser.__Internal)));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 *((global::CppSharp.Parser.ClangParser.__Internal*) __Instance) = *((global::CppSharp.Parser.ClangParser.__Internal*) _0.__Instance);

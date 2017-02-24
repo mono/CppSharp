@@ -75,7 +75,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.Allocator.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(0);
+            var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::Std.Allocator.__Internal)));
             *(global::Std.Allocator.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -96,7 +96,7 @@ namespace Std
 
         public Allocator()
         {
-            __Instance = Marshal.AllocHGlobal(0);
+            __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::Std.Allocator.__Internal)));
             __ownsNativeInstance = true;
             NativeToManagedMap[__Instance] = this;
             global::Std.Allocator.__Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -635,7 +635,7 @@ namespace Std
 
             private static void* __CopyValue(global::Std.Cxx11.BasicString.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(32);
+                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::Std.Cxx11.BasicString.__Internal)));
                 *(global::Std.Cxx11.BasicString.__Internal*) ret = native;
                 return ret.ToPointer();
             }
