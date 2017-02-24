@@ -561,8 +561,15 @@ namespace CppSharp.Generators.CSharp
         public void GenerateClassInternals(Class @class)
         {
             PushBlock(CSharpBlockKind.InternalsClass);
-            WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
-                @class.Layout.Size);
+            if (Options.GenerateSequentialLayout)
+            {
+                WriteLine("[StructLayout(LayoutKind.Sequential)]");
+            }
+            else
+            {
+                WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
+                    @class.Layout.Size);
+            }
 
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
@@ -772,7 +779,14 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            WriteLine("[FieldOffset({0})]", field.Offset);
+            if (Options.GenerateSequentialLayout)
+            {
+                // For the sequential layout there is no need to set an offset
+            }
+            else
+            {
+                WriteLine("[FieldOffset({0})]", field.Offset);
+            }
 
             TypePrinter.PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
@@ -2126,7 +2140,7 @@ namespace CppSharp.Generators.CSharp
                     copyCtorMethod.IsGenerated)
                 {
                     // Allocate memory for a new native object and call the ctor.
-                    WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
+                    WriteLine("var ret = Marshal.AllocHGlobal(Marshal.SizeOf(sizeof({0})));", @internal);
                     TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine($"{@class.Visit(TypePrinter)}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
                         @class.Visit(TypePrinter),
@@ -2136,7 +2150,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
+                    WriteLine("var ret = Marshal.AllocHGlobal(Marshal.SizeOf(sizeof({0})));", @internal);
                     WriteLine("*({0}*) ret = native;", @internal);
                     WriteLine("return ret.ToPointer();");
                 }
@@ -2577,8 +2591,11 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassConstructor(Method method, Class @class)
         {
-            WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
-                @class.Layout.Size);
+            TypePrinter.PushContext(TypePrinterContextKind.Native);
+            var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
+            TypePrinter.PopContext();
+            WriteLine("{0} = Marshal.AllocHGlobal(Marshal.SizeOf(sizeof({1})));", Helpers.InstanceIdentifier,
+                @internal);
             WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
             WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
 

@@ -161,6 +161,7 @@ namespace CppSharp
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
         public bool GenerateInternalImports;
+        public bool GenerateSequentialLayout;
         public bool UseHeaderDirectories;
 
         /// <summary>
