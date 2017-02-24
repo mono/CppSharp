@@ -561,8 +561,15 @@ namespace CppSharp.Generators.CSharp
         public void GenerateClassInternals(Class @class)
         {
             PushBlock(CSharpBlockKind.InternalsClass);
-            WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
-                @class.Layout.Size);
+            if (Options.GenerateSequentialLayout)
+            {
+                WriteLine("[StructLayout(LayoutKind.Sequential)]");
+            }
+            else
+            {
+                WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
+                    @class.Layout.Size);
+            }
 
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
@@ -772,7 +779,14 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            WriteLine("[FieldOffset({0})]", field.Offset);
+            if (Options.GenerateSequentialLayout)
+            {
+                // For the sequential layout there is no need to set an offset
+            }
+            else
+            {
+                WriteLine("[FieldOffset({0})]", field.Offset);
+            }
 
             TypePrinter.PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
