@@ -2132,7 +2132,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType && !@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("private static void* __CopyValue({0} native)", @internal);
+                WriteLine($"private static void* __CopyValue({@internal} native)");
                 WriteStartBraceIndent();
                 var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
                     method.IsCopyConstructor);
@@ -2140,7 +2140,7 @@ namespace CppSharp.Generators.CSharp
                     copyCtorMethod.IsGenerated)
                 {
                     // Allocate memory for a new native object and call the ctor.
-                    WriteLine("var ret = Marshal.AllocHGlobal(Marshal.SizeOf(sizeof({0})));", @internal);
+                    WriteLine($"var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({@internal})));");
                     TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine($"{@class.Visit(TypePrinter)}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
                         @class.Visit(TypePrinter),
@@ -2150,8 +2150,8 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine("var ret = Marshal.AllocHGlobal(Marshal.SizeOf(sizeof({0})));", @internal);
-                    WriteLine("*({0}*) ret = native;", @internal);
+                    WriteLine($"var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({@internal})));");
+                    WriteLine($"*({@internal}*) ret = native;");
                     WriteLine("return ret.ToPointer();");
                 }
                 WriteCloseBraceIndent();
@@ -2166,12 +2166,12 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 if (@class.IsRefType)
                 {
-                    WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
-                    WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
+                    WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
+                    WriteLine($"NativeToManagedMap[{Helpers.InstanceIdentifier}] = this;");
                 }
                 else
                 {
-                    WriteLine("{0} = native;", Helpers.InstanceField);
+                    WriteLine($"{Helpers.InstanceField} = native;");
                 }
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2594,10 +2594,9 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
             TypePrinter.PopContext();
-            WriteLine("{0} = Marshal.AllocHGlobal(Marshal.SizeOf(sizeof({1})));", Helpers.InstanceIdentifier,
-                @internal);
-            WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
-            WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
+            WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({@internal})));");
+            WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
+            WriteLine($"NativeToManagedMap[{Helpers.InstanceIdentifier}] = this;");
 
             if (method.IsCopyConstructor)
             {
