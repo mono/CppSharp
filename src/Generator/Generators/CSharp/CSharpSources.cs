@@ -561,15 +561,9 @@ namespace CppSharp.Generators.CSharp
         public void GenerateClassInternals(Class @class)
         {
             PushBlock(CSharpBlockKind.InternalsClass);
-            if (Options.GenerateSequentialLayout)
-            {
-                WriteLine("[StructLayout(LayoutKind.Sequential)]");
-            }
-            else
-            {
-                WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
-                    @class.Layout.Size);
-            }
+            if (!Options.GenerateSequentialLayout || @class.IsUnion)
+                WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.Size})]");
+            // no else because the layout is sequential for structures by default
 
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
@@ -577,7 +571,7 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
             foreach (var field in @class.Layout.Fields)
-                GenerateClassInternalsField(field);
+                GenerateClassInternalsField(field, @class);
             if (@class.IsGenerated)
             {
                 var functions = GatherClassInternalFunctions(@class);
@@ -754,7 +748,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateClassInternalsField(LayoutField field)
+        private void GenerateClassInternalsField(LayoutField field, Class @class)
         {
             Declaration decl;
             field.QualifiedType.Type.TryGetDeclaration(out decl);
@@ -779,14 +773,8 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            if (Options.GenerateSequentialLayout)
-            {
-                // For the sequential layout there is no need to set an offset
-            }
-            else
-            {
-                WriteLine("[FieldOffset({0})]", field.Offset);
-            }
+            if (!Options.GenerateSequentialLayout || @class.IsUnion)
+                WriteLine($"[FieldOffset({field.Offset})]");
 
             TypePrinter.PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
@@ -803,11 +791,11 @@ namespace CppSharp.Generators.CSharp
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("{0} {1} {2} = {3};", access, fieldType, fieldName, fieldValuePrinted);
+                Write($"{access} {fieldType} {fieldName} = {fieldValuePrinted};");
             }
             else
             {
-                Write("{0} {1} {2};", access, fieldType, fieldName);
+                Write($"{access} {fieldType} {fieldName};");
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
