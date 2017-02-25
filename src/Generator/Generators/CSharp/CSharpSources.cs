@@ -3012,6 +3012,16 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             WriteStartBraceIndent();
+            GenerateEnumItems(@enum);
+            WriteCloseBraceIndent();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
+        }
+
+        public virtual void GenerateEnumItems(Enumeration @enum)
+        {
             for (var i = 0; i < @enum.Items.Count; ++i)
             {
                 var item = @enum.Items[i];
@@ -3027,11 +3037,6 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
             }
-            WriteCloseBraceIndent();
-
-            PopBlock(NewLineKind.BeforeNextBlock);
-
-            return true;
         }
 
         public static string GetMethodIdentifier(Method method)
