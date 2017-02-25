@@ -194,9 +194,6 @@ namespace CppSharp.Generators
             
                 PopBlock(NewLineKind.Never);
             }
-            
-            PopIndent();
-            WriteLine("};");
         }
 
         public virtual bool VisitEnumItemDecl(Enumeration.Item item)
