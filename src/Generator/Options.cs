@@ -26,7 +26,6 @@ namespace CppSharp
 
             GeneratorKind = GeneratorKind.CSharp;
             OutputInteropIncludes = true;
-            CommentPrefix = "///";
 
             Encoding = Encoding.ASCII;
 
@@ -188,7 +187,13 @@ namespace CppSharp
 
         public string IncludePrefix;
         public Func<TranslationUnit, string> GenerateName;
-        public string CommentPrefix;
+
+        /// <summary>
+        /// Set this option to the kind of comments that you want generated
+        /// in the source code. This overrides the default kind set by the
+        /// target generator.
+        /// </summary>
+        public CommentKind? CommentKind;
 
         public Encoding Encoding { get; set; }
 

@@ -108,45 +108,6 @@ namespace CppSharp.Generators.CLI
             return method.Name;
         }
 
-        public void GenerateDeclarationCommon(Declaration decl)
-        {
-            if (decl.Comment == null)
-                return;
-
-            GenerateSummary(decl.Comment.BriefText);
-            GenerateDebug(decl);
-        }
-
-        public void GenerateSummary(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return;
-
-            PushBlock(BlockKind.BlockComment);
-            WriteLine("/// <summary>");
-            WriteLine("/// {0}", comment);
-            WriteLine("/// </summary>");
-            PopBlock();
-        }
-
-        public void GenerateInlineSummary(RawComment comment)
-        {
-            if (comment == null) return;
-
-            if (String.IsNullOrWhiteSpace(comment.BriefText))
-                return;
-
-            PushBlock(BlockKind.InlineComment);
-            WriteLine("/// <summary> {0} </summary>", comment.BriefText);
-            PopBlock();
-        }
-
-        public void GenerateDebug(Declaration decl)
-        {
-            if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
-                WriteLine("// DEBUG: " + decl.DebugText);
-        }
-
         public void GenerateMethodParameters(Method method)
         {
             for (var i = 0; i < method.Parameters.Count; ++i)

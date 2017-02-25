@@ -21,6 +21,25 @@ namespace CppSharp.Generators
         public virtual string FilePath =>
             $"{TranslationUnit.FileNameWithoutExtension}.{FileExtension}";
 
+        /// <summary>
+        /// Gets the comment style kind for regular comments.
+        /// </summary>
+        public virtual CommentKind CommentKind
+        {
+            get
+            {
+                if (!Options.CommentKind.HasValue)
+                    return CommentKind.BCPL;
+                
+                return Options.CommentKind.Value;
+            }
+        } 
+
+        /// <summary>
+        /// Gets the comment style kind for documentation comments.
+        /// </summary>
+        public virtual CommentKind DocumentationCommentKind => CommentKind.BCPLSlash;
+
         protected CodeGenerator(BindingContext context, TranslationUnit unit)
             : this(context, new List<TranslationUnit> { unit })
         {
@@ -57,27 +76,23 @@ namespace CppSharp.Generators
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 
-        public void GenerateInlineSummary(RawComment comment)
-        {
-            if (comment == null) return;
+        #region Comment generation
 
-            if (string.IsNullOrWhiteSpace(comment.BriefText))
+        public virtual void GenerateSummary(string comment)
+        {
+            if (string.IsNullOrWhiteSpace(comment))
                 return;
 
-            PushBlock(BlockKind.InlineComment);
-            if (comment.BriefText.Contains("\n"))
-            {
-                WriteLine("{0} <summary>", Options.CommentPrefix);
-                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                            Environment.NewLine.ToCharArray()))
-                    WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
-                WriteLine("{0} </summary>", Options.CommentPrefix);
-            }
-            else
-            {
-                WriteLine("{0} <summary>{1}</summary>", Options.CommentPrefix, comment.BriefText);
-            }
+            PushBlock(BlockKind.BlockComment);
+            WriteLine("/// <summary>");
+            WriteLine("/// {0}", comment);
+            WriteLine("/// </summary>");
             PopBlock();
+        }
+
+        public virtual void GenerateInlineSummary(RawComment comment)
+        {
+            GenerateComment(comment);
         }
 
         public virtual void GenerateComment(RawComment comment)
@@ -85,7 +100,7 @@ namespace CppSharp.Generators
             if (comment.FullComment != null)
             {
                 PushBlock(BlockKind.BlockComment);
-                WriteLine(comment.FullComment.CommentToString(Options.CommentPrefix));
+                WriteLine(comment.FullComment.CommentToString(CommentKind));
                 PopBlock();
                 return;
             }
@@ -93,12 +108,24 @@ namespace CppSharp.Generators
             if (string.IsNullOrWhiteSpace(comment.BriefText))
                 return;
 
+            var lines = new List<string>();
+
             PushBlock(BlockKind.BlockComment);
-            WriteLine("{0} <summary>", Options.CommentPrefix);
-            foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                        Environment.NewLine.ToCharArray()))
-                WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
-            WriteLine("{0} </summary>", Options.CommentPrefix);
+            if (comment.BriefText.Contains("\n"))
+            {
+                lines.Add("<summary>");
+                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                            Environment.NewLine.ToCharArray()))
+                    lines.Add($"<para>{line}</para>");
+                lines.Add("</summary>");
+            }
+            else
+            {
+                lines.Add($"<summary>{comment.BriefText}</summary>");
+            }
+            PopBlock();
+
+            GenerateMultiLineComment(lines, CommentKind);
             PopBlock();
         }
 
@@ -116,6 +143,8 @@ namespace CppSharp.Generators
             if (!string.IsNullOrWhiteSpace(lineCommentEpilogue))
                 WriteLine("{0}", lineCommentEpilogue);
         }
+
+        #endregion
 
         public virtual void GenerateFilePreamble(CommentKind kind)
         {

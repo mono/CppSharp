@@ -9,13 +9,13 @@ namespace CppSharp.Generators.CSharp
 {
     public static class CSharpCommentPrinter
     {
-        public static string CommentToString(this Comment comment, string commentPrefix)
+        public static string CommentToString(this Comment comment, CommentKind kind)
         {
             var sections = new List<Section> { new Section(CommentElement.Summary) };
             GetCommentSections(comment, sections);
             foreach (var section in sections)
                 TrimSection(section);
-            return FormatComment(sections, commentPrefix);
+            return FormatComment(sections, kind);
         }
 
         private static void GetCommentSections(this Comment comment, List<Section> sections)
@@ -115,8 +115,10 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private static string FormatComment(List<Section> sections, string commentPrefix)
+        private static string FormatComment(List<Section> sections, CommentKind kind)
         {
+            var commentPrefix = Comment.GetMultiLineCommentPrologue(kind);
+        
             var commentBuilder = new StringBuilder();
             foreach (var section in sections.Where(s => s.Lines.Count > 0))
             {
