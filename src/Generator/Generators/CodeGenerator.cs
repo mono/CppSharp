@@ -100,11 +100,13 @@ namespace CppSharp.Generators
             if (string.IsNullOrWhiteSpace(comment))
                 return;
 
-            PushBlock(BlockKind.BlockComment);
-            WriteLine("/// <summary>");
-            WriteLine("/// {0}", comment);
-            WriteLine("/// </summary>");
-            PopBlock();
+            var lines = new List<string>();
+
+            lines.Add("<summary>");
+            lines.Add($"{comment}");
+            lines.Add("</summary>");
+
+            GenerateMultiLineComment(lines, DocumentationCommentKind);
         }
 
         public virtual void GenerateInlineSummary(RawComment comment)
