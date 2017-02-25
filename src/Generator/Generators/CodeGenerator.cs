@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.Generators.CSharp;
@@ -166,6 +167,40 @@ namespace CppSharp.Generators
 
         #endregion
 
+        #region Enum generation
+
+        public virtual void GenerateEnumItems(Enumeration @enum)
+        {
+            foreach (var item in @enum.Items)
+            {
+                PushBlock(BlockKind.EnumItem);
+            
+                item.Visit(this);
+            
+                if (item != @enum.Items.Last())
+                    WriteLine(",");
+            
+                PopBlock(NewLineKind.Never);
+            }
+            
+            PopIndent();
+            WriteLine("};");
+        }
+
+        public virtual bool VisitEnumItemDecl(Enumeration.Item item)
+        {
+            GenerateInlineSummary(item.Comment);
+
+            Write(item.Name);
+
+            var @enum = item.Namespace as Enumeration;
+            if (item.ExplicitValue)
+                Write(" = {0}", @enum.GetItemValueAsString(item));
+
+            return true;
+        }
+
+        #endregion
 
         #region Visitor methods
 
@@ -229,11 +264,6 @@ namespace CppSharp.Generators
         }
 
         public virtual bool VisitEnumDecl(Enumeration @enum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual bool VisitEnumItemDecl(Enumeration.Item item)
         {
             throw new NotImplementedException();
         }

@@ -836,22 +836,7 @@ namespace CppSharp.Generators.CLI
             NewLine();
             WriteStartBraceIndent();
 
-            foreach (var item in @enum.Items)
-            {
-                PushBlock(CLIBlockKind.EnumItem);
-
-                GenerateInlineSummary(item.Comment);
-
-                Write(item.Name);
-
-                if (item.ExplicitValue)
-                    Write(" = {0}", @enum.GetItemValueAsString(item));
-
-                if (item != @enum.Items.Last())
-                    WriteLine(",");
-
-                PopBlock(NewLineKind.Never);
-            }
+            GenerateEnumItems(@enum);
 
             PopIndent();
             WriteLine("};");

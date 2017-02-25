@@ -3020,25 +3020,6 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public virtual void GenerateEnumItems(Enumeration @enum)
-        {
-            for (var i = 0; i < @enum.Items.Count; ++i)
-            {
-                var item = @enum.Items[i];
-                GenerateInlineSummary(item.Comment);
-
-                var value = @enum.GetItemValueAsString(item);
-                Write(item.ExplicitValue
-                          ? string.Format("{0} = {1}", item.Name, value)
-                          : string.Format("{0}", item.Name));
-
-                if (i < @enum.Items.Count - 1)
-                    Write(",");
-
-                NewLine();
-            }
-        }
-
         public static string GetMethodIdentifier(Method method)
         {
             if (method.IsConstructor || method.IsDestructor)

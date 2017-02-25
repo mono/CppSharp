@@ -20,7 +20,8 @@ namespace CppSharp
         public const int InlineComment = 2;
         public const int Header = 3;
         public const int Footer = 4;
-        public const int LAST = 5;
+        public const int EnumItem = 5;
+        public const int LAST = 6;
     }
 
     public class Block : ITextGenerator
