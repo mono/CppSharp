@@ -127,7 +127,6 @@ namespace CppSharp.Generators
 
             var lines = new List<string>();
 
-            PushBlock(BlockKind.BlockComment);
             if (comment.BriefText.Contains("\n"))
             {
                 lines.Add("<summary>");
@@ -140,14 +139,14 @@ namespace CppSharp.Generators
             {
                 lines.Add($"<summary>{comment.BriefText}</summary>");
             }
-            PopBlock();
 
             GenerateMultiLineComment(lines, CommentKind);
-            PopBlock();
         }
 
         public virtual void GenerateMultiLineComment(List<string> lines, CommentKind kind)
         {
+            PushBlock(BlockKind.BlockComment);
+        
             var lineCommentPrologue = Comment.GetLineCommentPrologue(kind);
             if (!string.IsNullOrWhiteSpace(lineCommentPrologue))
                 WriteLine("{0}", lineCommentPrologue);
@@ -159,6 +158,8 @@ namespace CppSharp.Generators
             var lineCommentEpilogue = Comment.GetLineCommentEpilogue(kind);
             if (!string.IsNullOrWhiteSpace(lineCommentEpilogue))
                 WriteLine("{0}", lineCommentEpilogue);
+
+            PopBlock();
         }
 
         #endregion
