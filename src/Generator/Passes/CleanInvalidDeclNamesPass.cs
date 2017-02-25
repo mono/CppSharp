@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators.CLI;
@@ -20,9 +21,12 @@ namespace CppSharp.Passes
             if (char.IsNumber(name[0]))
                 return '_' + name;
 
+            // TODO: Fix this to not need per-generator code.
+            var units = new List<TranslationUnit> { new TranslationUnit() };
             if (Options.IsCLIGenerator)
-                return CLITemplate.SafeIdentifier(name);
-            return Helpers.SafeIdentifier(name);
+                return new CLIHeaders(Context, units).SafeIdentifier(name);
+
+            return new CSharpSources(Context, units).SafeIdentifier(name);
         }
 
         public override bool VisitDeclaration(Declaration decl)

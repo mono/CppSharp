@@ -16,29 +16,6 @@ namespace CppSharp.Generators.CSharp
 {
     public static class Helpers
     {
-        // from https://github.com/mono/mono/blob/master/mcs/class/System/Microsoft.CSharp/CSharpCodeGenerator.cs
-        private static readonly string[] Keywords =
-            {
-                "abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
-                "base", "extern", "this", "false", "operator", "throw", "break", "finally",
-                "out", "true", "fixed", "override", "try", "case", "params", "typeof",
-                "catch", "for", "private", "foreach", "protected", "checked", "goto",
-                "public", "unchecked", "class", "if", "readonly", "unsafe", "const",
-                "implicit", "ref", "continue", "in", "return", "using", "virtual", "default",
-                "interface", "sealed", "volatile", "delegate", "internal", "do", "is",
-                "sizeof", "while", "lock", "stackalloc", "else", "static", "enum",
-                "namespace", "object", "bool", "byte", "float", "uint", "char", "ulong",
-                "ushort", "decimal", "int", "sbyte", "short", "double", "long", "string",
-                "void", "partial", "yield", "where"
-            };
-
-        public static string SafeIdentifier(string id)
-        {
-            if (id.All(char.IsLetterOrDigit))
-                return Keywords.Contains(id) ? "@" + id : id;
-            return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
-        }
-
         public static readonly string InternalStruct = Generator.GeneratedIdentifier("Internal");
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
@@ -131,9 +108,29 @@ namespace CppSharp.Generators.CSharp
 
         #region Identifiers
 
-        public static string GeneratedIdentifier(string id)
+        // Extracted from:
+        // https://github.com/mono/mono/blob/master/mcs/class/System/Microsoft.CSharp/CSharpCodeGenerator.cs
+        static readonly string[] ReservedKeywords =
         {
-            return Generator.GeneratedIdentifier(id);
+            "abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
+            "base", "extern", "this", "false", "operator", "throw", "break", "finally",
+            "out", "true", "fixed", "override", "try", "case", "params", "typeof",
+            "catch", "for", "private", "foreach", "protected", "checked", "goto",
+            "public", "unchecked", "class", "if", "readonly", "unsafe", "const",
+            "implicit", "ref", "continue", "in", "return", "using", "virtual", "default",
+            "interface", "sealed", "volatile", "delegate", "internal", "do", "is",
+            "sizeof", "while", "lock", "stackalloc", "else", "static", "enum",
+            "namespace", "object", "bool", "byte", "float", "uint", "char", "ulong",
+            "ushort", "decimal", "int", "sbyte", "short", "double", "long", "string",
+            "void", "partial", "yield", "where"
+        };
+
+        public override string SafeIdentifier(string id)
+        {
+            if (id.All(char.IsLetterOrDigit))
+                return ReservedKeywords.Contains(id) ? "@" + id : id;
+
+            return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
         #endregion
@@ -247,7 +244,7 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             PushBlock(CSharpBlockKind.Functions);
-            var parentName = Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+            var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
             WriteLine("public unsafe partial class {0}", parentName);
             WriteStartBraceIndent();
 
@@ -650,7 +647,7 @@ namespace CppSharp.Generators.CSharp
             Write("partial ");
 
             Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
-            Write("{0}", Helpers.SafeIdentifier(@class.Name));
+            Write("{0}", SafeIdentifier(@class.Name));
 
             var bases = new List<string>();
 
@@ -708,11 +705,11 @@ namespace CppSharp.Generators.CSharp
                 coreType.IsPrimitiveType(PrimitiveType.Half))
                 return;
 
-            var safeIdentifier = Helpers.SafeIdentifier(field.Name);
+            var safeIdentifier = SafeIdentifier(field.Name);
 
             if(safeIdentifier.All(c => c.Equals('_')))
             {
-                safeIdentifier = Helpers.SafeIdentifier(field.Name);
+                safeIdentifier = SafeIdentifier(field.Name);
             }
 
             PushBlock(CSharpBlockKind.Field);
@@ -842,7 +839,7 @@ namespace CppSharp.Generators.CSharp
                     TypePrinter.PushContext(TypePrinterContextKind.Native);
                     ctx.ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
                         $"(({@class.Visit(TypePrinter)}*) {Helpers.InstanceIdentifier})")}{
-                        (@class.IsValueType ? "." : "->")}{Helpers.SafeIdentifier(name)}";
+                        (@class.IsValueType ? "." : "->")}{SafeIdentifier(name)}";
                     TypePrinter.PopContext();
                 }
                 param.Visit(marshal);
@@ -934,7 +931,7 @@ namespace CppSharp.Generators.CSharp
             var name = ((Class) field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
-                type, arrPtr, Helpers.InstanceField, Helpers.SafeIdentifier(name)));
+                type, arrPtr, Helpers.InstanceField, SafeIdentifier(name)));
             WriteStartBraceIndent();
             return arrPtr;
         }
@@ -1046,7 +1043,7 @@ namespace CppSharp.Generators.CSharp
                     Declaration = decl,
                     ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
                         $"(({@class.Visit(TypePrinter)}*) {Helpers.InstanceIdentifier})")}{
-                        (@class.IsValueType ? "." : "->")}{Helpers.SafeIdentifier(name)}",
+                        (@class.IsValueType ? "." : "->")}{SafeIdentifier(name)}",
                     ReturnType = decl.QualifiedType
                 };
                 TypePrinter.PopContext();
@@ -1296,7 +1293,7 @@ namespace CppSharp.Generators.CSharp
         {
             var isIndexer = prop.Parameters.Count != 0;
             if (!isIndexer)
-                return Helpers.SafeIdentifier(prop.Name);
+                return SafeIdentifier(prop.Name);
 
             var @params = prop.Parameters.Select(param => {
                 var p = new Parameter(param);
@@ -3001,7 +2998,7 @@ namespace CppSharp.Generators.CSharp
             // internal P/Invoke declarations must see protected enums
             if (@enum.Access == AccessSpecifier.Protected)
                 Write("internal ");
-            Write("enum {0}", Helpers.SafeIdentifier(@enum.Name));
+            Write("enum {0}", SafeIdentifier(@enum.Name));
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());

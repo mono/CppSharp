@@ -381,7 +381,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestComments()
         {
             var @class = AstContext.FindCompleteClass("TestComments");
-            var commentClass = @class.Comment.FullComment.CommentToString(Options.CommentPrefix);
+            var commentClass = @class.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>
 /// <para>Hash set/map base class.</para>
 /// <para>Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor</para>
@@ -389,7 +389,7 @@ namespace CppSharp.Generator.Tests.AST
 /// </summary>".Replace("\r", string.Empty), commentClass.Replace("\r", string.Empty));
 
             var method = @class.Methods.First(m => m.Name == "GetIOHandlerControlSequence");
-            var commentMethod = method.Comment.FullComment.CommentToString(Options.CommentPrefix);
+            var commentMethod = method.Comment.FullComment.CommentToString(CommentKind.BCPL);
             Assert.AreEqual(@"/// <summary>
 /// <para>Get the string that needs to be written to the debugger stdin file</para>
 /// <para>handle when a control character is typed.</para>

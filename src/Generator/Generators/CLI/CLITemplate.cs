@@ -74,11 +74,6 @@ namespace CppSharp.Generators.CLI
 
         #region Helpers
 
-        public static string SafeIdentifier(string proposedName)
-        {
-            return proposedName;
-        }
-
         public string QualifiedIdentifier(Declaration decl)
         {
             if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))

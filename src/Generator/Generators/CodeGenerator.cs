@@ -79,6 +79,8 @@ namespace CppSharp.Generators
             PopBlock();
         }
 
+        #region Declaration generation
+
         public virtual void GenerateDeclarationCommon(Declaration decl)
         {
             if (decl.Comment != null)
@@ -93,6 +95,16 @@ namespace CppSharp.Generators
             if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
+
+        #endregion
+
+        #region Identifiers generation
+
+        public virtual string SafeIdentifier(string id) => id;
+
+        public virtual string GeneratedIdentifier(string id) => Generator.GeneratedIdentifier(id);
+
+        #endregion
 
         #region Comment generation
 
