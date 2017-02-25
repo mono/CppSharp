@@ -201,7 +201,8 @@ namespace CppSharp.Generators
 
         public virtual bool VisitEnumItemDecl(Enumeration.Item item)
         {
-            GenerateInlineSummary(item.Comment);
+            if (item.Comment != null)
+                GenerateInlineSummary(item.Comment);
 
             Write(item.Name);
 
