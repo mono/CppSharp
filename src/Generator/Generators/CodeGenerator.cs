@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Web.Util;
 using CppSharp.AST;
+using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Generators
 {
@@ -40,7 +42,67 @@ namespace CppSharp.Generators
             return base.Generate();
         }
 
-        public void GenerateMultiLineComment(List<string> lines, CommentKind kind)
+        public virtual void GenerateDeclarationCommon(Declaration decl)
+        {
+            if (decl.Comment != null)
+            {
+                GenerateComment(decl.Comment);
+                GenerateDebug(decl);
+            }
+        }
+
+        public virtual void GenerateDebug(Declaration decl)
+        {
+            if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
+                WriteLine("// DEBUG: " + decl.DebugText);
+        }
+
+        public void GenerateInlineSummary(RawComment comment)
+        {
+            if (comment == null) return;
+
+            if (string.IsNullOrWhiteSpace(comment.BriefText))
+                return;
+
+            PushBlock(BlockKind.InlineComment);
+            if (comment.BriefText.Contains("\n"))
+            {
+                WriteLine("{0} <summary>", Options.CommentPrefix);
+                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                            Environment.NewLine.ToCharArray()))
+                    WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
+                WriteLine("{0} </summary>", Options.CommentPrefix);
+            }
+            else
+            {
+                WriteLine("{0} <summary>{1}</summary>", Options.CommentPrefix, comment.BriefText);
+            }
+            PopBlock();
+        }
+
+        public virtual void GenerateComment(RawComment comment)
+        {
+            if (comment.FullComment != null)
+            {
+                PushBlock(BlockKind.BlockComment);
+                WriteLine(comment.FullComment.CommentToString(Options.CommentPrefix));
+                PopBlock();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(comment.BriefText))
+                return;
+
+            PushBlock(BlockKind.BlockComment);
+            WriteLine("{0} <summary>", Options.CommentPrefix);
+            foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                        Environment.NewLine.ToCharArray()))
+                WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
+            WriteLine("{0} </summary>", Options.CommentPrefix);
+            PopBlock();
+        }
+
+        public virtual void GenerateMultiLineComment(List<string> lines, CommentKind kind)
         {
             var lineCommentPrologue = Comment.GetLineCommentPrologue(kind);
             if (!string.IsNullOrWhiteSpace(lineCommentPrologue))

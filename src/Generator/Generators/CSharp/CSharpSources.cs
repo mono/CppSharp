@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
@@ -338,67 +337,12 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public void GenerateDeclarationCommon(Declaration decl)
+        public override void GenerateDeclarationCommon(Declaration decl)
         {
-            if (decl.Comment != null)
-            {
-                GenerateComment(decl.Comment);
-                GenerateDebug(decl);
-            }
+            base.GenerateDeclarationCommon(decl);
 
             foreach (Attribute attribute in decl.Attributes)
                 WriteLine("[{0}({1})]", attribute.Type.FullName, attribute.Value);
-        }
-
-        public void GenerateDebug(Declaration decl)
-        {
-            if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
-                WriteLine("// DEBUG: " + decl.DebugText);
-        }
-
-        public void GenerateComment(RawComment comment)
-        {
-            if (comment.FullComment != null)
-            {
-                PushBlock(BlockKind.BlockComment);
-                WriteLine(comment.FullComment.CommentToString(Options.CommentPrefix));
-                PopBlock();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(comment.BriefText))
-                return;
-
-            PushBlock(BlockKind.BlockComment);
-            WriteLine("{0} <summary>", Options.CommentPrefix);
-            foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                        Environment.NewLine.ToCharArray()))
-                WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
-            WriteLine("{0} </summary>", Options.CommentPrefix);
-            PopBlock();
-        }
-
-        public void GenerateInlineSummary(RawComment comment)
-        {
-            if (comment == null) return;
-
-            if (string.IsNullOrWhiteSpace(comment.BriefText))
-                return;
-
-            PushBlock(BlockKind.InlineComment);
-            if (comment.BriefText.Contains("\n"))
-            {
-                WriteLine("{0} <summary>", Options.CommentPrefix);
-                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                            Environment.NewLine.ToCharArray()))
-                    WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
-                WriteLine("{0} </summary>", Options.CommentPrefix);
-            }
-            else
-            {
-                WriteLine("{0} <summary>{1}</summary>", Options.CommentPrefix, comment.BriefText);
-            }
-            PopBlock();
         }
 
         #region Classes
@@ -3053,7 +2997,7 @@ namespace CppSharp.Generators.CSharp
             if (@enum.IsFlags)
                 WriteLine("[Flags]");
 
-            Write(Helpers.GetAccess(@enum.Access)); 
+            Write(Helpers.GetAccess(@enum.Access));
             // internal P/Invoke declarations must see protected enums
             if (@enum.Access == AccessSpecifier.Protected)
                 Write("internal ");
