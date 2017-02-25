@@ -1394,6 +1394,7 @@ namespace CppSharp
             {
                 var item = decl.GetItems(i);
                 var _item = Visit(item) as AST.Enumeration.Item;
+                _item.Namespace = _enum;
                 _enum.AddItem(_item);
             }
 
@@ -1411,7 +1412,7 @@ namespace CppSharp
             var _item = new AST.Enumeration.Item
             {
                 Expression = decl.Expression,
-                Value = decl.Value
+                Value = decl.Value,
             };
             VisitDeclaration(decl, _item);
 
