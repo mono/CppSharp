@@ -184,16 +184,14 @@ namespace CppSharp.Generators
 
         public virtual void GenerateEnumItems(Enumeration @enum)
         {
+            var last = @enum.Items.Last();
+
             foreach (var item in @enum.Items)
             {
-                PushBlock(BlockKind.EnumItem);
-            
                 item.Visit(this);
-            
-                if (item != @enum.Items.Last())
+
+                if (item != last)
                     WriteLine(",");
-            
-                PopBlock(NewLineKind.Never);
             }
         }
 
