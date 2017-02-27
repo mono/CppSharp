@@ -113,11 +113,12 @@ namespace CppSharp.Generators
             if (string.IsNullOrWhiteSpace(comment))
                 return;
 
-            var lines = new List<string>();
-
-            lines.Add("<summary>");
-            lines.Add($"{comment}");
-            lines.Add("</summary>");
+            var lines = new List<string>
+            {
+                "<summary>",
+                $"{comment}",
+                "</summary>"
+            };
 
             GenerateMultiLineComment(lines, DocumentationCommentKind);
         }
