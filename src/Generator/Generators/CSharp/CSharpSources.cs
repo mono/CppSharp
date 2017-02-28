@@ -554,20 +554,24 @@ namespace CppSharp.Generators.CSharp
         {
             // private classes must be visible to because the internal structs can be used in dependencies
             // the proper fix is InternalsVisibleTo
-            Write(@class.Access == AccessSpecifier.Protected ? "protected internal " : "public ");
-            Write("unsafe ");
+            var keywords = new List<string>();
+            
+            keywords.Add(@class.Access == AccessSpecifier.Protected ? "protected internal" : "public");
+            keywords.Add("unsafe");
 
             if (@class.IsAbstract)
-                Write("abstract ");
+                keywords.Add("abstract");
 
             if (@class.IsStatic)
-                Write("static ");
+                keywords.Add("static");
 
             // This token needs to directly precede the "class" token.
-            Write("partial ");
+            keywords.Add("partial");
 
-            Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
-            Write("{0}", SafeIdentifier(@class.Name));
+            keywords.Add(@class.IsInterface ? "interface" : (@class.IsValueType ? "struct" : "class"));
+            keywords.Add(SafeIdentifier(@class.Name));
+
+            Write(string.Join(" ", keywords));
 
             var bases = new List<string>();
 
