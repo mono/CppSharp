@@ -218,6 +218,14 @@ namespace CppSharp.Generators
 
         #endregion
 
+        #region Class generation
+
+        public virtual void GenerateClassSpecifier(Class @class)
+        {
+        }
+
+        #endregion
+
         #region Visitor methods
 
         public virtual bool VisitDeclaration(Declaration decl)

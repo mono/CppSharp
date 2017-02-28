@@ -242,7 +242,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var nestedClass in classTemplate.Classes)
             {
                 NewLine();
-                GenerateClassProlog(nestedClass);
+                GenerateClassSpecifier(nestedClass);
                 NewLine();
                 WriteStartBraceIndent();
                 GenerateClassInternals(nestedClass);
@@ -306,7 +306,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(BlockKind.Class);
             GenerateDeclarationCommon(@class);
 
-            GenerateClassProlog(@class);
+            GenerateClassSpecifier(@class);
 
             NewLine();
             WriteStartBraceIndent();
@@ -379,7 +379,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(BlockKind.Interface);
             GenerateDeclarationCommon(@class);
 
-            GenerateClassProlog(@class);
+            GenerateClassSpecifier(@class);
 
             NewLine();
             WriteStartBraceIndent();
@@ -550,7 +550,7 @@ namespace CppSharp.Generators.CSharp
             return @class.IsValueType || !@class.HasBase || !@class.HasRefBase();
         }
 
-        public void GenerateClassProlog(Class @class)
+        public override void GenerateClassSpecifier(Class @class)
         {
             // private classes must be visible to because the internal structs can be used in dependencies
             // the proper fix is InternalsVisibleTo

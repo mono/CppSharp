@@ -245,8 +245,18 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(@class);
 
-            if (GenerateClassProlog(@class))
+            GenerateClassSpecifier(@class);
+
+            if (@class.IsOpaque)
+            {
+                WriteLine(";");
                 return;
+            }
+
+            NewLine();
+            WriteLine("{");
+            WriteLine("public:");
+            NewLine();
 
             // Process the nested types.
             PushIndent();
@@ -571,7 +581,7 @@ namespace CppSharp.Generators.CLI
             PopIndent();
         }
 
-        public bool GenerateClassProlog(Class @class)
+        public override void GenerateClassSpecifier(Class @class)
         {
             if (@class.IsUnion)
                 WriteLine("[System::Runtime::InteropServices::StructLayout({0})]",
@@ -590,12 +600,6 @@ namespace CppSharp.Generators.CLI
             if (@class.IsStatic)
                 Write(" abstract sealed");
 
-            if (@class.IsOpaque)
-            {
-                WriteLine(";");
-                return true;
-            }
-
             if (!@class.IsStatic)
             {
                 if (@class.HasRefBase())
@@ -603,13 +607,6 @@ namespace CppSharp.Generators.CLI
                 else if (@class.IsRefType)
                     Write(" : ICppInstance");
             }
-
-            NewLine();
-            WriteLine("{");
-            WriteLine("public:");
-            NewLine();
-
-            return false;
         }
 
         public void GenerateClassProperties(Class @class)
