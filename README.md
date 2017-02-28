@@ -89,7 +89,7 @@ Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-li
 ## Support
 
 For building wrappers and priority support please write to &#99;&#112;&#112;&#115;&#104;&#97;&#114;&#112;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;.
-Alternatively, you may post bounties at https://www.bountysource.com/ or http://bugsheet.com/.
+Alternatively, you may post bounties at https://www.bountysource.com/.
 
 ## Users
 
