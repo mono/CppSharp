@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.Util;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Generators
@@ -358,5 +360,59 @@ namespace CppSharp.Generators
         }
 
         #endregion
+    }
+
+    public static class Helpers
+    {
+        public static readonly string InternalStruct = Generator.GeneratedIdentifier("Internal");
+        public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
+        public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
+        public static readonly string PointerAdjustmentIdentifier = Generator.GeneratedIdentifier("PointerAdjustment");
+        public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
+        public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
+        public static readonly string TargetIdentifier = Generator.GeneratedIdentifier("target");
+        public static readonly string SlotIdentifier = Generator.GeneratedIdentifier("slot");
+
+        public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
+
+        public static readonly string CreateInstanceIdentifier = Generator.GeneratedIdentifier("CreateInstance");
+
+        public static string GetSuffixForInternal(Declaration context)
+        {
+            var specialization = context as ClassTemplateSpecialization;
+
+            if (specialization == null ||
+                specialization.TemplatedDecl.TemplatedClass.Fields.All(
+                f => !(f.Type.Desugar() is TemplateParameterType)))
+                return string.Empty;
+
+            if (specialization.Arguments.All(
+                a => a.Type.Type != null && a.Type.Type.IsAddress()))
+                return "_Ptr";
+
+            var suffixBuilder = new StringBuilder(specialization.USR);
+            for (int i = 0; i < suffixBuilder.Length; i++)
+                if (!char.IsLetterOrDigit(suffixBuilder[i]))
+                    suffixBuilder[i] = '_';
+            const int maxCSharpIdentifierLength = 480;
+            if (suffixBuilder.Length > maxCSharpIdentifierLength)
+                return suffixBuilder.Remove(maxCSharpIdentifierLength,
+                    suffixBuilder.Length - maxCSharpIdentifierLength).ToString();
+            return suffixBuilder.ToString();
+        }
+
+        public static string GetAccess(AccessSpecifier accessSpecifier)
+        {
+            switch (accessSpecifier)
+            {
+                case AccessSpecifier.Private:
+                case AccessSpecifier.Internal:
+                    return "internal ";
+                case AccessSpecifier.Protected:
+                    return "protected ";
+                default:
+                    return "public ";
+            }
+        }
     }
 }
