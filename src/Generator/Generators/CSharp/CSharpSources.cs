@@ -554,9 +554,7 @@ namespace CppSharp.Generators.CSharp
         {
             // private classes must be visible to because the internal structs can be used in dependencies
             // the proper fix is InternalsVisibleTo
-            Write(@class.Access == AccessSpecifier.Protected ? "protected " : "public ");
-            if (@class.Access == AccessSpecifier.Protected)
-                Write("internal ");
+            Write(@class.Access == AccessSpecifier.Protected ? "protected internal " : "public ");
             Write("unsafe ");
 
             if (@class.IsAbstract)
