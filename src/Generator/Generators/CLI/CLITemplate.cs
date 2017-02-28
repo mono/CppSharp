@@ -25,31 +25,6 @@ namespace CppSharp.Generators.CLI
         }
     }
 
-    public class CLIBlockKind
-    {
-        public const int Includes = BlockKind.LAST + 1;
-        public const int IncludesForwardReferences = BlockKind.LAST + 2;
-        public const int Namespace = BlockKind.LAST + 3;
-        public const int ForwardReferences = BlockKind.LAST + 4;
-        public const int Enum = BlockKind.LAST + 5;
-        public const int EnumItem = BlockKind.LAST + 6;
-        public const int Class = BlockKind.LAST + 7;
-        public const int Method = BlockKind.LAST + 8;
-        public const int MethodBody = BlockKind.LAST + 9;
-        public const int Usings = BlockKind.LAST + 10;
-        public const int FunctionsClass = BlockKind.LAST + 11;
-        public const int Function = BlockKind.LAST + 12;
-        public const int Property = BlockKind.LAST + 13;
-        public const int Typedef = BlockKind.LAST + 14;
-        public const int Variable = BlockKind.LAST + 15;
-        public const int Template = BlockKind.LAST + 16;
-        public static int Destructor = BlockKind.LAST + 17;
-        public static int Finalizer = BlockKind.LAST + 18;
-        public static int AccessSpecifier = BlockKind.LAST + 19;
-        public static int Fields = BlockKind.LAST + 20;
-        public static int Field = BlockKind.LAST + 21;
-    }
-
     /// <summary>
     /// There are two implementation
     /// for source (CLISources) and header (CLIHeaders)

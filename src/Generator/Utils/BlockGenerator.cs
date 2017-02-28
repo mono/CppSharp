@@ -13,21 +13,48 @@ namespace CppSharp
         IfNotEmpty
     }
 
-    public class BlockKind
+    public enum BlockKind
     {
-        public const int Unknown = 0;
-        public const int BlockComment = 1;
-        public const int InlineComment = 2;
-        public const int Header = 3;
-        public const int Footer = 4;
-        public const int EnumItem = 5;
-        public const int LAST = 6;
+        Unknown,
+        BlockComment,
+        InlineComment,
+        Header,
+        Footer,
+        Usings,
+        Namespace,
+        Enum,
+        EnumItem,
+        Typedef,
+        Class,
+        InternalsClass,
+        InternalsClassMethod,
+        InternalsClassField,
+        Functions,
+        Function,
+        Method,
+        Event,
+        Variable,
+        Property,
+        Field,
+        VTableDelegate,
+        Region,
+        Interface,
+        Finalizer,
+        Includes,
+        IncludesForwardReferences,
+        ForwardReferences,
+        MethodBody,
+        FunctionsClass,
+        Template,
+        Destructor,
+        AccessSpecifier,
+        Fields,
     }
 
     public class Block : ITextGenerator
     {
         public TextGenerator Text { get; set; }
-        public int Kind { get; set; }
+        public BlockKind Kind { get; set; }
         public NewLineKind NewLineKind { get; set; }
 
         public object Object { get; set; }
@@ -45,7 +72,7 @@ namespace CppSharp
 
         }
 
-        public Block(int kind)
+        public Block(BlockKind kind)
         {
             Kind = kind;
             Blocks = new List<Block>();
@@ -69,7 +96,7 @@ namespace CppSharp
             Blocks.Add(block);
         }
 
-        public IEnumerable<Block> FindBlocks(int kind)
+        public IEnumerable<Block> FindBlocks(BlockKind kind)
         {
             foreach (var block in Blocks)
             {
@@ -306,7 +333,7 @@ namespace CppSharp
             ActiveBlock.AddBlock(block);
         }
 
-        public void PushBlock(int kind = 0, object obj = null)
+        public void PushBlock(BlockKind kind = BlockKind.Unknown, object obj = null)
         {
             var block = new Block { Kind = kind, Object = obj };
             PushBlock(block);
@@ -329,12 +356,12 @@ namespace CppSharp
             return block;
         }
 
-        public IEnumerable<Block> FindBlocks(int kind)
+        public IEnumerable<Block> FindBlocks(BlockKind kind)
         {
             return RootBlock.FindBlocks(kind);
         }
 
-        public Block FindBlock(int kind)
+        public Block FindBlock(BlockKind kind)
         {
             return FindBlocks(kind).SingleOrDefault();
         }

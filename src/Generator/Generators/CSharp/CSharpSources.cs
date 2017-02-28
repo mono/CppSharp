@@ -14,30 +14,6 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
 {
-    public class CSharpBlockKind
-    {
-        private const int FIRST = BlockKind.LAST + 1000;
-        public const int Usings = FIRST + 1;
-        public const int Namespace = FIRST + 2;
-        public const int Enum = FIRST + 3;
-        public const int Typedef = FIRST + 4;
-        public const int Class = FIRST + 5;
-        public const int InternalsClass = FIRST + 6;
-        public const int InternalsClassMethod = FIRST + 7;
-        public const int InternalsClassField = FIRST + 15;
-        public const int Functions = FIRST + 8;
-        public const int Function = FIRST + 9;
-        public const int Method = FIRST + 10;
-        public const int Event = FIRST + 11;
-        public const int Variable = FIRST + 12;
-        public const int Property = FIRST + 13;
-        public const int Field = FIRST + 14;
-        public const int VTableDelegate = FIRST + 16;
-        public const int Region = FIRST + 17;
-        public const int Interface = FIRST + 18;
-        public const int Finalizer = FIRST + 19;
-    }
-
     public class CSharpSources : CodeGenerator
     {
         public CSharpTypePrinter TypePrinter { get; set; }
@@ -92,7 +68,7 @@ namespace CppSharp.Generators.CSharp
 
             if (!string.IsNullOrEmpty(Module.OutputNamespace))
             {
-                PushBlock(CSharpBlockKind.Namespace);
+                PushBlock(BlockKind.Namespace);
                 WriteLine("namespace {0}", Module.OutputNamespace);
                 WriteStartBraceIndent();
             }
@@ -109,7 +85,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateUsings()
         {
-            PushBlock(CSharpBlockKind.Usings);
+            PushBlock(BlockKind.Usings);
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
@@ -143,7 +119,7 @@ namespace CppSharp.Generators.CSharp
 
             if (shouldGenerateNamespace)
             {
-                PushBlock(CSharpBlockKind.Namespace);
+                PushBlock(BlockKind.Namespace);
                 WriteLine("namespace {0}", context.Name);
                 WriteStartBraceIndent();
             }
@@ -189,12 +165,12 @@ namespace CppSharp.Generators.CSharp
             if (!context.Functions.Any(f => f.IsGenerated) && !hasGlobalVariables)
                 return;
 
-            PushBlock(CSharpBlockKind.Functions);
+            PushBlock(BlockKind.Functions);
             var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
             WriteLine("public unsafe partial class {0}", parentName);
             WriteStartBraceIndent();
 
-            PushBlock(CSharpBlockKind.InternalsClass);
+            PushBlock(BlockKind.InternalsClass);
             GenerateClassInternalHead();
             WriteStartBraceIndent();
 
@@ -247,7 +223,7 @@ namespace CppSharp.Generators.CSharp
             bool generateClass = specializations.Any(s => s.IsGenerated);
             if (!generateClass)
             {
-                PushBlock(CSharpBlockKind.Namespace);
+                PushBlock(BlockKind.Namespace);
                 WriteLine("namespace {0}{1}",
                     classTemplate.OriginalNamespace is Class ?
                         classTemplate.OriginalNamespace.Name + '_' : string.Empty,
@@ -327,7 +303,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            PushBlock(CSharpBlockKind.Class);
+            PushBlock(BlockKind.Class);
             GenerateDeclarationCommon(@class);
 
             GenerateClassProlog(@class);
@@ -347,7 +323,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (ShouldGenerateClassNativeField(@class))
                 {
-                    PushBlock(CSharpBlockKind.Field);
+                    PushBlock(BlockKind.Field);
                     if (@class.IsValueType)
                     {
                         WriteLine("private {0}.{1} {2};", @class.Name, Helpers.InternalStruct,
@@ -362,7 +338,7 @@ namespace CppSharp.Generators.CSharp
 
                         PopBlock(NewLineKind.BeforeNextBlock);
 
-                        PushBlock(CSharpBlockKind.Field);
+                        PushBlock(BlockKind.Field);
 
                         WriteLine("protected int {0};", Helpers.PointerAdjustmentIdentifier);
 
@@ -400,7 +376,7 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsGenerated || @class.IsIncomplete)
                 return;
 
-            PushBlock(CSharpBlockKind.Interface);
+            PushBlock(BlockKind.Interface);
             GenerateDeclarationCommon(@class);
 
             GenerateClassProlog(@class);
@@ -411,7 +387,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var method in @class.Methods.Where(m =>
                 !ASTUtils.CheckIgnoreMethod(m, Options) && m.Access == AccessSpecifier.Public))
             {
-                PushBlock(CSharpBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 GenerateDeclarationCommon(method);
 
                 var functionName = GetMethodIdentifier(method);
@@ -426,7 +402,7 @@ namespace CppSharp.Generators.CSharp
             }
             foreach (var prop in @class.Properties.Where(p => p.IsGenerated && p.Access == AccessSpecifier.Public))
             {
-                PushBlock(CSharpBlockKind.Property);
+                PushBlock(BlockKind.Property);
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
@@ -447,7 +423,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassInternals(Class @class)
         {
-            PushBlock(CSharpBlockKind.InternalsClass);
+            PushBlock(BlockKind.InternalsClass);
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.Size})]");
             // no else because the layout is sequential for structures by default
@@ -658,7 +634,7 @@ namespace CppSharp.Generators.CSharp
                 safeIdentifier = SafeIdentifier(field.Name);
             }
 
-            PushBlock(CSharpBlockKind.Field);
+            PushBlock(BlockKind.Field);
 
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[FieldOffset({field.Offset})]");
@@ -690,7 +666,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassField(Field field, bool @public = false)
         {
-            PushBlock(CSharpBlockKind.Field);
+            PushBlock(BlockKind.Field);
 
             GenerateDeclarationCommon(field);
 
@@ -706,7 +682,7 @@ namespace CppSharp.Generators.CSharp
             Class @class, bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
         {
-            PushBlock(CSharpBlockKind.Method);
+            PushBlock(BlockKind.Method);
             Write("set");
 
             var param = new Parameter
@@ -934,7 +910,7 @@ namespace CppSharp.Generators.CSharp
             Class @class, bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
         {
-            PushBlock(CSharpBlockKind.Method);
+            PushBlock(BlockKind.Method);
             Write("get");
 
             if (property != null && property.GetMethod != null &&
@@ -1171,7 +1147,7 @@ namespace CppSharp.Generators.CSharp
                     continue;
                 }
 
-                PushBlock(CSharpBlockKind.Property);
+                PushBlock(BlockKind.Property);
 
                 ArrayType arrayType = prop.Type as ArrayType;
                 if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType() && prop.Field != null)
@@ -1252,7 +1228,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVariable(Class @class, Variable variable)
         {
-            PushBlock(CSharpBlockKind.Variable);
+            PushBlock(BlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
             WriteLine("public static {0} {1}", variable.Type, variable.Name);
@@ -1286,7 +1262,7 @@ namespace CppSharp.Generators.CSharp
             if (wrappedEntries.Count == 0)
                 return;
 
-            PushBlock(CSharpBlockKind.Region);
+            PushBlock(BlockKind.Region);
             WriteLine("#region Virtual table interop");
             NewLine();
 
@@ -1599,7 +1575,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVTableMethodDelegates(Class @class, Method method)
         {
-            PushBlock(CSharpBlockKind.VTableDelegate);
+            PushBlock(BlockKind.VTableDelegate);
 
             // This works around a parser bug, see https://github.com/mono/CppSharp/issues/202
             if (method.Signature != null)
@@ -1657,7 +1633,7 @@ namespace CppSharp.Generators.CSharp
             if (!@event.IsGenerated)
                 return true;
 
-            PushBlock(CSharpBlockKind.Event, @event);
+            PushBlock(BlockKind.Event, @event);
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
@@ -1800,7 +1776,7 @@ namespace CppSharp.Generators.CSharp
             if (!Options.GenerateFinalizers)
                 return;
 
-            PushBlock(CSharpBlockKind.Finalizer);
+            PushBlock(BlockKind.Finalizer);
 
             WriteLine("~{0}()", @class.Name);
             WriteStartBraceIndent();
@@ -1817,7 +1793,7 @@ namespace CppSharp.Generators.CSharp
             // Generate the IDispose Dispose() method.
             if (!hasBaseClass)
             {
-                PushBlock(CSharpBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine("public void Dispose()");
                 WriteStartBraceIndent();
 
@@ -1830,7 +1806,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             // Generate Dispose(bool) method
-            PushBlock(CSharpBlockKind.Method);
+            PushBlock(BlockKind.Method);
             Write("public ");
             if (!@class.IsValueType)
                 Write(hasBaseClass ? "override " : "virtual ");
@@ -1910,7 +1886,7 @@ namespace CppSharp.Generators.CSharp
             var shouldGenerateClassNativeField = ShouldGenerateClassNativeField(@class);
             if (@class.IsRefType && shouldGenerateClassNativeField)
             {
-                PushBlock(CSharpBlockKind.Field);
+                PushBlock(BlockKind.Field);
                 WriteLine("protected bool {0};", Helpers.OwnsNativeInstanceIdentifier);
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -1920,7 +1896,7 @@ namespace CppSharp.Generators.CSharp
             var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
             if (!@class.IsAbstractImpl)
             {
-                PushBlock(CSharpBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine("internal static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     @class.Visit(TypePrinter), Helpers.CreateInstanceIdentifier);
@@ -1932,7 +1908,7 @@ namespace CppSharp.Generators.CSharp
 
             GenerateNativeConstructorByValue(@class, ctorCall);
 
-            PushBlock(CSharpBlockKind.Method);
+            PushBlock(BlockKind.Method);
             WriteLine("{0} {1}(void* native, bool skipVTables = false){2}",
                 @class.IsAbstractImpl ? "internal" : (@class.IsRefType ? "protected" : "private"),
                 @class.Name, @class.IsValueType ? " : this()" : string.Empty);
@@ -1995,7 +1971,7 @@ namespace CppSharp.Generators.CSharp
 
             if (!@class.IsAbstractImpl)
             {
-                PushBlock(CSharpBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine("internal static {0} {1}({2} native, bool skipVTables = false)",
                     @class.Visit(TypePrinter), Helpers.CreateInstanceIdentifier, @internal);
                 WriteStartBraceIndent();
@@ -2006,7 +1982,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType && !@class.IsAbstract)
             {
-                PushBlock(CSharpBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine($"private static void* __CopyValue({@internal} native)");
                 WriteStartBraceIndent();
                 var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
@@ -2034,7 +2010,7 @@ namespace CppSharp.Generators.CSharp
             }
             if (!@class.IsAbstract)
             {
-                PushBlock(CSharpBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine("{0} {1}({2} native, bool skipVTables = false)",
                     @class.IsAbstractImpl ? "internal" : "private", @class.Name, @internal);
                 WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native), skipVTables)" : ": this()");
@@ -2078,7 +2054,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateFunction(Function function, string parentName)
         {
-            PushBlock(CSharpBlockKind.Function);
+            PushBlock(BlockKind.Function);
             GenerateDeclarationCommon(function);
 
             var functionName = GetFunctionIdentifier(function);
@@ -2100,7 +2076,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateMethod(Method method, Class @class)
         {
-            PushBlock(CSharpBlockKind.Method, method);
+            PushBlock(BlockKind.Method, method);
             GenerateDeclarationCommon(method);
 
             if (method.ExplicitInterfaceImpl == null)
@@ -2898,13 +2874,13 @@ namespace CppSharp.Generators.CSharp
             if (typedef.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
                 || typedef.Type.IsPointerTo(out tag))
             {
-                PushBlock(CSharpBlockKind.Typedef);
+                PushBlock(BlockKind.Typedef);
                 WriteLine("public class " + typedef.Name + @" { }");
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
             else if (typedef.Type.IsPointerTo(out functionType))
             {
-                PushBlock(CSharpBlockKind.Typedef);
+                PushBlock(BlockKind.Typedef);
                 var attributedType = typedef.Type.GetPointee() as AttributedType;
                 var callingConvention = attributedType == null
                     ? functionType.CallingConvention
@@ -2934,7 +2910,7 @@ namespace CppSharp.Generators.CSharp
             if (@enum.IsIncomplete)
                 return true;
 
-            PushBlock(CSharpBlockKind.Enum);
+            PushBlock(BlockKind.Enum);
             GenerateDeclarationCommon(@enum);
 
             if (@enum.IsFlags)
@@ -3025,7 +3001,7 @@ namespace CppSharp.Generators.CSharp
                     function = function.OriginalFunction;
             }
 
-            PushBlock(CSharpBlockKind.InternalsClassMethod);
+            PushBlock(BlockKind.InternalsClassMethod);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
             Write("[DllImport(\"{0}\", ", GetLibraryOf(function));
 

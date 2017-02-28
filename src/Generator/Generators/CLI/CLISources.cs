@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -32,14 +32,14 @@ namespace CppSharp.Generators.CLI
             if (Context.Options.GenerateName != null)
                 file = Context.Options.GenerateName(TranslationUnit);
 
-            PushBlock(CLIBlockKind.Includes);
+            PushBlock(BlockKind.Includes);
             WriteLine("#include \"{0}.h\"", file);
             GenerateForwardReferenceHeaders();
 
             NewLine();
             PopBlock();
 
-            PushBlock(CLIBlockKind.Usings);
+            PushBlock(BlockKind.Usings);
             WriteLine("using namespace System;");
             WriteLine("using namespace System::Runtime::InteropServices;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
@@ -57,7 +57,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateForwardReferenceHeaders()
         {
-            PushBlock(CLIBlockKind.IncludesForwardReferences);
+            PushBlock(BlockKind.IncludesForwardReferences);
 
             var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps, Context.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
@@ -82,7 +82,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateDeclContext(DeclarationContext @namespace)
         {
-            PushBlock(CLIBlockKind.Namespace);
+            PushBlock(BlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
             {
                 if (!@class.IsGenerated || @class.IsDependent)
@@ -125,7 +125,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClass(Class @class)
         {
-            PushBlock(CLIBlockKind.Class);
+            PushBlock(BlockKind.Class);
 
             GenerateDeclContext(@class);
 
@@ -137,7 +137,7 @@ namespace CppSharp.Generators.CLI
             {
                 var qualifiedIdentifier = QualifiedIdentifier(@class);
 
-                PushBlock(CLIBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine("System::IntPtr {0}::{1}::get()",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteStartBraceIndent();
@@ -145,7 +145,7 @@ namespace CppSharp.Generators.CLI
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
 
-                PushBlock(CLIBlockKind.Method);
+                PushBlock(BlockKind.Method);
                 WriteLine("void {0}::{1}::set(System::IntPtr object)",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteStartBraceIndent();
@@ -243,7 +243,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassDestructor(Class @class)
         {
-            PushBlock(CLIBlockKind.Destructor);
+            PushBlock(BlockKind.Destructor);
 
             WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
             WriteStartBraceIndent();
@@ -269,7 +269,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassFinalizer(Class @class)
         {
-            PushBlock(CLIBlockKind.Finalizer);
+            PushBlock(BlockKind.Finalizer);
 
             WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);
             WriteStartBraceIndent();
@@ -287,7 +287,7 @@ namespace CppSharp.Generators.CLI
             var printer = TypePrinter;
             var oldCtx = printer.TypePrinterContext;
 
-            PushBlock(CLIBlockKind.Template);
+            PushBlock(BlockKind.Template);
 
             var function = template.TemplatedFunction;
 
@@ -328,7 +328,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateProperty(Property property, Class realOwner)
         {
-            PushBlock(CLIBlockKind.Property);
+            PushBlock(BlockKind.Property);
 
             if (property.Field != null)
             {
@@ -742,7 +742,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method, Class @class)
         {
-            PushBlock(CLIBlockKind.Method, method);
+            PushBlock(BlockKind.Method, method);
 
             if (method.IsConstructor || method.IsDestructor ||
                 method.OperatorKind == CXXOperatorKind.Conversion ||
@@ -761,7 +761,7 @@ namespace CppSharp.Generators.CLI
 
             WriteStartBraceIndent();
 
-            PushBlock(CLIBlockKind.MethodBody, method);
+            PushBlock(BlockKind.MethodBody, method);
 
             if (method.IsConstructor && @class.IsRefType)
                 WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
