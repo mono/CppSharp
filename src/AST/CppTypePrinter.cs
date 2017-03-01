@@ -359,6 +359,10 @@ namespace CppSharp.AST
         {
             if (ResolveTypedefs)
                 return typedef.Type.Visit(this);
+
+            if (PrintFlavorKind != CppTypePrintFlavorKind.Cpp)
+                return typedef.OriginalName;
+
             var originalNamespace = typedef.OriginalNamespace.Visit(this);
             return originalNamespace == "::" ? typedef.OriginalName :
                 $"{originalNamespace}::{typedef.OriginalName}";
