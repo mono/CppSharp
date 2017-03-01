@@ -2076,16 +2076,8 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        public void GenerateMethod(Method method, Class @class)
+        public override void GenerateMethodSpecifier(Method method, Class @class)
         {
-            PushBlock(BlockKind.Method, method);
-            GenerateDeclarationCommon(method);
-
-            if (method.ExplicitInterfaceImpl == null)
-            {
-                Write(Helpers.GetAccess(GetValidMethodAccess(method)));
-            }
-
             // check if overriding a function from a secondary base
             Method rootBaseMethod;
             var isOverride = method.IsOverride &&
@@ -2126,6 +2118,19 @@ namespace CppSharp.Generators.CSharp
             Write(FormatMethodParameters(method.Parameters));
 
             Write(")");
+        }
+
+        public void GenerateMethod(Method method, Class @class)
+        {
+            PushBlock(BlockKind.Method, method);
+            GenerateDeclarationCommon(method);
+
+            if (method.ExplicitInterfaceImpl == null)
+            {
+                Write(Helpers.GetAccess(GetValidMethodAccess(method)));
+            }
+
+            GenerateMethodSpecifier(method, @class);
 
             if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor && !method.IsPure)
             {
