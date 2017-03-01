@@ -249,7 +249,7 @@ namespace CppSharp.Generators
         public virtual bool VisitDeclContext(DeclarationContext context)
         {
             foreach (var decl in context.Declarations)
-                if (!decl.IsGenerated)
+                if (decl.IsGenerated)
                     decl.Visit(this);
 
             return true;
