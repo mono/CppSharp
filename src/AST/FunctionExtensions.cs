@@ -74,6 +74,16 @@ namespace CppSharp.AST
             return @params;
         }
 
+        public static bool IsGeneratedOverride(this Method method)
+        {
+            // Check if overriding a function from a secondary base.
+            var @class = method.Namespace as Class;
+            Method rootBaseMethod;
+            return method.IsOverride &&
+                (rootBaseMethod = @class.GetBaseMethod(method, true)) != null &&
+                rootBaseMethod.IsGenerated && rootBaseMethod.IsVirtual;
+        }
+
         public static bool CanOverride(this Method @override, Method method)
         {
             return (method.OriginalName == @override.OriginalName &&

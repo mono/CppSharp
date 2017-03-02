@@ -2078,13 +2078,7 @@ namespace CppSharp.Generators.CSharp
 
         public override void GenerateMethodSpecifier(Method method, Class @class)
         {
-            // check if overriding a function from a secondary base
-            Method rootBaseMethod;
-            var isOverride = method.IsOverride &&
-                (rootBaseMethod = @class.GetBaseMethod(method, true)) != null &&
-                rootBaseMethod.IsGenerated && rootBaseMethod.IsVirtual;
-
-            if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
+            if (method.IsVirtual && !method.IsGeneratedOverride() && !method.IsOperator && !method.IsPure)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -2093,10 +2087,8 @@ namespace CppSharp.Generators.CSharp
             if (method.IsStatic || isBuiltinOperator)
                 Write("static ");
 
-            if (isOverride)
-            {
+            if (method.IsGeneratedOverride())
                 Write("override ");
-            }
 
             if (method.IsPure)
                 Write("abstract ");

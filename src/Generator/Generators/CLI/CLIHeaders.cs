@@ -713,9 +713,7 @@ namespace CppSharp.Generators.CLI
             Write(")");
 
             if (method.IsOverride)
-            {
                 Write(" override");
-            }
         }
 
         public void GenerateMethod(Method method)
