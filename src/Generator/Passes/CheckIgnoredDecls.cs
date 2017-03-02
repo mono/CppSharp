@@ -7,6 +7,8 @@ namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
+        public bool CheckDecayedTypes { get; set; } = true;
+
         public bool CheckDeclarationAccess(Declaration decl)
         {
             var generateNonPublicDecls = Options.IsCSharpGenerator;
@@ -135,13 +137,16 @@ namespace CppSharp.Passes
                     return false;
                 }
 
-                var decayedType = param.Type.Desugar() as DecayedType;
-                if (decayedType != null)
+                if (CheckDecayedTypes)
                 {
-                    function.ExplicitlyIgnore();
-                    Diagnostics.Debug("Function '{0}' was ignored due to unsupported decayed type param",
-                        function.Name);
-                    return false;
+                    var decayedType = param.Type.Desugar() as DecayedType;
+                    if (decayedType != null)
+                    {
+                        function.ExplicitlyIgnore();
+                        Diagnostics.Debug("Function '{0}' was ignored due to unsupported decayed type param",
+                            function.Name);
+                        return false;
+                    }
                 }
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
