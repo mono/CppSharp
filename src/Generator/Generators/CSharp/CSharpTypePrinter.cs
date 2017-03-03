@@ -459,6 +459,14 @@ namespace CppSharp.Generators.CSharp
         {
             switch (primitive)
             {
+                case PrimitiveType.Char:
+                    width = targetInfo?.CharWidth ?? 8;
+                    signed = true;
+                    break;
+                case PrimitiveType.UChar:
+                    width = targetInfo?.CharWidth ?? 8;
+                    signed = false;
+                    break;
                 case PrimitiveType.Short:
                     width = targetInfo?.ShortWidth ?? 16;
                     signed = true;
