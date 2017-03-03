@@ -141,7 +141,7 @@ namespace CppSharp.AST
                 case PrimitiveType.Float128: return "__float128";
                 case PrimitiveType.IntPtr: return "void*";
                 case PrimitiveType.UIntPtr: return "uintptr_t";
-                case PrimitiveType.Null: return "std::nullptr_t";
+                case PrimitiveType.Null: return PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "std::nullptr_t" : "NULL";
             }
 
             throw new NotSupportedException();
