@@ -55,6 +55,7 @@ namespace CppSharp
 
             var options = driver.Options;
             options.GeneratorKind = Kind;
+            options.CommentKind = CommentKind.BCPLSlash;
             var parserModule = options.AddModule("CppSharp.CppParser");
             parserModule.Headers.AddRange(new[]
             {
