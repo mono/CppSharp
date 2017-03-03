@@ -55,7 +55,7 @@ namespace CppSharp.Tests
         {
             base.Setup(driver);
 
-            driver.Options.OutputNamespace = "CommonTest";
+            driver.Options.Modules[1].OutputNamespace = "CommonTest";
             driver.Options.UnityBuild = true;
         }
 

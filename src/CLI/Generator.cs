@@ -122,14 +122,15 @@ namespace CppSharp
             parserOptions.Abi = abi;
 
             var driverOptions = driver.Options;
-            driverOptions.LibraryName = options.OutputFileName;
+            driverOptions.GeneratorKind = options.Kind;
+            var module = driverOptions.AddModule(options.OutputFileName);
 
             if(!string.IsNullOrEmpty(options.InputLibraryName))
-                driverOptions.SharedLibraryName = options.InputLibraryName;
+                module.SharedLibraryName = options.InputLibraryName;
 
-            driverOptions.GeneratorKind = options.Kind;
-            driverOptions.Headers.AddRange(options.HeaderFiles);
-            driverOptions.Libraries.AddRange(options.Libraries);
+            module.Headers.AddRange(options.HeaderFiles);
+            module.Libraries.AddRange(options.Libraries);
+            module.OutputNamespace = options.OutputNamespace;
 
             if (abi == CppAbi.Microsoft)
                 parserOptions.MicrosoftMode = true;
@@ -155,7 +156,6 @@ namespace CppSharp
             }
 
             driverOptions.OutputDir = options.OutputDir;
-            driverOptions.OutputNamespace = options.OutputNamespace;
             driverOptions.CheckSymbols = options.CheckSymbols;
             driverOptions.UnityBuild = options.UnityBuild;
         }

@@ -41,13 +41,12 @@ namespace CppSharp.Generator.Tests
             var parserOptions = new ParserOptions();
             parserOptions.AddLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
-            driverOptions.Libraries.Add(library);
+            var module = driverOptions.AddModule("Test");
+            module.Libraries.Add(library);
             var driver = new Driver(driverOptions)
             {
                 ParserOptions = parserOptions
             };
-            foreach (var module in driver.Options.Modules)
-                module.LibraryName = "Test";
             driver.Setup();
             Assert.IsTrue(driver.ParseLibraries());
             var dependencies = driver.Context.Symbols.Libraries[0].Dependencies;

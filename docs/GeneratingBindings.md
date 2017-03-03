@@ -76,9 +76,9 @@ void Setup(Driver driver)
 {
     var options = driver.Options;
     options.GeneratorKind = GeneratorKind.CSharp;
-    options.LibraryName = "Sample";
-    options.Headers.Add("Sample.h");
-    options.Libraries.Add("Sample.lib");
+    var module = options.AddModule("Sample");
+    module.Headers.Add("Sample.h");
+    module.Libraries.Add("Sample.lib");
 }
 ```
 

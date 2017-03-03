@@ -25,20 +25,20 @@ namespace CppSharp.Utils
         public virtual void Setup(Driver driver)
         {
             var options = driver.Options;
-            options.LibraryName = name;
             options.GeneratorKind = kind;
             options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
-            options.SharedLibraryName = name + ".Native";
             options.Quiet = true;
+            var testModule = options.AddModule(name);
+            testModule.SharedLibraryName = name + ".Native";
 
             Diagnostics.Message("");
             Diagnostics.Message("Generating bindings for {0} ({1})",
-                options.LibraryName, options.GeneratorKind.ToString());
+                testModule.LibraryName, options.GeneratorKind.ToString());
 
             // Workaround for CLR which does not check for .dll if the
             // name already has a dot.
             if (!Platform.IsMono)
-                options.SharedLibraryName += ".dll";
+                testModule.SharedLibraryName += ".dll";
 
             var parserOptions = driver.ParserOptions;
             if (Platform.IsMacOS)
@@ -50,7 +50,7 @@ namespace CppSharp.Utils
             Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
             foreach (var file in files)
-                options.Headers.Add(Path.GetFileName(file));
+                testModule.Headers.Add(Path.GetFileName(file));
         }
 
         public virtual void Preprocess(Driver driver, ASTContext ctx)

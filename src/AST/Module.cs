@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.AST
 {
@@ -14,6 +15,16 @@ namespace CppSharp.AST
         public List<TranslationUnit> Units { get; } = new List<TranslationUnit>();
         public List<string> CodeFiles { get; } = new List<string>();
         public List<Module> Dependencies { get; } = new List<Module>();
+
+        [Obsolete("Use Module(string libraryName) instead.")]
+        public Module()
+        {
+        }
+
+        public Module(string libraryName)
+        {
+            LibraryName = libraryName;
+        }
 
         public string SharedLibraryName
         {

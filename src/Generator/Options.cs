@@ -21,7 +21,7 @@ namespace CppSharp
         {
             OutputDir = Directory.GetCurrentDirectory();
 
-            SystemModule = new Module { OutputNamespace = string.Empty, LibraryName = "Std" };
+            SystemModule = new Module("Std") { OutputNamespace = string.Empty };
             Modules = new List<Module> { SystemModule };
 
             GeneratorKind = GeneratorKind.CSharp;
@@ -75,48 +75,63 @@ namespace CppSharp
         public Module SystemModule { get; }
         public List<Module> Modules { get; }
 
+        [Obsolete("Do not use.")]
         public Module MainModule
         {
             get
             {
                 if (Modules.Count == 1)
-                    Modules.Add(new Module());
+                    AddModule("Main");
                 return Modules[1];
             }
         }
 
+        [Obsolete("Use Modules and Module.Headers instead.")]
         public List<string> Headers => MainModule.Headers;
 
+        [Obsolete("Use Modules and Module.Libraries instead.")]
         public List<string> Libraries => MainModule.Libraries;
 
+        [Obsolete("Use Modules and Module.SharedLibraryName instead.")]
         public string SharedLibraryName
         {
             get { return MainModule.SharedLibraryName; }
             set { MainModule.SharedLibraryName = value; }
         }
 
+        [Obsolete("Use Modules and Module.OutputNamespace instead.")]
         public string OutputNamespace
         {
             get { return MainModule.OutputNamespace; }
             set { MainModule.OutputNamespace = value; }
         }
 
+        [Obsolete("Use Modules and Module.LibraryName instead.")]
         public string LibraryName
         {
             get { return MainModule.LibraryName; }
             set { MainModule.LibraryName = value; }
         }
 
+        [Obsolete("Use Modules and Module.InlinesLibraryName instead.")]
         public string InlinesLibraryName
         {
             get { return MainModule.InlinesLibraryName; }
             set { MainModule.InlinesLibraryName = value; }
         }
 
+        [Obsolete("Use Modules and Module.TemplatesLibraryName instead.")]
         public string TemplatesLibraryName
         {
             get { return MainModule.TemplatesLibraryName; }
             set { MainModule.TemplatesLibraryName = value; }
+        }
+
+        public Module AddModule(string libraryName)
+        {
+            var module = new Module(libraryName);
+            Modules.Add(module);
+            return module;
         }
 
         public bool DoAllModulesHaveLibraries() =>

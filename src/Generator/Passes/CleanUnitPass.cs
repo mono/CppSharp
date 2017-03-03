@@ -21,7 +21,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        Module GetModule(TranslationUnit unit)
+        private Module GetModule(TranslationUnit unit)
         {
             if (unit.IsSystemHeader)
                 return Options.SystemModule;
@@ -33,7 +33,7 @@ namespace CppSharp.Passes
 
             return Options.Modules.FirstOrDefault(
                 m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
-                Options.MainModule;
+                    Options.Modules[1];
         }
 
         public override bool VisitDeclarationContext(DeclarationContext context)
