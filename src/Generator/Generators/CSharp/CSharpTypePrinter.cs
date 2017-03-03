@@ -672,9 +672,10 @@ namespace CppSharp.Generators.CSharp
                 ctx = ctx.Namespace;
             }
 
-            if (!ctx.TranslationUnit.IsSystemHeader && ctx.TranslationUnit.IsValid &&
-                !string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
-                names.Push(ctx.TranslationUnit.Module.OutputNamespace);
+            var unit = ctx.TranslationUnit;
+            if (!unit.IsSystemHeader && unit.IsValid && unit.Module != null &&
+                !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
+                names.Push(unit.Module.OutputNamespace);
 
             return $"global::{string.Join(".", names)}";
         }
