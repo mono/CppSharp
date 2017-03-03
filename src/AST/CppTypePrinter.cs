@@ -142,6 +142,20 @@ namespace CppSharp.AST
                 case PrimitiveType.IntPtr: return "void*";
                 case PrimitiveType.UIntPtr: return "uintptr_t";
                 case PrimitiveType.Null: return PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "std::nullptr_t" : "NULL";
+                case PrimitiveType.String:
+                {
+                    switch (PrintFlavorKind)
+                    {
+                    case CppTypePrintFlavorKind.C:
+                        return "const char*";
+                    case CppTypePrintFlavorKind.Cpp:
+                        return "std::string";
+                    case CppTypePrintFlavorKind.ObjC:
+                        return "NSString";;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                    }
+                }
             }
 
             throw new NotSupportedException();

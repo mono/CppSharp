@@ -1132,7 +1132,8 @@ namespace CppSharp.AST
         LongDouble,
         Float128,
         IntPtr,
-        UIntPtr
+        UIntPtr,
+        String
     }
 
     /// <summary>

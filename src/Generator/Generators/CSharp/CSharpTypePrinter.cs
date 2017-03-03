@@ -558,6 +558,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
                 case PrimitiveType.Null: return "void*";
+                case PrimitiveType.String: return "string";
             }
 
             throw new NotSupportedException();

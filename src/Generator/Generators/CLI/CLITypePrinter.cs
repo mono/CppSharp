@@ -232,6 +232,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.IntPtr: return "IntPtr";
                 case PrimitiveType.UIntPtr: return "UIntPtr";
                 case PrimitiveType.Null: return "void*";
+                case PrimitiveType.String: return "System::String";
             }
 
             throw new NotSupportedException();
