@@ -123,17 +123,22 @@ namespace CppSharp.Generators.CSharp
             foreach (var section in sections.Where(s => s.Lines.Count > 0))
             {
                 var tag = section.Type.ToString().ToLowerInvariant();
-                commentBuilder.AppendFormat("{0} <{1}{2}>", commentPrefix,
-                    tag + (section.Attributes.Count == 0 ? string.Empty : " "),
-                    string.Join(" ", section.Attributes));
-                commentBuilder.AppendLine();
-                foreach (var line in section.Lines)
+                var attributes = string.Empty;
+                if (section.Attributes.Any())
+                    attributes = ' ' + string.Join(" ", section.Attributes);
+                commentBuilder.Append($"{commentPrefix} <{tag}{attributes}>");
+                if (section.Lines.Count == 1)
                 {
-                    commentBuilder.AppendFormat("{0} <para>{1}</para>", commentPrefix, line);
-                    commentBuilder.AppendLine();
+                    commentBuilder.Append($"{section.Lines[0]}");
                 }
-                commentBuilder.AppendFormat("{0} </{1}>", commentPrefix, tag);
-                commentBuilder.AppendLine();
+                else
+                {
+                    commentBuilder.AppendLine();
+                    foreach (var line in section.Lines)
+                        commentBuilder.AppendLine($"{commentPrefix} <para>{line}</para>");
+                    commentBuilder.Append($"{commentPrefix} ");
+                }
+                commentBuilder.AppendLine($"</{tag}>");
             }
             if (commentBuilder.Length > 0)
             {
@@ -148,15 +153,13 @@ namespace CppSharp.Generators.CSharp
             public Section(CommentElement type)
             {
                 Type = type;
-                Attributes = new List<string>();
-                Lines = new List<string>();
             }
 
             public CommentElement Type { get; set; }
 
-            public List<string> Attributes { get; set; }
+            public List<string> Attributes { get; } = new List<string>();
 
-            public List<string> Lines { get; private set; }
+            public List<string> Lines { get; } = new List<string>();
         }
 
         private enum CommentElement

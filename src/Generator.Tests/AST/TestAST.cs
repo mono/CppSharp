@@ -400,9 +400,7 @@ namespace CppSharp.Generator.Tests.AST
 // <para>terminal, so this function allows GUI programs to emulate this</para>
 // <para>functionality.</para>
 // </remarks>
-// <param name=""ch"">
-// <para>The character that was typed along with the control key</para>
-// </param>
+// <param name=""ch"">The character that was typed along with the control key</param>
 // <returns>
 // <para>The string that should be written into the file handle that is</para>
 // <para>feeding the input stream for the debugger, or NULL if there is</para>
