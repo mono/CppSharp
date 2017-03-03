@@ -586,9 +586,9 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $"{GetName(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
+                return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
 
-            return $@"{GetName(@class)}{(@class.IsDependent ? $@"<{
+            return $@"{VisitDeclaration(@class)}{(@class.IsDependent ? $@"<{
                 string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>" : string.Empty)}";
         }
 
@@ -617,17 +617,17 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
         {
-            return GetName(typedef);
+            return VisitDeclaration(typedef);
         }
 
         public override TypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            return GetName(typeAlias);
+            return VisitDeclaration(typeAlias);
         }
 
         public override TypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
-            return GetName(@enum);
+            return VisitDeclaration(@enum);
         }
 
         public override TypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
@@ -635,7 +635,7 @@ namespace CppSharp.Generators.CSharp
             return VisitDeclaration(item);
         }
 
-        public string GetName(Declaration decl)
+        string GetName(Declaration decl)
         {
             var names = new Stack<string>();
 
@@ -682,7 +682,7 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitVariableDecl(Variable variable)
         {
-            return GetName(variable);
+            return VisitDeclaration(variable);
         }
 
         public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
