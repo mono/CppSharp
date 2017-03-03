@@ -191,13 +191,10 @@ namespace CppSharp.Generators
 
         public virtual void GenerateEnumItems(Enumeration @enum)
         {
-            var last = @enum.Items.Last();
-
-            foreach (var item in @enum.Items)
+            for (int i = 0; i < @enum.Items.Count; i++)
             {
-                item.Visit(this);
-
-                WriteLine(item == last ? string.Empty : ",");
+                @enum.Items[i].Visit(this);
+                WriteLine(i == @enum.Items.Count - 1 ? string.Empty : ",");
             }
         }
 
