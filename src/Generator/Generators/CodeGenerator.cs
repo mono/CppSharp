@@ -197,8 +197,7 @@ namespace CppSharp.Generators
             {
                 item.Visit(this);
 
-                if (item != last)
-                    WriteLine(",");
+                WriteLine(item == last ? string.Empty : ",");
             }
         }
 
