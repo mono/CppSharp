@@ -1644,7 +1644,7 @@ namespace CppSharp.Generators.CSharp
             var delegateName = delegateInstance + "Delegate";
             var delegateRaise = delegateInstance + "RaiseInstance";
 
-            WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]");
+            WriteLine("[UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]");
             WriteLine("delegate void {0}({1});", delegateName, args);
             WriteLine("{0} {1};", delegateName, delegateRaise);
             NewLine();
@@ -2891,7 +2891,7 @@ namespace CppSharp.Generators.CSharp
                 else
                     WriteLine(
                         "[SuppressUnmanagedCodeSecurity, " +
-                        "UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
+                        "UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.{0})]",
                         interopCallConv);
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),
@@ -3011,7 +3011,7 @@ namespace CppSharp.Generators.CSharp
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
-                WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
+                WriteLine("[return: MarshalAs(UnmanagedType.I1)]");
 
             TypePrinterResult retType;
             var @params = GatherInternalParams(function, out retType);

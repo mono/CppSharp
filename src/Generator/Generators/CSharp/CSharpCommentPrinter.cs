@@ -129,7 +129,7 @@ namespace CppSharp.Generators.CSharp
                 commentBuilder.Append($"{commentPrefix} <{tag}{attributes}>");
                 if (section.Lines.Count == 1)
                 {
-                    commentBuilder.Append($"{section.Lines[0]}");
+                    commentBuilder.Append(section.Lines[0]);
                 }
                 else
                 {
