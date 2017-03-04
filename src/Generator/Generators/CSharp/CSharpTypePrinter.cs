@@ -673,7 +673,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var unit = ctx.TranslationUnit;
-            if (!unit.IsSystemHeader && unit.IsValid && unit.Module != null &&
+            if (!unit.IsSystemHeader && unit.IsValid &&
                 !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
                 names.Push(unit.Module.OutputNamespace);
 
