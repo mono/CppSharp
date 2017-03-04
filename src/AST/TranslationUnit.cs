@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -25,15 +24,11 @@ namespace CppSharp.AST
         /// Contains the macros present in the unit.
         public List<MacroDefinition> Macros;
 
-        public Module Module
-        {
-            get { return (module != null) ? (Module) module.Target : null; }
-            set { module = new WeakReference(value); }
-        }
+        public Module Module { get; set; }
 
         public bool IsSystemHeader { get; set; }
 
-        public bool IsValid { get { return FilePath != "<invalid>"; } }
+        public bool IsValid => FilePath != "<invalid>";
 
         /// Contains the path to the file.
         public string FilePath;
@@ -82,8 +77,6 @@ namespace CppSharp.AST
                     (fileRelativePath = Path.Combine(FileRelativeDirectory, FileName));
             }
         }
-
-        private WeakReference module;
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
