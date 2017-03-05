@@ -155,7 +155,7 @@ namespace Std
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
-                internal static extern void ctor_0(global::System.IntPtr instance);
+                internal static extern void ctorc__N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
@@ -178,7 +178,7 @@ namespace Std
 
             private static void* __CopyValue(global::Std.__1.Allocator.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::Std.__1.Allocator.__Internal)));
+                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.Allocator.__Internal));
                 *(global::Std.__1.Allocator.__Internal*) ret = native;
                 return ret.ToPointer();
             }
@@ -199,10 +199,10 @@ namespace Std
 
             public Allocator()
             {
-                __Instance = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::Std.__1.Allocator.__Internal)));
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.__1.Allocator.__Internal));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                global::Std.__1.Allocator.__Internal.ctor_0((__Instance + __PointerAdjustment));
+                global::Std.__1.Allocator.__Internal.ctorc__N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
             }
 
             public void Dispose()
@@ -1271,12 +1271,12 @@ namespace Std
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
-                internal static extern void dtor_0(global::System.IntPtr instance);
+                internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
-                internal static extern global::System.IntPtr CStr_0(global::System.IntPtr instance);
+                internal static extern global::System.IntPtr CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
             }
 
             internal enum ShortMask : uint
@@ -1416,7 +1416,7 @@ namespace Std
 
             private static void* __CopyValue(global::Std.__1.BasicString.__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(global::Std.__1.BasicString.__Internal)));
+                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.BasicString.__Internal));
                 *(global::Std.__1.BasicString.__Internal*) ret = native;
                 return ret.ToPointer();
             }
@@ -1445,7 +1445,7 @@ namespace Std
                 global::Std.__1.BasicString __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (disposing)
-                    global::Std.__1.BasicString.__Internal.dtor_0((__Instance + __PointerAdjustment));
+                    global::Std.__1.BasicString.__Internal.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }
@@ -1454,7 +1454,7 @@ namespace Std
             {
                 get
                 {
-                    var __ret = global::Std.__1.BasicString.__Internal.CStr_0((__Instance + __PointerAdjustment));
+                    var __ret = global::Std.__1.BasicString.__Internal.CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
                     return Marshal.PtrToStringAnsi(__ret);
                 }
             }
