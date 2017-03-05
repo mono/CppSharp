@@ -2010,7 +2010,7 @@ namespace CppSharp.Generators.CSharp
                     copyCtorMethod.IsGenerated)
                 {
                     // Allocate memory for a new native object and call the ctor.
-                    WriteLine($"var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({@internal})));");
+                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
                     TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine($"{@class.Visit(TypePrinter)}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
                         @class.Visit(TypePrinter),
@@ -2020,7 +2020,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine($"var ret = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({@internal})));");
+                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
                     WriteLine($"*({@internal}*) ret = native;");
                     WriteLine("return ret.ToPointer();");
                 }
@@ -2461,7 +2461,7 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
             TypePrinter.PopContext();
-            WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({@internal})));");
+            WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(sizeof({@internal}));");
             WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
             WriteLine($"NativeToManagedMap[{Helpers.InstanceIdentifier}] = this;");
 
