@@ -247,20 +247,16 @@ namespace CppSharp.Generators.CSharp
 
         private static List<ClassTemplateSpecialization> GetSpecializationsToGenerate(Class classTemplate)
         {
-            List<ClassTemplateSpecialization> specializations;
             if (classTemplate.Fields.Any(
                 f => f.Type.Desugar() is TemplateParameterType))
-                specializations = classTemplate.Specializations;
-            else
-            {
-                specializations = new List<ClassTemplateSpecialization>();
-                var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
-                if (specialization == null)
-                    specializations.Add(classTemplate.Specializations[0]);
-                else
-                    specializations.Add(specialization);
-            }
+                return classTemplate.Specializations;
 
+            var specializations = new List<ClassTemplateSpecialization>();
+            var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
+            if (specialization == null)
+                specializations.Add(classTemplate.Specializations[0]);
+            else
+                specializations.Add(specialization);
             return specializations;
         }
 
@@ -1282,6 +1278,9 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateVTable(Class @class)
         {
+            var containingClass = @class;
+            @class = @class.IsDependent ? @class.Specializations[0] : @class;
+
             var wrappedEntries = GetUniqueVTableMethodEntries(@class);
             if (wrappedEntries.Count == 0)
                 return;
@@ -1292,9 +1291,8 @@ namespace CppSharp.Generators.CSharp
 
             // Generate a delegate type for each method.
             foreach (var method in wrappedEntries.Select(e => e.Method))
-            {
-                GenerateVTableMethodDelegates(@class, method);
-            }
+                GenerateVTableMethodDelegates(containingClass, containingClass.IsDependent ?
+                    containingClass.Methods[@class.Methods.IndexOf(method)] : method);
 
             WriteLine("private static void*[] __ManagedVTables;");
             if (wrappedEntries.Any(e => e.Method.IsDestructor))
