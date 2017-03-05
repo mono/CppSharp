@@ -301,16 +301,17 @@ void Parser::SetupHeader()
     auto& TO = Inv->TargetOpts;
     targetABI = ConvertToClangTargetCXXABI(opts->abi);
 
-    TO->Triple = llvm::sys::getDefaultTargetTriple();
-    if (!opts->TargetTriple.empty())
-        TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
+    if (opts->TargetTriple.empty())
+        opts->TargetTriple = llvm::sys::getDefaultTargetTriple();
+    TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     if (!TI)
     {
         // We might have no target info due to an invalid user-provided triple.
         // Try again with the default triple.
-        TO->Triple = llvm::sys::getDefaultTargetTriple();
+        opts->TargetTriple = llvm::sys::getDefaultTargetTriple();
+        TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
         TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     }
 

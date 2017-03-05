@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Parser;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
@@ -1893,8 +1894,6 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            var className = @class.IsAbstractImpl ? @class.BaseClass.Name : @class.Name;
-
             var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
             if (!@class.IsAbstractImpl)
             {
@@ -3046,7 +3045,7 @@ namespace CppSharp.Generators.CSharp
             var targetTriple = Context.ParserOptions.TargetTriple;
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
-            else if ((targetTriple.Contains("win32") || targetTriple.Contains("win64")) &&
+            else if (TargetTriple.IsWindows(targetTriple) &&
                 libName.Contains('.') && Path.GetExtension(libName) != ".dll")
                 libName += ".dll";
 

@@ -35,11 +35,6 @@ namespace CppSharp.Utils
             Diagnostics.Message("Generating bindings for {0} ({1})",
                 testModule.LibraryName, options.GeneratorKind.ToString());
 
-            // Workaround for CLR which does not check for .dll if the
-            // name already has a dot.
-            if (!Platform.IsMono)
-                testModule.SharedLibraryName += ".dll";
-
             var parserOptions = driver.ParserOptions;
             if (Platform.IsMacOS)
                 parserOptions.TargetTriple = Environment.Is64BitProcess ? "x86_64-apple-darwin" : "i686-apple-darwin";

@@ -24,9 +24,6 @@ namespace CppSharp.Tests
             module.Headers.Add($"{@base}.h");
             module.OutputNamespace = @base;
             module.SharedLibraryName = $"{@base}.Native";
-            // Workaround for CLR which does not check for .dll if the name already has a dot
-            if (System.Type.GetType("Mono.Runtime") == null)
-                module.SharedLibraryName += ".dll";
             driver.Options.Modules[1].Dependencies.Add(module);
         }
 
