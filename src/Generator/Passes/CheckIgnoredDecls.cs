@@ -403,7 +403,7 @@ namespace CppSharp.Passes
             return !decl.IsIncomplete || decl.CompleteDeclaration != null;
         }
 
-        private bool IsTypeExternal(Module module, Type type)
+        public static bool IsTypeExternal(Module module, Type type)
         {
             Declaration declaration;
             if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))

@@ -15,6 +15,11 @@ namespace CppSharp.Passes
             @class.Specializations.RemoveAll(
                 s => s.Fields.Any(f => f.Type.IsPrimitiveType(PrimitiveType.Void)));
 
+            foreach (var specialization in @class.Specializations.Where(s => s.Arguments.Any(
+                a => a.Type.Type != null &&
+                    CheckIgnoredDeclsPass.IsTypeExternal(@class.TranslationUnit.Module, a.Type.Type))))
+                specialization.ExplicitlyIgnore();
+
             if (@class.Specializations.Count == 0)
                 return false;
 
@@ -28,8 +33,7 @@ namespace CppSharp.Passes
                     @class.Specializations.Remove(specialization);
 
             for (int i = @class.Specializations.Count - 1; i >= 0; i--)
-                if (@class.Specializations[i] is ClassTemplatePartialSpecialization &&
-                    !@class.Specializations[i].Arguments.All(allPointers))
+                if (@class.Specializations[i] is ClassTemplatePartialSpecialization)
                     @class.Specializations.RemoveAt(i);
 
             return true;
