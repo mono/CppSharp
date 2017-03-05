@@ -1317,11 +1317,6 @@ namespace CppSharp.Generators.CSharp
             WriteLine("if (__OriginalVTables != null)");
             WriteLineIndent("return;");
 
-            TypePrinter.PushContext(TypePrinterContextKind.Native);
-            WriteLine($"var native = ({@class.Visit(TypePrinter)}*) {Helpers.InstanceIdentifier}.ToPointer();");
-            TypePrinter.PopContext();
-            NewLine();
-
             SaveOriginalVTablePointers(@class);
 
             NewLine();
@@ -1389,19 +1384,18 @@ namespace CppSharp.Generators.CSharp
                 AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly);
         }
 
-        private void SaveOriginalVTablePointers(Class @class, bool cast = false)
+        private void SaveOriginalVTablePointers(Class @class)
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
-            var pointer = cast ? $@"(({@class.Visit(TypePrinter)}*) native)" : "native";
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
                         @class.Layout.VTablePointers.Select(v => 
-                            $"{pointer}->{v.Name}.ToPointer()")));
+                            $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})")));
             else
                 WriteLine(
-                    $@"__OriginalVTables = new void*[] {{ {pointer}->{
-                        @class.Layout.VTablePointers[0].Name}.ToPointer() }};");
+                    $@"__OriginalVTables = new void*[] {{ *(void**) ({
+                        Helpers.InstanceIdentifier} + {@class.Layout.VTablePointers[0].Offset}) }};");
             TypePrinter.PopContext();
         }
 
@@ -1420,15 +1414,17 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("{0}[{1}] = vfptr{1}.ToPointer();", managedVTables, i);
 
                 AllocateNewVTableEntries(vfptr.Layout.Components, wrappedEntries,
-                    @class.Layout.VTablePointers[i].Name, i, destructorOnly);
+                    @class.Layout.VTablePointers[i].Offset, i, destructorOnly);
             }
 
             WriteCloseBraceIndent();
             NewLine();
 
             for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
-                WriteLine("native->{0} = new IntPtr({1}[{2}]);",
-                    @class.Layout.VTablePointers[i].Name, managedVTables, i);
+            {
+                var offset = @class.Layout.VTablePointers[i].Offset;
+                WriteLine($"*(void**) ({Helpers.InstanceIdentifier} + {offset}) = {managedVTables}[{i}];");
+            }
         }
 
         private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1445,17 +1441,17 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0}[0] = vfptr0.ToPointer();", managedVTables);
 
             AllocateNewVTableEntries(@class.Layout.Layout.Components,
-                wrappedEntries, @class.Layout.VTablePointers[0].Name, 0, destructorOnly);
+                wrappedEntries, @class.Layout.VTablePointers[0].Offset, 0, destructorOnly);
 
             WriteCloseBraceIndent();
             NewLine();
 
-            WriteLine("native->{0} = new IntPtr({1}[0]);",
-                @class.Layout.VTablePointers[0].Name, managedVTables);
+            var offset = @class.Layout.VTablePointers[0].Offset;
+            WriteLine($"*(void**) ({Helpers.InstanceIdentifier} + {offset}) = {managedVTables}[0];");
         }
 
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
-            IList<VTableComponent> wrappedEntries, string vptr, int tableIndex, bool destructorOnly)
+            IList<VTableComponent> wrappedEntries, uint vptrOffset, int tableIndex, bool destructorOnly)
         {
             var pointerSize = Context.TargetInfo.PointerWidth / 8;
             for (var i = 0; i < entries.Count; i++)
@@ -1464,8 +1460,9 @@ namespace CppSharp.Generators.CSharp
                 var offset = pointerSize
                     * (i - (Context.ParserOptions.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
 
-                var nativeVftableEntry = string.Format("*(void**)(native->{0} + {1})", vptr, offset);
-                var managedVftableEntry = string.Format("*(void**)(vfptr{0} + {1})", tableIndex, offset);
+                var nativeVftableEntry = $@"*(void**) (new IntPtr(*(void**) {
+                    Helpers.InstanceIdentifier}) + {vptrOffset} + {offset})";
+                var managedVftableEntry = $"*(void**) (vfptr{tableIndex} + {offset})";
 
                 if ((entry.Kind == VTableComponentKind.FunctionPointer ||
                      entry.Kind == VTableComponentKind.DeletingDtorPointer) &&
@@ -1963,7 +1960,7 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 if (@class.IsAbstractImpl || hasVTables)
-                    SaveOriginalVTablePointers(@class, true);
+                    SaveOriginalVTablePointers(@class);
 
                 if (setupVTables)
                 {
