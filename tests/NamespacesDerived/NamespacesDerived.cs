@@ -19,17 +19,15 @@ namespace CppSharp.Tests
 
             driver.Options.Modules[1].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
             var @base = "NamespacesBase";
-            var module = new Module();
+            var module = driver.Options.AddModule(@base);
             module.IncludeDirs.Add(Path.GetFullPath(GetTestsDirectory(@base)));
-            module.Headers.Add(string.Format("{0}.h", @base));
+            module.Headers.Add($"{@base}.h");
             module.OutputNamespace = @base;
-            module.SharedLibraryName = string.Format("{0}.Native", @base);
+            module.SharedLibraryName = $"{@base}.Native";
             // Workaround for CLR which does not check for .dll if the name already has a dot
             if (System.Type.GetType("Mono.Runtime") == null)
                 module.SharedLibraryName += ".dll";
-            module.LibraryName = @base;
             driver.Options.Modules[1].Dependencies.Add(module);
-            driver.Options.Modules.Insert(1, module);
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)
