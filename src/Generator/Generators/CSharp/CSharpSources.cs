@@ -207,19 +207,7 @@ namespace CppSharp.Generators.CSharp
             if (classTemplate.Specializations.Count == 0)
                 return;
 
-            List<ClassTemplateSpecialization> specializations;
-            if (classTemplate.Fields.Any(
-                f => f.Type.Desugar() is TemplateParameterType))
-                specializations = classTemplate.Specializations;
-            else
-            {
-                specializations = new List<ClassTemplateSpecialization>();
-                var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
-                if (specialization == null)
-                    specializations.Add(classTemplate.Specializations[0]);
-                else
-                    specializations.Add(specialization);
-            }
+            var specializations = GetSpecializationsToGenerate(classTemplate);
 
             bool generateClass = specializations.Any(s => s.IsGenerated);
             if (!generateClass)
@@ -255,6 +243,25 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+        }
+
+        private static List<ClassTemplateSpecialization> GetSpecializationsToGenerate(Class classTemplate)
+        {
+            List<ClassTemplateSpecialization> specializations;
+            if (classTemplate.Fields.Any(
+                f => f.Type.Desugar() is TemplateParameterType))
+                specializations = classTemplate.Specializations;
+            else
+            {
+                specializations = new List<ClassTemplateSpecialization>();
+                var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
+                if (specialization == null)
+                    specializations.Add(classTemplate.Specializations[0]);
+                else
+                    specializations.Add(specialization);
+            }
+
+            return specializations;
         }
 
         public override void GenerateDeclarationCommon(Declaration decl)
@@ -458,6 +465,22 @@ namespace CppSharp.Generators.CSharp
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     functions.AddRange(GatherClassInternalFunctions(@base.Class, false));
 
+            var currentSpecialization = @class as ClassTemplateSpecialization;
+            Class template;
+            if (currentSpecialization != null &&
+                GetSpecializationsToGenerate(
+                    template = currentSpecialization.TemplatedDecl.TemplatedClass).Count == 1)
+                foreach (var specialization in template.Specializations.Where(s => !s.Ignore))
+                    GatherClassInternalFunctions(specialization, includeCtors, functions);
+            else
+                GatherClassInternalFunctions(@class, includeCtors, functions);
+
+            return functions;
+        }
+
+        private void GatherClassInternalFunctions(Class @class, bool includeCtors,
+            List<Function> functions)
+        {
             Action<Method> tryAddOverload = method =>
             {
                 if (method.IsSynthetized &&
@@ -514,8 +537,6 @@ namespace CppSharp.Generators.CSharp
                 if (prop.SetMethod != null && prop.SetMethod != prop.GetMethod)
                     tryAddOverload(prop.SetMethod);
             }
-
-            return functions;
         }
 
         private IEnumerable<string> GatherInternalParams(Function function, out TypePrinterResult retType)
@@ -1226,7 +1247,7 @@ namespace CppSharp.Generators.CSharp
                 return p;
             });
 
-            return string.Format("this[{0}]", FormatMethodParameters(@params));
+            return $"this[{FormatMethodParameters(@params)}]";
         }
 
         private void GenerateVariable(Class @class, Variable variable)
@@ -1619,7 +1640,7 @@ namespace CppSharp.Generators.CSharp
 
         public string GetVTableMethodDelegateName(Function function)
         {
-            var nativeId = GetFunctionNativeIdentifier(function);
+            var nativeId = GetFunctionNativeIdentifier(function, true);
 
             // Trim '@' (if any) because '@' is valid only as the first symbol.
             nativeId = nativeId.Trim('@');
@@ -2953,38 +2974,53 @@ namespace CppSharp.Generators.CSharp
             return function.Name;
         }
 
-        public static string GetFunctionNativeIdentifier(Function function)
+        public static string GetFunctionNativeIdentifier(Function function,
+            bool ignoreSpecialization = false)
         {
-            var functionName = function.Name;
-
-            var method = function as Method;
-            if (method != null)
-            {
-                if (method.IsConstructor && !method.IsCopyConstructor)
-                    functionName = "ctor";
-                else if (method.IsCopyConstructor)
-                    functionName = "cctor";
-                else if (method.IsDestructor)
-                    functionName = "dtor";
-                else
-                    functionName = GetMethodIdentifier(method);
-            }
-
-            var identifier = functionName;
+            var identifier = new StringBuilder();
 
             if (function.IsOperator)
-                identifier = "Operator" + function.OperatorKind;
+                identifier.Append($"Operator{function.OperatorKind}");
+            else
+            {
+                var method = function as Method;
+                if (method != null)
+                {
+                    if (method.IsConstructor && !method.IsCopyConstructor)
+                        identifier.Append("ctor");
+                    else if (method.IsCopyConstructor)
+                        identifier.Append("cctor");
+                    else if (method.IsDestructor)
+                        identifier.Append("dtor");
+                    else
+                        identifier.Append(GetMethodIdentifier(method));
+                }
+                else
+                {
+                    identifier.Append(function.Name);
+                }
+            }
+
+            var specialization = function.Namespace as ClassTemplateSpecialization;
+            if (specialization != null && !ignoreSpecialization)
+                identifier.Append(Helpers.GetSuffixFor(specialization));
 
             var overloads = function.Namespace.GetOverloads(function)
                 .ToList();
             var index = overloads.IndexOf(function);
 
             if (index >= 0)
-                identifier += "_" + index.ToString(CultureInfo.InvariantCulture);
+            {
+                identifier.Append('_');
+                identifier.Append(index.ToString(CultureInfo.InvariantCulture));
+            }
             else if (function.Index.HasValue)
-                identifier += "_" + function.Index.Value;
+            {
+                identifier.Append('_');
+                identifier.Append(function.Index.Value);
+            }
 
-            return identifier;
+            return identifier.ToString();
         }
 
         public void GenerateInternalFunction(Function function)

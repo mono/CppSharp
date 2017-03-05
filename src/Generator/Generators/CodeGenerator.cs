@@ -407,6 +407,11 @@ namespace CppSharp.Generators
                 a => a.Type.Type != null && a.Type.Type.IsAddress()))
                 return "_Ptr";
 
+            return GetSuffixFor(specialization);
+        }
+
+        public static string GetSuffixFor(ClassTemplateSpecialization specialization)
+        {
             var suffixBuilder = new StringBuilder(specialization.USR);
             for (int i = 0; i < suffixBuilder.Length; i++)
                 if (!char.IsLetterOrDigit(suffixBuilder[i]))
