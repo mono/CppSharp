@@ -61,7 +61,7 @@ namespace CppSharp
             var diagInfo = new DiagnosticInfo
             {
                 Kind = DiagnosticKind.Debug,
-                Message = string.Format(msg, args)
+                Message = args.Any() ? string.Format(msg, args) : msg
             };
 
             Implementation.Emit(diagInfo);
@@ -70,10 +70,10 @@ namespace CppSharp
         public static void Message(string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
-                {
-                    Kind = DiagnosticKind.Message,
-                    Message = string.Format(msg, args)
-                };
+            {
+                Kind = DiagnosticKind.Message,
+                Message = args.Any() ? string.Format(msg, args) : msg
+            };
 
             Implementation.Emit(diagInfo);
         }
@@ -83,7 +83,7 @@ namespace CppSharp
             var diagInfo = new DiagnosticInfo
             {
                 Kind = DiagnosticKind.Warning,
-                Message = string.Format(msg, args)
+                Message = args.Any() ? string.Format(msg, args) : msg
             };
 
             Implementation.Emit(diagInfo);
