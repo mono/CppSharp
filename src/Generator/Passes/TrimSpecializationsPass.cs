@@ -33,7 +33,8 @@ namespace CppSharp.Passes
                     @class.Specializations.Remove(specialization);
 
             for (int i = @class.Specializations.Count - 1; i >= 0; i--)
-                if (@class.Specializations[i] is ClassTemplatePartialSpecialization)
+                if (@class.Specializations[i] is ClassTemplatePartialSpecialization &&
+                    !@class.Specializations[i].Arguments.All(allPointers))
                     @class.Specializations.RemoveAt(i);
 
             return true;
