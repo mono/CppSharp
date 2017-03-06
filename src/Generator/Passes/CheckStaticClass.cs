@@ -99,6 +99,9 @@ namespace CppSharp.Passes
             if (@class.IsOpaque)
                 return false;
 
+            if (@class.IsDependent)
+                return false;
+
             // TODO: We should take C++ friends into account here, they might allow
             // a class to be instantiated even it if's not possible to instantiate
             // it using just its regular members.
