@@ -214,6 +214,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(methodsWithDefaultValues.DefaultMappedToEnum(), Is.EqualTo(Flags.Flag3));
             methodsWithDefaultValues.DefaultMappedToZeroEnum();
             methodsWithDefaultValues.DefaultMappedToEnumAssignedWithCtor();
+            methodsWithDefaultValues.DefaultZeroMappedToEnumAssignedWithCtor();
             methodsWithDefaultValues.DefaultImplicitCtorInt();
             methodsWithDefaultValues.DefaultImplicitCtorChar();
             methodsWithDefaultValues.DefaultImplicitCtorFoo();

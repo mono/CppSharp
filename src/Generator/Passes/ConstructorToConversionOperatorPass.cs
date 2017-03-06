@@ -69,7 +69,11 @@ namespace CppSharp.Passes
                 OperatorKind = operatorKind,
                 IsExplicit = method.IsExplicit
             };
-            conversionOperator.Parameters.Add(new Parameter(parameter) { DefaultArgument = null });
+            conversionOperator.Parameters.Add(new Parameter(parameter)
+                {
+                    DefaultArgument = null,
+                    OriginalDefaultArgument = null
+                });
             ((Class) method.Namespace).Methods.Add(conversionOperator);
             return true;
         }

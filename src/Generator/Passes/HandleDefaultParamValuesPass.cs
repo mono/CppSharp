@@ -44,7 +44,8 @@ namespace CppSharp.Passes
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
                 var result = parameter.DefaultArgument.String;
-                if (PrintExpression(function, parameter.Type, parameter.DefaultArgument, ref result) == null)
+                if (PrintExpression(function, parameter.Type,
+                        parameter.OriginalDefaultArgument, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                 if (string.IsNullOrEmpty(result))
                 {
@@ -324,7 +325,7 @@ namespace CppSharp.Passes
             if (function.Parameters.Count != 1)
                 return false;
 
-            var defaultArgument = function.Parameters[0].DefaultArgument;
+            var defaultArgument = function.Parameters[0].OriginalDefaultArgument;
             return defaultArgument is BuiltinTypeExpression &&
                 ((BuiltinTypeExpression) defaultArgument).Value == 0;
         }

@@ -373,6 +373,12 @@ namespace lowerCaseNameSpace
     };
 }
 
+class DLL_API DefaultZeroMappedToEnum
+{
+public:
+    DefaultZeroMappedToEnum(int* = 0);
+};
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -409,6 +415,7 @@ public:
     QFlags<Flags> defaultMappedToEnum(const QFlags<Flags>& qFlags = Flags::Flag3);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
+    void defaultZeroMappedToEnumAssignedWithCtor(DefaultZeroMappedToEnum defaultZeroMappedToEnum = DefaultZeroMappedToEnum());
     void defaultImplicitCtorInt(Quux arg = 0);
     void defaultImplicitCtorChar(Quux arg = 'a');
     void defaultImplicitCtorFoo(Quux arg = Foo());

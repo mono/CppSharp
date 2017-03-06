@@ -64,6 +64,35 @@ namespace CppSharp.Tests
         }
     }
 
+    [TypeMap("DefaultZeroMappedToEnum")]
+    public class DefaultZeroMappedToEnum : TypeMap
+    {
+        public override string CSharpConstruct()
+        {
+            return string.Empty;
+        }
+
+        public override Type CSharpSignatureType(CSharpTypePrinterContext ctx)
+        {
+            return new TagType(new Enumeration());
+        }
+
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            return "Flags";
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
+
     [TypeMap("QList")]
     public class QList : TypeMap
     {
