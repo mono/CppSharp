@@ -74,59 +74,29 @@ namespace CppSharp.Passes
 
         public bool IsRenameableDecl(Declaration decl)
         {
-            if (decl is Class)
-                return Targets.HasFlag(RenameTargets.Class);
-
-            var method = decl as Method;
-            if (method != null)
-            {
-                return Targets.HasFlag(RenameTargets.Method) &&
-                    method.Kind == CXXMethodKind.Normal;
-            }
-
+            if (decl is Class) return true;
             var function = decl as Function;
             if (function != null)
             {
-                // Special case the IDisposable.Dispose method.
-                return Targets.HasFlag(RenameTargets.Function) &&
-                    (!function.IsOperator && function.Name != "dispose");
+                // special case the IDisposable.Dispose that could be added later
+                return !function.IsOperator && function.Name != "dispose";
             }
-
-            if (decl is Parameter)
-                return Targets.HasFlag(RenameTargets.Parameter);
-
-            if (decl is Enumeration.Item)
-                return Targets.HasFlag(RenameTargets.EnumItem);
-
-            if (decl is Enumeration)
-                return Targets.HasFlag(RenameTargets.Enum);
-
+            if (decl is Parameter) return true;
+            if (decl is Enumeration) return true;
             var property = decl as Property;
-            if (property != null)
-                return Targets.HasFlag(RenameTargets.Property) && !property.IsIndexer;
-
-            if (decl is Event)
-                return Targets.HasFlag(RenameTargets.Event);
-
-            if (decl is TypedefDecl)
-                return Targets.HasFlag(RenameTargets.Delegate);
-
+            if (property != null) return !property.IsIndexer;
+            if (decl is Event) return true;
+            if (decl is TypedefDecl) return true;
             if (decl is Namespace && !(decl is TranslationUnit)) return true;
-
-            if (decl is Variable)
-                return Targets.HasFlag(RenameTargets.Variable);
-
+            if (decl is Variable) return true;
             var field = decl as Field;
             if (field != null)
             {
-                if (!Targets.HasFlag(RenameTargets.Field))
-                    return false;
                 var fieldProperty = ((Class) field.Namespace).Properties.FirstOrDefault(
                     p => p.Field == field);
                 return (fieldProperty != null &&
                     fieldProperty.IsInRefTypeAndBackedByValueClassField());
             }
-
             return false;
         }
 
@@ -149,7 +119,6 @@ namespace CppSharp.Passes
             string newName;
             if (Rename(decl, out newName) && !AreThereConflicts(decl, newName))
                 decl.Name = newName;
-
             return true;
         }
 
@@ -159,7 +128,6 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Classes.Where(c => !c.IsIncomplete));
             declarations.AddRange(decl.Namespace.Enums);
             declarations.AddRange(decl.Namespace.Events);
-
             var function = decl as Function;
             if (function != null && function.SynthKind != FunctionSynthKind.AdjustedMethod)
             {
@@ -169,13 +137,11 @@ namespace CppSharp.Passes
             }
             else
                 declarations.AddRange(decl.Namespace.Functions);
-
             declarations.AddRange(decl.Namespace.Variables);
             declarations.AddRange(from typedefDecl in decl.Namespace.Typedefs
                                   let pointerType = typedefDecl.Type.Desugar() as PointerType
                                   where pointerType != null && pointerType.GetFinalPointee() is FunctionType
                                   select typedefDecl);
-
             var specialization = decl as ClassTemplateSpecialization;
             if (specialization != null)
                 declarations.RemoveAll(d => specialization.TemplatedDecl.TemplatedDecl == d);
@@ -211,6 +177,21 @@ namespace CppSharp.Passes
                 f => !f.Ignore && f.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
         }
 
+        public override bool VisitEnumItemDecl(Enumeration.Item item)
+        {
+            if (!Targets.HasFlag(RenameTargets.EnumItem))
+                return false;
+
+            string newName;
+            if (Rename(item, out newName))
+            {
+                item.Name = newName;
+                return true;
+            }
+
+            return true;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             var result = base.VisitClassDecl(@class);
@@ -222,6 +203,73 @@ namespace CppSharp.Passes
                 VisitMethodDecl(method);
 
             return result;
+        }
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (!Targets.HasFlag(RenameTargets.Field))
+                return false;
+
+            return base.VisitFieldDecl(field);
+        }
+
+        public override bool VisitProperty(Property property)
+        {
+            if (!Targets.HasFlag(RenameTargets.Property))
+                return false;
+
+            return base.VisitProperty(property);
+        }
+
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            if (!Targets.HasFlag(RenameTargets.Delegate))
+                return false;
+
+            return base.VisitTypedefDecl(typedef);
+        }
+
+        public override bool VisitMethodDecl(Method method)
+        {
+            if (!Targets.HasFlag(RenameTargets.Method))
+                return false;
+
+            if (method.Kind != CXXMethodKind.Normal)
+                return false;
+
+            return base.VisitMethodDecl(method);
+        }
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (!Targets.HasFlag(RenameTargets.Function))
+                return false;
+
+            return base.VisitFunctionDecl(function);
+        }
+
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            if (!Targets.HasFlag(RenameTargets.Parameter))
+                return false;
+
+            return base.VisitParameterDecl(parameter);
+        }
+
+        public override bool VisitEvent(Event @event)
+        {
+            if (!Targets.HasFlag(RenameTargets.Event))
+                return false;
+
+            return base.VisitEvent(@event);
+        }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!Targets.HasFlag(RenameTargets.Variable))
+                return false;
+
+            return base.VisitVariableDecl(variable);
         }
     }
 
@@ -265,8 +313,7 @@ namespace CppSharp.Passes
 
         public override bool Rename(Declaration decl, out string newName)
         {
-            if (base.Rename(decl, out newName))
-                return true;
+            if (base.Rename(decl, out newName)) return true;
 
             var replace = Regex.Replace(decl.Name, Pattern, Replacement);
 
@@ -288,7 +335,7 @@ namespace CppSharp.Passes
     }
 
     /// <summary>
-    /// Renames a declaration based on a pre-defined pattern.
+    /// Renames a declaration based on a regular expression pattern.
     /// </summary>
     public class CaseRenamePass : RenamePass
     {
@@ -302,8 +349,7 @@ namespace CppSharp.Passes
 
         public override bool Rename(Declaration decl, out string newName)
         {
-            if (base.Rename(decl, out newName))
-                return true;
+            if (base.Rename(decl, out newName)) return true;
 
             newName = ConvertCaseString(decl, Pattern);
             return true;
