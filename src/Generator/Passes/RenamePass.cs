@@ -75,7 +75,7 @@ namespace CppSharp.Passes
         public bool IsRenameableDecl(Declaration decl)
         {
             if (decl is Class)
-                return true;
+                return Targets.HasFlag(RenameTargets.Class);
 
             var method = decl as Method;
             if (method != null)
