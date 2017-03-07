@@ -1332,7 +1332,7 @@ namespace CppSharp.Generators.CSharp
             // Generate a delegate type for each method.
             foreach (var method in wrappedEntries.Select(e => e.Method))
                 GenerateVTableMethodDelegates(containingClass, containingClass.IsDependent ?
-                    containingClass.Methods[@class.Methods.IndexOf(method)] : method);
+                   (Method) method.InstantiatedFrom : method);
 
             WriteLine("private static void*[] __ManagedVTables;");
             if (wrappedEntries.Any(e => e.Method.IsDestructor))

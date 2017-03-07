@@ -3731,6 +3731,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         break;
     }
     case Decl::CXXConstructor:
+    case Decl::CXXDestructor:
+    case Decl::CXXConversion:
     case Decl::CXXMethod:
     {
         auto MD = cast<CXXMethodDecl>(D);
@@ -3764,11 +3766,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         Decl = WalkNonTypeTemplateParameter(NTTPD);
         break;
     }
-    // Ignore these declarations since they must have been declared in
-    // a class already.
-    case Decl::CXXDestructor:
-    case Decl::CXXConversion:
-        break;
     case Decl::BuiltinTemplate:
     case Decl::ClassScopeFunctionSpecialization:
     case Decl::PragmaComment:
