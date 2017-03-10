@@ -106,7 +106,6 @@ namespace CppSharp.Passes
         private bool CheckForSimpleExpressions(Expression expression, ref string result, Type desugared)
         {
             return CheckFloatSyntax(desugared, expression, ref result) ||
-                CheckForBinaryOperator(desugared, expression, ref result) ||
                 CheckForEnumValue(desugared, expression, ref result) ||
                 CheckForDefaultChar(desugared, ref result);
         }
@@ -205,16 +204,6 @@ namespace CppSharp.Passes
                 argsBuilder.Append(')');
                 result = argsBuilder.ToString();
             }
-            else
-            {
-                if (method.Parameters.Count > 0)
-                {
-                    var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
-                    Enumeration @enum;
-                    if (paramType.TryGetEnum(out @enum))
-                        result = TranslateEnumExpression(method, paramType, expression.String);
-                }
-            }
             return expressionSupported ? true : (bool?) null;
         }
 
@@ -244,46 +233,12 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private bool CheckForBinaryOperator(Type desugared, Expression expression,
-            ref string result)
-        {
-            if (expression.Class != StatementClass.BinaryOperator)
-                return false;
-
-            var binaryOperator = (BinaryOperator) expression;
-
-            var lhsResult = binaryOperator.LHS.String;
-            CheckForEnumValue(desugared, binaryOperator.LHS, ref lhsResult);
-
-            var rhsResult = binaryOperator.RHS.String;
-            CheckForEnumValue(desugared, binaryOperator.RHS, ref rhsResult);
-
-            result = string.Format("{0} {1} {2}", lhsResult,
-                binaryOperator.OpcodeStr, rhsResult);
-            return true;
-        }
-
         private bool CheckForEnumValue(Type desugared, Statement statement,
             ref string result)
         {
             var enumItem = statement.Declaration as Enumeration.Item;
             if (enumItem != null)
-            {
-                if (desugared.IsPrimitiveType())
-                {
-                    statement.Declaration = null;
-                    result = string.Format("(int) {0}.{1}",
-                        new CSharpTypePrinter(Context).VisitEnumDecl(
-                            (Enumeration) enumItem.Namespace), enumItem.Name);
-                }
-                else
-                {
-                    result = string.Format("{0}.{1}",
-                        new CSharpTypePrinter(Context).VisitEnumDecl(
-                            (Enumeration) enumItem.Namespace), enumItem.Name);
-                }
                 return true;
-            }
 
             var call = statement.Declaration as Function;
             if (call != null && statement.String != "0")

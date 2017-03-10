@@ -14,7 +14,6 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Context.TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any);
             driver.Context.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
         }
 

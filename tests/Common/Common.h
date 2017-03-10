@@ -1218,3 +1218,5 @@ DLL_API void hasPointerParam(Foo* foo, int i);
 DLL_API void hasPointerParam(const Foo& foo);
 
 enum EmptyEnum { };
+
+enum __enum_with_underscores { };

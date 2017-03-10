@@ -221,7 +221,6 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
-            driver.Context.TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any);
             driver.Context.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
             driver.Context.TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
         }
@@ -232,10 +231,6 @@ namespace CppSharp
 
         public void Postprocess(Driver driver, ASTContext ctx)
         {
-            new CaseRenamePass(
-                RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate |
-                RenameTargets.Field | RenameTargets.Variable,
-                RenameCasePattern.UpperCamelCase).VisitASTContext(driver.Context.ASTContext);
         }
 
         public void Run()

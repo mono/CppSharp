@@ -338,9 +338,7 @@ namespace CppSharp
 
             if (Options.GeneratorKind == GeneratorKind.CLI ||
                 Options.GeneratorKind == GeneratorKind.CSharp)
-                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Function |
-                    RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate |
-                    RenameTargets.Field | RenameTargets.Variable | RenameTargets.Class);
+                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any &~ RenameTargets.Parameter);
         }
 
         public void ProcessCode()
