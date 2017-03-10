@@ -93,6 +93,9 @@ namespace CppSharp.AST
         // True if the type is to be treated as a union.
         public bool IsUnion;
 
+        // True if the class is final / sealed.
+        public bool IsFinal { get; set; }
+
         // True if the type is to be treated as opaque.
         public bool IsOpaque;
 
@@ -123,6 +126,7 @@ namespace CppSharp.AST
             Specifiers = new List<AccessSpecifierDecl>();
             IsAbstract = false;
             IsUnion = false;
+            IsFinal = false;
             IsOpaque = false;
             IsPOD = false;
             Type = ClassType.RefType;

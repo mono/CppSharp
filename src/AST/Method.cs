@@ -93,6 +93,7 @@ namespace CppSharp.AST
             IsVirtual = method.IsVirtual;
             IsConst = method.IsConst;
             IsOverride = method.IsOverride;
+            IsFinal = method.IsFinal;
             IsProxy = method.IsProxy;
             IsStatic = method.IsStatic;
             Kind = method.Kind;
@@ -115,6 +116,10 @@ namespace CppSharp.AST
         public bool IsConst { get; set; }
         public bool IsExplicit { get; set; }
         public bool IsOverride { get; set; }
+
+         // True if the method is final / sealed.
+        public bool IsFinal { get; set; }
+
         public bool IsProxy { get; set; }
 
         public RefQualifier RefQualifier { get; set; }
