@@ -87,14 +87,15 @@ namespace CppSharp
             return null;
         }
 
-        public static Enumeration.Item GenerateEnumItemFromMacro(this ASTContext context,
+        public static Enumeration.Item GenerateEnumItemFromMacro(this Enumeration @enum,
             MacroDefinition macro)
         {
             var item = new Enumeration.Item
             {
                 Name = macro.Name,
                 Expression = macro.Expression,
-                Value = ParseMacroExpression(macro.Expression)
+                Value = ParseMacroExpression(macro.Expression),
+                Namespace = @enum
             };
 
             return item;
@@ -143,7 +144,7 @@ namespace CppSharp
                     if (@enum.Items.Exists(it => it.Name == macro.Name))
                         continue;
 
-                    var item = GenerateEnumItemFromMacro(context, macro);
+                    var item = @enum.GenerateEnumItemFromMacro(macro);
                     @enum.AddItem(item);
 
                     macro.Enumeration = @enum;
