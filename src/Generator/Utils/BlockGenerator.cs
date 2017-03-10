@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -51,6 +52,7 @@ namespace CppSharp
         Fields,
     }
 
+    [DebuggerDisplay("{BlockKind} | {Object}")]
     public class Block : ITextGenerator
     {
         public TextGenerator Text { get; set; }
