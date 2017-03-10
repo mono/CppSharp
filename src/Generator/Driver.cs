@@ -335,12 +335,12 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());
+
             if (Options.GeneratorKind == GeneratorKind.CLI ||
                 Options.GeneratorKind == GeneratorKind.CSharp)
-                TranslationUnitPasses.AddPass(new CaseRenamePass(
-                    RenameTargets.Function | RenameTargets.Method | RenameTargets.Property |
-                    RenameTargets.Delegate | RenameTargets.Field | RenameTargets.Variable,
-                    RenameCasePattern.UpperCamelCase));
+                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Function |
+                    RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate |
+                    RenameTargets.Field | RenameTargets.Variable | RenameTargets.Class);
         }
 
         public void ProcessCode()
