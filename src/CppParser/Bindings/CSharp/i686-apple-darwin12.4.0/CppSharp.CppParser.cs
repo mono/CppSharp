@@ -133,8 +133,8 @@ namespace CppSharp
                 None = 0,
                 New = 1,
                 Delete = 2,
-                Array_New = 3,
-                Array_Delete = 4,
+                ArrayNew = 3,
+                ArrayDelete = 4,
                 Plus = 5,
                 Minus = 6,
                 Star = 7,
@@ -230,8 +230,8 @@ namespace CppSharp
                 Itanium = 0,
                 Microsoft = 1,
                 ARM = 2,
-                iOS = 3,
-                iOS64 = 4
+                IOS = 3,
+                IOS64 = 4
             }
 
             public enum VTableComponentKind
@@ -291,8 +291,8 @@ namespace CppSharp
             public enum ArchType
             {
                 UnknownArch = 0,
-                x86 = 1,
-                x86_64 = 2
+                X86 = 1,
+                X8664 = 2
             }
 
             public unsafe partial class Type : IDisposable

@@ -1255,9 +1255,9 @@ namespace CppSharp
                     return AST.CXXOperatorKind.New;
                 case CXXOperatorKind.Delete:
                     return AST.CXXOperatorKind.Delete;
-                case CXXOperatorKind.Array_New:
+                case CXXOperatorKind.ArrayNew:
                     return AST.CXXOperatorKind.Array_New;
-                case CXXOperatorKind.Array_Delete:
+                case CXXOperatorKind.ArrayDelete:
                     return AST.CXXOperatorKind.Array_Delete;
                 case CXXOperatorKind.Plus:
                     return AST.CXXOperatorKind.Plus;
@@ -1575,9 +1575,9 @@ namespace CppSharp
                     return AST.CppAbi.Microsoft;
                 case CppAbi.ARM:
                     return AST.CppAbi.ARM;
-                case CppAbi.iOS:
+                case CppAbi.IOS:
                     return AST.CppAbi.iOS;
-                case CppAbi.iOS64:
+                case CppAbi.IOS64:
                     return AST.CppAbi.iOS64;
                 default:
                     throw new ArgumentOutOfRangeException("abi");

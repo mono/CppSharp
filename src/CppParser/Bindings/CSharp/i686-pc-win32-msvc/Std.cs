@@ -57,6 +57,86 @@ public unsafe partial class StdExceptionData
 
 namespace Std
 {
+    public unsafe partial class CharTraits : IDisposable
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="?eof@?$char_traits@D@std@@SAHXZ")]
+            internal static extern int Eofc__N_std_S_char_traits__C_0();
+        }
+
+        public global::System.IntPtr __Instance { get; protected set; }
+
+        protected int __PointerAdjustment;
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits>();
+        protected void*[] __OriginalVTables;
+
+        protected bool __ownsNativeInstance;
+
+        internal static global::Std.CharTraits __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        {
+            return new CharTraits(native.ToPointer(), skipVTables);
+        }
+
+        internal static global::Std.CharTraits __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+        {
+            return new CharTraits(native, skipVTables);
+        }
+
+        private static void* __CopyValue(global::Std.CharTraits.__Internal native)
+        {
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
+            *(global::Std.CharTraits.__Internal*) ret = native;
+            return ret.ToPointer();
+        }
+
+        private CharTraits(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+            : this(__CopyValue(native), skipVTables)
+        {
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+        }
+
+        protected CharTraits(void* native, bool skipVTables = false)
+        {
+            if (native == null)
+                return;
+            __Instance = new global::System.IntPtr(native);
+        }
+
+        public CharTraits()
+        {
+            __Instance = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            global::Std.CharTraits __dummy;
+            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            if (__ownsNativeInstance)
+                Marshal.FreeHGlobal(__Instance);
+        }
+
+        public static int Eof()
+        {
+            var __ret = global::Std.CharTraits.__Internal.Eofc__N_std_S_char_traits__C_0();
+            return __ret;
+        }
+    }
+}
+
+namespace Std
+{
 }
 
 namespace Std
@@ -703,8 +783,8 @@ namespace Std
     [Flags]
     public enum CodecvtMode
     {
-        _Consume_header = 4,
-        _Generate_header = 2
+        ConsumeHeader = 4,
+        GenerateHeader = 2
     }
 }
 

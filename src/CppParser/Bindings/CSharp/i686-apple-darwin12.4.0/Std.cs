@@ -249,9 +249,9 @@ namespace Std
 
             public enum Lx : uint
             {
-                relaxed = 0,
-                preferred = 1,
-                strict = 2
+                Relaxed = 0,
+                Preferred = 1,
+                Strict = 2
             }
         }
     }
@@ -1260,6 +1260,83 @@ namespace Std
 {
     namespace __1
     {
+        public unsafe partial class CharTraits : IDisposable
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZNSt3__111char_traitsIcE3eofEv")]
+                internal static extern int Eofc__N_std_N___1_S_char_traits__C_0();
+            }
+
+            public global::System.IntPtr __Instance { get; protected set; }
+
+            protected int __PointerAdjustment;
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.CharTraits> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.CharTraits>();
+            protected void*[] __OriginalVTables;
+
+            protected bool __ownsNativeInstance;
+
+            internal static global::Std.__1.CharTraits __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            {
+                return new CharTraits(native.ToPointer(), skipVTables);
+            }
+
+            internal static global::Std.__1.CharTraits __CreateInstance(global::Std.__1.CharTraits.__Internal native, bool skipVTables = false)
+            {
+                return new CharTraits(native, skipVTables);
+            }
+
+            private static void* __CopyValue(global::Std.__1.CharTraits.__Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.CharTraits.__Internal));
+                *(global::Std.__1.CharTraits.__Internal*) ret = native;
+                return ret.ToPointer();
+            }
+
+            private CharTraits(global::Std.__1.CharTraits.__Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
+            {
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+            }
+
+            protected CharTraits(void* native, bool skipVTables = false)
+            {
+                if (native == null)
+                    return;
+                __Instance = new global::System.IntPtr(native);
+            }
+
+            public CharTraits()
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.__1.CharTraits.__Internal));
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+            }
+
+            public void Dispose()
+            {
+                Dispose(disposing: true);
+            }
+
+            public virtual void Dispose(bool disposing)
+            {
+                global::Std.__1.CharTraits __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance)
+                    Marshal.FreeHGlobal(__Instance);
+            }
+
+            public static int Eof()
+            {
+                var __ret = global::Std.__1.CharTraits.__Internal.Eofc__N_std_N___1_S_char_traits__C_0();
+                return __ret;
+            }
+        }
+
         public unsafe partial class BasicString : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 12)]
@@ -1281,28 +1358,28 @@ namespace Std
 
             internal enum ShortMask : uint
             {
-                __short_mask = 0x1
+                ShortMask = 0x1
             }
 
             internal enum LongMask : uint
             {
-                __long_mask = 0x1
+                LongMask = 0x1
             }
 
             internal enum MinCap : uint
             {
-                __min_cap = 11
+                MinCap = 11
             }
 
             internal enum NWords : uint
             {
-                __n_words = 3
+                NWords = 3
             }
 
             [Flags]
             internal enum Alignment : uint
             {
-                __alignment = 16
+                Alignment = 16
             }
 
             public unsafe partial class Rep
