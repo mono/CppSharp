@@ -73,6 +73,11 @@ namespace CppSharp.Utils
                 if (Directory.Exists(path))
                     return path;
 
+                path = Path.Combine(directory.FullName, "external", "CppSharp", "tests", name);
+
+                if (Directory.Exists(path))
+                    return path;
+
                 directory = directory.Parent;
             }
 
