@@ -437,6 +437,9 @@ namespace CppSharp.AST
 
         public virtual bool VisitEnumItemDecl(Enumeration.Item item)
         {
+            if (!VisitDeclaration(item))
+                return false;
+
             return true;
         }
 
