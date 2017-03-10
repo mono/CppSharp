@@ -31,7 +31,6 @@ namespace CppSharp.Passes
         protected RenamePass()
         {
             VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitTemplateArguments = false;
             // properties need to be visited but in a different order (see VisitClassDecl) so disable the default order
             VisitOptions.VisitClassProperties = false;
@@ -157,6 +156,9 @@ namespace CppSharp.Passes
 
         private static bool AreThereConflicts(Declaration decl, string newName)
         {
+            if (decl is Parameter)
+                return false;
+
             var declarations = new List<Declaration>();
             declarations.AddRange(decl.Namespace.Classes.Where(c => !c.IsIncomplete));
             declarations.AddRange(decl.Namespace.Enums);
