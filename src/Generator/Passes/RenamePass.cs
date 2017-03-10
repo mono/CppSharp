@@ -141,15 +141,17 @@ namespace CppSharp.Passes
             if (decl.Name == null)
                 return true;
 
-            return Rename(decl);
+            var renamed = Rename(decl);
+            return true;
         }
 
         private bool Rename(Declaration decl)
         {
             string newName;
-            if (Rename(decl, out newName) && !AreThereConflicts(decl, newName))
-                decl.Name = newName;
-
+            if (!Rename(decl, out newName) || AreThereConflicts(decl, newName))
+                return false;
+            
+            decl.Name = newName;
             return true;
         }
 
