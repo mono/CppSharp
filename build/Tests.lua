@@ -8,6 +8,7 @@ function SetupExampleProject()
   files { "**.cs", "./*.lua" }
   links
   {
+    "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
     "CppSharp.Parser"
@@ -55,6 +56,7 @@ function SetupTestGeneratorProject(name, depends)
 
     linktable = {
       "System.Core",
+      "CppSharp",
       "CppSharp.AST",
       "CppSharp.Generator",
       "CppSharp.Generator.Tests",
