@@ -1219,4 +1219,4 @@ DLL_API void hasPointerParam(const Foo& foo);
 
 enum EmptyEnum { };
 
-enum __enum_with_underscores { };
+enum __enum_with_underscores { lOWER_BEFORE_CAPITAL, CAPITALS_More, underscore_at_end_, usesDigits1_0 };

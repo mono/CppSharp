@@ -338,24 +338,25 @@ namespace CppSharp.Passes
             if (sb[0] == '@')
                 sb.Remove(0, 1);
 
-            // do not remove underscores from ALL_CAPS names
-            if (!decl.Name.Where(char.IsLetter).All(char.IsUpper))
+            for (int i = sb.Length - 1; i >= 0; i--)
             {
-                for (int i = sb.Length - 1; i >= 0; i--)
-                {
-                    if (sb[i] == '_' && i < sb.Length - 1)
-                    {
-                        sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
-                        sb.Remove(i, 1);
-                    }
-                }
+                // ensure separation by not ending up with more capitals or digits in a row than before
+                if (sb[i] != '_' || (i > 0 && (char.IsUpper(sb[i - 1]) ||
+                    (i < sb.Length - 1 && char.IsDigit(sb[i + 1]) && char.IsDigit(sb[i - 1])))))
+                    continue;
+
+                if (i < sb.Length - 1)
+                    sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
+                sb.Remove(i, 1);
             }
 
             var @class = decl as Class;
             switch (pattern)
             {
                 case RenameCasePattern.UpperCamelCase:
-                    sb[0] = char.ToUpperInvariant(sb[0]);
+                    // ensure separation by not ending up with more capitals in a row than before
+                    if (sb.Length == 1 || !char.IsUpper(sb[1]))
+                        sb[0] = char.ToUpperInvariant(sb[0]);
                     if (@class != null && @class.Type == ClassType.Interface)
                         sb[1] = char.ToUpperInvariant(sb[1]);
                     break;

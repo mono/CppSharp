@@ -37,7 +37,10 @@ public class CommonTests : GeneratorTestFixture
         using (var hasProtectedEnum = new HasProtectedEnum())
         {
         }
-        EnumWithUnderscores e = 0;
+        EnumWithUnderscores e = EnumWithUnderscores.lOWER_BEFORE_CAPITAL;
+        e = EnumWithUnderscores.UnderscoreAtEnd;
+        e = EnumWithUnderscores.CAPITALS_More;
+        e = EnumWithUnderscores.UsesDigits1_0;
         e.GetHashCode();
 
 #pragma warning restore 0168
