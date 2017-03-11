@@ -24,7 +24,7 @@ solution "CppSharp"
     defines { "WINDOWS" }
 	
   configuration {}
-
+  
   group "Libraries"
     include (srcdir .. "/Core")
     include (srcdir .. "/AST")

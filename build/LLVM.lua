@@ -12,7 +12,7 @@ require "scripts/LLVM"
 function SearchLLVM()
   LLVMRootDirDebug = basedir .. "/scripts/" .. get_llvm_package_name(nil, "Debug")
   LLVMRootDirRelease = basedir .. "/scripts/" .. get_llvm_package_name()
-
+  
   if os.isdir(LLVMRootDirDebug) or os.isdir(LLVMRootDirRelease) then
     LLVMDirPerConfiguration = true
     print("Using debug LLVM build: " .. LLVMRootDirDebug)
