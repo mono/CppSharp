@@ -75,12 +75,17 @@ function SetupManagedProject()
     configuration(c)
   end
 
-  if action == "vs2015" then
+  if action == "vs2017" then
 
-  configuration "vs2015"
-    framework "4.6"
-
-  end
+        configuration "vs2017"
+			framework "4.6"
+    
+    elseif action == "vs2015" then
+        
+        configuration "vs2015"
+			framework "4.6"
+    
+    end
 
   configuration "vs2013"
     framework "4.5"
