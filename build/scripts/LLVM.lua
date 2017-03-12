@@ -251,6 +251,17 @@ function clean_llvm(llvm_build)
 	if os.isdir(llvm_build) then os.rmdir(llvm_build) end
 end
 
+function get_cmake_generator()
+	local vsver = get_vs_version()
+	if vsver == "vs2017" then
+		return "Visual Studio 14 2017"
+	elseif vsver == "vs2015" then
+		return "Visual Studio 14 2015"
+	else
+		error("Cannot map to CMake configuration due to unknown MSVC version")
+	end
+end
+
 function build_llvm(llvm_build)
 	if not os.isdir(llvm) then
 		print("LLVM/Clang directory does not exist, cloning...")
@@ -262,7 +273,7 @@ function build_llvm(llvm_build)
 	local conf = get_llvm_configuration_name()
 	local use_msbuild = false
 	if os.is("windows") and use_msbuild then
-		cmake("Visual Studio 14 2015", conf, llvm_build)
+		cmake(get_cmake_generator(), conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
