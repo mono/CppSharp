@@ -354,8 +354,8 @@ namespace CppSharp.Passes
             switch (pattern)
             {
                 case RenameCasePattern.UpperCamelCase:
-                    // ensure separation by not ending up with more capitals in a row than before
-                    if (sb.Length == 1 || !char.IsUpper(sb[1]))
+                    // ensure separation in enum items by not ending up with more capitals in a row than before
+                    if (sb.Length == 1 || !char.IsUpper(sb[1]) || !(decl is Enumeration.Item))
                         sb[0] = char.ToUpperInvariant(sb[0]);
                     if (@class != null && @class.Type == ClassType.Interface)
                         sb[1] = char.ToUpperInvariant(sb[1]);

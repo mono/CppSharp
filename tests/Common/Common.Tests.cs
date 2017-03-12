@@ -42,6 +42,7 @@ public class CommonTests : GeneratorTestFixture
         e = EnumWithUnderscores.CAPITALS_More;
         e = EnumWithUnderscores.UsesDigits1_0;
         e.GetHashCode();
+        Common.SMallFollowedByCapital();
 
 #pragma warning restore 0168
 #pragma warning restore 0219

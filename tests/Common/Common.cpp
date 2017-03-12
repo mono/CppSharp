@@ -660,3 +660,7 @@ void hasPointerParam(Foo* foo, int i)
 void hasPointerParam(const Foo& foo)
 {
 }
+
+void sMallFollowedByCapital()
+{
+}
