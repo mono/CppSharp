@@ -48,22 +48,28 @@ function clone_llvm()
   git.reset_hard(clang, clang_release)
 end
 
+function get_vs_version()
+  local function map_msvc_to_vs_version(ver)
+    if     ver == "19" then return "vs2015"
+    elseif ver == "18" then return "vs2013"
+    elseif ver == "17" then return "vs2012"
+    else error("Unknown MSVC compiler version, run in VS command prompt.") end
+  end
+
+  local out = outputof("cl")
+  local ver, arch = string.match(out, '(%d+).%d+.%d+.?%d*%s+')
+  vsver = map_msvc_to_vs_version(ver)
+
+  return vsver
+end
+
 function get_toolset_configuration_name()
   if os.is("windows") then
-    local function get_vs_version(ver)
-      if     ver == "19" then return "vs2015"
-      elseif ver == "18" then return "vs2013"
-      elseif ver == "17" then return "vs2012"
-      else error("Unknown MSVC compiler version, run in VS command prompt.") end
-    end
-
     local vsver = _ACTION
     local arch = "x86"
 
     if not string.starts(vsver, "vs") then
-      local out = outputof("cl")
-      local ver, arch = string.match(out, '(%d+).%d+.%d+.?%d*%s+')
-      vsver = get_vs_version(ver)
+      vsver = get_vs_version()
     end
 
     return table.concat({vsver, arch}, "-")
