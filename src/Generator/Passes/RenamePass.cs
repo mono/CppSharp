@@ -80,7 +80,8 @@ namespace CppSharp.Passes
             if (method != null)
             {
                 return Targets.HasFlag(RenameTargets.Method) &&
-                    method.Kind == CXXMethodKind.Normal;
+                    method.Kind == CXXMethodKind.Normal &&
+                    method.Name != "dispose";
             }
 
             var function = decl as Function;

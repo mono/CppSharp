@@ -653,6 +653,10 @@ void HasOverloadsWithDifferentPointerKindsToSameType::overload(const int& i)
 {
 }
 
+void HasOverloadsWithDifferentPointerKindsToSameType::dispose()
+{
+}
+
 void hasPointerParam(Foo* foo, int i)
 {
 }

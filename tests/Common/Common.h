@@ -1212,6 +1212,7 @@ public:
     void overload(int& i);
     void overload(int&& i);
     void overload(const int& i);
+    void dispose();
 };
 
 DLL_API void hasPointerParam(Foo* foo, int i);
