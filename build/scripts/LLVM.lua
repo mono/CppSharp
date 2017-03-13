@@ -58,9 +58,8 @@ function get_vs_version()
 
   local out = outputof("cl")
   local ver, arch = string.match(out, '(%d+).%d+.%d+.?%d*%s+')
-  vsver = map_msvc_to_vs_version(ver)
 
-  return vsver
+  return map_msvc_to_vs_version(ver)
 end
 
 function get_toolset_configuration_name()
@@ -254,7 +253,7 @@ end
 function get_cmake_generator()
 	local vsver = get_vs_version()
 	if vsver == "vs2017" then
-		return "Visual Studio 14 2017"
+		return "Visual Studio 15 2017"
 	elseif vsver == "vs2015" then
 		return "Visual Studio 14 2015"
 	else
