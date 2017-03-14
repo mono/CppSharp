@@ -219,8 +219,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class))
-                return false;
+            base.VisitClassDecl(@class);
 
             foreach (var property in @class.Properties.OrderByDescending(p => p.Access))
                 VisitProperty(property);
