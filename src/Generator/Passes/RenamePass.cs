@@ -218,7 +218,8 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            var result = base.VisitClassDecl(@class);
+            if (!base.VisitClassDecl(@class))
+                return false;
 
             foreach (var property in @class.Properties.OrderByDescending(p => p.Access))
                 VisitProperty(property);
@@ -226,7 +227,12 @@ namespace CppSharp.Passes
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
 
-            return result;
+            return true;
+        }
+
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            return base.VisitDeclaration(parameter);
         }
     }
 
