@@ -32,9 +32,10 @@ namespace CppSharp.Passes
         {
             VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitTemplateArguments = false;
-            // properties need to be visited but in a different order (see VisitClassDecl) so disable the default order
+            // these need to be visited but in a different order (see VisitClassDecl) so disable the default order
             VisitOptions.VisitClassProperties = false;
             VisitOptions.VisitClassMethods = false;
+            VisitOptions.VisitNamespaceEvents = false;
         }
 
         protected RenamePass(RenameTargets targets)
@@ -226,6 +227,9 @@ namespace CppSharp.Passes
 
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
+
+            foreach (var @event in @class.Events)
+                VisitEvent(@event);
 
             return true;
         }
