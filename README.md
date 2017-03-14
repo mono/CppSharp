@@ -1,3 +1,9 @@
+**CppSharp has been selected for participation in the Google Summer of Code 2017!**
+
+We are looking for volunteers to write code for CppSharp in the summer of 2017. Please check our task at http://www.mono-project.com/community/google-summer-of-code/projects/#cppsharp--maintenance--improvement-tasks.
+
+
+
 CppSharp is a tool and set of libraries which allows programmmers to use
 C/C++ libraries with high-level programming languages (such as C#).
 
