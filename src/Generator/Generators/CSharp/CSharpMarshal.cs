@@ -464,6 +464,9 @@ namespace CppSharp.Generators.CSharp
                         supportBefore.WriteCloseBraceIndent();
                     }
                     break;
+                case ArrayType.ArraySize.Incomplete:
+                    Context.Return.Write(Context.Parameter.Name);
+                    break;
                 default:
                     Context.Return.Write("null");
                     break;

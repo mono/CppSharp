@@ -1149,3 +1149,5 @@ public:
 protected:
     int field;
 };
+
+void DLL_API hasArrayOfConstChar(const char* const arrayOfConstChar[]);

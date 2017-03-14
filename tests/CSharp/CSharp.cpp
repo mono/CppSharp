@@ -1306,3 +1306,7 @@ void HasGetterAndOverriddenSetter::setBaseSetter(int value)
 {
     field = value;
 }
+
+void hasArrayOfConstChar(const char* const arrayOfConstChar[])
+{
+}

@@ -90,11 +90,10 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitArrayType(ArrayType array,
             TypeQualifiers quals)
         {
+            Type arrayType = array.Type.Desugar();
             if (ContextKind == TypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
-                Type arrayType = array.Type.Desugar();
-
                 PrimitiveType primitiveType;
                 if ((arrayType.IsPointerToPrimitiveType(out primitiveType) &&
                     !(arrayType is FunctionType)) || 
@@ -148,9 +147,12 @@ namespace CppSharp.Generators.CSharp
 
             // const char* and const char[] are the same so we can use a string
             if (array.SizeType == ArrayType.ArraySize.Incomplete &&
-                array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
+                arrayType.IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
                 return "string";
+
+            if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
+                return "char**";
 
             return string.Format("{0}{1}", array.Type.Visit(this),
                 array.SizeType == ArrayType.ArraySize.Constant ? "[]" :
