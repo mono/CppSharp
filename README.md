@@ -121,4 +121,6 @@ CppSharp is used by the following projects:
 
 [FFmpeg.AutoGen](https://github.com/Ruslan-B/FFmpeg.AutoGen)
 
+[GLFW3.NET](https://github.com/realvictorprm/GLFW3.NET)
+
 Please feel free to send us a pull request adding your own projects to the list above.
