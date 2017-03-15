@@ -8,7 +8,6 @@ autom4te.cache
 missing
 *Makefile
 *Makefile.in
-*.dll
 *.exe
 bin/
 *.userprefs

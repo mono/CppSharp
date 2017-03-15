@@ -20,7 +20,8 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
             Abi = CppAbi.Microsoft;
-            ToolSetToUse = MSVCToolchain.GetCLVersion(vsVersion) * 10000000;
+            var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
+            ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
 
             AddArguments("-fms-extensions");
             AddArguments("-fms-compatibility");
