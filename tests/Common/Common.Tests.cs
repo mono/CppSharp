@@ -339,6 +339,9 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestStaticClasses()
     {
+        Type staticClassType = typeof(TestStaticClass);
+        // Only static class can be both abstract and sealed
+        Assert.IsTrue(staticClassType.IsAbstract && staticClassType.IsSealed);
         Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
         Assert.That(TestStaticClass.OneTwoThree, Is.EqualTo(123));
         Assert.That(TestStaticClassDerived.Foo, Is.EqualTo(0));
