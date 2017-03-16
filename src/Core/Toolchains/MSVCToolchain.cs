@@ -51,6 +51,47 @@ namespace CppSharp
 
     public static class MSVCToolchain
     {
+        static void DumpSdks(string sku, IEnumerable<ToolchainVersion> sdks)
+        {
+            Console.WriteLine("\n{0} SDKs:", sku);
+            foreach (var sdk in sdks)
+                Console.WriteLine("\t({0}) {1}", sdk.Version, sdk.Directory);
+        }
+
+        /// <summary>Dumps the detected SDK versions.</summary>
+        public static void DumpSdks()
+        {
+            List<ToolchainVersion> vsSdks;
+            GetVisualStudioSdks(out vsSdks);
+            DumpSdks("Visual Studio", vsSdks);
+
+            List<ToolchainVersion> windowsSdks;
+            GetWindowsSdks(out windowsSdks);
+            DumpSdks("Windows", windowsSdks);
+
+            List<ToolchainVersion> windowsKitsSdks;
+            GetWindowsKitsSdks(out windowsKitsSdks);
+            DumpSdks("Windows Kits", windowsKitsSdks);
+
+            List<ToolchainVersion> netFrameworkSdks;
+            GetNetFrameworkSdks(out netFrameworkSdks);
+            DumpSdks(".NET Framework", netFrameworkSdks);
+
+            List<ToolchainVersion> msbuildSdks;
+            GetMSBuildSdks(out msbuildSdks);
+            DumpSdks("MSBuild", msbuildSdks);
+        }
+
+        /// <summary>Dumps include directories for selected toolchain.</summary>
+        public static void DumpSdkIncludes(VisualStudioVersion vsVersion =
+            VisualStudioVersion.Latest)
+        {
+            Console.WriteLine("\nInclude search path (VS: {0}):", vsVersion);
+            var includes = GetSystemIncludes(vsVersion);
+            foreach (var include in includes)
+                Console.WriteLine("\t{0}", include);
+        }
+
         public static Version GetCLVersion(VisualStudioVersion vsVersion)
         {
             Version clVersion;
