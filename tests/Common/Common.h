@@ -324,6 +324,7 @@ DLL_API int operator==(const Foo2& a, const Foo2& b)
 typedef int (*DelegateInGlobalNamespace)(int);
 typedef int (STDCALL *DelegateStdCall)(int);
 typedef int (CDECL *DelegateCDecl)(int n);
+typedef void(*DelegateNullCheck)(void);
 
 struct DLL_API TestDelegates
 {
@@ -344,6 +345,8 @@ struct DLL_API TestDelegates
     int (*MarshalAnonymousDelegate4())(int n);
 
     void MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del);
+
+    DelegateNullCheck MarshalNullDelegate();
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
