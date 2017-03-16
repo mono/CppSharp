@@ -51,47 +51,6 @@ namespace CppSharp
 
     public static class MSVCToolchain
     {
-        static void DumpSdks(string sku, IEnumerable<ToolchainVersion> sdks)
-        {
-            Console.WriteLine("\n{0} SDKs:", sku);
-            foreach (var sdk in sdks)
-                Console.WriteLine("\t({0}) {1}", sdk.Version, sdk.Directory);
-        }
-
-        /// <summary>Dumps the detected SDK versions.</summary>
-        public static void DumpSdks()
-        {
-            List<ToolchainVersion> vsSdks;
-            GetVisualStudioSdks(out vsSdks);
-            DumpSdks("Visual Studio", vsSdks);
-
-            List<ToolchainVersion> windowsSdks;
-            GetWindowsSdks(out windowsSdks);
-            DumpSdks("Windows", windowsSdks);
-
-            List<ToolchainVersion> windowsKitsSdks;
-            GetWindowsKitsSdks(out windowsKitsSdks);
-            DumpSdks("Windows Kits", windowsKitsSdks);
-
-            List<ToolchainVersion> netFrameworkSdks;
-            GetNetFrameworkSdks(out netFrameworkSdks);
-            DumpSdks(".NET Framework", netFrameworkSdks);
-
-            List<ToolchainVersion> msbuildSdks;
-            GetMSBuildSdks(out msbuildSdks);
-            DumpSdks("MSBuild", msbuildSdks);
-        }
-
-        /// <summary>Dumps include directories for selected toolchain.</summary>
-        public static void DumpSdkIncludes(VisualStudioVersion vsVersion =
-            VisualStudioVersion.Latest)
-        {
-            Console.WriteLine("\nInclude search path (VS: {0}):", vsVersion);
-            var includes = GetSystemIncludes(vsVersion);
-            foreach (var include in includes)
-                Console.WriteLine("\t{0}", include);
-        }
-
         public static Version GetCLVersion(VisualStudioVersion vsVersion)
         {
             Version clVersion;
@@ -197,11 +156,25 @@ namespace CppSharp
             vsDir = vsDir.Substring(0, vsDir.LastIndexOf(@"\Common7\IDE",
                 StringComparison.Ordinal));
 
-            var includes = new List<string>();
-            if(vsVersion == VisualStudioVersion.VS2017 ||
-               vsVersion == VisualStudioVersion.Latest)
-                return GetSystemIncludesVS2017(vsDir);        
-            includes.Add(Path.Combine(vsDir, @"VC\include"));
+            if (vsVersion != VisualStudioVersion.Latest)
+                return GetSystemIncludes(vsVersion, vsDir);
+
+            // we don't know what "latest" is on a given machine
+            // because we do not (yet) pass a parameter from the build scripts
+            // so start from the latest specified version and loop until a match is found 
+            for (var i = VisualStudioVersion.Latest - 1; i >= VisualStudioVersion.VS2012; i--)
+            {
+                var includes = GetSystemIncludes(i, vsDir);
+                if (includes.Any())
+                    return includes;
+            }
+            return new List<string>();
+        }
+
+        private static List<string> GetSystemIncludes(VisualStudioVersion vsVersion, string vsDir)
+        {
+            if (vsVersion == VisualStudioVersion.VS2017)
+                return GetSystemIncludesVS2017(vsDir);
 
             int windowsSdkMajorVer;
             var windowsKitSdk = GetWindowsKitsToolchain(vsVersion, out windowsSdkMajorVer);
@@ -209,6 +182,7 @@ namespace CppSharp
             List<ToolchainVersion> windowsSdks;
             GetWindowsSdks(out windowsSdks);
 
+            var includes = new List<string> { Path.Combine(vsDir, @"VC\include") };
             // Older Visual Studio versions provide their own Windows SDK.
             if (windowsSdks.Count == 0)
             {
