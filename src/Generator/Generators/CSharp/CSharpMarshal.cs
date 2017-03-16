@@ -249,9 +249,9 @@ namespace CppSharp.Generators.CSharp
 
                 Context.SupportBefore.WriteLine("var {0} = {1};", ptrName,
                     Context.ReturnVarName);
-
-                Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
-                    ptrName, typedef.ToString());
+                
+                var res = $"{ptrName} == IntPtr.Zero? null : ({typedef})Marshal.GetDelegateForFunctionPointer({ptrName}, typeof({typedef}))";
+                Context.Return.Write(res);
                 return true;
             }
 

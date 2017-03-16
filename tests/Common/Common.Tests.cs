@@ -317,6 +317,9 @@ public class CommonTests : GeneratorTestFixture
 
         var cdecl = delegates.CDecl(i => i);
         Assert.AreEqual(1, cdecl);
+
+        var emptydelegeate = delegates.MarshalNullDelegate;
+        Assert.AreEqual(emptydelegeate, null);
     }
 
     [Test]

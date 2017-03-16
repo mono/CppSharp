@@ -421,6 +421,11 @@ void TestDelegates::MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del)
 {
 }
 
+DelegateNullCheck TestDelegates::MarshalNullDelegate()
+{
+    return nullptr;
+}
+
 void DelegateNamespace::f2(void (*)())
 {
 }
