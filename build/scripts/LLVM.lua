@@ -139,7 +139,7 @@ function download_llvm()
           "Please upgrade to a newer VS version or compile LLVM manually.")
   end
 
-  local base = "https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm/"
+  local base = "https://github.com/mono/CppSharp/releases/download/CppSharp/"
   local pkg_name = get_llvm_package_name()
   local archive = pkg_name .. archive_ext
 
