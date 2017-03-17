@@ -381,7 +381,7 @@ struct DLL_API TestFinalizers
 {
 };
 
-// Tests static classes
+/// <summary> Tests static classes </summary>
 struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);

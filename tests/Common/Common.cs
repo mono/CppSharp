@@ -61,6 +61,7 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
+            driver.Context.TranslationUnitPasses.AddPass(new FixCommentsPass());
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
         }
