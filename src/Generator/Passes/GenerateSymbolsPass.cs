@@ -9,9 +9,9 @@ using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
-    public class GenerateInlinesPass : TranslationUnitPass
+    public class GenerateSymbolsPass : TranslationUnitPass
     {
-        public GenerateInlinesPass()
+        public GenerateSymbolsPass()
         {
             VisitOptions.VisitClassBases = false;
             VisitOptions.VisitClassFields = false;
@@ -31,33 +31,33 @@ namespace CppSharp.Passes
             var result = base.VisitASTContext(context);
             var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
             findSymbolsPass.Wait = true;
-            GenerateInlines();
+            GenerateSymbols();
             return result;
         }
 
-        public event EventHandler<InlinesCodeEventArgs> InlinesCodeGenerated;
+        public event EventHandler<SymbolsCodeEventArgs> SymbolsCodeGenerated;
 
-        private void GenerateInlines()
+        private void GenerateSymbols()
         {
             var modules = (from module in Options.Modules
-                           where inlinesCodeGenerators.ContainsKey(module)
+                           where symbolsCodeGenerators.ContainsKey(module)
                            select module).ToList();
             remainingCompilationTasks = modules.Count;
             foreach (var module in modules)
             {
-                var inlinesCodeGenerator = inlinesCodeGenerators[module];
-                var cpp = $"{module.InlinesLibraryName}.{inlinesCodeGenerator.FileExtension}";
+                var symbolsCodeGenerator = symbolsCodeGenerators[module];
+                var cpp = $"{module.SymbolsLibraryName}.{symbolsCodeGenerator.FileExtension}";
                 Directory.CreateDirectory(Options.OutputDir);
                 var path = Path.Combine(Options.OutputDir, cpp);
-                File.WriteAllText(path, inlinesCodeGenerator.Generate());
+                File.WriteAllText(path, symbolsCodeGenerator.Generate());
 
-                var e = new InlinesCodeEventArgs(module);
-                InlinesCodeGenerated?.Invoke(this, e);
+                var e = new SymbolsCodeEventArgs(module);
+                SymbolsCodeGenerated?.Invoke(this, e);
                 if (string.IsNullOrEmpty(e.CustomCompiler))
                     RemainingCompilationTasks--;
                 else
                     InvokeCompiler(e.CustomCompiler, e.CompilerArguments,
-                        e.OutputDir, module.InlinesLibraryName);
+                        e.OutputDir, module.SymbolsLibraryName);
             }
         }
 
@@ -69,20 +69,20 @@ namespace CppSharp.Passes
             var module = function.TranslationUnit.Module;
             if (module == Options.SystemModule)
             {
-                GetInlinesCodeGenerator(module);
+                GetSymbolsCodeGenerator(module);
                 return false;
             }
 
             if (!NeedsSymbol(function))
                 return false;
 
-            var inlinesCodeGenerator = GetInlinesCodeGenerator(module);
-            return function.Visit(inlinesCodeGenerator);
+            var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
+            return function.Visit(symbolsCodeGenerator);
         }
 
-        public class InlinesCodeEventArgs : EventArgs
+        public class SymbolsCodeEventArgs : EventArgs
         {
-            public InlinesCodeEventArgs(Module module)
+            public SymbolsCodeEventArgs(Module module)
             {
                 this.Module = module;
             }
@@ -107,19 +107,19 @@ namespace CppSharp.Passes
                 !Context.Symbols.FindSymbol(ref mangled);
         }
 
-        private InlinesCodeGenerator GetInlinesCodeGenerator(Module module)
+        private SymbolsCodeGenerator GetSymbolsCodeGenerator(Module module)
         {
-            if (inlinesCodeGenerators.ContainsKey(module))
-                return inlinesCodeGenerators[module];
+            if (symbolsCodeGenerators.ContainsKey(module))
+                return symbolsCodeGenerators[module];
             
-            var inlinesCodeGenerator = new InlinesCodeGenerator(Context, module.Units);
-            inlinesCodeGenerators[module] = inlinesCodeGenerator;
-            inlinesCodeGenerator.Process();
+            var symbolsCodeGenerator = new SymbolsCodeGenerator(Context, module.Units);
+            symbolsCodeGenerators[module] = symbolsCodeGenerator;
+            symbolsCodeGenerator.Process();
 
-            return inlinesCodeGenerator;
+            return symbolsCodeGenerator;
         }
 
-        private void InvokeCompiler(string compiler, string arguments, string outputDir, string inlines)
+        private void InvokeCompiler(string compiler, string arguments, string outputDir, string symbols)
         {
             new Thread(() =>
                 {
@@ -127,20 +127,20 @@ namespace CppSharp.Passes
                     string errorMessage;
                     ProcessHelper.Run(compiler, arguments, out error, out errorMessage);
                     if (string.IsNullOrEmpty(errorMessage))
-                        CollectInlinedSymbols(outputDir, inlines);
+                        CollectSymbols(outputDir, symbols);
                     else
                         Diagnostics.Error(errorMessage);
                     RemainingCompilationTasks--;
                 }).Start();
         }
 
-        private void CollectInlinedSymbols(string outputDir, string inlines)
+        private void CollectSymbols(string outputDir, string symbols)
         {
             using (var parserOptions = new ParserOptions())
             {
                 parserOptions.AddLibraryDirs(outputDir);
                 var output = Path.GetFileName($@"{(Platform.IsWindows ?
-                    string.Empty : "lib")}{inlines}.{
+                    string.Empty : "lib")}{symbols}.{
                     (Platform.IsMacOS ? "dylib" : Platform.IsWindows ? "dll" : "so")}");
                 parserOptions.LibraryFile = output;
                 using (var parserResult = Parser.ClangParser.ParseLibrary(parserOptions))
@@ -181,7 +181,7 @@ namespace CppSharp.Passes
         private int remainingCompilationTasks;
         private static readonly object @lock = new object();
 
-        private Dictionary<Module, InlinesCodeGenerator> inlinesCodeGenerators =
-            new Dictionary<Module, InlinesCodeGenerator>();
+        private Dictionary<Module, SymbolsCodeGenerator> symbolsCodeGenerators =
+            new Dictionary<Module, SymbolsCodeGenerator>();
     }
 }

@@ -37,38 +37,21 @@ namespace CppSharp.AST
             set { sharedLibraryName = value; }
         }
 
-        public string InlinesLibraryName
+        public string SymbolsLibraryName
         {
             get
             {
-                if (string.IsNullOrEmpty(inlinesLibraryName))
+                if (string.IsNullOrEmpty(symbolsLibraryName))
                 {
                     if (string.IsNullOrEmpty(OutputNamespace))
-                        return string.Format("{0}-inlines", LibraryName);
+                        return string.Format("{0}-symbols", LibraryName);
 
-                    return string.Format("{0}-inlines", OutputNamespace);
+                    return string.Format("{0}-symbols", OutputNamespace);
                 }
 
-                return inlinesLibraryName;
+                return symbolsLibraryName;
             }
-            set { inlinesLibraryName = value; }
-        }
-
-        public string TemplatesLibraryName
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(templatesLibraryName))
-                {
-                    if (string.IsNullOrEmpty(OutputNamespace))
-                        return string.Format("{0}-templates", LibraryName);
-
-                    return string.Format("{0}-templates", OutputNamespace);
-                }
-
-                return templatesLibraryName;
-            }
-            set { templatesLibraryName = value; }
+            set { symbolsLibraryName = value; }
         }
 
         public string LibraryName { get; set; }
@@ -76,7 +59,7 @@ namespace CppSharp.AST
         public override string ToString() => LibraryName;
 
         private string sharedLibraryName;
-        private string inlinesLibraryName;
+        private string symbolsLibraryName;
         private string templatesLibraryName;
     }
 }

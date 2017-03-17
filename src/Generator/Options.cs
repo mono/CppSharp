@@ -113,18 +113,11 @@ namespace CppSharp
             set { MainModule.LibraryName = value; }
         }
 
-        [Obsolete("Use Modules and Module.InlinesLibraryName instead.")]
-        public string InlinesLibraryName
+        [Obsolete("Use Modules and Module.SymbolsLibraryName instead.")]
+        public string SymbolsLibraryName
         {
-            get { return MainModule.InlinesLibraryName; }
-            set { MainModule.InlinesLibraryName = value; }
-        }
-
-        [Obsolete("Use Modules and Module.TemplatesLibraryName instead.")]
-        public string TemplatesLibraryName
-        {
-            get { return MainModule.TemplatesLibraryName; }
-            set { MainModule.TemplatesLibraryName = value; }
+            get { return MainModule.SymbolsLibraryName; }
+            set { MainModule.SymbolsLibraryName = value; }
         }
 
         public Module AddModule(string libraryName)
