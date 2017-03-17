@@ -673,3 +673,8 @@ void hasPointerParam(const Foo& foo)
 void sMallFollowedByCapital()
 {
 }
+
+TestStaticClass& TestStaticClass::operator=(const TestStaticClass& oth)
+{
+    return *this;
+}

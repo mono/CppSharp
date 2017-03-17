@@ -388,13 +388,14 @@ struct DLL_API TestStaticClass
 
     static int GetOneTwoThree();
 
-protected:
+    TestStaticClass& operator=(const TestStaticClass& oth);
+
+private:
 
     static int _Mult(int a, int b);
 
     static int GetFourFiveSix();
 
-private:
     TestStaticClass();
 };
 
