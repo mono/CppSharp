@@ -1310,3 +1310,15 @@ void HasGetterAndOverriddenSetter::setBaseSetter(int value)
 void hasArrayOfConstChar(const char* const arrayOfConstChar[])
 {
 }
+
+struct IncompleteStruct {};
+
+IncompleteStruct* createIncompleteStruct()
+{
+    return new IncompleteStruct();
+}
+
+DLL_API void useIncompleteStruct(IncompleteStruct * a)
+{
+    return;
+}

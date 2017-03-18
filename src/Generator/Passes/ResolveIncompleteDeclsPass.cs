@@ -67,6 +67,9 @@ namespace CppSharp.Passes
             if (declaration.CompleteDeclaration != null)
                 return;
 
+            var @class = declaration as Class;
+            if (@class != null && @class.IsOpaque) return;
+
             declaration.CompleteDeclaration =
                 ASTContext.FindCompleteClass(declaration.QualifiedName);
 

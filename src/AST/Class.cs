@@ -96,8 +96,20 @@ namespace CppSharp.AST
         // True if the class is final / sealed.
         public bool IsFinal { get; set; }
 
+        private bool? isOpaque = null;
+
         // True if the type is to be treated as opaque.
-        public bool IsOpaque;
+        public bool IsOpaque
+        {
+            get
+            {
+                return isOpaque == null ? IsIncomplete && CompleteDeclaration == null : isOpaque.Value;
+            }
+            set
+            {
+                isOpaque = value;
+            }
+        }
 
         // True if the class is dynamic.
         public bool IsDynamic;
@@ -127,7 +139,6 @@ namespace CppSharp.AST
             IsAbstract = false;
             IsUnion = false;
             IsFinal = false;
-            IsOpaque = false;
             IsPOD = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();

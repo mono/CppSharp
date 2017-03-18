@@ -369,6 +369,14 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            var @class = decl as Class;
+            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
+                !(@class is ClassTemplateSpecialization))
+            {
+                msg = null;
+                return false;
+            }
+
             if (decl.IsIncomplete)
             {
                 msg = "incomplete";
@@ -400,6 +408,11 @@ namespace CppSharp.Passes
 
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
+
+            var @class = (decl as Class);
+            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
+                !(@class is ClassTemplateSpecialization))
+                return true;
             return !decl.IsIncomplete || decl.CompleteDeclaration != null;
         }
 

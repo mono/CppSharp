@@ -698,4 +698,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
             return base.HasPointerToEnumInParam(pointerToEnum);
         }
     }
+
+    [Test]
+    public void TestGenerationOfIncompleteClasses()
+    {
+        var incompleteStruct = CSharp.CSharp.CreateIncompleteStruct();
+        Assert.IsNotNull(incompleteStruct);
+        Assert.DoesNotThrow(() => CSharp.CSharp.UseIncompleteStruct(incompleteStruct));
+    }
 }
