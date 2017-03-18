@@ -1151,3 +1151,10 @@ protected:
 };
 
 void DLL_API hasArrayOfConstChar(const char* const arrayOfConstChar[]);
+
+struct CompleteIncompleteStruct;
+
+typedef struct IncompleteStruct IncompleteStruct;
+
+DLL_API IncompleteStruct* createIncompleteStruct();
+DLL_API void useIncompleteStruct(IncompleteStruct* a);

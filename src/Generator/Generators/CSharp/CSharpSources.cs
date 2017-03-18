@@ -272,7 +272,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (@class.IsIncomplete)
+            if (@class.IsIncomplete && !@class.IsOpaque)
                 return false;
 
             if (@class.IsInterface)
@@ -308,63 +308,59 @@ namespace CppSharp.Generators.CSharp
             }
 
             PushBlock(BlockKind.Class);
-            GenerateDeclarationCommon(@class);
-
+            GenerateDeclarationCommon(@class);            
             GenerateClassSpecifier(@class);
 
             NewLine();
             WriteStartBraceIndent();
+            
+            if (!@class.IsAbstractImpl)
+                GenerateClassInternals(@class);
 
-            if (!@class.IsOpaque)
+            VisitDeclContext(@class);
+
+            if (@class.IsDependent || !@class.IsGenerated)
+                goto exit;
+
+            if (ShouldGenerateClassNativeField(@class))
             {
-                if (!@class.IsAbstractImpl)
-                    GenerateClassInternals(@class);
-
-                VisitDeclContext(@class);
-
-                if (@class.IsDependent || !@class.IsGenerated)
-                    goto exit;
-
-                if (ShouldGenerateClassNativeField(@class))
+                PushBlock(BlockKind.Field);
+                if (@class.IsValueType)
                 {
-                    PushBlock(BlockKind.Field);
-                    if (@class.IsValueType)
-                    {
-                        WriteLine("private {0}.{1} {2};", @class.Name, Helpers.InternalStruct,
-                            Helpers.InstanceField);
-                        WriteLine("internal {0}.{1} {2} {{ get {{ return {3}; }} }}", @class.Name,
-                            Helpers.InternalStruct, Helpers.InstanceIdentifier, Helpers.InstanceField);
-                    }
-                    else
-                    {
-                        WriteLine("public {0} {1} {{ get; protected set; }}",
-                            CSharpTypePrinter.IntPtrType, Helpers.InstanceIdentifier);
-
-                        PopBlock(NewLineKind.BeforeNextBlock);
-
-                        PushBlock(BlockKind.Field);
-
-                        WriteLine("protected int {0};", Helpers.PointerAdjustmentIdentifier);
-
-                        // use interfaces if any - derived types with a secondary base this class must be compatible with the map
-                        var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
-                        var dict = string.Format("global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>",
-                            (@interface ?? @class).Visit(TypePrinter));
-                        WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
-                        WriteLine("protected void*[] __OriginalVTables;");
-                    }
-                    PopBlock(NewLineKind.BeforeNextBlock);
+                    WriteLine("private {0}.{1} {2};", @class.Name, Helpers.InternalStruct,
+                        Helpers.InstanceField);
+                    WriteLine("internal {0}.{1} {2} {{ get {{ return {3}; }} }}", @class.Name,
+                        Helpers.InternalStruct, Helpers.InstanceIdentifier, Helpers.InstanceField);
                 }
+                else
+                {
+                    WriteLine("public {0} {1} {{ get; protected set; }}",
+                        CSharpTypePrinter.IntPtrType, Helpers.InstanceIdentifier);
 
-                GenerateClassConstructors(@class);
+                    PopBlock(NewLineKind.BeforeNextBlock);
 
-                GenerateClassMethods(@class.Methods);
-                GenerateClassVariables(@class);
-                GenerateClassProperties(@class);
+                    PushBlock(BlockKind.Field);
 
-                if (@class.IsDynamic)
-                    GenerateVTable(@class);
+                    WriteLine("protected int {0};", Helpers.PointerAdjustmentIdentifier);
+
+                    // use interfaces if any - derived types with a secondary base this class must be compatible with the map
+                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
+                    var dict = string.Format("global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>",
+                        (@interface ?? @class).Visit(TypePrinter));
+                    WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
+                    WriteLine("protected void*[] __OriginalVTables;");
+                }
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
+
+            GenerateClassConstructors(@class);
+
+            GenerateClassMethods(@class.Methods);
+            GenerateClassVariables(@class);
+            GenerateClassProperties(@class);
+
+            if (@class.IsDynamic)
+                GenerateVTable(@class);
         exit:
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);

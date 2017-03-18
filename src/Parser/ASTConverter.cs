@@ -994,7 +994,7 @@ namespace CppSharp
             {
                 var decl = ctx.GetClasses(i);
                 var _decl = Visit(decl) as AST.Class;
-                if (!_decl.IsIncomplete)
+                if (!_decl.IsIncomplete || _decl.IsOpaque)
                     _ctx.Classes.Add(_decl);
             }
 
