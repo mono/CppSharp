@@ -79,9 +79,9 @@ Please see the following resources for more information:
 
 ## Community
 
-Feel free to open up issues on Github with any questions
+Feel free to open up issues on Github for any problems you find.
 
-Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
+You can also join us at our [#managed-interop](https://gitter.im/managed-interop) Gitter discussion channel.
 
 ## Support
 
