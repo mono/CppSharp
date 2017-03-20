@@ -599,7 +599,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsGenerated)
             {
-                if (@class.IsRefType)
+                if (@class.IsRefType && !@class.IsOpaque)
                     bases.Add("IDisposable");
             }
 
@@ -1822,7 +1822,7 @@ namespace CppSharp.Generators.CSharp
                     // virtual destructors in abstract classes may lack a pointer in the v-table
                     // so they have to be called by symbol; thus we need an explicit Dispose override
                     @class.IsAbstract)
-                    GenerateDisposeMethods(@class);
+                    if(!@class.IsOpaque)GenerateDisposeMethods(@class);
             }
         }
 
