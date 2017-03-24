@@ -2216,7 +2216,7 @@ namespace CppSharp.Generators.CSharp
                 goto SkipImpl;
             }
 
-            GenerateMethodBody(method, @class);
+            GenerateMethodBody(method);
 
             SkipImpl:
 
@@ -2230,8 +2230,9 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateMethodBody(Method method, Class @class)
+        private void GenerateMethodBody(Method method)
         {
+            var @class = (Class) method.Namespace;
             if (@class.IsRefType)
             {
                 if (method.IsConstructor)
