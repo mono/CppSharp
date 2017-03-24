@@ -2896,29 +2896,9 @@ namespace CppSharp.Generators.CSharp
             return paramMarshal;
         }
 
-        static string GetParameterUsage(ParameterUsage usage)
-        {
-            switch (usage)
-            {
-                case ParameterUsage.Out:
-                    return "out ";
-                case ParameterUsage.InOut:
-                    return "ref ";
-                default:
-                    return string.Empty;
-            }
-        }
-
         private string FormatMethodParameters(IEnumerable<Parameter> @params)
         {
-            return string.Join(", ",
-                from param in @params
-                where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
-                let typeName = param.CSharpType(TypePrinter)
-                select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
-                    typeName, param.Name +
-                        (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?
-                            string.Empty : " = " + ExpressionPrinter.VisitParameter(param))));
+            return TypePrinter.VisitParameters(@params, true).Type;
         }
 
         #endregion

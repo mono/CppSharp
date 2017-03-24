@@ -692,7 +692,9 @@ namespace CppSharp.Generators.CSharp
         {
             var args = new List<string>();
 
-            foreach (var param in @params)
+            foreach (var param in @params.Where(
+                p => ContextKind == TypePrinterContextKind.Native ||
+                    (p.Kind != ParameterKind.IndirectReturnType && !p.Ignore)))
             {
                 TypePrinterContext.Parameter = param;
                 args.Add(VisitParameter(param, hasNames).Type);
@@ -702,15 +704,15 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ", args);
         }
 
-        public override TypePrinterResult VisitParameter(Parameter arg, bool hasName)
+        public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
-            var type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
-            var name = arg.Name;
-
-            if (hasName && !string.IsNullOrEmpty(name))
-                return string.Format("{0} {1}", type, name);
-
-            return type;
+            var usage = ContextKind == TypePrinterContextKind.Native ?
+                string.Empty : GetParameterUsage(param.Usage);
+            var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var name = param.Name;
+            if (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments)
+                return $"{usage}{type} {name}";
+            return $"{usage}{type} {name} = {expressionPrinter.VisitParameter(param)}";
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
@@ -756,6 +758,21 @@ namespace CppSharp.Generators.CSharp
         {
             return vectorType.ElementType.Visit(this);
         }
+
+        private static string GetParameterUsage(ParameterUsage usage)
+        {
+            switch (usage)
+            {
+                case ParameterUsage.Out:
+                    return "out ";
+                case ParameterUsage.InOut:
+                    return "ref ";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);
     }
 
     public static class CSharpTypePrinterExtensions
