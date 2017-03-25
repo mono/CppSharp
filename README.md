@@ -4,7 +4,7 @@ We are looking for volunteers to write code for CppSharp in the summer of 2017. 
 
 
 
-CppSharp is a tool and set of libraries which allows programmmers to use
+CppSharp is a tool and set of libraries which allows programmers to use
 C/C++ libraries with high-level programming languages (such as C#).
 
 It is a tool that takes C/C++ header and library files and generates the 
