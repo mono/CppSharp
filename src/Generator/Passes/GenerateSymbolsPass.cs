@@ -43,9 +43,16 @@ namespace CppSharp.Passes
                            where symbolsCodeGenerators.ContainsKey(module)
                            select module).ToList();
             remainingCompilationTasks = modules.Count;
-            foreach (var module in modules)
+            foreach (var module in modules.Where(symbolsCodeGenerators.ContainsKey))
             {
                 var symbolsCodeGenerator = symbolsCodeGenerators[module];
+                if (specializations.ContainsKey(module))
+                {
+                    symbolsCodeGenerator.NewLine();
+                    foreach (var specialization in specializations[module])
+                        symbolsCodeGenerator.VisitClassTemplateSpecializationDecl(specialization);
+                }
+
                 var cpp = $"{module.SymbolsLibraryName}.{symbolsCodeGenerator.FileExtension}";
                 Directory.CreateDirectory(Options.OutputDir);
                 var path = Path.Combine(Options.OutputDir, cpp);
@@ -78,6 +85,28 @@ namespace CppSharp.Passes
 
             var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
             return function.Visit(symbolsCodeGenerator);
+        }
+
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (!base.VisitClassTemplateSpecializationDecl(specialization) ||
+                specialization.Ignore || specialization.TemplatedDecl.TemplatedClass.Ignore)
+                return false;
+
+            if (specialization is ClassTemplatePartialSpecialization ||
+                specialization.Arguments.Any(a => a.Type.Type == null ||
+                    CheckIgnoredDeclsPass.IsTypeExternal(
+                        specialization.TranslationUnit.Module, a.Type.Type)))
+                return false;
+
+            List<ClassTemplateSpecialization> list;
+            if (specializations.ContainsKey(specialization.TranslationUnit.Module))
+                list = specializations[specialization.TranslationUnit.Module];
+            else
+                specializations[specialization.TranslationUnit.Module] =
+                    list = new List<ClassTemplateSpecialization>();
+            list.Add(specialization);
+            return true;
         }
 
         public class SymbolsCodeEventArgs : EventArgs
@@ -183,5 +212,7 @@ namespace CppSharp.Passes
 
         private Dictionary<Module, SymbolsCodeGenerator> symbolsCodeGenerators =
             new Dictionary<Module, SymbolsCodeGenerator>();
+        private Dictionary<Module, List<ClassTemplateSpecialization>> specializations =
+            new Dictionary<Module, List<ClassTemplateSpecialization>>();
     }
 }

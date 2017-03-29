@@ -44,6 +44,12 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            WriteLine($"template class {specialization.Visit(cppTypePrinter)};");
+            return true;
+        }
+
         private string GetWrapper(Module module)
         {
             var symbolsLibraryName = new StringBuilder(module.SymbolsLibraryName);
