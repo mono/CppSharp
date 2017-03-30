@@ -305,7 +305,7 @@ namespace CppSharp
                     var dirPrefix = windowsSdkMajorVer + ".";
                     var includeDir =
                         (from dir in Directory.EnumerateDirectories(parentIncludeDir).OrderByDescending(d => d)
-                         where Path.GetFileName(dir).StartsWith(dirPrefix)
+                         where Path.GetFileName(dir).StartsWith(dirPrefix, StringComparison.Ordinal)
                          select Path.Combine(windowsKitSdk.Directory, include, dir)).FirstOrDefault();
                     if (!string.IsNullOrEmpty(includeDir))
                         includes.Add(Path.Combine(includeDir, Path.GetFileName(path)));
@@ -570,22 +570,22 @@ namespace CppSharp
             var hive = (RegistryHive)0;
             subKey = null;
 
-            if (keyPath.StartsWith("HKEY_CLASSES_ROOT\\"))
+            if (keyPath.StartsWith("HKEY_CLASSES_ROOT\\", StringComparison.Ordinal))
             {
                 hive = RegistryHive.ClassesRoot;
                 subKey = keyPath.Substring(18);
             }
-            else if (keyPath.StartsWith("HKEY_USERS\\"))
+            else if (keyPath.StartsWith("HKEY_USERS\\", StringComparison.Ordinal))
             {
                 hive = RegistryHive.Users;
                 subKey = keyPath.Substring(11);
             }
-            else if (keyPath.StartsWith("HKEY_LOCAL_MACHINE\\"))
+            else if (keyPath.StartsWith("HKEY_LOCAL_MACHINE\\", StringComparison.Ordinal))
             {
                 hive = RegistryHive.LocalMachine;
                 subKey = keyPath.Substring(19);
             }
-            else if (keyPath.StartsWith("HKEY_CURRENT_USER\\"))
+            else if (keyPath.StartsWith("HKEY_CURRENT_USER\\", StringComparison.Ordinal))
             {
                 hive = RegistryHive.CurrentUser;
                 subKey = keyPath.Substring(18);
@@ -609,10 +609,8 @@ namespace CppSharp
             try
             {
                 var query = new SetupConfiguration();
-                var query2 = (ISetupConfiguration2)query;
+                var query2 = (ISetupConfiguration2) query;
                 var e = query2.EnumAllInstances();
-
-                var helper = (ISetupHelper)query;
 
                 int fetched;
                 var instances = new ISetupInstance[1];
@@ -621,7 +619,7 @@ namespace CppSharp
                     e.Next(1, instances, out fetched);
                     if (fetched > 0)
                     {
-                        var instance = (ISetupInstance2)instances[0];
+                        var instance = (ISetupInstance2) instances[0];
                         if (instance.GetInstallationPath() != vsDir) continue;
                         var packages = instance.GetPackages();
                         var vc_tools = from package in packages
@@ -696,11 +694,11 @@ namespace CppSharp
         /// <returns>Success of the operation</returns>
         private static bool GetVs2017Instances(ICollection<ToolchainVersion> versions)
         {
-            const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154);
+            const int REGDB_E_CLASSNOTREG = unchecked((int) 0x80040154);
             try
             {
                 var query = new SetupConfiguration();
-                var query2 = (ISetupConfiguration2)query;
+                var query2 = (ISetupConfiguration2) query;
                 var e = query2.EnumAllInstances();
                 int fetched;
                 var instances = new ISetupInstance[1];
@@ -709,12 +707,11 @@ namespace CppSharp
                     e.Next(1, instances, out fetched);
                     if (fetched > 0)
                     {
-                        var instance = (ISetupInstance2)instances[0];
-                        var packages = instance.GetPackages();
+                        var instance = (ISetupInstance2) instances[0];
                         var toolchain = new ToolchainVersion
                         {
                             Directory = instance.GetInstallationPath() + @"\Common7\IDE",
-                            Version = Single.Parse(instance.GetInstallationVersion().Remove(2)),
+                            Version = float.Parse(instance.GetInstallationVersion().Remove(2)),
                             Value = null // Not used currently
                         };
                         versions.Add(toolchain);

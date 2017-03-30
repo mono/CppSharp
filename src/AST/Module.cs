@@ -60,6 +60,5 @@ namespace CppSharp.AST
 
         private string sharedLibraryName;
         private string symbolsLibraryName;
-        private string templatesLibraryName;
     }
 }
