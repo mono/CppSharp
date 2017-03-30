@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
+using CppSharp.Generators.CSharp;
 using CppSharp.Parser;
+using CppSharp.Types;
 using CppSharp.Utils;
 
 namespace CppSharp.Passes
@@ -15,6 +18,7 @@ namespace CppSharp.Passes
         {
             VisitOptions.VisitClassBases = false;
             VisitOptions.VisitClassFields = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitEventParameters = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
@@ -80,6 +84,13 @@ namespace CppSharp.Passes
                 return false;
             }
 
+            if (function.IsGenerated)
+            {
+                CheckTypeForSpecialization(function.OriginalReturnType.Type);
+                foreach (var parameter in function.Parameters)
+                    CheckTypeForSpecialization(parameter.Type);
+            }
+
             if (!NeedsSymbol(function))
                 return false;
 
@@ -87,26 +98,51 @@ namespace CppSharp.Passes
             return function.Visit(symbolsCodeGenerator);
         }
 
-        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        private void CheckTypeForSpecialization(AST.Type type)
         {
-            if (!base.VisitClassTemplateSpecializationDecl(specialization) ||
-                specialization.Ignore || specialization.TemplatedDecl.TemplatedClass.Ignore)
-                return false;
+            type = type.Desugar();
+            ClassTemplateSpecialization specialization;
+            type = type.GetFinalPointee() ?? type;
+            if (!type.TryGetDeclaration(out specialization))
+                return;
 
-            if (specialization is ClassTemplatePartialSpecialization ||
-                specialization.Arguments.Any(a => a.Type.Type == null ||
-                    CheckIgnoredDeclsPass.IsTypeExternal(
-                        specialization.TranslationUnit.Module, a.Type.Type)))
-                return false;
+            if (specialization.Ignore ||
+                specialization.TemplatedDecl.TemplatedClass.Ignore ||
+                specialization.IsIncomplete ||
+                specialization.TemplatedDecl.TemplatedClass.IsIncomplete ||
+                specialization is ClassTemplatePartialSpecialization ||
+                specialization.Arguments.Any(a => UnsupportedTemplateArgument(specialization, a)))
+                return;
 
-            List<ClassTemplateSpecialization> list;
+            TypeMap typeMap;
+            if (Context.TypeMaps.FindTypeMap(specialization, out typeMap))
+            {
+                var mappedTo = typeMap.CSharpSignatureType(new CSharpTypePrinterContext { Type = type });
+                mappedTo = mappedTo.Desugar();
+                mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo);
+                if (mappedTo.IsPrimitiveType() || mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum())
+                    return;
+            }
+
+            HashSet<ClassTemplateSpecialization> list;
             if (specializations.ContainsKey(specialization.TranslationUnit.Module))
                 list = specializations[specialization.TranslationUnit.Module];
             else
                 specializations[specialization.TranslationUnit.Module] =
-                    list = new List<ClassTemplateSpecialization>();
+                    list = new HashSet<ClassTemplateSpecialization>();
             list.Add(specialization);
-            return true;
+        }
+
+        private bool UnsupportedTemplateArgument(ClassTemplateSpecialization specialization, TemplateArgument a)
+        {
+            if (a.Type.Type == null ||
+                CheckIgnoredDeclsPass.IsTypeExternal(
+                    specialization.TranslationUnit.Module, a.Type.Type))
+                return true;
+
+            var typeIgnoreChecker = new TypeIgnoreChecker(Context.TypeMaps);
+            a.Type.Type.Visit(typeIgnoreChecker);
+            return typeIgnoreChecker.IsIgnored;
         }
 
         public class SymbolsCodeEventArgs : EventArgs
@@ -212,7 +248,7 @@ namespace CppSharp.Passes
 
         private Dictionary<Module, SymbolsCodeGenerator> symbolsCodeGenerators =
             new Dictionary<Module, SymbolsCodeGenerator>();
-        private Dictionary<Module, List<ClassTemplateSpecialization>> specializations =
-            new Dictionary<Module, List<ClassTemplateSpecialization>>();
+        private Dictionary<Module, HashSet<ClassTemplateSpecialization>> specializations =
+            new Dictionary<Module, HashSet<ClassTemplateSpecialization>>();
     }
 }
