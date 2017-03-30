@@ -570,7 +570,7 @@ namespace CppSharp.Generators.CSharp
             // the proper fix is InternalsVisibleTo
             var keywords = new List<string>();
             
-            keywords.Add(@class.Access == AccessSpecifier.Protected ? "protected internal" : "public");
+            keywords.Add(@class.Access == AccessSpecifier.Internal ? "internal" : "public");
             keywords.Add("unsafe");
 
             if (@class.IsAbstract)
