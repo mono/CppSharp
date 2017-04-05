@@ -66,9 +66,9 @@ Before building, ensure cmake is installed under Applications/Cmake.app and Ninj
 ../premake5-osx --file=LLVM.lua package_llvm
 ```
 
-If the clone_llvm step fails, you can try to manually clone LLVM and Clang as explained above. You should still run clone_llvm to ensure that you are on the correct revision.
+You can specify an `--arch=x86` or `--arch=x64` flag to the invocations above to specify an explicit build architecture.  
 
-The compile flags for cmake can be edited in `build/scripts/LLVM.lua`, e.g. if you need to build a 64-bit version.
+If the clone_llvm step fails, you can try to manually clone LLVM and Clang as explained above. You should still run clone_llvm to ensure that you are on the correct revision.
 
 
 ## Compiling on Linux

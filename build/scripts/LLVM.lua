@@ -2,6 +2,16 @@ require "Build"
 require "Utils"
 require "../Helpers"
 
+newoption {
+   trigger     = "arch",
+   value       = "x86",
+   description = "Choose a particular architecture / bitness",
+   allowed = {
+      { "x86",  "x86 32-bits" },
+      { "x64",  "x64 64-bits" },
+   }
+}
+
 local llvm = path.getabsolute(basedir .. "/../deps/llvm")
 
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
@@ -63,9 +73,10 @@ function get_vs_version()
 end
 
 function get_toolset_configuration_name()
+  local arch = _OPTIONS["arch"]
+
   if os.is("windows") then
     local vsver = _ACTION
-    local arch = "x86"
 
     if not string.starts(vsver, "vs") then
       vsver = get_vs_version()
@@ -74,7 +85,7 @@ function get_toolset_configuration_name()
     return table.concat({vsver, arch}, "-")
   end
   -- FIXME: Implement for non-Windows platforms
-  return nil
+  return table.concat({arch}, "-")
 end
 
 -- Returns a string describing the package configuration.
@@ -85,10 +96,6 @@ function get_llvm_package_name(rev, conf, toolset)
   end
   rev = string.sub(rev, 0, 6)
 
-  if not conf then
-  	conf = get_llvm_configuration_name()
-  end
-
   if not toolset then
     toolset = get_toolset_configuration_name()
   end
@@ -97,6 +104,10 @@ function get_llvm_package_name(rev, conf, toolset)
 
   if toolset then
     table.insert(components, toolset)
+  end
+
+  if not conf then
+  	conf = get_llvm_configuration_name()
   end
 
   table.insert(components, conf)
@@ -277,7 +288,11 @@ function build_llvm(llvm_build)
 		msbuild(llvm_sln, conf)
 	else
 		local options = os.is("macosx") and
-			"-DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true" or "" 
+			"-DLLVM_ENABLE_LIBCXX=true" or ""
+		local is32bits = _OPTIONS["arch"] == "x86"
+		if is32bits then
+			options = options .. is32bits and " -DLLVM_BUILD_32_BITS=true" or ""
+		end
 		cmake("Ninja", conf, llvm_build, options)
 		ninja(llvm_build)
 		ninja(llvm_build, "clang-headers")
