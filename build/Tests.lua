@@ -20,7 +20,7 @@ end
 
 function SetupTestProject(name, extraFiles)
   SetupTestGeneratorProject(name)
-  SetupTestNativeProject(name)  
+  SetupTestNativeProject(name)
   SetupTestProjectsCSharp(name, nil, extraFiles)
   SetupTestProjectsCLI(name, extraFiles)
 end
@@ -73,7 +73,8 @@ function SetupTestGeneratorProject(name, depends)
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  local runtimeExe = os.is("windows") and "" or "mono --debug "
+  local monoExe = _OPTIONS["arch"] == "x64" and "mono64" or "mono"
+  local runtimeExe = os.is("windows") and "" or monoExe .. " --debug "
   if string.starts(action, "vs") then
     local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
     prebuildcommands { runtimeExe .. exePath }

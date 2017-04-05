@@ -66,7 +66,6 @@ function get_toolset_configuration_name(arch)
   if not arch then
     arch = _OPTIONS["arch"]
   end
-	print(arch)
 
   if os.is("windows") then
     local vsver = _ACTION
