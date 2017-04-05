@@ -1,5 +1,15 @@
 -- This module checks for the all the project dependencies.
 
+newoption {
+   trigger     = "arch",
+   default       = "x86",
+   description = "Choose a particular architecture / bitness",
+   allowed = {
+      { "x86",  "x86 32-bits" },
+      { "x64",  "x64 64-bits" },
+   }
+}
+
 action = _ACTION or ""
 
 basedir = path.getdirectory(_PREMAKE_COMMAND)

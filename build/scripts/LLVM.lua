@@ -2,16 +2,6 @@ require "Build"
 require "Utils"
 require "../Helpers"
 
-newoption {
-   trigger     = "arch",
-   value       = "x86",
-   description = "Choose a particular architecture / bitness",
-   allowed = {
-      { "x86",  "x86 32-bits" },
-      { "x64",  "x64 64-bits" },
-   }
-}
-
 local llvm = path.getabsolute(basedir .. "/../deps/llvm")
 
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
@@ -72,8 +62,11 @@ function get_vs_version()
   return map_msvc_to_vs_version(major, minor)
 end
 
-function get_toolset_configuration_name()
-  local arch = _OPTIONS["arch"]
+function get_toolset_configuration_name(arch)
+  if not arch then
+    arch = _OPTIONS["arch"]
+  end
+	print(arch)
 
   if os.is("windows") then
     local vsver = _ACTION
@@ -90,21 +83,16 @@ end
 
 -- Returns a string describing the package configuration.
 -- Example: llvm-f79c5c-windows-vs2015-x86-Debug
-function get_llvm_package_name(rev, conf, toolset)
+function get_llvm_package_name(rev, conf, arch)
   if not rev then
   	rev = get_llvm_rev()
   end
   rev = string.sub(rev, 0, 6)
 
-  if not toolset then
-    toolset = get_toolset_configuration_name()
-  end
-
   local components = {"llvm", rev, os.get()}
 
-  if toolset then
-    table.insert(components, toolset)
-  end
+  local toolset = get_toolset_configuration_name(arch)
+  table.insert(components, toolset)
 
   if not conf then
   	conf = get_llvm_configuration_name()
