@@ -317,6 +317,8 @@ namespace CppSharp.AST
 
         public List<Attribute> Attributes { get; private set; }
 
+        public List<Declaration> Redeclarations { get; } = new List<Declaration>();
+
         protected Declaration()
         {
             Access = AccessSpecifier.Public;

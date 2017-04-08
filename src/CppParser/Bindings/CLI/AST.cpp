@@ -1898,6 +1898,26 @@ void CppSharp::Parser::AST::Declaration::ClearPreprocessedEntities()
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->clearPreprocessedEntities();
 }
 
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Declaration::GetRedeclarations(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getRedeclarations(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)__ret);
+}
+
+void CppSharp::Parser::AST::Declaration::AddRedeclarations(CppSharp::Parser::AST::Declaration^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (::CppSharp::CppParser::AST::Declaration*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->addRedeclarations(__arg0);
+}
+
+void CppSharp::Parser::AST::Declaration::ClearRedeclarations()
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->clearRedeclarations();
+}
+
 CppSharp::Parser::AST::Declaration::operator CppSharp::Parser::AST::Declaration^(CppSharp::Parser::AST::DeclarationKind kind)
 {
     auto __arg0 = (::CppSharp::CppParser::AST::DeclarationKind)kind;
@@ -2093,6 +2113,12 @@ void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ s)
 unsigned int CppSharp::Parser::AST::Declaration::PreprocessedEntitiesCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getPreprocessedEntitiesCount();
+    return __ret;
+}
+
+unsigned int CppSharp::Parser::AST::Declaration::RedeclarationsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getRedeclarationsCount();
     return __ret;
 }
 

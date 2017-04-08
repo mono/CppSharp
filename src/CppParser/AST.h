@@ -483,6 +483,7 @@ public:
     Declaration* completeDeclaration;
     unsigned definitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)
+    VECTOR(Declaration*, Redeclarations)
     void* originalPtr;
     RawComment* comment;
 };
