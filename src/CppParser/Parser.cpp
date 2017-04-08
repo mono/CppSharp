@@ -3489,7 +3489,7 @@ Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
 }
 
 Declaration* Parser::WalkDeclaration(const clang::Decl* D,
-                                           bool CanBeDefinition)
+                                           bool CanBeDefinition, bool WalkRedecls)
 {
     using namespace clang;
 
@@ -3540,6 +3540,10 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         auto RD = cast<CXXRecordDecl>(D);
 
         auto Class = WalkRecordCXX(RD);
+
+        if (WalkRedecls)
+            for (auto redecl : RD->redecls())
+                Class->Redeclarations.push_back(WalkDeclaration(redecl, CanBeDefinition, false));
 
         // We store a definition order index into the declarations.
         // This is needed because declarations are added to their contexts as

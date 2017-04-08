@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
+using System.Collections.Generic;
 
 namespace CppSharp.Passes
 {
@@ -68,8 +69,16 @@ namespace CppSharp.Passes
                 return;
 
             var @class = declaration as Class;
-            if (@class != null && @class.IsOpaque) return;
-
+            var redecls = @class?.Redeclarations;
+            if (@class != null && @class.IsOpaque)
+            {
+                if (redecls.Count == 0 ||
+                   (redecls.Last() == @class && !redecls.Exists(decl => !decl.IsIncomplete)))
+                    return;
+                duplicateClasses.Add(@class);
+            }
+                
+            
             declaration.CompleteDeclaration =
                 ASTContext.FindCompleteClass(declaration.QualifiedName);
 
@@ -80,5 +89,17 @@ namespace CppSharp.Passes
                     declaration.Name);
             }
         }
+
+        public override bool VisitASTContext(ASTContext c)
+        {
+            base.VisitASTContext(c);
+
+            foreach (var duplicateClass in duplicateClasses)
+                duplicateClass.Namespace.Declarations.Remove(duplicateClass);
+
+            return true;
+        }
+
+        private HashSet<Declaration> duplicateClasses = new HashSet<Declaration>();
     }
 }

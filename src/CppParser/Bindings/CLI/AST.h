@@ -1489,11 +1489,22 @@ namespace CppSharp
                     unsigned int get();
                 }
 
+                property unsigned int RedeclarationsCount
+                {
+                    unsigned int get();
+                }
+
                 CppSharp::Parser::AST::PreprocessedEntity^ GetPreprocessedEntities(unsigned int i);
 
                 void AddPreprocessedEntities(CppSharp::Parser::AST::PreprocessedEntity^ s);
 
                 void ClearPreprocessedEntities();
+
+                CppSharp::Parser::AST::Declaration^ GetRedeclarations(unsigned int i);
+
+                void AddRedeclarations(CppSharp::Parser::AST::Declaration^ s);
+
+                void ClearRedeclarations();
 
                 static operator CppSharp::Parser::AST::Declaration^(CppSharp::Parser::AST::DeclarationKind kind);
 

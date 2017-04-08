@@ -955,6 +955,13 @@ namespace CppSharp
             _decl.OriginalPtr = originalPtr;
 
             NativeObjects.Add(decl);
+
+            for (uint i = 0; i < decl.RedeclarationsCount; i++)
+            {
+                var redecl = decl.GetRedeclarations(i);
+                _decl.Redeclarations.Add(Visit(redecl));
+            }
+
         }
 
         public void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)

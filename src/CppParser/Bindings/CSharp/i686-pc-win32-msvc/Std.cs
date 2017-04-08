@@ -202,6 +202,13 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorVal.__Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
@@ -210,13 +217,6 @@ namespace Std
 
         [StructLayout(LayoutKind.Explicit, Size = 12)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
-        {
-            [FieldOffset(0)]
-            internal global::Std.VectorVal.__Internal _Myval2;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
             [FieldOffset(0)]
             internal global::Std.VectorVal.__Internal _Myval2;
