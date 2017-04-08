@@ -2,12 +2,15 @@
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
+using System.Collections.Generic;
 
 namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
         public bool CheckDecayedTypes { get; set; } = true;
+
+        private HashSet<Declaration> toRemove = new HashSet<Declaration>();
 
         public bool CheckDeclarationAccess(Declaration decl)
         {
@@ -38,8 +41,12 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.IsInjected) toRemove.Add(@class);
             if (!base.VisitClassDecl(@class) || !@class.IsDependent)
+            {
+                if (@class.IsInjected) toRemove.Add(@class);
                 return false;
+            }
 
             // templates are not supported yet
             foreach (var specialization in @class.Specializations.Where(s => !s.IsExplicitlyGenerated))
@@ -220,6 +227,14 @@ namespace CppSharp.Passes
             return isIgnored;
         }
 
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (specialization.IsInjected) toRemove.Add(specialization);
+            if (!VisitDeclaration(specialization))
+                return false;
+            return true;
+        }
+
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             if (!VisitDeclaration(typedef))
@@ -320,6 +335,22 @@ namespace CppSharp.Passes
                 }
             }
 
+            return true;
+        }
+
+        public override bool VisitASTContext(ASTContext c)
+        {
+            base.VisitASTContext(c);
+            foreach (var rmv in toRemove)
+            {
+                var @class = rmv as Class;
+                @class.Namespace.Declarations.Remove(@class);
+                if (rmv is ClassTemplateSpecialization)
+                {
+                    var specialization = rmv as ClassTemplateSpecialization;
+                    specialization.TemplatedDecl.TemplatedClass.Specializations.Remove(specialization);
+                }
+            }
             return true;
         }
 

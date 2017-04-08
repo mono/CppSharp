@@ -63,7 +63,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="?eof@?$char_traits@D@std@@SAHXZ")]
             internal static extern int Eofc__N_std_S_char_traits__C_0();
         }
@@ -477,7 +477,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                 EntryPoint="??0?$allocator@D@std@@QAE@XZ")]
             internal static extern global::System.IntPtr ctorc__N_std_S_allocator__C_0(global::System.IntPtr instance);
         }
@@ -568,12 +568,12 @@ namespace Std
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                 EntryPoint="??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ")]
             internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance, int delete);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                 EntryPoint="?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ")]
             internal static extern global::System.IntPtr CStrc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance);
         }

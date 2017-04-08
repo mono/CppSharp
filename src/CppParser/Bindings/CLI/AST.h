@@ -343,8 +343,8 @@ namespace CppSharp
                 Itanium = 0,
                 Microsoft = 1,
                 ARM = 2,
-                IOS = 3,
-                IOS64 = 4
+                iOS = 3,
+                iOS64 = 4
             };
 
             public enum struct VTableComponentKind
@@ -405,7 +405,7 @@ namespace CppSharp
             {
                 UnknownArch = 0,
                 X86 = 1,
-                X8664 = 2
+                X86_64 = 2
             };
 
             public ref class Type : ICppInstance
@@ -2322,6 +2322,12 @@ namespace CppSharp
                 }
 
                 property bool IsExternCContext
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsInjected
                 {
                     bool get();
                     void set(bool);

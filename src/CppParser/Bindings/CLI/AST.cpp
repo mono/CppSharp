@@ -3944,6 +3944,16 @@ void CppSharp::Parser::AST::Class::IsExternCContext::set(bool value)
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->isExternCContext = value;
 }
 
+bool CppSharp::Parser::AST::Class::IsInjected::get()
+{
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->isInjected;
+}
+
+void CppSharp::Parser::AST::Class::IsInjected::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->isInjected = value;
+}
+
 CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
 {
     return (((::CppSharp::CppParser::AST::Class*)NativePtr)->layout == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ClassLayout((::CppSharp::CppParser::AST::ClassLayout*)((::CppSharp::CppParser::AST::Class*)NativePtr)->layout);

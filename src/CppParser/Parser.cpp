@@ -795,9 +795,6 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
     using namespace clang;
     Process = false;
 
-    if (Record->isInjectedClassName())
-        return nullptr;
-
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
 
@@ -819,10 +816,14 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
         RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
     }
 
+    if(RC != nullptr)
+        RC->isInjected = Record->isInjectedClassName();
+
     if (RC)
         return RC;
 
     RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    RC->isInjected = Record->isInjectedClassName();
     HandleDeclaration(Record, RC);
     EnsureCompleteRecord(Record, NS, RC);
 

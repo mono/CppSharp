@@ -98,6 +98,8 @@ namespace CppSharp.AST
 
         private bool? isOpaque = null;
 
+        public bool IsInjected { get; set; } = false;
+
         // True if the type is to be treated as opaque.
         public bool IsOpaque
         {

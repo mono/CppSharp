@@ -862,6 +862,7 @@ public:
     bool hasNonTrivialCopyConstructor;
     bool hasNonTrivialDestructor;
     bool isExternCContext;
+    bool isInjected;
 
     ClassLayout* layout;
 };
