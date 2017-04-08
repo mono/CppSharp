@@ -63,7 +63,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="?eof@?$char_traits@D@std@@SAHXZ")]
             internal static extern int Eofc__N_std_S_char_traits__C_0();
         }
@@ -477,7 +477,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="??0?$allocator@D@std@@QEAA@XZ")]
             internal static extern global::System.IntPtr ctorc__N_std_S_allocator__C_0(global::System.IntPtr instance);
         }
@@ -553,7 +553,7 @@ namespace Std
     }
 }
 
-public unsafe partial class _SETJMP_FLOAT128
+public unsafe partial class SETJMP_FLOAT128
 {
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     public partial struct __Internal
@@ -578,12 +578,12 @@ namespace Std
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ")]
             internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance, int delete);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ")]
             internal static extern global::System.IntPtr CStrc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance);
         }
