@@ -230,8 +230,8 @@ namespace CppSharp
                 Itanium = 0,
                 Microsoft = 1,
                 ARM = 2,
-                IOS = 3,
-                IOS64 = 4
+                iOS = 3,
+                iOS64 = 4
             }
 
             public enum VTableComponentKind
@@ -292,7 +292,7 @@ namespace CppSharp
             {
                 UnknownArch = 0,
                 X86 = 1,
-                X8664 = 2
+                X86_64 = 2
             }
 
             public unsafe partial class Type : IDisposable
@@ -8906,6 +8906,9 @@ namespace CppSharp
                     [FieldOffset(520)]
                     public byte isExternCContext;
 
+                    [FieldOffset(521)]
+                    public byte isInjected;
+
                     [FieldOffset(528)]
                     public global::System.IntPtr layout;
 
@@ -9279,6 +9282,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isExternCContext = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsInjected
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isInjected != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isInjected = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -10798,6 +10814,9 @@ namespace CppSharp
                     [FieldOffset(520)]
                     public byte isExternCContext;
 
+                    [FieldOffset(521)]
+                    public byte isInjected;
+
                     [FieldOffset(528)]
                     public global::System.IntPtr layout;
 
@@ -11098,6 +11117,9 @@ namespace CppSharp
 
                     [FieldOffset(520)]
                     public byte isExternCContext;
+
+                    [FieldOffset(521)]
+                    public byte isInjected;
 
                     [FieldOffset(528)]
                     public global::System.IntPtr layout;

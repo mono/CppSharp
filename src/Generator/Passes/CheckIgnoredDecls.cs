@@ -2,6 +2,7 @@
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
+using System.Collections.Generic;
 
 namespace CppSharp.Passes
 {
@@ -38,7 +39,13 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || !@class.IsDependent)
+            if (!base.VisitClassDecl(@class))
+                return false;
+
+            if (@class.IsInjected)
+                injectedClasses.Add(@class);
+
+            if (!@class.IsDependent)
                 return false;
 
             // templates are not supported yet
@@ -323,6 +330,16 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitASTContext(ASTContext c)
+        {
+            base.VisitASTContext(c);
+
+            foreach (var injectedClass in injectedClasses)
+                injectedClass.Namespace.Declarations.Remove(injectedClass);
+
+            return true;
+        }
+
         #region Helpers
 
         /// <remarks>
@@ -448,5 +465,7 @@ namespace CppSharp.Passes
         }
 
         #endregion
+
+        private HashSet<Declaration> injectedClasses = new HashSet<Declaration>();
     }
 }

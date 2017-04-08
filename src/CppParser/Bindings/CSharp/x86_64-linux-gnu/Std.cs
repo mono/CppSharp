@@ -45,12 +45,12 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSaIcEC2Ev")]
             internal static extern void ctorc__N_std_S_allocator__C_0(global::System.IntPtr instance);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSaIcED2Ev")]
             internal static extern void dtorc__N_std_S_allocator__C_0(global::System.IntPtr instance);
         }
@@ -204,8 +204,8 @@ namespace Std
 {
     public enum RbTreeColor : uint
     {
-        SRed = 0,
-        SBlack = 1
+        S_red = 0,
+        S_black = 1
     }
 
     namespace RbTree
@@ -333,7 +333,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSt11char_traitsIcE3eofEv")]
             internal static extern int Eofc__N_std_S_char_traits__C_0();
         }
@@ -634,12 +634,12 @@ namespace Std
             internal global::Std.BasicString.AllocHider.__Internal _M_dataplus;
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSsD2Ev")]
             internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNKSs5c_strEv")]
             internal static extern global::System.IntPtr CStrc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance);
         }

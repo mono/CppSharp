@@ -1509,6 +1509,7 @@ namespace CppSharp
             _class.HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             _class.HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             _class.IsExternCContext = @class.IsExternCContext;
+            _class.IsInjected = @class.IsInjected;
 
             if (@class.Layout != null)
                 _class.Layout = VisitClassLayout(@class.Layout);
@@ -1575,9 +1576,9 @@ namespace CppSharp
                     return AST.CppAbi.Microsoft;
                 case CppAbi.ARM:
                     return AST.CppAbi.ARM;
-                case CppAbi.IOS:
+                case CppAbi.iOS:
                     return AST.CppAbi.iOS;
-                case CppAbi.IOS64:
+                case CppAbi.iOS64:
                     return AST.CppAbi.iOS64;
                 default:
                     throw new ArgumentOutOfRangeException("abi");

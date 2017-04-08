@@ -153,7 +153,7 @@ namespace Std
             public unsafe partial struct __Internal
             {
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
                 internal static extern void ctorc__N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
             }
@@ -1266,7 +1266,7 @@ namespace Std
             public unsafe partial struct __Internal
             {
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__111char_traitsIcE3eofEv")]
                 internal static extern int Eofc__N_std_N___1_S_char_traits__C_0();
             }
@@ -1346,12 +1346,12 @@ namespace Std
                 internal global::Std.__1.CompressedPair.__Internal __r_;
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
                 internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-templates", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
                 internal static extern global::System.IntPtr CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
             }

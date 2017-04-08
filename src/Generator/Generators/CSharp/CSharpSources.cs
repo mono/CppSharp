@@ -144,7 +144,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var typedef in context.Typedefs)
                 typedef.Visit(this);
 
-            foreach (var @class in context.Classes)
+            foreach (var @class in context.Classes.Where(c => !(c is ClassTemplateSpecialization)))
                 @class.Visit(this);
 
             foreach (var @event in context.Events)

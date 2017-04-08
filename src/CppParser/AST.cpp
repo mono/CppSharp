@@ -723,6 +723,7 @@ Class::Class()
     , hasNonTrivialCopyConstructor(false)
     , hasNonTrivialDestructor(false)
     , isExternCContext(false)
+    , isInjected(false)
     , layout(0)
 {
 }
