@@ -311,9 +311,13 @@ namespace CppSharp.AST
                 return PrintLogicalNames ? declaration.LogicalOriginalName
                     : declaration.OriginalName;
             case TypePrintScopeKind.Qualified:
+                if (declaration.Namespace is Class)
+                    return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
             case TypePrintScopeKind.GlobalQualified:
+                if (declaration.Namespace is Class)
+                    return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
                 var qualifier = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : string.Empty;
                 return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
             }

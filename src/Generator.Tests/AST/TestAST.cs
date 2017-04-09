@@ -303,13 +303,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(67, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
+            Assert.AreEqual(70, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(90, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(93, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         static string StripWindowsNewLines(string text)
@@ -351,7 +351,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestMacroLineNumber()
         {
-            Assert.AreEqual(100, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
+            Assert.AreEqual(103, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
 
         [Test]
@@ -494,6 +494,15 @@ namespace CppSharp.Generator.Tests.AST
         {
             var function = AstContext.FindFunction("Math::function").FirstOrDefault();
             Assert.That(function, Is.Not.Null);
+        }
+
+        [Test]
+        public void TestPrintNestedInSpecialization()
+        {
+            var template = AstContext.FindDecl<ClassTemplate>("TestTemplateClass").First();
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
+            Assert.That(template.Specializations[1].Classes[0].Visit(cppTypePrinter),
+                Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
         }
     }
 }

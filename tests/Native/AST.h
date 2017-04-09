@@ -36,6 +36,9 @@ public:
     TestTemplateClass(T v);
     T Identity(T x);
     T value;
+    class NestedInTemplate
+    {
+    };
 };
 
 // Tests function templates
