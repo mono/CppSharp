@@ -504,5 +504,14 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(template.Specializations[1].Classes[0].Visit(cppTypePrinter),
                 Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
         }
+
+        [Test]
+        public void TestPrintQualifiedSpecialization()
+        {
+            var functionWithSpecializationArg = AstContext.FindFunction("functionWithSpecializationArg").First();
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
+            Assert.That(functionWithSpecializationArg.Parameters[0].Visit(cppTypePrinter),
+                Is.EqualTo("const TestTemplateClass<int>"));
+        }
     }
 }

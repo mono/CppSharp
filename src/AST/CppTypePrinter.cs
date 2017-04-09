@@ -183,7 +183,8 @@ namespace CppSharp.AST
             if (specialization == null)
                 return string.Empty;
 
-            return VisitClassTemplateSpecializationDecl(specialization);
+            var qual = GetStringQuals(quals);
+            return $@"{qual}{VisitClassTemplateSpecializationDecl(specialization)}";
         }
 
         public virtual string VisitDependentTemplateSpecializationType(
