@@ -1158,3 +1158,15 @@ typedef struct IncompleteStruct IncompleteStruct;
 
 DLL_API IncompleteStruct* createIncompleteStruct();
 DLL_API void useIncompleteStruct(IncompleteStruct* a);
+
+struct DLL_API DuplicateDeclaredStruct;
+
+DLL_API DuplicateDeclaredStruct* createDuplicateDeclaredStruct(int i);
+DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s);
+
+struct DLL_API ForwardDeclaredStruct {
+    int i = 0;
+};
+
+DLL_API ForwardDeclaredStruct* createForwardDeclaredStruct(int i);
+DLL_API int useForwardDeclaredStruct(ForwardDeclaredStruct* s);

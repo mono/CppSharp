@@ -706,4 +706,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.IsNotNull(incompleteStruct);
         Assert.DoesNotThrow(() => CSharp.CSharp.UseIncompleteStruct(incompleteStruct));
     }
+
+    [Test]
+    public void TestForwardDeclaredStruct()
+    {
+        var forwardDeclaredStruct = CSharp.CSharp.CreateForwardDeclaredStruct(10);
+        var i = CSharp.CSharp.UseForwardDeclaredStruct(forwardDeclaredStruct);
+        Assert.AreEqual(forwardDeclaredStruct.I, i);
+    }
+
+    [Test]
+    public void TestDuplicateDeclaredIncompleteStruct()
+    {
+        var duplicateDeclaredIncompleteStruct = CSharp.CSharp.CreateDuplicateDeclaredStruct(10);
+        var i = CSharp.CSharp.UseDuplicateDeclaredStruct(duplicateDeclaredIncompleteStruct);
+        Assert.AreEqual(10, i);
+    }
 }
