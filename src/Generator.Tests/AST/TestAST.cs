@@ -303,13 +303,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(65, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
+            Assert.AreEqual(67, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(88, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(90, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         static string StripWindowsNewLines(string text)
@@ -351,7 +351,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestMacroLineNumber()
         {
-            Assert.AreEqual(98, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
+            Assert.AreEqual(100, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
 
         [Test]
@@ -487,6 +487,13 @@ namespace CppSharp.Generator.Tests.AST
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true, IsVolatile = true });
             var type = pointee.Visit(cppTypePrinter);
             Assert.That(type, Is.EqualTo("const volatile char"));
+        }
+
+        [Test]
+        public void TestFindFunctionInNamespace()
+        {
+            var function = AstContext.FindFunction("Math::function").FirstOrDefault();
+            Assert.That(function, Is.Not.Null);
         }
     }
 }

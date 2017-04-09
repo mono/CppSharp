@@ -21,6 +21,8 @@ namespace Math
     Complex Complex::operator+(Complex &other) {
         return Complex(re + other.re, im + other.im);
     }
+
+    void function();
 }
 
 // Tests Enum.ItemByName

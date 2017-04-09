@@ -234,14 +234,6 @@ namespace CppSharp.AST
             return @namespace.FindFunction(funcName, createDecl);
         }
 
-        public Function FindFunction(string name)
-        {
-            return Functions
-                .Concat(Templates.OfType<FunctionTemplate>()
-                    .Select(t => t.TemplatedFunction))
-                .FirstOrDefault(f => f.Name == name);
-        }
-
         public Function FindFunctionByUSR(string usr)
         {
             return Functions
