@@ -972,7 +972,6 @@ namespace CppSharp.Generators.CSharp
 
             if (decl is Function)
             {
-                var function = decl as Function;
                 if (isAbstract)
                 {
                     Write(";");

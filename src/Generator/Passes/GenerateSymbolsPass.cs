@@ -47,7 +47,6 @@ namespace CppSharp.Passes
                            where symbolsCodeGenerators.ContainsKey(module)
                            select module).ToList();
             remainingCompilationTasks = modules.Count;
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             foreach (var module in modules.Where(symbolsCodeGenerators.ContainsKey))
             {
                 var symbolsCodeGenerator = symbolsCodeGenerators[module];
