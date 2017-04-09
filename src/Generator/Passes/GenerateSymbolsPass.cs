@@ -47,6 +47,7 @@ namespace CppSharp.Passes
                            where symbolsCodeGenerators.ContainsKey(module)
                            select module).ToList();
             remainingCompilationTasks = modules.Count;
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             foreach (var module in modules.Where(symbolsCodeGenerators.ContainsKey))
             {
                 var symbolsCodeGenerator = symbolsCodeGenerators[module];
@@ -54,7 +55,9 @@ namespace CppSharp.Passes
                 {
                     symbolsCodeGenerator.NewLine();
                     foreach (var specialization in specializations[module])
-                        symbolsCodeGenerator.VisitClassTemplateSpecializationDecl(specialization);
+                        foreach (var method in specialization.Methods.Where(
+                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit))
+                            symbolsCodeGenerator.VisitMethodDecl(method);
                 }
 
                 var cpp = $"{module.SymbolsLibraryName}.{symbolsCodeGenerator.FileExtension}";
@@ -86,9 +89,9 @@ namespace CppSharp.Passes
 
             if (function.IsGenerated)
             {
-                CheckTypeForSpecialization(function.OriginalReturnType.Type);
+                CheckTypeForSpecialization(function, function.OriginalReturnType.Type);
                 foreach (var parameter in function.Parameters)
-                    CheckTypeForSpecialization(parameter.Type);
+                    CheckTypeForSpecialization(function, parameter.Type);
             }
 
             if (!NeedsSymbol(function))
@@ -98,7 +101,7 @@ namespace CppSharp.Passes
             return function.Visit(symbolsCodeGenerator);
         }
 
-        private void CheckTypeForSpecialization(AST.Type type)
+        private void CheckTypeForSpecialization(Function function, AST.Type type)
         {
             type = type.Desugar();
             ClassTemplateSpecialization specialization;

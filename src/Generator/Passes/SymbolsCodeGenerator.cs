@@ -25,6 +25,11 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
+            if (method.Namespace is ClassTemplateSpecialization)
+            {
+                WriteLine($"template {method.Visit(cppTypePrinter)};");
+                return true;
+            }
             if (method.IsConstructor)
             {
                 WrapConstructor(method);
@@ -41,12 +46,6 @@ namespace CppSharp.Passes
         public override bool VisitFunctionDecl(Function function)
         {
             TakeFunctionAddress(function);
-            return true;
-        }
-
-        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
-        {
-            WriteLine($"template class {specialization.Visit(cppTypePrinter)};");
             return true;
         }
 

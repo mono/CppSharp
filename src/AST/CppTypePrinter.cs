@@ -362,7 +362,25 @@ namespace CppSharp.AST
 
         public virtual string VisitMethodDecl(Method method)
         {
-            return VisitDeclaration(method);
+            // HACK: this should never happen but there's an inexplicable crash with the 32-bit Windows CI - I have no time to fix it right now
+            var functionType = method.FunctionType.Type as FunctionType;
+            if (functionType == null)
+                return string.Empty;
+            var returnType = method.IsConstructor || method.IsDestructor ||
+                method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
+                string.Empty : $"{method.OriginalReturnType.Visit(this)} ";
+            var @class = method.Namespace.Visit(this);
+            var @params = string.Join(", ", method.Parameters.Select(p => p.Visit(this)));
+            var @const = (method.IsConst ? " const" : string.Empty);
+            var name = method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
+                $"operator {method.OriginalReturnType.Visit(this)}" :
+                method.OriginalName;
+            var exceptionType =
+                functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept ?
+                " noexcept" : string.Empty;
+            return $@"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
         }
 
         public virtual string VisitParameterDecl(Parameter parameter)
