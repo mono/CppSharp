@@ -206,7 +206,7 @@ namespace CppSharp.AST
         public virtual string VisitTemplateParameterSubstitutionType(
             TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
-            return param.Replacement.Visit(this);
+            return param.Replacement.Type.Visit(this, quals);
         }
 
         public virtual string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
