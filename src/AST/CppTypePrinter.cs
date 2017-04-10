@@ -241,8 +241,36 @@ namespace CppSharp.AST
         {
             if (type.Type == typeof(string))
                 return quals.IsConst ? "const char*" : "char*";
- 
-            throw new NotImplementedException(string.Format("Unhandled .NET type: {0}", type.Type));
+
+            switch (System.Type.GetTypeCode(type.Type))
+            {
+                case TypeCode.Boolean:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Bool), quals);
+                case TypeCode.Char:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Char), quals);
+                case TypeCode.Int16:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Short), quals);
+                case TypeCode.UInt16:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.UShort), quals);
+                case TypeCode.Int32:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Int), quals);
+                case TypeCode.UInt32:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.UInt), quals);
+                case TypeCode.Int64:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Long), quals);
+                case TypeCode.UInt64:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.ULong), quals);
+                case TypeCode.Single:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Float), quals);
+                case TypeCode.Double:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Double), quals);
+                case TypeCode.String:
+                    return quals.IsConst ? "const char*" : "char*";
+            }
+
+            return "void*";
         }
 
         public virtual string VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
@@ -363,7 +391,7 @@ namespace CppSharp.AST
         public virtual string VisitMethodDecl(Method method)
         {
             // HACK: this should never happen but there's an inexplicable crash with the 32-bit Windows CI - I have no time to fix it right now
-            var functionType = method.FunctionType.Type as FunctionType;
+            var functionType = method.FunctionType.Type.Desugar() as FunctionType;
             if (functionType == null)
                 return string.Empty;
             var returnType = method.IsConstructor || method.IsDestructor ||

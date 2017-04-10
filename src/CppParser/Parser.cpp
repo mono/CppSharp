@@ -2923,7 +2923,11 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             HandlePreprocessedEntities(F, headRange, MacroLocation::FunctionHead);
             HandlePreprocessedEntities(F, FTL.getParensRange(), MacroLocation::FunctionParameters);
         }
+        else
+            F->qualifiedType = GetQualifiedType(FD->getType());
     }
+    else
+        F->qualifiedType = GetQualifiedType(FD->getType());
 
     F->returnType = GetQualifiedType(FD->getReturnType(), &RTL);
 
