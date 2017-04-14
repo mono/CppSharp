@@ -4,7 +4,8 @@ project "CppSharp.Generator.Tests"
   SetupManagedProject()
 
   files { "**.cs" }
-  
+  vpaths { ["*"] = "*" }
+
   libdirs 
   {
     depsdir .. "/NUnit",

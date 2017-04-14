@@ -6,6 +6,8 @@ project "CppSharp.Runtime"
   clr "Unsafe"
 
   files   { "**.cs" }
+  vpaths { ["*"] = "*" }
+ 
   links { "System" }
 
   configuration "vs*"

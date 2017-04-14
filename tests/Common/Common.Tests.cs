@@ -37,6 +37,12 @@ public class CommonTests : GeneratorTestFixture
         using (var hasProtectedEnum = new HasProtectedEnum())
         {
         }
+        EnumWithUnderscores e = EnumWithUnderscores.lOWER_BEFORE_CAPITAL;
+        e = EnumWithUnderscores.UnderscoreAtEnd;
+        e = EnumWithUnderscores.CAPITALS_More;
+        e = EnumWithUnderscores.UsesDigits1_0;
+        e.GetHashCode();
+        Common.SMallFollowedByCapital();
 
 #pragma warning restore 0168
 #pragma warning restore 0219
@@ -283,13 +289,20 @@ public class CommonTests : GeneratorTestFixture
     public void TestConversionOperator()
     {
         var bar = new Bar2 { A = 1, B = 2, C = 3 };
-        Foo2 foo = bar;
-        Assert.AreEqual(foo.A, 1);
-        Assert.AreEqual(foo.B, 2);
-        Assert.AreEqual(foo.C, 3);
+        using (Foo2 foo = bar)
+        {
+            Assert.That(1, Is.EqualTo(foo.A));
+            Assert.That(2, Is.EqualTo(foo.B));
+            Assert.That(3, Is.EqualTo(foo.C));
+        }
+        using (var bar2Nested = new Bar2.Nested())
+        {
+            int bar2NestedInt = bar2Nested;
+            Assert.That(bar2NestedInt, Is.EqualTo(300));
+        }
 
-        Assert.AreEqual(300, new Bar2.Nested());
-        Assert.AreEqual(500, new Bar2());
+        int bar2Int = new Bar2();
+        Assert.That(bar2Int, Is.EqualTo(500));
     }
 
     [Test]
@@ -304,6 +317,9 @@ public class CommonTests : GeneratorTestFixture
 
         var cdecl = delegates.CDecl(i => i);
         Assert.AreEqual(1, cdecl);
+
+        var emptydelegeate = delegates.MarshalNullDelegate;
+        Assert.AreEqual(emptydelegeate, null);
     }
 
     [Test]
@@ -326,6 +342,9 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestStaticClasses()
     {
+        Type staticClassType = typeof(TestStaticClass);
+        // Only static class can be both abstract and sealed
+        Assert.IsTrue(staticClassType.IsAbstract && staticClassType.IsSealed);
         Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
         Assert.That(TestStaticClass.OneTwoThree, Is.EqualTo(123));
         Assert.That(TestStaticClassDerived.Foo, Is.EqualTo(0));
@@ -387,10 +406,18 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestOperators()
     {
-        var @class = new ClassWithOverloadedOperators();
-        Assert.AreEqual(1, (char) @class);
-        Assert.AreEqual(2, @class);
-        Assert.AreEqual(3, (short) @class);
+        using (var @class = new ClassWithOverloadedOperators())
+        {
+            char @char = @class;
+            Assert.That(@char, Is.EqualTo(1));
+            short @short = @class;
+            Assert.That(@short, Is.EqualTo(3));
+        }
+        using (var @class = new ClassWithOverloadedOperators())
+        {
+            int classInt = @class;
+            Assert.That(classInt, Is.EqualTo(2));
+        }
     }
 
     [Test]
@@ -493,8 +520,7 @@ public class CommonTests : GeneratorTestFixture
         new TestDelegates().MarshalUnattributedDelegate(i => i);
     }
 
-    // TODO: this test crashes our Windows build, possibly a problem with the NUnit runner there
-    [Test, Platform(Exclude = "Win")]
+    [Test, Platform(Exclude = "Win", Reason = "This test crashes our Windows build, possibly a problem with the NUnit runner there.")]
     public void TestPassAnonymousDelegate()
     {
         var testDelegates = new TestDelegates();

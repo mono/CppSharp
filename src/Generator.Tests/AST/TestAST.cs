@@ -11,7 +11,7 @@ namespace CppSharp.Generator.Tests.AST
     [TestFixture]
     public class TestAST : ASTTestFixture
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             CppSharp.AST.Type.TypePrinterDelegate = type =>
@@ -22,7 +22,7 @@ namespace CppSharp.Generator.Tests.AST
             ParseLibrary("AST.h", "ASTExtensions.h");
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void CleanUp()
         {
             ParserOptions.Dispose();
@@ -78,6 +78,11 @@ namespace CppSharp.Generator.Tests.AST
         class TestVisitor : IDeclVisitor<bool>
         {
             public bool VisitDeclaration(Declaration decl)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitTranslationUnit(TranslationUnit unit)
             {
                 throw new System.NotImplementedException();
             }
@@ -298,13 +303,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(65, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
+            Assert.AreEqual(70, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(88, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(93, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         static string StripWindowsNewLines(string text)
@@ -346,7 +351,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestMacroLineNumber()
         {
-            Assert.AreEqual(98, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
+            Assert.AreEqual(103, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
 
         [Test]
@@ -376,7 +381,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestComments()
         {
             var @class = AstContext.FindCompleteClass("TestComments");
-            var commentClass = @class.Comment.FullComment.CommentToString(Options.CommentPrefix);
+            var commentClass = @class.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>
 /// <para>Hash set/map base class.</para>
 /// <para>Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor</para>
@@ -384,25 +389,23 @@ namespace CppSharp.Generator.Tests.AST
 /// </summary>".Replace("\r", string.Empty), commentClass.Replace("\r", string.Empty));
 
             var method = @class.Methods.First(m => m.Name == "GetIOHandlerControlSequence");
-            var commentMethod = method.Comment.FullComment.CommentToString(Options.CommentPrefix);
-            Assert.AreEqual(@"/// <summary>
-/// <para>Get the string that needs to be written to the debugger stdin file</para>
-/// <para>handle when a control character is typed.</para>
-/// </summary>
-/// <remarks>
-/// <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
-/// <para>to have them do what normally would happen when using a real</para>
-/// <para>terminal, so this function allows GUI programs to emulate this</para>
-/// <para>functionality.</para>
-/// </remarks>
-/// <param name=""ch"">
-/// <para>The character that was typed along with the control key</para>
-/// </param>
-/// <returns>
-/// <para>The string that should be written into the file handle that is</para>
-/// <para>feeding the input stream for the debugger, or NULL if there is</para>
-/// <para>no string for this control key.</para>
-/// </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
+            var commentMethod = method.Comment.FullComment.CommentToString(CommentKind.BCPL);
+            Assert.AreEqual(@"// <summary>
+// <para>Get the string that needs to be written to the debugger stdin file</para>
+// <para>handle when a control character is typed.</para>
+// </summary>
+// <remarks>
+// <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
+// <para>to have them do what normally would happen when using a real</para>
+// <para>terminal, so this function allows GUI programs to emulate this</para>
+// <para>functionality.</para>
+// </remarks>
+// <param name=""ch"">The character that was typed along with the control key</param>
+// <returns>
+// <para>The string that should be written into the file handle that is</para>
+// <para>feeding the input stream for the debugger, or NULL if there is</para>
+// <para>no string for this control key.</para>
+// </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
         }
 
         [Test]
@@ -484,6 +487,31 @@ namespace CppSharp.Generator.Tests.AST
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true, IsVolatile = true });
             var type = pointee.Visit(cppTypePrinter);
             Assert.That(type, Is.EqualTo("const volatile char"));
+        }
+
+        [Test]
+        public void TestFindFunctionInNamespace()
+        {
+            var function = AstContext.FindFunction("Math::function").FirstOrDefault();
+            Assert.That(function, Is.Not.Null);
+        }
+
+        [Test]
+        public void TestPrintNestedInSpecialization()
+        {
+            var template = AstContext.FindDecl<ClassTemplate>("TestTemplateClass").First();
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
+            Assert.That(template.Specializations[1].Classes[0].Visit(cppTypePrinter),
+                Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
+        }
+
+        [Test]
+        public void TestPrintQualifiedSpecialization()
+        {
+            var functionWithSpecializationArg = AstContext.FindFunction("functionWithSpecializationArg").First();
+            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
+            Assert.That(functionWithSpecializationArg.Parameters[0].Visit(cppTypePrinter),
+                Is.EqualTo("const TestTemplateClass<int>"));
         }
     }
 }

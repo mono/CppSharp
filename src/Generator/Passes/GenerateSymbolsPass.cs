@@ -4,17 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
+using CppSharp.Generators.CSharp;
 using CppSharp.Parser;
+using CppSharp.Types;
 using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
-    public class GenerateInlinesPass : TranslationUnitPass
+    public class GenerateSymbolsPass : TranslationUnitPass
     {
-        public GenerateInlinesPass()
+        public GenerateSymbolsPass()
         {
             VisitOptions.VisitClassBases = false;
             VisitOptions.VisitClassFields = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitEventParameters = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
@@ -31,33 +35,42 @@ namespace CppSharp.Passes
             var result = base.VisitASTContext(context);
             var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
             findSymbolsPass.Wait = true;
-            GenerateInlines();
+            GenerateSymbols();
             return result;
         }
 
-        public event EventHandler<InlinesCodeEventArgs> InlinesCodeGenerated;
+        public event EventHandler<SymbolsCodeEventArgs> SymbolsCodeGenerated;
 
-        private void GenerateInlines()
+        private void GenerateSymbols()
         {
             var modules = (from module in Options.Modules
-                           where inlinesCodeGenerators.ContainsKey(module)
+                           where symbolsCodeGenerators.ContainsKey(module)
                            select module).ToList();
             remainingCompilationTasks = modules.Count;
-            foreach (var module in modules)
+            foreach (var module in modules.Where(symbolsCodeGenerators.ContainsKey))
             {
-                var inlinesCodeGenerator = inlinesCodeGenerators[module];
-                var cpp = $"{module.InlinesLibraryName}.{inlinesCodeGenerator.FileExtension}";
+                var symbolsCodeGenerator = symbolsCodeGenerators[module];
+                if (specializations.ContainsKey(module))
+                {
+                    symbolsCodeGenerator.NewLine();
+                    foreach (var specialization in specializations[module])
+                        foreach (var method in specialization.Methods.Where(
+                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit))
+                            symbolsCodeGenerator.VisitMethodDecl(method);
+                }
+
+                var cpp = $"{module.SymbolsLibraryName}.{symbolsCodeGenerator.FileExtension}";
                 Directory.CreateDirectory(Options.OutputDir);
                 var path = Path.Combine(Options.OutputDir, cpp);
-                File.WriteAllText(path, inlinesCodeGenerator.Generate());
+                File.WriteAllText(path, symbolsCodeGenerator.Generate());
 
-                var e = new InlinesCodeEventArgs(module);
-                InlinesCodeGenerated?.Invoke(this, e);
+                var e = new SymbolsCodeEventArgs(module);
+                SymbolsCodeGenerated?.Invoke(this, e);
                 if (string.IsNullOrEmpty(e.CustomCompiler))
                     RemainingCompilationTasks--;
                 else
                     InvokeCompiler(e.CustomCompiler, e.CompilerArguments,
-                        e.OutputDir, module.InlinesLibraryName);
+                        e.OutputDir, module.SymbolsLibraryName);
             }
         }
 
@@ -69,20 +82,74 @@ namespace CppSharp.Passes
             var module = function.TranslationUnit.Module;
             if (module == Options.SystemModule)
             {
-                GetInlinesCodeGenerator(module);
+                GetSymbolsCodeGenerator(module);
                 return false;
+            }
+
+            if (function.IsGenerated)
+            {
+                CheckTypeForSpecialization(function, function.OriginalReturnType.Type);
+                foreach (var parameter in function.Parameters)
+                    CheckTypeForSpecialization(function, parameter.Type);
             }
 
             if (!NeedsSymbol(function))
                 return false;
 
-            var inlinesCodeGenerator = GetInlinesCodeGenerator(module);
-            return function.Visit(inlinesCodeGenerator);
+            var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
+            return function.Visit(symbolsCodeGenerator);
         }
 
-        public class InlinesCodeEventArgs : EventArgs
+        private void CheckTypeForSpecialization(Function function, AST.Type type)
         {
-            public InlinesCodeEventArgs(Module module)
+            type = type.Desugar();
+            ClassTemplateSpecialization specialization;
+            type = type.GetFinalPointee() ?? type;
+            if (!type.TryGetDeclaration(out specialization))
+                return;
+
+            if (specialization.Ignore ||
+                specialization.TemplatedDecl.TemplatedClass.Ignore ||
+                specialization.IsIncomplete ||
+                specialization.TemplatedDecl.TemplatedClass.IsIncomplete ||
+                specialization is ClassTemplatePartialSpecialization ||
+                specialization.Arguments.Any(a => UnsupportedTemplateArgument(specialization, a)))
+                return;
+
+            TypeMap typeMap;
+            if (Context.TypeMaps.FindTypeMap(specialization, out typeMap))
+            {
+                var mappedTo = typeMap.CSharpSignatureType(new CSharpTypePrinterContext { Type = type });
+                mappedTo = mappedTo.Desugar();
+                mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo);
+                if (mappedTo.IsPrimitiveType() || mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum())
+                    return;
+            }
+
+            HashSet<ClassTemplateSpecialization> list;
+            if (specializations.ContainsKey(specialization.TranslationUnit.Module))
+                list = specializations[specialization.TranslationUnit.Module];
+            else
+                specializations[specialization.TranslationUnit.Module] =
+                    list = new HashSet<ClassTemplateSpecialization>();
+            list.Add(specialization);
+        }
+
+        private bool UnsupportedTemplateArgument(ClassTemplateSpecialization specialization, TemplateArgument a)
+        {
+            if (a.Type.Type == null ||
+                CheckIgnoredDeclsPass.IsTypeExternal(
+                    specialization.TranslationUnit.Module, a.Type.Type))
+                return true;
+
+            var typeIgnoreChecker = new TypeIgnoreChecker(Context.TypeMaps);
+            a.Type.Type.Visit(typeIgnoreChecker);
+            return typeIgnoreChecker.IsIgnored;
+        }
+
+        public class SymbolsCodeEventArgs : EventArgs
+        {
+            public SymbolsCodeEventArgs(Module module)
             {
                 this.Module = module;
             }
@@ -107,19 +174,19 @@ namespace CppSharp.Passes
                 !Context.Symbols.FindSymbol(ref mangled);
         }
 
-        private InlinesCodeGenerator GetInlinesCodeGenerator(Module module)
+        private SymbolsCodeGenerator GetSymbolsCodeGenerator(Module module)
         {
-            if (inlinesCodeGenerators.ContainsKey(module))
-                return inlinesCodeGenerators[module];
+            if (symbolsCodeGenerators.ContainsKey(module))
+                return symbolsCodeGenerators[module];
             
-            var inlinesCodeGenerator = new InlinesCodeGenerator(Context, module.Units);
-            inlinesCodeGenerators[module] = inlinesCodeGenerator;
-            inlinesCodeGenerator.Process();
+            var symbolsCodeGenerator = new SymbolsCodeGenerator(Context, module.Units);
+            symbolsCodeGenerators[module] = symbolsCodeGenerator;
+            symbolsCodeGenerator.Process();
 
-            return inlinesCodeGenerator;
+            return symbolsCodeGenerator;
         }
 
-        private void InvokeCompiler(string compiler, string arguments, string outputDir, string inlines)
+        private void InvokeCompiler(string compiler, string arguments, string outputDir, string symbols)
         {
             new Thread(() =>
                 {
@@ -127,20 +194,20 @@ namespace CppSharp.Passes
                     string errorMessage;
                     ProcessHelper.Run(compiler, arguments, out error, out errorMessage);
                     if (string.IsNullOrEmpty(errorMessage))
-                        CollectInlinedSymbols(outputDir, inlines);
+                        CollectSymbols(outputDir, symbols);
                     else
                         Diagnostics.Error(errorMessage);
                     RemainingCompilationTasks--;
                 }).Start();
         }
 
-        private void CollectInlinedSymbols(string outputDir, string inlines)
+        private void CollectSymbols(string outputDir, string symbols)
         {
             using (var parserOptions = new ParserOptions())
             {
                 parserOptions.AddLibraryDirs(outputDir);
                 var output = Path.GetFileName($@"{(Platform.IsWindows ?
-                    string.Empty : "lib")}{inlines}.{
+                    string.Empty : "lib")}{symbols}.{
                     (Platform.IsMacOS ? "dylib" : Platform.IsWindows ? "dll" : "so")}");
                 parserOptions.LibraryFile = output;
                 using (var parserResult = Parser.ClangParser.ParseLibrary(parserOptions))
@@ -181,7 +248,9 @@ namespace CppSharp.Passes
         private int remainingCompilationTasks;
         private static readonly object @lock = new object();
 
-        private Dictionary<Module, InlinesCodeGenerator> inlinesCodeGenerators =
-            new Dictionary<Module, InlinesCodeGenerator>();
+        private Dictionary<Module, SymbolsCodeGenerator> symbolsCodeGenerators =
+            new Dictionary<Module, SymbolsCodeGenerator>();
+        private Dictionary<Module, HashSet<ClassTemplateSpecialization>> specializations =
+            new Dictionary<Module, HashSet<ClassTemplateSpecialization>>();
     }
 }

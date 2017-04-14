@@ -281,6 +281,7 @@ DEF_STRING(Declaration, Name)
 DEF_STRING(Declaration, USR)
 DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
+DEF_VECTOR(Declaration, Declaration*, Redeclarations)
 
 DeclarationContext::DeclarationContext(DeclarationKind kind)
     : Declaration(kind)
@@ -723,6 +724,7 @@ Class::Class()
     , hasNonTrivialCopyConstructor(false)
     , hasNonTrivialDestructor(false)
     , isExternCContext(false)
+    , isInjected(false)
     , layout(0)
 {
 }

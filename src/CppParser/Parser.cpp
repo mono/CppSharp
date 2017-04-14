@@ -301,16 +301,17 @@ void Parser::SetupHeader()
     auto& TO = Inv->TargetOpts;
     targetABI = ConvertToClangTargetCXXABI(opts->abi);
 
-    TO->Triple = llvm::sys::getDefaultTargetTriple();
-    if (!opts->TargetTriple.empty())
-        TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
+    if (opts->TargetTriple.empty())
+        opts->TargetTriple = llvm::sys::getDefaultTargetTriple();
+    TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     if (!TI)
     {
         // We might have no target info due to an invalid user-provided triple.
         // Try again with the default triple.
-        TO->Triple = llvm::sys::getDefaultTargetTriple();
+        opts->TargetTriple = llvm::sys::getDefaultTargetTriple();
+        TO->Triple = llvm::Triple::normalize(opts->TargetTriple);
         TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     }
 
@@ -794,9 +795,6 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
     using namespace clang;
     Process = false;
 
-    if (Record->isInjectedClassName())
-        return nullptr;
-
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
 
@@ -822,6 +820,7 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
         return RC;
 
     RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    RC->isInjected = Record->isInjectedClassName();
     HandleDeclaration(Record, RC);
     EnsureCompleteRecord(Record, NS, RC);
 
@@ -2924,7 +2923,11 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             HandlePreprocessedEntities(F, headRange, MacroLocation::FunctionHead);
             HandlePreprocessedEntities(F, FTL.getParensRange(), MacroLocation::FunctionParameters);
         }
+        else
+            F->qualifiedType = GetQualifiedType(FD->getType());
     }
+    else
+        F->qualifiedType = GetQualifiedType(FD->getType());
 
     F->returnType = GetQualifiedType(FD->getReturnType(), &RTL);
 
@@ -3490,7 +3493,7 @@ Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
 }
 
 Declaration* Parser::WalkDeclaration(const clang::Decl* D,
-                                           bool CanBeDefinition)
+                                           bool CanBeDefinition, bool WalkRedecls)
 {
     using namespace clang;
 
@@ -3541,6 +3544,10 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         auto RD = cast<CXXRecordDecl>(D);
 
         auto Class = WalkRecordCXX(RD);
+
+        if (WalkRedecls)
+            for (auto redecl : RD->redecls())
+                Class->Redeclarations.push_back(WalkDeclaration(redecl, CanBeDefinition, false));
 
         // We store a definition order index into the declarations.
         // This is needed because declarations are added to their contexts as
@@ -3730,6 +3737,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         break;
     }
     case Decl::CXXConstructor:
+    case Decl::CXXDestructor:
+    case Decl::CXXConversion:
     case Decl::CXXMethod:
     {
         auto MD = cast<CXXMethodDecl>(D);
@@ -3763,11 +3772,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
         Decl = WalkNonTypeTemplateParameter(NTTPD);
         break;
     }
-    // Ignore these declarations since they must have been declared in
-    // a class already.
-    case Decl::CXXDestructor:
-    case Decl::CXXConversion:
-        break;
     case Decl::BuiltinTemplate:
     case Decl::ClassScopeFunctionSpecialization:
     case Decl::PragmaComment:

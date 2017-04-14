@@ -214,6 +214,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(methodsWithDefaultValues.DefaultMappedToEnum(), Is.EqualTo(Flags.Flag3));
             methodsWithDefaultValues.DefaultMappedToZeroEnum();
             methodsWithDefaultValues.DefaultMappedToEnumAssignedWithCtor();
+            methodsWithDefaultValues.DefaultZeroMappedToEnumAssignedWithCtor();
             methodsWithDefaultValues.DefaultImplicitCtorInt();
             methodsWithDefaultValues.DefaultImplicitCtorChar();
             methodsWithDefaultValues.DefaultImplicitCtorFoo();
@@ -550,8 +551,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         //Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
     }
 
-    // HACK: the completion of types is temporarily suspended because of problems with QtWidgets
-    [Test, Ignore]
+    [Test, Ignore("The completion of types is temporarily suspended because of problems with QtWidgets.")]
     public void TestTemplateInternals()
     {
         foreach (var internalType in new[]
@@ -697,5 +697,29 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             return base.HasPointerToEnumInParam(pointerToEnum);
         }
+    }
+
+    [Test]
+    public void TestGenerationOfIncompleteClasses()
+    {
+        var incompleteStruct = CSharp.CSharp.CreateIncompleteStruct();
+        Assert.IsNotNull(incompleteStruct);
+        Assert.DoesNotThrow(() => CSharp.CSharp.UseIncompleteStruct(incompleteStruct));
+    }
+
+    [Test]
+    public void TestForwardDeclaredStruct()
+    {
+        var forwardDeclaredStruct = CSharp.CSharp.CreateForwardDeclaredStruct(10);
+        var i = CSharp.CSharp.UseForwardDeclaredStruct(forwardDeclaredStruct);
+        Assert.AreEqual(forwardDeclaredStruct.I, i);
+    }
+
+    [Test]
+    public void TestDuplicateDeclaredIncompleteStruct()
+    {
+        var duplicateDeclaredIncompleteStruct = CSharp.CSharp.CreateDuplicateDeclaredStruct(10);
+        var i = CSharp.CSharp.UseDuplicateDeclaredStruct(duplicateDeclaredIncompleteStruct);
+        Assert.AreEqual(10, i);
     }
 }

@@ -48,6 +48,7 @@ namespace CppSharp.AST
             Kind = p.Kind;
             QualifiedType = p.QualifiedType;
             Usage = p.Usage;
+            OriginalDefaultArgument = p.OriginalDefaultArgument;
             DefaultArgument = p.DefaultArgument;
         }
 
@@ -60,7 +61,21 @@ namespace CppSharp.AST
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
 
-        public Expression DefaultArgument { get; set; }
+        public Expression DefaultArgument
+        {
+            get
+            {
+                return defaultArgument;
+            }
+            set
+            {
+                defaultArgument = value;
+                if (OriginalDefaultArgument == null)
+                    OriginalDefaultArgument = value;
+            }
+        }
+
+        public Expression OriginalDefaultArgument { get; set; }
 
         public bool IsIn => Usage == ParameterUsage.In;
         public bool IsOut => Usage == ParameterUsage.Out;
@@ -82,6 +97,8 @@ namespace CppSharp.AST
         {
             get { return DebugText.StartsWith("const ", System.StringComparison.Ordinal); }
         }
+
+        Expression defaultArgument;
     }
 
     public class ParameterTypeComparer : IEqualityComparer<Parameter>
@@ -148,6 +165,7 @@ namespace CppSharp.AST
             Mangled = function.Mangled;
             Index = function.Index;
             Signature = function.Signature;
+            FunctionType = function.FunctionType;
             if (function.SpecializationInfo != null)
             {
                 SpecializationInfo = new FunctionTemplateSpecialization(function.SpecializationInfo);

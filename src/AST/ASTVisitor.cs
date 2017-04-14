@@ -302,6 +302,14 @@ namespace CppSharp.AST
             return !AlreadyVisited(decl);
         }
 
+        public virtual bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            if (!VisitDeclaration(unit))
+                return false;
+
+            return VisitDeclarationContext(unit);
+        }
+
         public virtual bool VisitClassDecl(Class @class)
         {
             if (!VisitDeclarationContext(@class))
@@ -429,6 +437,9 @@ namespace CppSharp.AST
 
         public virtual bool VisitEnumItemDecl(Enumeration.Item item)
         {
+            if (!VisitDeclaration(item))
+                return false;
+
             return true;
         }
 

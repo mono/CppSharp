@@ -7,11 +7,11 @@ using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
-    public class InlinesCodeGenerator : CodeGenerator
+    public class SymbolsCodeGenerator : CodeGenerator
     {
         public override string FileExtension => "cpp";
 
-        public InlinesCodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
+        public SymbolsCodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
         }
@@ -25,6 +25,11 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
+            if (method.Namespace is ClassTemplateSpecialization)
+            {
+                WriteLine($"template {method.Visit(cppTypePrinter)};");
+                return true;
+            }
             if (method.IsConstructor)
             {
                 WrapConstructor(method);
@@ -46,11 +51,11 @@ namespace CppSharp.Passes
 
         private string GetWrapper(Module module)
         {
-            var inlinesLibraryName = new StringBuilder(module.InlinesLibraryName);
-            for (int i = 0; i < inlinesLibraryName.Length; i++)
-                if (!char.IsLetterOrDigit(inlinesLibraryName[i]))
-                    inlinesLibraryName[i] = '_';
-            return $"{inlinesLibraryName}{++functionCount}";
+            var symbolsLibraryName = new StringBuilder(module.SymbolsLibraryName);
+            for (int i = 0; i < symbolsLibraryName.Length; i++)
+                if (!char.IsLetterOrDigit(symbolsLibraryName[i]))
+                    symbolsLibraryName[i] = '_';
+            return $"{symbolsLibraryName}{++functionCount}";
         }
 
         private static string GetDerivedType(string @namespace, string wrapper)

@@ -8,6 +8,7 @@ function SetupExampleProject()
   files { "**.cs", "./*.lua" }
   links
   {
+    "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
     "CppSharp.Parser"
@@ -19,7 +20,7 @@ end
 
 function SetupTestProject(name, extraFiles)
   SetupTestGeneratorProject(name)
-  SetupTestNativeProject(name)  
+  SetupTestNativeProject(name)
   SetupTestProjectsCSharp(name, nil, extraFiles)
   SetupTestProjectsCLI(name, extraFiles)
 end
@@ -49,11 +50,13 @@ function SetupTestGeneratorProject(name, depends)
     kind "ConsoleApp"
     
     files { name .. ".cs" }
+    vpaths { ["*"] = "*" }
 
     dependson { name .. ".Native" }
 
     linktable = {
       "System.Core",
+      "CppSharp",
       "CppSharp.AST",
       "CppSharp.Generator",
       "CppSharp.Generator.Tests",
@@ -70,7 +73,8 @@ function SetupTestGeneratorProject(name, depends)
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  local runtimeExe = os.is("windows") and "" or "mono --debug "
+  local monoExe = _OPTIONS["arch"] == "x64" and "mono64" or "mono"
+  local runtimeExe = os.is("windows") and "" or monoExe .. " --debug "
   if string.starts(action, "vs") then
     local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
     prebuildcommands { runtimeExe .. exePath }
@@ -93,6 +97,7 @@ function SetupTestNativeProject(name, depends)
     language "C++"
 
     files { "**.h", "**.cpp" }
+    vpaths { ["*"] = "*" }
 
     if depends ~= nil then
       links { depends .. ".Native" }
@@ -125,6 +130,7 @@ function SetupTestProjectsCSharp(name, depends)
       path.join(gendir, name, name .. ".cs"),
       path.join(gendir, name, "Std.cs")
     }
+    vpaths { ["*"] = "*" }
 
     linktable = { "CppSharp.Runtime" }
 
@@ -138,6 +144,8 @@ function SetupTestProjectsCSharp(name, depends)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
+    vpaths { ["*"] = "*" }
+
     links { name .. ".CSharp", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
@@ -171,6 +179,7 @@ function SetupTestProjectsCLI(name, extraFiles)
         files { path.join(gendir, name, file .. ".h") }
       end
     end
+    vpaths { ["*"] = "*" }
 
     includedirs { path.join(testsdir, name), incdir }
     links { name .. ".Native" }    
@@ -179,6 +188,8 @@ function SetupTestProjectsCLI(name, extraFiles)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
+    vpaths { ["*"] = "*" }
+
     links { name .. ".CLI", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 

@@ -90,11 +90,10 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitArrayType(ArrayType array,
             TypeQualifiers quals)
         {
+            Type arrayType = array.Type.Desugar();
             if (ContextKind == TypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
-                Type arrayType = array.Type.Desugar();
-
                 PrimitiveType primitiveType;
                 if ((arrayType.IsPointerToPrimitiveType(out primitiveType) &&
                     !(arrayType is FunctionType)) || 
@@ -148,9 +147,12 @@ namespace CppSharp.Generators.CSharp
 
             // const char* and const char[] are the same so we can use a string
             if (array.SizeType == ArrayType.ArraySize.Incomplete &&
-                array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
+                arrayType.IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
                 return "string";
+
+            if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
+                return "char**";
 
             return string.Format("{0}{1}", array.Type.Visit(this),
                 array.SizeType == ArrayType.ArraySize.Constant ? "[]" :
@@ -459,6 +461,14 @@ namespace CppSharp.Generators.CSharp
         {
             switch (primitive)
             {
+                case PrimitiveType.Char:
+                    width = targetInfo?.CharWidth ?? 8;
+                    signed = true;
+                    break;
+                case PrimitiveType.UChar:
+                    width = targetInfo?.CharWidth ?? 8;
+                    signed = false;
+                    break;
                 case PrimitiveType.Short:
                     width = targetInfo?.ShortWidth ?? 16;
                     signed = true;
@@ -558,6 +568,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
                 case PrimitiveType.Null: return "void*";
+                case PrimitiveType.String: return "string";
             }
 
             throw new NotSupportedException();
@@ -577,9 +588,10 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $"{GetName(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
+                return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
 
-            return GetName(@class);
+            return $@"{VisitDeclaration(@class)}{(@class.IsDependent ? $@"<{
+                string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>" : string.Empty)}";
         }
 
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
@@ -607,17 +619,17 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
         {
-            return GetName(typedef);
+            return VisitDeclaration(typedef);
         }
 
         public override TypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            return GetName(typeAlias);
+            return VisitDeclaration(typeAlias);
         }
 
         public override TypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
-            return GetName(@enum);
+            return VisitDeclaration(@enum);
         }
 
         public override TypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
@@ -625,7 +637,7 @@ namespace CppSharp.Generators.CSharp
             return VisitDeclaration(item);
         }
 
-        public string GetName(Declaration decl)
+        string GetName(Declaration decl)
         {
             var names = new Stack<string>();
 
@@ -662,16 +674,17 @@ namespace CppSharp.Generators.CSharp
                 ctx = ctx.Namespace;
             }
 
-            if (!ctx.TranslationUnit.IsSystemHeader && ctx.TranslationUnit.IsValid &&
-                !string.IsNullOrWhiteSpace(ctx.TranslationUnit.Module.OutputNamespace))
-                names.Push(ctx.TranslationUnit.Module.OutputNamespace);
+            var unit = ctx.TranslationUnit;
+            if (!unit.IsSystemHeader && unit.IsValid &&
+                !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
+                names.Push(unit.Module.OutputNamespace);
 
             return $"global::{string.Join(".", names)}";
         }
 
         public override TypePrinterResult VisitVariableDecl(Variable variable)
         {
-            return GetName(variable);
+            return VisitDeclaration(variable);
         }
 
         public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
@@ -679,7 +692,9 @@ namespace CppSharp.Generators.CSharp
         {
             var args = new List<string>();
 
-            foreach (var param in @params)
+            foreach (var param in @params.Where(
+                p => ContextKind == TypePrinterContextKind.Native ||
+                    (p.Kind != ParameterKind.IndirectReturnType && !p.Ignore)))
             {
                 TypePrinterContext.Parameter = param;
                 args.Add(VisitParameter(param, hasNames).Type);
@@ -689,15 +704,15 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ", args);
         }
 
-        public override TypePrinterResult VisitParameter(Parameter arg, bool hasName)
+        public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
-            var type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
-            var name = arg.Name;
-
-            if (hasName && !string.IsNullOrEmpty(name))
-                return string.Format("{0} {1}", type, name);
-
-            return type;
+            var usage = ContextKind == TypePrinterContextKind.Native ?
+                string.Empty : GetParameterUsage(param.Usage);
+            var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var name = param.Name;
+            if (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments)
+                return $"{usage}{type} {name}";
+            return $"{usage}{type} {name} = {expressionPrinter.VisitParameter(param)}";
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
@@ -743,6 +758,21 @@ namespace CppSharp.Generators.CSharp
         {
             return vectorType.ElementType.Visit(this);
         }
+
+        private static string GetParameterUsage(ParameterUsage usage)
+        {
+            switch (usage)
+            {
+                case ParameterUsage.Out:
+                    return "out ";
+                case ParameterUsage.InOut:
+                    return "ref ";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);
     }
 
     public static class CSharpTypePrinterExtensions

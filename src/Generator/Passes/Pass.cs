@@ -26,7 +26,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public virtual bool VisitTranslationUnit(TranslationUnit unit)
+        public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             if (!unit.IsValid || unit.Ignore)
                 return false;

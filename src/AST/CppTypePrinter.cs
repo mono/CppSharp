@@ -41,8 +41,7 @@ namespace CppSharp.AST
         public virtual string VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var qual = GetStringQuals(quals);
-            return $@"{qual}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{
-                tag.Declaration.Visit(this)}";
+            return $@"{qual}{tag.Declaration.Visit(this)}";
         }
 
         public virtual string VisitArrayType(ArrayType array, TypeQualifiers quals)
@@ -93,11 +92,10 @@ namespace CppSharp.AST
                 return string.Format("{0} (*)({1})", returnType.Visit(this), args);
             }
 
-            var qual = GetStringQuals(quals);
+            var qual = GetStringQuals(quals, false);
             var pointeeType = pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
-            return $@"{pointeeType}{mod}{(
-                string.IsNullOrEmpty(qual) ? string.Empty : " ")}{qual}";
+            return $@"{pointeeType}{mod}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{qual}";
         }
 
         public virtual string VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
@@ -108,8 +106,7 @@ namespace CppSharp.AST
         public virtual string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             var qual = GetStringQuals(quals);
-            return $@"{qual}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{
-                VisitPrimitiveType(builtin.Type)}";
+            return $@"{qual}{VisitPrimitiveType(builtin.Type)}";
         }
 
         public virtual string VisitPrimitiveType(PrimitiveType primitive)
@@ -141,7 +138,21 @@ namespace CppSharp.AST
                 case PrimitiveType.Float128: return "__float128";
                 case PrimitiveType.IntPtr: return "void*";
                 case PrimitiveType.UIntPtr: return "uintptr_t";
-                case PrimitiveType.Null: return "std::nullptr_t";
+                case PrimitiveType.Null: return PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "std::nullptr_t" : "NULL";
+                case PrimitiveType.String:
+                {
+                    switch (PrintFlavorKind)
+                    {
+                    case CppTypePrintFlavorKind.C:
+                        return "const char*";
+                    case CppTypePrintFlavorKind.Cpp:
+                        return "std::string";
+                    case CppTypePrintFlavorKind.ObjC:
+                        return "NSString";;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                    }
+                }
             }
 
             throw new NotSupportedException();
@@ -153,8 +164,7 @@ namespace CppSharp.AST
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
                 return typedef.Declaration.Type.Visit(this);
             var qual = GetStringQuals(quals);
-            return $@"{qual}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{
-                typedef.Declaration.Visit(this)}";
+            return $@"{qual}{typedef.Declaration.Visit(this)}";
         }
 
         public virtual string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
@@ -173,7 +183,8 @@ namespace CppSharp.AST
             if (specialization == null)
                 return string.Empty;
 
-            return VisitClassTemplateSpecializationDecl(specialization);
+            var qual = GetStringQuals(quals);
+            return $@"{qual}{VisitClassTemplateSpecializationDecl(specialization)}";
         }
 
         public virtual string VisitDependentTemplateSpecializationType(
@@ -195,7 +206,7 @@ namespace CppSharp.AST
         public virtual string VisitTemplateParameterSubstitutionType(
             TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
-            return param.Replacement.Visit(this);
+            return param.Replacement.Type.Visit(this, quals);
         }
 
         public virtual string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
@@ -230,8 +241,36 @@ namespace CppSharp.AST
         {
             if (type.Type == typeof(string))
                 return quals.IsConst ? "const char*" : "char*";
- 
-            throw new NotImplementedException(string.Format("Unhandled .NET type: {0}", type.Type));
+
+            switch (System.Type.GetTypeCode(type.Type))
+            {
+                case TypeCode.Boolean:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Bool), quals);
+                case TypeCode.Char:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Char), quals);
+                case TypeCode.Int16:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Short), quals);
+                case TypeCode.UInt16:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.UShort), quals);
+                case TypeCode.Int32:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Int), quals);
+                case TypeCode.UInt32:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.UInt), quals);
+                case TypeCode.Int64:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Long), quals);
+                case TypeCode.UInt64:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.ULong), quals);
+                case TypeCode.Single:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Float), quals);
+                case TypeCode.Double:
+                    return VisitBuiltinType(new BuiltinType(PrimitiveType.Double), quals);
+                case TypeCode.String:
+                    return quals.IsConst ? "const char*" : "char*";
+            }
+
+            return "void*";
         }
 
         public virtual string VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
@@ -301,9 +340,13 @@ namespace CppSharp.AST
                 return PrintLogicalNames ? declaration.LogicalOriginalName
                     : declaration.OriginalName;
             case TypePrintScopeKind.Qualified:
+                if (declaration.Namespace is Class)
+                    return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
             case TypePrintScopeKind.GlobalQualified:
+                if (declaration.Namespace is Class)
+                    return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
                 var qualifier = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : string.Empty;
                 return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
             }
@@ -314,6 +357,11 @@ namespace CppSharp.AST
         public virtual string VisitDeclaration(Declaration decl)
         {
             return GetDeclName(decl, PrintScopeKind);
+        }
+
+        public string VisitTranslationUnit(TranslationUnit unit)
+        {
+            return VisitDeclaration(unit);
         }
 
         public virtual string VisitClassDecl(Class @class)
@@ -342,7 +390,25 @@ namespace CppSharp.AST
 
         public virtual string VisitMethodDecl(Method method)
         {
-            return VisitDeclaration(method);
+            // HACK: this should never happen but there's an inexplicable crash with the 32-bit Windows CI - I have no time to fix it right now
+            var functionType = method.FunctionType.Type.Desugar() as FunctionType;
+            if (functionType == null)
+                return string.Empty;
+            var returnType = method.IsConstructor || method.IsDestructor ||
+                method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
+                string.Empty : $"{method.OriginalReturnType.Visit(this)} ";
+            var @class = method.Namespace.Visit(this);
+            var @params = string.Join(", ", method.Parameters.Select(p => p.Visit(this)));
+            var @const = (method.IsConst ? " const" : string.Empty);
+            var name = method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
+                $"operator {method.OriginalReturnType.Visit(this)}" :
+                method.OriginalName;
+            var exceptionType =
+                functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept ?
+                " noexcept" : string.Empty;
+            return $@"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
         }
 
         public virtual string VisitParameterDecl(Parameter parameter)
@@ -354,6 +420,10 @@ namespace CppSharp.AST
         {
             if (ResolveTypedefs)
                 return typedef.Type.Visit(this);
+
+            if (PrintFlavorKind != CppTypePrintFlavorKind.Cpp)
+                return typedef.OriginalName;
+
             var originalNamespace = typedef.OriginalNamespace.Visit(this);
             return originalNamespace == "::" ? typedef.OriginalName :
                 $"{originalNamespace}::{typedef.OriginalName}";
@@ -467,7 +537,7 @@ namespace CppSharp.AST
             throw new NotImplementedException();
         }
 
-        private string GetStringQuals(TypeQualifiers quals)
+        private string GetStringQuals(TypeQualifiers quals, bool appendSpace = true)
         {
             var stringQuals = new List<string>();
             if (PrintTypeQualifiers)
@@ -477,7 +547,9 @@ namespace CppSharp.AST
                 if (quals.IsVolatile)
                     stringQuals.Add("volatile");
             }
-            return string.Join(" ", stringQuals);
+            if (stringQuals.Count == 0)
+                return string.Empty;
+            return string.Join(" ", stringQuals) + (appendSpace ? " " : string.Empty);
         }
     }
 }

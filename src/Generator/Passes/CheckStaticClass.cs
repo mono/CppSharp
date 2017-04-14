@@ -90,13 +90,16 @@ namespace CppSharp.Passes
             // If one exists, we assume it's a factory function and the class is
             // not meant to be static. It's a simple heuristic but it should be
             // good enough for the time being.
-            if (@class.Functions.Any(ReturnsClassInstance) ||
-                @class.Methods.Any(ReturnsClassInstance))
+            if (@class.Functions.Any(m => !m.IsOperator && ReturnsClassInstance(m)) ||
+                @class.Methods.Any(m => !m.IsOperator && ReturnsClassInstance(m)))
                 return false;
 
             // If the class is to be used as an opaque type, then it cannot be
             // bound as static.
             if (@class.IsOpaque)
+                return false;
+
+            if (@class.IsDependent)
                 return false;
 
             // TODO: We should take C++ friends into account here, they might allow

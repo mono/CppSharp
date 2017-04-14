@@ -421,6 +421,11 @@ void TestDelegates::MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del)
 {
 }
 
+DelegateNullCheck TestDelegates::MarshalNullDelegate()
+{
+    return nullptr;
+}
+
 void DelegateNamespace::f2(void (*)())
 {
 }
@@ -653,10 +658,23 @@ void HasOverloadsWithDifferentPointerKindsToSameType::overload(const int& i)
 {
 }
 
+void HasOverloadsWithDifferentPointerKindsToSameType::dispose()
+{
+}
+
 void hasPointerParam(Foo* foo, int i)
 {
 }
 
 void hasPointerParam(const Foo& foo)
 {
+}
+
+void sMallFollowedByCapital()
+{
+}
+
+TestStaticClass& TestStaticClass::operator=(const TestStaticClass& oth)
+{
+    return *this;
 }

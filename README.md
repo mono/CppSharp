@@ -1,4 +1,8 @@
-CppSharp is a tool and set of libraries which allows programmmers to use
+**CppSharp has been selected for participation in the Google Summer of Code 2017!**
+
+
+
+CppSharp is a tool and set of libraries which allows programmers to use
 C/C++ libraries with high-level programming languages (such as C#).
 
 It is a tool that takes C/C++ header and library files and generates the 
@@ -15,16 +19,7 @@ rich declaration and type information model.
 
 |Windows 64-bit|Windows 32-bit| windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
 |---------------------------|---------------------------|---------------------------|-----------------------------|-----------------------------|
-| [![NuGet][1]][2] | [![GitHub release][3]][4] | [![windows-vs-x86][5]][6] | [![linux-gcc-x86_64][7]][8] | [![osx-clang-x86][7]][8]
-
-[1]: https://img.shields.io/nuget/v/CppSharp.svg
-[2]: https://www.nuget.org/packages/CppSharp/
-[3]: https://img.shields.io/github/release/mono/CppSharp.svg
-[4]: https://github.com/mono/CppSharp/releases
-[5]: https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true
-[6]: https://ci.appveyor.com/project/tritao/CppSharp/branch/master
-[7]: https://travis-ci.org/mono/CppSharp.svg?branch=master
-[8]: https://travis-ci.org/mono/CppSharp
+| [![NuGet](https://img.shields.io/nuget/v/CppSharp.svg)](https://www.nuget.org/packages/CppSharp/) | [![GitHub release](https://img.shields.io/github/release/mono/CppSharp.svg)](https://github.com/mono/CppSharp/releases) | [![windows-vs-x86](https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true)](https://ci.appveyor.com/project/tritao/CppSharp/branch/master) | [![linux-gcc-x86_64](https://travis-ci.org/mono/CppSharp.svg?branch=master)](https://travis-ci.org/mono/CppSharp) | [![osx-clang-x86](https://travis-ci.org/mono/CppSharp.svg?branch=master)](https://travis-ci.org/mono/CppSharp)
 
 1. [Libraries](#libraries)
 2. [Documentation](#documentation)
@@ -82,13 +77,14 @@ Please see the following resources for more information:
 
 ## Community
 
-Feel free to open up issues on Github with any questions
+Feel free to open up issues on Github for any problems you find.
 
-Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
+You can also join us at our [#managed-interop](https://gitter.im/managed-interop) Gitter discussion channel.
 
 ## Support
 
 For building wrappers and priority support please write to &#99;&#112;&#112;&#115;&#104;&#97;&#114;&#112;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;.
+Alternatively, you may post bounties at https://www.bountysource.com/.
 
 ## Users
 
@@ -111,5 +107,9 @@ CppSharp is used by the following projects:
 [libgd bindings](https://github.com/imazen/deprecated-gd-bindings-generator-old)
 
 [ChakraSharp](https://github.com/baristalabs/ChakraSharp)
+
+[FFmpeg.AutoGen](https://github.com/Ruslan-B/FFmpeg.AutoGen)
+
+[GLFW3.NET](https://github.com/realvictorprm/GLFW3.NET)
 
 Please feel free to send us a pull request adding your own projects to the list above.

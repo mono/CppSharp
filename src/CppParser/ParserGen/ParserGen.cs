@@ -54,15 +54,17 @@ namespace CppSharp
             parserOptions.Abi = Abi;
 
             var options = driver.Options;
-            options.LibraryName = "CppSharp.CppParser";
             options.GeneratorKind = Kind;
-            options.Headers.AddRange(new[]
+            options.CommentKind = CommentKind.BCPLSlash;
+            var parserModule = options.AddModule("CppSharp.CppParser");
+            parserModule.Headers.AddRange(new[]
             {
                 "AST.h",
                 "Sources.h",
                 "CppParser.h"
             });
-            options.Libraries.Add("CppSharp.CppParser.lib");
+            parserModule.Libraries.Add("CppSharp.CppParser.lib");
+            parserModule.OutputNamespace = string.Empty;
 
             if (Abi == CppAbi.Microsoft)
                 parserOptions.MicrosoftMode = true;
@@ -85,7 +87,6 @@ namespace CppSharp
             if (Kind == GeneratorKind.CSharp)
                 options.OutputDir = Path.Combine(options.OutputDir, parserOptions.TargetTriple + extraTriple);
 
-            options.OutputNamespace = string.Empty;
             options.CheckSymbols = false;
             //options.Verbose = true;
             options.UnityBuild = true;

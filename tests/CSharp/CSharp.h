@@ -373,6 +373,12 @@ namespace lowerCaseNameSpace
     };
 }
 
+class DLL_API DefaultZeroMappedToEnum
+{
+public:
+    DefaultZeroMappedToEnum(int* = 0);
+};
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -409,6 +415,7 @@ public:
     QFlags<Flags> defaultMappedToEnum(const QFlags<Flags>& qFlags = Flags::Flag3);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
+    void defaultZeroMappedToEnumAssignedWithCtor(DefaultZeroMappedToEnum defaultZeroMappedToEnum = DefaultZeroMappedToEnum());
     void defaultImplicitCtorInt(Quux arg = 0);
     void defaultImplicitCtorChar(Quux arg = 'a');
     void defaultImplicitCtorFoo(Quux arg = Foo());
@@ -1142,3 +1149,24 @@ public:
 protected:
     int field;
 };
+
+void DLL_API hasArrayOfConstChar(const char* const arrayOfConstChar[]);
+
+struct CompleteIncompleteStruct;
+
+typedef struct IncompleteStruct IncompleteStruct;
+
+DLL_API IncompleteStruct* createIncompleteStruct();
+DLL_API void useIncompleteStruct(IncompleteStruct* a);
+
+struct DLL_API DuplicateDeclaredStruct;
+
+DLL_API DuplicateDeclaredStruct* createDuplicateDeclaredStruct(int i);
+DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s);
+
+struct DLL_API ForwardDeclaredStruct {
+    int i = 0;
+};
+
+DLL_API ForwardDeclaredStruct* createForwardDeclaredStruct(int i);
+DLL_API int useForwardDeclaredStruct(ForwardDeclaredStruct* s);

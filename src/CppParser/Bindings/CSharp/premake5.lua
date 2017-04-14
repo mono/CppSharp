@@ -8,10 +8,8 @@ project "CppSharp.Parser.CSharp"
 
   dependson { "CppSharp.CppParser" }
 
-  files
-  {
-    "**.lua"
-  }
+  files { "**.lua" }
+  vpaths { ["*"] = "*" }
 
   links { "CppSharp.Runtime" }
 
@@ -20,7 +18,7 @@ project "CppSharp.Parser.CSharp"
   elseif os.is("macosx") then
       local file = io.popen("lipo -info `which mono`")
       local output = file:read('*all')
-      if string.find(output, "x86_64") then  
+      if string.find(output, "x86_64") or _OPTIONS["arch"] == "x64" then  
         files { "x86_64-apple-darwin12.4.0/**.cs" }
       else
         files { "i686-apple-darwin12.4.0/**.cs" }

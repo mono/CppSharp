@@ -94,7 +94,7 @@ namespace CppSharp
             var diagInfo = new DiagnosticInfo
             {
                 Kind = DiagnosticKind.Error,
-                Message = string.Format(msg, args)
+                Message = args.Any() ? string.Format(msg, args) : msg
             };
 
             Implementation.Emit(diagInfo);

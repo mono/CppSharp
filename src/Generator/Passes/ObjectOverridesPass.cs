@@ -28,7 +28,7 @@ namespace CppSharp
             needsStreamInclude = false;
             foreach (var template in output.Outputs)
             {
-                foreach (var block in template.FindBlocks(CLIBlockKind.MethodBody))
+                foreach (var block in template.FindBlocks(BlockKind.MethodBody))
                 {
                     var method = block.Object as Method;
                     VisitMethod(method, block);
@@ -38,7 +38,7 @@ namespace CppSharp
                     var sourcesTemplate = template as CLISources;
                     if (sourcesTemplate != null)
                     {
-                        foreach (var block in sourcesTemplate.FindBlocks(CLIBlockKind.Includes))
+                        foreach (var block in sourcesTemplate.FindBlocks(BlockKind.Includes))
                         {
                             block.WriteLine("#include <sstream>");
                             block.WriteLine("");

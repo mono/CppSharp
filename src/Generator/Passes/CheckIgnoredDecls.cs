@@ -2,11 +2,14 @@
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
+using System.Collections.Generic;
 
 namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
+        public bool CheckDecayedTypes { get; set; } = true;
+
         public bool CheckDeclarationAccess(Declaration decl)
         {
             var generateNonPublicDecls = Options.IsCSharpGenerator;
@@ -36,7 +39,13 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || !@class.IsDependent)
+            if (!base.VisitClassDecl(@class))
+                return false;
+
+            if (@class.IsInjected)
+                injectedClasses.Add(@class);
+
+            if (!@class.IsDependent)
                 return false;
 
             // templates are not supported yet
@@ -135,13 +144,16 @@ namespace CppSharp.Passes
                     return false;
                 }
 
-                var decayedType = param.Type.Desugar() as DecayedType;
-                if (decayedType != null)
+                if (CheckDecayedTypes)
                 {
-                    function.ExplicitlyIgnore();
-                    Diagnostics.Debug("Function '{0}' was ignored due to unsupported decayed type param",
-                        function.Name);
-                    return false;
+                    var decayedType = param.Type.Desugar() as DecayedType;
+                    if (decayedType != null)
+                    {
+                        function.ExplicitlyIgnore();
+                        Diagnostics.Debug("Function '{0}' was ignored due to unsupported decayed type param",
+                            function.Name);
+                        return false;
+                    }
                 }
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
@@ -318,6 +330,16 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitASTContext(ASTContext c)
+        {
+            base.VisitASTContext(c);
+
+            foreach (var injectedClass in injectedClasses)
+                injectedClass.Namespace.Declarations.Remove(injectedClass);
+
+            return true;
+        }
+
         #region Helpers
 
         /// <remarks>
@@ -364,6 +386,14 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            var @class = decl as Class;
+            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
+                !(@class is ClassTemplateSpecialization))
+            {
+                msg = null;
+                return false;
+            }
+
             if (decl.IsIncomplete)
             {
                 msg = "incomplete";
@@ -395,10 +425,15 @@ namespace CppSharp.Passes
 
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
+
+            var @class = (decl as Class);
+            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
+                !(@class is ClassTemplateSpecialization))
+                return true;
             return !decl.IsIncomplete || decl.CompleteDeclaration != null;
         }
 
-        private bool IsTypeExternal(Module module, Type type)
+        public static bool IsTypeExternal(Module module, Type type)
         {
             Declaration declaration;
             if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
@@ -430,5 +465,7 @@ namespace CppSharp.Passes
         }
 
         #endregion
+
+        private HashSet<Declaration> injectedClasses = new HashSet<Declaration>();
     }
 }

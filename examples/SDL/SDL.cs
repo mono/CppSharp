@@ -10,8 +10,8 @@ namespace CppSharp
         public void Setup(Driver driver)
         {
             var options = driver.Options;
-            options.LibraryName = "SDL";
-            options.Headers.Add("SDL.h");
+            var module = options.AddModule("SDL");
+            module.Headers.Add("SDL.h");
             options.OutputDir = "SDL";
 
             var parserOptions = driver.ParserOptions;

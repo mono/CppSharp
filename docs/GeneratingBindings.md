@@ -1,7 +1,7 @@
 # Generating bindings
 
-Suppose we have the following declarations in a file named `Sample.h` and we
-want to bind it to .NET.
+Suppose we have the following declarations in a file named `Sample.h` located
+in `C:\Sample\include` and we want to bind it to .NET.
 
 ```csharp
 class Foo
@@ -76,9 +76,11 @@ void Setup(Driver driver)
 {
     var options = driver.Options;
     options.GeneratorKind = GeneratorKind.CSharp;
-    options.LibraryName = "Sample";
-    options.Headers.Add("Sample.h");
-    options.Libraries.Add("Sample.lib");
+    var module = options.AddModule("Sample");
+    module.IncludeDirs.Add("C:\Sample\include");
+    module.Headers.Add("Sample.h");
+    module.LibraryDirs.Add("C:\Sample\lib");
+    module.Libraries.Add("Sample.lib");
 }
 ```
 

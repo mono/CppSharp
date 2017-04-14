@@ -3,6 +3,10 @@
 
 void DLL_API functionInAnotherUnit();
 
+struct DLL_API ForwardDeclaredStruct;
+
+struct DLL_API DuplicateDeclaredStruct;
+
 template <typename T>
 class TemplateInAnotherUnit
 {

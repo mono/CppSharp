@@ -21,12 +21,11 @@ namespace CppSharp
         {
             OutputDir = Directory.GetCurrentDirectory();
 
-            SystemModule = new Module { OutputNamespace = string.Empty, LibraryName = "Std" };
+            SystemModule = new Module("Std") { OutputNamespace = string.Empty };
             Modules = new List<Module> { SystemModule };
 
             GeneratorKind = GeneratorKind.CSharp;
             OutputInteropIncludes = true;
-            CommentPrefix = "///";
 
             Encoding = Encoding.ASCII;
 
@@ -76,48 +75,56 @@ namespace CppSharp
         public Module SystemModule { get; }
         public List<Module> Modules { get; }
 
+        [Obsolete("Do not use.")]
         public Module MainModule
         {
             get
             {
                 if (Modules.Count == 1)
-                    Modules.Add(new Module());
+                    AddModule("Main");
                 return Modules[1];
             }
         }
 
+        [Obsolete("Use Modules and Module.Headers instead.")]
         public List<string> Headers => MainModule.Headers;
 
+        [Obsolete("Use Modules and Module.Libraries instead.")]
         public List<string> Libraries => MainModule.Libraries;
 
+        [Obsolete("Use Modules and Module.SharedLibraryName instead.")]
         public string SharedLibraryName
         {
             get { return MainModule.SharedLibraryName; }
             set { MainModule.SharedLibraryName = value; }
         }
 
+        [Obsolete("Use Modules and Module.OutputNamespace instead.")]
         public string OutputNamespace
         {
             get { return MainModule.OutputNamespace; }
             set { MainModule.OutputNamespace = value; }
         }
 
+        [Obsolete("Use Modules and Module.LibraryName instead.")]
         public string LibraryName
         {
             get { return MainModule.LibraryName; }
             set { MainModule.LibraryName = value; }
         }
 
-        public string InlinesLibraryName
+        [Obsolete("Use Modules and Module.SymbolsLibraryName instead.")]
+        public string SymbolsLibraryName
         {
-            get { return MainModule.InlinesLibraryName; }
-            set { MainModule.InlinesLibraryName = value; }
+            get { return MainModule.SymbolsLibraryName; }
+            set { MainModule.SymbolsLibraryName = value; }
         }
 
-        public string TemplatesLibraryName
+        public Module AddModule(string libraryName)
         {
-            get { return MainModule.TemplatesLibraryName; }
-            set { MainModule.TemplatesLibraryName = value; }
+            var module = new Module(libraryName);
+            Modules.Add(module);
+            return module;
         }
 
         public bool DoAllModulesHaveLibraries() =>
@@ -161,6 +168,7 @@ namespace CppSharp
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
         public bool GenerateInternalImports;
+        public bool GenerateSequentialLayout { get; set; }
         public bool UseHeaderDirectories;
 
         /// <summary>
@@ -187,7 +195,13 @@ namespace CppSharp
 
         public string IncludePrefix;
         public Func<TranslationUnit, string> GenerateName;
-        public string CommentPrefix;
+
+        /// <summary>
+        /// Set this option to the kind of comments that you want generated
+        /// in the source code. This overrides the default kind set by the
+        /// target generator.
+        /// </summary>
+        public CommentKind? CommentKind;
 
         public Encoding Encoding { get; set; }
 

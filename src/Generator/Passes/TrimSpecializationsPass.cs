@@ -15,6 +15,12 @@ namespace CppSharp.Passes
             @class.Specializations.RemoveAll(
                 s => s.Fields.Any(f => f.Type.IsPrimitiveType(PrimitiveType.Void)));
 
+            foreach (var specialization in @class.Specializations.Where(s => s.Arguments.Any(
+                a => a.Type.Type != null &&
+                    CheckIgnoredDeclsPass.IsTypeExternal(@class.TranslationUnit.Module, a.Type.Type)) ||
+                    @class is ClassTemplatePartialSpecialization))
+                specialization.ExplicitlyIgnore();
+
             if (@class.Specializations.Count == 0)
                 return false;
 

@@ -1,5 +1,15 @@
 -- This module checks for the all the project dependencies.
 
+newoption {
+   trigger     = "arch",
+   default       = "x86",
+   description = "Choose a particular architecture / bitness",
+   allowed = {
+      { "x86",  "x86 32-bits" },
+      { "x64",  "x64 64-bits" },
+   }
+}
+
 action = _ACTION or ""
 
 basedir = path.getdirectory(_PREMAKE_COMMAND)
@@ -75,12 +85,17 @@ function SetupManagedProject()
     configuration(c)
   end
 
-  if action == "vs2015" then
+  if action == "vs2017" then
 
-  configuration "vs2015"
-    framework "4.6"
-
-  end
+        configuration "vs2017"
+			framework "4.6"
+    
+    elseif action == "vs2015" then
+        
+        configuration "vs2015"
+			framework "4.6"
+    
+    end
 
   configuration "vs2013"
     framework "4.5"

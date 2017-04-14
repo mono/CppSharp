@@ -3,14 +3,8 @@ function SetupWrapper(name)
     SetupManagedTestProject()
 
     dependson { name .. ".Native", "NamespacesDerived.Gen" }
-	local runtimeExe = os.is("windows") and "" or "mono --debug "
-	if string.starts(action, "vs") then
-	  local exePath = SafePath("$(TargetDir)NamespacesDerived.Gen.exe")
-	  prebuildcommands { runtimeExe .. exePath }
-	else
-	  local exePath = SafePath("%{cfg.buildtarget.directory}/NamespacesDerived.Gen.exe")
-	  prebuildcommands { runtimeExe .. exePath }
-	end
+
+    SetupTestGeneratorBuildEvent("NamespacesDerived")
 
     files
     {

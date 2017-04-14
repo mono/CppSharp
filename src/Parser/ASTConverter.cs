@@ -887,26 +887,26 @@ namespace CppSharp
             return _rawComment;
         }
 
-        private AST.RawCommentKind ConvertRawCommentKind(RawCommentKind kind)
+        private AST.CommentKind ConvertRawCommentKind(RawCommentKind kind)
         {
             switch (kind)
             {
                 case RawCommentKind.Invalid:
-                    return AST.RawCommentKind.Invalid;
+                    return AST.CommentKind.Invalid;
                 case RawCommentKind.OrdinaryBCPL:
-                    return AST.RawCommentKind.OrdinaryBCPL;
+                    return AST.CommentKind.BCPL;
                 case RawCommentKind.OrdinaryC:
-                    return AST.RawCommentKind.OrdinaryC;
+                    return AST.CommentKind.C;
                 case RawCommentKind.BCPLSlash:
-                    return AST.RawCommentKind.BCPLSlash;
+                    return AST.CommentKind.BCPLSlash;
                 case RawCommentKind.BCPLExcl:
-                    return AST.RawCommentKind.BCPLExcl;
+                    return AST.CommentKind.BCPLExcl;
                 case RawCommentKind.JavaDoc:
-                    return AST.RawCommentKind.JavaDoc;
+                    return AST.CommentKind.JavaDoc;
                 case RawCommentKind.Qt:
-                    return AST.RawCommentKind.Qt;
+                    return AST.CommentKind.Qt;
                 case RawCommentKind.Merged:
-                    return AST.RawCommentKind.Merged;
+                    return AST.CommentKind.Merged;
                 default:
                     throw new ArgumentOutOfRangeException("kind");
             }
@@ -955,6 +955,13 @@ namespace CppSharp
             _decl.OriginalPtr = originalPtr;
 
             NativeObjects.Add(decl);
+
+            for (uint i = 0; i < decl.RedeclarationsCount; i++)
+            {
+                var redecl = decl.GetRedeclarations(i);
+                _decl.Redeclarations.Add(Visit(redecl));
+            }
+
         }
 
         public void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)
@@ -994,7 +1001,7 @@ namespace CppSharp
             {
                 var decl = ctx.GetClasses(i);
                 var _decl = Visit(decl) as AST.Class;
-                if (!_decl.IsIncomplete)
+                if (!_decl.IsIncomplete || _decl.IsOpaque)
                     _ctx.Classes.Add(_decl);
             }
 
@@ -1255,9 +1262,9 @@ namespace CppSharp
                     return AST.CXXOperatorKind.New;
                 case CXXOperatorKind.Delete:
                     return AST.CXXOperatorKind.Delete;
-                case CXXOperatorKind.Array_New:
+                case CXXOperatorKind.ArrayNew:
                     return AST.CXXOperatorKind.Array_New;
-                case CXXOperatorKind.Array_Delete:
+                case CXXOperatorKind.ArrayDelete:
                     return AST.CXXOperatorKind.Array_Delete;
                 case CXXOperatorKind.Plus:
                     return AST.CXXOperatorKind.Plus;
@@ -1394,6 +1401,7 @@ namespace CppSharp
             {
                 var item = decl.GetItems(i);
                 var _item = Visit(item) as AST.Enumeration.Item;
+                _item.Namespace = _enum;
                 _enum.AddItem(_item);
             }
 
@@ -1411,7 +1419,7 @@ namespace CppSharp
             var _item = new AST.Enumeration.Item
             {
                 Expression = decl.Expression,
-                Value = decl.Value
+                Value = decl.Value,
             };
             VisitDeclaration(decl, _item);
 
@@ -1508,6 +1516,7 @@ namespace CppSharp
             _class.HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             _class.HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             _class.IsExternCContext = @class.IsExternCContext;
+            _class.IsInjected = @class.IsInjected;
 
             if (@class.Layout != null)
                 _class.Layout = VisitClassLayout(@class.Layout);

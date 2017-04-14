@@ -58,6 +58,6 @@ namespace CppSharp.Passes
             }
         }
 
-        private static string[] supportedStdTypes = { "basic_string", "allocator" };
+        private static string[] supportedStdTypes = { "basic_string", "allocator", "char_traits" };
     }
 }

@@ -20,15 +20,14 @@ namespace CppSharp.Generator.Tests
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
             ParserOptions.AddIncludeDirs(testsPath);
 
-            Options.Headers.AddRange(files);
+            var module = Options.AddModule("Test");
+            module.Headers.AddRange(files);
 
             Driver = new Driver(Options)
             {
                 ParserOptions = this.ParserOptions
             };
 
-            foreach (var module in Driver.Options.Modules)
-                module.LibraryName = "Test";
             Driver.Setup();
             Driver.BuildParseOptions();
             if (!Driver.ParseCode())

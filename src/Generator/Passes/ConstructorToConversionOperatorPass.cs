@@ -67,9 +67,14 @@ namespace CppSharp.Passes
                 ConversionType = qualifiedCastToType,
                 ReturnType = qualifiedCastToType,
                 OperatorKind = operatorKind,
-                IsExplicit = method.IsExplicit
+                IsExplicit = method.IsExplicit,
+                FunctionType = method.FunctionType
             };
-            conversionOperator.Parameters.Add(new Parameter(parameter) { DefaultArgument = null });
+            conversionOperator.Parameters.Add(new Parameter(parameter)
+                {
+                    DefaultArgument = null,
+                    OriginalDefaultArgument = null
+                });
             ((Class) method.Namespace).Methods.Add(conversionOperator);
             return true;
         }

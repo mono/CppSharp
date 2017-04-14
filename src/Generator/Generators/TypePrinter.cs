@@ -258,6 +258,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public virtual TypePrinterResult VisitTranslationUnit(TranslationUnit unit)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual TypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
         {
             throw new NotImplementedException();

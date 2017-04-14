@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Passes

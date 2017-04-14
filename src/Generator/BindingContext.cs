@@ -31,7 +31,6 @@ namespace CppSharp.Generators
             Delegates = new Dictionary<Function, DelegatesPass.DelegateDefinition>();
 
             TypeMaps = new TypeMapDatabase();
-            TypeMaps.SetupTypeMaps(Options.GeneratorKind);
 
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);

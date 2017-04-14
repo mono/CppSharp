@@ -317,6 +317,8 @@ namespace CppSharp.AST
 
         public List<Attribute> Attributes { get; private set; }
 
+        public List<Declaration> Redeclarations { get; } = new List<Declaration>();
+
         protected Declaration()
         {
             Access = AccessSpecifier.Public;
@@ -367,6 +369,7 @@ namespace CppSharp.AST
     public interface IDeclVisitor<out T>
     {
         T VisitDeclaration(Declaration decl);
+        T VisitTranslationUnit(TranslationUnit unit);
         T VisitClassDecl(Class @class);
         T VisitFieldDecl(Field field);
         T VisitFunctionDecl(Function function);

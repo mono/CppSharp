@@ -64,29 +64,29 @@ namespace CppSharp.Types.Std
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             typePrinter.PushContext(TypePrinterContextKind.Native);
             if (!ctx.Parameter.Type.Desugar().IsAddress())
-                ctx.Return.Write("*({0}*) ", basicString.Visit(typePrinter));
+                ctx.Return.Write($"*({basicString.Visit(typePrinter)}*) ");
             typePrinter.PopContext();
             var allocator = ctx.Context.ASTContext.FindClass("allocator", false, true).First(
                 a => a.IsDependent && a.TranslationUnit.IsSystemHeader);
+            var allocatorChar = allocator.Specializations.First(s => !s.Ignore);
             if (type.IsPointer() || (type.IsReference() && ctx.Declaration is Field))
             {
-                ctx.Return.Write("new {0}({1}, new {2}()).{3}",
-                    basicString.Visit(typePrinter), ctx.Parameter.Name,
-                    allocator.Visit(typePrinter), Helpers.InstanceIdentifier);
+                ctx.Return.Write($@"new {basicString.Visit(typePrinter)}({
+                    ctx.Parameter.Name}, new {allocatorChar.Visit(typePrinter)}()).{
+                    Helpers.InstanceIdentifier}");
             }
             else
             {
-                string varAllocator = "__allocator" + ctx.ParameterIndex;
-                string varBasicString = "__basicString" + ctx.ParameterIndex;
-                ctx.SupportBefore.WriteLine("var {0} = new {1}();",
-                    varAllocator, allocator.Visit(typePrinter));
-                ctx.SupportBefore.WriteLine("var {0} = new {1}({2}, {3});",
-                    varBasicString, basicString.Visit(typePrinter),
-                    ctx.Parameter.Name, varAllocator);
-                ctx.Return.Write("{0}.{1}", varBasicString, Helpers.InstanceIdentifier);
-                ctx.Cleanup.WriteLine("{0}.Dispose({1});", varBasicString,
-                    type.IsPointer() ? "true" : "false");
-                ctx.Cleanup.WriteLine("{0}.Dispose();", varAllocator);
+                var varAllocator = $"__allocator{ctx.ParameterIndex}";
+                var varBasicString = $"__basicString{ctx.ParameterIndex}";
+                ctx.SupportBefore.WriteLine($@"var {varAllocator} = new {
+                    allocatorChar.Visit(typePrinter)}();");
+                ctx.SupportBefore.WriteLine($@"var {varBasicString} = new {
+                    basicString.Visit(typePrinter)}({ctx.Parameter.Name}, {varAllocator});");
+                ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
+                ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
+                    (type.IsPointer() ? "true" : "false")});");
+                ctx.Cleanup.WriteLine($"{varAllocator}.Dispose();");
             }
         }
 

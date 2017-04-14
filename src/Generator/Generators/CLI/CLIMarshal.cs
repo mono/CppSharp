@@ -249,7 +249,7 @@ namespace CppSharp.Generators.CLI
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
             {
-                Context.Return.Write("safe_cast<{0}>(", typedef);
+                Context.Return.Write($"{Context.ReturnVarName} == nullptr ? nullptr : safe_cast<{typedef}>(");
                 Context.Return.Write("System::Runtime::InteropServices::Marshal::");
                 Context.Return.Write("GetDelegateForFunctionPointer(");
                 Context.Return.Write("IntPtr({0}), {1}::typeid))",Context.ReturnVarName,

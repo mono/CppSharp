@@ -47,51 +47,54 @@ function clone_llvm()
   git.reset_hard(llvm, llvm_release)
   git.reset_hard(clang, clang_release)
 end
+function get_vs_version()
+  local function map_msvc_to_vs_version(major, minor)
+    if major == "19" and minor == "10" then return "vs2017"
+    elseif major == "19" then return "vs2015"
+    elseif major == "18" then return "vs2013"
+    elseif major == "17" then return "vs2012"
+    else error("Unknown MSVC compiler version, run in VS command prompt.") end
+  end
 
-function get_toolset_configuration_name()
+  local out = outputof("cl")
+  local major, minor = string.match(out, '(%d+).(%d+).%d+.?%d*%s+')
+  
+  return map_msvc_to_vs_version(major, minor)
+end
+
+function get_toolset_configuration_name(arch)
+  if not arch then
+    arch = _OPTIONS["arch"]
+  end
+
   if os.is("windows") then
-    local function get_vs_version(ver)
-      if     ver == "19" then return "vs2015"
-      elseif ver == "18" then return "vs2013"
-      elseif ver == "17" then return "vs2012"
-      else error("Unknown MSVC compiler version, run in VS command prompt.") end
-    end
-
     local vsver = _ACTION
-    local arch = "x86"
 
     if not string.starts(vsver, "vs") then
-      local out = outputof("cl")
-      local ver, arch = string.match(out, '(%d+).%d+.%d+.?%d*%s+%w*%s+(%w+)')
-      vsver = get_vs_version(ver)
+      vsver = get_vs_version()
     end
 
     return table.concat({vsver, arch}, "-")
   end
   -- FIXME: Implement for non-Windows platforms
-  return nil
+  return table.concat({arch}, "-")
 end
 
 -- Returns a string describing the package configuration.
 -- Example: llvm-f79c5c-windows-vs2015-x86-Debug
-function get_llvm_package_name(rev, conf, toolset)
+function get_llvm_package_name(rev, conf, arch)
   if not rev then
   	rev = get_llvm_rev()
   end
   rev = string.sub(rev, 0, 6)
 
-  if not conf then
-  	conf = get_llvm_configuration_name()
-  end
-
-  if not toolset then
-    toolset = get_toolset_configuration_name()
-  end
-
   local components = {"llvm", rev, os.get()}
 
-  if toolset then
-    table.insert(components, toolset)
+  local toolset = get_toolset_configuration_name(arch)
+  table.insert(components, toolset)
+
+  if not conf then
+  	conf = get_llvm_configuration_name()
   end
 
   table.insert(components, conf)
@@ -134,7 +137,7 @@ function download_llvm()
           "Please upgrade to a newer VS version or compile LLVM manually.")
   end
 
-  local base = "https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm/"
+  local base = "https://github.com/mono/CppSharp/releases/download/CppSharp/"
   local pkg_name = get_llvm_package_name()
   local archive = pkg_name .. archive_ext
 
@@ -245,6 +248,17 @@ function clean_llvm(llvm_build)
 	if os.isdir(llvm_build) then os.rmdir(llvm_build) end
 end
 
+function get_cmake_generator()
+	local vsver = get_vs_version()
+	if vsver == "vs2017" then
+		return "Visual Studio 15 2017"
+	elseif vsver == "vs2015" then
+		return "Visual Studio 14 2015"
+	else
+		error("Cannot map to CMake configuration due to unknown MSVC version")
+	end
+end
+
 function build_llvm(llvm_build)
 	if not os.isdir(llvm) then
 		print("LLVM/Clang directory does not exist, cloning...")
@@ -256,12 +270,16 @@ function build_llvm(llvm_build)
 	local conf = get_llvm_configuration_name()
 	local use_msbuild = false
 	if os.is("windows") and use_msbuild then
-		cmake("Visual Studio 14 2015", conf, llvm_build)
+		cmake(get_cmake_generator(), conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
 		local options = os.is("macosx") and
-			"-DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true" or "" 
+			"-DLLVM_ENABLE_LIBCXX=true" or ""
+		local is32bits = _OPTIONS["arch"] == "x86"
+		if is32bits then
+			options = options .. is32bits and " -DLLVM_BUILD_32_BITS=true" or ""
+		end
 		cmake("Ninja", conf, llvm_build, options)
 		ninja(llvm_build)
 		ninja(llvm_build, "clang-headers")

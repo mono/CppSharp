@@ -456,6 +456,10 @@ QRect::QRect(QPoint p, QSize s)
 {
 }
 
+DefaultZeroMappedToEnum::DefaultZeroMappedToEnum(int*)
+{
+}
+
 MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int bottom)
 {
 }
@@ -555,6 +559,10 @@ void MethodsWithDefaultValues::defaultMappedToZeroEnum(QFlags<Flags> qFlags)
 }
 
 void MethodsWithDefaultValues::defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags)
+{
+}
+
+void MethodsWithDefaultValues::defaultZeroMappedToEnumAssignedWithCtor(DefaultZeroMappedToEnum defaultZeroMappedToEnum)
 {
 }
 
@@ -1297,4 +1305,48 @@ int HasGetterAndOverriddenSetter::baseSetter()
 void HasGetterAndOverriddenSetter::setBaseSetter(int value)
 {
     field = value;
+}
+
+void hasArrayOfConstChar(const char* const arrayOfConstChar[])
+{
+}
+
+struct IncompleteStruct {};
+
+IncompleteStruct* createIncompleteStruct()
+{
+    return new IncompleteStruct();
+}
+
+DLL_API void useIncompleteStruct(IncompleteStruct * a)
+{
+    return;
+}
+
+struct DuplicateDeclaredStruct {
+    int i = 0;
+};
+
+DLL_API ForwardDeclaredStruct* createForwardDeclaredStruct(int i)
+{
+    auto ptr = new ForwardDeclaredStruct();
+    ptr->i = i;
+    return ptr;
+}
+
+DLL_API int useForwardDeclaredStruct(ForwardDeclaredStruct* s)
+{
+    return s->i;
+}
+
+DLL_API DuplicateDeclaredStruct* createDuplicateDeclaredStruct(int i)
+{
+    auto ptr = new DuplicateDeclaredStruct();
+    ptr->i = i;
+    return ptr;
+}
+
+DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s)
+{
+    return s->i;
 }

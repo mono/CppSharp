@@ -38,7 +38,14 @@ namespace CppSharp.AST
             if (templateSpecializationType != null)
                 templateArgs = templateSpecializationType.Arguments;
             else
-                templateArgs = ((ClassTemplateSpecialization) ((TagType) type).Declaration).Arguments;
+            {
+                var declaration = ((TagType) type).Declaration;
+                var specialization = declaration as ClassTemplateSpecialization;
+                if (specialization == null)
+                    return string.Join(", ",
+                        ((Class) declaration).TemplateParameters.Select(t => t.Name));
+                templateArgs = ((ClassTemplateSpecialization) declaration).Arguments;
+            }
 
             var paramsList = new List<string>();
             foreach (var arg in templateArgs.Where(a => a.Kind == TemplateArgument.ArgumentKind.Type))

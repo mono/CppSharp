@@ -24,9 +24,10 @@ namespace CppSharp.Passes
         public override bool VisitASTContext(ASTContext context)
         {
             // we need this one for marshalling std::string
-            foreach (var allocator in context.FindClass("allocator", false, true).Where(
-                a => a.TranslationUnit.IsSystemHeader))
-                usedStdTypes.Add(allocator);
+            foreach (var name in new[] { "allocator", "char_traits" })
+                foreach (var usedStdType in context.FindClass(name, false, true).Where(
+                    a => a.TranslationUnit.IsSystemHeader))
+                    usedStdTypes.Add(usedStdType);
 
             var result = base.VisitASTContext(context);
 

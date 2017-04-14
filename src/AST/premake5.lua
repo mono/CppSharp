@@ -6,4 +6,6 @@ project "CppSharp.AST"
   SetupManagedProject()
 
   files { "*.cs" }
+  vpaths { ["*"] = "*" }
+
   links { "System", "System.Core" }

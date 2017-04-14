@@ -93,8 +93,25 @@ namespace CppSharp.AST
         // True if the type is to be treated as a union.
         public bool IsUnion;
 
+        // True if the class is final / sealed.
+        public bool IsFinal { get; set; }
+
+        private bool? isOpaque = null;
+
+        public bool IsInjected { get; set; }
+
         // True if the type is to be treated as opaque.
-        public bool IsOpaque;
+        public bool IsOpaque
+        {
+            get
+            {
+                return isOpaque == null ? IsIncomplete && CompleteDeclaration == null : isOpaque.Value;
+            }
+            set
+            {
+                isOpaque = value;
+            }
+        }
 
         // True if the class is dynamic.
         public bool IsDynamic;
@@ -123,10 +140,11 @@ namespace CppSharp.AST
             Specifiers = new List<AccessSpecifierDecl>();
             IsAbstract = false;
             IsUnion = false;
-            IsOpaque = false;
+            IsFinal = false;
             IsPOD = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();
+            templateParameters = new List<Declaration>();
             specializations = new List<ClassTemplateSpecialization>();
         }
 
@@ -219,6 +237,24 @@ namespace CppSharp.AST
         }
 
         /// <summary>
+        /// If this class is a template, this list contains all of its template parameters.
+        /// <para>
+        /// <see cref="ClassTemplate"/> cannot be relied upon to contain all of them because
+        /// ClassTemplateDecl in Clang is not a complete declaration, it only serves to forward template classes.
+        /// </para>
+        /// </summary>
+        public List<Declaration> TemplateParameters
+        {
+            get
+            {
+                if (!IsDependent)
+                    throw new InvalidOperationException(
+                        "Only dependent classes have template parameters.");
+                return templateParameters;
+            }
+        }
+
+        /// <summary>
         /// If this class is a template, this list contains all of its specializations.
         /// <see cref="ClassTemplate"/> cannot be relied upon to contain all of them because
         /// ClassTemplateDecl in Clang is not a complete declaration, it only serves to forward template classes.
@@ -274,6 +310,7 @@ namespace CppSharp.AST
             return visitor.VisitClassDecl(this);
         }
 
+        private List<Declaration> templateParameters;
         private List<ClassTemplateSpecialization> specializations;
     }
 }

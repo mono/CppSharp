@@ -140,8 +140,16 @@ namespace CppSharp.Types
 
             foreach (var assembly in loadedAssemblies)
             {
-                var types = assembly.FindDerivedTypes(typeof(TypeMap));
-                SetupTypeMaps(types, generatorKind);
+                try
+                {
+                    var types = assembly.FindDerivedTypes(typeof(TypeMap));
+                    SetupTypeMaps(types, generatorKind);
+                }
+                catch (System.Reflection.ReflectionTypeLoadException ex)
+                {
+                    Diagnostics.Error("Error loading type maps from assembly '{0}': {1}",
+                        assembly.GetName().Name, ex.Message);
+                }
             }
         }
 
@@ -154,7 +162,7 @@ namespace CppSharp.Types
                 {
                     if (attr.GeneratorKind == 0 || attr.GeneratorKind == generatorKind)
                     {
-                        TypeMaps[attr.Type] = typeMap;                        
+                        TypeMaps[attr.Type] = typeMap;
                     }
                 }
             }
