@@ -3547,7 +3547,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
 
         if (WalkRedecls)
             for (auto redecl : RD->redecls())
-                Class->Redeclarations.push_back(WalkDeclaration(redecl, CanBeDefinition, false));
+                Class->Redeclarations.push_back(WalkDeclaration(redecl, false, false));
 
         // We store a definition order index into the declarations.
         // This is needed because declarations are added to their contexts as
