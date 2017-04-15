@@ -77,6 +77,23 @@ namespace CppSharp
             User = 4
         };
 
+        public ref class Parser : ICppInstance
+        {
+        public:
+
+            property ::CppSharp::CppParser::Parser* NativePtr;
+            property System::IntPtr __Instance
+            {
+                virtual System::IntPtr get();
+                virtual void set(System::IntPtr instance);
+            }
+
+            Parser(::CppSharp::CppParser::Parser* native);
+            static Parser^ __CreateInstance(::System::IntPtr native);
+        protected:
+        bool __ownsNativeInstance;
+        };
+
         public ref class CppParserOptions : ICppInstance
         {
         public:
@@ -331,6 +348,12 @@ namespace CppSharp
             {
                 CppSharp::Parser::AST::NativeLibrary^ get();
                 void set(CppSharp::Parser::AST::NativeLibrary^);
+            }
+
+            property CppSharp::Parser::Parser^ CodeParser
+            {
+                CppSharp::Parser::Parser^ get();
+                void set(CppSharp::Parser::Parser^);
             }
 
             property unsigned int DiagnosticsCount

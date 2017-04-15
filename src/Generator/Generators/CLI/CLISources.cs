@@ -85,10 +85,8 @@ namespace CppSharp.Generators.CLI
             PushBlock(BlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
             {
-                if (!@class.IsGenerated || @class.IsDependent)
-                    continue;
-
-                if (@class.IsOpaque || @class.IsIncomplete)
+                if ((!@class.IsOpaque && (@class.IsIncomplete || !@class.IsGenerated)) || 
+                    @class.IsDependent)
                     continue;
 
                 GenerateClass(@class);
