@@ -321,8 +321,8 @@ namespace CppSharp.Generators.CLI
         public override TypePrinterResult VisitDependentNameType(
             DependentNameType dependent, TypeQualifiers quals)
         {
-            return dependent.Desugared.Type != null
-                ? dependent.Desugared.Visit(this) : string.Empty;
+            return dependent.Qualifier.Type != null ?
+                dependent.Qualifier.Visit(this) : string.Empty;
         }
 
         public override TypePrinterResult VisitPackExpansionType(

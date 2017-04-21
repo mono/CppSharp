@@ -2543,6 +2543,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
             TPT->parameter = WalkTypeTemplateParameter(TTTL.getDecl());
         }
+        else if (TP->getDecl())
+            TPT->parameter = WalkTypeTemplateParameter(TP->getDecl());
         TPT->depth = TP->getDepth();
         TPT->index = TP->getIndex();
         TPT->isParameterPack = TP->isParameterPack();
@@ -2584,8 +2586,13 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     {
         auto DN = Type->getAs<clang::DependentNameType>();
         auto DNT = new DependentNameType();
-        if (DN->isSugared())
-            DNT->desugared = GetQualifiedType(DN->desugar(), TL);
+        switch (DN->getQualifier()->getKind())
+        {
+        case clang::NestedNameSpecifier::SpecifierKind::TypeSpec:
+        case clang::NestedNameSpecifier::SpecifierKind::TypeSpecWithTemplate:
+            DNT->qualifier = GetQualifiedType(clang::QualType(DN->getQualifier()->getAsType(), 0));
+            break;
+        }
 
         Ty = DNT;
         break;

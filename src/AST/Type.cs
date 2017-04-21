@@ -941,7 +941,7 @@ namespace CppSharp.AST
         {
         }
 
-        public QualifiedType Desugared { get; set; }
+        public QualifiedType Qualifier { get; set; }
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())

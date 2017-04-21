@@ -702,7 +702,7 @@ namespace CppSharp
         {
             var _type = new AST.DependentNameType();
             VisitType(type, _type);
-            _type.Desugared = VisitQualified(type.Desugared);
+            _type.Qualifier = VisitQualified(type.Qualifier);
             return _type;
         }
 
