@@ -252,12 +252,19 @@ namespace CppSharp
             {
                 if (windowsSdkMajorVer >= 8)
                 {
-                    var shared = Path.Combine(windowsSdkDir, "include", "shared");
-                    var um = Path.Combine(windowsSdkDir, "include", "um");
-                    var winrt = Path.Combine(windowsSdkDir, "include", "winrt");
-                    if (Directory.Exists(shared) && Directory.Exists(um) &&
-                        Directory.Exists(winrt))
-                        return new[] { shared, um, winrt };
+                    var windowsSdkIncludeDir = Path.Combine(windowsSdkDir, "include");
+                    IEnumerable<string> searchDirs = new[] { windowsSdkIncludeDir };
+                    if (Directory.Exists(windowsSdkIncludeDir))
+                        searchDirs = searchDirs.Union(Directory.EnumerateDirectories(windowsSdkIncludeDir));
+                    foreach (var dir in searchDirs)
+                    {
+                        var shared = Path.Combine(dir, "shared");
+                        var um = Path.Combine(dir, "um");
+                        var winrt = Path.Combine(dir, "winrt");
+                        if (Directory.Exists(shared) && Directory.Exists(um) &&
+                            Directory.Exists(winrt))
+                            return new[] { shared, um, winrt };
+                    }
                 }
                 else
                 {
