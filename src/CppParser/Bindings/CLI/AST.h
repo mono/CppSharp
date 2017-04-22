@@ -978,7 +978,7 @@ namespace CppSharp
 
                 ~DependentNameType();
 
-                property CppSharp::Parser::AST::QualifiedType^ Desugared
+                property CppSharp::Parser::AST::QualifiedType^ Qualifier
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);

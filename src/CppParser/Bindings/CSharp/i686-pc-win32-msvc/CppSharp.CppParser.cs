@@ -2562,7 +2562,7 @@ namespace CppSharp
                     public byte isDependent;
 
                     [FieldOffset(8)]
-                    public global::CppSharp.Parser.AST.QualifiedType.__Internal desugared;
+                    public global::CppSharp.Parser.AST.QualifiedType.__Internal qualifier;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2629,16 +2629,16 @@ namespace CppSharp
                     __Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
-                public global::CppSharp.Parser.AST.QualifiedType Desugared
+                public global::CppSharp.Parser.AST.QualifiedType Qualifier
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->desugared);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->qualifier);
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->qualifier = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }

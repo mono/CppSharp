@@ -197,7 +197,7 @@ namespace CppSharp.AST
 
         public virtual string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
         {
-            if (param.Parameter.Name == null)
+            if (param.Parameter == null || param.Parameter.Name == null)
                 return string.Empty;
 
             return param.Parameter.Name;
@@ -216,7 +216,7 @@ namespace CppSharp.AST
 
         public virtual string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
-            return dependent.Desugared.Type != null ? dependent.Desugared.Visit(this) : string.Empty;
+            return dependent.Qualifier.Type != null ? dependent.Qualifier.Visit(this) : string.Empty;
         }
 
         public virtual string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)

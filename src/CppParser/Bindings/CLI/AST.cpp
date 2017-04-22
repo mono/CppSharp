@@ -1108,14 +1108,14 @@ CppSharp::Parser::AST::DependentNameType::DependentNameType(CppSharp::Parser::AS
     NativePtr = new ::CppSharp::CppParser::AST::DependentNameType(__arg0);
 }
 
-CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::DependentNameType::Desugared::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::DependentNameType::Qualifier::get()
 {
-    return (&((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->desugared == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->desugared);
+    return (&((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->qualifier == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->qualifier);
 }
 
-void CppSharp::Parser::AST::DependentNameType::Desugared::set(CppSharp::Parser::AST::QualifiedType^ value)
+void CppSharp::Parser::AST::DependentNameType::Qualifier::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->desugared = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->qualifier = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::PackExpansionType::PackExpansionType(::CppSharp::CppParser::AST::PackExpansionType* native)
