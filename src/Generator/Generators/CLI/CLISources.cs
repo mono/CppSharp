@@ -210,7 +210,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var method in @class.Methods.Where(m => @class == realOwner || !m.IsOperator))
             {
-                if (ASTUtils.CheckIgnoreMethod(method, Options))
+                if (ASTUtils.CheckIgnoreMethod(method, Options) || CLIHeaders.FunctionIgnored(method))
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
@@ -237,7 +237,8 @@ namespace CppSharp.Generators.CLI
             }
 
             foreach (var property in @class.Properties.Where(
-                p => !ASTUtils.CheckIgnoreProperty(p) && !p.IsInRefTypeAndBackedByValueClassField()))
+                p => !ASTUtils.CheckIgnoreProperty(p) && !p.IsInRefTypeAndBackedByValueClassField() &&
+                        !CLIHeaders.TypeIgnored(p.Type)))
                 GenerateProperty(property, realOwner);
         }
 
@@ -686,7 +687,8 @@ namespace CppSharp.Generators.CLI
             }
 
             int paramIndex = 0;
-            foreach (var property in @class.Properties.Where( p => !ASTUtils.CheckIgnoreProperty(p)))
+            foreach (var property in @class.Properties.Where( 
+                p => !ASTUtils.CheckIgnoreProperty(p) && !CLIHeaders.TypeIgnored(p.Type)))
             {
                 if (property.Field == null)
                     continue;
@@ -742,6 +744,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method, Class @class)
         {
+            if (CLIHeaders.FunctionIgnored(method))
+                return;
             PushBlock(BlockKind.Method, method);
 
             if (method.IsConstructor || method.IsDestructor ||
@@ -894,7 +898,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunction(Function function, DeclarationContext @namespace)
         {
-            if (!function.IsGenerated)
+            if (!function.IsGenerated || CLIHeaders.FunctionIgnored(function))
                 return;
 
             GenerateDeclarationCommon(function);

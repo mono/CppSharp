@@ -14,3 +14,15 @@ void testFreeFunction()
 {
 
 }
+
+struct IncompleteStruct {};
+
+IncompleteStruct* createIncompleteStruct()
+{
+    return new IncompleteStruct();
+}
+
+DLL_API void useIncompleteStruct(IncompleteStruct * a)
+{
+    return;
+}
