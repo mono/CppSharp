@@ -49,3 +49,10 @@ std::ostream& operator<<(std::ostream& os, const Date& dt)
 }
 
 DLL_API void testFreeFunction();
+
+struct CompleteIncompleteStruct;
+
+typedef struct IncompleteStruct IncompleteStruct;
+
+DLL_API IncompleteStruct* createIncompleteStruct();
+DLL_API void useIncompleteStruct(IncompleteStruct* a);

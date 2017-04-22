@@ -394,7 +394,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ASTUtils.CheckIgnoreMethod(ctor, Options))
+                if (ASTUtils.CheckIgnoreMethod(ctor, Options) || FunctionIgnored(ctor))
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
@@ -526,7 +526,7 @@ namespace CppSharp.Generators.CLI
             var staticMethods = new List<Method>();
             foreach (var method in methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method, Options))
+                if (ASTUtils.CheckIgnoreMethod(method, Options) || FunctionIgnored(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -622,7 +622,8 @@ namespace CppSharp.Generators.CLI
             }
 
             PushIndent();
-            foreach (var prop in @class.Properties.Where(prop => !ASTUtils.CheckIgnoreProperty(prop)))
+            foreach (var prop in @class.Properties.Where(
+                prop => !ASTUtils.CheckIgnoreProperty(prop) && !TypeIgnored(prop.Type)))
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
@@ -657,7 +658,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateProperty(Property property)
         {
-            if (!(property.HasGetter || property.HasSetter))
+            if (!(property.HasGetter || property.HasSetter) || TypeIgnored(property.Type))
                 return;
 
             PushBlock(BlockKind.Property, property);
@@ -718,7 +719,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method)
         {
-            if (ASTUtils.CheckIgnoreMethod(method, Options)) return;
+            if (ASTUtils.CheckIgnoreMethod(method, Options) || FunctionIgnored(method)) return;
 
             PushBlock(BlockKind.Method, method);
             GenerateDeclarationCommon(method);
@@ -789,7 +790,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunction(Function function)
         {
-            if (!function.IsGenerated)
+            if (!function.IsGenerated || FunctionIgnored(function))
                 return;
 
             PushBlock(BlockKind.Function, function);
@@ -804,6 +805,20 @@ namespace CppSharp.Generators.CLI
             WriteLine(");");
 
             PopBlock();
+        }
+
+        public static bool FunctionIgnored(Function function)
+        {
+            return TypeIgnored(function.ReturnType.Type) ||
+                function.Parameters.Any(param => TypeIgnored(param.Type));
+        }
+
+        public static bool TypeIgnored(CppSharp.AST.Type type)
+        {
+            var desugared = type.Desugar();
+            var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
+            Class @class;
+            return finalType.TryGetClass(out @class) && @class.IsIncomplete;
         }
 
         public void GenerateEnum(Enumeration @enum)
