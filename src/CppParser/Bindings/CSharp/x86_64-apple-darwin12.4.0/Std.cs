@@ -122,6 +122,21 @@ namespace Std
 {
     namespace __1
     {
+        namespace Vector
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            public unsafe partial struct __Internal
+            {
+                [FieldOffset(0)]
+                public global::System.IntPtr __begin_;
+
+                [FieldOffset(8)]
+                public global::System.IntPtr __end_;
+
+                [FieldOffset(16)]
+                internal global::Std.__1.CompressedPair.__Internal __end_cap_;
+            }
+        }
     }
 }
 
@@ -134,6 +149,14 @@ namespace Std
     namespace __1
     {
         namespace Tuple
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
+
+        namespace TupleImpl
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public unsafe partial struct __Internal
