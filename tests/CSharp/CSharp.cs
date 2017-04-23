@@ -33,7 +33,7 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("QPoint");
             ctx.SetClassAsValueType("QSize");
             ctx.SetClassAsValueType("QRect");
-
+            ctx.SetClassAsValueType("StructTestArrayTypeFromTypedef");
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
         }
 
