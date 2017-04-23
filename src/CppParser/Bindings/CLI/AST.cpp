@@ -1089,6 +1089,12 @@ CppSharp::Parser::AST::DependentNameType^ CppSharp::Parser::AST::DependentNameTy
 
 CppSharp::Parser::AST::DependentNameType::~DependentNameType()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::DependentNameType*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::DependentNameType::DependentNameType()
@@ -1116,6 +1122,20 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::DependentNameType::
 void CppSharp::Parser::AST::DependentNameType::Qualifier::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
     ((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->qualifier = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+System::String^ CppSharp::Parser::AST::DependentNameType::Identifier::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->getIdentifier();
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::AST::DependentNameType::Identifier::set(System::String^ s)
+{
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::AST::DependentNameType*)NativePtr)->setIdentifier(__arg0);
 }
 
 CppSharp::Parser::AST::PackExpansionType::PackExpansionType(::CppSharp::CppParser::AST::PackExpansionType* native)

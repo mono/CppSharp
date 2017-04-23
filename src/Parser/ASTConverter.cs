@@ -703,6 +703,7 @@ namespace CppSharp
             var _type = new AST.DependentNameType();
             VisitType(type, _type);
             _type.Qualifier = VisitQualified(type.Qualifier);
+            _type.Identifier = type.Identifier;
             return _type;
         }
 

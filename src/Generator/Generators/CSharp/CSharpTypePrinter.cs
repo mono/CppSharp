@@ -442,7 +442,9 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals)
         {
-            return dependent.Qualifier.Type != null ? dependent.Qualifier.Visit(this) : string.Empty;
+            if (dependent.Qualifier.Type == null)
+                return dependent.Identifier;
+            return $"{dependent.Qualifier.Visit(this)}.{dependent.Identifier}";
         }
 
         public override TypePrinterResult VisitPackExpansionType(PackExpansionType type,

@@ -2593,6 +2593,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             DNT->qualifier = GetQualifiedType(clang::QualType(DN->getQualifier()->getAsType(), 0));
             break;
         }
+        DNT->Identifier = DN->getIdentifier()->getName();
 
         Ty = DNT;
         break;

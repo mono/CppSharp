@@ -279,10 +279,10 @@ namespace CppSharp.Generator.Tests.AST
             var paramType = ctor.Parameters[0].Type as TemplateParameterType;
             Assert.IsNotNull(paramType);
             Assert.AreEqual(templateTypeParameter, paramType.Parameter);
-            Assert.AreEqual(3, template.Specializations.Count);
+            Assert.AreEqual(5, template.Specializations.Count);
             Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[0].SpecializationKind);
-            Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[1].SpecializationKind);
-            Assert.AreEqual(TemplateSpecializationKind.Undeclared, template.Specializations[2].SpecializationKind);
+            Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[3].SpecializationKind);
+            Assert.AreEqual(TemplateSpecializationKind.Undeclared, template.Specializations[4].SpecializationKind);
             var typeDef = AstContext.FindTypedef("TestTemplateClassInt").FirstOrDefault();
             Assert.IsNotNull(typeDef, "Couldn't find TestTemplateClassInt typedef.");
             var integerInst = typeDef.Type as TemplateSpecializationType;
@@ -335,7 +335,6 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestAmbiguity()
         {
-            new CleanUnitPass { Context = Driver.Context }.VisitASTContext(AstContext);
             new CheckAmbiguousFunctions { Context = Driver.Context }.VisitASTContext(AstContext);
             Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);
         }
@@ -501,7 +500,7 @@ namespace CppSharp.Generator.Tests.AST
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestTemplateClass").First();
             var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
-            Assert.That(template.Specializations[1].Classes[0].Visit(cppTypePrinter),
+            Assert.That(template.Specializations[3].Classes[0].Visit(cppTypePrinter),
                 Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
         }
 
@@ -512,6 +511,14 @@ namespace CppSharp.Generator.Tests.AST
             var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
             Assert.That(functionWithSpecializationArg.Parameters[0].Visit(cppTypePrinter),
                 Is.EqualTo("const TestTemplateClass<int>"));
+        }
+
+        [Test]
+        public void TestDependentNameType()
+        {
+            var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
+            Assert.That(template.TemplatedClass.Fields[0].Type.ToString(),
+                Is.EqualTo("global::Test.TestTemplateClass<T>.NestedInTemplate"));
         }
     }
 }

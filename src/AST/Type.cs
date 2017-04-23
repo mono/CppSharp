@@ -943,6 +943,8 @@ namespace CppSharp.AST
 
         public QualifiedType Qualifier { get; set; }
 
+        public string Identifier { get; set; }
+
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {

@@ -983,6 +983,12 @@ namespace CppSharp
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
                 }
+
+                property System::String^ Identifier
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
             };
 
             public ref class PackExpansionType : CppSharp::Parser::AST::Type

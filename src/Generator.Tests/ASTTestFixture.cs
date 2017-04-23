@@ -2,6 +2,7 @@ using System;
 using CppSharp.AST;
 using CppSharp.Utils;
 using CppSharp.Parser;
+using CppSharp.Passes;
 
 namespace CppSharp.Generator.Tests
 {
@@ -34,6 +35,8 @@ namespace CppSharp.Generator.Tests
                 throw new Exception("Error parsing the code");
 
             AstContext = Driver.Context.ASTContext;
+            new CleanUnitPass { Context = Driver.Context }.VisitASTContext(AstContext);
+            new ResolveIncompleteDeclsPass { Context = Driver.Context }.VisitASTContext(AstContext);
         }
     }
 }

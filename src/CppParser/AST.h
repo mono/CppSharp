@@ -258,7 +258,9 @@ class CS_API DependentNameType : public Type
 {
 public:
     DECLARE_TYPE_KIND(DependentName)
+    ~DependentNameType();
     QualifiedType qualifier;
+    STRING(Identifier)
 };
 
 class CS_API PackExpansionType : public Type

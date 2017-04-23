@@ -2552,7 +2552,7 @@ namespace CppSharp
 
             public unsafe partial class DependentNameType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -2564,6 +2564,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::CppSharp.Parser.AST.QualifiedType.__Internal qualifier;
 
+                    [FieldOffset(24)]
+                    public global::Std.BasicString.__Internal Identifier;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -2573,6 +2576,21 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QEAA@AEBV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="??1DependentNameType@AST@CppParser@CppSharp@@QEAA@XZ")]
+                    internal static extern void dtor_0(global::System.IntPtr instance, int delete);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="?getIdentifier@DependentNameType@AST@CppParser@CppSharp@@QEAAPEBDXZ")]
+                    internal static extern global::System.IntPtr Identifier_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="?setIdentifier@DependentNameType@AST@CppParser@CppSharp@@QEAAXPEBD@Z")]
+                    internal static extern void SetIdentifier_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
                 }
 
                 internal static new global::CppSharp.Parser.AST.DependentNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
@@ -2629,6 +2647,16 @@ namespace CppSharp
                     __Internal.cctor_1((__Instance + __PointerAdjustment), __arg0);
                 }
 
+                public override void Dispose(bool disposing)
+                {
+                    global::CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public global::CppSharp.Parser.AST.QualifiedType Qualifier
                 {
                     get
@@ -2639,6 +2667,20 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->qualifier = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                    }
+                }
+
+                public string Identifier
+                {
+                    get
+                    {
+                        var __ret = __Internal.Identifier_0((__Instance + __PointerAdjustment));
+                        return Marshal.PtrToStringAnsi(__ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetIdentifier_0((__Instance + __PointerAdjustment), value);
                     }
                 }
             }

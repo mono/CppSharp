@@ -121,6 +121,7 @@ class TestSpecializationArguments
 {
 public:
     TestSpecializationArguments() {}
+    typename TestTemplateClass<T>::NestedInTemplate n;
 };
 
 void instantiatesTemplate(TestSpecializationArguments<int> i, TestSpecializationArguments<float> f)

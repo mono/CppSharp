@@ -185,6 +185,10 @@ InjectedClassNameType::InjectedClassNameType()
 
 DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
+DependentNameType::~DependentNameType() {}
+
+DEF_STRING(DependentNameType, Identifier)
+
 PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
 
 UnaryTransformType::UnaryTransformType() : Type(TypeKind::UnaryTransform) {}
