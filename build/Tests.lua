@@ -73,7 +73,7 @@ function SetupTestGeneratorProject(name, depends)
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  local monoExe = _OPTIONS["arch"] == "x64" and "mono64" or "mono"
+  local monoExe = target_architecture() == "x64" and "mono64" or "mono"
   local runtimeExe = os.is("windows") and "" or monoExe .. " --debug "
   if string.starts(action, "vs") then
     local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
