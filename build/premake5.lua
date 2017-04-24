@@ -10,7 +10,7 @@ dofile "LLVM.lua"
 solution "CppSharp"
 
   configurations { "Debug", "Release" }
-  platforms { "x32", "x64" }
+  platforms { target_architecture() }
 
   characterset "Unicode"
   symbols "On"
