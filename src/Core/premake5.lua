@@ -9,11 +9,9 @@ project "CppSharp"
   files { "**.cs" }
   vpaths { ["*"] = "*" }
   
-  libdirs{ depsdir .."/vs2017" }
-  
   links
   {
     "System",
     "System.Core",
-    "Microsoft.VisualStudio.Setup.Configuration.Interop"
+    depsdir .. "/vs2017/Microsoft.VisualStudio.Setup.Configuration.Interop"
   }
