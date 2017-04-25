@@ -76,13 +76,13 @@ namespace CppSharp.Generators
         public virtual TypePrinterResult VisitAttributedType(AttributedType attributed,
             TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return attributed.Modified.Visit(this);
         }
 
         public virtual TypePrinterResult VisitBuiltinType(BuiltinType builtin,
             TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return VisitPrimitiveType(builtin.Type, quals);
         }
 
         public virtual TypePrinterResult VisitCILType(CILType type, TypeQualifiers quals)
@@ -92,7 +92,7 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitClassDecl(Class @class)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(@class);
         }
 
         public virtual TypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
@@ -103,13 +103,13 @@ namespace CppSharp.Generators
         public virtual TypePrinterResult VisitClassTemplateSpecializationDecl(
             ClassTemplateSpecialization specialization)
         {
-            throw new NotImplementedException();
+            return VisitClassDecl(specialization);
         }
 
         public virtual TypePrinterResult VisitDecayedType(DecayedType decayed,
             TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return decayed.Decayed.Visit(this);
         }
 
         public virtual TypePrinterResult VisitDeclaration(Declaration decl)
@@ -120,7 +120,7 @@ namespace CppSharp.Generators
         public virtual TypePrinterResult VisitDeclaration(Declaration decl,
             TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(decl);
         }
 
         public virtual TypePrinterResult VisitDelegate(FunctionType function)
@@ -142,12 +142,12 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(@enum);
         }
 
         public virtual TypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(@item);
         }
 
         public virtual TypePrinterResult VisitEvent(Event @event)
@@ -202,7 +202,7 @@ namespace CppSharp.Generators
         public virtual TypePrinterResult VisitMemberPointerType(
             MemberPointerType member, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return member.QualifiedPointee.Visit(this);
         }
 
         public virtual TypePrinterResult VisitMethodDecl(Method method)
@@ -230,18 +230,31 @@ namespace CppSharp.Generators
         public virtual TypePrinterResult VisitParameter(Parameter param,
             bool hasName = true)
         {
-            throw new NotImplementedException();
+            Parameter = param;
+            var type = param.QualifiedType.Visit(this);
+            var name = hasName ? $" {param.Name}" : string.Empty;
+            Parameter = null;
+            return $"{type}{name}";
         }
 
         public virtual TypePrinterResult VisitParameterDecl(Parameter parameter)
         {
-            throw new NotImplementedException();
+            return parameter.QualifiedType.Visit(this);
         }
 
         public virtual TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
             bool hasNames = true)
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+
+            foreach (var param in @params)
+            {
+                Parameter = param;
+                args.Add(VisitParameter(param, hasNames).Type);
+            }
+
+            Parameter = null;
+            return string.Join(", ", args);
         }
 
         public virtual TypePrinterResult VisitPointerType(PointerType pointer,
@@ -263,7 +276,10 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            if (tag.Declaration == null)
+                return string.Empty;
+
+            return tag.Declaration.Visit(this);
         }
 
         public virtual TypePrinterResult VisitTemplateParameterDecl(
@@ -303,7 +319,7 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(typeAlias);
         }
 
         public virtual TypePrinterResult VisitTypeAliasTemplateDecl(
@@ -314,7 +330,7 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(typedef);
         }
 
         public TypePrinterResult VisitTypedefNameDecl(TypedefNameDecl typedef)
@@ -342,7 +358,7 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitVariableDecl(Variable variable)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(variable);
         }
 
         public virtual TypePrinterResult VisitVarTemplateDecl(VarTemplate template)

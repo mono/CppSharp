@@ -73,22 +73,11 @@ namespace CppSharp.Generators.CLI
             return string.Format("System::Func<{0}{1}>", returnType.Visit(this), args);
         }
 
-        public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
-            bool hasNames)
-        {
-            var args = new List<string>();
-
-            foreach (var param in @params)
-                args.Add(VisitParameter(param, hasNames).ToString());
-
-            return string.Join(", ", args);
-        }
-
         public override TypePrinterResult VisitParameter(Parameter param,
             bool hasName = true)
         {
             Parameter = param;
-            var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var type = param.QualifiedType.Visit(this);
             Parameter = null;
 
             var str = string.Empty;
@@ -167,19 +156,8 @@ namespace CppSharp.Generators.CLI
             return pointer.QualifiedPointee.Visit(this);
         }
 
-        public override TypePrinterResult VisitMemberPointerType(
-            MemberPointerType member, TypeQualifiers quals)
-        {
-            return member.QualifiedPointee.Visit(this);
-        }
-
-        public override TypePrinterResult VisitBuiltinType(BuiltinType builtin,
+        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
             TypeQualifiers quals)
-        {
-            return VisitPrimitiveType(builtin.Type);
-        }
-
-        public string VisitPrimitiveType(PrimitiveType primitive)
         {
             switch (primitive)
             {
@@ -235,18 +213,6 @@ namespace CppSharp.Generators.CLI
             }
 
             return decl.Type.Visit(this);
-        }
-
-        public override TypePrinterResult VisitAttributedType(AttributedType attributed,
-            TypeQualifiers quals)
-        {
-            return attributed.Modified.Visit(this);
-        }
-
-        public override TypePrinterResult VisitDecayedType(DecayedType decayed,
-            TypeQualifiers quals)
-        {
-            return decayed.Decayed.Visit(this);
         }
 
         public override TypePrinterResult VisitTemplateSpecializationType(
@@ -323,18 +289,6 @@ namespace CppSharp.Generators.CLI
             return result;
         }
 
-        public override TypePrinterResult VisitPrimitiveType(PrimitiveType type,
-            TypeQualifiers quals)
-        {
-            return VisitPrimitiveType(type);
-        }
-
-        public override TypePrinterResult VisitDeclaration(Declaration decl,
-            TypeQualifiers quals)
-        {
-            return VisitDeclaration(decl);
-        }
-
         public override TypePrinterResult VisitDeclaration(Declaration decl)
         {
             var names = new List<string>();
@@ -367,12 +321,6 @@ namespace CppSharp.Generators.CLI
 
             return string.Format("{0}{1}", @class.Name, @class.IsRefType ? "^"
                 : string.Empty);
-        }
-
-        public override TypePrinterResult VisitClassTemplateSpecializationDecl(
-            ClassTemplateSpecialization specialization)
-        {
-            return VisitClassDecl(specialization);
         }
 
         public override TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)

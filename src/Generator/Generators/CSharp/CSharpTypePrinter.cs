@@ -52,7 +52,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            return tag.Declaration.Visit(this);
+            return base.VisitTagType(tag, quals);
         }
 
         public override TypePrinterResult VisitArrayType(ArrayType array,
@@ -288,12 +288,6 @@ namespace CppSharp.Generators.CSharp
             return IntPtrType;
         }
 
-        public override TypePrinterResult VisitBuiltinType(BuiltinType builtin,
-            TypeQualifiers quals)
-        {
-            return VisitPrimitiveType(builtin.Type, quals);
-        }
-
         public override TypePrinterResult VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {
@@ -332,18 +326,6 @@ namespace CppSharp.Generators.CSharp
             }
 
             return decl.Type.Visit(this);
-        }
-
-        public override TypePrinterResult VisitAttributedType(AttributedType attributed,
-            TypeQualifiers quals)
-        {
-            return attributed.Modified.Visit(this);
-        }
-
-        public override TypePrinterResult VisitDecayedType(DecayedType decayed,
-            TypeQualifiers quals)
-        {
-            return decayed.Decayed.Visit(this);
         }
 
         public override TypePrinterResult VisitTemplateSpecializationType(
@@ -543,12 +525,6 @@ namespace CppSharp.Generators.CSharp
             throw new NotSupportedException();
         }
 
-        public override TypePrinterResult VisitDeclaration(Declaration decl,
-            TypeQualifiers quals)
-        {
-            return VisitDeclaration(decl);
-        }
-
         public override TypePrinterResult VisitDeclaration(Declaration decl)
         {
             return GetName(decl);
@@ -584,26 +560,6 @@ namespace CppSharp.Generators.CSharp
             Parameter = null;
 
             return ret;
-        }
-
-        public override TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
-        {
-            return VisitDeclaration(typedef);
-        }
-
-        public override TypePrinterResult VisitTypeAliasDecl(TypeAlias typeAlias)
-        {
-            return VisitDeclaration(typeAlias);
-        }
-
-        public override TypePrinterResult VisitEnumDecl(Enumeration @enum)
-        {
-            return VisitDeclaration(@enum);
-        }
-
-        public override TypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
-        {
-            return VisitDeclaration(item);
         }
 
         string GetName(Declaration decl)
@@ -651,33 +607,21 @@ namespace CppSharp.Generators.CSharp
             return $"global::{string.Join(".", names)}";
         }
 
-        public override TypePrinterResult VisitVariableDecl(Variable variable)
-        {
-            return VisitDeclaration(variable);
-        }
-
         public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
             bool hasNames)
         {
-            var args = new List<string>();
-
-            foreach (var param in @params.Where(
+            @params = @params.Where(
                 p => ContextKind == TypePrinterContextKind.Native ||
-                    (p.Kind != ParameterKind.IndirectReturnType && !p.Ignore)))
-            {
-                Parameter = param;
-                args.Add(VisitParameter(param, hasNames).Type);
-            }
+                    (p.Kind != ParameterKind.IndirectReturnType && !p.Ignore));
 
-            Parameter = null;
-            return string.Join(", ", args);
+            return base.VisitParameters(@params, hasNames);
         }
 
         public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
             var usage = ContextKind == TypePrinterContextKind.Native ?
                 string.Empty : GetParameterUsage(param.Usage);
-            var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var type = param.QualifiedType.Visit(this);
             var name = param.Name;
             if (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments)
                 return $"{usage}{type} {name}";
