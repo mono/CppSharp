@@ -90,12 +90,12 @@ namespace CppSharp.Types
 
         #region C++/CLI backend
 
-        public virtual Type CLISignatureType(CLITypePrinterContext ctx)
+        public virtual Type CLISignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(object));
         }
 
-        public virtual string CLISignature(CLITypePrinterContext ctx)
+        public virtual string CLISignature(TypePrinterContext ctx)
         {
             throw new NotImplementedException();
         }

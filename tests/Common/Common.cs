@@ -12,7 +12,7 @@ namespace CppSharp.Tests
     [TypeMap("TypeMappedIndex")]
     public class TypeMappedIndex : TypeMap
     {
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "unsigned short";
         }

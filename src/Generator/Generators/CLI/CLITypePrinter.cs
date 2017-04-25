@@ -8,23 +8,8 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
-    public class CLITypePrinterContext : TypePrinterContext
-    {
-        public CLITypePrinterContext()
-        {
-            
-        }
-
-        public CLITypePrinterContext(TypePrinterContextKind kind)
-            : base(kind)
-        {
-        }
-    }
-
     public class CLITypePrinter : TypePrinter
     {
-        public CLITypePrinterContext TypePrinterContext { get; set; }
-
         public BindingContext Context { get; private set; }
 
         public DriverOptions Options { get { return Context.Options; } }
@@ -33,13 +18,6 @@ namespace CppSharp.Generators.CLI
         public CLITypePrinter(BindingContext context)
         {
             Context = context;
-            TypePrinterContext = new CLITypePrinterContext();
-        }
-
-        public CLITypePrinter(BindingContext context, CLITypePrinterContext typePrinterContext)
-            : this(context)
-        {
-            TypePrinterContext = typePrinterContext;
         }
 
         public override TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
@@ -48,8 +26,8 @@ namespace CppSharp.Generators.CLI
             if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
             {
                 typeMap.Type = tag;
-                TypePrinterContext.Type = tag;
-                return typeMap.CLISignature(TypePrinterContext);
+                var typePrinterContext = new TypePrinterContext { Type = tag };
+                return typeMap.CLISignature(typePrinterContext);
             }
 
             Declaration decl = tag.Declaration;
@@ -109,9 +87,9 @@ namespace CppSharp.Generators.CLI
         public override TypePrinterResult VisitParameter(Parameter param,
             bool hasName = true)
         {
-            TypePrinterContext.Parameter = param;
+            Parameter = param;
             var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
-            TypePrinterContext.Parameter = null;
+            Parameter = null;
 
             var str = string.Empty;
             if(param.Usage == ParameterUsage.Out)
@@ -162,8 +140,7 @@ namespace CppSharp.Generators.CLI
             if (finalPointee.IsPrimitiveType())
             {
                 // Skip one indirection if passed by reference
-                var param = TypePrinterContext.Parameter;
-                bool isRefParam = param != null && (param.IsOut || param.IsInOut);
+                bool isRefParam = Parameter != null && (Parameter.IsOut || Parameter.IsInOut);
                 if (isRefParam)
                     return pointer.QualifiedPointee.Visit(this);
 
@@ -180,8 +157,7 @@ namespace CppSharp.Generators.CLI
                 var typeName = @enum.Visit(this);
 
                 // Skip one indirection if passed by reference
-                var param = TypePrinterContext.Parameter;
-                if (param != null && (param.IsOut || param.IsInOut)
+                if (Parameter != null && (Parameter.IsOut || Parameter.IsInOut)
                     && pointee == finalPointee)
                     return string.Format("{0}", typeName);
 
@@ -247,8 +223,8 @@ namespace CppSharp.Generators.CLI
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                TypePrinterContext.Type = typedef;
-                return typeMap.CLISignature(TypePrinterContext);
+                var typePrinterContext = new TypePrinterContext { Type = typedef };
+                return typeMap.CLISignature(typePrinterContext);
             }
 
             FunctionType func;
@@ -285,8 +261,8 @@ namespace CppSharp.Generators.CLI
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
-                TypePrinterContext.Type = template;
-                return typeMap.CLISignature(TypePrinterContext);
+                var typePrinterContext = new TypePrinterContext { Type = template };
+                return typeMap.CLISignature(typePrinterContext);
             }
 
             return decl.Name;

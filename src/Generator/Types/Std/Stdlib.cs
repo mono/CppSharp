@@ -11,7 +11,7 @@ namespace CppSharp.Types.Std
     [TypeMap("va_list")]
     public class VaList : TypeMap
     {
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "va_list";
         }
@@ -30,7 +30,7 @@ namespace CppSharp.Types.Std
     [TypeMap("std::basic_string<char, std::char_traits<char>, std::allocator<char>>")]
     public class String : TypeMap
     {
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "System::String^";
         }
@@ -131,7 +131,7 @@ namespace CppSharp.Types.Std
     [TypeMap("std::wstring", GeneratorKind = GeneratorKind.CLI)]
     public class WString : TypeMap
     {
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "System::String^";
         }
@@ -185,7 +185,7 @@ namespace CppSharp.Types.Std
             }
         }
 
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return string.Format("System::Collections::Generic::List<{0}>^",
                 ctx.GetTemplateParameterList());
@@ -320,7 +320,7 @@ namespace CppSharp.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             var type = Type as TemplateSpecializationType;
             return string.Format(
@@ -361,7 +361,7 @@ namespace CppSharp.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             throw new System.NotImplementedException();
         }
@@ -380,7 +380,7 @@ namespace CppSharp.Types.Std
     [TypeMap("std::ostream", GeneratorKind.CLI)]
     public class OStream : TypeMap
     {
-        public override string CLISignature(CLITypePrinterContext ctx)
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "System::IO::TextWriter^";
         }

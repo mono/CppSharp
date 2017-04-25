@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -285,24 +285,17 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateFunctionTemplate(FunctionTemplate template)
         {
-            var printer = TypePrinter;
-            var oldCtx = printer.TypePrinterContext;
-
             PushBlock(BlockKind.Template);
 
             var function = template.TemplatedFunction;
 
-            var typeCtx = new CLITypePrinterContext()
-                {
-                    Kind = TypePrinterContextKind.Template,
-                    Declaration = template
-                };
+            var typePrinter = new CLITypePrinter(Context)
+            {
+                Declaration = template
+            };
+            typePrinter.PushContext(TypePrinterContextKind.Template);
 
-            printer.TypePrinterContext = typeCtx;
-
-            var typePrinter = new CLITypePrinter(Context, typeCtx);
-            var retType = function.ReturnType.Type.Visit(typePrinter,
-                function.ReturnType.Qualifiers);
+            var retType = function.ReturnType.Visit(typePrinter);
 
             var typeNames = "";
             var paramNames = template.Parameters.Select(param => param.Name).ToList();
@@ -323,8 +316,6 @@ namespace CppSharp.Generators.CLI
             NewLine();
 
             PopBlock(NewLineKind.BeforeNextBlock);
-
-            printer.TypePrinterContext = oldCtx;
         }
 
         private void GenerateProperty(Property property, Class realOwner)
