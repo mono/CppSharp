@@ -117,6 +117,8 @@ namespace CppSharp
         static ulong ParseMacroExpression(string expression)
         {
             // TODO: Handle string expressions
+            if (expression.Length == 3 && expression[0] == '\'' && expression[2] == '\'') // '0' || 'A'
+                return expression[1]; // return the ASCI code of this character
 
             long val;
             return ParseToNumber(expression, out val) ? (ulong)val : 0;
