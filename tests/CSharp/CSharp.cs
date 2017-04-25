@@ -76,12 +76,12 @@ namespace CppSharp.Tests
             return string.Empty;
         }
 
-        public override Type CSharpSignatureType(CSharpTypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return GetEnumType(ctx.Type);
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             return CSharpSignatureType(ctx).ToString();
         }
@@ -129,12 +129,12 @@ namespace CppSharp.Tests
             return string.Empty;
         }
 
-        public override Type CSharpSignatureType(CSharpTypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new TagType(new Enumeration());
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             return "Flags";
         }
@@ -165,9 +165,9 @@ namespace CppSharp.Tests
             }
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == TypePrinterContextKind.Native)
+            if (ctx.Kind == TypePrinterContextKind.Native)
                 return string.Format("QList.{0}{1}", Helpers.InternalStruct,
                     Type.IsAddress() ? "*" : string.Empty);
 
@@ -191,7 +191,7 @@ namespace CppSharp.Tests
     [TypeMap("TypeMappedWithOperator")]
     public class TypeMappedWithOperator : TypeMap
     {
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             // doesn't matter, we just need it to compile
             return "int";

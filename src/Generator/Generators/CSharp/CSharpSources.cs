@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -766,10 +766,9 @@ namespace CppSharp.Generators.CSharp
             {
                 Parameter = param,
                 ArgName = param.Name,
+                ReturnType = new QualifiedType(var.Type)
             };
-
-            ctx.Kind = MarshalKind.Variable;
-            ctx.ReturnType = new QualifiedType(var.Type);
+            ctx.PushMarshalKind(MarshalKind.Variable);
 
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             decl.CSharpMarshalToNative(marshal);
@@ -829,7 +828,8 @@ namespace CppSharp.Generators.CSharp
                 Parameter = param,
                 ArgName = param.Name,
             };
-            ctx.Kind = MarshalKind.NativeField;
+            ctx.PushMarshalKind(MarshalKind.NativeField);
+
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             ctx.Declaration = field;
 
@@ -1067,7 +1067,6 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var ctx = new CSharpMarshalContext(Context)
             {
-                Kind = MarshalKind.NativeField,
                 ArgName = field.Name,
                 Declaration = field,
                 ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
@@ -1075,6 +1074,8 @@ namespace CppSharp.Generators.CSharp
                     (@class.IsValueType ? "." : "->")}{SafeIdentifier(name)}",
                 ReturnType = field.QualifiedType
             };
+            ctx.PushMarshalKind(MarshalKind.NativeField);
+            
             TypePrinter.PopContext();
 
             var arrayType = field.Type as ArrayType;
@@ -1586,8 +1587,8 @@ namespace CppSharp.Generators.CSharp
                     ArgName = Helpers.ReturnIdentifier,
                     Parameter = param,
                     Function = method,
-                    Kind = MarshalKind.VTableReturnValue
                 };
+                ctx.PushMarshalKind(MarshalKind.VTableReturnValue);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 method.OriginalReturnType.Visit(marshal);
@@ -2611,12 +2612,15 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     if (string.IsNullOrWhiteSpace(construct))
-                        WriteLine("{0} {1};",
-                            typeMap.CSharpSignature(new CSharpTypePrinterContext
-                            {
-                                Type = indirectRetType.Type.Desugar()
-                            }),
+                    {
+		                var typePrinterContext = new TypePrinterContext
+		                {
+		                    Type = indirectRetType.Type.Desugar()
+		                };
+
+                        WriteLine("{0} {1};", typeMap.CSharpSignature(typePrinterContext),
                             Helpers.ReturnIdentifier);
+                    }
                     else
                         WriteLine("var {0} = {1};", construct);
                 }

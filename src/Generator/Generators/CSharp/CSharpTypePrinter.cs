@@ -10,25 +10,9 @@ using System.Text;
 
 namespace CppSharp.Generators.CSharp
 {
-    public class CSharpTypePrinterContext : TypePrinterContext
-    {
-        public TypePrinterContextKind CSharpKind;
-        public MarshalKind MarshalKind;
-        public QualifiedType FullType;
-    }
-
     public class CSharpTypePrinter : TypePrinter
     {
         public const string IntPtrType = "global::System.IntPtr";
-
-        private readonly Stack<TypePrinterContextKind> contexts;
-        private readonly Stack<MarshalKind> marshalKinds;
-
-        public TypePrinterContextKind ContextKind => contexts.Peek();
-
-        public MarshalKind MarshalKind => marshalKinds.Peek();
-
-        public CSharpTypePrinterContext TypePrinterContext;
 
         public BindingContext Context { get; set; }
 
@@ -38,27 +22,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinter(BindingContext context)
         {
             Context = context;
-            contexts = new Stack<TypePrinterContextKind>();
-            marshalKinds = new Stack<MarshalKind>();
-            PushContext(TypePrinterContextKind.Managed);
-            PushMarshalKind(MarshalKind.Unknown);
-
-            TypePrinterContext = new CSharpTypePrinterContext();
         }
-
-        public void PushContext(TypePrinterContextKind contextKind)
-        {
-            contexts.Push(contextKind);
-        }
-
-        public TypePrinterContextKind PopContext() => contexts.Pop();
-
-        public void PushMarshalKind(MarshalKind marshalKind)
-        {
-            marshalKinds.Push(marshalKind);
-        }
-
-        public MarshalKind PopMarshalKind() => marshalKinds.Pop();
 
         public override TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
@@ -69,11 +33,15 @@ namespace CppSharp.Generators.CSharp
             if (TypeMapDatabase.FindTypeMap(tag.Declaration, out typeMap))
             {
                 typeMap.Type = tag;
-                TypePrinterContext.CSharpKind = ContextKind;
-                TypePrinterContext.MarshalKind = MarshalKind;
-                TypePrinterContext.Type = tag;
 
-                string type = typeMap.CSharpSignature(TypePrinterContext);
+                var typePrinterContext = new TypePrinterContext()
+                {
+                    Kind = Kind,
+                    MarshalKind = MarshalKind,
+                    Type = tag
+                };
+
+                string type = typeMap.CSharpSignature(typePrinterContext);
                 if (!string.IsNullOrEmpty(type))
                 {
                     return new TypePrinterResult
@@ -106,7 +74,7 @@ namespace CppSharp.Generators.CSharp
                     return string.Format("{0}", array.Type.Visit(this, quals));
                 }
 
-                if (TypePrinterContext.Parameter != null)
+                if (Parameter != null)
                     return string.Format("global::System.IntPtr");
 
                 Enumeration @enum;
@@ -243,7 +211,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (isManagedContext || MarshalKind == MarshalKind.GenericDelegate)
                     return "string";
-                if (TypePrinterContext.Parameter == null || TypePrinterContext.Parameter.Name == Helpers.ReturnIdentifier)
+                if (Parameter == null || Parameter.Name == Helpers.ReturnIdentifier)
                     return IntPtrType;
                 if (Options.Encoding == Encoding.ASCII)
                     return string.Format("[MarshalAs(UnmanagedType.LPStr)] string");
@@ -267,8 +235,7 @@ namespace CppSharp.Generators.CSharp
             if (finalPointee.IsPrimitiveType())
             {
                 // Skip one indirection if passed by reference
-                var param = TypePrinterContext.Parameter;
-                bool isRefParam = param != null && (param.IsOut || param.IsInOut);
+                bool isRefParam = Parameter != null && (Parameter.IsOut || Parameter.IsInOut);
                 if (isManagedContext && isRefParam)
                     return pointer.QualifiedPointee.Visit(this);
 
@@ -291,8 +258,7 @@ namespace CppSharp.Generators.CSharp
             if (desugared.TryGetEnum(out @enum))
             {
                 // Skip one indirection if passed by reference
-                var param = TypePrinterContext.Parameter;
-                if (isManagedContext && param != null && (param.IsOut || param.IsInOut)
+                if (isManagedContext && Parameter != null && (Parameter.IsOut || Parameter.IsInOut)
                     && pointee == finalPointee)
                     return pointer.QualifiedPointee.Visit(this);
 
@@ -301,7 +267,7 @@ namespace CppSharp.Generators.CSharp
 
             Class @class;
             if ((desugared.IsDependent || desugared.TryGetClass(out @class) ||
-                (desugared is ArrayType && TypePrinterContext.Parameter != null))
+                (desugared is ArrayType && Parameter != null))
                 && ContextKind == TypePrinterContextKind.Native)
             {
                 return IntPtrType;
@@ -337,11 +303,15 @@ namespace CppSharp.Generators.CSharp
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                TypePrinterContext.CSharpKind = ContextKind;
-                TypePrinterContext.MarshalKind = MarshalKind;
-                TypePrinterContext.Type = typedef;
 
-                string type = typeMap.CSharpSignature(TypePrinterContext);
+                var typePrinterContext = new TypePrinterContext
+                {
+                    Kind = ContextKind,
+                    MarshalKind = MarshalKind,
+                    Type = typedef
+                };
+
+                string type = typeMap.CSharpSignature(typePrinterContext);
                 if (!string.IsNullOrEmpty(type))
                 {
                     return new TypePrinterResult
@@ -388,11 +358,15 @@ namespace CppSharp.Generators.CSharp
 
             typeMap.Declaration = decl;
             typeMap.Type = template;
-            TypePrinterContext.Type = template;
-            TypePrinterContext.CSharpKind = ContextKind;
-            TypePrinterContext.MarshalKind = MarshalKind;
 
-            var type = GetCSharpSignature(typeMap);
+            var typePrinterContext = new TypePrinterContext
+            {
+                Type = template,
+                Kind = ContextKind,
+                MarshalKind = MarshalKind
+            };
+    
+            var type = typeMap.CSharpSignature(typePrinterContext);
             if (!string.IsNullOrEmpty(type))
             {
                 return new TypePrinterResult
@@ -411,13 +385,6 @@ namespace CppSharp.Generators.CSharp
             if (template.Desugared.Type != null)
                 return template.Desugared.Visit(this);
             return string.Empty;
-        }
-
-        private string GetCSharpSignature(TypeMap typeMap)
-        {
-            TypePrinterContext.CSharpKind = ContextKind;
-            TypePrinterContext.MarshalKind = MarshalKind;
-            return typeMap.CSharpSignature(TypePrinterContext);
         }
 
         public override TypePrinterResult VisitTemplateParameterType(
@@ -612,9 +579,9 @@ namespace CppSharp.Generators.CSharp
             if (parameter.Kind == ParameterKind.IndirectReturnType)
                 return IntPtrType;
 
-            TypePrinterContext.Parameter = parameter;
+            Parameter = parameter;
             var ret = paramType.Visit(this);
-            TypePrinterContext.Parameter = null;
+            Parameter = null;
 
             return ret;
         }
@@ -698,11 +665,11 @@ namespace CppSharp.Generators.CSharp
                 p => ContextKind == TypePrinterContextKind.Native ||
                     (p.Kind != ParameterKind.IndirectReturnType && !p.Ignore)))
             {
-                TypePrinterContext.Parameter = param;
+                Parameter = param;
                 args.Add(VisitParameter(param, hasNames).Type);
             }
 
-            TypePrinterContext.Parameter = null;
+            Parameter = null;
             return string.Join(", ", args);
         }
 
@@ -782,7 +749,7 @@ namespace CppSharp.Generators.CSharp
         public static TypePrinterResult CSharpType(this QualifiedType type,
             CSharpTypePrinter printer)
         {
-            printer.TypePrinterContext.FullType = type;
+            printer.FullType = type;
             return type.Visit(printer);
         }
 
@@ -798,7 +765,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is ITypedDecl)
             {
                 var type = (decl as ITypedDecl).QualifiedType;
-                printer.TypePrinterContext.FullType = type;
+                printer.FullType = type;
             }
 
             return decl.Visit(printer);

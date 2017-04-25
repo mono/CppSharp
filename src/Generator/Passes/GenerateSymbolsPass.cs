@@ -119,7 +119,8 @@ namespace CppSharp.Passes
             TypeMap typeMap;
             if (Context.TypeMaps.FindTypeMap(specialization, out typeMap))
             {
-                var mappedTo = typeMap.CSharpSignatureType(new CSharpTypePrinterContext { Type = type });
+                var typePrinterContext = new TypePrinterContext { Type = type };
+                var mappedTo = typeMap.CSharpSignatureType(typePrinterContext);
                 mappedTo = mappedTo.Desugar();
                 mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo);
                 if (mappedTo.IsPrimitiveType() || mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum())

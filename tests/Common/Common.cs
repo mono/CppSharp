@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
@@ -27,7 +27,7 @@ namespace CppSharp.Tests
             ctx.Return.Write("::TypeMappedIndex()");
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             return "ushort";
         }

@@ -1,7 +1,9 @@
-using CppSharp.AST;
+﻿using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.Generators
 {
@@ -22,6 +24,42 @@ namespace CppSharp.Generators
     public class TypePrinter : ITypePrinter<TypePrinterResult>,
         IDeclVisitor<TypePrinterResult>
     {
+        private readonly Stack<TypePrinterContextKind> contexts;
+        private readonly Stack<MarshalKind> marshalKinds;
+
+        public TypePrinterContextKind ContextKind => contexts.Peek();
+
+        public TypePrinterContextKind Kind => ContextKind;
+
+        public MarshalKind MarshalKind => marshalKinds.Peek();
+
+        public TypePrinter()
+        {
+            contexts = new Stack<TypePrinterContextKind>();
+            marshalKinds = new Stack<MarshalKind>();
+            PushContext(TypePrinterContextKind.Managed);
+            PushMarshalKind(MarshalKind.Unknown);
+        }
+
+        public void PushContext(TypePrinterContextKind contextKind)
+        {
+            contexts.Push(contextKind);
+        }
+
+        public TypePrinterContextKind PopContext() => contexts.Pop();
+
+        public void PushMarshalKind(MarshalKind marshalKind)
+        {
+            marshalKinds.Push(marshalKind);
+        }
+
+        public MarshalKind PopMarshalKind() => marshalKinds.Pop();
+
+        public Declaration Declaration;
+        public Parameter Parameter;
+        public CppSharp.AST.Type Type;
+        public QualifiedType FullType;
+
         #region Dummy implementations
 
         public virtual string ToString(CppSharp.AST.Type type)

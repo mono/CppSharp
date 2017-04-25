@@ -2,17 +2,7 @@
 
 namespace CppSharp.Generators
 {
-    public enum MarshalKind
-    {
-        Unknown,
-        NativeField,
-        GenericDelegate,
-        DefaultExpression,
-        VTableReturnValue,
-        Variable
-    }
-
-    public class MarshalContext
+    public class MarshalContext : TypePrinter
     {
         public MarshalContext(BindingContext context)
         {
@@ -29,13 +19,10 @@ namespace CppSharp.Generators
         public TextGenerator SupportBefore { get; private set; }
         public TextGenerator Return { get; private set; }
 
-        public Declaration Declaration { get; set; }
-
         public string ReturnVarName { get; set; }
         public QualifiedType ReturnType { get; set; }
 
         public string ArgName { get; set; }
-        public Parameter Parameter { get; set; }
         public int ParameterIndex { get; set; }
         public Function Function { get; set; }
 

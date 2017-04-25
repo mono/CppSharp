@@ -148,15 +148,24 @@ namespace CppSharp.Passes
 
             var ctor = expression as CXXConstructExpr;
 
-            TypeMap typeMap;
-
             var typePrinter = new CSharpTypePrinter(Context);
             typePrinter.PushMarshalKind(MarshalKind.DefaultExpression);
+
             var typePrinterResult = type.Visit(typePrinter).Type;
+
+            TypeMap typeMap;
             if (TypeMaps.FindTypeMap(decl, type, out typeMap))
             {
-                var typeInSignature = typeMap.CSharpSignatureType(
-                    typePrinter.TypePrinterContext).SkipPointerRefs().Desugar();
+                var typePrinterContext = new TypePrinterContext()
+                {
+                    Kind = typePrinter.Kind,
+                    MarshalKind = typePrinter.MarshalKind,
+                    Type = type
+                };
+
+                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext)
+                    .SkipPointerRefs().Desugar();
+
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
@@ -259,11 +268,15 @@ namespace CppSharp.Passes
                  HasSingleZeroArgExpression(function)) &&
                 TypeMaps.FindTypeMap(desugared, out typeMap))
             {
-                var typeInSignature = typeMap.CSharpSignatureType(new CSharpTypePrinterContext
+                var typePrinterContext = new TypePrinterContext
                 {
                     MarshalKind = MarshalKind.DefaultExpression,
                     Type = desugared
-                }).SkipPointerRefs().Desugar();
+                };
+
+                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext)
+                    .SkipPointerRefs().Desugar();
+
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                     return "0";

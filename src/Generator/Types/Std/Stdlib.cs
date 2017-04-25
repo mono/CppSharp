@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
@@ -16,7 +16,7 @@ namespace CppSharp.Types.Std
             return "va_list";
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             return "va_list";
         }
@@ -47,9 +47,9 @@ namespace CppSharp.Types.Std
                 ctx.ReturnVarName);
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == TypePrinterContextKind.Managed)
+            if (ctx.Kind == TypePrinterContextKind.Managed)
                 return "string";
             ClassTemplateSpecialization basicString = GetBasicString(ctx.Type);
             var typePrinter = new CSharpTypePrinter(null);
@@ -148,7 +148,7 @@ namespace CppSharp.Types.Std
                 ctx.ReturnVarName);
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             return "string";
         }
@@ -292,9 +292,9 @@ namespace CppSharp.Types.Std
             ctx.Return.Write(tmpVarName);
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == TypePrinterContextKind.Native)
+            if (ctx.Kind == TypePrinterContextKind.Native)
                 return "Std.Vector";
 
             return string.Format("Std.Vector<{0}>", ctx.GetTemplateParameterList());
@@ -338,9 +338,9 @@ namespace CppSharp.Types.Std
             throw new System.NotImplementedException();
         }
 
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == TypePrinterContextKind.Native)
+            if (ctx.Kind == TypePrinterContextKind.Native)
                 return "Std.Map";
 
             var type = Type as TemplateSpecializationType;
@@ -420,7 +420,7 @@ namespace CppSharp.Types.Std
     [TypeMap("FILE", GeneratorKind = GeneratorKind.CSharp)]
     public class FILE : TypeMap
     {
-        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        public override string CSharpSignature(TypePrinterContext ctx)
         {
             return CSharpTypePrinter.IntPtrType;
         }

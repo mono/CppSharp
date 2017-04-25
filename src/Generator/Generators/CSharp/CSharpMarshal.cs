@@ -13,13 +13,9 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalContext(BindingContext context)
             : base(context)
         {
-            Kind = MarshalKind.Unknown;
             ArgumentPrefix = new TextGenerator();
             Cleanup = new TextGenerator();
         }
-
-        public MarshalKind Kind { get; set; }
-        public QualifiedType FullType;
 
         public TextGenerator ArgumentPrefix { get; private set; }
         public TextGenerator Cleanup { get; private set; }
@@ -221,7 +217,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Char16:
                     return false;
                 case PrimitiveType.Bool:
-                    if (Context.Kind == MarshalKind.NativeField)
+                    if (Context.MarshalKind == MarshalKind.NativeField)
                     {
                         // returned structs must be blittable and bool isn't
                         Context.Return.Write("{0} != 0", Context.ReturnVarName);
@@ -496,7 +492,7 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee.Desugar();
             if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef() &&
-                Context.Kind != MarshalKind.VTableReturnValue)
+                Context.MarshalKind != MarshalKind.VTableReturnValue)
             {
                 var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
                 var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
@@ -602,9 +598,9 @@ namespace CppSharp.Generators.CSharp
                         Context.Return.Write(string.Format("({0}) ", pointer.Visit(typePrinter)));
                         typePrinter.PopContext();
                     }
-                    if (marshalAsString && (Context.Kind == MarshalKind.NativeField ||
-                        Context.Kind == MarshalKind.VTableReturnValue ||
-                        Context.Kind == MarshalKind.Variable))
+                    if (marshalAsString && (Context.MarshalKind == MarshalKind.NativeField ||
+                        Context.MarshalKind == MarshalKind.VTableReturnValue ||
+                        Context.MarshalKind == MarshalKind.Variable))
                         Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
                     else
                         Context.Return.Write(Context.Parameter.Name);
@@ -649,7 +645,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Char16:
                     return false;
                 case PrimitiveType.Bool:
-                    if (Context.Kind == MarshalKind.NativeField)
+                    if (Context.MarshalKind == MarshalKind.NativeField)
                     {
                         // returned structs must be blittable and bool isn't
                         Context.Return.Write("(byte) ({0} ? 1 : 0)", Context.Parameter.Name);

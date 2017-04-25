@@ -12,16 +12,32 @@ namespace CppSharp.AST
         Managed
     }
 
-    public abstract class TypePrinterContext
+    public enum MarshalKind
     {
-        protected TypePrinterContext()
+        Unknown,
+        NativeField,
+        GenericDelegate,
+        DefaultExpression,
+        VTableReturnValue,
+        Variable
+    }
+
+    public class TypePrinterContext
+    {
+        public TypePrinterContextKind Kind;
+        public MarshalKind MarshalKind;
+        public Declaration Declaration;
+        public Parameter Parameter;
+        public Type Type;
+
+        public TypePrinterContext() : this(TypePrinterContextKind.Normal)
         {
-            Kind = TypePrinterContextKind.Normal;
         }
 
-        protected TypePrinterContext(TypePrinterContextKind kind)
+        public TypePrinterContext(TypePrinterContextKind kind)
         {
             Kind = kind;
+            MarshalKind = MarshalKind.Unknown;
         }
 
         public string GetTemplateParameterList()
@@ -58,11 +74,6 @@ namespace CppSharp.AST
 
             return string.Join(", ", paramsList);
         }
-
-        public TypePrinterContextKind Kind;
-        public Declaration Declaration;
-        public Parameter Parameter;
-        public Type Type;
     }
 
     public interface ITypePrinter

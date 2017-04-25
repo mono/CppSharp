@@ -57,12 +57,12 @@ namespace CppSharp.Types
 
         #region C# backend
 
-        public virtual Type CSharpSignatureType(CSharpTypePrinterContext ctx)
+        public virtual Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(object));
         }
 
-        public virtual string CSharpSignature(CSharpTypePrinterContext ctx)
+        public virtual string CSharpSignature(TypePrinterContext ctx)
         {
             throw new NotImplementedException();
         }
