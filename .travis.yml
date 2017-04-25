@@ -23,7 +23,7 @@ install:
 
 script: |
   if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi &&
-  if [ "$TRAVIS_OS_NAME" = "linux" ]; then BUILD_CONF=release_x64; else BUILD_CONF=release_x32; fi &&
+  if [ "$TRAVIS_OS_NAME" = "linux" ]; then BUILD_CONF=release_x64; else BUILD_CONF=release_x86; fi &&
   $PREMAKE --file=build/premake5.lua gmake &&
   config=$BUILD_CONF make -C build/gmake/ &&
   BUILD_DIR=`ls build/gmake/lib` &&
