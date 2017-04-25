@@ -125,7 +125,7 @@ namespace CppSharp
 
         #endregion
 
-        public CompilationOptions Compilation;
+        public CompilationOptions Compilation = new CompilationOptions();
 
         #region Generator options
 
