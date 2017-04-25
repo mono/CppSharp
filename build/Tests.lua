@@ -72,8 +72,16 @@ function SetupTestGeneratorProject(name, depends)
     SetupParser()
 end
 
+local function get_mono_exe()
+  if target_architecture() == "x64" then
+    local _, errorcode = os.outputof("mono64")
+    return errorcode ~= 127 and "mono64" or "mono"
+  end
+  return "mono"
+end
+
 function SetupTestGeneratorBuildEvent(name)
-  local monoExe = target_architecture() == "x64" and "mono64" or "mono"
+  local monoExe = get_mono_exe()
   local runtimeExe = os.is("windows") and "" or monoExe .. " --debug "
   if string.starts(action, "vs") then
     local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
