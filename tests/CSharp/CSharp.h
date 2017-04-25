@@ -1176,3 +1176,6 @@ struct StructTestArrayTypeFromTypedef
 {
     charsArrayType arr;
 };
+
+#define MY_MACRO_TEST_1 '1'
+#define MY_MACRO_TEST_2 '2'
