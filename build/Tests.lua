@@ -55,6 +55,7 @@ function SetupTestGeneratorProject(name, depends)
     dependson { name .. ".Native" }
 
     linktable = {
+	  "System",
       "System.Core",
       "CppSharp",
       "CppSharp.AST",

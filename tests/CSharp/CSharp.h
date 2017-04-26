@@ -1170,3 +1170,12 @@ struct DLL_API ForwardDeclaredStruct {
 
 DLL_API ForwardDeclaredStruct* createForwardDeclaredStruct(int i);
 DLL_API int useForwardDeclaredStruct(ForwardDeclaredStruct* s);
+
+typedef char charsArrayType[13];
+struct StructTestArrayTypeFromTypedef
+{
+    charsArrayType arr;
+};
+
+#define MY_MACRO_TEST_1 '1'
+#define MY_MACRO_TEST_2 '2'

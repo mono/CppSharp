@@ -68,7 +68,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
 
 #pragma warning restore 0168
-#pragma warning restore 0219        
+#pragma warning restore 0219
     }
 
     [Test]
@@ -81,7 +81,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(foo[0], Is.EqualTo(250));
 
         Assert.That(foo[(uint) 0], Is.EqualTo(15));
-        
+
         var bar = new Bar();
         Assert.That(bar[0].A, Is.EqualTo(10));
         bar[0] = new Foo { A = 25 };
@@ -399,7 +399,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.AreEqual(100, p[0]);
         Assert.AreEqual(200, p[1]);
         Assert.AreEqual(300, p[2]);
-            
+
         int[] array = { 1, 2, 3 };
         fixed (int* p1 = array)
         {
@@ -532,7 +532,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
     }
-    
+
     [Test]
     public void TestGetEnumFromNativePointer()
     {
@@ -721,5 +721,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
         var duplicateDeclaredIncompleteStruct = CSharp.CSharp.CreateDuplicateDeclaredStruct(10);
         var i = CSharp.CSharp.UseDuplicateDeclaredStruct(duplicateDeclaredIncompleteStruct);
         Assert.AreEqual(10, i);
+    }
+
+    [Test]
+    public void TestMyMacroTestEnum()
+    {
+        var a = (MyMacroTestEnum)'1';
+        var b = (MyMacroTestEnum)'2';
+        Assert.IsTrue(a == MyMacroTestEnum.MY_MACRO_TEST_1 && b == MyMacroTestEnum.MY_MACRO_TEST_2);
     }
 }

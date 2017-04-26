@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
@@ -33,8 +36,22 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("QPoint");
             ctx.SetClassAsValueType("QSize");
             ctx.SetClassAsValueType("QRect");
-
+            ctx.SetClassAsValueType("StructTestArrayTypeFromTypedef");
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
+
+            var macroRegex = new Regex(@"(MY_MACRO_TEST_.*)");
+            List<string> list = new List<string>();
+            foreach (TranslationUnit unit in ctx.TranslationUnits)
+            {
+              if (unit.FilePath == "<invalid>" || unit.FileName == "CSharp.h")
+                foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
+                {
+                  Match match = macroRegex.Match(macro.Name);
+                  if (match.Success) list.Add(macro.Name);
+                }
+            }
+            var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", list.ToArray());
+              enumTest.Namespace = new Namespace() {Name = "MacroTest"};
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

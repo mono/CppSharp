@@ -308,12 +308,12 @@ namespace CppSharp.Generators.CSharp
             }
 
             PushBlock(BlockKind.Class);
-            GenerateDeclarationCommon(@class);            
+            GenerateDeclarationCommon(@class);
             GenerateClassSpecifier(@class);
 
             NewLine();
             WriteStartBraceIndent();
-            
+
             if (!@class.IsAbstractImpl)
                 GenerateClassInternals(@class);
 
@@ -569,7 +569,7 @@ namespace CppSharp.Generators.CSharp
             // private classes must be visible to because the internal structs can be used in dependencies
             // the proper fix is InternalsVisibleTo
             var keywords = new List<string>();
-            
+
             keywords.Add(@class.Access == AccessSpecifier.Protected ? "protected internal" : "public");
             keywords.Add("unsafe");
 
@@ -833,7 +833,7 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             ctx.Declaration = field;
 
-            var arrayType = field.Type as ArrayType;
+            var arrayType = field.Type as ArrayType ?? field.QualifiedType.Type.Desugar() as ArrayType;
 
             if (arrayType != null && @class.IsValueType)
             {
@@ -1078,7 +1078,7 @@ namespace CppSharp.Generators.CSharp
             
             TypePrinter.PopContext();
 
-            var arrayType = field.Type as ArrayType;
+            var arrayType = field.Type as ArrayType ?? field.QualifiedType.Type.Desugar() as ArrayType;
 
             if (arrayType != null && @class.IsValueType)
                 ctx.ReturnVarName = HandleValueArray(arrayType, field);
@@ -1285,7 +1285,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVariable(Class @class, Variable variable)
         {
             PushBlock(BlockKind.Variable);
-            
+
             GenerateDeclarationCommon(variable);
             WriteLine("public static {0} {1}", variable.Type, variable.Name);
             WriteStartBraceIndent();
@@ -1424,7 +1424,7 @@ namespace CppSharp.Generators.CSharp
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
-                        @class.Layout.VTablePointers.Select(v => 
+                        @class.Layout.VTablePointers.Select(v =>
                             $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})")));
             else
                 WriteLine(
@@ -1566,7 +1566,7 @@ namespace CppSharp.Generators.CSharp
             if (method.IsGenerated)
             {
                 WriteLine("{0}.{1}({2});", Helpers.TargetIdentifier,
-                    method.Name, string.Join(", ", marshals));              
+                    method.Name, string.Join(", ", marshals));
             }
             else
             {
@@ -2157,7 +2157,7 @@ namespace CppSharp.Generators.CSharp
             else if (method.ExplicitInterfaceImpl != null)
                 Write("{0} {1}.{2}(", method.OriginalReturnType,
                     method.ExplicitInterfaceImpl.Name, functionName);
-            else if (method.OperatorKind == CXXOperatorKind.Conversion || 
+            else if (method.OperatorKind == CXXOperatorKind.Conversion ||
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0} {1}(", functionName, method.OriginalReturnType);
             else
@@ -2278,7 +2278,7 @@ namespace CppSharp.Generators.CSharp
             Class @class;
             return p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue
                 ? "ref param" + index++
-                : (( p.Type.TryGetClass(out @class) && @class.IsInterface) ? "param" + index++ 
+                : (( p.Type.TryGetClass(out @class) && @class.IsInterface) ? "param" + index++
                      : ExpressionPrinter.VisitParameter(p));
         }
 
@@ -2362,7 +2362,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine("return {0}.GetHashCode();", Helpers.InstanceIdentifier);                       
+                    WriteLine("return {0}.GetHashCode();", Helpers.InstanceIdentifier);
                 }
                 WriteCloseBraceIndent();
             }
@@ -2733,7 +2733,7 @@ namespace CppSharp.Generators.CSharp
 
             if (needsFixedThis && operatorParam == null)
                 WriteCloseBraceIndent();
-            
+
             var numFixedBlocks = @params.Count(param => param.HasUsingBlock);
             for(var i = 0; i < numFixedBlocks; ++i)
                 WriteCloseBraceIndent();
