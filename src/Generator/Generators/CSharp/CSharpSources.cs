@@ -833,7 +833,7 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             ctx.Declaration = field;
 
-            var arrayType = field.Type as ArrayType ?? field.QualifiedType.Type.Desugar() as ArrayType;
+            var arrayType = field.Type.Desugar() as ArrayType;
 
             if (arrayType != null && @class.IsValueType)
             {
@@ -1078,7 +1078,7 @@ namespace CppSharp.Generators.CSharp
             
             TypePrinter.PopContext();
 
-            var arrayType = field.Type as ArrayType ?? field.QualifiedType.Type.Desugar() as ArrayType;
+            var arrayType = field.Type.Desugar() as ArrayType;
 
             if (arrayType != null && @class.IsValueType)
                 ctx.ReturnVarName = HandleValueArray(arrayType, field);
