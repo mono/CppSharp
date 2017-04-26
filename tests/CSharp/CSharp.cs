@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
@@ -39,8 +40,18 @@ namespace CppSharp.Tests
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
 
             var macroRegex = new Regex(@"(MY_MACRO_TEST_.*)");
-            var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", (from unit in ctx.TranslationUnits where unit.FilePath == "<invalid>" || unit.FileName == "CSharp.h" from macro in unit.PreprocessedEntities.OfType<MacroDefinition>() let match = macroRegex.Match(macro.Name) where match.Success select macro.Name).ToArray());
-            enumTest.Namespace = new Namespace() {Name = "MacroTest"};
+            List<string> list = new List<string>();
+            foreach (TranslationUnit unit in ctx.TranslationUnits)
+            {
+              if (unit.FilePath == "<invalid>" || unit.FileName == "CSharp.h")
+                foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
+                {
+                  Match match = macroRegex.Match(macro.Name);
+                  if (match.Success) list.Add(macro.Name);
+                }
+            }
+            var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", list.ToArray());
+              enumTest.Namespace = new Namespace() {Name = "MacroTest"};
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)
