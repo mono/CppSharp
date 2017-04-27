@@ -239,7 +239,7 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitParameterDecl(Parameter parameter)
         {
-            return parameter.QualifiedType.Visit(this);
+            return VisitParameter(parameter, hasName: false);
         }
 
         public virtual TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
