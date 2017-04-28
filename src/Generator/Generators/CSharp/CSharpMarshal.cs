@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -82,7 +82,7 @@ namespace CppSharp.Generators.CSharp
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    var supportBefore = Context.SupportBefore;
+                    var supportBefore = Context.Before;
                     string value = Generator.GeneratedIdentifier("value");
                     supportBefore.WriteLine("{0}[] {1} = null;", array.Type, value, array.Size);
                     supportBefore.WriteLine("if ({0} != null)", Context.ReturnVarName);
@@ -243,7 +243,7 @@ namespace CppSharp.Generators.CSharp
                 var ptrName = Generator.GeneratedIdentifier("ptr") +
                     Context.ParameterIndex;
 
-                Context.SupportBefore.WriteLine("var {0} = {1};", ptrName,
+                Context.Before.WriteLine("var {0} = {1};", ptrName,
                     Context.ReturnVarName);
                 
                 var res = $"{ptrName} == IntPtr.Zero? null : ({typedef})Marshal.GetDelegateForFunctionPointer({ptrName}, typeof({typedef}))";
@@ -258,7 +258,7 @@ namespace CppSharp.Generators.CSharp
         {
             var ptrName = Generator.GeneratedIdentifier("ptr") + Context.ParameterIndex;
 
-            Context.SupportBefore.WriteLine("var {0} = {1};", ptrName,
+            Context.Before.WriteLine("var {0} = {1};", ptrName,
                 Context.ReturnVarName);
 
             Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
@@ -302,13 +302,13 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             parameter.Type.Visit(marshal);
 
-            if (!string.IsNullOrWhiteSpace(ctx.SupportBefore))
-                Context.SupportBefore.WriteLine(ctx.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(ctx.Before))
+                Context.Before.WriteLine(ctx.Before);
 
             if (!string.IsNullOrWhiteSpace(ctx.Return) &&
                 !parameter.Type.IsPrimitiveTypeConvertibleToRef())
             {
-                Context.SupportBefore.WriteLine("var _{0} = {1};", parameter.Name,
+                Context.Before.WriteLine("var _{0} = {1};", parameter.Name,
                     ctx.Return);
             }
 
@@ -328,19 +328,19 @@ namespace CppSharp.Generators.CSharp
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
             var qualifiedIdentifier = @class.Visit(typePrinter);
-            Context.SupportBefore.WriteLine("{0} {1};", qualifiedIdentifier, ret);
-            Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
+            Context.Before.WriteLine("{0} {1};", qualifiedIdentifier, ret);
+            Context.Before.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
                 originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
             if (originalClass.IsRefType)
             {
-                Context.SupportBefore.WriteLine(
+                Context.Before.WriteLine(
                     "else if ({0}.NativeToManagedMap.ContainsKey({1}))", qualifiedClass, Context.ReturnVarName);
-                Context.SupportBefore.WriteLineIndent("{0} = ({1}) {2}.NativeToManagedMap[{3}];",
+                Context.Before.WriteLineIndent("{0} = ({1}) {2}.NativeToManagedMap[{3}];",
                     ret, qualifiedIdentifier, qualifiedClass, Context.ReturnVarName);
                 var dtor = originalClass.Destructors.FirstOrDefault();
                 if (dtor != null && dtor.IsVirtual)
                 {
-                    Context.SupportBefore.WriteLine("else {0}{1} = ({2}) {3}.{4}({5}{6});",
+                    Context.Before.WriteLine("else {0}{1} = ({2}) {3}.{4}({5}{6});",
                         MarshalsParameter
                             ? string.Empty
                             : string.Format("{0}.NativeToManagedMap[{1}] = ", qualifiedClass, Context.ReturnVarName),
@@ -349,13 +349,13 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
+                    Context.Before.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
                         Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                 }
             }
             else
             {
-                Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
+                Context.Before.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
                     Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
             }
             return ret;
@@ -408,19 +408,19 @@ namespace CppSharp.Generators.CSharp
                 case ArrayType.ArraySize.Constant:
                     if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
-                        Context.SupportBefore.WriteLine("if ({0} == null || {0}.Length != {1})",
+                        Context.Before.WriteLine("if ({0} == null || {0}.Length != {1})",
                             Context.Parameter.Name, array.Size);
                         ThrowArgumentOutOfRangeException();
                         var ptr = "__ptr" + Context.ParameterIndex;
-                        Context.SupportBefore.WriteLine("fixed ({0}* {1} = {2})",
+                        Context.Before.WriteLine("fixed ({0}* {1} = {2})",
                             array.Type, ptr, Context.Parameter.Name);
-                        Context.SupportBefore.WriteStartBraceIndent();
+                        Context.Before.WriteStartBraceIndent();
                         Context.Return.Write("new global::System.IntPtr({0})", ptr);
                         Context.HasCodeBlock = true;
                     }
                     else
                     {
-                        var supportBefore = Context.SupportBefore;
+                        var supportBefore = Context.Before;
                         supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
                         supportBefore.WriteStartBraceIndent();
                         Class @class;
@@ -472,7 +472,7 @@ namespace CppSharp.Generators.CSharp
 
         private void ThrowArgumentOutOfRangeException()
         {
-            Context.SupportBefore.WriteLineIndent(
+            Context.Before.WriteLineIndent(
                 "throw new ArgumentOutOfRangeException(\"{0}\", " +
                 "\"The dimensions of the provided array don't match the required size.\");",
                 Context.Parameter.Name);
@@ -499,17 +499,17 @@ namespace CppSharp.Generators.CSharp
                 if (templateSubstitution != null)
                 {
                     var castParam = $"__{Context.Parameter.Name}{Context.ParameterIndex}";
-                    Context.SupportBefore.WriteLine(
+                    Context.Before.WriteLine(
                         $"var {castParam} = ({templateSubstitution}) (object) {Context.Parameter.Name};");
-                    Context.SupportBefore.WriteLine($"{pointer} {refParamPtr} = &{castParam};");
+                    Context.Before.WriteLine($"{pointer} {refParamPtr} = &{castParam};");
                     Context.Return.Write(refParamPtr);
                 }
                 else
                 {
-                    Context.SupportBefore.WriteLine(
+                    Context.Before.WriteLine(
                         $"fixed ({pointer} {refParamPtr} = &{Context.Parameter.Name})");
                     Context.HasCodeBlock = true;
-                    Context.SupportBefore.WriteStartBraceIndent();
+                    Context.Before.WriteStartBraceIndent();
                     Context.Return.Write(refParamPtr);
                 }
                 return true;
@@ -550,13 +550,13 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
                     var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
-                    Context.SupportBefore.WriteLine("var {0} = new {1}.{2}();",
+                    Context.Before.WriteLine("var {0} = new {1}.{2}();",
                         Generator.GeneratedIdentifier(Context.ArgName), qualifiedIdentifier,
                         Helpers.InternalStruct);
                 }
                 else
                 {
-                    Context.SupportBefore.WriteLine("var {0} = {1}.{2};",
+                    Context.Before.WriteLine("var {0} = {1}.{2};",
                             Generator.GeneratedIdentifier(Context.ArgName),
                             Context.Parameter.Name,
                             Helpers.InstanceIdentifier);
@@ -582,9 +582,9 @@ namespace CppSharp.Generators.CSharp
                     var typeName = Type.TypePrinterDelegate(finalPointee);
 
                     if (param.IsInOut)
-                        Context.SupportBefore.WriteLine("{0} _{1} = {1};", typeName, param.Name);
+                        Context.Before.WriteLine("{0} _{1} = {1};", typeName, param.Name);
                     else
-                        Context.SupportBefore.WriteLine("{0} _{1};", typeName, param.Name);
+                        Context.Before.WriteLine("{0} _{1};", typeName, param.Name);
 
                     Context.Return.Write("&_{0}", param.Name);
                 }
@@ -755,8 +755,8 @@ namespace CppSharp.Generators.CSharp
                             (method.OperatorKind != CXXOperatorKind.EqualEqual &&
                             method.OperatorKind != CXXOperatorKind.ExclaimEqual))
                         {
-                            Context.SupportBefore.WriteLine("if (ReferenceEquals({0}, null))", param);
-                            Context.SupportBefore.WriteLineIndent(
+                            Context.Before.WriteLine("if (ReferenceEquals({0}, null))", param);
+                            Context.Before.WriteLineIndent(
                                 "throw new global::System.ArgumentNullException(\"{0}\", " +
                                 "\"Cannot be null because it is a C++ reference (&).\");",
                                 param);

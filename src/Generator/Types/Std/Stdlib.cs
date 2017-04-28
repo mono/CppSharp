@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
@@ -79,9 +79,9 @@ namespace CppSharp.Types.Std
             {
                 var varAllocator = $"__allocator{ctx.ParameterIndex}";
                 var varBasicString = $"__basicString{ctx.ParameterIndex}";
-                ctx.SupportBefore.WriteLine($@"var {varAllocator} = new {
+                ctx.Before.WriteLine($@"var {varAllocator} = new {
                     allocatorChar.Visit(typePrinter)}();");
-                ctx.SupportBefore.WriteLine($@"var {varBasicString} = new {
+                ctx.Before.WriteLine($@"var {varBasicString} = new {
                     basicString.Visit(typePrinter)}({ctx.Parameter.Name}, {varAllocator});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
                 ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
@@ -107,10 +107,10 @@ namespace CppSharp.Types.Std
             else
             {
                 const string varBasicString = "__basicStringRet";
-                ctx.SupportBefore.WriteLine("using (var {0} = {1}.{2}({3}))",
+                ctx.Before.WriteLine("using (var {0} = {1}.{2}({3}))",
                     varBasicString, basicString.Visit(typePrinter),
                     Helpers.CreateInstanceIdentifier, ctx.ReturnVarName);
-                ctx.SupportBefore.WriteStartBraceIndent();
+                ctx.Before.WriteStartBraceIndent();
                 ctx.Return.Write("{0}.{1}{2}", varBasicString, c_str.Name,
                     c_str is Method ? "()" : string.Empty);
                 ctx.HasCodeBlock = true;
@@ -208,11 +208,11 @@ namespace CppSharp.Types.Std
             var cppTypePrinter = new CppTypePrinter();
             var nativeType = type.Type.Visit(cppTypePrinter);
 
-            ctx.SupportBefore.WriteLine("auto {0} = std::vector<{1}>();",
+            ctx.Before.WriteLine("auto {0} = std::vector<{1}>();",
                 tmpVarName, nativeType);
-            ctx.SupportBefore.WriteLine("for each({0} _element in {1})",
+            ctx.Before.WriteLine("for each({0} _element in {1})",
                 managedType, entryString);
-            ctx.SupportBefore.WriteStartBraceIndent();
+            ctx.Before.WriteStartBraceIndent();
             {
                 var param = new Parameter
                 {
@@ -229,21 +229,21 @@ namespace CppSharp.Types.Std
                 var marshal = new CLIMarshalManagedToNativePrinter(elementCtx);
                 type.Type.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    ctx.SupportBefore.Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    ctx.Before.Write(marshal.Context.Before);
 
                 if (isPointerToPrimitive)
-                    ctx.SupportBefore.WriteLine("auto _marshalElement = {0}.ToPointer();",
+                    ctx.Before.WriteLine("auto _marshalElement = {0}.ToPointer();",
                         marshal.Context.Return);
                 else
-                    ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
+                    ctx.Before.WriteLine("auto _marshalElement = {0};",
                     marshal.Context.Return);
 
-                ctx.SupportBefore.WriteLine("{0}.push_back(_marshalElement);",
+                ctx.Before.WriteLine("{0}.push_back(_marshalElement);",
                     tmpVarName);
             }
             
-            ctx.SupportBefore.WriteCloseBraceIndent();
+            ctx.Before.WriteCloseBraceIndent();
 
             ctx.Return.Write(tmpVarName);
         }
@@ -258,12 +258,12 @@ namespace CppSharp.Types.Std
                 : type.Type;
             var tmpVarName = "_tmp" + ctx.ArgName;
             
-            ctx.SupportBefore.WriteLine(
+            ctx.Before.WriteLine(
                 "auto {0} = gcnew System::Collections::Generic::List<{1}>();",
                 tmpVarName, managedType);
-            ctx.SupportBefore.WriteLine("for(auto _element : {0})",
+            ctx.Before.WriteLine("for(auto _element : {0})",
                 ctx.ReturnVarName);
-            ctx.SupportBefore.WriteStartBraceIndent();
+            ctx.Before.WriteStartBraceIndent();
             {
                 var elementCtx = new MarshalContext(ctx.Context)
                                      {
@@ -274,20 +274,20 @@ namespace CppSharp.Types.Std
                 var marshal = new CLIMarshalNativeToManagedPrinter(elementCtx);
                 type.Type.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    ctx.SupportBefore.Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    ctx.Before.Write(marshal.Context.Before);
 
-                ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
+                ctx.Before.WriteLine("auto _marshalElement = {0};",
                     marshal.Context.Return);
 
                 if (isPointerToPrimitive)
-                    ctx.SupportBefore.WriteLine("{0}->Add({1}(_marshalElement));",
+                    ctx.Before.WriteLine("{0}->Add({1}(_marshalElement));",
                         tmpVarName, managedType);
                 else
-                    ctx.SupportBefore.WriteLine("{0}->Add(_marshalElement);",
+                    ctx.Before.WriteLine("{0}->Add(_marshalElement);",
                         tmpVarName);
             }
-            ctx.SupportBefore.WriteCloseBraceIndent();
+            ctx.Before.WriteCloseBraceIndent();
 
             ctx.Return.Write(tmpVarName);
         }
@@ -391,7 +391,7 @@ namespace CppSharp.Types.Std
             if (!ctx.Parameter.Type.Desugar().IsPointer())
                 marshal.ArgumentPrefix.Write("*");
             var marshalCtxName = string.Format("ctx_{0}", ctx.Parameter.Name);
-            ctx.SupportBefore.WriteLine("msclr::interop::marshal_context {0};", marshalCtxName);
+            ctx.Before.WriteLine("msclr::interop::marshal_context {0};", marshalCtxName);
             ctx.Return.Write("{0}.marshal_as<std::ostream*>({1})",
                 marshalCtxName, ctx.Parameter.Name);
         }

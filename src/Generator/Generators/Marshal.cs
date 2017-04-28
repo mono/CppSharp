@@ -7,7 +7,7 @@ namespace CppSharp.Generators
         public MarshalContext(BindingContext context)
         {
             Context = context;
-            SupportBefore = new TextGenerator();
+            Before = new TextGenerator();
             Return = new TextGenerator();
             MarshalVarPrefix = string.Empty;
         }
@@ -16,7 +16,7 @@ namespace CppSharp.Generators
 
         public MarshalPrinter<MarshalContext> MarshalToNative;
 
-        public TextGenerator SupportBefore { get; private set; }
+        public TextGenerator Before { get; private set; }
         public TextGenerator Return { get; private set; }
 
         public string ReturnVarName { get; set; }

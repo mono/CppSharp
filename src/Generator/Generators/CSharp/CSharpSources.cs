@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -773,8 +773,8 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             decl.CSharpMarshalToNative(marshal);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Write(marshal.Context.Before);
 
             if (ctx.HasCodeBlock)
                 PushIndent();
@@ -854,8 +854,8 @@ namespace CppSharp.Generators.CSharp
             }
             param.Visit(marshal);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Write(marshal.Context.Before);
 
             if (ctx.HasCodeBlock)
                 PushIndent();
@@ -1038,8 +1038,8 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             decl.CSharpMarshalToManaged(marshal);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Write(marshal.Context.Before);
 
             if (ctx.HasCodeBlock)
                 PushIndent();
@@ -1086,8 +1086,8 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             field.CSharpMarshalToManaged(marshal);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Write(marshal.Context.Before);
 
             if (ctx.HasCodeBlock)
                 PushIndent();
@@ -1552,8 +1552,8 @@ namespace CppSharp.Generators.CSharp
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { MarshalsParameter = true };
                 param.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 marshals.Add(marshal.Context.Return);
             }
@@ -1593,8 +1593,8 @@ namespace CppSharp.Generators.CSharp
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 method.OriginalReturnType.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 if (method.HasIndirectReturnTypeParameter)
                 {
@@ -2712,8 +2712,8 @@ namespace CppSharp.Generators.CSharp
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 retType.CSharpMarshalToManaged(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 if (ctx.HasCodeBlock)
                     PushIndent();
@@ -2809,8 +2809,8 @@ namespace CppSharp.Generators.CSharp
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 param.CSharpMarshalToManaged(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 WriteLine("{0} = {1};", param.Name, marshal.Context.Return);
 
@@ -2883,8 +2883,8 @@ namespace CppSharp.Generators.CSharp
             if (string.IsNullOrEmpty(marshal.Context.Return))
                 throw new Exception("Cannot marshal argument of function");
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Write(marshal.Context.Before);
 
             if (paramMarshal.HasUsingBlock)
                 PushIndent();

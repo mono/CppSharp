@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -421,8 +421,8 @@ namespace CppSharp.Generators.CLI
                     variable += string.Format("({0})", marshal2.Context.Return);
                 }
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 if (marshal.Context.Return.StringBuilder.Length > 0)
                 {
@@ -495,8 +495,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 decl.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 WriteLine("return {0};", marshal.Context.Return);
             }
@@ -699,8 +699,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 property.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 WriteLine("{0} = {1};", property.Field.Name, marshal.Context.Return);
             }
@@ -846,8 +846,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 names.Add(marshal.Context.Return);
             }
@@ -880,8 +880,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 property.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 WriteLine("this->{0} = {1};", property.Name, marshal.Context.Return);
             }
@@ -956,8 +956,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 marshal.MarshalValueClassProperties(@class, valueMarshalName);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
             }
 
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
@@ -1032,8 +1032,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
                 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 WriteLine("{0} = {1};",param.Name,marshal.Context.Return);
             }
@@ -1065,8 +1065,8 @@ namespace CppSharp.Generators.CLI
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 retType.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 // Special case for indexer - needs to dereference if the internal
                 // function is a pointer type and the property is not.
@@ -1190,8 +1190,8 @@ namespace CppSharp.Generators.CLI
 
                 if (param.IsInOut)
                 {
-                    if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                        Write(marshal.Context.SupportBefore);
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                        Write(marshal.Context.Before);
 
                     WriteLine("{0} {1} = {2};", type, argName, marshal.Context.Return);
                 }
@@ -1200,8 +1200,8 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
 
                 WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName,
                     marshal.Context.Return);

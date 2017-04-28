@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -44,19 +44,18 @@ namespace CppSharp.Generators.CLI
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    var supportBefore = Context.SupportBefore;
                     string value = Generator.GeneratedIdentifier("array") + Context.ParameterIndex;
-                    supportBefore.WriteLine("cli::array<{0}>^ {1} = nullptr;", array.Type, value, array.Size);
-                    supportBefore.WriteLine("if ({0} != 0)", Context.ReturnVarName);
-                    supportBefore.WriteStartBraceIndent();
-                    supportBefore.WriteLine("{0} = gcnew cli::array<{1}>({2});", value, array.Type, array.Size);
-                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                    Context.Before.WriteLine("cli::array<{0}>^ {1} = nullptr;", array.Type, value, array.Size);
+                    Context.Before.WriteLine("if ({0} != 0)", Context.ReturnVarName);
+                    Context.Before.WriteStartBraceIndent();
+                    Context.Before.WriteLine("{0} = gcnew cli::array<{1}>({2});", value, array.Type, array.Size);
+                    Context.Before.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
                     if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
-                        supportBefore.WriteLineIndent("{0}[i] = new ::System::IntPtr({1}[i]);",
+                        Context.Before.WriteLineIndent("{0}[i] = new ::System::IntPtr({1}[i]);",
                             value, Context.ReturnVarName);
                     else
-                        supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
-                    supportBefore.WriteCloseBraceIndent();
+                        Context.Before.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
+                    Context.Before.WriteCloseBraceIndent();
                     Context.Return.Write(value);
                     break;
                 case ArrayType.ArraySize.Incomplete:
@@ -305,7 +304,7 @@ namespace CppSharp.Generators.CLI
             if (@class.IsRefType && needsCopy)
             {
                 var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
-                Context.SupportBefore.WriteLine("auto {0} = new ::{1}({2});", name,
+                Context.Before.WriteLine("auto {0} = new ::{1}({2});", name,
                     @class.QualifiedOriginalName, Context.ReturnVarName);
                 instance = name;
             }
@@ -458,15 +457,15 @@ namespace CppSharp.Generators.CLI
                     if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
                         const string pinnedPtr = "__pinnedPtr";
-                        Context.SupportBefore.WriteLine("cli::pin_ptr<{0}> {1} = &{2}[0];",
+                        Context.Before.WriteLine("cli::pin_ptr<{0}> {1} = &{2}[0];",
                             array.Type, pinnedPtr, Context.Parameter.Name);
                         const string arrayPtr = "__arrayPtr";
-                        Context.SupportBefore.WriteLine("{0}* {1} = {2};", array.Type, arrayPtr, pinnedPtr);
+                        Context.Before.WriteLine("{0}* {1} = {2};", array.Type, arrayPtr, pinnedPtr);
                         Context.Return.Write("({0} (&)[{1}]) {2}", array.Type, array.Size, arrayPtr);
                     }
                     else
                     {
-                        var supportBefore = Context.SupportBefore;
+                        var supportBefore = Context.Before;
                         supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
                         supportBefore.WriteStartBraceIndent();
                         supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
@@ -519,7 +518,7 @@ namespace CppSharp.Generators.CLI
                 pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
-                Context.SupportBefore.WriteLine(
+                Context.Before.WriteLine(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
                     Context.ArgName, Context.Parameter.Name);
 
@@ -708,8 +707,8 @@ namespace CppSharp.Generators.CLI
                 (method.OperatorKind != CXXOperatorKind.EqualEqual &&
                 method.OperatorKind != CXXOperatorKind.ExclaimEqual)))
             {
-                Context.SupportBefore.WriteLine("if (ReferenceEquals({0}, nullptr))", Context.Parameter.Name);
-                Context.SupportBefore.WriteLineIndent(
+                Context.Before.WriteLine("if (ReferenceEquals({0}, nullptr))", Context.Parameter.Name);
+                Context.Before.WriteLineIndent(
                     "throw gcnew ::System::ArgumentNullException(\"{0}\", " +
                     "\"Cannot be null because it is a C++ reference (&).\");",
                     Context.Parameter.Name);
@@ -741,7 +740,7 @@ namespace CppSharp.Generators.CLI
             var marshalVar = Context.MarshalVarPrefix + "_marshal" +
                 Context.ParameterIndex++;
 
-            Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
+            Context.Before.WriteLine("auto {0} = ::{1}();", marshalVar,
                 @class.QualifiedOriginalName);
 
             MarshalValueClassProperties(@class, marshalVar);
@@ -789,8 +788,8 @@ namespace CppSharp.Generators.CLI
 
             Context.ParameterIndex = marshalCtx.ParameterIndex;
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Context.SupportBefore.Write(marshal.Context.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Context.Before.Write(marshal.Context.Before);
 
             Type type;
             Class @class;
@@ -800,15 +799,15 @@ namespace CppSharp.Generators.CLI
 
             if (isRef)
             {
-                Context.SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
-                Context.SupportBefore.PushIndent();
+                Context.Before.WriteLine("if ({0} != nullptr)", fieldRef);
+                Context.Before.PushIndent();
             }
 
-            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar,
+            Context.Before.WriteLine("{0}.{1} = {2};", marshalVar,
                 property.Field.OriginalName, marshal.Context.Return);
 
             if (isRef)
-                Context.SupportBefore.PopIndent();
+                Context.Before.PopIndent();
         }
 
         public override bool VisitFieldDecl(Field field)
