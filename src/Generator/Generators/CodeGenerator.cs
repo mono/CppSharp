@@ -9,7 +9,7 @@ using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Generators
 {
-    public abstract class CodeGenerator : BlockGenerator, IDeclVisitor<bool>
+    public abstract class CodeGenerator : BlockGenerator, IDeclVisitor<bool>, IAstVisited
     {
         public BindingContext Context { get; }
 
@@ -42,6 +42,8 @@ namespace CppSharp.Generators
         /// Gets the comment style kind for documentation comments.
         /// </summary>
         public virtual CommentKind DocumentationCommentKind => CommentKind.BCPLSlash;
+
+        public ISet<object> Visited { get; } = new HashSet<object>();
 
         protected CodeGenerator(BindingContext context, TranslationUnit unit)
             : this(context, new List<TranslationUnit> { unit })
@@ -232,9 +234,19 @@ namespace CppSharp.Generators
 
         #region Visitor methods
 
+        public bool AlreadyVisited(CppSharp.AST.Type type)
+        {
+            return !Visited.Add(type);
+        }
+
+        public bool AlreadyVisited(Declaration decl)
+        {
+            return !Visited.Add(decl);
+        }
+
         public virtual bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            return !AlreadyVisited(decl);
         }
 
         public virtual bool VisitTranslationUnit(TranslationUnit unit)
