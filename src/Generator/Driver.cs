@@ -131,7 +131,7 @@ namespace CppSharp
             // This eventually gets passed to Clang's MSCompatibilityVersion, which
             // is in turn used to derive the value of the built-in define _MSC_VER.
             // It used to receive a 4-digit based identifier but now expects a full
-            // version MSVC digit, so check if we still have the old version and 
+            // version MSVC digit, so check if we still have the old version and
             // convert to the right format.
 
             if (ParserOptions.ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
@@ -201,7 +201,7 @@ namespace CppSharp
 
             foreach (var source in Project.Sources.Where(s => s.Options != null))
                 source.Options.Dispose();
-           
+
             Context.TargetInfo = parser.GetTargetInfo(ParserOptions);
             Context.ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
 
@@ -275,7 +275,7 @@ namespace CppSharp
         }
 
         public void SetupPasses(ILibrary library)
-        { 
+        {
             var TranslationUnitPasses = Context.TranslationUnitPasses;
 
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
@@ -497,9 +497,11 @@ namespace CppSharp
             if (!options.Quiet)
                 Diagnostics.Message("Processing code...");
 
+            driver.SetupPasses(library);
+
             library.Preprocess(driver, driver.Context.ASTContext);
 
-            driver.SetupPasses(library);
+
 
             driver.ProcessCode();
             library.Postprocess(driver, driver.Context.ASTContext);
