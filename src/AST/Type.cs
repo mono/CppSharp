@@ -1084,6 +1084,11 @@ namespace CppSharp.AST
         {
         }
 
+        public UnsupportedType(string description)
+        {
+            Description = description;
+        }
+
         public UnsupportedType(UnsupportedType type)
             : base(type)
         {
