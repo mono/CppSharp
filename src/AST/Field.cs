@@ -10,9 +10,12 @@ namespace CppSharp.AST
 
         public Class Class { get; set; }
 
+        public bool IsStatic { get; set; }
+
         public bool IsBitField { get; set; }
 
         public uint BitWidth { get; set; }
+
 
         public Field()
         {
