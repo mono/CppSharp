@@ -127,7 +127,8 @@ namespace CppSharp.AST
         AbstractImplCall,
         DefaultValueOverload,
         InterfaceInstance,
-        AdjustedMethod
+        AdjustedMethod,
+        FieldAcessor
     }
 
     public enum FriendKind
@@ -243,6 +244,11 @@ namespace CppSharp.AST
         public string Mangled { get; set; }
         public string Signature { get; set; }
         public string Body { get; set; }
+
+        /// <summary>
+        /// Field associated in case of synthetized field acessors.
+        /// </summary>
+        public Field Field { get; set; }
 
         /// <summary>
         /// Keeps an index that de-duplicates native names in the C# backend.
