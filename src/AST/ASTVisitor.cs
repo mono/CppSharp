@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -321,16 +322,32 @@ namespace CppSharp.AST
                         baseClass.Class.Visit(this);
 
             if (VisitOptions.VisitClassFields)
+            {
                 foreach (var field in @class.Fields)
                     VisitFieldDecl(field);
 
+                var fields = @class.Declarations.OfType<Field>().ToArray();
+                foreach (var field in fields)
+                    VisitFieldDecl(field);
+            }
+
             if (VisitOptions.VisitClassProperties)
+            {
                 foreach (var property in @class.Properties)
                     VisitProperty(property);
+
+                var properties = @class.Declarations.OfType<Property>().ToArray();
+                foreach (var property in properties)
+                    VisitProperty(property);
+            }
 
             if (VisitOptions.VisitClassMethods)
             {
                 var methods = @class.Methods.ToArray();
+                foreach (var method in methods)
+                    VisitMethodDecl(method);
+
+                methods = @class.Declarations.OfType<Method>().ToArray();
                 foreach (var method in methods)
                     VisitMethodDecl(method);
             }
