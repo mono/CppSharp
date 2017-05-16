@@ -683,9 +683,9 @@ namespace CppSharp
                 }
                 while (fetched > 0);
             }
+            // a COM exception means the VS 2017 COM API (therefore VS itself) is not installed, ignore
             catch (COMException ex) when (ex.HResult == REGDB_E_CLASSNOTREG)
             {
-                Console.WriteLine("The query API is not registered. Assuming no instances are installed.");
             }
             catch (Exception ex)
             {
@@ -726,9 +726,9 @@ namespace CppSharp
                 }
                 while (fetched > 0);
             }
+            // a COM exception means the VS 2017 COM API (therefore VS itself) is not installed, ignore
             catch (COMException ex) when (ex.HResult == REGDB_E_CLASSNOTREG)
             {
-                Console.WriteLine("The query API is not registered. Assuming no instances are installed.");
                 return false;
             }
             catch (Exception ex)
