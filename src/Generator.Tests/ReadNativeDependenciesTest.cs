@@ -11,29 +11,26 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesWindows()
         {
-            var dependencies = GetDependencies("ls-windows");
-            Assert.AreEqual("msys-intl-8.dll", dependencies[0]);
-            Assert.AreEqual("msys-2.0.dll", dependencies[1]);
-            Assert.AreEqual("KERNEL32.dll", dependencies[2]);
+            var dependencies = GetDependencies("libexpat-windows");
+            Assert.AreEqual("KERNEL32.dll", dependencies[0]);
+            Assert.AreEqual("msvcrt.dll", dependencies[1]);
+            Assert.AreEqual("USER32.dll", dependencies[2]);
+
         }
 
         [Test]
         public void TestReadDependenciesLinux()
         {
-            var dependencies = GetDependencies("ls-linux");
-            Assert.AreEqual("libselinux.so.1", dependencies[0]);
-            Assert.AreEqual("librt.so.1", dependencies[1]);
-            Assert.AreEqual("libacl.so.1", dependencies[2]);
-            Assert.AreEqual("libc.so.6", dependencies[3]);
+            var dependencies = GetDependencies("libexpat-linux");
+            Assert.AreEqual("libc.so.6", dependencies[0]);
         }
 
         [Test]
         public void TestReadDependenciesOSX()
         {
-            var dependencies = GetDependencies("ls-osx");
-            Assert.AreEqual("libutil.dylib", dependencies[0]);
-            Assert.AreEqual("libncurses.5.4.dylib", dependencies[1]);
-            Assert.AreEqual("libSystem.B.dylib", dependencies[2]);
+            var dependencies = GetDependencies("libexpat.1.dylib");
+            Assert.AreEqual("libexpat.1.dylib", dependencies[0]);
+            Assert.AreEqual("libSystem.B.dylib", dependencies[1]);
         }
 
         private static IList<string> GetDependencies(string library)
