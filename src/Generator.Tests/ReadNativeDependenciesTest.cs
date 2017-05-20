@@ -15,7 +15,6 @@ namespace CppSharp.Generator.Tests
             Assert.AreEqual("KERNEL32.dll", dependencies[0]);
             Assert.AreEqual("msvcrt.dll", dependencies[1]);
             Assert.AreEqual("USER32.dll", dependencies[2]);
-
         }
 
         [Test]
@@ -28,7 +27,7 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesOSX()
         {
-            var dependencies = GetDependencies("libexpat.1.dylib");
+            var dependencies = GetDependencies("libexpat-osx");
             Assert.AreEqual("libexpat.1.dylib", dependencies[0]);
             Assert.AreEqual("libSystem.B.dylib", dependencies[1]);
         }
