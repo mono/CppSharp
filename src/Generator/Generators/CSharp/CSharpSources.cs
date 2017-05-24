@@ -553,7 +553,7 @@ namespace CppSharp.Generators.CSharp
               .GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, false)
               .Select(p => new Parameter(p)).ToArray();
 
-            foreach (var p in paramsCopy.Where(paramCopy => paramCopy.Type.IsPrimitiveType() && ((BuiltinType)paramCopy.Type).Type == PrimitiveType.Bool))
+            foreach (var p in paramsCopy.Where(paramCopy => paramCopy.Type.IsPrimitiveType() && (paramCopy.Type as BuiltinType)?.Type == PrimitiveType.Bool))
             {
                 p.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Char));
             }
