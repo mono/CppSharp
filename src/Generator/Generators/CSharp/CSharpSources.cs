@@ -2647,7 +2647,7 @@ namespace CppSharp.Generators.CSharp
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
                     name.Append(param.Context.ArgumentPrefix);
 
-                var paramString = param.Param.Type.IsPrimitiveType() && ((BuiltinType)param.Param.Type).Type == PrimitiveType.Bool? $"{param.Name} ? (sbyte)1: (sbyte)0" : param.Name;
+                var paramString = param.Param.Type.IsPrimitiveType() && (param.Param.Type as BuiltinType)?.Type == PrimitiveType.Bool? $"{param.Name} ? (sbyte)1: (sbyte)0" : param.Name;
                 name.Append(paramString);
                 names.Add(name.ToString());
             }
