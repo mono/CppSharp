@@ -33,6 +33,11 @@ bool Foo::operator ==(const Foo& other) const
     return A == other.A && B == other.B;
 }
 
+int Foo::fooPtr()
+{
+    return 1;
+}
+
 Foo2::Foo2() {}
 
 Foo2 Foo2::operator<<(signed int i)

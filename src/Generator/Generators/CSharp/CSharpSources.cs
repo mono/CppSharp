@@ -2914,16 +2914,8 @@ namespace CppSharp.Generators.CSharp
             GenerateDeclarationCommon(typedef);
 
             FunctionType functionType;
-            TagType tag;
 
-            if (typedef.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
-                || typedef.Type.IsPointerTo(out tag))
-            {
-                PushBlock(BlockKind.Typedef);
-                WriteLine("public class " + typedef.Name + @" { }");
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
-            else if (typedef.Type.IsPointerTo(out functionType))
+            if (typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(BlockKind.Typedef);
                 var attributedType = typedef.Type.GetPointee() as AttributedType;

@@ -65,6 +65,8 @@ public:
     int TakesRef(const Foo& other);
 
     bool operator ==(const Foo& other) const;
+
+    int fooPtr();
 };
 
 // HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp
