@@ -18,8 +18,11 @@ namespace CppSharp.Passes
 
         public override void Process()
         {
-            foreach (var header in TranslationUnit.Module.Headers)
-                WriteLine($"#include <{header}>");
+            if (TranslationUnit.Module == Options.SystemModule)
+                WriteLine("#include <string>");
+            else
+                foreach (var header in TranslationUnit.Module.Headers)
+                    WriteLine($"#include <{header}>");
             NewLine();
         }
 

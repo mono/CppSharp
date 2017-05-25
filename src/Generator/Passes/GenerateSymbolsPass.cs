@@ -80,17 +80,12 @@ namespace CppSharp.Passes
                 return false;
 
             var module = function.TranslationUnit.Module;
-            if (module == Options.SystemModule)
-            {
-                GetSymbolsCodeGenerator(module);
-                return false;
-            }
 
             if (function.IsGenerated)
             {
-                CheckTypeForSpecialization(function, function.OriginalReturnType.Type);
+                CheckTypeForSpecialization(function.OriginalReturnType.Type);
                 foreach (var parameter in function.Parameters)
-                    CheckTypeForSpecialization(function, parameter.Type);
+                    CheckTypeForSpecialization(parameter.Type);
             }
 
             if (!NeedsSymbol(function))
@@ -100,7 +95,7 @@ namespace CppSharp.Passes
             return function.Visit(symbolsCodeGenerator);
         }
 
-        private void CheckTypeForSpecialization(Function function, AST.Type type)
+        private void CheckTypeForSpecialization(AST.Type type)
         {
             type = type.Desugar();
             ClassTemplateSpecialization specialization;
