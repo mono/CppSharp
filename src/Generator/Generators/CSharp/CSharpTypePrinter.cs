@@ -64,7 +64,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PrimitiveType primitiveType;
                 if ((arrayType.IsPointerToPrimitiveType(out primitiveType) &&
-                    !(arrayType is FunctionType)) || 
+                    !(arrayType is FunctionType)) ||
                     (arrayType.IsPrimitiveType() && MarshalKind != MarshalKind.NativeField))
                 {
                     if (primitiveType == PrimitiveType.Void)
@@ -197,6 +197,9 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
         {
+            if (MarshalKind == MarshalKind.NativeField)
+                return IntPtrType;
+
             var pointee = pointer.Pointee;
 
             if (pointee is FunctionType)
@@ -347,7 +350,7 @@ namespace CppSharp.Generators.CSharp
                 Kind = ContextKind,
                 MarshalKind = MarshalKind
             };
-    
+
             var type = typeMap.CSharpSignature(typePrinterContext);
             if (!string.IsNullOrEmpty(type))
             {
@@ -457,7 +460,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-       static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)
+        static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)
         {
             uint width;
             bool signed;
@@ -686,6 +689,29 @@ namespace CppSharp.Generators.CSharp
         }
 
         private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);
+
+        public override TypePrinterResult VisitFieldDecl(Field field)
+        {
+            var cSharpSourcesDummy = new CSharpSources(Context, new List<TranslationUnit>());
+            var safeIdentifier = cSharpSourcesDummy.SafeIdentifier(field.Name);
+
+            if (safeIdentifier.All(c => c.Equals('_')))
+            {
+                safeIdentifier = cSharpSourcesDummy.SafeIdentifier(field.Name);
+            }
+
+            PushMarshalKind(MarshalKind.NativeField);   
+            var fieldTypePrinted = field.QualifiedType.Visit(this);
+            PopMarshalKind();           
+                     
+            var returnTypePrinter = new TypePrinterResult();
+            if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
+                returnTypePrinter.NameSuffix = fieldTypePrinted.NameSuffix;
+
+            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {safeIdentifier}"; 
+
+            return returnTypePrinter;
+        }
     }
 
     public static class CSharpTypePrinterExtensions

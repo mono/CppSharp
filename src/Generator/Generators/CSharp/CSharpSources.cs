@@ -643,38 +643,22 @@ namespace CppSharp.Generators.CSharp
                 coreType.IsPrimitiveType(PrimitiveType.Half))
                 return;
 
-            var safeIdentifier = SafeIdentifier(field.Name);
-
-            if(safeIdentifier.All(c => c.Equals('_')))
-            {
-                safeIdentifier = SafeIdentifier(field.Name);
-            }
-
+            TypePrinterResult retType = TypePrinter.VisitFieldDecl(
+                new Field { Name = field.Name, QualifiedType = field.QualifiedType });
+           
             PushBlock(BlockKind.Field);
 
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[FieldOffset({field.Offset})]");
-
-            TypePrinter.PushMarshalKind(MarshalKind.NativeField);
-            var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
-            TypePrinter.PopMarshalKind();
-
-            var fieldType = field.QualifiedType.Type.Desugar().IsAddress() ?
-                CSharpTypePrinter.IntPtrType : fieldTypePrinted.Type;
-
-            var fieldName = safeIdentifier;
-            if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
-                fieldName += fieldTypePrinted.NameSuffix;
-
             var access = decl != null && !decl.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write($"{access} {fieldType} {fieldName} = {fieldValuePrinted};");
+                Write($"{access} {retType}{retType.NameSuffix} = {fieldValuePrinted};");
             }
             else
             {
-                Write($"{access} {fieldType} {fieldName};");
+                Write($"{access} {retType}{retType.NameSuffix};");
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
