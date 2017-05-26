@@ -1179,3 +1179,16 @@ struct StructTestArrayTypeFromTypedef
 
 #define MY_MACRO_TEST_1 '1'
 #define MY_MACRO_TEST_2 '2'
+
+typedef struct __pltd_rssi_test {
+	bool en;
+	uint32_t freq;
+	float limit;
+}_pltd_rssi_test;
+
+#define MAX_SUPPORTED_RF_TESTS 10   
+
+typedef struct __pltd_580_test_params
+{
+	_pltd_rssi_test rssi_test[MAX_SUPPORTED_RF_TESTS];
+};

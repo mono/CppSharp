@@ -730,4 +730,103 @@ public unsafe class CSharpTests : GeneratorTestFixture
         var b = (MyMacroTestEnum)'2';
         Assert.IsTrue(a == MyMacroTestEnum.MY_MACRO_TEST_1 && b == MyMacroTestEnum.MY_MACRO_TEST_2);
     }
+
+    [Test]
+    public void TestGenerationOfArraySetter()
+    {
+        PltdRssiTest[] arr = new PltdRssiTest[10];
+        Pltd580TestParams tests = new Pltd580TestParams();
+        arr[0] = new PltdRssiTest();
+        arr[1] = new PltdRssiTest();
+        arr[2] = new PltdRssiTest();
+        arr[3] = new PltdRssiTest();
+        arr[4] = new PltdRssiTest();
+        arr[5] = new PltdRssiTest();
+        arr[6] = new PltdRssiTest();
+        arr[7] = new PltdRssiTest();
+        arr[8] = new PltdRssiTest();
+        arr[9] = new PltdRssiTest();
+
+        arr[0].En = true;
+        arr[0].Freq = 2450;
+        arr[0].Limit = -40;
+
+        arr[1].En = false;
+        arr[1].Freq = 2451;
+        arr[1].Limit = -41;
+
+        arr[2].En = true;
+        arr[2].Freq = 2452;
+        arr[2].Limit = -42;
+
+        arr[3].En = true;
+        arr[3].Freq = 2453;
+        arr[3].Limit = -43;
+
+        arr[4].En = false;
+        arr[4].Freq = 2454;
+        arr[4].Limit = -44;
+
+        arr[5].En = true;
+        arr[5].Freq = 2455;
+        arr[5].Limit = -45;
+
+        arr[6].En = true;
+        arr[6].Freq = 2456;
+        arr[6].Limit = -46;
+
+        arr[7].En = true;
+        arr[7].Freq = 2457;
+        arr[7].Limit = -47;
+
+        arr[8].En = false;
+        arr[8].Freq = 2458;
+        arr[8].Limit = -48;
+
+        arr[9].En = true;
+        arr[9].Freq = 2459;
+        arr[9].Limit = -49;
+
+        tests.RssiTest = arr;
+
+        Assert.AreEqual(tests.RssiTest[0].En, true);
+        Assert.AreEqual(tests.RssiTest[0].Freq, 2450);
+        Assert.AreEqual(tests.RssiTest[0].Limit, -40);
+
+        Assert.AreEqual(tests.RssiTest[1].En, false);
+        Assert.AreEqual(tests.RssiTest[1].Freq, 2451);
+        Assert.AreEqual(tests.RssiTest[1].Limit, -41);
+
+        Assert.AreEqual(tests.RssiTest[2].En, true);
+        Assert.AreEqual(tests.RssiTest[2].Freq, 2452);
+        Assert.AreEqual(tests.RssiTest[2].Limit, -42);
+
+        Assert.AreEqual(tests.RssiTest[3].En, true);
+        Assert.AreEqual(tests.RssiTest[3].Freq, 2453);
+        Assert.AreEqual(tests.RssiTest[3].Limit, -43);
+
+        Assert.AreEqual(tests.RssiTest[4].En, false);
+        Assert.AreEqual(tests.RssiTest[4].Freq, 2454);
+        Assert.AreEqual(tests.RssiTest[4].Limit, -44);
+
+        Assert.AreEqual(tests.RssiTest[5].En, true);
+        Assert.AreEqual(tests.RssiTest[5].Freq, 2455);
+        Assert.AreEqual(tests.RssiTest[5].Limit, -45);
+
+        Assert.AreEqual(tests.RssiTest[6].En, true);
+        Assert.AreEqual(tests.RssiTest[6].Freq, 2456);
+        Assert.AreEqual(tests.RssiTest[6].Limit, -46);
+
+        Assert.AreEqual(tests.RssiTest[7].En, true);
+        Assert.AreEqual(tests.RssiTest[7].Freq, 2457);
+        Assert.AreEqual(tests.RssiTest[7].Limit, -47);
+
+        Assert.AreEqual(tests.RssiTest[8].En, false);
+        Assert.AreEqual(tests.RssiTest[8].Freq, 2458);
+        Assert.AreEqual(tests.RssiTest[8].Limit, -48);
+
+        Assert.AreEqual(tests.RssiTest[9].En, true);
+        Assert.AreEqual(tests.RssiTest[9].Freq, 2459);
+        Assert.AreEqual(tests.RssiTest[9].Limit, -49);
+    }
 }

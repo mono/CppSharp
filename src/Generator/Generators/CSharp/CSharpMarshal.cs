@@ -434,7 +434,7 @@ namespace CppSharp.Generators.CSharp
                         if (@class != null && @class.IsRefType)
                         {
                             supportBefore.WriteLineIndent(
-                                "{0}[i * sizeof({1}.{2})] = *((byte*)({1}.{2}*){3}[i].{4});",
+                                "*({1}.{2}*) &{0}[i * sizeof({1}.{2})] = *({1}.{2}*){3}[i].{4};",
                                 Context.ReturnVarName, array.Type, Helpers.InternalStruct,
                                 Context.ArgName, Helpers.InstanceIdentifier);
                         }
