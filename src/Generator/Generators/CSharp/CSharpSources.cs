@@ -1935,7 +1935,8 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
+            var suffix = @class.IsAbstract ? "Internal" : string.Empty;
+            var ctorCall = $"{@class.Visit(TypePrinter)}{suffix}";
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(BlockKind.Method);
