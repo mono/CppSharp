@@ -7,6 +7,12 @@
 #include <string>
 #include <vector>
 
+class TestPrimitiveTypes
+{
+public:
+    long double longDouble;
+};
+
 class DLL_API IgnoredType
 {
     class IgnoredNested
@@ -1179,12 +1185,6 @@ class HasSystemBase : public std::string
 };
 
 typedef SpecialisesVoid<std::vector<std::string>> SpecialisesWithNestedSystemTypes;
-
-struct HasLongDoubles
-{
-    long double simple;
-    long double array[4];
-};
 
 enum
 {

@@ -517,8 +517,8 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Half: return "__fp16";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
-                // not really supported yet but it's closest, and we don't want crashes when parsing long doubles
-                case PrimitiveType.LongDouble: return "decimal";
+                case PrimitiveType.LongDouble: return new TypePrinterResult { Type = "fixed byte",
+                    NameSuffix = $"[{Context.TargetInfo.LongDoubleWidth}]"};
                 case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
                 case PrimitiveType.Null: return "void*";
