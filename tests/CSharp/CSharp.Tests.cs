@@ -730,4 +730,108 @@ public unsafe class CSharpTests : GeneratorTestFixture
         var b = (MyMacroTestEnum)'2';
         Assert.IsTrue(a == MyMacroTestEnum.MY_MACRO_TEST_1 && b == MyMacroTestEnum.MY_MACRO_TEST_2);
     }
+
+    [Test]
+    public void TestGenerationOfArraySetter()
+    {
+        var complexArrayElements = new ComplexArrayElement[10];
+        complexArrayElements[0] = new ComplexArrayElement();
+        complexArrayElements[1] = new ComplexArrayElement();
+        complexArrayElements[2] = new ComplexArrayElement();
+        complexArrayElements[3] = new ComplexArrayElement();
+        complexArrayElements[4] = new ComplexArrayElement();
+        complexArrayElements[5] = new ComplexArrayElement();
+        complexArrayElements[6] = new ComplexArrayElement();
+        complexArrayElements[7] = new ComplexArrayElement();
+        complexArrayElements[8] = new ComplexArrayElement();
+        complexArrayElements[9] = new ComplexArrayElement();
+
+        complexArrayElements[0].BoolField = true;
+        complexArrayElements[0].IntField = 2450;
+        complexArrayElements[0].FloatField = -40;
+
+        complexArrayElements[1].BoolField = false;
+        complexArrayElements[1].IntField = 2451;
+        complexArrayElements[1].FloatField = -41;
+
+        complexArrayElements[2].BoolField = true;
+        complexArrayElements[2].IntField = 2452;
+        complexArrayElements[2].FloatField = -42;
+
+        complexArrayElements[3].BoolField = true;
+        complexArrayElements[3].IntField = 2453;
+        complexArrayElements[3].FloatField = -43;
+
+        complexArrayElements[4].BoolField = false;
+        complexArrayElements[4].IntField = 2454;
+        complexArrayElements[4].FloatField = -44;
+
+        complexArrayElements[5].BoolField = true;
+        complexArrayElements[5].IntField = 2455;
+        complexArrayElements[5].FloatField = -45;
+
+        complexArrayElements[6].BoolField = true;
+        complexArrayElements[6].IntField = 2456;
+        complexArrayElements[6].FloatField = -46;
+
+        complexArrayElements[7].BoolField = true;
+        complexArrayElements[7].IntField = 2457;
+        complexArrayElements[7].FloatField = -47;
+
+        complexArrayElements[8].BoolField = false;
+        complexArrayElements[8].IntField = 2458;
+        complexArrayElements[8].FloatField = -48;
+
+        complexArrayElements[9].BoolField = true;
+        complexArrayElements[9].IntField = 2459;
+        complexArrayElements[9].FloatField = -49;
+
+        using (HasComplexArray tests = new HasComplexArray { ComplexArray = complexArrayElements })
+        {
+            Assert.AreEqual(tests.ComplexArray[0].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[0].IntField, 2450);
+            Assert.AreEqual(tests.ComplexArray[0].FloatField, -40);
+
+            Assert.AreEqual(tests.ComplexArray[1].BoolField, false);
+            Assert.AreEqual(tests.ComplexArray[1].IntField, 2451);
+            Assert.AreEqual(tests.ComplexArray[1].FloatField, -41);
+
+            Assert.AreEqual(tests.ComplexArray[2].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[2].IntField, 2452);
+            Assert.AreEqual(tests.ComplexArray[2].FloatField, -42);
+
+            Assert.AreEqual(tests.ComplexArray[3].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[3].IntField, 2453);
+            Assert.AreEqual(tests.ComplexArray[3].FloatField, -43);
+
+            Assert.AreEqual(tests.ComplexArray[4].BoolField, false);
+            Assert.AreEqual(tests.ComplexArray[4].IntField, 2454);
+            Assert.AreEqual(tests.ComplexArray[4].FloatField, -44);
+
+            Assert.AreEqual(tests.ComplexArray[5].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[5].IntField, 2455);
+            Assert.AreEqual(tests.ComplexArray[5].FloatField, -45);
+
+            Assert.AreEqual(tests.ComplexArray[6].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[6].IntField, 2456);
+            Assert.AreEqual(tests.ComplexArray[6].FloatField, -46);
+
+            Assert.AreEqual(tests.ComplexArray[7].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[7].IntField, 2457);
+            Assert.AreEqual(tests.ComplexArray[7].FloatField, -47);
+
+            Assert.AreEqual(tests.ComplexArray[8].BoolField, false);
+            Assert.AreEqual(tests.ComplexArray[8].IntField, 2458);
+            Assert.AreEqual(tests.ComplexArray[8].FloatField, -48);
+
+            Assert.AreEqual(tests.ComplexArray[9].BoolField, true);
+            Assert.AreEqual(tests.ComplexArray[9].IntField, 2459);
+            Assert.AreEqual(tests.ComplexArray[9].FloatField, -49);
+        }
+
+        foreach (var complexArrayElement in complexArrayElements)
+        {
+            complexArrayElement.Dispose();
+        }
+    }
 }

@@ -1179,3 +1179,17 @@ struct StructTestArrayTypeFromTypedef
 
 #define MY_MACRO_TEST_1 '1'
 #define MY_MACRO_TEST_2 '2'
+
+struct ComplexArrayElement
+{
+    bool BoolField;
+    uint32_t IntField;
+    float FloatField;
+};
+
+#define ARRAY_LENGTH_MACRO 10
+
+struct HasComplexArray
+{
+    ComplexArrayElement complexArray[ARRAY_LENGTH_MACRO];
+};
