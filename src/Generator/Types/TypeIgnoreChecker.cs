@@ -158,6 +158,12 @@ namespace CppSharp
             Ignore();
             return false;
         }
+
+        public override bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            Ignore();
+            return false;
+        }
     }
 
 }

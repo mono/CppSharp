@@ -253,7 +253,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        public virtual bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
         {
             return true;
         }
