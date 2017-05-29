@@ -278,7 +278,7 @@ function build_llvm(llvm_build)
 			"-DLLVM_ENABLE_LIBCXX=true" or ""
 		local is32bits = target_architecture() == "x86"
 		if is32bits then
-			options = options .. is32bits and " -DLLVM_BUILD_32_BITS=true" or ""
+			options = options .. (is32bits and " -DLLVM_BUILD_32_BITS=true" or "")
 		end
 		cmake("Ninja", conf, llvm_build, options)
 		ninja(llvm_build)
