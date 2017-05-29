@@ -479,8 +479,9 @@ namespace CppSharp.AST
             foreach (var templateParameter in template.Parameters)
                 templateParameter.Visit(this);
 
-            foreach (var specialization in template.Specializations)
-                specialization.Visit(this);
+            if (VisitOptions.VisitClassTemplateSpecializations)
+                foreach (var specialization in template.Specializations)
+                    specialization.Visit(this);
 
             template.TemplatedClass.Visit(this);
 
@@ -549,7 +550,7 @@ namespace CppSharp.AST
             if (!VisitDeclaration(context))
                 return false;
 
-            foreach (var decl in context.Classes)
+            foreach (var decl in context.Classes.Where(c => !(c is ClassTemplateSpecialization)))
                 decl.Visit(this);
 
             foreach (var decl in context.Functions)
