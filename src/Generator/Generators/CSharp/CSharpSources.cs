@@ -1859,6 +1859,9 @@ namespace CppSharp.Generators.CSharp
                 // Use interfaces if any - derived types with a this class as a seconary base, must be compatible with the map
                 var @interface = @base.Namespace.Classes.Find(c => c.OriginalClass == @base);
 
+                WriteLine("if ({0} == IntPtr.Zero)", Helpers.InstanceIdentifier);
+                WriteLineIndent("return;");
+
                 // The local var must be of the exact type in the object map because of TryRemove
                 WriteLine("{0} {1};",
                     (@interface ?? (@base.IsAbstractImpl ? @base.BaseClass : @base)).Visit(TypePrinter),
@@ -1907,6 +1910,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
             WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
+            WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
