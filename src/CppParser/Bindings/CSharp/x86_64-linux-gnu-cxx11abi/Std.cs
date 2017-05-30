@@ -65,12 +65,12 @@ namespace Std
 
         internal static global::Std.Allocator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
-            return new Allocator(native.ToPointer(), skipVTables);
+            return new global::Std.Allocator(native.ToPointer(), skipVTables);
         }
 
         internal static global::Std.Allocator __CreateInstance(global::Std.Allocator.__Internal native, bool skipVTables = false)
         {
-            return new Allocator(native, skipVTables);
+            return new global::Std.Allocator(native, skipVTables);
         }
 
         private static void* __CopyValue(global::Std.Allocator.__Internal native)
@@ -109,12 +109,15 @@ namespace Std
 
         public virtual void Dispose(bool disposing)
         {
+            if (__Instance == IntPtr.Zero)
+                return;
             global::Std.Allocator __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (disposing)
                 global::Std.Allocator.__Internal.dtorc__N_std_S_allocator__C_0((__Instance + __PointerAdjustment));
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
         }
     }
 
@@ -355,12 +358,12 @@ namespace Std
 
         internal static global::Std.CharTraits __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
-            return new CharTraits(native.ToPointer(), skipVTables);
+            return new global::Std.CharTraits(native.ToPointer(), skipVTables);
         }
 
         internal static global::Std.CharTraits __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
         {
-            return new CharTraits(native, skipVTables);
+            return new global::Std.CharTraits(native, skipVTables);
         }
 
         private static void* __CopyValue(global::Std.CharTraits.__Internal native)
@@ -398,10 +401,13 @@ namespace Std
 
         public virtual void Dispose(bool disposing)
         {
+            if (__Instance == IntPtr.Zero)
+                return;
             global::Std.CharTraits __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
         }
 
         public static int Eof()
@@ -705,12 +711,12 @@ namespace Std
 
             internal static global::Std.Cxx11.BasicString __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new BasicString(native.ToPointer(), skipVTables);
+                return new global::Std.Cxx11.BasicString(native.ToPointer(), skipVTables);
             }
 
             internal static global::Std.Cxx11.BasicString __CreateInstance(global::Std.Cxx11.BasicString.__Internal native, bool skipVTables = false)
             {
-                return new BasicString(native, skipVTables);
+                return new global::Std.Cxx11.BasicString(native, skipVTables);
             }
 
             private static void* __CopyValue(global::Std.Cxx11.BasicString.__Internal native)
@@ -741,12 +747,15 @@ namespace Std
 
             public virtual void Dispose(bool disposing)
             {
+                if (__Instance == IntPtr.Zero)
+                    return;
                 global::Std.Cxx11.BasicString __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (disposing)
                     global::Std.Cxx11.BasicString.__Internal.dtorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
+                __Instance = IntPtr.Zero;
             }
 
             public string CStr
