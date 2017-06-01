@@ -6,17 +6,17 @@ namespace CppSharp.AST
 {
     public static class ASTUtils
     {
-        public static bool CheckIgnoreFunction(Function function, DriverOptions options)
+        public static bool CheckIgnoreFunction(Function function)
         {
             if (!function.IsGenerated) return true;
 
             if (function is Method)
-                return CheckIgnoreMethod(function as Method, options);
+                return CheckIgnoreMethod(function as Method);
 
             return false;
         }
 
-        public static bool CheckIgnoreMethod(Method method, DriverOptions options)
+        public static bool CheckIgnoreMethod(Method method)
         {
             if (!method.IsGenerated) return true;
 

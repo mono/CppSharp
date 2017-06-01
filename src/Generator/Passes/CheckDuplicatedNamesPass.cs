@@ -126,7 +126,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreFunction(decl, Options))
+            if (ASTUtils.CheckIgnoreFunction(decl))
                 return false;
 
             CheckDuplicate(decl);
@@ -138,7 +138,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreMethod(decl, Options))
+            if (ASTUtils.CheckIgnoreMethod(decl))
                 return false;
 
             if (decl.ExplicitInterfaceImpl == null)

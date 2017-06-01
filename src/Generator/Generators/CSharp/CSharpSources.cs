@@ -385,7 +385,7 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
 
             foreach (var method in @class.Methods.Where(m =>
-                !ASTUtils.CheckIgnoreMethod(m, Options) && m.Access == AccessSpecifier.Public))
+                !ASTUtils.CheckIgnoreMethod(m) && m.Access == AccessSpecifier.Public))
             {
                 PushBlock(BlockKind.Method);
                 GenerateDeclarationCommon(method);
@@ -512,7 +512,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method, Options))
+                if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -1129,7 +1129,7 @@ namespace CppSharp.Generators.CSharp
             var staticMethods = new List<Method>();
             foreach (var method in methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method, Options))
+                if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -1786,7 +1786,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ASTUtils.CheckIgnoreMethod(ctor, Options))
+                if (ASTUtils.CheckIgnoreMethod(ctor))
                     continue;
 
                 GenerateMethod(ctor, @class);

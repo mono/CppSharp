@@ -385,7 +385,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ASTUtils.CheckIgnoreMethod(ctor, Options) || FunctionIgnored(ctor))
+                if (ASTUtils.CheckIgnoreMethod(ctor) || FunctionIgnored(ctor))
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
@@ -517,7 +517,7 @@ namespace CppSharp.Generators.CLI
             var staticMethods = new List<Method>();
             foreach (var method in methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method, Options) || FunctionIgnored(method))
+                if (ASTUtils.CheckIgnoreMethod(method) || FunctionIgnored(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -710,7 +710,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method)
         {
-            if (ASTUtils.CheckIgnoreMethod(method, Options) || FunctionIgnored(method)) return;
+            if (ASTUtils.CheckIgnoreMethod(method) || FunctionIgnored(method)) return;
 
             PushBlock(BlockKind.Method, method);
             GenerateDeclarationCommon(method);

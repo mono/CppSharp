@@ -210,7 +210,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var method in @class.Methods.Where(m => @class == realOwner || !m.IsOperator))
             {
-                if (ASTUtils.CheckIgnoreMethod(method, Options) || CLIHeaders.FunctionIgnored(method))
+                if (ASTUtils.CheckIgnoreMethod(method) || CLIHeaders.FunctionIgnored(method))
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
