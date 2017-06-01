@@ -52,6 +52,12 @@ namespace CppSharp
             return true;
         }
 
+        public override bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        {
+            Ignore();
+            return false;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             return VisitDeclaration(@class);
