@@ -31,7 +31,7 @@ namespace Std
             public partial struct __Internal
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr _M_exception_object;
+                internal global::System.IntPtr _M_exception_object;
             }
         }
     }
@@ -171,10 +171,10 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _M_p;
+            internal global::System.IntPtr _M_p;
 
             [FieldOffset(8)]
-            public uint _M_offset;
+            internal uint _M_offset;
         }
     }
 
@@ -184,10 +184,10 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _M_p;
+            internal global::System.IntPtr _M_p;
 
             [FieldOffset(8)]
-            public uint _M_offset;
+            internal uint _M_offset;
         }
     }
 }
@@ -254,16 +254,16 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::Std.RbTreeColor _M_color;
+            internal global::Std.RbTreeColor _M_color;
 
             [FieldOffset(8)]
-            public global::System.IntPtr _M_parent;
+            internal global::System.IntPtr _M_parent;
 
             [FieldOffset(16)]
-            public global::System.IntPtr _M_left;
+            internal global::System.IntPtr _M_left;
 
             [FieldOffset(24)]
-            public global::System.IntPtr _M_right;
+            internal global::System.IntPtr _M_right;
         }
     }
 }
@@ -308,7 +308,7 @@ public unsafe partial class MbstateT
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public int __count;
+        internal int __count;
 
         [FieldOffset(4)]
         internal global::MbstateT._.__Internal __value;
@@ -320,10 +320,10 @@ public unsafe partial class MbstateT
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public uint __wch;
+            internal uint __wch;
 
             [FieldOffset(0)]
-            public fixed sbyte __wchb[4];
+            internal fixed sbyte __wchb[4];
         }
     }
 }
@@ -417,10 +417,10 @@ public unsafe partial class Timespec
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public long tv_sec;
+        internal long tv_sec;
 
         [FieldOffset(8)]
-        public long tv_nsec;
+        internal long tv_nsec;
     }
 }
 
@@ -430,10 +430,10 @@ public unsafe partial class Timeval
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public long tv_sec;
+        internal long tv_sec;
 
         [FieldOffset(8)]
-        public long tv_usec;
+        internal long tv_usec;
     }
 }
 
@@ -443,10 +443,10 @@ public unsafe partial class PthreadInternalList
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public global::System.IntPtr __prev;
+        internal global::System.IntPtr __prev;
 
         [FieldOffset(8)]
-        public global::System.IntPtr __next;
+        internal global::System.IntPtr __next;
     }
 }
 
@@ -459,10 +459,10 @@ public unsafe partial struct PthreadMutexT
         internal global::PthreadMutexT.PthreadMutexS.__Internal __data;
 
         [FieldOffset(0)]
-        public fixed sbyte __size[40];
+        internal fixed sbyte __size[40];
 
         [FieldOffset(0)]
-        public long __align;
+        internal long __align;
     }
 
     public unsafe partial class PthreadMutexS
@@ -471,25 +471,25 @@ public unsafe partial struct PthreadMutexT
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public int __lock;
+            internal int __lock;
 
             [FieldOffset(4)]
-            public uint __count;
+            internal uint __count;
 
             [FieldOffset(8)]
-            public int __owner;
+            internal int __owner;
 
             [FieldOffset(12)]
-            public uint __nusers;
+            internal uint __nusers;
 
             [FieldOffset(16)]
-            public int __kind;
+            internal int __kind;
 
             [FieldOffset(20)]
-            public short __spins;
+            internal short __spins;
 
             [FieldOffset(22)]
-            public short __elision;
+            internal short __elision;
 
             [FieldOffset(24)]
             internal global::PthreadInternalList.__Internal __list;
@@ -506,10 +506,10 @@ public unsafe partial struct PthreadCondT
         internal global::PthreadCondT._.__Internal __data;
 
         [FieldOffset(0)]
-        public fixed sbyte __size[48];
+        internal fixed sbyte __size[48];
 
         [FieldOffset(0)]
-        public long __align;
+        internal long __align;
     }
 
     public unsafe partial class _
@@ -518,28 +518,28 @@ public unsafe partial struct PthreadCondT
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public int __lock;
+            internal int __lock;
 
             [FieldOffset(4)]
-            public uint __futex;
+            internal uint __futex;
 
             [FieldOffset(8)]
-            public ulong __total_seq;
+            internal ulong __total_seq;
 
             [FieldOffset(16)]
-            public ulong __wakeup_seq;
+            internal ulong __wakeup_seq;
 
             [FieldOffset(24)]
-            public ulong __woken_seq;
+            internal ulong __woken_seq;
 
             [FieldOffset(32)]
-            public global::System.IntPtr __mutex;
+            internal global::System.IntPtr __mutex;
 
             [FieldOffset(40)]
-            public uint __nwaiters;
+            internal uint __nwaiters;
 
             [FieldOffset(44)]
-            public uint __broadcast_seq;
+            internal uint __broadcast_seq;
         }
     }
 }
@@ -553,10 +553,10 @@ public unsafe partial struct PthreadRwlockT
         internal global::PthreadRwlockT._.__Internal __data;
 
         [FieldOffset(0)]
-        public fixed sbyte __size[56];
+        internal fixed sbyte __size[56];
 
         [FieldOffset(0)]
-        public long __align;
+        internal long __align;
     }
 
     public unsafe partial class _
@@ -565,40 +565,40 @@ public unsafe partial struct PthreadRwlockT
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public int __lock;
+            internal int __lock;
 
             [FieldOffset(4)]
-            public uint __nr_readers;
+            internal uint __nr_readers;
 
             [FieldOffset(8)]
-            public uint __readers_wakeup;
+            internal uint __readers_wakeup;
 
             [FieldOffset(12)]
-            public uint __writer_wakeup;
+            internal uint __writer_wakeup;
 
             [FieldOffset(16)]
-            public uint __nr_readers_queued;
+            internal uint __nr_readers_queued;
 
             [FieldOffset(20)]
-            public uint __nr_writers_queued;
+            internal uint __nr_writers_queued;
 
             [FieldOffset(24)]
-            public int __writer;
+            internal int __writer;
 
             [FieldOffset(28)]
-            public int __shared;
+            internal int __shared;
 
             [FieldOffset(32)]
-            public sbyte __rwelision;
+            internal sbyte __rwelision;
 
             [FieldOffset(33)]
-            public fixed byte __pad1[7];
+            internal fixed byte __pad1[7];
 
             [FieldOffset(40)]
-            public ulong __pad2;
+            internal ulong __pad2;
 
             [FieldOffset(48)]
-            public uint __flags;
+            internal uint __flags;
         }
     }
 }
@@ -609,10 +609,10 @@ public unsafe partial class PthreadUnwindBufT
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed byte __cancel_jmp_buf[72];
+        internal fixed byte __cancel_jmp_buf[72];
 
         [FieldOffset(72)]
-        public void* __pad;
+        internal void* __pad;
     }
 
     public unsafe partial class _
@@ -621,10 +621,10 @@ public unsafe partial class PthreadUnwindBufT
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public fixed long __cancel_jmp_buf[8];
+            internal fixed long __cancel_jmp_buf[8];
 
             [FieldOffset(64)]
-            public int __mask_was_saved;
+            internal int __mask_was_saved;
         }
     }
 }
@@ -656,7 +656,7 @@ namespace Std
             public partial struct __Internal
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr _M_p;
+                internal global::System.IntPtr _M_p;
             }
         }
 
@@ -666,13 +666,13 @@ namespace Std
             public partial struct __Internal
             {
                 [FieldOffset(0)]
-                public ulong _M_length;
+                internal ulong _M_length;
 
                 [FieldOffset(8)]
-                public ulong _M_capacity;
+                internal ulong _M_capacity;
 
                 [FieldOffset(16)]
-                public int _M_refcount;
+                internal int _M_refcount;
             }
         }
 
@@ -682,13 +682,13 @@ namespace Std
             public partial struct __Internal
             {
                 [FieldOffset(0)]
-                public ulong _M_length;
+                internal ulong _M_length;
 
                 [FieldOffset(8)]
-                public ulong _M_capacity;
+                internal ulong _M_capacity;
 
                 [FieldOffset(16)]
-                public int _M_refcount;
+                internal int _M_refcount;
             }
         }
 
@@ -793,7 +793,7 @@ public unsafe partial struct Wait
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public int w_status;
+        internal int w_status;
 
         [FieldOffset(0)]
         internal global::Wait._.__Internal __wait_terminated;
@@ -808,16 +808,16 @@ public unsafe partial struct Wait
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public uint __w_termsig;
+            internal uint __w_termsig;
 
             [FieldOffset(0)]
-            public uint __w_coredump;
+            internal uint __w_coredump;
 
             [FieldOffset(1)]
-            public uint __w_retcode;
+            internal uint __w_retcode;
 
             [FieldOffset(2)]
-            public uint __;
+            internal uint __;
         }
     }
 
@@ -827,13 +827,13 @@ public unsafe partial struct Wait
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public uint __w_stopval;
+            internal uint __w_stopval;
 
             [FieldOffset(1)]
-            public uint __w_stopsig;
+            internal uint __w_stopsig;
 
             [FieldOffset(2)]
-            public uint __;
+            internal uint __;
         }
     }
 }
@@ -862,7 +862,7 @@ namespace Std
                 internal global::Std.SsoString.Str.__Internal _M_s;
 
                 [FieldOffset(0)]
-                public fixed sbyte _M_bytes[32];
+                internal fixed sbyte _M_bytes[32];
             }
         }
 
@@ -872,13 +872,13 @@ namespace Std
             public partial struct __Internal
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr _M_p;
+                internal global::System.IntPtr _M_p;
 
                 [FieldOffset(8)]
-                public ulong _M_string_length;
+                internal ulong _M_string_length;
 
                 [FieldOffset(16)]
-                public fixed sbyte _M_local_buf[16];
+                internal fixed sbyte _M_local_buf[16];
             }
         }
     }

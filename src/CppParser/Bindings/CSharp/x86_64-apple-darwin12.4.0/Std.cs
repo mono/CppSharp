@@ -47,7 +47,7 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::System.IntPtr __ptr_;
+            internal global::System.IntPtr __ptr_;
         }
     }
 }
@@ -62,10 +62,10 @@ public unsafe partial class Sbuf
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public global::System.IntPtr _base;
+        internal global::System.IntPtr _base;
 
         [FieldOffset(8)]
-        public int _size;
+        internal int _size;
     }
 }
 
@@ -75,13 +75,13 @@ public unsafe partial class DarwinSigaltstack
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public global::System.IntPtr ss_sp;
+        internal global::System.IntPtr ss_sp;
 
         [FieldOffset(8)]
-        public ulong ss_size;
+        internal ulong ss_size;
 
         [FieldOffset(16)]
-        public int ss_flags;
+        internal int ss_flags;
     }
 }
 
@@ -91,10 +91,10 @@ public unsafe partial class Timeval
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public long tv_sec;
+        internal long tv_sec;
 
         [FieldOffset(8)]
-        public int tv_usec;
+        internal int tv_usec;
     }
 }
 
@@ -104,10 +104,10 @@ public unsafe partial class RuneRange
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public int __nranges;
+        internal int __nranges;
 
         [FieldOffset(8)]
-        public global::System.IntPtr __ranges;
+        internal global::System.IntPtr __ranges;
     }
 }
 
@@ -266,10 +266,10 @@ public unsafe partial struct Sigval
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public int sival_int;
+        internal int sival_int;
 
         [FieldOffset(0)]
-        public global::System.IntPtr sival_ptr;
+        internal global::System.IntPtr sival_ptr;
     }
 }
 
@@ -279,10 +279,10 @@ public unsafe partial struct SigactionU
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public global::System.IntPtr __sa_handler;
+        internal global::System.IntPtr __sa_handler;
 
         [FieldOffset(0)]
-        public global::System.IntPtr __sa_sigaction;
+        internal global::System.IntPtr __sa_sigaction;
     }
 }
 
@@ -292,52 +292,52 @@ public unsafe partial class DarwinI386ThreadState
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public uint __eax;
+        internal uint __eax;
 
         [FieldOffset(4)]
-        public uint __ebx;
+        internal uint __ebx;
 
         [FieldOffset(8)]
-        public uint __ecx;
+        internal uint __ecx;
 
         [FieldOffset(12)]
-        public uint __edx;
+        internal uint __edx;
 
         [FieldOffset(16)]
-        public uint __edi;
+        internal uint __edi;
 
         [FieldOffset(20)]
-        public uint __esi;
+        internal uint __esi;
 
         [FieldOffset(24)]
-        public uint __ebp;
+        internal uint __ebp;
 
         [FieldOffset(28)]
-        public uint __esp;
+        internal uint __esp;
 
         [FieldOffset(32)]
-        public uint __ss;
+        internal uint __ss;
 
         [FieldOffset(36)]
-        public uint __eflags;
+        internal uint __eflags;
 
         [FieldOffset(40)]
-        public uint __eip;
+        internal uint __eip;
 
         [FieldOffset(44)]
-        public uint __cs;
+        internal uint __cs;
 
         [FieldOffset(48)]
-        public uint __ds;
+        internal uint __ds;
 
         [FieldOffset(52)]
-        public uint __es;
+        internal uint __es;
 
         [FieldOffset(56)]
-        public uint __fs;
+        internal uint __fs;
 
         [FieldOffset(60)]
-        public uint __gs;
+        internal uint __gs;
     }
 }
 
@@ -347,37 +347,37 @@ public unsafe partial class DarwinFpControl
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public ushort __invalid;
+        internal ushort __invalid;
 
         [FieldOffset(0)]
-        public ushort __denorm;
+        internal ushort __denorm;
 
         [FieldOffset(0)]
-        public ushort __zdiv;
+        internal ushort __zdiv;
 
         [FieldOffset(0)]
-        public ushort __ovrfl;
+        internal ushort __ovrfl;
 
         [FieldOffset(0)]
-        public ushort __undfl;
+        internal ushort __undfl;
 
         [FieldOffset(0)]
-        public ushort __precis;
+        internal ushort __precis;
 
         [FieldOffset(0)]
-        public ushort _;
+        internal ushort _;
 
         [FieldOffset(1)]
-        public ushort __pc;
+        internal ushort __pc;
 
         [FieldOffset(1)]
-        public ushort __rc;
+        internal ushort __rc;
 
         [FieldOffset(1)]
-        public ushort _1;
+        internal ushort _1;
 
         [FieldOffset(1)]
-        public ushort _2;
+        internal ushort _2;
     }
 }
 
@@ -387,46 +387,46 @@ public unsafe partial class DarwinFpStatus
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public ushort __invalid;
+        internal ushort __invalid;
 
         [FieldOffset(0)]
-        public ushort __denorm;
+        internal ushort __denorm;
 
         [FieldOffset(0)]
-        public ushort __zdiv;
+        internal ushort __zdiv;
 
         [FieldOffset(0)]
-        public ushort __ovrfl;
+        internal ushort __ovrfl;
 
         [FieldOffset(0)]
-        public ushort __undfl;
+        internal ushort __undfl;
 
         [FieldOffset(0)]
-        public ushort __precis;
+        internal ushort __precis;
 
         [FieldOffset(0)]
-        public ushort __stkflt;
+        internal ushort __stkflt;
 
         [FieldOffset(0)]
-        public ushort __errsumm;
+        internal ushort __errsumm;
 
         [FieldOffset(1)]
-        public ushort __c0;
+        internal ushort __c0;
 
         [FieldOffset(1)]
-        public ushort __c1;
+        internal ushort __c1;
 
         [FieldOffset(1)]
-        public ushort __c2;
+        internal ushort __c2;
 
         [FieldOffset(1)]
-        public ushort __tos;
+        internal ushort __tos;
 
         [FieldOffset(1)]
-        public ushort __c3;
+        internal ushort __c3;
 
         [FieldOffset(1)]
-        public ushort __busy;
+        internal ushort __busy;
     }
 }
 
@@ -436,10 +436,10 @@ public unsafe partial class DarwinMmstReg
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed sbyte __mmst_reg[10];
+        internal fixed sbyte __mmst_reg[10];
 
         [FieldOffset(10)]
-        public fixed sbyte __mmst_rsrv[6];
+        internal fixed sbyte __mmst_rsrv[6];
     }
 }
 
@@ -449,7 +449,7 @@ public unsafe partial class DarwinXmmReg
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed sbyte __xmm_reg[16];
+        internal fixed sbyte __xmm_reg[16];
     }
 }
 
@@ -459,7 +459,7 @@ public unsafe partial class DarwinI386FloatState
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed int __fpu_reserved[2];
+        internal fixed int __fpu_reserved[2];
 
         [FieldOffset(8)]
         internal global::DarwinFpControl.__Internal __fpu_fcw;
@@ -468,37 +468,37 @@ public unsafe partial class DarwinI386FloatState
         internal global::DarwinFpStatus.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
-        public byte __fpu_ftw;
+        internal byte __fpu_ftw;
 
         [FieldOffset(13)]
-        public byte __fpu_rsrv1;
+        internal byte __fpu_rsrv1;
 
         [FieldOffset(14)]
-        public ushort __fpu_fop;
+        internal ushort __fpu_fop;
 
         [FieldOffset(16)]
-        public uint __fpu_ip;
+        internal uint __fpu_ip;
 
         [FieldOffset(20)]
-        public ushort __fpu_cs;
+        internal ushort __fpu_cs;
 
         [FieldOffset(22)]
-        public ushort __fpu_rsrv2;
+        internal ushort __fpu_rsrv2;
 
         [FieldOffset(24)]
-        public uint __fpu_dp;
+        internal uint __fpu_dp;
 
         [FieldOffset(28)]
-        public ushort __fpu_ds;
+        internal ushort __fpu_ds;
 
         [FieldOffset(30)]
-        public ushort __fpu_rsrv3;
+        internal ushort __fpu_rsrv3;
 
         [FieldOffset(32)]
-        public uint __fpu_mxcsr;
+        internal uint __fpu_mxcsr;
 
         [FieldOffset(36)]
-        public uint __fpu_mxcsrmask;
+        internal uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
         internal global::DarwinMmstReg.__Internal __fpu_stmm0;
@@ -549,10 +549,10 @@ public unsafe partial class DarwinI386FloatState
         internal global::DarwinXmmReg.__Internal __fpu_xmm7;
 
         [FieldOffset(296)]
-        public fixed sbyte __fpu_rsrv4[224];
+        internal fixed sbyte __fpu_rsrv4[224];
 
         [FieldOffset(520)]
-        public int __fpu_reserved1;
+        internal int __fpu_reserved1;
     }
 }
 
@@ -562,7 +562,7 @@ public unsafe partial class DarwinI386AvxState
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed int __fpu_reserved[2];
+        internal fixed int __fpu_reserved[2];
 
         [FieldOffset(8)]
         internal global::DarwinFpControl.__Internal __fpu_fcw;
@@ -571,37 +571,37 @@ public unsafe partial class DarwinI386AvxState
         internal global::DarwinFpStatus.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
-        public byte __fpu_ftw;
+        internal byte __fpu_ftw;
 
         [FieldOffset(13)]
-        public byte __fpu_rsrv1;
+        internal byte __fpu_rsrv1;
 
         [FieldOffset(14)]
-        public ushort __fpu_fop;
+        internal ushort __fpu_fop;
 
         [FieldOffset(16)]
-        public uint __fpu_ip;
+        internal uint __fpu_ip;
 
         [FieldOffset(20)]
-        public ushort __fpu_cs;
+        internal ushort __fpu_cs;
 
         [FieldOffset(22)]
-        public ushort __fpu_rsrv2;
+        internal ushort __fpu_rsrv2;
 
         [FieldOffset(24)]
-        public uint __fpu_dp;
+        internal uint __fpu_dp;
 
         [FieldOffset(28)]
-        public ushort __fpu_ds;
+        internal ushort __fpu_ds;
 
         [FieldOffset(30)]
-        public ushort __fpu_rsrv3;
+        internal ushort __fpu_rsrv3;
 
         [FieldOffset(32)]
-        public uint __fpu_mxcsr;
+        internal uint __fpu_mxcsr;
 
         [FieldOffset(36)]
-        public uint __fpu_mxcsrmask;
+        internal uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
         internal global::DarwinMmstReg.__Internal __fpu_stmm0;
@@ -652,13 +652,13 @@ public unsafe partial class DarwinI386AvxState
         internal global::DarwinXmmReg.__Internal __fpu_xmm7;
 
         [FieldOffset(296)]
-        public fixed sbyte __fpu_rsrv4[224];
+        internal fixed sbyte __fpu_rsrv4[224];
 
         [FieldOffset(520)]
-        public int __fpu_reserved1;
+        internal int __fpu_reserved1;
 
         [FieldOffset(524)]
-        public fixed sbyte __avx_reserved1[64];
+        internal fixed sbyte __avx_reserved1[64];
 
         [FieldOffset(588)]
         internal global::DarwinXmmReg.__Internal __fpu_ymmh0;
@@ -692,16 +692,16 @@ public unsafe partial class DarwinI386ExceptionState
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public ushort __trapno;
+        internal ushort __trapno;
 
         [FieldOffset(2)]
-        public ushort __cpu;
+        internal ushort __cpu;
 
         [FieldOffset(4)]
-        public uint __err;
+        internal uint __err;
 
         [FieldOffset(8)]
-        public uint __faultvaddr;
+        internal uint __faultvaddr;
     }
 }
 
@@ -711,67 +711,67 @@ public unsafe partial class DarwinX86ThreadState64
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public ulong __rax;
+        internal ulong __rax;
 
         [FieldOffset(8)]
-        public ulong __rbx;
+        internal ulong __rbx;
 
         [FieldOffset(16)]
-        public ulong __rcx;
+        internal ulong __rcx;
 
         [FieldOffset(24)]
-        public ulong __rdx;
+        internal ulong __rdx;
 
         [FieldOffset(32)]
-        public ulong __rdi;
+        internal ulong __rdi;
 
         [FieldOffset(40)]
-        public ulong __rsi;
+        internal ulong __rsi;
 
         [FieldOffset(48)]
-        public ulong __rbp;
+        internal ulong __rbp;
 
         [FieldOffset(56)]
-        public ulong __rsp;
+        internal ulong __rsp;
 
         [FieldOffset(64)]
-        public ulong __r8;
+        internal ulong __r8;
 
         [FieldOffset(72)]
-        public ulong __r9;
+        internal ulong __r9;
 
         [FieldOffset(80)]
-        public ulong __r10;
+        internal ulong __r10;
 
         [FieldOffset(88)]
-        public ulong __r11;
+        internal ulong __r11;
 
         [FieldOffset(96)]
-        public ulong __r12;
+        internal ulong __r12;
 
         [FieldOffset(104)]
-        public ulong __r13;
+        internal ulong __r13;
 
         [FieldOffset(112)]
-        public ulong __r14;
+        internal ulong __r14;
 
         [FieldOffset(120)]
-        public ulong __r15;
+        internal ulong __r15;
 
         [FieldOffset(128)]
-        public ulong __rip;
+        internal ulong __rip;
 
         [FieldOffset(136)]
-        public ulong __rflags;
+        internal ulong __rflags;
 
         [FieldOffset(144)]
-        public ulong __cs;
+        internal ulong __cs;
 
         [FieldOffset(152)]
-        public ulong __fs;
+        internal ulong __fs;
 
         [FieldOffset(160)]
-        public ulong __gs;
+        internal ulong __gs;
     }
 }
 
@@ -781,7 +781,7 @@ public unsafe partial class DarwinX86FloatState64
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed int __fpu_reserved[2];
+        internal fixed int __fpu_reserved[2];
 
         [FieldOffset(8)]
         internal global::DarwinFpControl.__Internal __fpu_fcw;
@@ -790,37 +790,37 @@ public unsafe partial class DarwinX86FloatState64
         internal global::DarwinFpStatus.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
-        public byte __fpu_ftw;
+        internal byte __fpu_ftw;
 
         [FieldOffset(13)]
-        public byte __fpu_rsrv1;
+        internal byte __fpu_rsrv1;
 
         [FieldOffset(14)]
-        public ushort __fpu_fop;
+        internal ushort __fpu_fop;
 
         [FieldOffset(16)]
-        public uint __fpu_ip;
+        internal uint __fpu_ip;
 
         [FieldOffset(20)]
-        public ushort __fpu_cs;
+        internal ushort __fpu_cs;
 
         [FieldOffset(22)]
-        public ushort __fpu_rsrv2;
+        internal ushort __fpu_rsrv2;
 
         [FieldOffset(24)]
-        public uint __fpu_dp;
+        internal uint __fpu_dp;
 
         [FieldOffset(28)]
-        public ushort __fpu_ds;
+        internal ushort __fpu_ds;
 
         [FieldOffset(30)]
-        public ushort __fpu_rsrv3;
+        internal ushort __fpu_rsrv3;
 
         [FieldOffset(32)]
-        public uint __fpu_mxcsr;
+        internal uint __fpu_mxcsr;
 
         [FieldOffset(36)]
-        public uint __fpu_mxcsrmask;
+        internal uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
         internal global::DarwinMmstReg.__Internal __fpu_stmm0;
@@ -895,10 +895,10 @@ public unsafe partial class DarwinX86FloatState64
         internal global::DarwinXmmReg.__Internal __fpu_xmm15;
 
         [FieldOffset(424)]
-        public fixed sbyte __fpu_rsrv4[96];
+        internal fixed sbyte __fpu_rsrv4[96];
 
         [FieldOffset(520)]
-        public int __fpu_reserved1;
+        internal int __fpu_reserved1;
     }
 }
 
@@ -908,7 +908,7 @@ public unsafe partial class DarwinX86AvxState64
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public fixed int __fpu_reserved[2];
+        internal fixed int __fpu_reserved[2];
 
         [FieldOffset(8)]
         internal global::DarwinFpControl.__Internal __fpu_fcw;
@@ -917,37 +917,37 @@ public unsafe partial class DarwinX86AvxState64
         internal global::DarwinFpStatus.__Internal __fpu_fsw;
 
         [FieldOffset(12)]
-        public byte __fpu_ftw;
+        internal byte __fpu_ftw;
 
         [FieldOffset(13)]
-        public byte __fpu_rsrv1;
+        internal byte __fpu_rsrv1;
 
         [FieldOffset(14)]
-        public ushort __fpu_fop;
+        internal ushort __fpu_fop;
 
         [FieldOffset(16)]
-        public uint __fpu_ip;
+        internal uint __fpu_ip;
 
         [FieldOffset(20)]
-        public ushort __fpu_cs;
+        internal ushort __fpu_cs;
 
         [FieldOffset(22)]
-        public ushort __fpu_rsrv2;
+        internal ushort __fpu_rsrv2;
 
         [FieldOffset(24)]
-        public uint __fpu_dp;
+        internal uint __fpu_dp;
 
         [FieldOffset(28)]
-        public ushort __fpu_ds;
+        internal ushort __fpu_ds;
 
         [FieldOffset(30)]
-        public ushort __fpu_rsrv3;
+        internal ushort __fpu_rsrv3;
 
         [FieldOffset(32)]
-        public uint __fpu_mxcsr;
+        internal uint __fpu_mxcsr;
 
         [FieldOffset(36)]
-        public uint __fpu_mxcsrmask;
+        internal uint __fpu_mxcsrmask;
 
         [FieldOffset(40)]
         internal global::DarwinMmstReg.__Internal __fpu_stmm0;
@@ -1022,13 +1022,13 @@ public unsafe partial class DarwinX86AvxState64
         internal global::DarwinXmmReg.__Internal __fpu_xmm15;
 
         [FieldOffset(424)]
-        public fixed sbyte __fpu_rsrv4[96];
+        internal fixed sbyte __fpu_rsrv4[96];
 
         [FieldOffset(520)]
-        public int __fpu_reserved1;
+        internal int __fpu_reserved1;
 
         [FieldOffset(524)]
-        public fixed sbyte __avx_reserved1[64];
+        internal fixed sbyte __avx_reserved1[64];
 
         [FieldOffset(588)]
         internal global::DarwinXmmReg.__Internal __fpu_ymmh0;
@@ -1086,16 +1086,16 @@ public unsafe partial class DarwinX86ExceptionState64
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public ushort __trapno;
+        internal ushort __trapno;
 
         [FieldOffset(2)]
-        public ushort __cpu;
+        internal ushort __cpu;
 
         [FieldOffset(4)]
-        public uint __err;
+        internal uint __err;
 
         [FieldOffset(8)]
-        public ulong __faultvaddr;
+        internal ulong __faultvaddr;
     }
 }
 
@@ -1105,7 +1105,7 @@ public unsafe partial struct Wait
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public int w_status;
+        internal int w_status;
 
         [FieldOffset(0)]
         internal global::Wait._.__Internal w_T;
@@ -1120,16 +1120,16 @@ public unsafe partial struct Wait
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public uint w_Termsig;
+            internal uint w_Termsig;
 
             [FieldOffset(0)]
-            public uint w_Coredump;
+            internal uint w_Coredump;
 
             [FieldOffset(1)]
-            public uint w_Retcode;
+            internal uint w_Retcode;
 
             [FieldOffset(2)]
-            public uint w_Filler;
+            internal uint w_Filler;
         }
     }
 
@@ -1139,13 +1139,13 @@ public unsafe partial struct Wait
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public uint w_Stopval;
+            internal uint w_Stopval;
 
             [FieldOffset(1)]
-            public uint w_Stopsig;
+            internal uint w_Stopsig;
 
             [FieldOffset(2)]
-            public uint w_Filler;
+            internal uint w_Filler;
         }
     }
 }
@@ -1179,10 +1179,10 @@ namespace Std
             public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr __begin_;
+                internal global::System.IntPtr __begin_;
 
                 [FieldOffset(8)]
-                public global::System.IntPtr __end_;
+                internal global::System.IntPtr __end_;
 
                 [FieldOffset(16)]
                 internal global::Std.__1.CompressedPair.__Internal __end_cap_;
@@ -1201,7 +1201,7 @@ namespace Std
             public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr __begin_node_;
+                internal global::System.IntPtr __begin_node_;
 
                 [FieldOffset(8)]
                 internal global::Std.__1.CompressedPair.__Internal __pair1_;
@@ -1217,7 +1217,7 @@ namespace Std
             public unsafe partial struct __Internal_Ptr
             {
                 [FieldOffset(0)]
-                public global::System.IntPtr __left_;
+                internal global::System.IntPtr __left_;
             }
         }
     }
@@ -1420,13 +1420,13 @@ namespace Std
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    public ulong __cap_;
+                    internal ulong __cap_;
 
                     [FieldOffset(8)]
-                    public ulong __size_;
+                    internal ulong __size_;
 
                     [FieldOffset(16)]
-                    public global::System.IntPtr __data_;
+                    internal global::System.IntPtr __data_;
                 }
             }
 
@@ -1439,7 +1439,7 @@ namespace Std
                     internal global::Std.__1.BasicString.Short._.__Internal _;
 
                     [FieldOffset(1)]
-                    public fixed sbyte __data_[23];
+                    internal fixed sbyte __data_[23];
                 }
 
                 public unsafe partial struct _
@@ -1448,10 +1448,10 @@ namespace Std
                     public partial struct __Internal
                     {
                         [FieldOffset(0)]
-                        public byte __size_;
+                        internal byte __size_;
 
                         [FieldOffset(0)]
-                        public sbyte __lx;
+                        internal sbyte __lx;
                     }
                 }
             }
@@ -1462,7 +1462,7 @@ namespace Std
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    public fixed ulong __words[3];
+                    internal fixed ulong __words[3];
                 }
             }
 

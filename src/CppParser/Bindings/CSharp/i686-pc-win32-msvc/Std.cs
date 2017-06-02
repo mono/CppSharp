@@ -21,7 +21,7 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public int _Locktype;
+            internal int _Locktype;
         }
     }
 }
@@ -34,10 +34,10 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _Data1;
+            internal global::System.IntPtr _Data1;
 
             [FieldOffset(4)]
-            public global::System.IntPtr _Data2;
+            internal global::System.IntPtr _Data2;
         }
     }
 }
@@ -48,10 +48,10 @@ public unsafe partial class StdExceptionData
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public global::System.IntPtr _What;
+        internal global::System.IntPtr _What;
 
         [FieldOffset(4)]
-        public byte _DoFree;
+        internal byte _DoFree;
     }
 }
 
@@ -150,20 +150,20 @@ namespace Std
         public unsafe partial struct __Internalc__N_std_S__Yarn__C
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _Myptr;
+            internal global::System.IntPtr _Myptr;
 
             [FieldOffset(4)]
-            public sbyte _Nul;
+            internal sbyte _Nul;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public unsafe partial struct __Internalc__N_std_S__Yarn__W
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _Myptr;
+            internal global::System.IntPtr _Myptr;
 
             [FieldOffset(4)]
-            public char _Nul;
+            internal char _Nul;
         }
     }
 
@@ -657,10 +657,10 @@ namespace Std
             internal global::Std.StringVal.Bxty.__Internal _Bx;
 
             [FieldOffset(16)]
-            public uint _Mysize;
+            internal uint _Mysize;
 
             [FieldOffset(20)]
-            public uint _Myres;
+            internal uint _Myres;
         }
 
 
@@ -682,13 +682,13 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _Myfirst;
+            internal global::System.IntPtr _Myfirst;
 
             [FieldOffset(4)]
-            public global::System.IntPtr _Mylast;
+            internal global::System.IntPtr _Mylast;
 
             [FieldOffset(8)]
-            public global::System.IntPtr _Myend;
+            internal global::System.IntPtr _Myend;
         }
     }
 
@@ -715,10 +715,10 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            public global::System.IntPtr _Myhead;
+            internal global::System.IntPtr _Myhead;
 
             [FieldOffset(4)]
-            public uint _Mysize;
+            internal uint _Mysize;
         }
     }
 }
@@ -742,10 +742,10 @@ public unsafe partial class StdTypeInfoData
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public global::System.IntPtr _UndecoratedName;
+        internal global::System.IntPtr _UndecoratedName;
 
         [FieldOffset(4)]
-        public fixed sbyte _DecoratedName[1];
+        internal fixed sbyte _DecoratedName[1];
     }
 }
 
@@ -755,16 +755,16 @@ public unsafe partial class Ctypevec
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public uint _Page;
+        internal uint _Page;
 
         [FieldOffset(4)]
-        public global::System.IntPtr _Table;
+        internal global::System.IntPtr _Table;
 
         [FieldOffset(8)]
-        public int _Delfl;
+        internal int _Delfl;
 
         [FieldOffset(12)]
-        public global::System.IntPtr _LocaleName;
+        internal global::System.IntPtr _LocaleName;
     }
 }
 
@@ -774,16 +774,16 @@ public unsafe partial class Cvtvec
     public partial struct __Internal
     {
         [FieldOffset(0)]
-        public uint _Page;
+        internal uint _Page;
 
         [FieldOffset(4)]
-        public uint _Mbcurmax;
+        internal uint _Mbcurmax;
 
         [FieldOffset(8)]
-        public int _Isclocale;
+        internal int _Isclocale;
 
         [FieldOffset(12)]
-        public fixed byte _Isleadbyte[32];
+        internal fixed byte _Isleadbyte[32];
     }
 }
 
@@ -805,10 +805,10 @@ namespace Std
         public partial struct __Internal
         {
             [FieldOffset(0)]
-            public int _Myval;
+            internal int _Myval;
 
             [FieldOffset(4)]
-            public global::System.IntPtr _Mycat;
+            internal global::System.IntPtr _Mycat;
         }
     }
 }

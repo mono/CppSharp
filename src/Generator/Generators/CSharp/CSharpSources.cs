@@ -649,16 +649,13 @@ namespace CppSharp.Generators.CSharp
 
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[FieldOffset({field.Offset})]");
-            var access = decl != null && !decl.IsGenerated ? "internal" : "public";
+            Write($"internal {retType}{retType.NameSuffix}");
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write($"{access} {retType}{retType.NameSuffix} = {fieldValuePrinted};");
+                Write($" = {fieldValuePrinted}");
             }
-            else
-            {
-                Write($"{access} {retType}{retType.NameSuffix};");
-            }
+            Write(";");
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
