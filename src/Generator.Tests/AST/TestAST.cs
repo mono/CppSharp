@@ -405,6 +405,10 @@ namespace CppSharp.Generator.Tests.AST
 // <para>feeding the input stream for the debugger, or NULL if there is</para>
 // <para>no string for this control key.</para>
 // </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
+
+            var enumClass = AstContext.FindCompleteClass("TestInlineComments");
+            var commentEnum = enumClass.Comment.FullComment.CommentToString(CommentKind.BCPL);
+            Assert.AreEqual("/// <summary>Testing the inline comment, test 1</summary>".Replace("\r", string.Empty), commentClass.Replace("\r", string.Empty));
         }
 
         [Test]
