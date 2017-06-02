@@ -245,7 +245,7 @@ namespace CppSharp.Generators.CSharp
 
                 Context.Before.WriteLine("var {0} = {1};", ptrName,
                     Context.ReturnVarName);
-                
+
                 var res = $"{ptrName} == IntPtr.Zero? null : ({typedef})Marshal.GetDelegateForFunctionPointer({ptrName}, typeof({typedef}))";
                 Context.Return.Write(res);
                 return true;
@@ -492,7 +492,8 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee.Desugar();
             if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef() &&
-                Context.MarshalKind != MarshalKind.VTableReturnValue)
+                Context.MarshalKind != MarshalKind.VTableReturnValue &&
+                Context.Function.OperatorKind != CXXOperatorKind.Subscript)
             {
                 var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
                 var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
@@ -580,13 +581,17 @@ namespace CppSharp.Generators.CSharp
                 if (isRefParam)
                 {
                     var typeName = Type.TypePrinterDelegate(finalPointee);
-
-                    if (param.IsInOut)
-                        Context.Before.WriteLine("{0} _{1} = {1};", typeName, param.Name);
+                    if (Context.Function.OperatorKind == CXXOperatorKind.Subscript)
+                        Context.Return.Write(param.Name);
                     else
-                        Context.Before.WriteLine("{0} _{1};", typeName, param.Name);
+                    {
+                        if (param.IsInOut)
+                            Context.Before.WriteLine($"{typeName} _{param.Name} = {param.Name};");
+                        else
+                            Context.Before.WriteLine($"{typeName} _{param.Name};");
 
-                    Context.Return.Write("&_{0}", param.Name);
+                        Context.Return.Write($"&_{param.Name}");
+                    }
                 }
                 else
                 {
