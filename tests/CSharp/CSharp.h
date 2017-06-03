@@ -1193,3 +1193,14 @@ struct HasComplexArray
 {
     ComplexArrayElement complexArray[ARRAY_LENGTH_MACRO];
 };
+
+class DLL_API TestIndexedProperties
+{
+public:
+    int operator[](const int& key);
+};
+
+int TestIndexedProperties::operator[](const int& key)
+{
+    return key;
+}

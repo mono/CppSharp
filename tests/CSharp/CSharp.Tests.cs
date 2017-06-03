@@ -834,4 +834,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
             complexArrayElement.Dispose();
         }
     }
+
+    [Test]
+    public void TestConstRefIndexer()
+    {
+        using (var indexproperty = new TestIndexedProperties())
+        {
+            int a = 2;
+            Assert.That(indexproperty[&a], Is.EqualTo(2));
+        }
+    }
 }
