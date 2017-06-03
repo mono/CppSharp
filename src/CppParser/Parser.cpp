@@ -592,7 +592,7 @@ static TypeQualifiers GetTypeQualifiers(const clang::QualType& Type)
     return quals;
 }
 
-QualifiedType Parser::GetQualifiedType(const clang::QualType& qual, clang::TypeLoc* TL)
+QualifiedType Parser::GetQualifiedType(const clang::QualType& qual, const clang::TypeLoc* TL)
 {
     QualifiedType qualType;
     qualType.type = WalkType(qual, TL);
@@ -2101,7 +2101,7 @@ bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
     return true;
 }
 
-Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
+Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     bool DesugarType)
 {
     using namespace clang;
@@ -2590,7 +2590,25 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         {
         case clang::NestedNameSpecifier::SpecifierKind::TypeSpec:
         case clang::NestedNameSpecifier::SpecifierKind::TypeSpecWithTemplate:
-            DNT->qualifier = GetQualifiedType(clang::QualType(DN->getQualifier()->getAsType(), 0));
+            const auto& Qualifier = clang::QualType(DN->getQualifier()->getAsType(), 0);
+            if (LocValid)
+            {
+                const auto& DNTL = TL->getAs<DependentNameTypeLoc>();
+                if (!DNTL.isNull())
+                {
+                    const auto& QL = DNTL.getQualifierLoc();
+                    const auto& NNSL = QL.getTypeLoc();
+                    DNT->qualifier = GetQualifiedType(Qualifier, &NNSL);
+                }
+                else
+                {
+                    DNT->qualifier = GetQualifiedType(Qualifier, 0);
+                }
+            }
+            else
+            {
+                DNT->qualifier = GetQualifiedType(Qualifier, 0);
+            }
             break;
         }
         DNT->Identifier = DN->getIdentifier()->getName();

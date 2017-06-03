@@ -86,7 +86,7 @@ private:
     Friend* WalkFriend(const clang::FriendDecl* FD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     bool ShouldCompleteType(const clang::QualType& QualType, bool LocValid);
-    Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
+    Type* WalkType(clang::QualType QualType, const clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
     TemplateTemplateParameter* WalkTemplateTemplateParameter(const clang::TemplateTemplateParmDecl* TTP);
@@ -104,7 +104,7 @@ private:
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
-    QualifiedType GetQualifiedType(const clang::QualType& qual, clang::TypeLoc* TL = 0);
+    QualifiedType GetQualifiedType(const clang::QualType& qual, const clang::TypeLoc* TL = 0);
     void ReadClassLayout(Class* Class, const clang::RecordDecl* RD, clang::CharUnits Offset, bool IncludeVirtualBases);
     LayoutField WalkVTablePointer(Class* Class, const clang::CharUnits& Offset, const std::string& prefix);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
