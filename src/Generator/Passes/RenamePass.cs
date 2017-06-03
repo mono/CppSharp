@@ -166,7 +166,7 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Events);
 
             var function = decl as Function;
-            if (function != null && function.SynthKind != FunctionSynthKind.AdjustedMethod)
+            if (function != null)
             {
                 declarations.Add(function.Namespace);
                 // account for overloads
