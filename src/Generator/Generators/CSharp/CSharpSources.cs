@@ -440,10 +440,22 @@ namespace CppSharp.Generators.CSharp
                 var functions = GatherClassInternalFunctions(@class);
 
                 foreach (var function in functions)
-                    GenerateInternalFunction(function);
+                {
+                    // Ignore auto generated DllImports of not Implemened Ctors (and functions at all)
+                    if (Options.IgnoreNotImplementedCtors)
+                    {
+                        if (Context.Symbols.Symbols.ContainsKey(function.Mangled))
+                            GenerateInternalFunction(function);
+                    }
+                    else
+                    {
+                        GenerateInternalFunction(function);
+                    }
+                }
+
             }
 
-            TypePrinter.PopContext();
+      TypePrinter.PopContext();
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -536,7 +548,16 @@ namespace CppSharp.Generators.CSharp
 
             retType = function.ReturnType.CSharpType(TypePrinter);
 
-            var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
+            var paramsCopy = function
+              .GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, false)
+              .Select(p => new Parameter(p)).ToArray();
+
+            foreach (var p in paramsCopy.Where(paramCopy => paramCopy.Type.IsPrimitiveType() && (paramCopy.Type as BuiltinType)?.Type == PrimitiveType.Bool))
+            {
+                p.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Char));
+            }
+
+            var @params = paramsCopy.Select(p =>
                 string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
 
             TypePrinter.PopContext();
@@ -1506,9 +1527,10 @@ namespace CppSharp.Generators.CSharp
                     ReturnVarName = param.Name,
                     ParameterIndex = i
                 };
-
+                ctx.PushMarshalKind(param.Type.IsPrimitiveType() ? MarshalKind.NativeField : MarshalKind.Unknown);
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { MarshalsParameter = true };
                 param.Visit(marshal);
+                ctx.PopMarshalKind();
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
@@ -1764,7 +1786,17 @@ namespace CppSharp.Generators.CSharp
                 if (ASTUtils.CheckIgnoreMethod(ctor))
                     continue;
 
-                GenerateMethod(ctor, @class);
+                // Ignore auto generate body methods of not implemented c'tors. excpet default c'tors
+                if (Options.IgnoreNotImplementedCtors)
+                {
+                    if (ctor.Access == AccessSpecifier.Public || Context.Symbols.Symbols.ContainsKey(ctor.Mangled))
+                        GenerateMethod(ctor, @class);
+                }
+                else
+                {
+                    GenerateMethod(ctor, @class);
+                }
+
             }
 
             if (@class.IsRefType)
@@ -1928,7 +1960,18 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            GenerateNativeConstructorByValue(@class, ctorCall);
+            // Ignore auto generate of not implemented native copy c'tors.
+            if (Options.IgnoreNotImplementedCtors)
+            {
+                var ctorMethod = @class.FindMethod(ctorCall);
+                if (ctorMethod != null && Context.Symbols.Symbols.ContainsKey(ctorMethod.Mangled))
+                    GenerateNativeConstructorByValue(@class, ctorCall);
+            }
+            else
+            {
+                GenerateNativeConstructorByValue(@class, ctorCall);
+            }
+
 
             PushBlock(BlockKind.Method);
             WriteLine("{0} {1}(void* native, bool skipVTables = false){2}",
@@ -2223,7 +2266,16 @@ namespace CppSharp.Generators.CSharp
             {
                 if (method.IsConstructor)
                 {
-                    GenerateInternalFunctionCall(method);
+                    // Ignore struct c'tors that not exist in the libs.
+                    if (Options.IgnoreNotImplementedCtors)
+                    {
+                        if (Context.Symbols.Symbols.ContainsKey(method.Mangled))
+                            GenerateInternalFunctionCall(method);
+                    }
+                    else
+                    {
+                        GenerateInternalFunctionCall(method);
+                    }
                 }
                 else if (method.IsOperator)
                 {
@@ -2477,7 +2529,18 @@ namespace CppSharp.Generators.CSharp
             if (method.IsCopyConstructor)
             {
                 if (@class.HasNonTrivialCopyConstructor)
-                    GenerateInternalFunctionCall(method);
+                {
+                    if (Options.IgnoreNotImplementedCtors)
+                    {
+                        // at wanted public c'tors we don't want to call to doesn't exist native entry point.
+                        if (Context.Symbols.Symbols.ContainsKey(method.Mangled))
+                            GenerateInternalFunctionCall(method);
+                    }
+                    else
+                    {
+                        GenerateInternalFunctionCall(method);
+                    }
+                }
                 else
                 {
                     TypePrinter.PushContext(TypePrinterContextKind.Native);
@@ -2490,8 +2553,19 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 if (!method.IsDefaultConstructor || @class.HasNonTrivialDefaultConstructor)
-                    GenerateInternalFunctionCall(method);
-            }
+                {
+                    if (Options.IgnoreNotImplementedCtors)
+                    {
+                        // at wanted public c'tors we don't want to call to doesn't exist native entry point.
+                        if (Context.Symbols.Symbols.ContainsKey(method.Mangled))
+                           GenerateInternalFunctionCall(method);
+                    }
+                    else
+                    {
+                        GenerateInternalFunctionCall(method);
+                    }
+                }
+      }
 
             GenerateVTableClassSetupCall(@class);
         }
@@ -2600,7 +2674,8 @@ namespace CppSharp.Generators.CSharp
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
                     name.Append(param.Context.ArgumentPrefix);
 
-                name.Append(param.Name);
+                var paramString = param.Param.Type.IsPrimitiveType() && ((BuiltinType)param.Param.Type).Type == PrimitiveType.Bool? $"{param.Name} ? (sbyte)1: (sbyte)0" : param.Name;
+                name.Append(paramString);
                 names.Add(name.ToString());
             }
 
