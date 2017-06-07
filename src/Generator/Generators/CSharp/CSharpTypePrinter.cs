@@ -524,6 +524,8 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
                 case PrimitiveType.Null: return "void*";
                 case PrimitiveType.String: return "string";
+                case PrimitiveType.Float128: return new TypePrinterResult { Type = "fixed byte",
+                    NameSuffix = $"[{Context.TargetInfo.Float128Width}]"};
             }
 
             throw new NotSupportedException();

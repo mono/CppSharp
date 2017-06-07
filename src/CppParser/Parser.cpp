@@ -1919,7 +1919,7 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
     case clang::BuiltinType::Float: return PrimitiveType::Float;
     case clang::BuiltinType::Double: return PrimitiveType::Double;
     case clang::BuiltinType::LongDouble: return PrimitiveType::LongDouble;
-    case clang::BuiltinType::Float128: return PrimitiveType::Half;
+    case clang::BuiltinType::Float128: return PrimitiveType::Float128;
 
     case clang::BuiltinType::NullPtr: return PrimitiveType::Null;
 
@@ -4326,6 +4326,8 @@ ParserTargetInfo* Parser::GetTargetInfo()
     parserTargetInfo->pointerWidth = TI.getPointerWidth(0);
     parserTargetInfo->wCharAlign = TI.getWCharAlign();
     parserTargetInfo->wCharWidth = TI.getWCharWidth();
+	parserTargetInfo->float128Align = TI.getFloat128Align();
+	parserTargetInfo->float128Width = TI.getFloat128Width();
 
     return parserTargetInfo;
 }

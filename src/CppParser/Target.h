@@ -72,6 +72,8 @@ struct CS_API ParserTargetInfo
     unsigned int pointerWidth;
     unsigned int wCharAlign;
     unsigned int wCharWidth;
+	unsigned int float128Align;
+	unsigned int float128Width;
 };
 
 } }
