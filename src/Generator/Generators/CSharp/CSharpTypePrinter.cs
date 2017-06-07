@@ -512,9 +512,12 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
                     return GetIntString(primitive, Context.TargetInfo);
-                case PrimitiveType.Int128: return "__int128";
-                case PrimitiveType.UInt128: return "__uint128_t";
-                case PrimitiveType.Half: return "__fp16";
+                case PrimitiveType.Int128:return new TypePrinterResult { Type = "fixed byte",
+                    NameSuffix = $"[{Context.TargetInfo.IntMaxTWidth}]"};
+                case PrimitiveType.UInt128:return new TypePrinterResult { Type = "fixed byte",
+                    NameSuffix = $"[{Context.TargetInfo.UIntMaxType}]"};
+                case PrimitiveType.Half: return new TypePrinterResult { Type = "fixed byte",
+                    NameSuffix = $"[{Context.TargetInfo.HalfWidth}]"};
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.LongDouble: return new TypePrinterResult { Type = "fixed byte",
