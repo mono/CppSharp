@@ -1204,3 +1204,5 @@ int TestIndexedProperties::operator[](const int& key)
 {
     return key;
 }
+
+extern const ComplexArrayElement ArrayOfVariableSize[];
