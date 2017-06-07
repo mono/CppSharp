@@ -637,8 +637,7 @@ namespace CppSharp.Generators.CSharp
                 coreType = arrayType.Type.Desugar();
             // we do not support the primitives below yet because their representation in C# is problematic
             if (coreType.IsPrimitiveType(PrimitiveType.Int128) ||
-                coreType.IsPrimitiveType(PrimitiveType.UInt128) ||
-                coreType.IsPrimitiveType(PrimitiveType.Half))
+                coreType.IsPrimitiveType(PrimitiveType.UInt128))
                 return;
 
             TypePrinterResult retType = TypePrinter.VisitFieldDecl(
