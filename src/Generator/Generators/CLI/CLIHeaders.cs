@@ -164,10 +164,8 @@ namespace CppSharp.Generators.CLI
             // Generate all the struct/class declarations for the module.
             foreach (var @class in decl.Classes)
             {
-                if (!@class.IsGenerated || @class.IsIncomplete || @class.IsDependent)
-                    continue;
-
-                if (@class.IsOpaque)
+                if ((!@class.IsOpaque && (!@class.IsGenerated || @class.IsIncomplete)) || 
+                    @class.IsDependent)
                     continue;
 
                 PushBlock(BlockKind.Class, @class);
@@ -240,14 +238,14 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClass(Class @class)
         {
-            if (!@class.IsGenerated || @class.IsIncomplete)
+            if ((!@class.IsOpaque && (!@class.IsGenerated || @class.IsIncomplete)))
                 return;
 
             GenerateDeclarationCommon(@class);
 
             GenerateClassSpecifier(@class);
 
-            if (@class.IsOpaque)
+            if (@class.IsOpaque && !@class.IsIncomplete)
             {
                 WriteLine(";");
                 return;

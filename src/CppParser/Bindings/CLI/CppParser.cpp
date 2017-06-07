@@ -11,6 +11,26 @@
 using namespace System;
 using namespace System::Runtime::InteropServices;
 
+CppSharp::Parser::Parser::Parser(::CppSharp::CppParser::Parser* native)
+    : __ownsNativeInstance(false)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::Parser^ CppSharp::Parser::Parser::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::Parser((::CppSharp::CppParser::Parser*) native.ToPointer());
+}
+
+System::IntPtr CppSharp::Parser::Parser::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::Parser::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::Parser*)object.ToPointer();
+}
 CppSharp::Parser::CppParserOptions::CppParserOptions(::CppSharp::CppParser::CppParserOptions* native)
     : __ownsNativeInstance(false)
 {
@@ -533,6 +553,16 @@ CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::ParserResult::Library::g
 void CppSharp::Parser::ParserResult::Library::set(CppSharp::Parser::AST::NativeLibrary^ value)
 {
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->library = (::CppSharp::CppParser::AST::NativeLibrary*)value->NativePtr;
+}
+
+CppSharp::Parser::Parser^ CppSharp::Parser::ParserResult::CodeParser::get()
+{
+    return (((::CppSharp::CppParser::ParserResult*)NativePtr)->codeParser == nullptr) ? nullptr : gcnew CppSharp::Parser::Parser((::CppSharp::CppParser::Parser*)((::CppSharp::CppParser::ParserResult*)NativePtr)->codeParser);
+}
+
+void CppSharp::Parser::ParserResult::CodeParser::set(CppSharp::Parser::Parser^ value)
+{
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->codeParser = (::CppSharp::CppParser::Parser*)value->NativePtr;
 }
 
 unsigned int CppSharp::Parser::ParserResult::DiagnosticsCount::get()
