@@ -606,26 +606,6 @@ namespace CppSharp.Generators.CSharp
                 Write(" : {0}", string.Join(", ", bases));
         }
 
-        public void GenerateClassFields(Class owner, Class @class,
-            Action<Class, Field> action, bool nativeFields = false)
-        {
-            foreach (var @base in @class.Bases.Where(b => b.Class != null))
-            {
-                TypeMap typeMap;
-                if ((!Context.TypeMaps.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
-                    @base.Class.OriginalClass == @class)
-                    continue;
-
-                GenerateClassFields(owner, @base.Class, action, nativeFields);
-            }
-
-            foreach (var field in @class.Fields)
-            {
-                if (ASTUtils.CheckIgnoreField(field, nativeFields)) continue;
-                action(owner, field);
-            }
-        }
-
         private void GenerateClassInternalsField(LayoutField field, Class @class)
         {
             Declaration decl;
