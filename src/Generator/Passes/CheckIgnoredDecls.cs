@@ -368,7 +368,7 @@ namespace CppSharp.Passes
             }
 
             if (Options.DoAllModulesHaveLibraries() &&
-                module != Options.SystemModule && IsTypeExternal(module, type))
+                module != Options.SystemModule && ASTUtils.IsTypeExternal(module, type))
             {
                 msg = "external";
                 return true;
@@ -431,19 +431,6 @@ namespace CppSharp.Passes
                 !(@class is ClassTemplateSpecialization))
                 return true;
             return !decl.IsIncomplete || decl.CompleteDeclaration != null;
-        }
-
-        public static bool IsTypeExternal(Module module, Type type)
-        {
-            Declaration declaration;
-            if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
-                return false;
-
-            declaration = declaration.CompleteDeclaration ?? declaration;
-            if (declaration.Namespace == null || declaration.TranslationUnit.Module == null)
-                return false;
-
-            return declaration.TranslationUnit.Module.Dependencies.Contains(module);
         }
 
         private bool IsTypeIgnored(Type type)

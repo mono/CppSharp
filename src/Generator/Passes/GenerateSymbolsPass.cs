@@ -83,9 +83,21 @@ namespace CppSharp.Passes
 
             if (function.IsGenerated)
             {
-                CheckTypeForSpecialization(function.OriginalReturnType.Type);
+                Action<ClassTemplateSpecialization> add =
+                    s =>
+                    {
+                        ICollection<ClassTemplateSpecialization> specs;
+                        if (specializations.ContainsKey(s.TranslationUnit.Module))
+                            specs = specializations[s.TranslationUnit.Module];
+                        else specs = specializations[s.TranslationUnit.Module] =
+                            new HashSet<ClassTemplateSpecialization>();
+                        specs.Add(s);
+                    };
+                ASTUtils.CheckTypeForSpecialization(function.OriginalReturnType.Type,
+                    function, add, Context.TypeMaps);
                 foreach (var parameter in function.Parameters)
-                    CheckTypeForSpecialization(parameter.Type);
+                    ASTUtils.CheckTypeForSpecialization(parameter.Type, function,
+                        add, Context.TypeMaps);
             }
 
             if (!NeedsSymbol(function))
@@ -93,54 +105,6 @@ namespace CppSharp.Passes
 
             var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
             return function.Visit(symbolsCodeGenerator);
-        }
-
-        private void CheckTypeForSpecialization(AST.Type type)
-        {
-            type = type.Desugar();
-            ClassTemplateSpecialization specialization;
-            type = type.GetFinalPointee() ?? type;
-            if (!type.TryGetDeclaration(out specialization))
-                return;
-
-            if (specialization.Ignore ||
-                specialization.TemplatedDecl.TemplatedClass.Ignore ||
-                specialization.IsIncomplete ||
-                specialization.TemplatedDecl.TemplatedClass.IsIncomplete ||
-                specialization is ClassTemplatePartialSpecialization ||
-                specialization.Arguments.Any(a => UnsupportedTemplateArgument(specialization, a)))
-                return;
-
-            TypeMap typeMap;
-            if (Context.TypeMaps.FindTypeMap(specialization, out typeMap))
-            {
-                var typePrinterContext = new TypePrinterContext { Type = type };
-                var mappedTo = typeMap.CSharpSignatureType(typePrinterContext);
-                mappedTo = mappedTo.Desugar();
-                mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo);
-                if (mappedTo.IsPrimitiveType() || mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum())
-                    return;
-            }
-
-            HashSet<ClassTemplateSpecialization> list;
-            if (specializations.ContainsKey(specialization.TranslationUnit.Module))
-                list = specializations[specialization.TranslationUnit.Module];
-            else
-                specializations[specialization.TranslationUnit.Module] =
-                    list = new HashSet<ClassTemplateSpecialization>();
-            list.Add(specialization);
-        }
-
-        private bool UnsupportedTemplateArgument(ClassTemplateSpecialization specialization, TemplateArgument a)
-        {
-            if (a.Type.Type == null ||
-                CheckIgnoredDeclsPass.IsTypeExternal(
-                    specialization.TranslationUnit.Module, a.Type.Type))
-                return true;
-
-            var typeIgnoreChecker = new TypeIgnoreChecker(Context.TypeMaps);
-            a.Type.Type.Visit(typeIgnoreChecker);
-            return typeIgnoreChecker.IsIgnored;
         }
 
         public class SymbolsCodeEventArgs : EventArgs

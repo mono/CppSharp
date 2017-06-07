@@ -1,6 +1,8 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST.Extensions;
+using CppSharp.Types;
 
 namespace CppSharp.AST
 {
@@ -19,6 +21,9 @@ namespace CppSharp.AST
         public static bool CheckIgnoreMethod(Method method)
         {
             if (!method.IsGenerated) return true;
+
+            if (method.IsDependent && UsesAdditionalTypeParam(method))
+                return true;
 
             var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
@@ -48,9 +53,10 @@ namespace CppSharp.AST
                     if (!baseClass.IsInterface)
                     {
                         var copyConstructor = baseClass.Methods.FirstOrDefault(m => m.IsCopyConstructor);
-                        if (copyConstructor == null
-                            || copyConstructor.Access == AccessSpecifier.Private
-                            || !copyConstructor.IsDeclared)
+                        if (copyConstructor == null ||
+                            copyConstructor.Access == AccessSpecifier.Private ||
+                            (!copyConstructor.IsDeclared &&
+                             !copyConstructor.TranslationUnit.IsSystemHeader))
                             return true;
                     }
                 }
@@ -61,7 +67,7 @@ namespace CppSharp.AST
 
         public static bool CheckIgnoreField(Field field, bool useInternals = false)
         {
-            if (field.Access == AccessSpecifier.Private && !useInternals) 
+            if (field.Access == AccessSpecifier.Private && !useInternals)
                 return true;
 
             if (field.Class.IsValueType && field.IsDeclared)
@@ -79,6 +85,99 @@ namespace CppSharp.AST
                 return false;
 
             return !prop.IsGenerated;
+        }
+
+        public static void CheckTypeForSpecialization(Type type, Declaration container,
+            Action<ClassTemplateSpecialization> addSpecialization,
+            ITypeMapDatabase typeMaps, bool internalOnly = false)
+        {
+            type = type.Desugar();
+            type = type.GetFinalPointee() ?? type;
+            ClassTemplateSpecialization specialization;
+            if (!type.TryGetDeclaration(out specialization) ||
+                specialization.IsExplicitlyGenerated)
+                return;
+
+            TypeMap typeMap;
+            typeMaps.FindTypeMap(specialization, out typeMap);
+
+            if ((!internalOnly && (((specialization.Ignore ||
+                 specialization.TemplatedDecl.TemplatedClass.Ignore) && typeMap == null) ||
+                 specialization.Arguments.Any(a => UnsupportedTemplateArgument(
+                     specialization, a, typeMaps)))) ||
+                specialization.IsIncomplete ||
+                specialization.TemplatedDecl.TemplatedClass.IsIncomplete ||
+                specialization is ClassTemplatePartialSpecialization ||
+                container.Namespace == specialization)
+                return;
+
+            while (container.Namespace != null)
+            {
+                if (container.Namespace == specialization)
+                    return;
+                container = container.Namespace;
+            }
+
+            if (!internalOnly && typeMaps.FindTypeMap(specialization, out typeMap))
+            {
+                var typePrinterContext = new TypePrinterContext { Type = type };
+                var mappedTo = typeMap.CSharpSignatureType(typePrinterContext);
+                mappedTo = mappedTo.Desugar();
+                mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo);
+                if (mappedTo.IsPrimitiveType() || mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum())
+                    return;
+            }
+
+            addSpecialization(specialization);
+        }
+
+        public static bool IsTypeExternal(Module module, Type type)
+        {
+            Declaration declaration;
+            if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
+                return false;
+
+            declaration = declaration.CompleteDeclaration ?? declaration;
+            if (declaration.Namespace == null || declaration.TranslationUnit.Module == null)
+                return false;
+
+            return declaration.TranslationUnit.Module.Dependencies.Contains(module);
+        }
+
+        private static bool UsesAdditionalTypeParam(Method method)
+        {
+            var specialization = method.Namespace as ClassTemplateSpecialization;
+            Class template;
+            if (specialization != null)
+                template = specialization.TemplatedDecl.TemplatedClass;
+            else
+            {
+                template = (Class) method.Namespace;
+                if (!template.IsDependent)
+                    return false;
+            }
+            var typeParams = template.TemplateParameters.Select(t => t.Name).ToList();
+            return method.Parameters.Any(p =>
+            {
+                if (!p.IsDependent)
+                    return false;
+                var desugared = p.Type.Desugar();
+                var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar()
+                    as TemplateParameterType;
+                return finalType != null && !typeParams.Contains(finalType.Parameter.Name);
+            });
+        }
+
+        private static bool UnsupportedTemplateArgument(
+            ClassTemplateSpecialization specialization, TemplateArgument a, ITypeMapDatabase typeMaps)
+        {
+            if (a.Type.Type == null ||
+                IsTypeExternal(specialization.TranslationUnit.Module, a.Type.Type))
+                return true;
+
+            var typeIgnoreChecker = new TypeIgnoreChecker(typeMaps);
+            a.Type.Type.Visit(typeIgnoreChecker);
+            return typeIgnoreChecker.IsIgnored;
         }
     }
 
