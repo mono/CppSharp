@@ -16804,7 +16804,7 @@ namespace CppSharp
 
         public unsafe partial class ParserTargetInfo : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 176)]
+            [StructLayout(LayoutKind.Explicit, Size = 184)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -16923,6 +16923,12 @@ namespace CppSharp
 
                 [FieldOffset(172)]
                 internal uint wCharWidth;
+
+                [FieldOffset(176)]
+                internal uint float128Align;
+
+                [FieldOffset(180)]
+                internal uint float128Width;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -17517,6 +17523,32 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->wCharWidth = value;
+                }
+            }
+
+            public uint Float128Align
+            {
+                get
+                {
+                    return ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->float128Align;
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->float128Align = value;
+                }
+            }
+
+            public uint Float128Width
+            {
+                get
+                {
+                    return ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->float128Width;
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->float128Width = value;
                 }
             }
 
