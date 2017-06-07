@@ -1120,6 +1120,18 @@ public:
 
 #pragma region Comments
 
+class TestInlineComments
+{
+public:
+	/// <summary>Testing the inline comment, test 1</summary> 
+	enum testEnum
+	{
+		/// <summary>Testing the inline comment, test 1</summary> 
+		FirstEnumMember,
+		/// <summary>Testing the in3line comment, test 3</summary>
+		SecondEnumMember
+	};
+};
 enum struct CommentKind
 {
     FullComment,
