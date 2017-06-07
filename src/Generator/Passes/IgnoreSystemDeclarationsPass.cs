@@ -61,25 +61,8 @@ namespace CppSharp.Passes
                             m.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
                             !m.Parameters[1].Type.Desugar().IsPrimitiveType());
                         ctor.GenerationKind = GenerationKind.Generate;
-                        foreach (var parameter in ctor.Parameters)
-                            parameter.DefaultArgument = null;
-                    }
-                    foreach (var ctor in @class.Methods.Where(m =>
-                        {
-                            if (!m.IsConstructor || m.Parameters.Count != 2)
-                                return false;
-                            for (int i = 0; i < m.Parameters.Count; i++)
-                            {
-                                var type = m.Parameters[i].Type.Desugar();
-                                var templateParameter = (type.GetFinalPointee() ?? type) as TemplateParameterType;
-                                if (templateParameter == null ||
-                                    @class.TemplateParameters.All(t => t.Name != templateParameter.Parameter.Name))
-                                    return false;
-                            }
-                            return true;
-                        }))
-                    {
-                        ctor.GenerationKind = GenerationKind.Generate;
+                        ctor.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
+                        ctor.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
                         foreach (var parameter in ctor.Parameters)
                             parameter.DefaultArgument = null;
                     }

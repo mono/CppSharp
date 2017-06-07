@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include <limits>
+#include <string>
 #include "AnotherUnit.h"
 
 class DLL_API Foo
@@ -1206,3 +1207,5 @@ int TestIndexedProperties::operator[](const int& key)
 }
 
 extern const ComplexArrayElement ArrayOfVariableSize[];
+
+void useStdStringJustAsParameter(std::string s);

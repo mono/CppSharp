@@ -1350,3 +1350,7 @@ DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s)
 {
     return s->i;
 }
+
+void useStdStringJustAsParameter(std::string s)
+{
+}

@@ -94,7 +94,8 @@ namespace CppSharp.Passes
                 var nestedContext = declaration as Namespace;
                 if (nestedContext != null)
                     RemoveUnusedStdTypes(nestedContext);
-                else if (!this.usedStdTypes.Contains(declaration))
+                else if (!this.usedStdTypes.Contains(declaration) &&
+                    !declaration.IsExplicitlyGenerated)
                     context.Declarations.RemoveAt(i);
             }
         }

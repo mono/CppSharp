@@ -71,7 +71,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            if (decl.IsDependent)
+            if (decl.IsDependent && !decl.IsExplicitlyGenerated)
             {
                 decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
                 Diagnostics.Debug("Decl '{0}' was ignored due to dependent context",
