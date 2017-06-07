@@ -7,12 +7,6 @@
 #include <string>
 #include <vector>
 
-class TestPrimitiveTypes
-{
-public:
-    long double longDouble;
-};
-
 class DLL_API IgnoredType
 {
     class IgnoredNested
