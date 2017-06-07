@@ -430,6 +430,26 @@ void CppSharp::Parser::ParserTargetInfo::WCharWidth::set(unsigned int value)
     ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharWidth = value;
 }
 
+unsigned int CppSharp::Parser::ParserTargetInfo::Float128Align::get()
+{
+    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Align;
+}
+
+void CppSharp::Parser::ParserTargetInfo::Float128Align::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Align = value;
+}
+
+unsigned int CppSharp::Parser::ParserTargetInfo::Float128Width::get()
+{
+    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Width;
+}
+
+void CppSharp::Parser::ParserTargetInfo::Float128Width::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Width = value;
+}
+
 System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->getABI();
