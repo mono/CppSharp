@@ -635,11 +635,6 @@ namespace CppSharp.Generators.CSharp
             var coreType = field.QualifiedType.Type.Desugar();
             if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant)
                 coreType = arrayType.Type.Desugar();
-            // we do not support the primitives below yet because their representation in C# is problematic
-            if (coreType.IsPrimitiveType(PrimitiveType.Int128) ||
-                coreType.IsPrimitiveType(PrimitiveType.UInt128) ||
-                coreType.IsPrimitiveType(PrimitiveType.Half))
-                return;
 
             TypePrinterResult retType = TypePrinter.VisitFieldDecl(
                 new Field { Name = field.Name, QualifiedType = field.QualifiedType });
