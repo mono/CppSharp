@@ -284,6 +284,18 @@ namespace CppSharp
                 void set(unsigned int);
             }
 
+            property unsigned int Float128Align
+            {
+                unsigned int get();
+                void set(unsigned int);
+            }
+
+            property unsigned int Float128Width
+            {
+                unsigned int get();
+                void set(unsigned int);
+            }
+
             property System::String^ ABI
             {
                 System::String^ get();

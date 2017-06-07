@@ -38,7 +38,9 @@ ParserTargetInfo::ParserTargetInfo() :
     pointerAlign(0),
     pointerWidth(0),
     wCharAlign(0),
-    wCharWidth(0)
+    wCharWidth(0),
+    float128Align(0),
+    float128Width(0)
 {
 }
 
