@@ -516,8 +516,11 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestDependentNameType()
         {
-            var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
-            Assert.That(template.TemplatedClass.Fields[0].Type.ToString(),
+            var template = AstContext.FindDecl<ClassTemplate>(
+                "TestSpecializationArguments").First();
+            var type = template.TemplatedClass.Fields[0].Type.Visit(
+                new CSharpTypePrinter(Driver.Context));
+            Assert.That($"{type}",
                 Is.EqualTo("global::Test.TestTemplateClass<T>.NestedInTemplate"));
         }
     }

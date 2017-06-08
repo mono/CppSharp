@@ -344,9 +344,11 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("protected int {0};", Helpers.PointerAdjustmentIdentifier);
 
                     // use interfaces if any - derived types with a secondary base this class must be compatible with the map
-                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
-                    var dict = string.Format("global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>",
-                        (@interface ?? @class).Visit(TypePrinter));
+                    var @interface = @class.Namespace.Classes.FirstOrDefault(
+                        c => c.IsInterface && c.OriginalClass == @class);
+                    var printedClass = (@interface ?? @class).Visit(TypePrinter);
+                    var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {
+                        printedClass}{printedClass.NameSuffix}>";
                     WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
                     WriteLine("protected void*[] __OriginalVTables;");
                 }
@@ -1169,6 +1171,7 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 GenerateDeclarationCommon(prop);
+                var printedType = prop.Type.Visit(TypePrinter);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
                     Write(Helpers.GetAccess(GetValidPropertyAccess(prop)));
@@ -1190,12 +1193,12 @@ namespace CppSharp.Generators.CSharp
                     if (prop.IsVirtual && !isOverride && !prop.IsPure)
                         Write("virtual ");
 
-                    WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
+                    WriteLine($"{printedType}{printedType.NameSuffix} {GetPropertyName(prop)}");
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", prop.Type, prop.ExplicitInterfaceImpl.Name,
-                        GetPropertyName(prop));
+                    WriteLine($@"{printedType}{printedType.NameSuffix} {
+                        prop.ExplicitInterfaceImpl.Name}.{GetPropertyName(prop)}");
                 }
                 WriteStartBraceIndent();
 
@@ -1613,7 +1616,9 @@ namespace CppSharp.Generators.CSharp
             WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
-            WriteLine("var {0} = ({1}) NativeToManagedMap[instance];", Helpers.TargetIdentifier, @class.Visit(TypePrinter));
+            var printedClass = @class.Visit(TypePrinter);
+            WriteLine($@"var {Helpers.TargetIdentifier} = ({printedClass}{
+                printedClass.NameSuffix}) NativeToManagedMap[instance];");
             WriteLine("if ({0}.{1})", Helpers.TargetIdentifier, Helpers.OwnsNativeInstanceIdentifier);
             WriteLineIndent("{0}.SetupVTables();", Helpers.TargetIdentifier);
             GenerateVTableManagedCall(method);
@@ -1828,15 +1833,16 @@ namespace CppSharp.Generators.CSharp
                 var @base = @class.GetNonIgnoredRootBase();
 
                 // Use interfaces if any - derived types with a this class as a seconary base, must be compatible with the map
-                var @interface = @base.Namespace.Classes.Find(c => c.OriginalClass == @base);
+                var @interface = @base.Namespace.Classes.FirstOrDefault(
+                    c => c.IsInterface && c.OriginalClass == @base);
 
                 WriteLine("if ({0} == IntPtr.Zero)", Helpers.InstanceIdentifier);
                 WriteLineIndent("return;");
 
                 // The local var must be of the exact type in the object map because of TryRemove
-                WriteLine("{0} {1};",
-                    (@interface ?? (@base.IsAbstractImpl ? @base.BaseClass : @base)).Visit(TypePrinter),
-                    Helpers.DummyIdentifier);
+                var printedClass = (@interface ?? (
+                    @base.IsAbstractImpl ? @base.BaseClass : @base)).Visit(TypePrinter);
+                WriteLine($"{printedClass}{printedClass.NameSuffix} {Helpers.DummyIdentifier};");
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
                 TypePrinter.PushContext(TypePrinterContextKind.Native);
@@ -1911,13 +1917,15 @@ namespace CppSharp.Generators.CSharp
             }
 
             var suffix = @class.IsAbstract ? "Internal" : string.Empty;
-            var ctorCall = $"{@class.Visit(TypePrinter)}{suffix}";
+            var printedClass = @class.Visit(TypePrinter);
+            var ctorCall = $"{printedClass}{printedClass.NameSuffix}{suffix}";
+
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(BlockKind.Method);
-                WriteLine("internal static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
+                WriteLine("internal static {0}{1}{2} {3}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
-                    @class.Visit(TypePrinter), Helpers.CreateInstanceIdentifier);
+                    printedClass, printedClass.NameSuffix, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return new {0}(native.ToPointer(), skipVTables);", ctorCall);
                 WriteCloseBraceIndent();
@@ -2118,7 +2126,10 @@ namespace CppSharp.Generators.CSharp
                     method.ExplicitInterfaceImpl.Name, functionName);
             else if (method.OperatorKind == CXXOperatorKind.Conversion ||
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
-                Write("{0} {1}(", functionName, method.OriginalReturnType);
+            {
+                var printedType = method.OriginalReturnType.Visit(TypePrinter);
+                Write($"{functionName} {printedType}{printedType.NameSuffix}(");
+            }
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
 
@@ -2427,11 +2438,15 @@ namespace CppSharp.Generators.CSharp
                         method.Parameters[0].Type.IsPrimitiveTypeConvertibleToRef() ?
                         "ref *" : string.Empty,
                         method.Parameters[0].Name);
+                    var printedType = method.ConversionType.Visit(TypePrinter);
                     if (@interface != null)
-                        WriteLine("return new {0}(({2}) {1});",
-                            method.ConversionType, paramName, @interface.Name);
+                    {
+                        var printedInterface = @interface.Visit(TypePrinter);
+                        WriteLine($@"return new {printedType}{printedType.NameSuffix}(({
+                            printedInterface}{printedInterface.NameSuffix}) {paramName});");
+                    }
                     else
-                        WriteLine("return new {0}({1});", method.ConversionType, paramName);
+                        WriteLine($"return new {printedType}{printedType.NameSuffix}({paramName});");
                 }
                 else
                 {
@@ -2508,8 +2523,8 @@ namespace CppSharp.Generators.CSharp
                 TypePrinter.PopContext();
             }
 
-            var functionName = string.Format("{0}.{1}", @internal,
-                GetFunctionNativeIdentifier(function.OriginalFunction ?? function));
+            var nativeFunction = GetFunctionNativeIdentifier(function);
+            var functionName = $"{@internal}.{nativeFunction}";
             GenerateFunctionCall(functionName, parameters, function, returnType);
         }
 

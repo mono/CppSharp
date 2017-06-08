@@ -7,6 +7,7 @@ using Type = CppSharp.AST.Type;
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -339,7 +340,13 @@ namespace CppSharp.Generators.CSharp
 
             TypeMap typeMap;
             if (!TypeMapDatabase.FindTypeMap(template, out typeMap))
+            {
+                if (ContextKind == TypePrinterContextKind.Managed &&
+                    decl == template.Template.TemplatedDecl)
+                    return $@"{decl.Visit(this)}<{string.Join(", ",
+                        template.Arguments.Select(VisitTemplateArgument))}>";
                 return decl.Visit(this);
+            }
 
             typeMap.Declaration = decl;
             typeMap.Type = template;
@@ -542,8 +549,12 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native)
                 return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
 
-            return $@"{VisitDeclaration(@class)}{(@class.IsDependent ? $@"<{
-                string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>" : string.Empty)}";
+            var typePrinterResult = new TypePrinterResult();
+            typePrinterResult.Type = VisitDeclaration(@class).Type;
+            if (@class.IsDependent)
+                typePrinterResult.NameSuffix = $@"<{
+                    string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>";
+            return typePrinterResult;
         }
 
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
@@ -552,7 +563,18 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native)
                 return $@"{VisitClassDecl(specialization)}{
                     Helpers.GetSuffixForInternal(specialization)}";
-            return VisitClassDecl(specialization);
+            if (specialization.IsExplicitlyGenerated)
+                return $"{VisitClassDecl(specialization)}";
+            var args = string.Join(", ", specialization.Arguments.Select(VisitTemplateArgument));
+            return $"{VisitClassDecl(specialization)}<{args}>";
+        }
+
+        private TypePrinterResult VisitTemplateArgument(TemplateArgument a)
+        {
+            if (a.Type.Type == null)
+                return a.Integral.ToString(CultureInfo.InvariantCulture);
+            var type = a.Type.Type.Desugar();
+            return type.IsPointerToPrimitiveType() ? "global::System.IntPtr" : type.Visit(this);
         }
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
@@ -626,13 +648,20 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
-            var usage = ContextKind == TypePrinterContextKind.Native ?
-                string.Empty : GetParameterUsage(param.Usage);
-            var type = param.QualifiedType.Visit(this);
+            var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var type = $"{printedType}{printedType.NameSuffix}";
             var name = param.Name;
+
+            if (ContextKind == TypePrinterContextKind.Native)
+                return $"{type} {name}";
+
+            var usage = GetParameterUsage(param.Usage);
+
             if (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments)
                 return $"{usage}{type} {name}";
-            return $"{usage}{type} {name} = {expressionPrinter.VisitParameter(param)}";
+
+            var defaultValue = expressionPrinter.VisitParameter(param);
+            return $"{usage}{type} {name} = {defaultValue}";
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
