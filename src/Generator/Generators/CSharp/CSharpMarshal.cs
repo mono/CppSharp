@@ -732,7 +732,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             string param = Context.Parameter.Name;
-            Type type = Context.Parameter.Type.Desugar();
+            Type type = Context.Parameter.Type.Desugar(false);
             string paramInstance;
             Class @interface;
             var finalType = type.GetFinalPointee() ?? type;

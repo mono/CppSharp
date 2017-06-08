@@ -481,7 +481,6 @@ public:
     virtual int property() = 0;
 };
 
-template <typename T>
 class DLL_API IgnoredType
 {
 };
@@ -493,10 +492,10 @@ class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 class DLL_API PropertyWithIgnoredType
 {
 public:
-    IgnoredType<int> ignoredType();
-    void setIgnoredType(const IgnoredType<int>& value);
+    IgnoredType ignoredType();
+    void setIgnoredType(const IgnoredType& value);
 private:
-    IgnoredType<int> _ignoredType;
+    IgnoredType _ignoredType;
 };
 
 // --- Multiple inheritance

@@ -184,7 +184,12 @@ namespace CppSharp.AST
             }
 
             if (template.IsDependent && template.Template != null)
+            {
+                var @class = template.Template.TemplatedDecl as Class;
+                if (@class != null)
+                    return @class.Specializations.Any(s => s.Visit(this));
                 return template.Template.Visit(this);
+            }
 
             var specialization = template.GetClassTemplateSpecialization();
             return specialization != null && specialization.Visit(this);

@@ -657,6 +657,89 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestTemplateWithPointerToTypeParameter()
+    {
+        int staticT = 5;
+        Assert.That(IndependentFieldsExtensions.StaticDependent(ref staticT), Is.EqualTo(5));
+    }
+
+    [Test]
+    public void TestTemplateCopyConstructor()
+    {
+        using (var original = new IndependentFields<int>(5))
+        {
+            using (var copy = new IndependentFields<int>(original))
+            {
+                Assert.That(copy.Independent, Is.EqualTo(original.Independent));
+            }
+        }
+    }
+
+    [Test]
+    public void TestTemplateWithIndependentFields()
+    {
+        using (var independentFields = new IndependentFields<int>())
+        {
+            var t = 5;
+            Assert.That(independentFields.GetDependent(ref t), Is.EqualTo(5));
+            Assert.That(independentFields.Independent, Is.EqualTo(1));
+        }
+        using (var independentFields = new IndependentFields<bool>())
+        {
+            var t = true;
+            Assert.That(independentFields.GetDependent(ref t), Is.EqualTo(true));
+            Assert.That(independentFields.Independent, Is.EqualTo(1));
+        }
+    }
+
+    [Test]
+    public void TestVirtualTemplate()
+    {
+        using (var virtualTemplate = new VirtualTemplate<int>())
+        {
+            Assert.That(virtualTemplate.Function, Is.EqualTo(5));
+        }
+    }
+
+    [Test]
+    public void TestOverrideOfTemplate()
+    {
+        using (var hasVirtualTemplate = new HasVirtualTemplate())
+        {
+            using (var overrideVirtualTemplate = new OverrideVirtualTemplate())
+            {
+                hasVirtualTemplate.SetV(overrideVirtualTemplate);
+                Assert.That(hasVirtualTemplate.Function, Is.EqualTo(10));
+            }
+        }
+    }
+
+    [Test]
+    public void TestDefaultTemplateArgument()
+    {
+        using (var hasDefaultTemplateArgument = new HasDefaultTemplateArgument<int, int>())
+        {
+            hasDefaultTemplateArgument.Property = 10;
+            Assert.That(hasDefaultTemplateArgument.Property, Is.EqualTo(10));
+        }
+    }
+
+    [Test]
+    public void TestTemplateStaticProperty()
+    {
+        HasDefaultTemplateArgument<int, int>.StaticProperty = 5;
+        Assert.That(HasDefaultTemplateArgument<int, int>.StaticProperty, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void TestIndependentConstInIndependentTemplate()
+    {
+        Assert.That(IndependentFields<int>.IndependentConst, Is.EqualTo(15));
+        Assert.That(IndependentFields<bool>.IndependentConst, Is.EqualTo(15));
+        Assert.That(IndependentFields<T1>.IndependentConst, Is.EqualTo(15));
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())
@@ -861,5 +944,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         TypedefedFuncPtr function = (a, b) => 5;
         Assert.That(CSharp.CSharp.FuncWithTypedefedFuncPtrAsParam(function), Is.EqualTo(5));
+    }
+
+    private class OverrideVirtualTemplate : VirtualTemplate<int>
+    {
+        public override int Function
+        {
+            get { return 10; }
+        }
     }
 }

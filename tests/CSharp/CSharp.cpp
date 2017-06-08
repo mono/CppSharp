@@ -700,12 +700,12 @@ void HasOverridesWithIncreasedAccess::privateOverride(int i)
 {
 }
 
-IgnoredType<int> PropertyWithIgnoredType::ignoredType()
+IgnoredType PropertyWithIgnoredType::ignoredType()
 {
     return _ignoredType;
 }
 
-void PropertyWithIgnoredType::setIgnoredType(const IgnoredType<int> &value)
+void PropertyWithIgnoredType::setIgnoredType(const IgnoredType& value)
 {
     _ignoredType = value;
 }

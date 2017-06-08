@@ -39,9 +39,18 @@ namespace CppSharp.Passes
             if (!@class.IsDependent)
                 return false;
 
-            // templates are not supported yet
-            foreach (var specialization in @class.Specializations.Where(s => !s.IsExplicitlyGenerated))
-                specialization.ExplicitlyIgnore();
+            if (Options.IsCLIGenerator || @class.TranslationUnit.IsSystemHeader ||
+                @class.Specializations.Count == 0)
+            {
+                bool hasExplicitlyGeneratedSpecializations = false;
+                foreach (var specialization in @class.Specializations)
+                    if (specialization.IsExplicitlyGenerated)
+                        hasExplicitlyGeneratedSpecializations = true;
+                    else
+                        specialization.ExplicitlyIgnore();
+                if (!hasExplicitlyGeneratedSpecializations)
+                    @class.ExplicitlyIgnore();
+            }
 
             return true;
         }
@@ -59,14 +68,6 @@ namespace CppSharp.Passes
                 Diagnostics.Debug("Decl '{0}' was ignored due to invalid access",
                     decl.Name);
                 decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
-                return true;
-            }
-
-            if (decl.IsDependent && !decl.IsExplicitlyGenerated)
-            {
-                decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
-                Diagnostics.Debug("Decl '{0}' was ignored due to dependent context",
-                    decl.Name);
                 return true;
             }
 
@@ -106,6 +107,14 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(function) || function.IsSynthetized
                 || function.IsExplicitlyGenerated)
                 return false;
+
+            if (function.IsDependent && !(function.Namespace is Class))
+            {
+                function.GenerationKind = GenerationKind.None;
+                Diagnostics.Debug("Function '{0}' was ignored due to dependent context",
+                    function.Name);
+                return false;
+            }
 
             var ret = function.OriginalReturnType;
 
@@ -231,7 +240,8 @@ namespace CppSharp.Passes
                 return false;
 
             string msg;
-            if (HasInvalidType(typedef.Type, typedef.TranslationUnit.Module, out msg))
+            if (HasInvalidType(typedef.Type, typedef.TranslationUnit.Module, out msg) &&
+                !(typedef.Type.Desugar() is MemberPointerType))
             {
                 typedef.ExplicitlyIgnore();
                 Diagnostics.Debug("Typedef '{0}' was ignored due to {1} type",

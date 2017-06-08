@@ -131,9 +131,14 @@ namespace CppSharp.Tests
             ClassTemplateSpecialization classTemplateSpecialization;
             var templateSpecializationType = type as TemplateSpecializationType;
             if (templateSpecializationType != null)
+            {
                 classTemplateSpecialization = templateSpecializationType.GetClassTemplateSpecialization();
-            else
-                classTemplateSpecialization = (ClassTemplateSpecialization)((TagType)type).Declaration;
+                return classTemplateSpecialization.Arguments[0].Type.Type;
+            }
+            var declaration = ((TagType) type).Declaration;
+            if (declaration.IsDependent)
+                return new TagType(((Class) declaration).TemplateParameters[0]);
+            classTemplateSpecialization = (ClassTemplateSpecialization) declaration;
             return classTemplateSpecialization.Arguments[0].Type.Type;
         }
     }
@@ -185,8 +190,14 @@ namespace CppSharp.Tests
         public override string CSharpSignature(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Native)
-                return string.Format("QList.{0}{1}", Helpers.InternalStruct,
+            {
+                var type = (TemplateSpecializationType) ctx.Type.Desugar();
+                var specialization = type.GetClassTemplateSpecialization();
+                var typePrinter = new CSharpTypePrinter(null);
+                typePrinter.PushContext(TypePrinterContextKind.Native);
+                return string.Format($"{specialization.Visit(typePrinter)}{(Type.IsAddress() ? "*" : string.Empty)}", specialization.Visit(typePrinter),
                     Type.IsAddress() ? "*" : string.Empty);
+            }
 
             return string.Format("System.Collections.Generic.{0}<{1}>",
                 ctx.MarshalKind == MarshalKind.DefaultExpression ? "List" : "IList",
@@ -196,7 +207,11 @@ namespace CppSharp.Tests
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             // pointless, put just so that the generated code compiles
-            ctx.Return.Write("new QList.{0}()", Helpers.InternalStruct);
+            var type = (TemplateSpecializationType) ctx.Parameter.Type.Desugar();
+            var specialization = type.GetClassTemplateSpecialization();
+            var typePrinter = new CSharpTypePrinter(null);
+            typePrinter.PushContext(TypePrinterContextKind.Native);
+            ctx.Return.Write("new {0}()", specialization.Visit(typePrinter));
         }
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)

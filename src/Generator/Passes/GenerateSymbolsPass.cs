@@ -78,7 +78,7 @@ namespace CppSharp.Passes
             if (@class.IsDependent)
                 foreach (var specialization in @class.Specializations.Where(
                     s => s.IsExplicitlyGenerated))
-                    Add(specialization);
+                    specialization.Visit(this);
             else
                 foreach (var @base in @class.Bases.Where(b => b.IsClass))
                 {
@@ -203,7 +203,6 @@ namespace CppSharp.Passes
                 specs = specializations[specialization.TranslationUnit.Module];
             else specs = specializations[specialization.TranslationUnit.Module] =
                 new HashSet<ClassTemplateSpecialization>();
-            GetSymbolsCodeGenerator(specialization.TranslationUnit.Module);
             specs.Add(specialization);
         }
 

@@ -21,6 +21,7 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateDecl(template))
                 return false;
 
+            bool complete = !template.TemplatedDecl.IsIncomplete;
             EnsureCompleteDeclaration(template.TemplatedDecl);
 
             template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
@@ -29,8 +30,11 @@ namespace CppSharp.Passes
                 s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
                 template.TemplatedClass.Specializations.Add(specialization);
 
-            if (template.TemplatedClass.TemplateParameters.Count == 0)
+            if (template.TemplatedClass.TemplateParameters.Count == 0 || complete)
+            {
+                template.TemplatedClass.TemplateParameters.Clear();
                 template.TemplatedClass.TemplateParameters.AddRange(template.Parameters);
+            }
 
             return true;
         }

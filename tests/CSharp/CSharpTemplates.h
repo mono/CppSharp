@@ -1,8 +1,17 @@
 #include "../Tests.h"
 #include "AnotherUnit.h"
 
+#include <string>
+
 class DLL_API T1
 {
+public:
+    T1();
+    T1(int f);
+    ~T1();
+    int getField() const;
+private:
+    int field;
 };
 
 class DLL_API T2
@@ -12,9 +21,76 @@ class DLL_API T2
 template <typename T>
 class DLL_API IndependentFields : public T1
 {
+public:
+    IndependentFields();
+    IndependentFields(const IndependentFields<T>& other);
+    IndependentFields(const T& t);
+    IndependentFields(int i);
+    ~IndependentFields();
+    int getIndependent();
+    const T* returnTakeDependentPointer(const T* p);
+    T getDependent(const T& t);
+    static T staticDependent(const T& t);
+    template <typename AdditionalDependentType>
+    void usesAdditionalDependentType(AdditionalDependentType additionalDependentType);
+    static const int independentConst;
 private:
-    int field;
+    int independent;
 };
+
+template <typename T>
+const int IndependentFields<T>::independentConst = 15;
+
+template <typename T>
+IndependentFields<T>::IndependentFields() : independent(1)
+{
+}
+
+template <typename T>
+IndependentFields<T>::IndependentFields(const IndependentFields<T>& other)
+{
+    independent = other.independent;
+}
+
+template <typename T>
+IndependentFields<T>::IndependentFields(const T& t) : independent(1)
+{
+}
+
+template <typename T>
+IndependentFields<T>::IndependentFields(int i)
+{
+    independent = i;
+}
+
+template <typename T>
+IndependentFields<T>::~IndependentFields()
+{
+}
+
+template <typename T>
+const T* IndependentFields<T>::returnTakeDependentPointer(const T* p)
+{
+    return p;
+}
+
+template <typename T>
+T IndependentFields<T>::getDependent(const T& t)
+{
+    return t;
+}
+
+template <typename T>
+T IndependentFields<T>::staticDependent(const T& t)
+{
+    return t;
+}
+
+template <typename T>
+int IndependentFields<T>::getIndependent()
+{
+    return independent;
+}
 
 template <typename T>
 class DLL_API DependentValueFields
@@ -44,7 +120,106 @@ private:
 template <typename T, typename D = IndependentFields<T>>
 class HasDefaultTemplateArgument
 {
+public:
+    HasDefaultTemplateArgument();
+    ~HasDefaultTemplateArgument();
+    T property();
+    void setProperty(const T& t);
+    static T staticProperty();
+    static void setStaticProperty(const T& t);
+private:
     T field;
+    static T staticField;
+};
+
+template <>
+class HasDefaultTemplateArgument<bool, bool>
+{
+public:
+    HasDefaultTemplateArgument();
+    ~HasDefaultTemplateArgument();
+    bool property();
+    void setProperty(const bool& t);
+    static bool staticProperty();
+    static void setStaticProperty(const bool& t);
+private:
+    bool field;
+    static bool staticField;
+};
+
+template <typename T, typename D>
+HasDefaultTemplateArgument<T, D>::HasDefaultTemplateArgument()
+{
+}
+
+template <typename T, typename D>
+HasDefaultTemplateArgument<T, D>::~HasDefaultTemplateArgument()
+{
+}
+
+template <typename T, typename D>
+T HasDefaultTemplateArgument<T, D>::property()
+{
+    return field;
+}
+
+template <typename T, typename D>
+void HasDefaultTemplateArgument<T, D>::setProperty(const T& t)
+{
+    field = t;
+}
+
+template <typename T, typename D>
+T HasDefaultTemplateArgument<T, D>::staticProperty()
+{
+    return staticField;
+}
+
+template <typename T, typename D>
+void HasDefaultTemplateArgument<T, D>::setStaticProperty(const T& t)
+{
+    staticField = t;
+}
+
+template <typename T, typename D>
+T HasDefaultTemplateArgument<T, D>::staticField;
+
+template <typename T>
+class VirtualTemplate
+{
+public:
+    VirtualTemplate();
+    virtual ~VirtualTemplate();
+    virtual int function();
+};
+
+template <typename T>
+VirtualTemplate<T>::VirtualTemplate()
+{
+}
+
+template <typename T>
+VirtualTemplate<T>::~VirtualTemplate()
+{
+}
+
+template <typename T>
+int VirtualTemplate<T>::function()
+{
+    return 5;
+}
+
+class DLL_API HasVirtualTemplate
+{
+public:
+    HasVirtualTemplate();
+    ~HasVirtualTemplate();
+    VirtualTemplate<int> getVCopy();
+    void setV(VirtualTemplate<int>* value);
+    int function();
+private:
+    VirtualTemplate<int>* v;
+    HasDefaultTemplateArgument<bool, bool> explicitSpecialization;
 };
 
 template <typename T>
@@ -58,6 +233,7 @@ public:
     class NestedTemplate
     {
     };
+    IndependentFields<bool> getIndependentFields();
 private:
     IndependentFields<int> independentFields;
     DependentValueFields<bool> dependentValueFields;
@@ -121,3 +297,18 @@ struct MapResultType<InputSequence<T>, MapFunctor>
 {
     typedef InputSequence<typename LazyResultType<MapFunctor>::Type> ResultType;
 };
+
+// we optimise specialisations so that only actually used ones are wrapped
+void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
+                             IndependentFields<T1> _3, IndependentFields<std::string> _4,
+                             VirtualTemplate<int> _5, VirtualTemplate<bool> _6,
+                             HasDefaultTemplateArgument<int, int> _7, std::string s);
+
+// force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
+template class DLL_API IndependentFields<int>;
+template class DLL_API IndependentFields<bool>;
+template class DLL_API IndependentFields<T1>;
+template class DLL_API IndependentFields<std::string>;
+template class DLL_API VirtualTemplate<int>;
+template class DLL_API VirtualTemplate<bool>;
+template class DLL_API HasDefaultTemplateArgument<int, int>;
