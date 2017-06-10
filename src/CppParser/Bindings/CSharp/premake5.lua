@@ -32,6 +32,37 @@ project "CppSharp.Parser.CSharp"
 
   configuration ""
 
+project "Std-templates"
+
+  kind "SharedLib"
+  language "C++"
+  SetupNativeProject()
+  rtti "Off"
+
+  configuration "vs*"
+    buildoptions { clang_msvc_flags }
+
+  configuration "*"
+
+  if os.is("windows") then
+      files { "i686-pc-win32-msvc/Std-templates.cpp" }
+  elseif os.is("macosx") then
+      local file = io.popen("lipo -info `which mono`")
+      local output = file:read('*all')
+      if string.find(output, "x86_64") then
+        files { "x86_64-apple-darwin12.4.0/Std-templates.cpp" }
+      else
+        files { "i686-apple-darwin12.4.0/Std-templates.cpp" }
+      end
+
+  elseif os.is("linux") then
+      files { "x86_64-linux-gnu/Std-templates.cpp" }
+  else
+      print "Unknown architecture"
+  end
+
+  configuration "*"
+
 function SetupParser()
   links
   {
