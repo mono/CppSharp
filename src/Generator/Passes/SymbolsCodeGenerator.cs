@@ -30,7 +30,8 @@ namespace CppSharp.Passes
         {
             if (method.Namespace is ClassTemplateSpecialization)
             {
-                WriteLine($"template {method.Visit(cppTypePrinter)};");
+                var exporting = Context.ParserOptions.IsMicrosoftAbi ? "__declspec(dllexport) " : string.Empty;
+                WriteLine($"template {exporting}{method.Visit(cppTypePrinter)};");
                 return true;
             }
             if (method.IsConstructor)
