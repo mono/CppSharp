@@ -2998,7 +2998,7 @@ namespace CppSharp.Generators.CSharp
                 identifier.Append(Helpers.GetSuffixFor(specialization));
 
             var overloads = function.Namespace.GetOverloads(function)
-                .ToList();
+                .Where(f => f.IsGenerated).ToList();
             var index = overloads.IndexOf(function);
 
             if (index >= 0)
