@@ -355,15 +355,31 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestCopyConstructor()
     {
-        Foo foo = new Foo { A = 5, B = 5.5f };
-        var copyFoo = new Foo(foo);
-        Assert.That(foo.A, Is.EqualTo(copyFoo.A));
-        Assert.That(foo.B, Is.EqualTo(copyFoo.B));
+        using (Foo foo = new Foo { A = 5, B = 5.5f })
+        {
+            using (var copyFoo = new Foo(foo))
+            {
+                Assert.That(foo.A, Is.EqualTo(copyFoo.A));
+                Assert.That(foo.B, Is.EqualTo(copyFoo.B));
+            }
+        }
 
-        var testCopyConstructorRef = new TestCopyConstructorRef { A = 10, B = 5 };
-        var copyBar = new TestCopyConstructorRef(testCopyConstructorRef);
-        Assert.That(testCopyConstructorRef.A, Is.EqualTo(copyBar.A));
-        Assert.That(testCopyConstructorRef.B, Is.EqualTo(copyBar.B));
+        using (var testCopyConstructorRef = new TestCopyConstructorRef { A = 10, B = 5 })
+        {
+            using (var copyBar = new TestCopyConstructorRef(testCopyConstructorRef))
+            {
+                Assert.That(testCopyConstructorRef.A, Is.EqualTo(copyBar.A));
+                Assert.That(testCopyConstructorRef.B, Is.EqualTo(copyBar.B));
+            }
+        }
+
+        using (var original = new HasCopyAndMoveConstructor(5))
+        {
+            using (var copy = new HasCopyAndMoveConstructor(original))
+            {
+                Assert.That(copy.Field, Is.EqualTo(original.Field));
+            }
+        }
     }
 
     [Test]

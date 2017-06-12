@@ -302,6 +302,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new GenerateAnonymousDelegatesPass());
             TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
             TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
+            TranslationUnitPasses.AddPass(new IgnoreMoveConstructorsPass());
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());

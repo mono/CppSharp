@@ -683,3 +683,27 @@ TestStaticClass& TestStaticClass::operator=(const TestStaticClass& oth)
 {
     return *this;
 }
+
+HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(int value)
+{
+    field = value;
+}
+
+HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(const HasCopyAndMoveConstructor &other)
+{
+    field = other.field;
+}
+
+HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(HasCopyAndMoveConstructor&& other)
+{
+    field = other.field;
+}
+
+HasCopyAndMoveConstructor::~HasCopyAndMoveConstructor()
+{
+}
+
+int HasCopyAndMoveConstructor::getField()
+{
+    return field;
+}

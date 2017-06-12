@@ -31,9 +31,6 @@ namespace CppSharp.AST
             if (@class != null && @class.IsValueType && isEmptyCtor)
                 return true;
 
-            if (method.IsMoveConstructor)
-                return true;
-
             if (method.IsDestructor)
                 return true;
 

@@ -763,7 +763,6 @@ public:
 
 class DLL_API HasStdString
 {
-    // test if these are ignored with the C# back-end
 public:
     std::string testStdString(std::string s);
     std::string s;
@@ -1223,3 +1222,15 @@ enum EmptyEnum { };
 enum __enum_with_underscores { lOWER_BEFORE_CAPITAL, CAPITALS_More, underscore_at_end_, usesDigits1_0 };
 
 void DLL_API sMallFollowedByCapital();
+
+class DLL_API HasCopyAndMoveConstructor
+{
+public:
+    HasCopyAndMoveConstructor(int value);
+    HasCopyAndMoveConstructor(const HasCopyAndMoveConstructor& other);
+    HasCopyAndMoveConstructor(HasCopyAndMoveConstructor&& other);
+    ~HasCopyAndMoveConstructor();
+    int getField();
+private:
+    int field;
+};

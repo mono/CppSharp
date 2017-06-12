@@ -33,7 +33,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(function))
                 return false;
 
-            if (function.IsAmbiguous)
+            if (function.IsAmbiguous || !function.IsGenerated)
                 return false;
 
             var overloads = function.Namespace.GetOverloads(function);
