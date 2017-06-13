@@ -133,13 +133,6 @@ namespace Std
 {
     namespace __1
     {
-        namespace Tuple
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct __Internal
-            {
-            }
-        }
     }
 }
 
@@ -1234,24 +1227,6 @@ namespace Std
 {
     namespace __1
     {
-        namespace Map
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.__1.Tree.__Internal __tree_;
-            }
-
-
-            public unsafe partial class ValueCompare
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 0)]
-                public partial struct __Internal
-                {
-                }
-            }
-        }
     }
 }
 
@@ -1268,10 +1243,6 @@ namespace Std
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public unsafe partial struct __Internal
             {
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNSt3__111char_traitsIcE3eofEv")]
-                internal static extern int Eofc__N_std_N___1_S_char_traits__C_0();
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
@@ -1313,13 +1284,6 @@ namespace Std
                 __Instance = new global::System.IntPtr(native);
             }
 
-            public CharTraits()
-            {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.__1.CharTraits.__Internal));
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
-            }
-
             public void Dispose()
             {
                 Dispose(disposing: true);
@@ -1335,12 +1299,6 @@ namespace Std
                     Marshal.FreeHGlobal(__Instance);
                 __Instance = IntPtr.Zero;
             }
-
-            public static int Eof()
-            {
-                var __ret = global::Std.__1.CharTraits.__Internal.Eofc__N_std_N___1_S_char_traits__C_0();
-                return __ret;
-            }
         }
 
         public unsafe partial class BasicString : IDisposable
@@ -1354,7 +1312,7 @@ namespace Std
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
-                internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
+                internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -1530,19 +1488,16 @@ namespace Std
                 global::Std.__1.BasicString __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (disposing)
-                    global::Std.__1.BasicString.__Internal.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
+                    global::Std.__1.BasicString.__Internal.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
                 __Instance = IntPtr.Zero;
             }
 
-            public string CStr
+            public string CStr()
             {
-                get
-                {
-                    var __ret = global::Std.__1.BasicString.__Internal.CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
-                    return Marshal.PtrToStringAnsi(__ret);
-                }
+                var __ret = global::Std.__1.BasicString.__Internal.CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
+                return Marshal.PtrToStringAnsi(__ret);
             }
         }
 

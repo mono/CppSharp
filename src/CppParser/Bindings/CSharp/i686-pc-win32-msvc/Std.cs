@@ -62,10 +62,6 @@ namespace Std
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                EntryPoint="?eof@?$char_traits@D@std@@SAHXZ")]
-            internal static extern int Eofc__N_std_S_char_traits__C_0();
         }
 
         public global::System.IntPtr __Instance { get; protected set; }
@@ -107,13 +103,6 @@ namespace Std
             __Instance = new global::System.IntPtr(native);
         }
 
-        public CharTraits()
-        {
-            __Instance = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
-            __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
-        }
-
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -128,12 +117,6 @@ namespace Std
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
-        }
-
-        public static int Eof()
-        {
-            var __ret = global::Std.CharTraits.__Internal.Eofc__N_std_S_char_traits__C_0();
-            return __ret;
         }
     }
 }
@@ -576,7 +559,7 @@ namespace Std
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                 EntryPoint="??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ")]
-            internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance, int delete);
+            internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr instance, int delete);
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -635,7 +618,7 @@ namespace Std
             global::Std.BasicString __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (disposing)
-                global::Std.BasicString.__Internal.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0((__Instance + __PointerAdjustment), 0);
+                global::Std.BasicString.__Internal.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment), 0);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
