@@ -9,6 +9,8 @@ project "CppSharp.Generator"
   excludes { "Filter.cs" }
   vpaths { ["*"] = "*" }
 
+  dependson { "Std-symbols" }
+
   links
   {
   	"System",
