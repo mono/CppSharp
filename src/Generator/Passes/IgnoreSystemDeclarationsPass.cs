@@ -75,6 +75,13 @@ namespace CppSharp.Passes
                             m => !m.IsConstructor || m.Parameters.Any()))
                             method.ExplicitlyIgnore();
                     break;
+                case "char_traits":
+                    foreach (var method in @class.Methods)
+                        method.ExplicitlyIgnore();
+                    foreach (var specialization in @class.Specializations)
+                        foreach (var method in specialization.Methods)
+                            method.ExplicitlyIgnore();
+                    break;
             }
             return true;
         }

@@ -1,8 +1,5 @@
 #include <string>
-#include <vector>
-#include <map>
-#include <unordered_map>
 
-template class std::allocator<char>;
-template class std::char_traits<char>;
-template class std::basic_string<char, std::char_traits<char>, std::allocator<char>>;
+template std::__1::allocator<char>::allocator() noexcept;
+template std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type*, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type&);
+template const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type* std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::c_str() const noexcept;
