@@ -77,8 +77,7 @@ namespace CppSharp.Passes
                                     char.ToUpperInvariant(@event.Name[0]), @event.Name.Substring(1));
                                 Diagnostics.Debug("Event {0}::{1} renamed to {2}", @event.Namespace.Name, oldName, @event.Name);
                             }
-                            getter.Name = name;
-                            GenerateProperty(getter.Namespace, getter, readOnly ? null : setter);
+                            GenerateProperty(name, getter.Namespace, getter, readOnly ? null : setter);
                             goto next;
                         }
                     }
@@ -133,8 +132,12 @@ namespace CppSharp.Passes
 
             private static void GenerateProperty(DeclarationContext context, Method getter, Method setter = null)
             {
+                GenerateProperty(GetPropertyName(getter.Name), context, getter, setter);
+            }
+
+            private static void GenerateProperty(string name, DeclarationContext context, Method getter, Method setter)
+            {
                 var type = (Class) context;
-                var name = GetPropertyName(getter.Name);
                 if (type.Properties.Any(p => p.Name == name &&
                     p.ExplicitInterfaceImpl == getter.ExplicitInterfaceImpl))
                     return;

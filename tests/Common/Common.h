@@ -531,11 +531,14 @@ DLL_API int Function()
 // Tests properties
 struct DLL_API TestProperties
 {
+public:
     TestProperties();
     int Field;
 
     int getFieldValue();
     void setFieldValue(int Value);
+private:
+    int FieldValue;
 };
 
 TestProperties::TestProperties() : Field(0) {}
