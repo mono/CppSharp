@@ -412,11 +412,19 @@ public class CommonTests : GeneratorTestFixture
             Assert.AreEqual(4, newProperties.Field);
             newProperties.Field = 5;
             Assert.AreEqual(5, indexedProperties[(byte) 0].Field);
+
             var bar = new Bar { A = 5 };
             indexedProperties[0u] = bar;
             Assert.That(bar.A, Is.EqualTo(indexedProperties[0u].A));
             indexedProperties[(ushort) 0] = bar;
             Assert.That(bar.A, Is.EqualTo(indexedProperties[(ushort) 0].A));
+
+            using (var foo = new Foo())
+            {
+                var bar2 = new Bar { A = 10 };
+                indexedProperties[foo] = bar2;
+                Assert.That(bar2.A, Is.EqualTo(indexedProperties[foo].A));
+            }
         }
     }
 

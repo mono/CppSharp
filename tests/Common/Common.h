@@ -568,6 +568,7 @@ public:
     foo_t operator[](TestProperties b);
     Bar& operator[](unsigned long i);
     Bar& operator[](const TypeMappedIndex& key);
+    Bar& operator[](const Foo& key);
     // Test that we do not generate 'ref int' parameters as C# does not allow it
     int operator[](CS_OUT char key);
 

@@ -449,6 +449,11 @@ TypeMappedIndex::TypeMappedIndex()
 {
 }
 
+Bar& TestIndexedProperties::operator[](const Foo& key)
+{
+    return bar;
+}
+
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
     // cause a crash to indicate this is the incorrect ctor to invoke
