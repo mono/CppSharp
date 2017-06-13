@@ -10,7 +10,7 @@ namespace CppSharp.Passes
         {
             if (!base.VisitClassDecl(@class))
                 return false;
-
+            
             EnsureCompleteDeclaration(@class);
 
             return true;
@@ -23,14 +23,45 @@ namespace CppSharp.Passes
 
             EnsureCompleteDeclaration(template.TemplatedDecl);
 
-            template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
-            // store all spesializations in the real template class because ClassTemplateDecl only forwards
-            foreach (var specialization in template.Specializations.Where(
-                s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
-                template.TemplatedClass.Specializations.Add(specialization);
+            if (template.Redeclarations.Count > 0 && template.TemplatedDecl.IsIncomplete && template.TemplatedDecl.CompleteDeclaration == null)
+            {
+                Diagnostics.Message($"Template {template} has {template.Redeclarations.Count} redeclarations");
+                var contains = 
+                     template.Redeclarations.Find(decl => !(decl as ClassTemplate).TemplatedClass.IsIncomplete);
+                Diagnostics.Message($"Template {template}, has full decl {contains}");
+                if (contains != null)
+                {
+                    var parent = (contains as ClassTemplate).TemplatedClass;
+                    foreach (var specialization in template.Specializations.Where(
+                        s => !s.IsIncomplete && !parent.Specializations.Contains(s)))
+                        parent.Specializations.Add(specialization);
+                    if (parent.TemplateParameters.Count == 0)
+                        parent.TemplateParameters.AddRange(template.Parameters);
+                }
+                else
+                {
+                    template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
+                    // store all spesializations in the real template class because ClassTemplateDecl only forwards
+                    foreach (var specialization in template.Specializations.Where(
+                        s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
+                        template.TemplatedClass.Specializations.Add(specialization);
 
-            if (template.TemplatedClass.TemplateParameters.Count == 0)
-                template.TemplatedClass.TemplateParameters.AddRange(template.Parameters);
+                    if (template.TemplatedClass.TemplateParameters.Count == 0)
+                        template.TemplatedClass.TemplateParameters.AddRange(template.Parameters);
+                }
+            }
+            else
+            {
+                template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
+                // store all spesializations in the real template class because ClassTemplateDecl only forwards
+                foreach (var specialization in template.Specializations.Where(
+                    s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
+                    template.TemplatedClass.Specializations.Add(specialization);
+
+                if (template.TemplatedClass.TemplateParameters.Count == 0)
+                    template.TemplatedClass.TemplateParameters.AddRange(template.Parameters);
+
+            }
 
             return true;
         }

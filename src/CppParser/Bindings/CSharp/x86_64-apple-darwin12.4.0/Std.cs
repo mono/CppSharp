@@ -140,6 +140,14 @@ namespace Std
             {
             }
         }
+
+        namespace TupleImpl
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            public unsafe partial struct __Internal
+            {
+            }
+        }
     }
 }
 

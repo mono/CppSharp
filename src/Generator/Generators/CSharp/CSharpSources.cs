@@ -253,7 +253,7 @@ namespace CppSharp.Generators.CSharp
 
             var specializations = new List<ClassTemplateSpecialization>();
             var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
-            if (specialization == null)
+            if (specialization == null && classTemplate.Specializations.Count > 0)
                 specializations.Add(classTemplate.Specializations[0]);
             else
                 specializations.Add(specialization);

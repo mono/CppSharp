@@ -3593,8 +3593,12 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::ClassTemplate:
     {
         auto TD = cast<ClassTemplateDecl>(D);
-        auto Template = WalkClassTemplate(TD); 
-        
+        auto Template = WalkClassTemplate(TD);
+
+        if (WalkRedecls)
+            for (auto redecl : TD->redecls())
+                Template->Redeclarations.push_back(WalkDeclaration(redecl, false, false));
+
         Decl = Template;
         break;
     }
