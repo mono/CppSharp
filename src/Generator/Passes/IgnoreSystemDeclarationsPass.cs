@@ -51,11 +51,11 @@ namespace CppSharp.Passes
             switch (@class.Name)
             {
                 case "basic_string":
-                    foreach (var method in @class.Methods.Where(m => m.OriginalName != "c_str"))
+                    foreach (var method in @class.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
                         method.ExplicitlyIgnore();
                     foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
                     {
-                        foreach (var method in specialization.Methods.Where(m => m.OriginalName != "c_str"))
+                        foreach (var method in specialization.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
                             method.ExplicitlyIgnore();
                         var ctor = specialization.Methods.Single(m => m.IsConstructor && m.Parameters.Count == 2 &&
                             m.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
