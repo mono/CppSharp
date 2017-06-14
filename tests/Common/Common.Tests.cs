@@ -711,7 +711,7 @@ public class CommonTests : GeneratorTestFixture
         Assert.That(Foo.ReadWrite, Is.EqualTo(25));
     }
 
-    [Test, Ignore("We need symbols for std::string to invoke and auto-compilation of exported templates is not added yet.")]
+    [Test]
     public void TestStdString()
     {
         // when C++ memory is deleted, it's only marked as free but not immediadely freed

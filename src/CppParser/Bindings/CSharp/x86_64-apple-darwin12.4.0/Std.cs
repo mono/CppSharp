@@ -1235,6 +1235,15 @@ namespace Std
                 [FieldOffset(0)]
                 internal global::Std.__1.Tree.__Internal __tree_;
             }
+
+
+            public unsafe partial class ValueCompare
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 0)]
+                public partial struct __Internal
+                {
+                }
+            }
         }
     }
 }

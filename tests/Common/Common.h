@@ -768,7 +768,9 @@ public:
 class DLL_API HasStdString
 {
 public:
-    std::string testStdString(std::string s);
+    HasStdString();
+    ~HasStdString();
+    std::string testStdString(const std::string& s);
     std::string s;
     std::string& getStdString();
 };

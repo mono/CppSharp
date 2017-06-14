@@ -4,6 +4,7 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
+using CppSharp.Parser;
 
 namespace CppSharp.Passes
 {
@@ -30,7 +31,11 @@ namespace CppSharp.Passes
         {
             if (method.Namespace is ClassTemplateSpecialization)
             {
-                var exporting = Context.ParserOptions.IsMicrosoftAbi ? "__declspec(dllexport) " : string.Empty;
+                var exporting = string.Empty;
+                if (Context.ParserOptions.IsMicrosoftAbi)
+                    exporting = "__declspec(dllexport) ";
+                else if (TargetTriple.IsMacOS(Context.ParserOptions.TargetTriple))
+                    exporting = "__attribute__((visibility(\"default\"))) ";
                 WriteLine($"template {exporting}{method.Visit(cppTypePrinter)};");
                 return true;
             }

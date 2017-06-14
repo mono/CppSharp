@@ -435,7 +435,15 @@ void DelegateNamespace::f2(void (*)())
 {
 }
 
-std::string HasStdString::testStdString(std::string s)
+HasStdString::HasStdString()
+{
+}
+
+HasStdString::~HasStdString()
+{
+}
+
+std::string HasStdString::testStdString(const std::string& s)
 {
     return s + "_test";
 }

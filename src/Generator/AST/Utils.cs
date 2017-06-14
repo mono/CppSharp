@@ -91,9 +91,13 @@ namespace CppSharp.AST
             type = type.Desugar();
             type = type.GetFinalPointee() ?? type;
             ClassTemplateSpecialization specialization;
-            if (!type.TryGetDeclaration(out specialization) ||
-                specialization.IsExplicitlyGenerated)
+            type.TryGetDeclaration(out specialization);
+            if (specialization == null || specialization.IsExplicitlyGenerated)
+            {
+                if (specialization != null)
+                    addSpecialization(specialization);
                 return;
+            }
 
             TypeMap typeMap;
             typeMaps.FindTypeMap(specialization, out typeMap);
