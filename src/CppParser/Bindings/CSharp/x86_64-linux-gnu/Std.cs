@@ -625,7 +625,7 @@ namespace Std
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSsD2Ev")]
-            internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr instance);
+            internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0(global::System.IntPtr instance);
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -726,7 +726,7 @@ namespace Std
             global::Std.BasicString __dummy;
             NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (disposing)
-                global::Std.BasicString.__Internal.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                global::Std.BasicString.__Internal.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C_0((__Instance + __PointerAdjustment));
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
