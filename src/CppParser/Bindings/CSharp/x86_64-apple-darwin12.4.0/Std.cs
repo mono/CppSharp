@@ -1227,6 +1227,15 @@ namespace Std
 {
     namespace __1
     {
+        namespace Map
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            public unsafe partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal global::Std.__1.Tree.__Internal __tree_;
+            }
+        }
     }
 }
 

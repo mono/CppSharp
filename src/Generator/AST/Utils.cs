@@ -103,7 +103,7 @@ namespace CppSharp.AST
                  specialization.Arguments.Any(a => UnsupportedTemplateArgument(
                      specialization, a, typeMaps)))) ||
                 specialization.IsIncomplete ||
-                specialization.TemplatedDecl.TemplatedClass.IsIncomplete ||
+                (!internalOnly && specialization.TemplatedDecl.TemplatedClass.IsIncomplete) ||
                 specialization is ClassTemplatePartialSpecialization ||
                 container.Namespace == specialization)
                 return;
