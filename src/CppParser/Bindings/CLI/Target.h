@@ -56,6 +56,12 @@ namespace CppSharp
 
             ~ParserTargetInfo();
 
+            property System::String^ ABI
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
+
             property CppSharp::Parser::ParserIntType Char16Type
             {
                 CppSharp::Parser::ParserIntType get();
@@ -294,12 +300,6 @@ namespace CppSharp
             {
                 unsigned int get();
                 void set(unsigned int);
-            }
-
-            property System::String^ ABI
-            {
-                System::String^ get();
-                void set(System::String^);
             }
 
             protected:

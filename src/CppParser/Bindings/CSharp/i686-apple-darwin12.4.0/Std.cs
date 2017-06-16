@@ -1256,69 +1256,6 @@ namespace Std
 {
     namespace __1
     {
-        public unsafe partial class CharTraits : IDisposable
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct __Internal
-            {
-            }
-
-            public global::System.IntPtr __Instance { get; protected set; }
-
-            protected int __PointerAdjustment;
-            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.CharTraits> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.CharTraits>();
-            protected void*[] __OriginalVTables;
-
-            protected bool __ownsNativeInstance;
-
-            internal static global::Std.__1.CharTraits __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-            {
-                return new global::Std.__1.CharTraits(native.ToPointer(), skipVTables);
-            }
-
-            internal static global::Std.__1.CharTraits __CreateInstance(global::Std.__1.CharTraits.__Internal native, bool skipVTables = false)
-            {
-                return new global::Std.__1.CharTraits(native, skipVTables);
-            }
-
-            private static void* __CopyValue(global::Std.__1.CharTraits.__Internal native)
-            {
-                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.CharTraits.__Internal));
-                *(global::Std.__1.CharTraits.__Internal*) ret = native;
-                return ret.ToPointer();
-            }
-
-            private CharTraits(global::Std.__1.CharTraits.__Internal native, bool skipVTables = false)
-                : this(__CopyValue(native), skipVTables)
-            {
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
-            }
-
-            protected CharTraits(void* native, bool skipVTables = false)
-            {
-                if (native == null)
-                    return;
-                __Instance = new global::System.IntPtr(native);
-            }
-
-            public void Dispose()
-            {
-                Dispose(disposing: true);
-            }
-
-            public virtual void Dispose(bool disposing)
-            {
-                if (__Instance == IntPtr.Zero)
-                    return;
-                global::Std.__1.CharTraits __dummy;
-                NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
-                __Instance = IntPtr.Zero;
-            }
-        }
-
         public unsafe partial class BasicString : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 12)]
@@ -1326,6 +1263,11 @@ namespace Std
             {
                 [FieldOffset(0)]
                 internal global::Std.__1.CompressedPair.__Internal __r_;
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2EPKcRKS4_")]
+                internal static extern void ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string __s, global::System.IntPtr __a);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -1492,6 +1434,17 @@ namespace Std
                 if (native == null)
                     return;
                 __Instance = new global::System.IntPtr(native);
+            }
+
+            public BasicString(string __s, global::Std.__1.Allocator __a)
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.__1.BasicString.__Internal));
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                if (ReferenceEquals(__a, null))
+                    throw new global::System.ArgumentNullException("__a", "Cannot be null because it is a C++ reference (&).");
+                var __arg1 = __a.__Instance;
+                global::Std.__1.BasicString.__Internal.ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment), __s, __arg1);
             }
 
             public void Dispose()

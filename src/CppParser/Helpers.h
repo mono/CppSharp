@@ -53,13 +53,3 @@
     void klass::add##name (const char* s) { return name.push_back(std::string(s)); } \
     unsigned klass::get##name##Count () { return name.size(); } \
     void klass::clear##name() { name.clear(); }
-
-#define STRING(name) \
-    std::string name; \
-    const char* get##name(); \
-    void set##name(const char* s);
-
-#define DEF_STRING(klass, name) \
-    const char* klass::get##name() { return name.c_str(); } \
-    void klass::set##name(const char* s) { name = s; }
-

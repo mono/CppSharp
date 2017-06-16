@@ -60,7 +60,7 @@ Generates the glue binding code from a syntax tree of the native code.
  * Multiple runtimes: .NET and Mono
  * C++ virtual methods overriding from managed code
  * C++ multiple inheritance by translating to C# interfaces
- * C++ standard library types (work-in-progress)
+ * C++ std::string
  * C++ default parameter values
  * C/C++ semantic comments (Doxygen) to C# comments
  * Extensible bindings semantics via user passes and type mapping 

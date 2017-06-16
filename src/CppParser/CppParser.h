@@ -49,8 +49,7 @@ struct CS_API CppParserOptions
     ~CppParserOptions();
 
     VECTOR_STRING(Arguments)
-
-    STRING(LibraryFile)
+    std::string libraryFile;
     // C/C++ header file names.
     VECTOR_STRING(SourceFiles)
 
@@ -64,7 +63,7 @@ struct CS_API CppParserOptions
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
     int toolSetToUse;
-    STRING(TargetTriple)
+    std::string targetTriple;
     CppAbi abi;
 
     bool noStandardIncludes;
@@ -89,9 +88,8 @@ struct CS_API ParserDiagnostic
 {
     ParserDiagnostic();
     ParserDiagnostic(const ParserDiagnostic&);
-
-    STRING(FileName)
-    STRING(Message)
+    std::string fileName;
+    std::string message;
     ParserDiagnosticLevel level;
     int lineNumber;
     int columnNumber;
