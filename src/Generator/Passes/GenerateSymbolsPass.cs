@@ -125,8 +125,8 @@ namespace CppSharp.Passes
             var method = function as Method;
             return function.IsGenerated && !function.IsDeleted && !function.IsDependent &&
                 !function.IsPure &&
-                (!string.IsNullOrEmpty(function.Body) || function.IsImplicit ||
-                 function.Namespace is ClassTemplateSpecialization) &&
+                (!string.IsNullOrEmpty(function.Body) || function.IsImplicit) &&
+                !(function.Namespace is ClassTemplateSpecialization) &&
                 // we don't need symbols for virtual functions anyway
                 (method == null || (!method.IsVirtual && !method.IsSynthetized &&
                  (!method.IsConstructor || !((Class) method.Namespace).IsAbstract))) &&
