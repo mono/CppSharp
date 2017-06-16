@@ -187,7 +187,6 @@ DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
 DependentNameType::~DependentNameType() {}
 
-DEF_STRING(DependentNameType, Identifier)
 
 PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
 
@@ -215,15 +214,13 @@ LayoutField::LayoutField() : offset(0), fieldPtr(0) {}
 
 LayoutField::LayoutField(const LayoutField & other)
     : offset(other.offset)
-    , Name(other.Name)
+    , name(other.name)
     , qualifiedType(other.qualifiedType)
     , fieldPtr(other.fieldPtr)
 {
 }
 
 LayoutField::~LayoutField() {}
-
-DEF_STRING(LayoutField, Name)
 
 LayoutBase::LayoutBase() : offset(0), _class(0) {}
 
@@ -264,9 +261,9 @@ Declaration::Declaration(const Declaration& rhs)
     , location(rhs.location.ID)
     , lineNumberStart(rhs.lineNumberStart)
     , lineNumberEnd(rhs.lineNumberEnd)
-    , Name(rhs.Name)
+    , name(rhs.name)
     , comment(rhs.comment)
-    , DebugText(rhs.DebugText)
+    , debugText(rhs.debugText)
     , isIncomplete(rhs.isIncomplete)
     , isDependent(rhs.isDependent)
     , isImplicit(rhs.isImplicit)
@@ -281,9 +278,6 @@ Declaration::~Declaration()
 {
 }
 
-DEF_STRING(Declaration, Name)
-DEF_STRING(Declaration, USR)
-DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
 DEF_VECTOR(Declaration, Declaration*, Redeclarations)
 
@@ -325,7 +319,7 @@ DeclarationContext::FindNamespace(const std::vector<std::string>& Namespaces)
         auto childNamespace = std::find_if(currentNamespace->Namespaces.begin(),
             currentNamespace->Namespaces.end(),
             [&](CppSharp::CppParser::AST::Namespace* ns) {
-                return ns->Name == _namespace;
+                return ns->name == _namespace;
         });
 
         if (childNamespace == currentNamespace->Namespaces.end())
@@ -344,7 +338,7 @@ Namespace* DeclarationContext::FindCreateNamespace(const std::string& Name)
     if (!_namespace)
     {
         _namespace = new Namespace();
-        _namespace->Name = Name;
+        _namespace->name = Name;
         _namespace->_namespace = this;
 
         Namespaces.push_back(_namespace);
@@ -362,7 +356,7 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
     if (entries.size() == 1)
     {
         auto _class = std::find_if(Classes.begin(), Classes.end(),
-            [&](Class* klass) { return klass->Name == Name &&
+            [&](Class* klass) { return klass->name == Name &&
                 (!klass->isIncomplete || !IsComplete); });
 
         return _class != Classes.end() ? *_class : nullptr;
@@ -383,7 +377,7 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
 Class* DeclarationContext::CreateClass(std::string Name, bool IsComplete)
 {
     auto _class = new Class();
-    _class->Name = Name;
+    _class->name = Name;
     _class->_namespace = this;
     _class->isIncomplete = !IsComplete;
 
@@ -427,7 +421,7 @@ Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
     if (entries.size() == 1)
     {
         auto foundEnum = std::find_if(Enums.begin(), Enums.end(),
-            [&](Enumeration* _enum) { return _enum->Name == Name; });
+            [&](Enumeration* _enum) { return _enum->name == Name; });
 
         if (foundEnum != Enums.end())
             return *foundEnum;
@@ -436,7 +430,7 @@ Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
             return nullptr;
 
         auto _enum = new Enumeration();
-        _enum->Name = Name;
+        _enum->name = Name;
         _enum->_namespace = this;
         Enums.push_back(_enum);
         return _enum;
@@ -495,7 +489,7 @@ Function* DeclarationContext::FindFunction(const std::string& USR)
 TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Create)
 {
     auto foundTypedef = std::find_if(Typedefs.begin(), Typedefs.end(),
-            [&](TypedefDecl* tdef) { return tdef->Name == Name; });
+            [&](TypedefDecl* tdef) { return tdef->name == Name; });
 
     if (foundTypedef != Typedefs.end())
         return *foundTypedef;
@@ -504,7 +498,7 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
         return nullptr;
      
     auto tdef = new TypedefDecl();
-    tdef->Name = Name;
+    tdef->name = Name;
     tdef->_namespace = this;
 
     return tdef;
@@ -513,7 +507,7 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
 TypeAlias* DeclarationContext::FindTypeAlias(const std::string& Name, bool Create)
 {
     auto foundTypeAlias = std::find_if(TypeAliases.begin(), TypeAliases.end(),
-        [&](TypeAlias* talias) { return talias->Name == Name; });
+        [&](TypeAlias* talias) { return talias->name == Name; });
 
     if (foundTypeAlias != TypeAliases.end())
         return *foundTypeAlias;
@@ -522,7 +516,7 @@ TypeAlias* DeclarationContext::FindTypeAlias(const std::string& Name, bool Creat
         return nullptr;
 
     auto talias = new TypeAlias();
-    talias->Name = Name;
+    talias->name = Name;
     talias->_namespace = this;
 
     return talias;
@@ -566,15 +560,14 @@ Friend::Friend() : CppSharp::CppParser::AST::Declaration(DeclarationKind::Friend
 
 Friend::~Friend() {}
 
-DEF_STRING(Statement, String)
 
-Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : String(str), _class(stmtClass), decl(decl) {}
+Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : string(str), _class(stmtClass), decl(decl) {}
 
 Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl)
     : Statement(str, stmtClass, decl) {}
 
 BinaryOperator::BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr)
-    : Expression(str, StatementClass::BinaryOperator), LHS(lhs), RHS(rhs), OpcodeStr(opcodeStr) {}
+    : Expression(str, StatementClass::BinaryOperator), LHS(lhs), RHS(rhs), opcodeStr(opcodeStr) {}
 
 BinaryOperator::~BinaryOperator()
 {
@@ -582,7 +575,6 @@ BinaryOperator::~BinaryOperator()
     delete RHS;
 }
 
-DEF_STRING(BinaryOperator, OpcodeStr)
 
 CallExpr::CallExpr(const std::string& str, Declaration* decl)
     : Expression(str, StatementClass::CallExprClass, decl) {}
@@ -649,10 +641,6 @@ Function::Function()
 }
 
 Function::~Function() {}
-
-DEF_STRING(Function, Mangled)
-DEF_STRING(Function, Signature)
-DEF_STRING(Function, Body)
 DEF_VECTOR(Function, Parameter*, Parameters)
 
 Method::Method() 
@@ -684,16 +672,14 @@ DEF_VECTOR(Enumeration, Enumeration::Item*, Items)
 Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
 
 Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
-    Expression(rhs.Expression), value(rhs.value) {}
+    expression(rhs.expression), value(rhs.value) {}
 
 Enumeration::Item::~Item() {}
-
-DEF_STRING(Enumeration::Item, Expression)
 
 Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
 {
     auto foundEnumItem = std::find_if(Items.begin(), Items.end(),
-        [&](Item* _item) { return _item->Name == Name; });
+        [&](Item* _item) { return _item->name == Name; });
     if (foundEnumItem != Items.end())
         return *foundEnumItem;
     return nullptr;
@@ -702,8 +688,6 @@ Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
 Variable::Variable() : Declaration(DeclarationKind::Variable) {}
 
 Variable::~Variable() {}
-
-DEF_STRING(Variable, Mangled)
 
 BaseClassSpecifier::BaseClassSpecifier() : type(0), offset(0) {}
 
@@ -872,21 +856,13 @@ MacroDefinition::MacroDefinition()
 
 MacroDefinition::~MacroDefinition() {}
 
-DEF_STRING(MacroDefinition, Name)
-DEF_STRING(MacroDefinition, Expression)
-
 MacroExpansion::MacroExpansion() : definition(0) { kind = DeclarationKind::MacroExpansion; }
 
 MacroExpansion::~MacroExpansion() {}
 
-DEF_STRING(MacroExpansion, Name)
-DEF_STRING(MacroExpansion, Text)
-
 TranslationUnit::TranslationUnit() { kind = DeclarationKind::TranslationUnit; }
 
 TranslationUnit::~TranslationUnit() {}
-
-DEF_STRING(TranslationUnit, FileName)
 DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 
 NativeLibrary::NativeLibrary()
@@ -899,7 +875,6 @@ NativeLibrary::~NativeLibrary()
 }
 
 // NativeLibrary
-DEF_STRING(NativeLibrary, FileName)
 DEF_VECTOR_STRING(NativeLibrary, Symbols)
 DEF_VECTOR_STRING(NativeLibrary, Dependencies)
 
@@ -935,14 +910,14 @@ TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {
-            return unit && unit->FileName == normalizedFile;
+            return unit && unit->fileName == normalizedFile;
     });
 
     if (existingUnit != TranslationUnits.end())
         return *existingUnit;
 
     auto unit = new TranslationUnit();
-    unit->FileName = normalizedFile;
+    unit->fileName = normalizedFile;
     TranslationUnits.push_back(unit);
 
     return unit;
@@ -950,9 +925,6 @@ TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 
 // Comments
 Comment::Comment(CommentKind kind) : kind(kind) {}
-
-DEF_STRING(RawComment, Text)
-DEF_STRING(RawComment, BriefText)
 
 RawComment::RawComment() : fullCommentBlock(0) {}
 
@@ -1004,9 +976,8 @@ BlockContentComment::BlockContentComment(CommentKind Kind) : Comment(Kind) {}
 
 BlockCommandComment::Argument::Argument() {}
 
-BlockCommandComment::Argument::Argument(const Argument& rhs) : Text(rhs.Text) {}
+BlockCommandComment::Argument::Argument(const Argument& rhs) : text(rhs.text) {}
 
-DEF_STRING(BlockCommandComment::Argument, Text)
 
 BlockCommandComment::BlockCommandComment() : BlockContentComment(CommentKind::BlockCommandComment), commandId(0), paragraphComment(0) {}
 
@@ -1036,8 +1007,6 @@ VerbatimBlockComment::~VerbatimBlockComment()
 DEF_VECTOR(VerbatimBlockComment, VerbatimBlockLineComment*, Lines)
 
 VerbatimLineComment::VerbatimLineComment() : BlockCommandComment(CommentKind::VerbatimLineComment) {}
-
-DEF_STRING(VerbatimLineComment, Text)
 
 ParagraphComment::ParagraphComment() : BlockContentComment(CommentKind::ParagraphComment), isWhitespace(false) {}
 
@@ -1078,21 +1047,13 @@ HTMLTagComment::HTMLTagComment(CommentKind Kind) : InlineContentComment(Kind) {}
 
 HTMLStartTagComment::Attribute::Attribute() {}
 
-HTMLStartTagComment::Attribute::Attribute(const Attribute& rhs) : Name(rhs.Name), Value(rhs.Value) {}
-
-DEF_STRING(HTMLStartTagComment::Attribute, Name)
-
-DEF_STRING(HTMLStartTagComment::Attribute, Value)
+HTMLStartTagComment::Attribute::Attribute(const Attribute& rhs) : name(rhs.name), value(rhs.value) {}
 
 HTMLStartTagComment::HTMLStartTagComment() : HTMLTagComment(CommentKind::HTMLStartTagComment) {}
 
 DEF_VECTOR(HTMLStartTagComment, HTMLStartTagComment::Attribute, Attributes)
 
-DEF_STRING(HTMLStartTagComment, TagName)
-
 HTMLEndTagComment::HTMLEndTagComment() : HTMLTagComment(CommentKind::HTMLEndTagComment) {}
-
-DEF_STRING(HTMLEndTagComment, TagName)
 
 InlineContentComment::InlineContentComment() : Comment(CommentKind::InlineContentComment), hasTrailingNewline(false) {}
 
@@ -1100,13 +1061,9 @@ InlineContentComment::InlineContentComment(CommentKind Kind) : Comment(Kind), ha
 
 TextComment::TextComment() : InlineContentComment(CommentKind::TextComment) {}
 
-DEF_STRING(TextComment, Text)
-
 InlineCommandComment::Argument::Argument() {}
 
-InlineCommandComment::Argument::Argument(const Argument& rhs) : Text(rhs.Text) {}
-
-DEF_STRING(InlineCommandComment::Argument, Text)
+InlineCommandComment::Argument::Argument(const Argument& rhs) : text(rhs.text) {}
 
 InlineCommandComment::InlineCommandComment()
     : InlineContentComment(CommentKind::InlineCommandComment), commandId(0), commentRenderKind(RenderNormal) {}
@@ -1114,7 +1071,5 @@ InlineCommandComment::InlineCommandComment()
 DEF_VECTOR(InlineCommandComment, InlineCommandComment::Argument, Arguments)
 
 VerbatimBlockLineComment::VerbatimBlockLineComment() : Comment(CommentKind::VerbatimBlockLineComment) {}
-
-DEF_STRING(VerbatimBlockLineComment, Text)
 
 } } }

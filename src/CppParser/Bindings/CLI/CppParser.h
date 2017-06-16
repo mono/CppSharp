@@ -96,6 +96,54 @@ namespace CppSharp
 
             ~CppParserOptions();
 
+            property System::Collections::Generic::List<System::String^>^ Arguments
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::String^ LibraryFile
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ SourceFiles
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ IncludeDirs
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ SystemIncludeDirs
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ Defines
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ Undefines
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ LibraryDirs
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
             property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
                 CppSharp::Parser::AST::ASTContext^ get();
@@ -106,6 +154,12 @@ namespace CppSharp
             {
                 int get();
                 void set(int);
+            }
+
+            property System::String^ TargetTriple
+            {
+                System::String^ get();
+                void set(System::String^);
             }
 
             property CppSharp::Parser::AST::CppAbi Abi
@@ -148,18 +202,6 @@ namespace CppSharp
             {
                 CppSharp::Parser::ParserTargetInfo^ get();
                 void set(CppSharp::Parser::ParserTargetInfo^);
-            }
-
-            property System::String^ LibraryFile
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
-            property System::String^ TargetTriple
-            {
-                System::String^ get();
-                void set(System::String^);
             }
 
             property unsigned int ArgumentsCount
@@ -262,6 +304,18 @@ namespace CppSharp
 
             ~ParserDiagnostic();
 
+            property System::String^ FileName
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
+
+            property System::String^ Message
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
+
             property CppSharp::Parser::ParserDiagnosticLevel Level
             {
                 CppSharp::Parser::ParserDiagnosticLevel get();
@@ -278,18 +332,6 @@ namespace CppSharp
             {
                 int get();
                 void set(int);
-            }
-
-            property System::String^ FileName
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
-            property System::String^ Message
-            {
-                System::String^ get();
-                void set(System::String^);
             }
 
             protected:
@@ -319,6 +361,12 @@ namespace CppSharp
             {
                 CppSharp::Parser::ParserResultKind get();
                 void set(CppSharp::Parser::ParserResultKind);
+            }
+
+            property System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ Diagnostics
+            {
+                System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ get();
+                void set(System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^);
             }
 
             property CppSharp::Parser::AST::ASTContext^ ASTContext

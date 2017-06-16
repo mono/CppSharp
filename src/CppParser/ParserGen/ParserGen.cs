@@ -157,7 +157,6 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
-            driver.AddTranslationUnitPass(new IgnoreStdFieldsPass());
         }
 
         public void Preprocess(Driver driver, ASTContext ctx)
@@ -235,42 +234,6 @@ namespace CppSharp
                      CppAbi.Itanium, isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
-        }
-    }
-
-    public class IgnoreStdFieldsPass : TranslationUnitPass
-    {
-        public override bool VisitFieldDecl(Field field)
-        {
-            if (!field.IsGenerated)
-                return false;
-
-            if (!IsStdType(field.QualifiedType)) return false;
-
-            field.ExplicitlyIgnore();
-            return true;
-        }
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            if (function.GenerationKind == GenerationKind.None)
-                return false;
-
-            if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))
-            {
-                function.ExplicitlyIgnore();
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool IsStdType(QualifiedType type)
-        {
-            var typePrinter = new CppTypePrinter();
-            var typeName = type.Visit(typePrinter);
-
-            return typeName.Contains("std::");
         }
     }
 }
