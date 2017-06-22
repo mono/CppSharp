@@ -251,6 +251,7 @@ Declaration::Declaration(DeclarationKind kind)
     , completeDeclaration(0)
     , definitionOrder(0)
     , originalPtr(0)
+    , maxFieldAlignment(0)
 {
 }
 

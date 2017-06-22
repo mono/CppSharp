@@ -2118,6 +2118,16 @@ void CppSharp::Parser::AST::Declaration::Kind::set(CppSharp::Parser::AST::Declar
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->kind = (::CppSharp::CppParser::AST::DeclarationKind)value;
 }
 
+int CppSharp::Parser::AST::Declaration::MaxFieldAlignment::get()
+{
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->maxFieldAlignment;
+}
+
+void CppSharp::Parser::AST::Declaration::MaxFieldAlignment::set(int value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->maxFieldAlignment = value;
+}
+
 CppSharp::Parser::AST::AccessSpecifier CppSharp::Parser::AST::Declaration::Access::get()
 {
     return (CppSharp::Parser::AST::AccessSpecifier)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->access;

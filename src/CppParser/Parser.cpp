@@ -3523,22 +3523,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
 {
     using namespace clang;
 
-    if (D->hasAttrs())
-    {
-        for (auto it = D->attr_begin(); it != D->attr_end(); ++it)
-        {
-            Attr* Attr = (*it);
-
-            if (Attr->getKind() != clang::attr::Annotate)
-                continue;
-
-            AnnotateAttr* Annotation = cast<AnnotateAttr>(Attr);
-            assert(Annotation != nullptr);
-
-            StringRef AnnotationText = Annotation->getAnnotation();
-        }
-    }
-
     Declaration* Decl = nullptr;
 
     auto Kind = D->getKind();
@@ -3827,6 +3811,19 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
 
         break;
     } };
+
+    if (Decl && D->hasAttrs())
+    {
+        for (auto it = D->attr_begin(); it != D->attr_end(); ++it)
+        {
+            Attr* Attr = (*it);
+            if (Attr->getKind() == clang::attr::Kind::MaxFieldAlignment)
+            {
+                auto MFA = cast<clang::MaxFieldAlignmentAttr>(Attr);
+                Decl->maxFieldAlignment = MFA->getAlignment();
+            }
+        }
+    }
 
     return Decl;
 }

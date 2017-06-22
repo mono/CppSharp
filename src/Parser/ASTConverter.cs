@@ -941,6 +941,8 @@ namespace CppSharp
             _decl.IsIncomplete = decl.IsIncomplete;
             _decl.IsDependent = decl.IsDependent;
             _decl.DefinitionOrder = decl.DefinitionOrder;
+            _decl.MaxFieldAlignment = decl.MaxFieldAlignment;
+            
             if (decl.CompleteDeclaration != null)
                 _decl.CompleteDeclaration = Visit(decl.CompleteDeclaration);
             if (decl.Comment != null)
