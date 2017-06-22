@@ -1442,6 +1442,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::DeclarationKind);
                 }
 
+                property int MaxFieldAlignment
+                {
+                    int get();
+                    void set(int);
+                }
+
                 property CppSharp::Parser::AST::AccessSpecifier Access
                 {
                     CppSharp::Parser::AST::AccessSpecifier get();

@@ -446,7 +446,7 @@ enum class DeclarationKind
     NonTypeTemplateParm,
     VarTemplate,
     VarTemplateSpecialization,
-    VarTemplatePartialSpecialization,
+    VarTemplatePartialSpecialization
 };
 
 #define DECLARE_DECL_KIND(klass, kind) \
@@ -471,6 +471,7 @@ public:
     ~Declaration();
 
     DeclarationKind kind;
+    int maxFieldAlignment;
     AccessSpecifier access;
     DeclarationContext* _namespace;
     SourceLocation location;

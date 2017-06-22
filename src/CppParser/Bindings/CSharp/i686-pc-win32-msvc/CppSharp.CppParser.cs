@@ -4211,61 +4211,64 @@ namespace CppSharp
 
             public unsafe partial class Declaration : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 140)]
+                [StructLayout(LayoutKind.Explicit, Size = 144)]
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4463,6 +4466,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->kind = value;
+                    }
+                }
+
+                public int MaxFieldAlignment
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->maxFieldAlignment;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->maxFieldAlignment = value;
                     }
                 }
 
@@ -4703,94 +4719,97 @@ namespace CppSharp
 
             public unsafe partial class DeclarationContext : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 260)]
+                [StructLayout(LayoutKind.Explicit, Size = 264)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5374,64 +5393,67 @@ namespace CppSharp
 
             public unsafe partial class TypedefNameDecl : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 148)]
+                [StructLayout(LayoutKind.Explicit, Size = 152)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5538,64 +5560,67 @@ namespace CppSharp
 
             public unsafe partial class TypedefDecl : global::CppSharp.Parser.AST.TypedefNameDecl, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 148)]
+                [StructLayout(LayoutKind.Explicit, Size = 152)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5684,67 +5709,70 @@ namespace CppSharp
 
             public unsafe partial class TypeAlias : global::CppSharp.Parser.AST.TypedefNameDecl, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 152)]
+                [StructLayout(LayoutKind.Explicit, Size = 156)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal global::System.IntPtr describedAliasTemplate;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5851,64 +5879,67 @@ namespace CppSharp
 
             public unsafe partial class Friend : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 144)]
+                [StructLayout(LayoutKind.Explicit, Size = 148)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr declaration;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6768,76 +6799,79 @@ namespace CppSharp
 
             public unsafe partial class Parameter : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 160)]
+                [StructLayout(LayoutKind.Explicit, Size = 164)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal byte isIndirect;
 
-                    [FieldOffset(149)]
+                    [FieldOffset(153)]
                     internal byte hasDefaultValue;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal uint index;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal global::System.IntPtr defaultArgument;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6996,115 +7030,118 @@ namespace CppSharp
 
             public unsafe partial class Function : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 268)]
+                [StructLayout(LayoutKind.Explicit, Size = 272)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal byte isReturnIndirect;
 
-                    [FieldOffset(149)]
+                    [FieldOffset(153)]
                     internal byte hasThisReturn;
 
-                    [FieldOffset(150)]
+                    [FieldOffset(154)]
                     internal byte isConstExpr;
 
-                    [FieldOffset(151)]
+                    [FieldOffset(155)]
                     internal byte isVariadic;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal byte isInline;
 
-                    [FieldOffset(153)]
+                    [FieldOffset(157)]
                     internal byte isPure;
 
-                    [FieldOffset(154)]
+                    [FieldOffset(158)]
                     internal byte isDeleted;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
 
-                    [FieldOffset(160)]
+                    [FieldOffset(164)]
                     internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.BasicString.__Internal mangled;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.BasicString.__Internal signature;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.BasicString.__Internal body;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
 
-                    [FieldOffset(240)]
+                    [FieldOffset(244)]
                     internal global::Std.Vector.__Internal Parameters;
 
-                    [FieldOffset(252)]
+                    [FieldOffset(256)]
                     internal global::System.IntPtr specializationInfo;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal global::System.IntPtr instantiatedFrom;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7483,148 +7520,151 @@ namespace CppSharp
 
             public unsafe partial class Method : global::CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 296)]
+                [StructLayout(LayoutKind.Explicit, Size = 300)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal byte isReturnIndirect;
 
-                    [FieldOffset(149)]
+                    [FieldOffset(153)]
                     internal byte hasThisReturn;
 
-                    [FieldOffset(150)]
+                    [FieldOffset(154)]
                     internal byte isConstExpr;
 
-                    [FieldOffset(151)]
+                    [FieldOffset(155)]
                     internal byte isVariadic;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal byte isInline;
 
-                    [FieldOffset(153)]
+                    [FieldOffset(157)]
                     internal byte isPure;
 
-                    [FieldOffset(154)]
+                    [FieldOffset(158)]
                     internal byte isDeleted;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
 
-                    [FieldOffset(160)]
+                    [FieldOffset(164)]
                     internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.BasicString.__Internal mangled;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.BasicString.__Internal signature;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.BasicString.__Internal body;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
 
-                    [FieldOffset(240)]
+                    [FieldOffset(244)]
                     internal global::Std.Vector.__Internal Parameters;
 
-                    [FieldOffset(252)]
+                    [FieldOffset(256)]
                     internal global::System.IntPtr specializationInfo;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal global::System.IntPtr instantiatedFrom;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(268)]
+                    [FieldOffset(272)]
                     internal byte isVirtual;
 
-                    [FieldOffset(269)]
+                    [FieldOffset(273)]
                     internal byte isStatic;
 
-                    [FieldOffset(270)]
+                    [FieldOffset(274)]
                     internal byte isConst;
 
-                    [FieldOffset(271)]
+                    [FieldOffset(275)]
                     internal byte isExplicit;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(276)]
                     internal byte isOverride;
 
-                    [FieldOffset(276)]
+                    [FieldOffset(280)]
                     internal global::CppSharp.Parser.AST.CXXMethodKind methodKind;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(284)]
                     internal byte isDefaultConstructor;
 
-                    [FieldOffset(281)]
+                    [FieldOffset(285)]
                     internal byte isCopyConstructor;
 
-                    [FieldOffset(282)]
+                    [FieldOffset(286)]
                     internal byte isMoveConstructor;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal conversionType;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(296)]
                     internal global::CppSharp.Parser.AST.RefQualifierKind refQualifier;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7856,106 +7896,109 @@ namespace CppSharp
 
             public unsafe partial class Enumeration : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 284)]
+                [StructLayout(LayoutKind.Explicit, Size = 288)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal global::CppSharp.Parser.AST.Enumeration.EnumModifiers modifiers;
 
-                    [FieldOffset(264)]
+                    [FieldOffset(268)]
                     internal global::System.IntPtr type;
 
-                    [FieldOffset(268)]
+                    [FieldOffset(272)]
                     internal global::System.IntPtr builtinType;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(276)]
                     internal global::Std.Vector.__Internal Items;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -8016,57 +8059,60 @@ namespace CppSharp
                         internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                         [FieldOffset(4)]
-                        internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                        internal int maxFieldAlignment;
 
                         [FieldOffset(8)]
-                        internal global::System.IntPtr _namespace;
+                        internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                         [FieldOffset(12)]
-                        internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                        internal global::System.IntPtr _namespace;
 
                         [FieldOffset(16)]
-                        internal int lineNumberStart;
+                        internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                         [FieldOffset(20)]
-                        internal int lineNumberEnd;
+                        internal int lineNumberStart;
 
                         [FieldOffset(24)]
+                        internal int lineNumberEnd;
+
+                        [FieldOffset(28)]
                         internal global::Std.BasicString.__Internal name;
 
-                        [FieldOffset(48)]
+                        [FieldOffset(52)]
                         internal global::Std.BasicString.__Internal USR;
 
-                        [FieldOffset(72)]
+                        [FieldOffset(76)]
                         internal global::Std.BasicString.__Internal debugText;
 
-                        [FieldOffset(96)]
+                        [FieldOffset(100)]
                         internal byte isIncomplete;
 
-                        [FieldOffset(97)]
+                        [FieldOffset(101)]
                         internal byte isDependent;
 
-                        [FieldOffset(98)]
+                        [FieldOffset(102)]
                         internal byte isImplicit;
 
-                        [FieldOffset(100)]
+                        [FieldOffset(104)]
                         internal global::System.IntPtr completeDeclaration;
 
-                        [FieldOffset(104)]
+                        [FieldOffset(108)]
                         internal uint definitionOrder;
 
-                        [FieldOffset(108)]
+                        [FieldOffset(112)]
                         internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                        [FieldOffset(120)]
+                        [FieldOffset(124)]
                         internal global::Std.Vector.__Internal Redeclarations;
 
-                        [FieldOffset(132)]
+                        [FieldOffset(136)]
                         internal global::System.IntPtr originalPtr;
 
-                        [FieldOffset(136)]
+                        [FieldOffset(140)]
                         internal global::System.IntPtr comment;
 
-                        [FieldOffset(140)]
+                        [FieldOffset(144)]
                         internal global::Std.BasicString.__Internal expression;
 
                         [FieldOffset(168)]
@@ -8352,67 +8398,70 @@ namespace CppSharp
 
             public unsafe partial class Variable : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 172)]
+                [StructLayout(LayoutKind.Explicit, Size = 176)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.BasicString.__Internal mangled;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -8686,73 +8735,76 @@ namespace CppSharp
 
             public unsafe partial class Field : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 160)]
+                [StructLayout(LayoutKind.Explicit, Size = 164)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal global::System.IntPtr _class;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal byte isBitField;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal uint bitWidth;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -8898,61 +8950,64 @@ namespace CppSharp
 
             public unsafe partial class AccessSpecifierDecl : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 140)]
+                [StructLayout(LayoutKind.Explicit, Size = 144)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -9041,139 +9096,142 @@ namespace CppSharp
 
             public unsafe partial class Class : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 324)]
+                [StructLayout(LayoutKind.Explicit, Size = 328)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal global::Std.Vector.__Internal Bases;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(276)]
                     internal global::Std.Vector.__Internal Fields;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     internal global::Std.Vector.__Internal Methods;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(300)]
                     internal global::Std.Vector.__Internal Specifiers;
 
-                    [FieldOffset(308)]
+                    [FieldOffset(312)]
                     internal byte isPOD;
 
-                    [FieldOffset(309)]
+                    [FieldOffset(313)]
                     internal byte isAbstract;
 
-                    [FieldOffset(310)]
+                    [FieldOffset(314)]
                     internal byte isUnion;
 
-                    [FieldOffset(311)]
+                    [FieldOffset(315)]
                     internal byte isDynamic;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(316)]
                     internal byte isPolymorphic;
 
-                    [FieldOffset(313)]
+                    [FieldOffset(317)]
                     internal byte hasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(314)]
+                    [FieldOffset(318)]
                     internal byte hasNonTrivialCopyConstructor;
 
-                    [FieldOffset(315)]
+                    [FieldOffset(319)]
                     internal byte hasNonTrivialDestructor;
 
-                    [FieldOffset(316)]
+                    [FieldOffset(320)]
                     internal byte isExternCContext;
 
-                    [FieldOffset(317)]
+                    [FieldOffset(321)]
                     internal byte isInjected;
 
-                    [FieldOffset(320)]
+                    [FieldOffset(324)]
                     internal global::System.IntPtr layout;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -9622,67 +9680,70 @@ namespace CppSharp
 
             public unsafe partial class Template : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 156)]
+                [StructLayout(LayoutKind.Explicit, Size = 160)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal global::Std.Vector.__Internal Parameters;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -9861,67 +9922,70 @@ namespace CppSharp
 
             public unsafe partial class TypeAliasTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 156)]
+                [StructLayout(LayoutKind.Explicit, Size = 160)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal global::Std.Vector.__Internal Parameters;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -10010,70 +10074,73 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameter : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 152)]
+                [StructLayout(LayoutKind.Explicit, Size = 156)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal uint depth;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal uint index;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal byte isParameterPack;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -10206,76 +10273,79 @@ namespace CppSharp
 
             public unsafe partial class TemplateTemplateParameter : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 160)]
+                [StructLayout(LayoutKind.Explicit, Size = 164)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal global::Std.Vector.__Internal Parameters;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal byte isParameterPack;
 
-                    [FieldOffset(157)]
+                    [FieldOffset(161)]
                     internal byte isPackExpansion;
 
-                    [FieldOffset(158)]
+                    [FieldOffset(162)]
                     internal byte isExpandedParameterPack;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -10403,73 +10473,76 @@ namespace CppSharp
 
             public unsafe partial class TypeTemplateParameter : global::CppSharp.Parser.AST.TemplateParameter, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 160)]
+                [StructLayout(LayoutKind.Explicit, Size = 164)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal uint depth;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal uint index;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal byte isParameterPack;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal defaultArgument;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -10571,82 +10644,85 @@ namespace CppSharp
 
             public unsafe partial class NonTypeTemplateParameter : global::CppSharp.Parser.AST.TemplateParameter, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 164)]
+                [StructLayout(LayoutKind.Explicit, Size = 168)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal uint depth;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal uint index;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     internal byte isParameterPack;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::System.IntPtr defaultArgument;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal uint position;
 
-                    [FieldOffset(160)]
+                    [FieldOffset(164)]
                     internal byte isPackExpansion;
 
-                    [FieldOffset(161)]
+                    [FieldOffset(165)]
                     internal byte isExpandedParameterPack;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -10792,70 +10868,73 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 168)]
+                [StructLayout(LayoutKind.Explicit, Size = 172)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal global::Std.Vector.__Internal Parameters;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal global::Std.Vector.__Internal Specializations;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -11039,148 +11118,151 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplateSpecialization : global::CppSharp.Parser.AST.Class, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 344)]
+                [StructLayout(LayoutKind.Explicit, Size = 348)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal global::Std.Vector.__Internal Bases;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(276)]
                     internal global::Std.Vector.__Internal Fields;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     internal global::Std.Vector.__Internal Methods;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(300)]
                     internal global::Std.Vector.__Internal Specifiers;
 
-                    [FieldOffset(308)]
+                    [FieldOffset(312)]
                     internal byte isPOD;
 
-                    [FieldOffset(309)]
+                    [FieldOffset(313)]
                     internal byte isAbstract;
 
-                    [FieldOffset(310)]
+                    [FieldOffset(314)]
                     internal byte isUnion;
 
-                    [FieldOffset(311)]
+                    [FieldOffset(315)]
                     internal byte isDynamic;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(316)]
                     internal byte isPolymorphic;
 
-                    [FieldOffset(313)]
+                    [FieldOffset(317)]
                     internal byte hasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(314)]
+                    [FieldOffset(318)]
                     internal byte hasNonTrivialCopyConstructor;
 
-                    [FieldOffset(315)]
+                    [FieldOffset(319)]
                     internal byte hasNonTrivialDestructor;
 
-                    [FieldOffset(316)]
+                    [FieldOffset(320)]
                     internal byte isExternCContext;
 
-                    [FieldOffset(317)]
+                    [FieldOffset(321)]
                     internal byte isInjected;
 
-                    [FieldOffset(320)]
+                    [FieldOffset(324)]
                     internal global::System.IntPtr layout;
 
-                    [FieldOffset(324)]
+                    [FieldOffset(328)]
                     internal global::System.IntPtr templatedDecl;
 
-                    [FieldOffset(328)]
+                    [FieldOffset(332)]
                     internal global::Std.Vector.__Internal Arguments;
 
-                    [FieldOffset(340)]
+                    [FieldOffset(344)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -11349,148 +11431,151 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplatePartialSpecialization : global::CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 344)]
+                [StructLayout(LayoutKind.Explicit, Size = 348)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal global::Std.Vector.__Internal Bases;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(276)]
                     internal global::Std.Vector.__Internal Fields;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     internal global::Std.Vector.__Internal Methods;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(300)]
                     internal global::Std.Vector.__Internal Specifiers;
 
-                    [FieldOffset(308)]
+                    [FieldOffset(312)]
                     internal byte isPOD;
 
-                    [FieldOffset(309)]
+                    [FieldOffset(313)]
                     internal byte isAbstract;
 
-                    [FieldOffset(310)]
+                    [FieldOffset(314)]
                     internal byte isUnion;
 
-                    [FieldOffset(311)]
+                    [FieldOffset(315)]
                     internal byte isDynamic;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(316)]
                     internal byte isPolymorphic;
 
-                    [FieldOffset(313)]
+                    [FieldOffset(317)]
                     internal byte hasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(314)]
+                    [FieldOffset(318)]
                     internal byte hasNonTrivialCopyConstructor;
 
-                    [FieldOffset(315)]
+                    [FieldOffset(319)]
                     internal byte hasNonTrivialDestructor;
 
-                    [FieldOffset(316)]
+                    [FieldOffset(320)]
                     internal byte isExternCContext;
 
-                    [FieldOffset(317)]
+                    [FieldOffset(321)]
                     internal byte isInjected;
 
-                    [FieldOffset(320)]
+                    [FieldOffset(324)]
                     internal global::System.IntPtr layout;
 
-                    [FieldOffset(324)]
+                    [FieldOffset(328)]
                     internal global::System.IntPtr templatedDecl;
 
-                    [FieldOffset(328)]
+                    [FieldOffset(332)]
                     internal global::Std.Vector.__Internal Arguments;
 
-                    [FieldOffset(340)]
+                    [FieldOffset(344)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -11579,70 +11664,73 @@ namespace CppSharp
 
             public unsafe partial class FunctionTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 168)]
+                [StructLayout(LayoutKind.Explicit, Size = 172)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal global::Std.Vector.__Internal Parameters;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal global::Std.Vector.__Internal Specializations;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -12013,70 +12101,73 @@ namespace CppSharp
 
             public unsafe partial class VarTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 168)]
+                [StructLayout(LayoutKind.Explicit, Size = 172)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     internal global::Std.Vector.__Internal Parameters;
 
-                    [FieldOffset(156)]
+                    [FieldOffset(160)]
                     internal global::Std.Vector.__Internal Specializations;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -12260,76 +12351,79 @@ namespace CppSharp
 
             public unsafe partial class VarTemplateSpecialization : global::CppSharp.Parser.AST.Variable, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 192)]
+                [StructLayout(LayoutKind.Explicit, Size = 196)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.BasicString.__Internal mangled;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(172)]
+                    [FieldOffset(176)]
                     internal global::System.IntPtr templatedDecl;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Arguments;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -12498,76 +12592,79 @@ namespace CppSharp
 
             public unsafe partial class VarTemplatePartialSpecialization : global::CppSharp.Parser.AST.VarTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 192)]
+                [StructLayout(LayoutKind.Explicit, Size = 196)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.BasicString.__Internal mangled;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(172)]
+                    [FieldOffset(176)]
                     internal global::System.IntPtr templatedDecl;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Arguments;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -12656,97 +12753,100 @@ namespace CppSharp
 
             public unsafe partial class Namespace : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 264)]
+                [StructLayout(LayoutKind.Explicit, Size = 268)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal byte isInline;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -13305,106 +13405,109 @@ namespace CppSharp
 
             public unsafe partial class TranslationUnit : global::CppSharp.Parser.AST.Namespace, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 304)]
+                [StructLayout(LayoutKind.Explicit, Size = 308)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
+                    internal int maxFieldAlignment;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _namespace;
+                    internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(12)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr _namespace;
 
                     [FieldOffset(16)]
-                    internal int lineNumberStart;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(20)]
-                    internal int lineNumberEnd;
+                    internal int lineNumberStart;
 
                     [FieldOffset(24)]
+                    internal int lineNumberEnd;
+
+                    [FieldOffset(28)]
                     internal global::Std.BasicString.__Internal name;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.BasicString.__Internal USR;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal global::Std.BasicString.__Internal debugText;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     internal byte isIncomplete;
 
-                    [FieldOffset(97)]
+                    [FieldOffset(101)]
                     internal byte isDependent;
 
-                    [FieldOffset(98)]
+                    [FieldOffset(102)]
                     internal byte isImplicit;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(104)]
                     internal global::System.IntPtr completeDeclaration;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(108)]
                     internal uint definitionOrder;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(112)]
                     internal global::Std.Vector.__Internal PreprocessedEntities;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(124)]
                     internal global::Std.Vector.__Internal Redeclarations;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     internal global::System.IntPtr originalPtr;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     internal global::System.IntPtr comment;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     internal global::Std.Vector.__Internal Namespaces;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     internal global::Std.Vector.__Internal Enums;
 
-                    [FieldOffset(164)]
+                    [FieldOffset(168)]
                     internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(180)]
                     internal global::Std.Vector.__Internal Classes;
 
-                    [FieldOffset(188)]
+                    [FieldOffset(192)]
                     internal global::Std.Vector.__Internal Templates;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(204)]
                     internal global::Std.Vector.__Internal Typedefs;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     internal global::Std.Vector.__Internal TypeAliases;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     internal global::Std.Vector.__Internal Variables;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     internal global::Std.Vector.__Internal Friends;
 
-                    [FieldOffset(248)]
+                    [FieldOffset(252)]
                     internal global::Std.Map.__Internal anonymous;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(260)]
                     internal byte isAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     internal byte isInline;
 
-                    [FieldOffset(264)]
+                    [FieldOffset(268)]
                     internal global::Std.BasicString.__Internal fileName;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(292)]
                     internal byte isSystemHeader;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(296)]
                     internal global::Std.Vector.__Internal Macros;
 
                     [SuppressUnmanagedCodeSecurity]

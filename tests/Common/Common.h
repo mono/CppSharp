@@ -7,6 +7,25 @@
 #include <string>
 #include <vector>
 
+#pragma pack(4)
+class TestPacking
+{
+public:
+    int integer;
+    bool boolean;
+    double dble;
+    int i2;
+};
+
+#pragma pack(2)
+struct TestP 
+{
+    char b;
+    bool c;
+    double d;
+};
+
+
 class DLL_API IgnoredType
 {
     class IgnoredNested
