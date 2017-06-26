@@ -3820,7 +3820,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
             if (Attr->getKind() == clang::attr::Kind::MaxFieldAlignment)
             {
                 auto MFA = cast<clang::MaxFieldAlignmentAttr>(Attr);
-                Decl->maxFieldAlignment = MFA->getAlignment();
+                Decl->maxFieldAlignment = MFA->getAlignment() / 8; // bits to bytes.
             }
         }
     }

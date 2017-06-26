@@ -621,6 +621,23 @@ public class CommonTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPacking()
+    {
+        foreach (var testPacking in new TestPacking[] { new TestPacking1(), new TestPacking2(),
+            new TestPacking4(), new TestPacking8() })
+        {
+            testPacking.I1 = 2;
+            testPacking.I2 = 4;
+            testPacking.B = true;
+
+            Assert.That(testPacking.I1, Is.EqualTo(2));
+            Assert.That(testPacking.I2, Is.EqualTo(4));
+            Assert.That(testPacking.B, Is.EqualTo(true));
+            testPacking.Dispose();
+        }
+    }
+
+    [Test]
     public void TestRenamingVariableNamedAfterKeyword()
     {
         Assert.AreEqual(10, Foo.Unsafe);

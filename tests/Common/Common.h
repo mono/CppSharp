@@ -7,24 +7,46 @@
 #include <string>
 #include <vector>
 
-#pragma pack(4)
-class TestPacking
+class DLL_API TestPacking
 {
 public:
-    int integer;
-    bool boolean;
-    double dble;
+    int i1;
     int i2;
+    bool b;
+    TestPacking();
+};
+
+#pragma pack(1)
+class DLL_API TestPacking1: public TestPacking
+{
+public:
+    TestPacking1();
+    ~TestPacking1();
 };
 
 #pragma pack(2)
-struct TestP 
+class DLL_API TestPacking2: public TestPacking
 {
-    char b;
-    bool c;
-    double d;
+public:
+    TestPacking2();
+    ~TestPacking2();
 };
 
+#pragma pack(4)
+class DLL_API TestPacking4: public TestPacking
+{
+public:
+    TestPacking4();
+    ~TestPacking4();
+};
+
+#pragma pack(8)
+class DLL_API TestPacking8: public TestPacking
+{
+public:
+    TestPacking8();
+    ~TestPacking8();
+};
 
 class DLL_API IgnoredType
 {

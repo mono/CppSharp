@@ -1,6 +1,42 @@
 #include "Common.h"
 #include <string.h>
 
+TestPacking::TestPacking()
+{
+}
+
+TestPacking1::TestPacking1()
+{
+}
+
+TestPacking1::~TestPacking1()
+{
+}
+
+TestPacking2::TestPacking2()
+{
+}
+
+TestPacking2::~TestPacking2()
+{
+}
+
+TestPacking4::TestPacking4()
+{
+}
+
+TestPacking4::~TestPacking4()
+{
+}
+
+TestPacking8::TestPacking8()
+{
+}
+
+TestPacking8::~TestPacking8()
+{
+}
+
 Foo::Foo()
 {
     auto p = new int[4];

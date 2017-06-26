@@ -428,7 +428,8 @@ namespace CppSharp.Generators.CSharp
             PushBlock(BlockKind.InternalsClass);
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.Size})]");
-            // no else because the layout is sequential for structures by default
+            else if (@class.MaxFieldAlignment > 0)
+                WriteLine($"[StructLayout(LayoutKind.Sequential, Pack = {@class.MaxFieldAlignment})]");
 
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
