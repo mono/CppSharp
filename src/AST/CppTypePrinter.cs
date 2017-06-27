@@ -153,6 +153,19 @@ namespace CppSharp.AST
                         throw new ArgumentOutOfRangeException();
                     }
                 }
+                case PrimitiveType.Decimal:
+                {
+                    switch (PrintFlavorKind)
+                    {
+                    case CppTypePrintFlavorKind.C:
+                    case CppTypePrintFlavorKind.Cpp:
+                        return "_Decimal32";
+                    case CppTypePrintFlavorKind.ObjC:
+                        return "NSDecimalNumber";;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                    }
+                }
             }
 
             throw new NotSupportedException();

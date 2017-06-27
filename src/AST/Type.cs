@@ -1140,7 +1140,8 @@ namespace CppSharp.AST
         Float128,
         IntPtr,
         UIntPtr,
-        String
+        String,
+        Decimal
     }
 
     /// <summary>
