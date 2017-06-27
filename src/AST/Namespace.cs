@@ -404,6 +404,7 @@ namespace CppSharp.AST
         {
             if (function.IsOperator)
                 return FindOperator(function.OperatorKind);
+
             return Functions.Where(fn => fn.Name == function.Name);
         }
 

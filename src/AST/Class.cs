@@ -280,11 +280,13 @@ namespace CppSharp.AST
             if (function.IsOperator)
                 return Methods.Where(fn => fn.OperatorKind == function.OperatorKind);
 
-            var methods = Methods.Where(m => m.Name == function.Name).ToList();
-            if (methods.Count != 0)
-                return methods;
+            var overloads = Methods.Where(m => m.Name == function.Name)
+                .Union(Declarations.Where(d => d is Function && d.Name == function.Name))
+                .Cast<Function>();
 
-            return base.GetOverloads(function);
+            overloads = overloads.Union(base.GetOverloads(function));
+
+            return overloads;
         }
 
         public Method FindMethod(string name)
