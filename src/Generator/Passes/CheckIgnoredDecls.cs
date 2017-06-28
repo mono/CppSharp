@@ -179,6 +179,12 @@ namespace CppSharp.Passes
             if (!CheckIgnoredBaseOverridenMethod(method))
                 return false;
 
+            if (method.IsMoveConstructor)
+            {
+                method.ExplicitlyIgnore();
+                return true;
+            }
+
             return base.VisitMethodDecl(method);
         }
 
