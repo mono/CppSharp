@@ -63,6 +63,20 @@ namespace CppSharp.Generator.Tests.Passes
         }
 
         [Test]
+        public void TestCleanCommentsPass()
+        {
+            var c = AstContext.FindClass("TestCommentsPass").FirstOrDefault();
+
+            passBuilder.AddPass(new CleanCommentsPass());
+            passBuilder.RunPasses(pass => pass.VisitDeclaration(c));
+
+            var para = (ParagraphComment)c.Comment.FullComment.Blocks[0];
+            var s = para.CommentToString(CommentKind.BCPLSlash);
+
+            Assert.That(s, Is.EqualTo("/// <summary>A simple test.</summary>"));
+        }
+
+        [Test]
         public void TestCaseRenamePass()
         {
             Type.TypePrinterDelegate += TypePrinterDelegate;

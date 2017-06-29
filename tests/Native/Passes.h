@@ -26,6 +26,11 @@ struct TestRename
   int lowerCaseField;
 };
 
+/// <summary>A simple test.</summary>
+class TestCommentsPass
+{
+};
+
 struct TestReadOnlyProperties
 {
     int readOnlyProperty;

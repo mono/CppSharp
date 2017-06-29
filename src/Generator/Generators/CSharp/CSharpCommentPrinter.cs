@@ -93,6 +93,10 @@ namespace CppSharp.Generators.CSharp
             var text = textComment.Text;
             if (trim)
                 text = text.Trim();
+
+            if (Helpers.RegexTag.IsMatch(text))
+                return String.Empty;
+
             return HtmlEncoder.HtmlEncode(
                 text.Length > 1 && text[0] == ' ' && text[1] != ' ' ? text.Substring(1) : text);
         }

@@ -304,6 +304,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
+            TranslationUnitPasses.AddPass(new CleanCommentsPass());
 
             Generator.SetupPasses();
 
