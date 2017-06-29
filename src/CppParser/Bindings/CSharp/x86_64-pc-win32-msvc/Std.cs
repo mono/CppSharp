@@ -469,15 +469,6 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
-
-
-    public unsafe partial class Rebind
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
-        }
-    }
 }
 
 public unsafe partial class SETJMP_FLOAT128
@@ -613,9 +604,17 @@ namespace Std
 
         public unsafe partial struct Bxty
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            [StructLayout(LayoutKind.Explicit, Size = 16)]
             public partial struct __Internal
             {
+                [FieldOffset(0)]
+                internal fixed sbyte _Buf[16];
+
+                [FieldOffset(0)]
+                internal global::System.IntPtr _Ptr;
+
+                [FieldOffset(0)]
+                internal fixed sbyte _Alias[16];
             }
         }
     }

@@ -125,7 +125,7 @@ namespace Std
     public unsafe partial class Rebind
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
+        public unsafe partial struct __Internal
         {
         }
     }
@@ -145,9 +145,17 @@ namespace Std
 
         public unsafe partial class VectorImpl
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public partial struct __Internal
             {
+                [FieldOffset(0)]
+                internal global::System.IntPtr _M_start;
+
+                [FieldOffset(8)]
+                internal global::System.IntPtr _M_finish;
+
+                [FieldOffset(16)]
+                internal global::System.IntPtr _M_end_of_storage;
             }
         }
     }
@@ -221,6 +229,23 @@ namespace Std
         }
 
 
+        public unsafe partial class RbTreeImpl
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 48)]
+            public unsafe partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal global::Std.Less.__Internal _M_key_compare;
+
+                [FieldOffset(8)]
+                internal global::Std.RbTreeNodeBase.__Internal _M_header;
+
+                [FieldOffset(40)]
+                internal ulong _M_node_count;
+            }
+
+        }
+
         public unsafe partial class ReuseOrAllocNode
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -231,15 +256,6 @@ namespace Std
         }
 
         public unsafe partial class AllocNode
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
-            }
-
-        }
-
-        public unsafe partial class RbTreeImpl
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
@@ -694,29 +710,47 @@ namespace Std
     }
 
 
-    public unsafe partial class RepBase
+    public unsafe partial class AllocHider
     {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         public partial struct __Internal
         {
+            [FieldOffset(0)]
+            internal global::System.IntPtr _M_p;
+        }
+
+    }
+
+    public unsafe partial class RepBase
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal ulong _M_length;
+
+            [FieldOffset(8)]
+            internal ulong _M_capacity;
+
+            [FieldOffset(16)]
+            internal int _M_refcount;
         }
 
     }
 
     public unsafe partial class Rep
     {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public partial struct __Internal
         {
-        }
+            [FieldOffset(0)]
+            internal ulong _M_length;
 
-    }
+            [FieldOffset(8)]
+            internal ulong _M_capacity;
 
-    public unsafe partial class AllocHider
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public partial struct __Internal
-        {
+            [FieldOffset(16)]
+            internal int _M_refcount;
         }
     }
 }

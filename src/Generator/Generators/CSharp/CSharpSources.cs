@@ -228,7 +228,8 @@ namespace CppSharp.Generators.CSharp
                     specialization.Visit(this);
             }
 
-            foreach (var nestedClass in classTemplate.Classes)
+            foreach (var nestedClass in classTemplate.Classes.Where(c => !c.IsDependent).Union(
+                specializations[0].Classes.Where(c => !c.IsDependent)))
             {
                 NewLine();
                 GenerateClassSpecifier(nestedClass);

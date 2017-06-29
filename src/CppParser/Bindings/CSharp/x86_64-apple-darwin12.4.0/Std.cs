@@ -215,15 +215,6 @@ namespace Std
             }
         }
 
-
-        public unsafe partial class Rebind
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
-            }
-
-        }
         namespace CompressedPair
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -1473,47 +1464,69 @@ namespace Std
         }
 
 
-        public unsafe partial class Long
+        public unsafe partial class Rep
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public partial struct __Internal
             {
+                [FieldOffset(0)]
+                internal global::Std.__1.BasicString.Rep._.__Internal _;
+            }
+
+        }
+
+        public unsafe partial class Long
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal ulong __cap_;
+
+                [FieldOffset(8)]
+                internal ulong __size_;
+
+                [FieldOffset(16)]
+                internal global::System.IntPtr __data_;
             }
 
         }
 
         public unsafe partial class Short
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public partial struct __Internal
             {
-            }
+                [FieldOffset(0)]
+                internal global::Std.__1.BasicString.Short._.__Internal _;
 
-        }
-
-        public unsafe partial struct Ulx
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
+                [FieldOffset(1)]
+                internal fixed sbyte __data_[23];
             }
 
         }
 
         public unsafe partial class Raw
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public partial struct __Internal
             {
+                [FieldOffset(0)]
+                internal fixed ulong __words[3];
             }
 
         }
 
-        public unsafe partial class Rep
+        public unsafe partial struct Ulx
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public partial struct __Internal
             {
+                [FieldOffset(0)]
+                internal global::Std.__1.BasicString.Long.__Internal __lx;
+
+                [FieldOffset(0)]
+                internal global::Std.__1.BasicString.Short.__Internal __lxx;
             }
         }
     }
