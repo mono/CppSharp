@@ -185,5 +185,21 @@ namespace CppSharp.AST
         {
             return units.Where(u => u.IsGenerated && (u.HasDeclarations || u.IsSystemHeader) && u.IsValid);
         }
+
+        public static List<ClassTemplateSpecialization> GetSpecializationsToGenerate(
+            this Class classTemplate)
+        {
+            if (classTemplate.Fields.Any(
+                f => f.Type.Desugar() is TemplateParameterType))
+                return classTemplate.Specializations;
+
+            var specializations = new List<ClassTemplateSpecialization>();
+            var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
+            if (specialization == null)
+                specializations.Add(classTemplate.Specializations[0]);
+            else
+                specializations.Add(specialization);
+            return specializations;
+        }
     }
 }

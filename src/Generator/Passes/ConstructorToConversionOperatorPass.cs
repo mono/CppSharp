@@ -34,7 +34,15 @@ namespace CppSharp.Passes
                     return false;
             }
 
+            if (method.Parameters[0].Type.IsDependentPointer())
+                return false;
+
             var parameter = method.Parameters[0];
+            Class @class;
+            var paramType = (parameter.Type.GetFinalPointee() ?? parameter.Type).Desugar();
+            if (paramType.TryGetClass(out @class) && @class == method.Namespace)
+                return false;
+
             // TODO: disable implicit operators for C++/CLI because they seem not to be support parameters
             if (!Options.IsCSharpGenerator)
             {

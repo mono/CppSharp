@@ -11,7 +11,7 @@ namespace CppSharp.AST
         {
             var @params = new List<Parameter>();
 
-            var method = function as Method;
+            var method = (function.OriginalFunction ?? function) as Method;
             var isInstanceMethod = method != null && !method.IsStatic;
 
             var pointer = new QualifiedType(new PointerType(new QualifiedType(new BuiltinType(PrimitiveType.Void))));
@@ -36,7 +36,8 @@ namespace CppSharp.AST
             }
 
             var i = 0;
-            foreach (var param in function.Parameters.Where(p => p.Kind != ParameterKind.OperatorParameter))
+            foreach (var param in function.Parameters.Where(
+                p => p.Kind != ParameterKind.OperatorParameter && p.Kind != ParameterKind.Extension))
             {
                 @params.Add(new Parameter
                     {

@@ -563,8 +563,6 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native)
                 return $@"{VisitClassDecl(specialization)}{
                     Helpers.GetSuffixForInternal(specialization)}";
-            if (specialization.IsExplicitlyGenerated)
-                return $"{VisitClassDecl(specialization)}";
             var args = string.Join(", ", specialization.Arguments.Select(VisitTemplateArgument));
             return $"{VisitClassDecl(specialization)}<{args}>";
         }
@@ -660,13 +658,14 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native)
                 return $"{type} {param.Name}";
 
+            var extension = param.Kind == ParameterKind.Extension ? "this " : string.Empty;
             var usage = GetParameterUsage(param.Usage);
 
             if (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments)
-                return $"{usage}{type} {param.Name}";
+                return $"{extension}{usage}{type} {param.Name}";
 
             var defaultValue = expressionPrinter.VisitParameter(param);
-            return $"{usage}{type} {param.Name} = {defaultValue}";
+            return $"{extension}{usage}{type} {param.Name} = {defaultValue}";
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)

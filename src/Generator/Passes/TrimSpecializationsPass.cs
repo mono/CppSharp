@@ -8,6 +8,20 @@ namespace CppSharp.Passes
 {
     public class TrimSpecializationsPass : TranslationUnitPass
     {
+        public TrimSpecializationsPass()
+        {
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitEventParameters = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceEvents = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitNamespaceTypedefs = false;
+            VisitOptions.VisitNamespaceVariables = false;
+            VisitOptions.VisitTemplateArguments = false;
+        }
+
         public override bool VisitASTContext(ASTContext context)
         {
             var result = base.VisitASTContext(context);
@@ -22,13 +36,30 @@ namespace CppSharp.Passes
                 return false;
 
             if (@class.IsDependent)
+            {
                 templates.Add(@class);
+                foreach (var specialization in @class.Specializations.Where(
+                    s => s.IsExplicitlyGenerated))
+                {
+                    specialization.Visit(this);
+                    foreach (var type in from a in specialization.Arguments
+                                         where a.Type.Type != null
+                                         select a.Type.Type.Desugar())
+                        CheckForInternalSpecialization(specialization, type);
+                }
+            }
             else
                 foreach (var @base in @class.Bases.Where(b => b.IsClass))
                 {
                     var specialization = @base.Class as ClassTemplateSpecialization;
                     if (specialization != null)
+                    {
                         specializations.Add(specialization);
+                        foreach (var field in specialization.Fields)
+                            field.Visit(this);
+                        foreach (var method in specialization.Methods)
+                            method.Visit(this);
+                    }
                 }
 
             return true;
@@ -63,12 +94,7 @@ namespace CppSharp.Passes
             if (!base.VisitDeclaration(field))
                 return false;
 
-            ASTUtils.CheckTypeForSpecialization(field.Type, field,
-                s =>
-                {
-                    if (!specializations.Contains(s))
-                        internalSpecializations.Add(s);
-                }, Context.TypeMaps, true);
+            CheckForInternalSpecialization(field, field.Type);
             return true;
         }
 
@@ -122,6 +148,20 @@ namespace CppSharp.Passes
             if (!template.IsExplicitlyGenerated &&
                 template.Specializations.All(s => s.Ignore))
                 template.ExplicitlyIgnore();
+        }
+
+        private void CheckForInternalSpecialization(Declaration container, AST.Type type)
+        {
+            ASTUtils.CheckTypeForSpecialization(type, container,
+                s =>
+                {
+                    if (!specializations.Contains(s))
+                    {
+                        internalSpecializations.Add(s);
+                        foreach (var f in s.Fields)
+                            f.Visit(this);
+                    }
+                }, Context.TypeMaps, true);
         }
 
         private HashSet<ClassTemplateSpecialization> specializations = new HashSet<ClassTemplateSpecialization>();

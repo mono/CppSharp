@@ -121,12 +121,7 @@ namespace CppSharp.Types
                         out typeMap);
             }
 
-            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
-                return true;
-            }
-
+            typePrinter.PrintScopeKind = TypePrintScopeKind.Local;
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
