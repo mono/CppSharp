@@ -1281,3 +1281,20 @@ public:
 private:
     int field;
 };
+
+class DLL_API HasVirtualFunctionsWithStringParams
+{
+public:
+    HasVirtualFunctionsWithStringParams();
+    ~HasVirtualFunctionsWithStringParams();
+    virtual void PureVirtualFunctionWithStringParams(std::string testString) = 0;
+    virtual int VirtualFunctionWithStringParam(std::string testString);
+};
+
+class DLL_API ImplementsVirtualFunctionsWithStringParams : public HasVirtualFunctionsWithStringParams
+{
+public:
+    ImplementsVirtualFunctionsWithStringParams();
+    ~ImplementsVirtualFunctionsWithStringParams();
+    virtual void PureVirtualFunctionWithStringParams(std::string testString);
+};

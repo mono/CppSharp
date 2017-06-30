@@ -1492,6 +1492,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var marshals = new List<string>();
+            var numBlocks = 0;
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var param = method.Parameters[i];
@@ -1515,6 +1516,11 @@ namespace CppSharp.Generators.CSharp
                     Write(marshal.Context.Before);
 
                 marshals.Add(marshal.Context.Return);
+                if (ctx.HasCodeBlock)
+                {
+                    PushIndent();
+                    numBlocks++;
+                }
             }
 
             var hasReturn = !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
@@ -1568,6 +1574,9 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("return {0};", marshal.Context.Return);
                 }
             }
+
+            for (var i = 0; i < numBlocks; ++i)
+                WriteCloseBraceIndent();
         }
 
         private void InvokeProperty(Declaration method, IEnumerable<string> marshals)
