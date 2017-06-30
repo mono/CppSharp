@@ -756,3 +756,28 @@ int HasCopyAndMoveConstructor::getField()
 {
     return field;
 }
+
+HasVirtualFunctionsWithStringParams::HasVirtualFunctionsWithStringParams()
+{
+}
+
+HasVirtualFunctionsWithStringParams::~HasVirtualFunctionsWithStringParams()
+{
+}
+
+ImplementsVirtualFunctionsWithStringParams::ImplementsVirtualFunctionsWithStringParams()
+{
+}
+
+ImplementsVirtualFunctionsWithStringParams::~ImplementsVirtualFunctionsWithStringParams()
+{
+}
+
+void ImplementsVirtualFunctionsWithStringParams::PureVirtualFunctionWithStringParams(std::string testString)
+{
+}
+
+int HasVirtualFunctionsWithStringParams::VirtualFunctionWithStringParam(std::string testString)
+{
+    return 5;
+}

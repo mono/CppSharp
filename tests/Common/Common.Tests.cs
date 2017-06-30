@@ -765,4 +765,14 @@ This is a very long string. This is a very long string. This is a very long stri
         var v = Common.FuncUnion(ut);
         Assert.AreEqual(20, v);
     }
+
+    [Test]
+    public void TestVirtualFuncWithStringParams()
+    {
+        using (var VirtFuncWithStringParam = new ImplementsVirtualFunctionsWithStringParams())
+        {
+            VirtFuncWithStringParam.PureVirtualFunctionWithStringParams("anyRandomString");
+            Assert.That(VirtFuncWithStringParam.VirtualFunctionWithStringParam("anyRandomString").Equals(5));
+        }
+    }
 }
