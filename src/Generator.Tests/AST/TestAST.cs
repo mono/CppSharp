@@ -393,12 +393,12 @@ namespace CppSharp.Generator.Tests.AST
 // <para>Get the string that needs to be written to the debugger stdin file</para>
 // <para>handle when a control character is typed.</para>
 // </summary>
-// <remarks>
+// <summary>
 // <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
 // <para>to have them do what normally would happen when using a real</para>
 // <para>terminal, so this function allows GUI programs to emulate this</para>
 // <para>functionality.</para>
-// </remarks>
+// </summary>
 // <param name=""ch"">The character that was typed along with the control key</param>
 // <returns>
 // <para>The string that should be written into the file handle that is</para>
