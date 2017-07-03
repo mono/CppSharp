@@ -62,7 +62,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         sections[0].Lines.AddRange(sections.Skip(1).SelectMany(s => s.Lines));
                         sections.RemoveRange(1, sections.Count - 1);
-                        sections.Add(new Section(CommentElement.Remarks));
+                        sections.Add(new Section(CommentElement.Summary));
                     }
                     break;
                 case DocumentationCommentKind.HTMLTagComment:
