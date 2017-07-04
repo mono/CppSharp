@@ -53,7 +53,17 @@ template <typename ELFT>
 ELFDumper<ELFT>::ELFDumper(const llvm::object::ELFFile<ELFT> *Obj) {
 
     llvm::SmallVector<const Elf_Phdr *, 4> LoadSegments;
+#ifdef WIN32
+    auto& ProgramHeaders = Obj->program_headers();
+    if (ProgramHeaders.takeError())
+    {
+        llvm::report_fatal_error("Error reading program headers");
+        return;
+    }
+    for (const Elf_Phdr &Phdr : ProgramHeaders.get()) {
+#else
     for (const Elf_Phdr &Phdr : Obj->program_headers()) {
+#endif // WIN32
         if (Phdr.p_type == llvm::ELF::PT_DYNAMIC) {
             DynamicRegion.Addr = Obj->base() + Phdr.p_offset;
             uint64_t Size = Phdr.p_filesz;

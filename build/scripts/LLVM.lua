@@ -317,6 +317,7 @@ function package_llvm(conf, llvm, llvm_build)
 
 	os.copydir(llvm .. "/tools/clang/lib/CodeGen", out .. "/tools/clang/lib/CodeGen", "*.h")
 	os.copydir(llvm .. "/tools/clang/lib/Driver", out .. "/tools/clang/lib/Driver", "*.h")
+	os.copydir(llvm .. "/tools/clang/lib/Driver/ToolChains", out .. "/tools/clang/lib/Driver/ToolChains", "*.h")
 
 	local out_lib_dir = out .. "/build" .. lib_dir
 	if os.is("windows") then

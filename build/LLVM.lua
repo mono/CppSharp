@@ -161,6 +161,11 @@ function SetupLLVMLibs()
       "LLVMCore",
       "LLVMSupport",
     }
+	
+  if os.is("windows") then
+    configuration "*"
+	  links { "LLVMBinaryFormat" }
+  end
     
   configuration(c)
 end
