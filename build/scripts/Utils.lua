@@ -42,7 +42,7 @@ function sudo(cmd)
 end
 
 function is_vagrant()
-  return os.isdir("/home/vagrant")
+  return os.isdir("/vagrant")
 end
 
 git = {}
