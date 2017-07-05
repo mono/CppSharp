@@ -137,6 +137,7 @@ function SetupLLVMLibs()
       "LLVMLinker",
       "LLVMipo",
       "LLVMVectorize",
+	  "LLVMBinaryFormat",
       "LLVMBitWriter",
       "LLVMIRReader",
       "LLVMAsmParser",
@@ -162,10 +163,6 @@ function SetupLLVMLibs()
       "LLVMCore",
       "LLVMSupport",
     }
-	
-  if os.istarget("windows") then
-	  links { "LLVMBinaryFormat" }
-  end
     
   filter(c)
 end

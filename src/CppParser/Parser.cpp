@@ -48,11 +48,7 @@
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
 #include <CodeGen/CGCXXABI.h>
-#ifdef WIN32
 #include <Driver/ToolChains/Linux.h>
-#else
-#include <Driver/ToolChains.h>
-#endif // WIN32
 
 
 #if defined(__APPLE__) || defined(__linux__)
@@ -301,11 +297,7 @@ void Parser::SetupHeader()
     CompilerInvocation* Inv = new CompilerInvocation();
     CompilerInvocation::CreateFromArgs(*Inv, args.data(), args.data() + args.size(),
       c->getDiagnostics());
-#ifdef WIN32
     c->setInvocation(std::shared_ptr<CompilerInvocation>(Inv));
-#else
-    c->setInvocation(Inv);
-#endif // WIN32
 
 
     auto& TO = Inv->TargetOpts;
@@ -3957,11 +3949,7 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, P
     {
         auto FileEntry = c->getPreprocessor().getHeaderSearchInfo().LookupFile(SourceFile,
             clang::SourceLocation(), /*isAngled*/true,
-#ifdef WIN32
             nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr, nullptr);
-#else
-            nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr);
-#endif // WIN32
 
         if (!FileEntry)
         {
