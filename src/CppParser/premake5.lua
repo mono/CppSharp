@@ -15,17 +15,17 @@ project "CppSharp.CppParser"
   SetupNativeProject()
   rtti "Off"
 
-  configuration "vs*"
+  filter "action:vs*"
     buildoptions { clang_msvc_flags }
 
   if os.getenv("APPVEYOR") then
     linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
   end
 
-  configuration "linux"
+  filter "system:linux"
     defines { "_GLIBCXX_USE_CXX11_ABI=0" }
 
-  configuration "*"
+  filter {}
   
   files
   {
@@ -33,12 +33,11 @@ project "CppSharp.CppParser"
     "*.cpp",
     "*.lua"
   }
-  
+
   SearchLLVM()
   SetupLLVMIncludes()
   SetupLLVMLibs()
   CopyClangIncludes()
   
-  configuration "*"
-
+  filter {}
 end

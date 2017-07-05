@@ -48,7 +48,7 @@ end
 git = {}
 
 -- Remove once https://github.com/premake/premake-core/pull/307 is merged.
-local sep = os.is("windows") and "\\" or "/"
+local sep = os.ishost("windows") and "\\" or "/"
 
 function git.clone(dir, url, target)
   local cmd = "git clone " .. url .. " " .. path.translate(dir, sep) 

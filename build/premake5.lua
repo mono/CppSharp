@@ -20,10 +20,10 @@ solution "CppSharp"
   targetdir (libdir)
   debugdir (bindir)
 
-  configuration "windows"
+  filter "system:windows"
     defines { "WINDOWS" }
 	
-  configuration {}
+  filter {}
 
   group "Libraries"
     include (srcdir .. "/Core")

@@ -67,7 +67,7 @@ function get_toolset_configuration_name(arch)
     arch = target_architecture()
   end
 
-  if os.is("windows") then
+  if os.istarget("windows") then
     local vsver = _ACTION
 
     if not string.starts(vsver, "vs") then
@@ -88,7 +88,7 @@ function get_llvm_package_name(rev, conf, arch)
   end
   rev = string.sub(rev, 0, 6)
 
-  local components = {"llvm", rev, os.get()}
+  local components = {"llvm", rev, os.target()}
 
   local toolset = get_toolset_configuration_name(arch)
   table.insert(components, toolset)
@@ -106,7 +106,7 @@ function get_llvm_configuration_name(debug)
 	if debug == true then
 		return "Debug"
 	end
-	return os.is("windows") and "RelWithDebInfo" or "Release"
+	return os.istarget("windows") and "RelWithDebInfo" or "Release"
 end
 
 function get_7z_path()
@@ -127,7 +127,7 @@ function extract_tar_xz(archive, dest_dir)
 	return execute_or_die(string.format("tar xJf %s -C %s", archive, dest_dir), true)
 end
 
-local use_7zip = os.is("windows")
+local use_7zip = os.ishost("windows")
 local archive_ext = use_7zip and ".7z" or ".tar.xz"
 
 function download_llvm()

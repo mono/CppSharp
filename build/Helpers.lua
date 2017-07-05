@@ -22,7 +22,7 @@ function target_architecture()
   if explicit_target_architecture ~= nil then
     return explicit_target_architecture
   end
-  if os.is("windows") then return "x86" end
+  if os.istarget("windows") then return "x86" end
   return is_64_bits_mono_runtime() and "x64" or "x86"
 end
 
@@ -64,20 +64,20 @@ end
 function SetupNativeProject()
   location ("%{wks.location}/projects")
 
-  local c = configuration "Debug"
+  filter { "configurations:Debug" }
     defines { "DEBUG" }
     
-  configuration "Release"
+  filter { "configurations:Release" }
     defines { "NDEBUG" }
     optimize "On"
     
   -- Compiler-specific options
   
-  configuration "vs*"
+  filter { "action:vs*" }
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
 
-  configuration { "gmake" }
+  filter { "action:gmake" }
     buildoptions { gcc_buildflags }
 
   filter { "system:macosx", "language:C++" }
@@ -89,41 +89,37 @@ function SetupNativeProject()
   
   -- OS-specific options
   
-  configuration "Windows"
+  filter { "system:windows" }
     defines { "WIN32", "_WINDOWS" }
   
-  configuration(c)
+  filter {}
 end
 
 function SetupManagedProject()
   language "C#"
   location ("%{wks.location}/projects")
 
-  if not os.is("macosx") then
-    local c = configuration { "vs*" }
+  if not os.istarget("macosx") then
+    filter { "action:vs*" }
       location "."
-    configuration(c)
+    filter {}
   end
 
   if action == "vs2017" then
+      filter { "action:vs2017" }
+        framework "4.6"
+  elseif action == "vs2015" then
+      filter { "action:vs2015" }
+        framework "4.6"
+  end
 
-        configuration "vs2017"
-			framework "4.6"
-    
-    elseif action == "vs2015" then
-        
-        configuration "vs2015"
-			framework "4.6"
-    
-    end
-
-  configuration "vs2013"
+  filter { "action:vs2013" }
     framework "4.5"
 
-  configuration "vs2012"
+  filter { "action:vs2012" }
     framework "4.5"
 
-  configuration {}
+  filter {}
 end
 
 function IncludeDir(dir)
@@ -149,7 +145,6 @@ function IncludeDir(dir)
 end
 
 function StaticLinksOpt(libnames)
-  local cc = configuration()
   local path = table.concat(cc.configset.libdirs, ";")
 
   local formats

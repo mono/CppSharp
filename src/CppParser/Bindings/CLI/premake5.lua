@@ -10,10 +10,10 @@ project "CppSharp.Parser.CLI"
   dependson { "CppSharp.CppParser" }
   flags { common_flags, "Managed" }
 
-  configuration "vs*"
+  filter "action:vs*"
     buildoptions { clang_msvc_flags }  
 
-  configuration "*"
+  filter {}
   
   files
   {
@@ -28,7 +28,7 @@ project "CppSharp.Parser.CLI"
     "../../../../src/CppParser/"
   }
   
-  configuration "*"
+  filter {}
 
   links { "CppSharp.CppParser" }
 

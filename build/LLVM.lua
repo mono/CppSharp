@@ -29,10 +29,10 @@ function get_llvm_build_dir()
 end
 
 function SetupLLVMIncludes()
-  local c = configuration()
+  local c = filter()
 
   if LLVMDirPerConfiguration then
-    configuration { "Debug" }
+    filter { "configurations:Debug" }
       includedirs
       {
         path.join(LLVMRootDirDebug, "include"),
@@ -42,7 +42,7 @@ function SetupLLVMIncludes()
         path.join(LLVMRootDirDebug, "build/tools/clang/include"),
       }
 
-    configuration { "Release" }
+    filter { "configurations:Release" }
       includedirs
       {
         path.join(LLVMRootDirRelease, "include"),
@@ -63,7 +63,7 @@ function SetupLLVMIncludes()
     }
   end
 
-  configuration(c)
+  filter(c)
 end
 
 function CopyClangIncludes()
@@ -88,37 +88,38 @@ function CopyClangIncludes()
 end
 
 function SetupLLVMLibs()
-  local c = configuration()
+  local c = filter()
 
-  configuration "not vs*"
+  filter { "action:not vs*" }
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
 
-  configuration "macosx"
+  filter { "system:macosx" }
     links { "c++", "curses", "pthread", "z" }
     
-  configuration "vs*"
+  filter { "action:vs*" }
     links { "version" }
 
-  configuration {}
+  filter {}
 
   if LLVMDirPerConfiguration then
-    configuration { "Debug" }
+    filter { "configurations:Debug" }
       libdirs { path.join(LLVMRootDirDebug, "build/lib") }
 
-    configuration { "Release" }
+    filter { "configurations:Release" }
       libdirs { path.join(LLVMRootDirRelease, "build/lib") }
   else
     local LLVMBuildDir = get_llvm_build_dir()
     libdirs { path.join(LLVMBuildDir, "lib") }
 
-    configuration { "Debug", "vs*" }
+    filter { "configurations:Debug", "action:vs*" }
       libdirs { path.join(LLVMBuildDir, "Debug/lib") }
 
-    configuration { "Release", "vs*" }
+    filter { "configurations:Release", "actoin:vs*" }
       libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
   end
 
-  configuration "*"
+  filter {}
+
     links
     {
       "clangFrontend",
@@ -162,10 +163,9 @@ function SetupLLVMLibs()
       "LLVMSupport",
     }
 	
-  if os.is("windows") then
-    configuration "*"
+  if os.istarget("windows") then
 	  links { "LLVMBinaryFormat" }
   end
     
-  configuration(c)
+  filter(c)
 end

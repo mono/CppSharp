@@ -13,9 +13,9 @@ project "CppSharp.Parser.CSharp"
 
   links { "CppSharp.Runtime" }
 
-  if os.is("windows") then
+  if os.istarget("windows") then
       files { "i686-pc-win32-msvc/**.cs" }
-  elseif os.is("macosx") then
+  elseif os.istarget("macosx") then
       local file = io.popen("lipo -info `which mono`")
       local output = file:read('*all')
       if string.find(output, "x86_64") or _OPTIONS["arch"] == "x64" then  
@@ -24,13 +24,13 @@ project "CppSharp.Parser.CSharp"
         files { "i686-apple-darwin12.4.0/**.cs" }
       end
 
-  elseif os.is("linux") then
+  elseif os.istarget("linux") then
       files { "x86_64-linux-gnu/**.cs" }
   else
       print "Unknown architecture"
   end
 
-  configuration ""
+  filter {}
 
 project "Std-symbols"
 
@@ -39,14 +39,14 @@ project "Std-symbols"
   SetupNativeProject()
   rtti "Off"
 
-  configuration "vs*"
+  filter { "action:vs*" }
     buildoptions { clang_msvc_flags }
 
-  configuration "*"
+  filter {}
 
-  if os.is("windows") then
+  if os.istarget("windows") then
       files { "i686-pc-win32-msvc/Std-symbols.cpp" }
-  elseif os.is("macosx") then
+  elseif os.istarget("macosx") then
       local file = io.popen("lipo -info `which mono`")
       local output = file:read('*all')
       if string.find(output, "x86_64") then
@@ -55,13 +55,13 @@ project "Std-symbols"
         files { "i686-apple-darwin12.4.0/Std-symbols.cpp" }
       end
 
-  elseif os.is("linux") then
+  elseif os.istarget("linux") then
       files { "x86_64-linux-gnu/Std-symbols.cpp" }
   else
       print "Unknown architecture"
   end
 
-  configuration "*"
+  filter {}
 
 function SetupParser()
   links

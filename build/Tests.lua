@@ -83,7 +83,7 @@ end
 
 function SetupTestGeneratorBuildEvent(name)
   local monoExe = get_mono_exe()
-  local runtimeExe = os.is("windows") and "" or monoExe .. " --debug "
+  local runtimeExe = os.ishost("windows") and "" or monoExe .. " --debug "
   if string.starts(action, "vs") then
     local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
     prebuildcommands { runtimeExe .. exePath }
@@ -163,7 +163,7 @@ function SetupTestProjectsCSharp(name, depends)
 end
 
 function SetupTestProjectsCLI(name, extraFiles)
-  if not os.is("windows") then
+  if not os.ishost("windows") then
     return
   end
 
