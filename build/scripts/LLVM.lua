@@ -233,7 +233,6 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DCLANG_TOOL_C_ARCMT_TEST_BUILD=false'
  		.. ' -DCLANG_TOOL_C_INDEX_TEST_BUILD=false'
  		.. ' -DCLANG_TOOL_DIAGTOOL_BUILD=false'
- 		.. ' -DCLANG_TOOL_DRIVER_BUILD=false'
  		.. ' -DCLANG_TOOL_LIBCLANG_BUILD=false'
  		.. ' -DCLANG_TOOL_SCAN_BUILD_BUILD=false'
  		.. ' -DCLANG_TOOL_SCAN_VIEW_BUILD=false'
