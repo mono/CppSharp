@@ -32,17 +32,21 @@ function download_cmake()
 	elseif os.is("macosx") then
 		system = "Darwin-x86_64.dmg"
 	elseif os.is("linux") then
-		system = "Linux-x86_64.tar.gz"
+		system = "Linux-x86_64.sh"
 	else
 		error("Error downloading CMake for unknown system")
 	end
 
-	local url = "https://cmake.org/files/v3.6/cmake-3.6.1-" .. system
-	local file = "cmake" .. path.getextension(system)
+	local base = "cmake-3.8.2-" 
+	local file = base .. system
+
+	local url = "https://cmake.org/files/v3.8/" .. file
 
 	if not os.isfile(file) then
 		download(url, file)
 	end
+
+	return file
 end
 
 function download_nuget()
@@ -74,7 +78,10 @@ function provision_linux()
 	-- LLVM/Clang build tools
 	if compile_llvm then
 		sudo("apt-get install -y ninja-build")
-		download_cmake()
+		local file = download_cmake()
+		sudo("mkdir -p /opt/cmake")
+		sudo("bash " .. file .. " --prefix=/opt/cmake --skip-license")
+		sudo("ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake")
 	end
 end
 
