@@ -19,14 +19,13 @@ end
 function execute(cmd, quiet)
   print(cmd)
   if not quiet then
-    return os.execute(cmd)
+    local status, exit, err = os.execute(cmd)
+    return err
   else
     local file = assert(io.popen(cmd .. " 2>&1", "r"))
     local output = file:read('*all')
-    file:close()
-    -- FIXME: Lua 5.2 returns the process exit code from close()
-    -- Update this once Premake upgrades from Lua 5.1
-    return 0
+    local status, exit, err = file:close()
+    return err
   end
 end
 
