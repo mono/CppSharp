@@ -137,7 +137,6 @@ function SetupLLVMLibs()
       "LLVMLinker",
       "LLVMipo",
       "LLVMVectorize",
-	  "LLVMBinaryFormat",
       "LLVMBitWriter",
       "LLVMIRReader",
       "LLVMAsmParser",
@@ -162,6 +161,7 @@ function SetupLLVMLibs()
       "LLVMCoverage",
       "LLVMCore",
       "LLVMSupport",
+      "LLVMBinaryFormat",
     }
     
   filter(c)
