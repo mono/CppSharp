@@ -163,7 +163,7 @@ end
 function cmake(gen, conf, builddir, options)
 	local cwd = os.getcwd()
 	os.chdir(builddir)
-	local cmake = os.is("macosx") and "/Applications/CMake.app/Contents/bin/cmake"
+	local cmake = os.ishost("macosx") and "/Applications/CMake.app/Contents/bin/cmake"
 		or "cmake"
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
  		.. ' -DLLVM_BUILD_TOOLS=false '
@@ -268,12 +268,12 @@ function build_llvm(llvm_build)
 
 	local conf = get_llvm_configuration_name()
 	local use_msbuild = false
-	if os.is("windows") and use_msbuild then
+	if os.ishost("windows") and use_msbuild then
 		cmake(get_cmake_generator(), conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
-		local options = os.is("macosx") and
+		local options = os.ishost("macosx") and
 			"-DLLVM_ENABLE_LIBCXX=true" or ""
 		local is32bits = target_architecture() == "x86"
 		if is32bits then
@@ -300,11 +300,11 @@ function package_llvm(conf, llvm, llvm_build)
 	os.copydir(llvm_build .. "/include", out .. "/build/include")
 
 	local llvm_msbuild_libdir = "/" .. conf .. "/lib"
-	local lib_dir =  os.is("windows") and os.isdir(llvm_msbuild_libdir)
+	local lib_dir =  os.ishost("windows") and os.isdir(llvm_msbuild_libdir)
 		and llvm_msbuild_libdir or "/lib"
 	local llvm_build_libdir = llvm_build .. lib_dir
 
-	if os.is("windows") and os.isdir(llvm_build_libdir) then
+	if os.ishost("windows") and os.isdir(llvm_build_libdir) then
 		os.copydir(llvm_build_libdir, out .. "/build" .. lib_dir, "*.lib")
 	else
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
@@ -319,7 +319,7 @@ function package_llvm(conf, llvm, llvm_build)
 	os.copydir(llvm .. "/tools/clang/lib/Driver/ToolChains", out .. "/tools/clang/lib/Driver/ToolChains", "*.h")
 
 	local out_lib_dir = out .. "/build" .. lib_dir
-	if os.is("windows") then
+	if os.ishost("windows") then
 		os.rmfiles(out_lib_dir, "LLVM*ObjCARCOpts*.lib")
 		os.rmfiles(out_lib_dir, "clang*ARC*.lib")
 		os.rmfiles(out_lib_dir, "clang*Matchers*.lib")
