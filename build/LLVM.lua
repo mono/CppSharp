@@ -162,6 +162,7 @@ function SetupLLVMLibs()
       "LLVMCore",
       "LLVMSupport",
       "LLVMBinaryFormat",
+      "LLVMDemangle"
     }
     
   filter(c)
