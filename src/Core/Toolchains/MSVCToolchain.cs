@@ -621,6 +621,7 @@ namespace CppSharp
 
                 int fetched;
                 var instances = new ISetupInstance[1];
+                var regexWinSDK10Version = new Regex(@"Windows10SDK\.(\d+)\.");
                 do
                 {
                     e.Next(1, instances, out fetched);
@@ -653,7 +654,20 @@ namespace CppSharp
                         if (win10sdks.Count() > 0)
                         {
                             var sdk = win10sdks.Last();
-                            var path = @"C:\Program Files (x86)\Windows Kits\10\include\" + "10.0." + sdk.GetId().Substring(46) + ".0"; //Microsoft.VisualStudio.Component.Windows10SDK. = 46 chars      
+                            var matchVersion = regexWinSDK10Version.Match(sdk.GetId());
+                            string path;
+                            if (matchVersion.Success)
+                            {
+                                Environment.SpecialFolder specialFolder = Environment.Is64BitOperatingSystem ?
+                                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles;
+                                var programFiles = Environment.GetFolderPath(specialFolder);
+                                path = Path.Combine(programFiles, "Windows Kits", "10", "include",
+                                    $"10.0.{matchVersion.Groups[1].Value}.0");
+                            }
+                            else
+                            {
+                                path = "<invalid>";
+                            }
                             var shared = Path.Combine(path, "shared");
                             var um = Path.Combine(path, "um");
                             var winrt = Path.Combine(path, "winrt");
