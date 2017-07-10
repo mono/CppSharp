@@ -494,10 +494,7 @@ namespace CppSharp.Generators.CSharp
         {
             switch (primitive)
             {
-                case PrimitiveType.Bool:
-                    // returned structs must be blittable and bool isn't
-                    return MarshalKind == MarshalKind.NativeField ?
-                        "byte" : "bool";
+                case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.Char32:
