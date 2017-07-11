@@ -489,6 +489,37 @@ std::string& HasStdString::getStdString()
     return s;
 }
 
+TestProperties::TestProperties() : Field(0)
+{
+}
+
+int TestProperties::getFieldValue()
+{
+    return Field;
+}
+
+void TestProperties::setFieldValue(int Value)
+{
+    Field = Value;
+}
+
+bool TestProperties::isVirtual()
+{
+    return false;
+}
+
+void TestProperties::setVirtual(bool value)
+{
+}
+
+HasOverridenSetter::HasOverridenSetter()
+{
+}
+
+void HasOverridenSetter::setVirtual(bool value)
+{
+}
+
 TypeMappedIndex::TypeMappedIndex()
 {
 }

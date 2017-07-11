@@ -85,7 +85,8 @@ namespace CppSharp.Passes
                     if (!type.IsInterface && baseProperty != null && baseProperty.IsVirtual && setter.IsVirtual)
                     {
                         bool isReadOnly = baseProperty.SetMethod == null;
-                        GenerateProperty(setter.Namespace, baseProperty.GetMethod,
+                        var name = GetReadWritePropertyName(baseProperty.GetMethod, afterSet);
+                        GenerateProperty(name, setter.Namespace, baseProperty.GetMethod,
                             readOnly || isReadOnly ? null : setter);
                     }
                 next:

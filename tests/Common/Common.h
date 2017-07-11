@@ -578,13 +578,19 @@ public:
 
     int getFieldValue();
     void setFieldValue(int Value);
+
+    bool isVirtual();
+    virtual void setVirtual(bool value);
 private:
     int FieldValue;
 };
 
-TestProperties::TestProperties() : Field(0) {}
-int TestProperties::getFieldValue() { return Field; }
-void TestProperties::setFieldValue(int Value) { Field = Value; }
+class DLL_API HasOverridenSetter : public TestProperties
+{
+public:
+    HasOverridenSetter();
+    void setVirtual(bool value);
+};
 
 class DLL_API TypeMappedIndex
 {

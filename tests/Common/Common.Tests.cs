@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using CommonTest;
 using CppSharp.Utils;
 using NUnit.Framework;
@@ -774,5 +775,14 @@ This is a very long string. This is a very long string. This is a very long stri
             VirtFuncWithStringParam.PureVirtualFunctionWithStringParams("anyRandomString");
             Assert.That(VirtFuncWithStringParam.VirtualFunctionWithStringParam("anyRandomString").Equals(5));
         }
+    }
+
+    [Test]
+    public void TestOverriddenSetter()
+    {
+        var propertyInfo = typeof(HasOverridenSetter).GetProperty("Virtual",
+            BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        Assert.That(propertyInfo, Is.Not.Null);
+        Assert.That(propertyInfo.CanWrite);
     }
 }
