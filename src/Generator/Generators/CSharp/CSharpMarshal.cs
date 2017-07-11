@@ -216,6 +216,14 @@ namespace CppSharp.Generators.CSharp
                     goto default;
                 case PrimitiveType.Char16:
                     return false;
+                case PrimitiveType.Bool:
+                    if (Context.MarshalKind == MarshalKind.NativeField)
+                    {
+                        // returned structs must be blittable and bool isn't
+                        Context.Return.Write("{0} != 0", Context.ReturnVarName);
+                        return true;
+                    }
+                    goto default;
                 default:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
@@ -641,6 +649,14 @@ namespace CppSharp.Generators.CSharp
                     goto default;
                 case PrimitiveType.Char16:
                     return false;
+                case PrimitiveType.Bool:
+                    if (Context.MarshalKind == MarshalKind.NativeField)
+                    {
+                        // returned structs must be blittable and bool isn't
+                        Context.Return.Write("(byte) ({0} ? 1 : 0)", Context.Parameter.Name);
+                        return true;
+                    }
+                    goto default;
                 default:
                     Context.Return.Write(Context.Parameter.Name);
                     return true;

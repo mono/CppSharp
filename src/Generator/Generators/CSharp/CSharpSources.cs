@@ -612,13 +612,19 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassInternalsField(LayoutField field, Class @class)
         {
+            Declaration decl;
+            field.QualifiedType.Type.TryGetDeclaration(out decl);
+
+            var arrayType = field.QualifiedType.Type.Desugar() as ArrayType;
+            var coreType = field.QualifiedType.Type.Desugar();
+            if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant)
+                coreType = arrayType.Type.Desugar();
+
             TypePrinterResult retType = TypePrinter.VisitFieldDecl(
                 new Field { Name = field.Name, QualifiedType = field.QualifiedType });
 
             PushBlock(BlockKind.Field);
 
-            if (field.QualifiedType.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool))
-                WriteLine("[MarshalAs(UnmanagedType.I1)]");
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[FieldOffset({field.Offset})]");
             Write($"internal {retType}{retType.NameSuffix}");
