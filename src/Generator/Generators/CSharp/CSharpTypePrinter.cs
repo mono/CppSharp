@@ -642,7 +642,6 @@ namespace CppSharp.Generators.CSharp
             @params = @params.Where(
                 p => ContextKind == TypePrinterContextKind.Native ||
                     (p.Kind != ParameterKind.IndirectReturnType && !p.Ignore));
-
             return base.VisitParameters(@params, hasNames);
         }
 
@@ -666,9 +665,14 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
         {
+            var paramsCopy = function.Parameters.Select(p => new Parameter(p)).ToArray();
+            foreach (var p in paramsCopy.Where(paramCopy => paramCopy.Type.IsPrimitiveType() && ((BuiltinType)paramCopy.Type).Type == PrimitiveType.Bool))
+            {
+              p.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Char));
+            }
             return string.Format("delegate {0} {{0}}({1})",
                 function.ReturnType.Visit(this),
-                VisitParameters(function.Parameters, hasNames: true));
+                VisitParameters(paramsCopy, hasNames: true));
         }
 
         public override string ToString(Type type)

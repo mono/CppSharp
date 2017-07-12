@@ -540,7 +540,16 @@ namespace CppSharp.Generators.CSharp
 
             retType = function.ReturnType.CSharpType(TypePrinter);
 
-            var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
+            var paramsCopy = function
+              .GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, false)
+              .Select(p => new Parameter(p)).ToArray();
+
+            foreach (var p in paramsCopy.Where(paramCopy => paramCopy.Type.IsPrimitiveType() && (paramCopy.Type as BuiltinType)?.Type == PrimitiveType.Bool))
+            {
+                p.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Char));
+            }
+
+            var @params = paramsCopy.Select(p =>
                 string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
 
             TypePrinter.PopContext();
@@ -1508,9 +1517,10 @@ namespace CppSharp.Generators.CSharp
                     ReturnVarName = param.Name,
                     ParameterIndex = i
                 };
-
+                ctx.PushMarshalKind(param.Type.IsPrimitiveType() ? MarshalKind.NativeField : MarshalKind.Unknown);
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { MarshalsParameter = true };
                 param.Visit(marshal);
+                ctx.PopMarshalKind();
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
@@ -2622,7 +2632,8 @@ namespace CppSharp.Generators.CSharp
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
                     name.Append(param.Context.ArgumentPrefix);
 
-                name.Append(param.Name);
+                var paramString = param.Param.Type.IsPrimitiveType() && (param.Param.Type as BuiltinType)?.Type == PrimitiveType.Bool? $"{param.Name} ? (sbyte)1: (sbyte)0" : param.Name;
+                name.Append(paramString);
                 names.Add(name.ToString());
             }
 
