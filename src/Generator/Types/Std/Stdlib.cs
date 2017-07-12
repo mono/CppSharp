@@ -94,15 +94,13 @@ namespace CppSharp.Types.Std
         {
             var type = ctx.ReturnType.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
-            Declaration c_str = basicString.Methods.FirstOrDefault(m => m.OriginalName == "c_str");
-            if (!c_str.IsGenerated)
-                c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
+            var c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             if (type.IsAddress() || ctx.Declaration is Field)
             {
-                ctx.Return.Write("{0}.{1}({2}).{3}{4}",
+                ctx.Return.Write("{0}.{1}({2}).{3}",
                     basicString.Visit(typePrinter), Helpers.CreateInstanceIdentifier,
-                    ctx.ReturnVarName, c_str.Name, c_str is Method ? "()" : string.Empty);
+                    ctx.ReturnVarName, c_str.Name);
             }
             else
             {
@@ -111,8 +109,7 @@ namespace CppSharp.Types.Std
                     varBasicString, basicString.Visit(typePrinter),
                     Helpers.CreateInstanceIdentifier, ctx.ReturnVarName);
                 ctx.Before.WriteStartBraceIndent();
-                ctx.Return.Write("{0}.{1}{2}", varBasicString, c_str.Name,
-                    c_str is Method ? "()" : string.Empty);
+                ctx.Return.Write($"{varBasicString}.{c_str.Name}");
                 ctx.HasCodeBlock = true;
             }
         }
