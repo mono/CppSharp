@@ -2691,7 +2691,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->identifier).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->identifier).CStr;
                     }
 
                     set
@@ -3670,7 +3670,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name).CStr;
                     }
 
                     set
@@ -4556,7 +4556,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->name).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->name).CStr;
                     }
 
                     set
@@ -4571,7 +4571,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->USR).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->USR).CStr;
                     }
 
                     set
@@ -4586,7 +4586,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->debugText).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->debugText).CStr;
                     }
 
                     set
@@ -6191,7 +6191,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->@string).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->@string).CStr;
                     }
 
                     set
@@ -6465,7 +6465,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr).CStr;
                     }
 
                     set
@@ -7405,7 +7405,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->mangled).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->mangled).CStr;
                     }
 
                     set
@@ -7420,7 +7420,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->signature).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->signature).CStr;
                     }
 
                     set
@@ -7435,7 +7435,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->body).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->body).CStr;
                     }
 
                     set
@@ -8205,7 +8205,7 @@ namespace CppSharp
                     {
                         get
                         {
-                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->expression).CStr();
+                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->expression).CStr;
                         }
 
                         set
@@ -8551,7 +8551,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->mangled).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->mangled).CStr;
                     }
 
                     set
@@ -13195,7 +13195,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->name).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->name).CStr;
                     }
 
                     set
@@ -13210,7 +13210,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->expression).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->expression).CStr;
                     }
 
                     set
@@ -13358,7 +13358,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->name).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->name).CStr;
                     }
 
                     set
@@ -13373,7 +13373,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->text).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->text).CStr;
                     }
 
                     set
@@ -13641,7 +13641,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->fileName).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->fileName).CStr;
                     }
 
                     set
@@ -13860,7 +13860,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName).CStr;
                     }
 
                     set
@@ -14857,7 +14857,7 @@ namespace CppSharp
                     {
                         get
                         {
-                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text).CStr();
+                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text).CStr;
                         }
 
                         set
@@ -15402,7 +15402,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text).CStr;
                     }
 
                     set
@@ -15678,7 +15678,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text).CStr;
                     }
 
                     set
@@ -15858,7 +15858,7 @@ namespace CppSharp
                     {
                         get
                         {
-                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text).CStr();
+                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text).CStr;
                         }
 
                         set
@@ -16246,7 +16246,7 @@ namespace CppSharp
                     {
                         get
                         {
-                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name).CStr();
+                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name).CStr;
                         }
 
                         set
@@ -16261,7 +16261,7 @@ namespace CppSharp
                     {
                         get
                         {
-                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value).CStr();
+                            return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value).CStr;
                         }
 
                         set
@@ -16364,7 +16364,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName).CStr;
                     }
 
                     set
@@ -16486,7 +16486,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName).CStr;
                     }
 
                     set
@@ -16599,7 +16599,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text).CStr;
                     }
 
                     set
@@ -16737,7 +16737,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text).CStr;
                     }
 
                     set
@@ -16752,7 +16752,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText).CStr();
+                        return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText).CStr;
                     }
 
                     set
@@ -17121,7 +17121,7 @@ namespace CppSharp
             {
                 get
                 {
-                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->ABI).CStr();
+                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->ABI).CStr;
                 }
 
                 set
@@ -18154,7 +18154,7 @@ namespace CppSharp
             {
                 get
                 {
-                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->libraryFile).CStr();
+                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->libraryFile).CStr;
                 }
 
                 set
@@ -18200,7 +18200,7 @@ namespace CppSharp
             {
                 get
                 {
-                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple).CStr();
+                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple).CStr;
                 }
 
                 set
@@ -18487,7 +18487,7 @@ namespace CppSharp
             {
                 get
                 {
-                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->fileName).CStr();
+                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->fileName).CStr;
                 }
 
                 set
@@ -18502,7 +18502,7 @@ namespace CppSharp
             {
                 get
                 {
-                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->message).CStr();
+                    return global::Std.BasicString.__CreateInstance(((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->message).CStr;
                 }
 
                 set

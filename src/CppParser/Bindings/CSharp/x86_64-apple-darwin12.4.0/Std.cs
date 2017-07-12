@@ -1268,7 +1268,7 @@ namespace Std
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
-                internal static extern global::System.IntPtr CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0(global::System.IntPtr instance);
+                internal static extern global::System.IntPtr CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr instance);
             }
 
             internal enum ShortMask : uint
@@ -1456,10 +1456,13 @@ namespace Std
                 __Instance = IntPtr.Zero;
             }
 
-            public string CStr()
+            public string CStr
             {
-                var __ret = global::Std.__1.BasicString.__Internal.CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_0((__Instance + __PointerAdjustment));
-                return Marshal.PtrToStringAnsi(__ret);
+                get
+                {
+                    var __ret = global::Std.__1.BasicString.__Internal.CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
+                    return Marshal.PtrToStringAnsi(__ret);
+                }
             }
         }
 
