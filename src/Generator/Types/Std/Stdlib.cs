@@ -96,21 +96,20 @@ namespace CppSharp.Types.Std
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
-            if (type.IsAddress() || ctx.Declaration is Field)
+            const string varBasicString = "__basicStringRet";
+            ctx.Before.WriteLine("var {0} = {1}.{2}({3});",
+                varBasicString, basicString.Visit(typePrinter),
+                Helpers.CreateInstanceIdentifier, ctx.ReturnVarName);
+            if (type.IsAddress())
             {
-                ctx.Return.Write("{0}.{1}({2}).{3}",
-                    basicString.Visit(typePrinter), Helpers.CreateInstanceIdentifier,
-                    ctx.ReturnVarName, c_str.Name);
+                ctx.Return.Write($"{varBasicString}.{c_str.Name}");
             }
             else
             {
-                const string varBasicString = "__basicStringRet";
-                ctx.Before.WriteLine("using (var {0} = {1}.{2}({3}))",
-                    varBasicString, basicString.Visit(typePrinter),
-                    Helpers.CreateInstanceIdentifier, ctx.ReturnVarName);
-                ctx.Before.WriteStartBraceIndent();
-                ctx.Return.Write($"{varBasicString}.{c_str.Name}");
-                ctx.HasCodeBlock = true;
+                const string varString = "__stringRet";
+                ctx.Before.WriteLine($"var {varString} = {varBasicString}.{c_str.Name};");
+                ctx.Before.WriteLine($"{varBasicString}.Dispose(false);");
+                ctx.Return.Write(varString);
             }
         }
 
