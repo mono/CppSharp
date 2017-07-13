@@ -83,6 +83,7 @@ namespace CppSharp
         public CompilationOptions Compilation = new CompilationOptions();
 
         #region Generator options
+        public bool IgnoreNotImplementedCtors = false;
 
         public GeneratorKind GeneratorKind;
 
