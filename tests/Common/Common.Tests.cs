@@ -785,4 +785,14 @@ This is a very long string. This is a very long string. This is a very long stri
         Assert.That(propertyInfo, Is.Not.Null);
         Assert.That(propertyInfo.CanWrite);
     }
+
+    [Test]
+    public void TestVirtualFunctionWithBoolParams()
+    {
+        using (var VirtualFuncWithBoolParam = new ImplementsVirtualFunctionWithBoolParams())
+        {
+            VirtualFuncWithBoolParam.VirtualFunctionWithBoolParam(true);
+            Assert.That(VirtualFuncWithBoolParam.VirtualFunctionWithBoolParamAndReturnsBool(true));
+        }
+    }
 }
