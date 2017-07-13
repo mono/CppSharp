@@ -1509,8 +1509,10 @@ namespace CppSharp.Generators.CSharp
                     ParameterIndex = i
                 };
 
+                ctx.PushMarshalKind(MarshalKind.GenericDelegate);
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { MarshalsParameter = true };
                 param.Visit(marshal);
+                ctx.PopMarshalKind();
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
@@ -1610,9 +1612,11 @@ namespace CppSharp.Generators.CSharp
             }
 
             TypePrinterResult retType;
+            TypePrinter.PushMarshalKind(MarshalKind.GenericDelegate);
             var @params = GatherInternalParams(method, out retType);
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
+            TypePrinter.PopMarshalKind();
 
             WriteLine("private static {0} {1}Instance;",
                 Context.Delegates[method].Signature,
@@ -2916,6 +2920,10 @@ namespace CppSharp.Generators.CSharp
                         "[SuppressUnmanagedCodeSecurity, " +
                         "UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.{0})]",
                         interopCallConv);
+
+                if (functionType.ReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool))
+                    WriteLine("[return: MarshalAs(UnmanagedType.I1)]");
+
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,

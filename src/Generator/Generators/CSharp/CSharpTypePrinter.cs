@@ -213,7 +213,7 @@ namespace CppSharp.Generators.CSharp
 
             if (allowStrings && IsConstCharString(pointer))
             {
-                if (isManagedContext || MarshalKind == MarshalKind.GenericDelegate)
+                if (isManagedContext)
                     return "string";
                 if (Parameter == null || Parameter.Name == Helpers.ReturnIdentifier)
                     return IntPtrType;
@@ -648,27 +648,35 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
+            var typeBuilder = new StringBuilder();
+            if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool)
+                && MarshalKind == MarshalKind.GenericDelegate)
+                typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
             var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
-            var type = $"{printedType}{printedType.NameSuffix}";
-            var name = param.Name;
+            typeBuilder.Append(printedType);
+            typeBuilder.Append(printedType.NameSuffix);
+            var type = typeBuilder.ToString();
 
             if (ContextKind == TypePrinterContextKind.Native)
-                return $"{type} {name}";
+                return $"{type} {param.Name}";
 
             var usage = GetParameterUsage(param.Usage);
 
             if (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments)
-                return $"{usage}{type} {name}";
+                return $"{usage}{type} {param.Name}";
 
             var defaultValue = expressionPrinter.VisitParameter(param);
-            return $"{usage}{type} {name} = {defaultValue}";
+            return $"{usage}{type} {param.Name} = {defaultValue}";
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
         {
-            return string.Format("delegate {0} {{0}}({1})",
-                function.ReturnType.Visit(this),
-                VisitParameters(function.Parameters, hasNames: true));
+            PushMarshalKind(MarshalKind.GenericDelegate);
+            var functionRetType = function.ReturnType.Visit(this);
+            var @params = VisitParameters(function.Parameters, hasNames: true);
+            PopMarshalKind();
+
+            return $"delegate {functionRetType} {{0}}({@params})";
         }
 
         public override string ToString(Type type)

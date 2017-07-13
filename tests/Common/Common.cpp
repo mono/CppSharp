@@ -812,3 +812,16 @@ int HasVirtualFunctionsWithStringParams::VirtualFunctionWithStringParam(std::str
 {
     return 5;
 }
+
+HasVirtualFunctionWithBoolParams::HasVirtualFunctionWithBoolParams()
+{
+}
+
+HasVirtualFunctionWithBoolParams::~HasVirtualFunctionWithBoolParams()
+{
+}
+
+bool HasVirtualFunctionWithBoolParams::virtualFunctionWithBoolParamAndReturnsBool(bool testBool)
+{
+    return testBool;
+}

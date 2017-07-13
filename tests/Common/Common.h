@@ -1304,3 +1304,11 @@ public:
     ~ImplementsVirtualFunctionsWithStringParams();
     virtual void PureVirtualFunctionWithStringParams(std::string testString);
 };
+
+class DLL_API HasVirtualFunctionWithBoolParams
+{
+public:
+    HasVirtualFunctionWithBoolParams();
+    ~HasVirtualFunctionWithBoolParams();
+    virtual bool virtualFunctionWithBoolParamAndReturnsBool(bool testBool);
+};
