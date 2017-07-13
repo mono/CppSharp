@@ -207,58 +207,41 @@ namespace CppSharp.Generators.CSharp
             if (classTemplate.Specializations.Count == 0)
                 return;
 
-            var specializations = GetSpecializationsToGenerate(classTemplate);
+            var specializations = classTemplate.GetSpecializationsToGenerate();
 
-            bool generateClass = specializations.Any(s => s.IsGenerated);
-            if (!generateClass)
-            {
-                PushBlock(BlockKind.Namespace);
-                WriteLine("namespace {0}{1}",
-                    classTemplate.OriginalNamespace is Class ?
-                        classTemplate.OriginalNamespace.Name + '_' : string.Empty,
-                    classTemplate.Name);
-                WriteStartBraceIndent();
-            }
+            PushBlock(BlockKind.Namespace);
+            WriteLine("namespace {0}{1}",
+                classTemplate.OriginalNamespace is Class ?
+                    classTemplate.OriginalNamespace.Name + '_' : string.Empty,
+                classTemplate.Name);
+            WriteStartBraceIndent();
 
             foreach (var specialization in specializations)
-            {
-                if (specialization.Ignore)
-                    GenerateClassInternals(specialization);
-                else
-                    specialization.Visit(this);
-            }
+                GenerateClassInternals(specialization);
 
             foreach (var nestedClass in classTemplate.Classes.Where(c => !c.IsDependent).Union(
                 specializations[0].Classes.Where(c => !c.IsDependent)))
             {
-                NewLine();
-                GenerateClassSpecifier(nestedClass);
-                NewLine();
-                WriteStartBraceIndent();
-                GenerateClassInternals(nestedClass);
+                GenerateClassInternalsOnly(nestedClass);
+                foreach (var nestedNestedClass in nestedClass.Classes)
+                {
+                    GenerateClassInternalsOnly(nestedNestedClass);
+                    WriteCloseBraceIndent();
+                }
                 WriteCloseBraceIndent();
             }
 
-            if (!generateClass)
-            {
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private static List<ClassTemplateSpecialization> GetSpecializationsToGenerate(Class classTemplate)
+        private void GenerateClassInternalsOnly(Class c)
         {
-            if (classTemplate.Fields.Any(
-                f => f.Type.Desugar() is TemplateParameterType))
-                return classTemplate.Specializations;
-
-            var specializations = new List<ClassTemplateSpecialization>();
-            var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
-            if (specialization == null)
-                specializations.Add(classTemplate.Specializations[0]);
-            else
-                specializations.Add(specialization);
-            return specializations;
+            NewLine();
+            GenerateClassSpecifier(c);
+            NewLine();
+            WriteStartBraceIndent();
+            GenerateClassInternals(c);
         }
 
         public override void GenerateDeclarationCommon(Declaration decl)
@@ -290,23 +273,14 @@ namespace CppSharp.Generators.CSharp
                 if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
 
-                return true;
+                if (@class.Specializations.All(s => s.Ignore))
+                    return true;
             }
 
-            System.Type typeMap = null;
-            string key = string.Empty;
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
-            foreach (var name in new[] { @class.OriginalName, @class.Visit(cppTypePrinter) })
-            {
-                if (Context.TypeMaps.TypeMaps.ContainsKey(name))
-                {
-                    key = name;
-                    typeMap = Context.TypeMaps.TypeMaps[key];
-                    // disable the type map for the mapped class itself so that operator params are not mapped
-                    Context.TypeMaps.TypeMaps.Remove(key);
-                    break;
-                }
-            }
+            var typeMaps = new List<System.Type>();
+            var keys = new List<string>();
+            // disable the type maps, if any, for this class because of copy ctors, operators and others
+            CSharpSourcesExtensions.DisableTypeMap(@class, typeMaps, keys, Context);
 
             PushBlock(BlockKind.Class);
             GenerateDeclarationCommon(@class);
@@ -315,12 +289,12 @@ namespace CppSharp.Generators.CSharp
             NewLine();
             WriteStartBraceIndent();
 
-            if (!@class.IsAbstractImpl)
+            if (!@class.IsAbstractImpl && !@class.IsDependent)
                 GenerateClassInternals(@class);
 
             VisitDeclContext(@class);
 
-            if (@class.IsDependent || !@class.IsGenerated)
+            if (!@class.IsGenerated)
                 goto exit;
 
             if (ShouldGenerateClassNativeField(@class))
@@ -368,8 +342,8 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            if (typeMap != null)
-                Context.TypeMaps.TypeMaps.Add(key, typeMap);
+            for (int i = 0; i < typeMaps.Count; i++)
+                Context.TypeMaps.TypeMaps.Add(keys[i], typeMaps[i]);
 
             return true;
         }
@@ -464,8 +438,8 @@ namespace CppSharp.Generators.CSharp
             var currentSpecialization = @class as ClassTemplateSpecialization;
             Class template;
             if (currentSpecialization != null &&
-                GetSpecializationsToGenerate(
-                    template = currentSpecialization.TemplatedDecl.TemplatedClass).Count == 1)
+                (template = currentSpecialization.TemplatedDecl.TemplatedClass)
+                .GetSpecializationsToGenerate().Count == 1)
                 foreach (var specialization in template.Specializations.Where(s => !s.Ignore))
                     GatherClassInternalFunctions(specialization, includeCtors, functions);
             else
@@ -589,6 +563,8 @@ namespace CppSharp.Generators.CSharp
             keywords.Add(SafeIdentifier(@class.Name));
 
             Write(string.Join(" ", keywords));
+            if (@class.IsDependent && @class.TemplateParameters.Any())
+                Write($"<{string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>");
 
             var bases = new List<string>();
 
@@ -670,13 +646,18 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
                 WriteStartBraceIndent();
-                GenerateFunctionSetter(property);
+
+                this.GenerateMember(@class, c => GenerateFunctionSetter(c, property), true);
             }
             else if (decl is Variable)
             {
                 NewLine();
                 WriteStartBraceIndent();
-                GenerateVariableSetter(decl, @class);
+                var var = decl as Variable;
+                this.GenerateMember(@class, c => GenerateVariableSetter(
+                    c is ClassTemplateSpecialization ?
+                        c.Variables.First(v => v.Name == decl.Name) : var),
+                    true);
             }
             else if (decl is Field)
             {
@@ -686,13 +667,14 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
                 WriteStartBraceIndent();
-                GenerateFieldSetter(field, @class);
+
+                this.GenerateField(@class, field, GenerateFieldSetter, true);
             }
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVariableSetter<T>(T decl, Class @class) where T : Declaration, ITypedDecl
+        private void GenerateVariableSetter<T>(T decl) where T : Declaration, ITypedDecl
         {
             var var = decl as Variable;
 
@@ -703,6 +685,7 @@ namespace CppSharp.Generators.CSharp
 
             string ptr = Generator.GeneratedIdentifier("ptr");
             var arrayType = decl.Type as ArrayType;
+            var @class = decl.Namespace as Class;
             var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
             if (isRefTypeArray)
                 WriteLine($@"var {ptr} = {
@@ -743,8 +726,9 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        private void GenerateFunctionSetter(Property property)
+        private void GenerateFunctionSetter(Class @class, Property property)
         {
+            property = GetActualProperty(property, @class);
             var param = new Parameter
             {
                 Name = "value",
@@ -754,7 +738,6 @@ namespace CppSharp.Generators.CSharp
             if (!property.Type.Equals(param.Type) && property.Type.IsEnumType())
                 param.Name = "&" + param.Name;
 
-            var @class = (Class) property.Namespace;
             var function = property.SetMethod;
             var method = function as Method;
             if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
@@ -939,7 +922,8 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
                 WriteStartBraceIndent();
-                GenerateFunctionGetter(property);
+
+                this.GenerateMember(@class, c => GenerateFunctionGetter(c, property));
             }
             else if (decl is Field)
             {
@@ -949,19 +933,22 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
                 WriteStartBraceIndent();
-                GenerateFieldGetter(field, @class);
+                this.GenerateField(@class, field, GenerateFieldGetter, false);
             }
             else if (decl is Variable)
             {
                 NewLine();
                 WriteStartBraceIndent();
-                GenerateVariableGetter(decl, @class);
+                var var = decl as Variable;
+                this.GenerateMember(@class, c => GenerateVariableGetter(
+                    c is ClassTemplateSpecialization ?
+                        c.Variables.First(v => v.Name == decl.Name) : var));
             }
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVariableGetter<T>(T decl, Class @class) where T : Declaration, ITypedDecl
+        private void GenerateVariableGetter<T>(T decl) where T : Declaration, ITypedDecl
         {
             var var = decl as Variable;
 
@@ -971,6 +958,7 @@ namespace CppSharp.Generators.CSharp
                 GetLibraryOf(decl), var.Mangled);
 
             var arrayType = decl.Type as ArrayType;
+            var @class = decl.Namespace as Class;
             var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
             if (isRefTypeArray)
                 WriteLine("var {0} = {1}{2};", Generator.GeneratedIdentifier("ptr"),
@@ -1008,15 +996,26 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        private void GenerateFunctionGetter(Property property)
+        private void GenerateFunctionGetter(Class @class, Property property)
         {
-            var @class = (Class) property.Namespace;
+            property = GetActualProperty(property, @class);
             if (property.GetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
                 GenerateVirtualPropertyCall(property.GetMethod, @class.BaseClass, property);
             else if (property.GetMethod.IsVirtual)
                 GenerateVirtualPropertyCall(property.GetMethod, @class, property);
             else GenerateInternalFunctionCall(property.GetMethod,
                 property.GetMethod.Parameters, property.QualifiedType.Type);
+        }
+
+        private static Property GetActualProperty(Property property, Class c)
+        {
+            if (!(c is ClassTemplateSpecialization))
+                return property;
+            if (property.GetMethod != null
+                && property.GetMethod.OperatorKind == CXXOperatorKind.Subscript)
+                return c.Properties.Single(p => p.GetMethod != null
+                    && p.GetMethod.InstantiatedFrom == property.GetMethod);
+            return c.Properties.Single(p => p.Name == property.Name);
         }
 
         private void GenerateFieldGetter(Field field, Class @class)
@@ -1884,18 +1883,22 @@ namespace CppSharp.Generators.CSharp
                     Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
                     WriteLine("if (disposing)");
-                    if (dtor.IsVirtual)
-                    {
+                    if (@class.IsDependent || dtor.IsVirtual)
                         WriteStartBraceIndent();
-                        GenerateDestructorCall(dtor);
-                        WriteCloseBraceIndent();
-                    }
                     else
-                    {
                         PushIndent();
-                        GenerateInternalFunctionCall(dtor);
+                    if (dtor.IsVirtual)
+                        this.GenerateMember(@class, c => GenerateDestructorCall(
+                            c is ClassTemplateSpecialization ?
+                                c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor), true);
+                    else
+                        this.GenerateMember(@class, c => GenerateInternalFunctionCall(
+                            c is ClassTemplateSpecialization ?
+                                c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor), true);
+                    if (@class.IsDependent || dtor.IsVirtual)
+                        WriteCloseBraceIndent();
+                    else
                         PopIndent();
-                    }
                 }
             }
 
@@ -1931,23 +1934,22 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            var suffix = @class.IsAbstract ? "Internal" : string.Empty;
-            var printedClass = @class.Visit(TypePrinter);
-            var ctorCall = $"{printedClass}{printedClass.NameSuffix}{suffix}";
-
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(BlockKind.Method);
+                var printedClass = @class.Visit(TypePrinter);
                 WriteLine("internal static {0}{1}{2} {3}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     printedClass, printedClass.NameSuffix, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
+                var suffix = @class.IsAbstract ? "Internal" : string.Empty;
+                var ctorCall = $"{printedClass}{printedClass.NameSuffix}{suffix}";
                 WriteLine("return new {0}(native.ToPointer(), skipVTables);", ctorCall);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            GenerateNativeConstructorByValue(@class, ctorCall);
+            this.GenerateNativeConstructorsByValue(@class);
 
             PushBlock(BlockKind.Method);
             WriteLine("{0} {1}(void* native, bool skipVTables = false){2}",
@@ -2004,7 +2006,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateNativeConstructorByValue(Class @class, string ctorCall)
+        public void GenerateNativeConstructorByValue(Class @class, string returnType)
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
             var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
@@ -2014,9 +2016,10 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(BlockKind.Method);
                 WriteLine("internal static {0} {1}({2} native, bool skipVTables = false)",
-                    @class.Visit(TypePrinter), Helpers.CreateInstanceIdentifier, @internal);
+                    returnType, Helpers.CreateInstanceIdentifier, @internal);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(native, skipVTables);", ctorCall);
+                var suffix = @class.IsAbstract ? "Internal" : "";
+                WriteLine($"return new {returnType}{suffix}(native, skipVTables);");
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -2201,7 +2204,19 @@ namespace CppSharp.Generators.CSharp
                 goto SkipImpl;
             }
 
-            GenerateMethodBody(method);
+            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload ||
+                method.SynthKind == FunctionSynthKind.ComplementOperator)
+            {
+                GenerateMethodBody(method);
+            }
+            else
+            {
+                var isVoid = method.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
+                    method.IsConstructor;
+                this.GenerateMember(@class, c => GenerateMethodBody(
+                    c is ClassTemplateSpecialization ?
+                        c.Methods.First(m => m.InstantiatedFrom == method) : method), isVoid);
+            }
 
             SkipImpl:
 
@@ -2671,6 +2686,13 @@ namespace CppSharp.Generators.CSharp
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
                 Write("var {0} = ", Helpers.ReturnIdentifier);
 
+            if (method != null && !method.IsConstructor && method.OriginalFunction != null &&
+                ((Method) method.OriginalFunction).IsConstructor)
+            {
+                WriteLine($@"Marshal.AllocHGlobal({
+                    ((Class) method.OriginalNamespace).Layout.Size});");
+                names.Insert(0, Helpers.ReturnIdentifier);
+            }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
             var cleanups = new List<TextGenerator>();
@@ -2955,7 +2977,8 @@ namespace CppSharp.Generators.CSharp
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());
 
-            if (@enum.BuiltinType.Type != PrimitiveType.Int)
+            if (@enum.BuiltinType.Type != PrimitiveType.Int &&
+                @enum.BuiltinType.Type != PrimitiveType.Null)
                 Write(" : {0}", typeName);
 
             NewLine();

@@ -185,27 +185,39 @@
             return @enum != null;
         }
 
-        public static Type Desugar(this Type t)
+        public static Type Desugar(this Type t, bool resolveTemplateSubstitution = true)
         {
             var typeDef = t as TypedefType;
             if (typeDef != null)
             {
                 var decl = typeDef.Declaration.Type;
                 if (decl != null)
-                    return decl.Desugar();
+                    return decl.Desugar(resolveTemplateSubstitution);
             }
 
-            var substType = t as TemplateParameterSubstitutionType;
-            if (substType != null)
+            if (resolveTemplateSubstitution)
             {
-                var replacement = substType.Replacement.Type;
-                if (replacement != null)
-                    return replacement.Desugar();
+                var substType = t as TemplateParameterSubstitutionType;
+                if (substType != null)
+                {
+                    var replacement = substType.Replacement.Type;
+                    if (replacement != null)
+                        return replacement.Desugar(resolveTemplateSubstitution);
+                }
+            }
+
+            var injectedType = t as InjectedClassNameType;
+            if (injectedType != null)
+            {
+                if (injectedType.InjectedSpecializationType.Type != null)
+                    return injectedType.InjectedSpecializationType.Type.Desugar(
+                        resolveTemplateSubstitution);
+                return new TagType(injectedType.Class);
             }
 
             var attributedType = t as AttributedType;
             if (attributedType != null)
-                return attributedType.Equivalent.Type.Desugar();
+                return attributedType.Equivalent.Type.Desugar(resolveTemplateSubstitution);
 
             return t;
         }
@@ -321,6 +333,19 @@
                     leftPointer.QualifiedPointee.ResolvesTo(rightPointer.QualifiedPointee);
             }
             return left.Equals(right);
+        }
+
+        public static bool IsDependentPointer(this Type type)
+        {
+            var desugared = type.Desugar();
+            if (desugared.IsAddress())
+            {
+                var pointee = desugared.GetFinalPointee().Desugar();
+                return pointee.IsDependent
+                    && !(pointee is TemplateSpecializationType)
+                    && !(pointee is InjectedClassNameType);
+            }
+            return false;
         }
     }
 }

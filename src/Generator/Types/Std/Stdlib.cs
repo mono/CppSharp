@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -27,7 +28,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::basic_string<char, std::char_traits<char>, std::allocator<char>>")]
+    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>")]
     public class String : TypeMap
     {
         public override string CLISignature(TypePrinterContext ctx)
@@ -69,9 +70,10 @@ namespace CppSharp.Types.Std
             var allocator = ctx.Context.ASTContext.FindClass("allocator", false, true).First(
                 a => a.IsDependent && a.TranslationUnit.IsSystemHeader);
             var allocatorChar = allocator.Specializations.First(s => !s.Ignore);
+            string qualifiedBasicString = GetQualifiedBasicString(basicString);
             if (type.IsPointer() || (type.IsReference() && ctx.Declaration is Field))
             {
-                ctx.Return.Write($@"new {basicString.Visit(typePrinter)}({
+                ctx.Return.Write($@"{qualifiedBasicString}Extensions.{basicString.Name}({
                     ctx.Parameter.Name}, new {allocatorChar.Visit(typePrinter)}()).{
                     Helpers.InstanceIdentifier}");
             }
@@ -81,8 +83,9 @@ namespace CppSharp.Types.Std
                 var varBasicString = $"__basicString{ctx.ParameterIndex}";
                 ctx.Before.WriteLine($@"var {varAllocator} = new {
                     allocatorChar.Visit(typePrinter)}();");
-                ctx.Before.WriteLine($@"var {varBasicString} = new {
-                    basicString.Visit(typePrinter)}({ctx.Parameter.Name}, {varAllocator});");
+                ctx.Before.WriteLine($@"var {varBasicString} = {
+                    qualifiedBasicString}Extensions.{basicString.Name}({ctx.Parameter.Name}, {
+                    varAllocator});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
                 ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
                     (type.IsPointer() ? "true" : "false")});");
@@ -94,23 +97,39 @@ namespace CppSharp.Types.Std
         {
             var type = ctx.ReturnType.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
-            var c_str = basicString.Properties.First(p => p.OriginalName == "c_str");
+            var c_str = basicString.Methods.First(m => m.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
+            string qualifiedBasicString = GetQualifiedBasicString(basicString);
             const string varBasicString = "__basicStringRet";
-            ctx.Before.WriteLine("var {0} = {1}.{2}({3});",
-                varBasicString, basicString.Visit(typePrinter),
-                Helpers.CreateInstanceIdentifier, ctx.ReturnVarName);
+            ctx.Before.WriteLine($@"var {varBasicString} = {
+                basicString.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({
+                ctx.ReturnVarName});");
             if (type.IsAddress())
             {
-                ctx.Return.Write($"{varBasicString}.{c_str.Name}");
+                ctx.Return.Write($@"{qualifiedBasicString}Extensions.{c_str.Name}({
+                    varBasicString})");
             }
             else
             {
                 const string varString = "__stringRet";
-                ctx.Before.WriteLine($"var {varString} = {varBasicString}.{c_str.Name};");
+                ctx.Before.WriteLine($@"var {varString} = {
+                    qualifiedBasicString}Extensions.{c_str.Name}({varBasicString});");
                 ctx.Before.WriteLine($"{varBasicString}.Dispose(false);");
                 ctx.Return.Write(varString);
             }
+        }
+
+        private static string GetQualifiedBasicString(ClassTemplateSpecialization basicString)
+        {
+            var declContext = basicString.TemplatedDecl.TemplatedDecl;
+            var names = new Stack<string>();
+            while (!(declContext is TranslationUnit))
+            {
+                names.Push(declContext.Name);
+                declContext = declContext.Namespace;
+            }
+            var qualifiedBasicString = string.Join(".", names);
+            return $"global::{qualifiedBasicString}";
         }
 
         private static ClassTemplateSpecialization GetBasicString(Type type)

@@ -55,11 +55,32 @@ namespace CppSharp.Passes
                         method.ExplicitlyIgnore();
                     foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
                     {
+                        foreach (var method in specialization.Methods)
+                        {
+                            if (method.IsDestructor || method.OriginalName == "c_str" ||
+                                (method.IsConstructor && method.Parameters.Count == 2 &&
+                                 method.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
+                                 !method.Parameters[1].Type.Desugar().IsPrimitiveType()))
+                            {
+                                method.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
+                            }
+                            else
+                            {
+                                method.ExplicitlyIgnore();
+                            }
+                        }
+                    }
+                    break;
+                case "allocator":
+                    foreach (var method in @class.Methods.Where(m => !m.IsConstructor || m.Parameters.Any()))
+                        method.ExplicitlyIgnore();
+                    foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
+                    {
                         foreach (var method in specialization.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
                             method.ExplicitlyIgnore();
-                        var ctor = specialization.Methods.Single(m => m.IsConstructor && m.Parameters.Count == 2 &&
-                            m.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
-                            !m.Parameters[1].Type.Desugar().IsPrimitiveType());
+                        var ctor = specialization.Methods.Single(m => m.IsConstructor && !m.Parameters.Any());
                         ctor.GenerationKind = GenerationKind.Generate;
                         ctor.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
                         ctor.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
@@ -67,20 +88,19 @@ namespace CppSharp.Passes
                             parameter.DefaultArgument = null;
                     }
                     break;
-                case "allocator":
-                    foreach (var method in @class.Methods.Where(m => !m.IsConstructor || m.Parameters.Any()))
-                        method.ExplicitlyIgnore();
-                    foreach (var specialization in @class.Specializations)
-                        foreach (var method in specialization.Methods.Where(
-                            m => !m.IsConstructor || m.Parameters.Any()))
-                            method.ExplicitlyIgnore();
-                    break;
                 case "char_traits":
                     foreach (var method in @class.Methods)
                         method.ExplicitlyIgnore();
                     foreach (var specialization in @class.Specializations)
+                    {
                         foreach (var method in specialization.Methods)
                             method.ExplicitlyIgnore();
+                        if (specialization.Arguments[0].Type.Type.IsPrimitiveType(PrimitiveType.Char))
+                        {
+                            specialization.GenerationKind = GenerationKind.Generate;
+                            specialization.TemplatedDecl.TemplatedDecl.GenerationKind = GenerationKind.Generate;
+                        }
+                    }
                     break;
             }
             return true;

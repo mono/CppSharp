@@ -821,10 +821,10 @@ namespace CppSharp.AST
             var type = obj as TemplateParameterType;
             if (type == null) return false;
 
-            return Parameter.Equals(type.Parameter)
-                && Depth.Equals(type.Depth)
-                && Index.Equals(type.Index)
-                && IsParameterPack.Equals(type.IsParameterPack);
+            return Parameter == type.Parameter
+                && Depth == type.Depth
+                && Index == type.Index
+                && IsParameterPack == type.IsParameterPack;
         }
 
         public override int GetHashCode()
