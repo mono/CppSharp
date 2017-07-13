@@ -213,7 +213,8 @@ namespace CppSharp.Generators.CSharp
 
             if (allowStrings && IsConstCharString(pointer))
             {
-                if (isManagedContext || MarshalKind == MarshalKind.GenericDelegate)
+                if (isManagedContext || MarshalKind == MarshalKind.GenericDelegate &&
+                    !FullType.Type.IsReference() && Parameter != null)
                     return "string";
                 if (Parameter == null || Parameter.Name == Helpers.ReturnIdentifier)
                     return IntPtrType;
@@ -252,7 +253,18 @@ namespace CppSharp.Generators.CSharp
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types
                 // like string* for const char **.
                 allowStrings = isRefParam;
+                bool flag = false;
+                if (MarshalKind == MarshalKind.GenericDelegate)
+                {
+                    PushMarshalKind(MarshalKind.Unknown);
+                    flag = true;
+                }
+
                 var result = pointer.QualifiedPointee.Visit(this);
+
+                if (flag)
+                    PopMarshalKind();
+
                 allowStrings = true;
 
                 return !isRefParam && result.Type == IntPtrType ? "void**" : result + "*";
@@ -652,6 +664,9 @@ namespace CppSharp.Generators.CSharp
             var type = $"{printedType}{printedType.NameSuffix}";
             var name = param.Name;
 
+            if (type.ToString() == "bool" && MarshalKind == MarshalKind.GenericDelegate)
+                type = "[MarshalAs(UnmanagedType.I1)]" + type;
+
             if (ContextKind == TypePrinterContextKind.Native)
                 return $"{type} {name}";
 
@@ -666,9 +681,14 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
         {
+            PushMarshalKind(MarshalKind.GenericDelegate);
+            var functionParameters = function.Parameters;
+            var paramsCopy = VisitParameters(functionParameters, hasNames: true);
+            var functionRetType = function.ReturnType.Visit(this);
+            PopMarshalKind();
+
             return string.Format("delegate {0} {{0}}({1})",
-                function.ReturnType.Visit(this),
-                VisitParameters(function.Parameters, hasNames: true));
+                functionRetType, paramsCopy);
         }
 
         public override string ToString(Type type)
