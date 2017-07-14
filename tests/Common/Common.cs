@@ -54,6 +54,9 @@ namespace CppSharp.Tests
         {
             base.Setup(driver);
 
+            driver.Options.GenerateName = file =>
+                file.FileNameWithoutExtension + "_GenerateName";
+
             driver.Options.Modules[1].OutputNamespace = "CommonTest";
             driver.Options.UnityBuild = true;
         }
