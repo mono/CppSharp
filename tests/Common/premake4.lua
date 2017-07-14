@@ -1,2 +1,2 @@
 group "Tests/Common"
-  SetupTestProject("Common", { "AnotherUnit" })
+  SetupTestProject("Common", { "AnotherUnit" } , "_GenerateName")

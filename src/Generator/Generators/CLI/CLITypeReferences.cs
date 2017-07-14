@@ -13,7 +13,7 @@ namespace CppSharp.Generators.CLI
 
         public override string ToString()
         {
-            if(Include.InHeader)
+            if (Include.InHeader)
                 return Include.ToString();
 
             if (!string.IsNullOrWhiteSpace(FowardReference))
@@ -39,12 +39,12 @@ namespace CppSharp.Generators.CLI
         {
             TypeMapDatabase = typeMapDatabase;
             DriverOptions = driverOptions;
-            typeReferences = new Dictionary<Declaration,CLITypeReference>();
+            typeReferences = new Dictionary<Declaration, CLITypeReference>();
         }
 
         public CLITypeReference GetTypeReference(Declaration decl)
         {
-            if(typeReferences.ContainsKey(decl))
+            if (typeReferences.ContainsKey(decl))
                 return typeReferences[decl];
 
             var @ref = new CLITypeReference { Declaration = decl };
@@ -100,7 +100,7 @@ namespace CppSharp.Generators.CLI
         private void GenerateInclude(ASTRecord<Declaration> record)
         {
             var decl = record.Value;
-            if(decl.Namespace == null)
+            if (decl.Namespace == null)
                 return;
 
             // Find a type map for the declaration and use it if it exists.
@@ -120,20 +120,20 @@ namespace CppSharp.Generators.CLI
             if (!decl.IsGenerated)
                 return;
 
-            if(IsBuiltinTypedef(decl))
+            if (IsBuiltinTypedef(decl))
                 return;
 
             var typeRef = GetTypeReference(decl);
             if (typeRef.Include.TranslationUnit == null)
             {
                 typeRef.Include = new Include
-                    {
-                        File = GetIncludePath(translationUnit),
-                        TranslationUnit = translationUnit,
-                        Kind = translationUnit.IsGenerated
+                {
+                    File = GetIncludePath(translationUnit),
+                    TranslationUnit = translationUnit,
+                    Kind = translationUnit.IsGenerated
                             ? Include.IncludeKind.Quoted
                             : Include.IncludeKind.Angled,
-                    };
+                };
             }
 
             typeRef.Include.InHeader |= IsIncludeInHeader(record);
@@ -141,8 +141,13 @@ namespace CppSharp.Generators.CLI
 
         private string GetIncludePath(TranslationUnit translationUnit)
         {
-            if (!DriverOptions.UseHeaderDirectories)
-                return translationUnit.FileName;
+            if (!DriverOptions.UseHeaderDirectories && DriverOptions.GenerateName != null)
+            {
+                var extension = Path.GetExtension(TranslationUnit.FileName);
+                return $"{DriverOptions.GenerateName(translationUnit)}{extension}";
+            }
+
+            return translationUnit.FileName;
 
             var rel = PathHelpers.GetRelativePath(
                 TranslationUnit.FileRelativeDirectory,
@@ -157,12 +162,12 @@ namespace CppSharp.Generators.CLI
         private bool IsBuiltinTypedef(Declaration decl)
         {
             var typedefDecl = decl as TypedefDecl;
-            if(typedefDecl == null) return false;
-            if(typedefDecl.Type is BuiltinType) return true;
+            if (typedefDecl == null) return false;
+            if (typedefDecl.Type is BuiltinType) return true;
 
             var typedefType = typedefDecl.Type as TypedefType;
-            if(typedefType == null) return false;
-            if(typedefType.Declaration == null) return false;
+            if (typedefType == null) return false;
+            if (typedefType.Declaration == null) return false;
 
             return typedefType.Declaration.Type is BuiltinType;
         }
@@ -189,9 +194,9 @@ namespace CppSharp.Generators.CLI
             if (@class.IsIncomplete && @class.CompleteDeclaration != null)
                 @class = (Class) @class.CompleteDeclaration;
 
-            var keywords = @class.IsValueType? "value struct" : "ref class";
+            var keywords = @class.IsValueType ? "value struct" : "ref class";
             var @ref = string.Format("{0} {1};", keywords, @class.Name);
-            
+
             GetTypeReference(@class).FowardReference = @ref;
 
             return false;
@@ -203,7 +208,7 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             var @base = "";
-            if(!@enum.Type.IsPrimitiveType(PrimitiveType.Int))
+            if (!@enum.Type.IsPrimitiveType(PrimitiveType.Int))
                 @base = string.Format(" : {0}", @enum.Type);
 
             var @ref = string.Format("enum struct {0}{1};", @enum.Name, @base);

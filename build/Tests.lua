@@ -18,11 +18,11 @@ function SetupExampleProject()
   SetupParser()
 end
 
-function SetupTestProject(name, extraFiles)
+function SetupTestProject(name, extraFiles, suffix)
   SetupTestGeneratorProject(name)
   SetupTestNativeProject(name)
-  SetupTestProjectsCSharp(name, nil, extraFiles)
-  SetupTestProjectsCLI(name, extraFiles)
+  SetupTestProjectsCSharp(name, nil, extraFiles, suffix)
+  SetupTestProjectsCLI(name, extraFiles, suffix)
 end
 
 function SetupTestCSharp(name)
@@ -127,7 +127,14 @@ function LinkNUnit()
   }
 end
 
-function SetupTestProjectsCSharp(name, depends)
+function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
+    if suffix ~= nil then
+      nm = name .. suffix 
+      str = "Std" .. suffix
+    else
+      nm = name
+      str = "Std"
+    end
   project(name .. ".CSharp")
     SetupManagedTestProject()
 
@@ -136,8 +143,8 @@ function SetupTestProjectsCSharp(name, depends)
 
     files
     {
-      path.join(gendir, name, name .. ".cs"),
-      path.join(gendir, name, "Std.cs")
+      path.join(gendir, name, nm .. ".cs"),
+      path.join(gendir, name, str .. ".cs")
     }
     vpaths { ["*"] = "*" }
 
@@ -162,7 +169,7 @@ function SetupTestProjectsCSharp(name, depends)
     links { "CppSharp.Runtime" }
 end
 
-function SetupTestProjectsCLI(name, extraFiles)
+function SetupTestProjectsCLI(name, extraFiles, suffix)
   if not os.ishost("windows") then
     return
   end
@@ -177,13 +184,22 @@ function SetupTestProjectsCLI(name, extraFiles)
     dependson { name .. ".Gen", name .. ".Native" }
     SetupTestGeneratorBuildEvent(name)
 
+    if (suffix ~= nil) then 
+      nm = name .. suffix
+    else
+      nm = name
+    end
+
     files
     {
-      path.join(gendir, name, name .. ".cpp"),
-      path.join(gendir, name, name .. ".h")
+      path.join(gendir, name, nm .. ".cpp"),
+      path.join(gendir, name, nm .. ".h")
     }
     if extraFiles ~= nil then
       for _, file in pairs(extraFiles) do
+        if suffix ~= nil then
+          file = file .. suffix  
+        end
         files { path.join(gendir, name, file .. ".cpp") }
         files { path.join(gendir, name, file .. ".h") }
       end
