@@ -56,6 +56,26 @@ namespace CppSharp.Passes
             if (!Options.CheckSymbols || Options.IsCLIGenerator)
                 return false;
 
+            if (decl.IsDependent)
+            {
+                var @class = decl.Namespace as Class;
+                if (@class != null && @class.IsDependent)
+                {
+                    foreach (var specialization in @class.Specializations)
+                    {
+                        var specializedFunction = specialization.Methods.Find(
+                            m => m.InstantiatedFrom == decl);
+                        if (specializedFunction != null &&
+                            CheckForSymbol(specializedFunction))
+                            return true;
+                    }
+                }
+            }
+            return CheckForSymbol(decl);
+        }
+
+        private bool CheckForSymbol(Declaration decl)
+        {
             var mangledDecl = decl as IMangledDecl;
             var method = decl as Method;
             if (decl.IsGenerated && mangledDecl != null &&

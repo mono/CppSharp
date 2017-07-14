@@ -32,6 +32,7 @@ namespace CppSharp.Passes
             VisitOptions.VisitClassFields = false;
             VisitOptions.VisitClassMethods = false;
             VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitEventParameters = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
