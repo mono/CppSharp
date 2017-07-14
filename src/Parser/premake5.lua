@@ -6,7 +6,7 @@ project "CppSharp.Parser"
   language "C#"
   clr "Unsafe"
 
-  files { "**.cs" }
+  files { "**.cs", "../../BuildConfig.cs" }
   vpaths { ["*"] = "*" }
 
   links

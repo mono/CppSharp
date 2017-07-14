@@ -9,6 +9,14 @@ dofile "LLVM.lua"
 
 solution "CppSharp"
 
+  buildconfig = io.open("../BuildConfig.cs", "w+")
+  io.output(buildconfig)
+  io.write("namespace CppSharp.Parser", "\n{\n    ")
+  io.write("public static class BuildConfig", "\n    {\n        ")
+  io.write("public const string Choice = \"" .. action .. "\";\n")
+  io.write("    }\n}")
+  io.close(buildconfig)
+
   configurations { "Debug", "Release" }
   platforms { target_architecture() }
 
