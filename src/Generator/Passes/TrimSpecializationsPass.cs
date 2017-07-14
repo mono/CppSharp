@@ -100,8 +100,8 @@ namespace CppSharp.Passes
 
         private void CleanSpecializations(Class template)
         {
-            template.Specializations.RemoveAll(
-                s => !specializations.Contains(s) && !internalSpecializations.Contains(s));
+            template.Specializations.RemoveAll(s => !s.IsExplicitlyGenerated
+                && !specializations.Contains(s) && !internalSpecializations.Contains(s));
 
             foreach (var specialization in template.Specializations.Where(
                 s => !s.IsExplicitlyGenerated &&
