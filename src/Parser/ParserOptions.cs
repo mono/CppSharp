@@ -14,8 +14,25 @@ namespace CppSharp.Parser
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         /// Sets up the parser options to work with the given Visual Studio toolchain.
-        public void SetupMSVC(VisualStudioVersion vsVersion = VisualStudioVersion.Latest)
+        public void SetupMSVC()
         {
+            VisualStudioVersion vsVersion = VisualStudioVersion.Latest;
+            switch (BuildConfig.Choice)
+            {
+                case "vs2012":
+                    vsVersion = VisualStudioVersion.VS2012;
+                    break;
+                case "vs2013":
+                    vsVersion = VisualStudioVersion.VS2013;
+                    break;
+                case "vs2015":
+                    vsVersion = VisualStudioVersion.VS2015;
+                    break;
+                case "vs2017":
+                    vsVersion = VisualStudioVersion.VS2017;
+                    break;
+            }
+
             MicrosoftMode = true;
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
