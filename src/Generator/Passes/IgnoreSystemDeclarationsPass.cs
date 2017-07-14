@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
@@ -43,8 +44,7 @@ namespace CppSharp.Passes
             if (!@class.TranslationUnit.IsSystemHeader)
                 return false;
 
-            if (!@class.IsExplicitlyGenerated)
-                @class.ExplicitlyIgnore();
+            @class.ExplicitlyIgnore();
 
             if (!@class.IsDependent || @class.Specializations.Count == 0)
                 return false;
@@ -55,54 +55,65 @@ namespace CppSharp.Passes
                 case "basic_string":
                     foreach (var method in @class.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
                         method.ExplicitlyIgnore();
-                    var basicString = @class.Specializations.First(s =>
-                        s.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char));
-                    basicString.GenerationKind = GenerationKind.Generate;
-                    foreach (var method in basicString.Methods)
+                    foreach (var basicString in GetCharSpecializations(@class))
                     {
-                        if (method.IsDestructor || method.OriginalName == "c_str" ||
-                            (method.IsConstructor && method.Parameters.Count == 2 &&
-                             method.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
-                             !method.Parameters[1].Type.Desugar().IsPrimitiveType()))
+                        basicString.GenerationKind = GenerationKind.Generate;
+                        foreach (var method in basicString.Methods)
                         {
-                            method.GenerationKind = GenerationKind.Generate;
-                            method.Namespace.GenerationKind = GenerationKind.Generate;
-                            method.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
-                            method.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
-                        }
-                        else
-                        {
-                            method.ExplicitlyIgnore();
+                            if (method.IsDestructor || method.OriginalName == "c_str" ||
+                                (method.IsConstructor && method.Parameters.Count == 2 &&
+                                 method.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
+                                 !method.Parameters[1].Type.Desugar().IsPrimitiveType()))
+                            {
+                                method.GenerationKind = GenerationKind.Generate;
+                                method.Namespace.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
+                            }
+                            else
+                            {
+                                method.ExplicitlyIgnore();
+                            }
                         }
                     }
                     break;
                 case "allocator":
                     foreach (var method in @class.Methods.Where(m => !m.IsConstructor || m.Parameters.Any()))
                         method.ExplicitlyIgnore();
-                    var allocator = @class.Specializations.First(s =>
-                        s.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char));
-                    allocator.GenerationKind = GenerationKind.Generate;
-                    foreach (var method in allocator.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
-                        method.ExplicitlyIgnore();
-                    var ctor = allocator.Methods.Single(m => m.IsConstructor && !m.Parameters.Any());
-                    ctor.GenerationKind = GenerationKind.Generate;
-                    ctor.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
-                    ctor.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
-                    foreach (var parameter in ctor.Parameters)
-                        parameter.DefaultArgument = null;
+                    foreach (var allocator in GetCharSpecializations(@class))
+                    {
+                        allocator.GenerationKind = GenerationKind.Generate;
+                        foreach (var method in from method in allocator.Methods
+                                               where method.IsDestructor && method.OriginalName != "c_str"
+                                               select method)
+                            method.ExplicitlyIgnore();
+                        var ctor = allocator.Methods.Single(m => m.IsConstructor && !m.Parameters.Any());
+                        ctor.GenerationKind = GenerationKind.Generate;
+                        ctor.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
+                        ctor.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
+                        foreach (var parameter in ctor.Parameters)
+                            parameter.DefaultArgument = null;
+                    }
                     break;
                 case "char_traits":
                     foreach (var method in @class.Methods)
                         method.ExplicitlyIgnore();
-                    var charTraits = @class.Specializations.First(s =>
-                        s.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char));
-                    foreach (var method in charTraits.Methods)
-                        method.ExplicitlyIgnore();
-                    charTraits.GenerationKind = GenerationKind.Generate;
-                    charTraits.TemplatedDecl.TemplatedDecl.GenerationKind = GenerationKind.Generate;
+                    foreach (var charTraits in GetCharSpecializations(@class))
+                    {
+                        foreach (var method in charTraits.Methods)
+                            method.ExplicitlyIgnore();
+                        charTraits.GenerationKind = GenerationKind.Generate;
+                        charTraits.TemplatedDecl.TemplatedDecl.GenerationKind = GenerationKind.Generate;
+                    }
                     break;
             }
             return true;
+        }
+
+        private static IEnumerable<ClassTemplateSpecialization> GetCharSpecializations(Class @class)
+        {
+            return @class.Specializations.Where(s =>
+                s.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char));
         }
 
         public override bool VisitFunctionDecl(Function function)

@@ -89,15 +89,11 @@ namespace CppSharp.AST
             ITypeMapDatabase typeMaps, bool internalOnly = false)
         {
             type = type.Desugar();
-            type = type.GetFinalPointee() ?? type;
+            type = (type.GetFinalPointee() ?? type).Desugar();
             ClassTemplateSpecialization specialization;
             type.TryGetDeclaration(out specialization);
-            if (specialization == null || specialization.IsExplicitlyGenerated)
-            {
-                if (specialization != null)
-                    addSpecialization(specialization);
+            if (specialization == null)
                 return;
-            }
 
             TypeMap typeMap;
             typeMaps.FindTypeMap(specialization, out typeMap);
