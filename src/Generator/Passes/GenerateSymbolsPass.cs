@@ -4,10 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using CppSharp.AST;
-using CppSharp.AST.Extensions;
-using CppSharp.Generators.CSharp;
 using CppSharp.Parser;
-using CppSharp.Types;
 using CppSharp.Utils;
 
 namespace CppSharp.Passes
@@ -73,6 +70,26 @@ namespace CppSharp.Passes
             }
         }
 
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (!base.VisitClassDecl(@class))
+                return false;
+
+            if (@class.IsDependent)
+                foreach (var specialization in @class.Specializations.Where(
+                    s => s.IsExplicitlyGenerated))
+                    Add(specialization);
+            else
+                foreach (var @base in @class.Bases.Where(b => b.IsClass))
+                {
+                    var specialization = @base.Class as ClassTemplateSpecialization;
+                    if (specialization != null && !specialization.IsExplicitlyGenerated)
+                        Add(specialization);
+                }
+
+            return true;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (!base.VisitFunctionDecl(function))
@@ -82,21 +99,11 @@ namespace CppSharp.Passes
 
             if (function.IsGenerated)
             {
-                Action<ClassTemplateSpecialization> add =
-                    s =>
-                    {
-                        ICollection<ClassTemplateSpecialization> specs;
-                        if (specializations.ContainsKey(s.TranslationUnit.Module))
-                            specs = specializations[s.TranslationUnit.Module];
-                        else specs = specializations[s.TranslationUnit.Module] =
-                            new HashSet<ClassTemplateSpecialization>();
-                        specs.Add(s);
-                    };
                 ASTUtils.CheckTypeForSpecialization(function.OriginalReturnType.Type,
-                    function, add, Context.TypeMaps);
+                    function, Add, Context.TypeMaps);
                 foreach (var parameter in function.Parameters)
                     ASTUtils.CheckTypeForSpecialization(parameter.Type, function,
-                        add, Context.TypeMaps);
+                        Add, Context.TypeMaps);
             }
 
             if (!NeedsSymbol(function))
@@ -187,6 +194,17 @@ namespace CppSharp.Passes
                         Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");
                 }
             }
+        }
+
+        private void Add(ClassTemplateSpecialization specialization)
+        {
+            ICollection<ClassTemplateSpecialization> specs;
+            if (specializations.ContainsKey(specialization.TranslationUnit.Module))
+                specs = specializations[specialization.TranslationUnit.Module];
+            else specs = specializations[specialization.TranslationUnit.Module] =
+                new HashSet<ClassTemplateSpecialization>();
+            GetSymbolsCodeGenerator(specialization.TranslationUnit.Module);
+            specs.Add(specialization);
         }
 
         private int RemainingCompilationTasks

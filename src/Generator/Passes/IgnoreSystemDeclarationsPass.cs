@@ -83,9 +83,7 @@ namespace CppSharp.Passes
                     foreach (var allocator in GetCharSpecializations(@class))
                     {
                         allocator.GenerationKind = GenerationKind.Generate;
-                        foreach (var method in from method in allocator.Methods
-                                               where method.IsDestructor && method.OriginalName != "c_str"
-                                               select method)
+                        foreach (var method in allocator.Methods)
                             method.ExplicitlyIgnore();
                         var ctor = allocator.Methods.Single(m => m.IsConstructor && !m.Parameters.Any());
                         ctor.GenerationKind = GenerationKind.Generate;
