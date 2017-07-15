@@ -3049,18 +3049,10 @@ namespace CppSharp.Generators.CSharp
             if (overloads.Count > 1)
                 index = overloads.IndexOf(function);
 
-            if (index >= 0)
-            {
-                if (index > 0)
-                {
-                    identifier.Append('_');
-                    identifier.Append(index.ToString(CultureInfo.InvariantCulture));
-                }
-            }
-            else if (function.Index.HasValue)
+            if (index > 0)
             {
                 identifier.Append('_');
-                identifier.Append(function.Index.Value);
+                identifier.Append(index.ToString(CultureInfo.InvariantCulture));
             }
 
             return identifier.ToString();

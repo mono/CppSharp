@@ -179,15 +179,6 @@ namespace CppSharp.Passes
             foreach (var property in @class.Properties)
                 VisitProperty(property);
 
-            var total = (uint)0;
-            foreach (var method in @class.Methods.Where(m => m.IsConstructor &&
-                !m.IsCopyConstructor && !m.IsMoveConstructor))
-                method.Index =  total++;
-
-            total = 0;
-            foreach (var method in @class.Methods.Where(m => m.IsCopyConstructor))
-                method.Index = total++;
-
             return false;
         }
 

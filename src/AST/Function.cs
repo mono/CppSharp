@@ -144,7 +144,6 @@ namespace CppSharp.AST
             Parameters = new List<Parameter>();
             CallingConvention = CallingConvention.Default;
             Signature = string.Empty;
-            Index = null;
         }
 
         public Function(Function function)
@@ -163,7 +162,6 @@ namespace CppSharp.AST
             SynthKind = function.SynthKind;
             OriginalFunction = function.OriginalFunction;
             Mangled = function.Mangled;
-            Index = function.Index;
             Signature = function.Signature;
             FunctionType = function.FunctionType;
             if (function.SpecializationInfo != null)
@@ -248,11 +246,6 @@ namespace CppSharp.AST
         /// Field associated in case of synthetized field acessors.
         /// </summary>
         public Field Field { get; set; }
-
-        /// <summary>
-        /// Keeps an index that de-duplicates native names in the C# backend.
-        /// </summary>
-        public uint? Index { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
