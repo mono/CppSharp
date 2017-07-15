@@ -280,7 +280,7 @@ namespace CppSharp.Generators.CSharp
             var typeMaps = new List<System.Type>();
             var keys = new List<string>();
             // disable the type maps, if any, for this class because of copy ctors, operators and others
-            CSharpSourcesExtensions.DisableTypeMap(@class, typeMaps, keys, Context);
+            this.DisableTypeMap(@class, typeMaps, keys);
 
             PushBlock(BlockKind.Class);
             GenerateDeclarationCommon(@class);

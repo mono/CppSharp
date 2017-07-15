@@ -567,7 +567,7 @@ namespace CppSharp.Generators.CSharp
             return $"{VisitClassDecl(specialization)}<{args}>";
         }
 
-        private TypePrinterResult VisitTemplateArgument(TemplateArgument a)
+        public TypePrinterResult VisitTemplateArgument(TemplateArgument a)
         {
             if (a.Type.Type == null)
                 return a.Integral.ToString(CultureInfo.InvariantCulture);

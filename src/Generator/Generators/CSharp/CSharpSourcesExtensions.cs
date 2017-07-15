@@ -8,14 +8,14 @@ namespace CppSharp.Generators.CSharp
 {
     public static class CSharpSourcesExtensions
     {
-        public static void DisableTypeMap(Class @class,
-            List<System.Type> typeMaps, List<string> keys, BindingContext context)
+        public static void DisableTypeMap(this CSharpSources gen, Class @class,
+            List<System.Type> typeMaps, List<string> keys)
         {
             var mapped = @class.OriginalClass ?? @class;
-            DisableSingleTypeMap(mapped, typeMaps, keys, context);
+            DisableSingleTypeMap(mapped, typeMaps, keys, gen.Context);
             if (mapped.IsDependent)
                 foreach (var specialization in mapped.Specializations)
-                    DisableSingleTypeMap(specialization, typeMaps, keys, context);
+                    DisableSingleTypeMap(specialization, typeMaps, keys, gen.Context);
         }
 
         public static void GenerateNativeConstructorsByValue(
@@ -38,7 +38,7 @@ namespace CppSharp.Generators.CSharp
                 if (@class.Fields.Any(f => f.Type.Desugar() is TemplateParameterType))
                 {
                     foreach (var parameter in @class.TemplateParameters)
-                        gen.WriteLine("var __{0} = typeof({0});", parameter.Name);
+                        gen.WriteLine($"var __{parameter.Name} = typeof({parameter.Name});");
 
                     foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
                     {
@@ -51,7 +51,7 @@ namespace CppSharp.Generators.CSharp
                             gen.WriteLine("return;");
                         gen.WriteCloseBraceIndent();
                     }
-                    gen.WriteLine("throw new global::System.InvalidOperationException();");
+                    ThrowException(gen, @class);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace CppSharp.Generators.CSharp
                         gen.WriteLine("return;");
                     gen.WriteCloseBraceIndent();
                 }
-                gen.WriteLine("throw new global::System.InvalidOperationException();");
+                ThrowException(gen, @class);
             }
             else
             {
@@ -121,6 +121,19 @@ namespace CppSharp.Generators.CSharp
                 i => string.Format("__{0}.IsAssignableFrom(typeof({1}))",
                     @class.TemplateParameters[i].Name,
                     specialization.Arguments[i].Type.Type.Desugar()))));
+        }
+
+        private static void ThrowException(CSharpSources gen, Class @class)
+        {
+            var typePrinter = new CSharpTypePrinter(gen.Context);
+            var supportedTypes = string.Join(", ",
+                @class.Specializations.Where(s => !s.Ignore).Select(s => $@"<{string.Join(", ",
+                    s.Arguments.Select(a => typePrinter.VisitTemplateArgument(a)))}>"));
+            var typeArguments = string.Join(", ", @class.TemplateParameters.Select(p => p.Name));
+            var managedTypes = string.Join(", ", @class.TemplateParameters.Select(p => $"typeof({p.Name}).FullName"));
+            gen.WriteLine($"throw new ArgumentOutOfRangeException(\"{typeArguments}\", "
+                + $@"string.Join("", "", new[] {{ {managedTypes} }}), "
+                + $"\"{@class.Visit(typePrinter)}<{typeArguments}> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: {supportedTypes}.\");");
         }
     }
 }
