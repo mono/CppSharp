@@ -280,8 +280,8 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
-            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new IgnoreSystemDeclarationsPass());
+            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
 
             if (Options.IsCSharpGenerator)
             {
