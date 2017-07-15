@@ -3008,8 +3008,8 @@ namespace CppSharp.Generators.CSharp
             return function.Name;
         }
 
-        public static string GetFunctionNativeIdentifier(Function function,
-            bool ignoreSpecialization = false)
+        public string GetFunctionNativeIdentifier(Function function,
+            bool isForDelegate = false)
         {
             var identifier = new StringBuilder();
 
@@ -3036,17 +3036,26 @@ namespace CppSharp.Generators.CSharp
             }
 
             var specialization = function.Namespace as ClassTemplateSpecialization;
-            if (specialization != null && !ignoreSpecialization)
+            if (specialization != null && !isForDelegate)
                 identifier.Append(Helpers.GetSuffixFor(specialization));
 
+            var internalParams = function.GatherInternalParams(
+                Context.ParserOptions.IsItaniumLikeAbi);
             var overloads = function.Namespace.GetOverloads(function)
-                .Where(f => f.IsGenerated || f.OperatorKind == CXXOperatorKind.Subscript).ToList();
-            var index = overloads.IndexOf(function);
+                .Where(f => !f.Ignore && (isForDelegate || internalParams.SequenceEqual(
+                    f.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi),
+                    new MarshallingParamComparer()))).ToList();
+            var index = -1;
+            if (overloads.Count > 1)
+                index = overloads.IndexOf(function);
 
             if (index >= 0)
             {
-                identifier.Append('_');
-                identifier.Append(index.ToString(CultureInfo.InvariantCulture));
+                if (index > 0)
+                {
+                    identifier.Append('_');
+                    identifier.Append(index.ToString(CultureInfo.InvariantCulture));
+                }
             }
             else if (function.Index.HasValue)
             {
@@ -3132,6 +3141,26 @@ namespace CppSharp.Generators.CSharp
             }
 
             return libName;
+        }
+
+        private class MarshallingParamComparer : IEqualityComparer<Parameter>
+        {
+            public bool Equals(Parameter x, Parameter y) =>
+                IsIntPtr(x) == IsIntPtr(y) || x.Type.Equals(y.Type);
+
+            private static bool IsIntPtr(Parameter p)
+            {
+                var type = p.Type.Desugar();
+                return p.Kind == ParameterKind.IndirectReturnType
+                    || (type.IsAddress()
+                    && (!type.GetPointee().Desugar().IsPrimitiveType()
+                    || type.GetPointee().Desugar().IsPrimitiveType(PrimitiveType.Void)));
+            }
+
+            public int GetHashCode(Parameter obj)
+            {
+                return obj.Type.Desugar().GetHashCode();
+            }
         }
     }
 

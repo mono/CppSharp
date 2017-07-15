@@ -6,7 +6,7 @@ namespace CppSharp.AST
 {
     public static class FunctionExtensions
     {
-        public static IEnumerable<Parameter> GatherInternalParams(this Function function,
+        public static IList<Parameter> GatherInternalParams(this Function function,
             bool isItaniumLikeAbi, bool universalDelegate = false)
         {
             var @params = new List<Parameter>();
