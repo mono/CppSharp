@@ -92,6 +92,11 @@ int IndependentFields<T>::getIndependent()
     return independent;
 }
 
+template <typename X>
+class DerivedChangesTypeName : public IndependentFields<X>
+{
+};
+
 template <typename T>
 class DLL_API DependentValueFields
 {
@@ -302,7 +307,7 @@ struct MapResultType<InputSequence<T>, MapFunctor>
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
                              VirtualTemplate<int> _5, VirtualTemplate<bool> _6,
-                             HasDefaultTemplateArgument<int, int> _7, std::string s);
+                             HasDefaultTemplateArgument<int, int> _7, DerivedChangesTypeName<T1> _8, std::string s);
 
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
@@ -312,3 +317,4 @@ template class DLL_API IndependentFields<std::string>;
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;
+template class DLL_API DerivedChangesTypeName<T1>;

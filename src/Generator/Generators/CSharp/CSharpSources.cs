@@ -641,10 +641,16 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.NeedsBase)
             {
-                bases.AddRange(
-                    from @base in @class.Bases
-                    where @base.IsClass
-                    select @base.Class.Visit(TypePrinter).Type);
+                foreach (var @base in @class.Bases.Where(b => b.IsClass))
+                {
+                    var typeMaps = new List<System.Type>();
+                    var keys = new List<string>();
+                    this.DisableTypeMap(@base.Class, typeMaps, keys);
+                    var printedBase = @base.Type.Desugar().Visit(TypePrinter);
+                    bases.Add(printedBase.Type);
+                    for (int i = 0; i < typeMaps.Count; i++)
+                        Context.TypeMaps.TypeMaps.Add(keys[i], typeMaps[i]);
+                }
             }
 
             if (@class.IsGenerated)

@@ -342,7 +342,8 @@ namespace CppSharp.Generators.CSharp
             if (!TypeMapDatabase.FindTypeMap(template, out typeMap))
             {
                 if (ContextKind == TypePrinterContextKind.Managed &&
-                    decl == template.Template.TemplatedDecl)
+                    decl == template.Template.TemplatedDecl &&
+                    template.Arguments.All(IsValid))
                     return $@"{VisitDeclaration(decl)}<{string.Join(", ",
                         template.Arguments.Select(VisitTemplateArgument))}>";
                 return decl.Visit(this);
@@ -395,7 +396,9 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitInjectedClassNameType(
             InjectedClassNameType injected, TypeQualifiers quals)
         {
-            return injected.Class.Visit(this);
+            return injected.InjectedSpecializationType.Type != null ?
+                injected.InjectedSpecializationType.Visit(this) :
+                injected.Class.Visit(this);
         }
 
         public override TypePrinterResult VisitDependentNameType(DependentNameType dependent,
@@ -774,6 +777,15 @@ namespace CppSharp.Generators.CSharp
             var typePrinterResult = type.Visit(this);
             PopContext();
             return typePrinterResult;
+        }
+
+        private static bool IsValid(TemplateArgument a)
+        {
+            if (a.Type.Type == null)
+                return true;
+            var templateParam = a.Type.Type.Desugar() as TemplateParameterType;
+            // HACK: TemplateParameterType.Parameter is null in some corner cases, see the parser
+            return templateParam == null || templateParam.Parameter != null;
         }
 
         private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);
