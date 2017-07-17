@@ -740,6 +740,31 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestTemplateWithIndexer()
+    {
+        using (var templateWithIndexer = new TemplateWithIndexer<int>())
+        {
+            templateWithIndexer[0] = 5;
+            Assert.That(templateWithIndexer[0], Is.EqualTo(5));
+            templateWithIndexer["test"] = 15;
+            Assert.That(templateWithIndexer["test"], Is.EqualTo(15));
+        }
+        using (var templateWithIndexer = new TemplateWithIndexer<T1>())
+        {
+            using (var t1 = new T1(10))
+            {
+                templateWithIndexer[0] = t1;
+                Assert.That(templateWithIndexer[0].Field, Is.EqualTo(t1.Field));
+            }
+            using (var t1 = new T1(15))
+            {
+                templateWithIndexer["test"] = t1;
+                Assert.That(templateWithIndexer["test"].Field, Is.EqualTo(t1.Field));
+            }
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())

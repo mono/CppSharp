@@ -928,28 +928,36 @@ namespace CppSharp.Generators.CSharp
         {
             Type type;
             function.Type.IsPointerTo(out type);
-            PrimitiveType primitiveType;
+
+            var @internal = TypePrinter.PrintNative(function.Namespace);
+            var ctx = new CSharpMarshalContext(Context)
+            {
+                Parameter = new Parameter
+                {
+                    Name = "value",
+                    QualifiedType = new QualifiedType(type)
+                },
+                ReturnType = new QualifiedType(type)
+            };
+            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+            type.Visit(marshal);
+            Write(marshal.Context.Before);
+
             var internalFunction = GetFunctionNativeIdentifier(function);
-            var @internal = $@"{Helpers.InternalStruct}{
-                Helpers.GetSuffixForInternal(function.Namespace)}";
-            if (type.IsPrimitiveType(out primitiveType))
+            if (type.IsPrimitiveType())
             {
                 WriteLine($@"*{@internal}.{internalFunction}({
-                    GetInstanceParam(function)}, {function.Parameters[0].Name}) = value;");
+                    GetInstanceParam(function)}, {function.Parameters[0].Name}) = {
+                    marshal.Context.Return};");
             }
             else
             {
-                var typeString = type.ToString();
-                Class @class;
-                var isValueType = (type.GetFinalPointee() ?? type).TryGetClass(out @class) &&
-                    @class.IsValueType;
+                var typeInternal = TypePrinter.PrintNative(type);
                 var paramMarshal = GenerateFunctionParamMarshal(
                     function.Parameters[0], 0, function);
-                WriteLine($@"*({typeString}.{@internal}*) {@internal}.{internalFunction}({
+                WriteLine($@"*({typeInternal}*) {@internal}.{internalFunction}({
                     GetInstanceParam(function)}, {(paramMarshal.Context == null ?
-                    paramMarshal.Name : paramMarshal.Context.Return)}) = {
-                    (isValueType ? string.Empty : $@"*({typeString}.{@internal}*) ")}value.{
-                    Helpers.InstanceIdentifier};");
+                    paramMarshal.Name : paramMarshal.Context.Return)}) = {marshal.Context.Return};");
             }
         }
 

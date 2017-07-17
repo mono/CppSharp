@@ -146,7 +146,8 @@ namespace CppSharp.Passes
                 var type = qualType.Type.Desugar();
                 while (type.IsAddress())
                 {
-                    var pointee = ((PointerType) type).Pointee.Desugar(false);
+                    var pointee = ((PointerType) type).Pointee.Desugar(
+                        resolveTemplateSubstitution: false);
                     if (pointee.IsAddress())
                         type = pointee;
                     else

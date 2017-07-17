@@ -167,12 +167,23 @@ namespace CppSharp.Generators.CSharp
                     return true;
                 }
 
-                if (Context.Context.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
-                    Context.Return.Write(string.Format("({0}) ", pointer));
+                if (Context.Context.Options.MarshalCharAsManagedChar &&
+                    primitive == PrimitiveType.Char)
+                    Context.Return.Write($"({pointer}) ");
+
+                var type = Context.ReturnType.Type.Desugar(
+                    resolveTemplateSubstitution: false);
                 if (Context.Function != null &&
                     Context.Function.OperatorKind == CXXOperatorKind.Subscript &&
-                    Context.ReturnType.Type.Desugar().IsPrimitiveType(primitive))
+                    type.IsPrimitiveType(primitive))
+                {
+                    var substitute = type as TemplateParameterSubstitutionType;
+                    if (substitute != null)
+                        Context.Return.Write($@"({
+                            substitute.ReplacedParameter.Parameter.Name}) (object) ");
                     Context.Return.Write("*");
+                }
+
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
@@ -732,7 +743,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             string param = Context.Parameter.Name;
-            Type type = Context.Parameter.Type.Desugar(false);
+            Type type = Context.Parameter.Type.Desugar(resolveTemplateSubstitution: false);
             string paramInstance;
             Class @interface;
             var finalType = type.GetFinalPointee() ?? type;

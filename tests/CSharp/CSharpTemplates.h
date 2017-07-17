@@ -152,6 +152,34 @@ private:
     static bool staticField;
 };
 
+template <typename T>
+class TemplateWithIndexer
+{
+public:
+    TemplateWithIndexer();
+    T& operator[](int i);
+    T& operator[](const char* string);
+private:
+    T t[1];
+};
+
+template <typename T>
+TemplateWithIndexer<T>::TemplateWithIndexer()
+{
+}
+
+template <typename T>
+T& TemplateWithIndexer<T>::operator[](int i)
+{
+    return t[0];
+}
+
+template <typename T>
+T& TemplateWithIndexer<T>::operator[](const char* string)
+{
+    return t[0];
+}
+
 template <typename T, typename D>
 HasDefaultTemplateArgument<T, D>::HasDefaultTemplateArgument()
 {
@@ -307,7 +335,8 @@ struct MapResultType<InputSequence<T>, MapFunctor>
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
                              VirtualTemplate<int> _5, VirtualTemplate<bool> _6,
-                             HasDefaultTemplateArgument<int, int> _7, DerivedChangesTypeName<T1> _8, std::string s);
+                             HasDefaultTemplateArgument<int, int> _7, DerivedChangesTypeName<T1> _8,
+                             TemplateWithIndexer<int> _9, TemplateWithIndexer<T1> _10, std::string s);
 
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
@@ -318,3 +347,5 @@ template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;
 template class DLL_API DerivedChangesTypeName<T1>;
+template class DLL_API TemplateWithIndexer<int>;
+template class DLL_API TemplateWithIndexer<T1>;
