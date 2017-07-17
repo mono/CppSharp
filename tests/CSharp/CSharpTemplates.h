@@ -132,6 +132,7 @@ public:
     void setProperty(const T& t);
     static T staticProperty();
     static void setStaticProperty(const T& t);
+    bool operator==(const HasDefaultTemplateArgument& other);
 private:
     T field;
     static T staticField;
@@ -212,6 +213,12 @@ template <typename T, typename D>
 void HasDefaultTemplateArgument<T, D>::setStaticProperty(const T& t)
 {
     staticField = t;
+}
+
+template <typename T, typename D>
+bool HasDefaultTemplateArgument<T, D>::operator==(const HasDefaultTemplateArgument& other)
+{
+    return field == other.field;
 }
 
 template <typename T, typename D>

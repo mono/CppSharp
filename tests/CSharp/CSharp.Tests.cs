@@ -765,6 +765,19 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestTemplateComparison()
+    {
+        using (var left = new HasDefaultTemplateArgument<int, int>())
+        using (var right = new HasDefaultTemplateArgument<int, int>())
+        {
+            left.Property = 15;
+            right.Property = 15;
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(left.Equals(right));
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())

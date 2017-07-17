@@ -2392,14 +2392,15 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteLine("public override bool Equals(object obj)");
                 WriteStartBraceIndent();
+                var printedClass = @class.Visit(TypePrinter);
                 if (@class.IsRefType)
                 {
-                    WriteLine("return this == obj as {0};", @class.Name);
+                    WriteLine($"return this == obj as {printedClass};");
                 }
                 else
                 {
-                    WriteLine("if (!(obj is {0})) return false;", @class.Name);
-                    WriteLine("return this == ({0}) obj;", @class.Name);
+                    WriteLine($"if (!(obj is {printedClass})) return false;");
+                    WriteLine($"return this == ({printedClass}) obj;");
                 }
                 WriteCloseBraceIndent();
 
@@ -2408,18 +2409,19 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("public override int GetHashCode()");
                 WriteStartBraceIndent();
                 if (@class.IsRefType)
-                {
-                    WriteLine("if ({0} == global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
-                    WriteLineIndent("return global::System.IntPtr.Zero.GetHashCode();");
-                    WriteLine($@"return (*({TypePrinter.PrintNative(@class)}*) {
-                        Helpers.InstanceIdentifier}).GetHashCode();");
-                }
+                    this.GenerateMember(@class, GenerateGetHashCode);
                 else
-                {
-                    WriteLine("return {0}.GetHashCode();", Helpers.InstanceIdentifier);
-                }
+                    WriteLine($"return {Helpers.InstanceIdentifier}.GetHashCode();");
                 WriteCloseBraceIndent();
             }
+        }
+
+        private void GenerateGetHashCode(Class @class)
+        {
+            WriteLine($"if ({Helpers.InstanceIdentifier} == global::System.IntPtr.Zero)");
+            WriteLineIndent("return global::System.IntPtr.Zero.GetHashCode();");
+            WriteLine($@"return (*({TypePrinter.PrintNative(@class)}*) {
+                Helpers.InstanceIdentifier}).GetHashCode();");
         }
 
         private void GenerateVirtualPropertyCall(Method method, Class @class,
