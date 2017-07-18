@@ -340,6 +340,16 @@ void Parser::SetupHeader()
     if (opts->verbose)
         HSOpts.Verbose = true;
 
+#ifndef __APPLE__
+    // Initialize the default platform headers.
+    HSOpts.ResourceDir = GetClangResourceDir();
+
+    llvm::SmallString<128> ResourceDir(HSOpts.ResourceDir);
+    llvm::sys::path::append(ResourceDir, "include");
+    HSOpts.AddPath(ResourceDir.str(), clang::frontend::System, /*IsFramework=*/false,
+        /*IgnoreSysRoot=*/false);
+#endif
+
     for (unsigned I = 0, E = opts->IncludeDirs.size(); I != E; ++I)
     {
         const auto& s = opts->IncludeDirs[I];
@@ -363,14 +373,6 @@ void Parser::SetupHeader()
         const auto& undefine = opts->Undefines[I];
         PPOpts.addMacroUndef(undefine);
     }
-
-    // Initialize the default platform headers.
-    HSOpts.ResourceDir = GetClangResourceDir();
-
-    llvm::SmallString<128> ResourceDir(HSOpts.ResourceDir);
-    llvm::sys::path::append(ResourceDir, "include");
-    HSOpts.AddPath(ResourceDir.str(), clang::frontend::System, /*IsFramework=*/false,
-        /*IgnoreSysRoot=*/false);
 
 #ifdef _MSC_VER
     if (opts->microsoftMode)
