@@ -34,7 +34,11 @@ namespace CppSharp.Parser
                     vsVersion = VisualStudioVersion.VS2017;
                     break;
             }
+            SetupMSVC(vsVersion);
+        }
 
+        public void SetupMSVC(VisualStudioVersion vsVersion)
+        {
             MicrosoftMode = true;
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
