@@ -379,6 +379,16 @@ void CppSharp::Parser::CppParserOptions::TargetTriple::set(System::String^ value
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetTriple = clix::marshalString<clix::E_UTF8>(value);
 }
 
+System::String^ CppSharp::Parser::CppParserOptions::CurrentDir::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::CppParserOptions*)NativePtr)->currentDir);
+}
+
+void CppSharp::Parser::CppParserOptions::CurrentDir::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->currentDir = clix::marshalString<clix::E_UTF8>(value);
+}
+
 CppSharp::Parser::AST::CppAbi CppSharp::Parser::CppParserOptions::Abi::get()
 {
     return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->abi;

@@ -71,19 +71,6 @@ Parser::Parser(CppParserOptions* Opts) : lib(Opts->ASTContext), opts(Opts), inde
 {
 }
 
-//-----------------------------------//
-
-std::string GetCurrentLibraryDir()
-{
-#ifdef HAVE_DLFCN
-    Dl_info dl_info;
-    dladdr((void *)GetCurrentLibraryDir, &dl_info);
-    return dl_info.dli_fname;
-#else
-    return ".";
-#endif
-}
-
 LayoutField Parser::WalkVTablePointer(Class* Class,
     const clang::CharUnits& Offset, const std::string& prefix)
 {
@@ -201,15 +188,14 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     }
 }
 
-static std::string GetClangResourceDir()
+static std::string GetClangResourceDir(std::string CurrentDir)
 {
     using namespace llvm;
     using namespace clang;
 
     // Compute the path to the resource directory.
     StringRef ClangResourceDir(CLANG_RESOURCE_DIR);
-    
-    SmallString<128> P(GetCurrentLibraryDir());
+    SmallString<128> P(CurrentDir);
     llvm::sys::path::remove_filename(P);
     
     if (ClangResourceDir != "")
@@ -342,7 +328,7 @@ void Parser::SetupHeader()
 
 #ifndef __APPLE__
     // Initialize the default platform headers.
-    HSOpts.ResourceDir = GetClangResourceDir();
+    HSOpts.ResourceDir = GetClangResourceDir(opts->currentDir);
 
     llvm::SmallString<128> ResourceDir(HSOpts.ResourceDir);
     llvm::sys::path::append(ResourceDir, "include");
