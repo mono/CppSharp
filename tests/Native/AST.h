@@ -153,6 +153,21 @@ public:
     ///     no string for this control key.
     //----------------------------------------------------------------------
     const char * GetIOHandlerControlSequence(char ch);
+
+    //------------------------------------------------------------------
+    /// Attach to a process by name.
+    ///
+    /// This function implies that a future call to SBTarget::Attach(...)
+    /// will be synchronous.
+    ///
+    /// @param[in] path
+    ///     A full or partial name for the process to attach to.
+    ///
+    /// @param[in] wait_for
+    ///     If \b false, attach to an existing process whose name matches.
+    ///     If \b true, then wait for the next process whose name matches.
+    //------------------------------------------------------------------
+    const char * TestDoxygenBoldTag(char ch);
 };
 
 template <typename T>
