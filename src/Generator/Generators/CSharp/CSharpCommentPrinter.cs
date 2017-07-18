@@ -81,6 +81,17 @@ namespace CppSharp.Generators.CSharp
                 case DocumentationCommentKind.InlineContentComment:
                     break;
                 case DocumentationCommentKind.InlineCommandComment:
+                    var lastSection = sections.Last();
+                    var inlineCommand = (InlineCommandComment) comment;
+                          
+                    if (inlineCommand.CommandKind == CommentCommandKind.B)
+                    {
+                        var argText = $"<c>{inlineCommand.Arguments[0].Text}</c>";
+                        if (lastSection.Lines.Count > 0)
+                            lastSection.Lines[lastSection.Lines.Count - 1] += argText;
+                        else
+                            lastSection.Lines.Add(argText);
+                    }                  
                     break;
                 case DocumentationCommentKind.VerbatimBlockLineComment:
                     break;
@@ -122,7 +133,6 @@ namespace CppSharp.Generators.CSharp
         private static string FormatComment(List<Section> sections, CommentKind kind)
         {
             var commentPrefix = Comment.GetMultiLineCommentPrologue(kind);
-        
             var commentBuilder = new StringBuilder();
             foreach (var section in sections.Where(s => s.Lines.Count > 0))
             {
