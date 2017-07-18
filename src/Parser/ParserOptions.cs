@@ -1,4 +1,5 @@
 ﻿using CppSharp.Parser.AST;
+using System.Reflection;
 
 namespace CppSharp.Parser
 {
@@ -8,6 +9,7 @@ namespace CppSharp.Parser
         {
             Abi = Platform.IsUnixPlatform ? CppAbi.Itanium : CppAbi.Microsoft;
             MicrosoftMode = !Platform.IsUnixPlatform;
+            CurrentDir = Assembly.GetExecutingAssembly().Location;
         }
 
         public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }

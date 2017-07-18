@@ -17839,7 +17839,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 156)]
+            [StructLayout(LayoutKind.Explicit, Size = 180)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -17876,24 +17876,27 @@ namespace CppSharp
                 internal global::Std.BasicString.__Internal targetTriple;
 
                 [FieldOffset(140)]
+                internal global::Std.BasicString.__Internal currentDir;
+
+                [FieldOffset(164)]
                 internal global::CppSharp.Parser.AST.CppAbi abi;
 
-                [FieldOffset(144)]
+                [FieldOffset(168)]
                 internal byte noStandardIncludes;
 
-                [FieldOffset(145)]
+                [FieldOffset(169)]
                 internal byte noBuiltinIncludes;
 
-                [FieldOffset(146)]
+                [FieldOffset(170)]
                 internal byte microsoftMode;
 
-                [FieldOffset(147)]
+                [FieldOffset(171)]
                 internal byte verbose;
 
-                [FieldOffset(148)]
+                [FieldOffset(172)]
                 internal global::CppSharp.Parser.LanguageVersion languageVersion;
 
-                [FieldOffset(152)]
+                [FieldOffset(176)]
                 internal global::System.IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -18304,6 +18307,24 @@ namespace CppSharp
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple = *(global::Std.BasicString.__Internal*) __basicString0.__Instance;
+                }
+            }
+
+            public string CurrentDir
+            {
+                get
+                {
+                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir);
+                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
+                    __basicStringRet.Dispose(false);
+                    return __stringRet;
+                }
+
+                set
+                {
+                    var __allocator0 = new global::Std.Allocator<sbyte>();
+                    var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir = *(global::Std.BasicString.__Internal*) __basicString0.__Instance;
                 }
             }
 

@@ -117,7 +117,7 @@ namespace Std
                 global::Std.Allocator.__Internal.ctorc__N_std_S_allocator__C((__Instance + __PointerAdjustment));
                 return;
             }
-            throw new global::System.InvalidOperationException();
+            throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
         }
 
         public void Dispose()
@@ -139,7 +139,7 @@ namespace Std
                     global::Std.Allocator.__Internal.dtorc__N_std_S_allocator__C((__Instance + __PointerAdjustment));
                     return;
                 }
-                throw new global::System.InvalidOperationException();
+                throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
             }
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
@@ -816,7 +816,7 @@ namespace Std
                     global::Std.BasicString.__Internal.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
                     return;
                 }
-                throw new global::System.InvalidOperationException();
+                throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
             }
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);

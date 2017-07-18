@@ -162,6 +162,12 @@ namespace CppSharp
                 void set(System::String^);
             }
 
+            property System::String^ CurrentDir
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
+
             property CppSharp::Parser::AST::CppAbi Abi
             {
                 CppSharp::Parser::AST::CppAbi get();
