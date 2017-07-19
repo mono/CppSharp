@@ -217,20 +217,7 @@ namespace CppSharp.Passes
         private void WriteRedeclaration(Function function, string returnType,
             string paramTypes, string functionName)
         {
-            var parentsOpen = new Stack<string>();
-            var parentsClose = new StringBuilder();
-            if (function.Namespace is Namespace &&
-                function.Namespace.Namespace is Namespace &&
-                !(function.Namespace.Namespace is TranslationUnit))
-            {
-                var @namespace = function.Namespace;
-                while (!(@namespace is TranslationUnit))
-                {
-                    parentsOpen.Push($"namespace {@namespace.OriginalName} {{ ");
-                    parentsClose.Append(" }");
-                    @namespace = @namespace.Namespace;
-                }
-            }
+            Stack<string> parentsOpen = GenerateNamespace(function);
             var functionType = (FunctionType) function.FunctionType.Type;
             Write($@"{string.Join(string.Empty, parentsOpen)}");
             if (function.IsConstExpr)
@@ -241,7 +228,36 @@ namespace CppSharp.Passes
             Write(paramTypes);
             if (functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept)
                 Write(" noexcept");
-            WriteLine($";{parentsClose}");
+            WriteLine($";{string.Join(string.Empty, parentsOpen.Select(p => " }"))}");
+        }
+
+        private static Stack<string> GenerateNamespace(Function function)
+        {
+            var declarationContextsInSignature = new List<DeclarationContext> { function.Namespace };
+            var typesInSignature = new List<Type> { function.OriginalReturnType.Type };
+            typesInSignature.AddRange(function.Parameters.Select(p => p.Type));
+            foreach (var type in typesInSignature)
+            {
+                Declaration declaration;
+                var finalType = (type.Desugar().GetFinalPointee() ?? type).Desugar();
+                if (finalType.TryGetDeclaration(out declaration))
+                    declarationContextsInSignature.Add(declaration.Namespace);
+            }
+            var nestedNamespace = declarationContextsInSignature.FirstOrDefault(d =>
+                d.Namespace is Namespace && !(d.Namespace is TranslationUnit));
+            var parentsOpen = new Stack<string>();
+            if (nestedNamespace != null)
+            {
+                var @namespace = nestedNamespace;
+                while (!(@namespace is Namespace))
+                    @namespace = @namespace.Namespace;
+                while (!(@namespace is TranslationUnit))
+                {
+                    parentsOpen.Push($"namespace {@namespace.OriginalName} {{ ");
+                    @namespace = @namespace.Namespace;
+                }
+            }
+            return parentsOpen;
         }
 
         private CppTypePrinter cppTypePrinter = new CppTypePrinter
