@@ -167,7 +167,7 @@ public:
     ///     If \b false, attach to an existing process whose name matches.
     ///     If \b true, then wait for the next process whose name matches.
     //------------------------------------------------------------------
-    const char * TestDoxygenBoldTag(char ch);
+    int SBAttachInfo(const char *path, bool wait_for);
 };
 
 template <typename T>

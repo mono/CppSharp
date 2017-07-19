@@ -406,7 +406,7 @@ namespace CppSharp.Generator.Tests.AST
 // <para>no string for this control key.</para>
 // </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
 
-            var methodTestDoxygen = @class.Methods.First(m => m.Name == "TestDoxygenBoldTag");
+            var methodTestDoxygen = @class.Methods.First(m => m.Name == "SBAttachInfo");
             var commentMethodDoxygen = methodTestDoxygen.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Attach to a process by name.</summary>
 /// <remarks>
@@ -415,10 +415,8 @@ namespace CppSharp.Generator.Tests.AST
 /// </remarks>
 /// <param name=""path"">A full or partial name for the process to attach to.</param>
 /// <param name=""wait_for"">
-/// <para>If<c>false,</c></para>
-/// <para>attach to an existing process whose name matches.</para>
-/// <para>If<c>true,</c></para>
-/// <para>then wait for the next process whose name matches.</para>
+/// <para>If <c>false,</c> attach to an existing process whose name matches.</para>
+/// <para>If <c>true,</c> then wait for the next process whose name matches.</para>
 /// </param>".Replace("\r", string.Empty), commentMethodDoxygen.Replace("\r", string.Empty));
         }
 
