@@ -626,7 +626,7 @@ Parameter::~Parameter()
 }
 
 Function::Function() 
-    : Declaration(DeclarationKind::Function)
+    : DeclarationContext(DeclarationKind::Function)
     , isReturnIndirect(false)
     , isConstExpr(false)
     , isVariadic(false)

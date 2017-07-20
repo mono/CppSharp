@@ -915,7 +915,7 @@ namespace CppSharp
 
         bool CheckForDuplicates(Declaration decl)
         {
-            return decl.OriginalPtr.ToPointer() != (void*)(0x1);
+            return decl.OriginalPtr.ToPointer() != (void*) (0x1);
         }
 
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
@@ -942,7 +942,7 @@ namespace CppSharp
             _decl.IsDependent = decl.IsDependent;
             _decl.DefinitionOrder = decl.DefinitionOrder;
             _decl.MaxFieldAlignment = decl.MaxFieldAlignment;
-            
+
             if (decl.CompleteDeclaration != null)
                 _decl.CompleteDeclaration = Visit(decl.CompleteDeclaration);
             if (decl.Comment != null)
@@ -1160,6 +1160,7 @@ namespace CppSharp
         public void VisitFunction(Function function, AST.Function _function)
         {
             VisitDeclaration(function, _function);
+            VisitDeclContext(function, _function);
 
             _function.ReturnType = typeConverter.VisitQualified(function.ReturnType);
             _function.IsReturnIndirect = function.IsReturnIndirect;
@@ -1692,7 +1693,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
                 var spec = decl.GetSpecializations(i);
-                var _spec = (AST.ClassTemplateSpecialization)Visit(spec);
+                var _spec = (AST.ClassTemplateSpecialization) Visit(spec);
                 _decl.Specializations.Add(_spec);
             }
             return _decl;
@@ -1711,7 +1712,7 @@ namespace CppSharp
         {
             VisitClass(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
-            _decl.TemplatedDecl = (AST.ClassTemplate)Visit(decl.TemplatedDecl);
+            _decl.TemplatedDecl = (AST.ClassTemplate) Visit(decl.TemplatedDecl);
             for (uint i = 0; i < decl.ArgumentsCount; ++i)
             {
                 var arg = decl.GetArguments(i);
@@ -1805,8 +1806,8 @@ namespace CppSharp
 
             var _spec = new AST.FunctionTemplateSpecialization();
             FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
-            _spec.Template = (AST.FunctionTemplate)Visit(spec.Template);
-            _spec.SpecializedFunction = (AST.Function)Visit(spec.SpecializedFunction);
+            _spec.Template = (AST.FunctionTemplate) Visit(spec.Template);
+            _spec.SpecializedFunction = (AST.Function) Visit(spec.SpecializedFunction);
             _spec.SpecializationKind = VisitSpecializationKind(spec.SpecializationKind);
             for (uint i = 0; i < spec.ArgumentsCount; ++i)
             {
@@ -1824,7 +1825,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
                 var spec = decl.GetSpecializations(i);
-                var _spec = (AST.VarTemplateSpecialization)Visit(spec);
+                var _spec = (AST.VarTemplateSpecialization) Visit(spec);
                 _decl.Specializations.Add(_spec);
             }
             return _decl;
@@ -1843,7 +1844,7 @@ namespace CppSharp
         {
             VisitVariable(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
-            _decl.TemplatedDecl = (AST.VarTemplate)Visit(decl.TemplatedDecl);
+            _decl.TemplatedDecl = (AST.VarTemplate) Visit(decl.TemplatedDecl);
             for (uint i = 0; i < decl.ArgumentsCount; ++i)
             {
                 var arg = decl.GetArguments(i);

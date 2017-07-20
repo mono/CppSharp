@@ -2012,7 +2012,7 @@ namespace CppSharp
                 }
             };
 
-            public ref class Function : CppSharp::Parser::AST::Declaration
+            public ref class Function : CppSharp::Parser::AST::DeclarationContext
             {
             public:
 

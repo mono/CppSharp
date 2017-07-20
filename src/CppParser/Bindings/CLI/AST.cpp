@@ -2608,13 +2608,13 @@ void CppSharp::Parser::AST::DeclarationContext::Enums::set(System::Collections::
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ CppSharp::Parser::AST::DeclarationContext::Functions::get()
 {
-    auto _tmp__Functions = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Function^>();
+    auto _tmp__Functions_ = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Function^>();
     for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Functions)
     {
         auto _marshalElement = (_element == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)_element);
-        _tmp__Functions->Add(_marshalElement);
+        _tmp__Functions_->Add(_marshalElement);
     }
-    return _tmp__Functions;
+    return _tmp__Functions_;
 }
 
 void CppSharp::Parser::AST::DeclarationContext::Functions::set(System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ value)
@@ -3458,7 +3458,7 @@ void CppSharp::Parser::AST::Parameter::DefaultArgument::set(CppSharp::Parser::AS
 }
 
 CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {
 }
 
@@ -3478,7 +3478,7 @@ CppSharp::Parser::AST::Function::~Function()
 }
 
 CppSharp::Parser::AST::Function::Function()
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
     __ownsNativeInstance = true;
     NativePtr = new ::CppSharp::CppParser::AST::Function();
@@ -3505,7 +3505,7 @@ void CppSharp::Parser::AST::Function::ClearParameters()
 }
 
 CppSharp::Parser::AST::Function::Function(CppSharp::Parser::AST::Function^ _0)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
