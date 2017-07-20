@@ -439,16 +439,6 @@ void CppSharp::Parser::CppParserOptions::Verbose::set(bool value)
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->verbose = value;
 }
 
-CppSharp::Parser::LanguageVersion CppSharp::Parser::CppParserOptions::LanguageVersion::get()
-{
-    return (CppSharp::Parser::LanguageVersion)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->languageVersion;
-}
-
-void CppSharp::Parser::CppParserOptions::LanguageVersion::set(CppSharp::Parser::LanguageVersion value)
-{
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->languageVersion = (::CppSharp::CppParser::LanguageVersion)value;
-}
-
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::CppParserOptions::TargetInfo::get()
 {
     return (((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo);

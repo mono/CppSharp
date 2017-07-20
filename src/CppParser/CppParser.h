@@ -15,34 +15,6 @@ namespace CppSharp { namespace CppParser {
 
 using namespace CppSharp::CppParser::AST;
 
-enum class LanguageVersion
-{
-    /**
-    * The C programming language.
-    */
-    C,
-    /**
-    * The C programming language (GNU version).
-    */
-    GNUC,
-    /**
-    * The C++ programming language year 1998; supports deprecated constructs.
-    */
-    CPlusPlus98,
-    /**
-    * The C++ programming language year 1998; supports deprecated constructs (GNU version).
-    */
-    GNUPlusPlus98,
-    /**
-    * The C++ programming language year 2011.
-    */
-    CPlusPlus11,
-    /**
-    * The C++ programming language year 2011 (GNU version).
-    */
-    GNUPlusPlus11
-};
-
 struct CS_API CppParserOptions
 {
     CppParserOptions();
@@ -71,7 +43,6 @@ struct CS_API CppParserOptions
     bool noBuiltinIncludes;
     bool microsoftMode;
     bool verbose;
-    LanguageVersion languageVersion;
 
     ParserTargetInfo* targetInfo;
 };

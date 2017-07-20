@@ -18,7 +18,6 @@ CppParserOptions::CppParserOptions()
     , noBuiltinIncludes(false)
     , microsoftMode(false)
     , verbose(false)
-    , languageVersion(CppParser::LanguageVersion::GNUPlusPlus11)
     , targetInfo(0)
 {
 }
