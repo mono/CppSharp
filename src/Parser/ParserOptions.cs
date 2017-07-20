@@ -15,6 +15,7 @@ namespace CppSharp.Parser
         public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
         public bool EnableRtti { get; set; }
+        public LanguageVersion LanguageVersion { get; set; } = LanguageVersion.GNUPlusPlus11;
 
         /// Sets up the parser options to work with the given Visual Studio toolchain.
         public void SetupMSVC()
@@ -81,6 +82,39 @@ namespace CppSharp.Parser
 
         private void SetupArguments()
         {
+            switch (LanguageVersion)
+            {
+                case LanguageVersion.C:
+                case LanguageVersion.GNUC:
+                    AddArguments("-xc");
+                    break;
+                default:
+                    AddArguments("-xc++");
+                    break;
+            }
+
+            switch (LanguageVersion)
+            {
+                case LanguageVersion.C:
+                    AddArguments("-std=c99");
+                    break;
+                case LanguageVersion.GNUC:
+                    AddArguments("-std=gnu99");
+                    break;
+                case LanguageVersion.CPlusPlus98:
+                    AddArguments("-std=c++98");
+                    break;
+                case LanguageVersion.GNUPlusPlus98:
+                    AddArguments("-std=gnu++98");
+                    break;
+                case LanguageVersion.CPlusPlus11:
+                    AddArguments(MicrosoftMode ? "-std=c++14" : "-std=c++11");
+                    break;
+                default:
+                    AddArguments(MicrosoftMode ? "-std=gnu++14" : "-std=gnu++11");
+                    break;
+            }
+
             if (!EnableRtti)
                 AddArguments("-fno-rtti");
         }
@@ -93,4 +127,32 @@ namespace CppSharp.Parser
                 SetupMSVC();
         }
     }
+
+    public enum LanguageVersion
+    {
+        /**
+        * The C programming language.
+        */
+        C,
+        /**
+        * The C programming language (GNU version).
+        */
+        GNUC,
+        /**
+        * The C++ programming language year 1998; supports deprecated constructs.
+        */
+        CPlusPlus98,
+        /**
+        * The C++ programming language year 1998; supports deprecated constructs (GNU version).
+        */
+        GNUPlusPlus98,
+        /**
+        * The C++ programming language year 2011.
+        */
+        CPlusPlus11,
+        /**
+        * The C++ programming language year 2011 (GNU version).
+        */
+        GNUPlusPlus11
+    };
 }

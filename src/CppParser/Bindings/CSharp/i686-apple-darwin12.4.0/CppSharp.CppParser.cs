@@ -17749,22 +17749,6 @@ namespace CppSharp
 {
     namespace Parser
     {
-        public enum LanguageVersion
-        {
-            /// <summary>The C programming language.</summary>
-            C = 0,
-            /// <summary>The C programming language (GNU version).</summary>
-            GNUC = 1,
-            /// <summary>The C++ programming language year 1998; supports deprecated constructs.</summary>
-            CPlusPlus98 = 2,
-            /// <summary>The C++ programming language year 1998; supports deprecated constructs (GNU version).</summary>
-            GNUPlusPlus98 = 3,
-            /// <summary>The C++ programming language year 2011.</summary>
-            CPlusPlus11 = 4,
-            /// <summary>The C++ programming language year 2011 (GNU version).</summary>
-            GNUPlusPlus11 = 5
-        }
-
         public enum ParserDiagnosticLevel
         {
             Ignored = 0,
@@ -17839,7 +17823,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 144)]
+            [StructLayout(LayoutKind.Explicit, Size = 140)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -17894,9 +17878,6 @@ namespace CppSharp
                 internal byte verbose;
 
                 [FieldOffset(136)]
-                internal global::CppSharp.Parser.LanguageVersion languageVersion;
-
-                [FieldOffset(140)]
                 internal global::System.IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -18390,19 +18371,6 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->verbose = (byte) (value ? 1 : 0);
-                }
-            }
-
-            public global::CppSharp.Parser.LanguageVersion LanguageVersion
-            {
-                get
-                {
-                    return ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->languageVersion;
-                }
-
-                set
-                {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->languageVersion = value;
                 }
             }
 
