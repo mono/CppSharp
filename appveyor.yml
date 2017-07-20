@@ -41,6 +41,7 @@ environment:
     secure: CrxPDgxTKC9ZRvFjttpRPO+e1DT8s0Zkk9HrAmHOIzDkOfFbbu1iTm/yJjZ2eDcd
 
 init:
+  - ps: '[System.IO.File]::AppendAllText("C:\Windows\System32\drivers\etc\hosts", "`n93.184.221.200`tapi.nuget.org")'
   - git config --global core.autocrlf true
 
 install:
