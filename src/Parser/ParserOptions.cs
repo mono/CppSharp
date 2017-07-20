@@ -79,18 +79,18 @@ namespace CppSharp.Parser
             SetupIncludes();
         }
 
+        private void SetupArguments()
+        {
+            if (!EnableRtti)
+                AddArguments("-fno-rtti");
+        }
+
         private void SetupIncludes()
         {
             if (Platform.IsMacOS)
                 SetupXcode();
             else if (Platform.IsWindows && !NoBuiltinIncludes)
                 SetupMSVC();
-        }
-
-        private void SetupArguments()
-        {
-            if (!EnableRtti)
-                AddArguments("-fno-rtti");
         }
     }
 }
