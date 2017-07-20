@@ -82,6 +82,8 @@ namespace CppSharp.Parser
 
         private void SetupArguments()
         {
+            AddArguments("-cc1");
+
             switch (LanguageVersion)
             {
                 case LanguageVersion.C:

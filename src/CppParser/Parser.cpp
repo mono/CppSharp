@@ -235,7 +235,6 @@ void Parser::SetupHeader()
     using namespace clang;
 
     std::vector<const char*> args;
-    args.push_back("-cc1");
 
     for (unsigned I = 0, E = opts->Arguments.size(); I != E; ++I)
     {
