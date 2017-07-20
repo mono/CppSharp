@@ -269,7 +269,6 @@ void Parser::SetupHeader()
         args.push_back(opts->microsoftMode ? "-std=gnu++14" : "-std=gnu++11");
         break;
     }
-    args.push_back("-fno-rtti");
 
     for (unsigned I = 0, E = opts->Arguments.size(); I != E; ++I)
     {

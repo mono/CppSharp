@@ -65,7 +65,7 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions();
-            ParserOptions.SetupIncludes();
+            ParserOptions.Setup();
             Context = new BindingContext(Options, ParserOptions);
             Context.TypeMaps.SetupTypeMaps(Options.GeneratorKind);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);

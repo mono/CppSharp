@@ -14,6 +14,7 @@ namespace CppSharp.Parser
 
         public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
+        public bool EnableRtti { get; set; }
 
         /// Sets up the parser options to work with the given Visual Studio toolchain.
         public void SetupMSVC()
@@ -72,12 +73,24 @@ namespace CppSharp.Parser
             AddArguments("-stdlib=libc++");
         }
 
-        public void SetupIncludes()
+        public void Setup()
+        {
+            SetupArguments();
+            SetupIncludes();
+        }
+
+        private void SetupIncludes()
         {
             if (Platform.IsMacOS)
                 SetupXcode();
             else if (Platform.IsWindows && !NoBuiltinIncludes)
                 SetupMSVC();
+        }
+
+        private void SetupArguments()
+        {
+            if (!EnableRtti)
+                AddArguments("-fno-rtti");
         }
     }
 }
