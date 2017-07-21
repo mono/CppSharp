@@ -137,7 +137,7 @@ namespace CppSharp.AST
         Undeclared
     }
 
-    public class Function : Declaration, ITypedDecl, IMangledDecl
+    public class Function : DeclarationContext, ITypedDecl, IMangledDecl
     {
         public Function()
         {

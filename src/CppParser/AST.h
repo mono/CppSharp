@@ -716,7 +716,7 @@ enum class FriendKind
     Undeclared
 };
 
-class CS_API Function : public Declaration
+class CS_API Function : public DeclarationContext
 {
 public:
     Function();

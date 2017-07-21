@@ -60,10 +60,11 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
+
             if (AlreadyVisited(decl))
                 return false;
 
-            if (decl is DeclarationContext && !(decl is Class))
+            if (decl is DeclarationContext && !(decl is Class) && !(decl is Function))
                 return true;
 
             var expansions = decl.PreprocessedEntities.OfType<MacroExpansion>();

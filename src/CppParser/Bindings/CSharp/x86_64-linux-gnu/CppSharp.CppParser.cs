@@ -7048,9 +7048,9 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Function : global::CppSharp.Parser.AST.Declaration, IDisposable
+            public unsafe partial class Function : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 272)]
+                [StructLayout(LayoutKind.Explicit, Size = 544)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -7111,57 +7111,90 @@ namespace CppSharp
                     internal global::System.IntPtr comment;
 
                     [FieldOffset(152)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
-
-                    [FieldOffset(168)]
-                    internal byte isReturnIndirect;
-
-                    [FieldOffset(169)]
-                    internal byte hasThisReturn;
-
-                    [FieldOffset(170)]
-                    internal byte isConstExpr;
-
-                    [FieldOffset(171)]
-                    internal byte isVariadic;
-
-                    [FieldOffset(172)]
-                    internal byte isInline;
-
-                    [FieldOffset(173)]
-                    internal byte isPure;
-
-                    [FieldOffset(174)]
-                    internal byte isDeleted;
+                    internal global::Std.Vector.__Internal Namespaces;
 
                     [FieldOffset(176)]
-                    internal global::CppSharp.Parser.AST.FriendKind friendKind;
-
-                    [FieldOffset(180)]
-                    internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
-
-                    [FieldOffset(184)]
-                    internal global::Std.BasicString.__Internal mangled;
-
-                    [FieldOffset(192)]
-                    internal global::Std.BasicString.__Internal signature;
+                    internal global::Std.Vector.__Internal Enums;
 
                     [FieldOffset(200)]
-                    internal global::Std.BasicString.__Internal body;
+                    internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(208)]
-                    internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
-
-                    [FieldOffset(216)]
-                    internal global::Std.Vector.__Internal Parameters;
-
-                    [FieldOffset(240)]
-                    internal global::System.IntPtr specializationInfo;
+                    [FieldOffset(224)]
+                    internal global::Std.Vector.__Internal Classes;
 
                     [FieldOffset(248)]
+                    internal global::Std.Vector.__Internal Templates;
+
+                    [FieldOffset(272)]
+                    internal global::Std.Vector.__Internal Typedefs;
+
+                    [FieldOffset(296)]
+                    internal global::Std.Vector.__Internal TypeAliases;
+
+                    [FieldOffset(320)]
+                    internal global::Std.Vector.__Internal Variables;
+
+                    [FieldOffset(344)]
+                    internal global::Std.Vector.__Internal Friends;
+
+                    [FieldOffset(368)]
+                    internal global::Std.Map.__Internal anonymous;
+
+                    [FieldOffset(416)]
+                    internal byte isAnonymous;
+
+                    [FieldOffset(424)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
+
+                    [FieldOffset(440)]
+                    internal byte isReturnIndirect;
+
+                    [FieldOffset(441)]
+                    internal byte hasThisReturn;
+
+                    [FieldOffset(442)]
+                    internal byte isConstExpr;
+
+                    [FieldOffset(443)]
+                    internal byte isVariadic;
+
+                    [FieldOffset(444)]
+                    internal byte isInline;
+
+                    [FieldOffset(445)]
+                    internal byte isPure;
+
+                    [FieldOffset(446)]
+                    internal byte isDeleted;
+
+                    [FieldOffset(448)]
+                    internal global::CppSharp.Parser.AST.FriendKind friendKind;
+
+                    [FieldOffset(452)]
+                    internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
+
+                    [FieldOffset(456)]
+                    internal global::Std.BasicString.__Internal mangled;
+
+                    [FieldOffset(464)]
+                    internal global::Std.BasicString.__Internal signature;
+
+                    [FieldOffset(472)]
+                    internal global::Std.BasicString.__Internal body;
+
+                    [FieldOffset(480)]
+                    internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
+
+                    [FieldOffset(488)]
+                    internal global::Std.Vector.__Internal Parameters;
+
+                    [FieldOffset(512)]
+                    internal global::System.IntPtr specializationInfo;
+
+                    [FieldOffset(520)]
                     internal global::System.IntPtr instantiatedFrom;
 
-                    [FieldOffset(256)]
+                    [FieldOffset(528)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7549,7 +7582,7 @@ namespace CppSharp
 
             public unsafe partial class Method : global::CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 312)]
+                [StructLayout(LayoutKind.Explicit, Size = 584)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -7610,90 +7643,123 @@ namespace CppSharp
                     internal global::System.IntPtr comment;
 
                     [FieldOffset(152)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
-
-                    [FieldOffset(168)]
-                    internal byte isReturnIndirect;
-
-                    [FieldOffset(169)]
-                    internal byte hasThisReturn;
-
-                    [FieldOffset(170)]
-                    internal byte isConstExpr;
-
-                    [FieldOffset(171)]
-                    internal byte isVariadic;
-
-                    [FieldOffset(172)]
-                    internal byte isInline;
-
-                    [FieldOffset(173)]
-                    internal byte isPure;
-
-                    [FieldOffset(174)]
-                    internal byte isDeleted;
+                    internal global::Std.Vector.__Internal Namespaces;
 
                     [FieldOffset(176)]
-                    internal global::CppSharp.Parser.AST.FriendKind friendKind;
-
-                    [FieldOffset(180)]
-                    internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
-
-                    [FieldOffset(184)]
-                    internal global::Std.BasicString.__Internal mangled;
-
-                    [FieldOffset(192)]
-                    internal global::Std.BasicString.__Internal signature;
+                    internal global::Std.Vector.__Internal Enums;
 
                     [FieldOffset(200)]
-                    internal global::Std.BasicString.__Internal body;
+                    internal global::Std.Vector.__Internal Functions;
 
-                    [FieldOffset(208)]
-                    internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
-
-                    [FieldOffset(216)]
-                    internal global::Std.Vector.__Internal Parameters;
-
-                    [FieldOffset(240)]
-                    internal global::System.IntPtr specializationInfo;
+                    [FieldOffset(224)]
+                    internal global::Std.Vector.__Internal Classes;
 
                     [FieldOffset(248)]
-                    internal global::System.IntPtr instantiatedFrom;
-
-                    [FieldOffset(256)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
+                    internal global::Std.Vector.__Internal Templates;
 
                     [FieldOffset(272)]
+                    internal global::Std.Vector.__Internal Typedefs;
+
+                    [FieldOffset(296)]
+                    internal global::Std.Vector.__Internal TypeAliases;
+
+                    [FieldOffset(320)]
+                    internal global::Std.Vector.__Internal Variables;
+
+                    [FieldOffset(344)]
+                    internal global::Std.Vector.__Internal Friends;
+
+                    [FieldOffset(368)]
+                    internal global::Std.Map.__Internal anonymous;
+
+                    [FieldOffset(416)]
+                    internal byte isAnonymous;
+
+                    [FieldOffset(424)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
+
+                    [FieldOffset(440)]
+                    internal byte isReturnIndirect;
+
+                    [FieldOffset(441)]
+                    internal byte hasThisReturn;
+
+                    [FieldOffset(442)]
+                    internal byte isConstExpr;
+
+                    [FieldOffset(443)]
+                    internal byte isVariadic;
+
+                    [FieldOffset(444)]
+                    internal byte isInline;
+
+                    [FieldOffset(445)]
+                    internal byte isPure;
+
+                    [FieldOffset(446)]
+                    internal byte isDeleted;
+
+                    [FieldOffset(448)]
+                    internal global::CppSharp.Parser.AST.FriendKind friendKind;
+
+                    [FieldOffset(452)]
+                    internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
+
+                    [FieldOffset(456)]
+                    internal global::Std.BasicString.__Internal mangled;
+
+                    [FieldOffset(464)]
+                    internal global::Std.BasicString.__Internal signature;
+
+                    [FieldOffset(472)]
+                    internal global::Std.BasicString.__Internal body;
+
+                    [FieldOffset(480)]
+                    internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
+
+                    [FieldOffset(488)]
+                    internal global::Std.Vector.__Internal Parameters;
+
+                    [FieldOffset(512)]
+                    internal global::System.IntPtr specializationInfo;
+
+                    [FieldOffset(520)]
+                    internal global::System.IntPtr instantiatedFrom;
+
+                    [FieldOffset(528)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
+
+                    [FieldOffset(544)]
                     internal byte isVirtual;
 
-                    [FieldOffset(273)]
+                    [FieldOffset(545)]
                     internal byte isStatic;
 
-                    [FieldOffset(274)]
+                    [FieldOffset(546)]
                     internal byte isConst;
 
-                    [FieldOffset(275)]
+                    [FieldOffset(547)]
                     internal byte isExplicit;
 
-                    [FieldOffset(276)]
+                    [FieldOffset(548)]
                     internal byte isOverride;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(552)]
                     internal global::CppSharp.Parser.AST.CXXMethodKind methodKind;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(556)]
                     internal byte isDefaultConstructor;
 
-                    [FieldOffset(285)]
+                    [FieldOffset(557)]
                     internal byte isCopyConstructor;
 
-                    [FieldOffset(286)]
+                    [FieldOffset(558)]
                     internal byte isMoveConstructor;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(560)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal conversionType;
 
-                    [FieldOffset(304)]
+                    [FieldOffset(576)]
                     internal global::CppSharp.Parser.AST.RefQualifierKind refQualifier;
 
                     [SuppressUnmanagedCodeSecurity]
