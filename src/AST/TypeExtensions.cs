@@ -347,5 +347,18 @@
             }
             return false;
         }
+
+        public static Module GetModule(this Type type)
+        {
+            Declaration declaration;
+            if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
+                return null;
+
+            declaration = declaration.CompleteDeclaration ?? declaration;
+            if (declaration.Namespace == null || declaration.TranslationUnit.Module == null)
+                return null;
+
+            return declaration.TranslationUnit.Module;
+        }
     }
 }

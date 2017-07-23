@@ -56,6 +56,7 @@ class TemplateClass
         int i;
         float f;
     };
+    T t;
 };
 
 class DLL_API HasVirtualInCore

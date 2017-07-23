@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
@@ -100,30 +101,14 @@ namespace CppSharp.Passes
 
         private void CleanSpecializations(Class template)
         {
-            template.Specializations.RemoveAll(s => 
+            template.Specializations.RemoveAll(s =>
                 !specializations.Contains(s) && !internalSpecializations.Contains(s));
 
             foreach (var specialization in template.Specializations.Where(
-                s => !s.IsExplicitlyGenerated &&
-                (s.Arguments.Any(a =>
-                {
-                    if (a.Kind != TemplateArgument.ArgumentKind.Declaration &&
-                        a.Kind != TemplateArgument.ArgumentKind.Template &&
-                        a.Kind != TemplateArgument.ArgumentKind.Type)
-                        return true;
-
-                    var type = a.Type.Type.Desugar();
-                    if (ASTUtils.IsTypeExternal(template.TranslationUnit.Module, type) ||
-                        type.IsPrimitiveType(PrimitiveType.Void))
-                        return true;
-
-                    var typeIgnoreChecker = new TypeIgnoreChecker(TypeMaps);
-                    type.Visit(typeIgnoreChecker);
-                    return typeIgnoreChecker.IsIgnored;
-                }) ||
-                s.SpecializationKind == TemplateSpecializationKind.ExplicitSpecialization ||
-                s is ClassTemplatePartialSpecialization ||
-                internalSpecializations.Contains(s))))
+                s => !s.IsExplicitlyGenerated
+                    && (s.SpecializationKind == TemplateSpecializationKind.ExplicitSpecialization
+                    || s is ClassTemplatePartialSpecialization
+                    || internalSpecializations.Contains(s))))
                 specialization.ExplicitlyIgnore();
 
             Func<TemplateArgument, bool> allPointers =
@@ -148,6 +133,34 @@ namespace CppSharp.Passes
             if (!template.IsExplicitlyGenerated &&
                 template.Specializations.All(s => s.Ignore))
                 template.ExplicitlyIgnore();
+
+            MoveExternalSpecializations(template);
+        }
+
+        /// <summary>
+        /// Moves specializations which use in their arguments types located outside
+        /// the library their template is located in, to the module of said external types.
+        /// </summary>
+        /// <param name="template">The template to check for external specializations.</param>
+        private static void MoveExternalSpecializations(Class template)
+        {
+            for (int i = template.Specializations.Count - 1; i >= 0; i--)
+            {
+                var specialization = template.Specializations[i];
+                var modules = (from arg in specialization.Arguments
+                               where arg.Type.Type != null
+                                   && ASTUtils.IsTypeExternal(
+                                          template.TranslationUnit.Module, arg.Type.Type)
+                               let module = arg.Type.Type.GetModule()
+                               where module != null
+                               select module).ToList().TopologicalSort(m => m.Dependencies);
+                if (modules.Any())
+                {
+                    var module = modules.Last();
+                    module.ExternalClassTemplateSpecializations.Add(specialization);
+                    template.Specializations.RemoveAt(i);
+                }
+            }
         }
 
         private void CheckForInternalSpecialization(Declaration container, AST.Type type)

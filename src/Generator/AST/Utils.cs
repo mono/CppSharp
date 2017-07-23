@@ -130,15 +130,8 @@ namespace CppSharp.AST
 
         public static bool IsTypeExternal(Module module, Type type)
         {
-            Declaration declaration;
-            if (!(type.GetFinalPointee() ?? type).TryGetDeclaration(out declaration))
-                return false;
-
-            declaration = declaration.CompleteDeclaration ?? declaration;
-            if (declaration.Namespace == null || declaration.TranslationUnit.Module == null)
-                return false;
-
-            return declaration.TranslationUnit.Module.Dependencies.Contains(module);
+            var typeModule = type.GetModule();
+            return typeModule != null && typeModule.Dependencies.Contains(module);
         }
 
         private static bool UsesAdditionalTypeParam(Method method)

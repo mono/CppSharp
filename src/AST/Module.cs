@@ -44,9 +44,9 @@ namespace CppSharp.AST
                 if (string.IsNullOrEmpty(symbolsLibraryName))
                 {
                     if (string.IsNullOrEmpty(OutputNamespace))
-                        return string.Format("{0}-symbols", LibraryName);
+                        return $"{LibraryName}-symbols";
 
-                    return string.Format("{0}-symbols", OutputNamespace);
+                    return $"{OutputNamespace}-symbols";
                 }
 
                 return symbolsLibraryName;
@@ -60,5 +60,11 @@ namespace CppSharp.AST
 
         private string sharedLibraryName;
         private string symbolsLibraryName;
+
+        /// <summary>
+        /// Gets the class template specializations which use in their arguments
+        /// types located in this <see cref="Module"/> which is not the module their template is located in.
+        /// </summary>
+        public HashSet<ClassTemplateSpecialization> ExternalClassTemplateSpecializations { get; } = new HashSet<ClassTemplateSpecialization>();
     }
 }

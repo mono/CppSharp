@@ -82,6 +82,53 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+
+            GenerateExternalClassTemplateSpecializations();
+        }
+
+        private void GenerateExternalClassTemplateSpecializations()
+        {
+            foreach (var group in from spec in Module.ExternalClassTemplateSpecializations
+                                  let module = spec.TranslationUnit.Module
+                                  group spec by module.OutputNamespace into @group
+                                  select @group)
+            {
+                PushBlock(BlockKind.Namespace);
+                if (!string.IsNullOrEmpty(group.Key))
+                {
+                    WriteLine($"namespace {group.Key}");
+                    WriteStartBraceIndent();
+                }
+
+                foreach (var template in from s in @group
+                                         group s by s.TemplatedDecl.TemplatedClass into template
+                                         select template)
+                {
+                    var declContext = template.Key.Namespace;
+                    var declarationContexts = new Stack<DeclarationContext>();
+                    while (!(declContext is TranslationUnit))
+                    {
+                        declarationContexts.Push(declContext);
+                        declContext = declContext.Namespace;
+                    }
+
+                    foreach (var declarationContext in declarationContexts)
+                    {
+                        WriteLine($"namespace {declarationContext.Name}");
+                        WriteStartBraceIndent();
+                    }
+
+                    GenerateClassTemplateSpecializationsInternals(
+                        template.Key, template.ToList(), false);
+
+                    foreach (var declarationContext in declarationContexts)
+                        WriteCloseBraceIndent();
+                }
+
+                if (!string.IsNullOrEmpty(group.Key))
+                    WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
         }
 
         public void GenerateUsings()
@@ -207,32 +254,56 @@ namespace CppSharp.Generators.CSharp
             if (classTemplate.Specializations.Count == 0)
                 return;
 
-            var specializations = classTemplate.GetSpecializationsToGenerate();
+            GenerateClassTemplateSpecializationsInternals(classTemplate,
+                classTemplate.Specializations, true);
+        }
 
+        private void GenerateClassTemplateSpecializationsInternals(Class classTemplate,
+            IList<ClassTemplateSpecialization> specializations, bool generateNested)
+        {
             PushBlock(BlockKind.Namespace);
+            var generated = GetGenerated(specializations);
             WriteLine("namespace {0}{1}",
                 classTemplate.OriginalNamespace is Class ?
                     classTemplate.OriginalNamespace.Name + '_' : string.Empty,
                 classTemplate.Name);
             WriteStartBraceIndent();
 
-            foreach (var specialization in specializations)
+            foreach (var specialization in generated)
                 GenerateClassInternals(specialization);
 
-            foreach (var nestedClass in classTemplate.Classes.Where(c => !c.IsDependent).Union(
-                specializations[0].Classes.Where(c => !c.IsDependent)))
+            if (generateNested)
             {
-                GenerateClassInternalsOnly(nestedClass);
-                foreach (var nestedNestedClass in nestedClass.Classes)
+                foreach (var nestedClass in classTemplate.Classes.Where(c => !c.IsDependent).Union(
+                    generated.First().Classes.Where(c => !c.IsDependent)))
                 {
-                    GenerateClassInternalsOnly(nestedNestedClass);
+                    GenerateClassInternalsOnly(nestedClass);
+                    foreach (var nestedNestedClass in nestedClass.Classes)
+                    {
+                        GenerateClassInternalsOnly(nestedNestedClass);
+                        WriteCloseBraceIndent();
+                    }
                     WriteCloseBraceIndent();
                 }
-                WriteCloseBraceIndent();
             }
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private IEnumerable<ClassTemplateSpecialization> GetGenerated(
+            IList<ClassTemplateSpecialization> specializations)
+        {
+            var specialization = specializations.FirstOrDefault(s => !s.Ignore);
+            if (specialization == null)
+                specialization = specializations[0];
+
+            Class classTemplate = specialization.TemplatedDecl.TemplatedClass;
+            if (classTemplate.Fields.Any(
+                f => f.Type.Desugar() is TemplateParameterType))
+                return specializations;
+
+            return new List<ClassTemplateSpecialization> { specialization };
         }
 
         private void GenerateClassInternalsOnly(Class c)
