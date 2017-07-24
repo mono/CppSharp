@@ -1789,41 +1789,17 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
             const LinkageSpecDecl* LD = cast<LinkageSpecDecl>(Ctx);
             continue;
         }
-        case Decl::Record:
-        {
-            auto RD = cast<RecordDecl>(Ctx);
-            DC = WalkRecord(RD);
-            continue;
-        }
         case Decl::CXXRecord:
         {
             auto RD = cast<CXXRecordDecl>(Ctx);
             DC = WalkRecordCXX(RD);
             continue;
         }
-        case Decl::ClassTemplateSpecialization:
-        {
-            auto CTSpec = cast<ClassTemplateSpecializationDecl>(Ctx);
-            DC = WalkClassTemplateSpecialization(CTSpec);
-            continue;
-        }
-        case Decl::ClassTemplatePartialSpecialization:
-        {
-            auto CTPSpec = cast<ClassTemplatePartialSpecializationDecl>(Ctx);
-            DC = WalkClassTemplatePartialSpecialization(CTPSpec);
-            continue;
-        }
-        case Decl::Enum:
-        {
-            auto CTPSpec = cast<EnumDecl>(Ctx);
-            DC = WalkEnum(CTPSpec);
-            continue;
-        }
         default:
         {
-            StringRef Kind = Ctx->getDeclKindName();
-            printf("Unhandled declaration context kind: %s\n", Kind.str().c_str());
-            assert(0 && "Unhandled declaration context kind");
+            auto D = cast<Decl>(Ctx);
+            auto Decl = WalkDeclaration(D);
+            DC = cast<DeclarationContext>(Decl);
         } }
     }
 
