@@ -134,7 +134,8 @@ namespace CppSharp.Passes
                 template.Specializations.All(s => s.Ignore))
                 template.ExplicitlyIgnore();
 
-            MoveExternalSpecializations(template);
+            if (template.Fields.Any(f => f.Type.Desugar() is TemplateParameterType))
+                MoveExternalSpecializations(template);
         }
 
         /// <summary>
