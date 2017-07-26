@@ -406,8 +406,8 @@ namespace CppSharp.Generator.Tests.AST
 // <para>no string for this control key.</para>
 // </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
 
-            var methodTestDoxygen = @class.Methods.First(m => m.Name == "SBAttachInfo");
-            var commentMethodDoxygen = methodTestDoxygen.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
+            var methodTestDoxygenBold = @class.Methods.First(m => m.Name == "SBAttachInfo");
+            var commentMethodDoxygen = methodTestDoxygenBold.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Attach to a process by name.</summary>
 /// <remarks>
 /// <para>This function implies that a future call to SBTarget::Attach(...)</para>

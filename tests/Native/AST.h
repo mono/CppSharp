@@ -168,6 +168,26 @@ public:
     ///     If \b true, then wait for the next process whose name matches.
     //------------------------------------------------------------------
     int SBAttachInfo(const char *path, bool wait_for);
+
+    /*! @brief Destroys the specified window and its context.
+    *
+    *  This function destroys the specified window and its context.  On calling
+    *  this function, no further callbacks will be called for that window.
+    *
+    *  If the context of the specified window is current on the main thread, it is
+    *  detached before being destroyed.
+    *
+    *  @param[in] window The window to destroy.
+    *
+    *  @note The context of the specified window must not be current on any other
+    *  thread when this function is called.
+    *
+    *  @reentrancy This function must not be called from a callback.
+    *
+    *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
+    *
+    */
+     void glfwDestroyWindow(char* window);
 };
 
 template <typename T>
