@@ -101,7 +101,8 @@ namespace CppSharp.Passes
                 };
 
             var returnType = @operator.Type;
-            if (returnType.IsAddress())
+            if (returnType.IsAddress() &&
+                !returnType.GetQualifiedPointee().Type.Desugar().IsPrimitiveType(PrimitiveType.Void))
             {
                 var pointer = (PointerType) returnType;
                 var qualifiedPointee = pointer.QualifiedPointee;

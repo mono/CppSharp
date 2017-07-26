@@ -844,4 +844,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(indexproperty[&a], Is.EqualTo(2));
         }
     }
+
+    [Test]
+    public void TestVoidPtrReturningIndexer()
+    {
+        using (var indexproperty = new TestIndexedProperties())
+        {
+            uint n = 21;
+            Assert.That(*((int*) indexproperty[n]), Is.EqualTo(21));
+        }
+    }
 }
