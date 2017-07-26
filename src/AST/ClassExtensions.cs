@@ -47,23 +47,24 @@ namespace CppSharp.AST
             foreach (var @base in @class.Bases.Where(
                 b => b.IsClass && b.Class.OriginalClass != @class && (!onlyPrimaryBase || !b.Class.IsInterface)))
             {
+                var baseClass = @base.Class.OriginalClass ?? @base.Class;
                 Method baseMethod;
                 if (!getTopmost)
                 {
-                    baseMethod = @base.Class.GetBaseMethod(@override, onlyPrimaryBase);
+                    baseMethod = baseClass.GetBaseMethod(@override, onlyPrimaryBase);
                     if (baseMethod != null)
                         return baseMethod;
                 }
 
-                baseMethod = (from method in @base.Class.Methods
-                    where @override.CanOverride(method)
-                    select method).FirstOrDefault();
+                baseMethod = (from method in baseClass.Methods
+                              where @override.CanOverride(method)
+                              select method).FirstOrDefault();
                 if (baseMethod != null)
                     return baseMethod;
 
                 if (getTopmost)
                 {
-                    baseMethod = (@base.Class.GetBaseMethod(@override, onlyPrimaryBase, true));
+                    baseMethod = (baseClass.GetBaseMethod(@override, onlyPrimaryBase, true));
                     if (baseMethod != null)
                         return baseMethod;
                 }

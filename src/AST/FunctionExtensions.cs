@@ -89,7 +89,9 @@ namespace CppSharp.AST
         {
             return (method.OriginalName == @override.OriginalName &&
                 method.OriginalReturnType.ResolvesTo(@override.OriginalReturnType) &&
-                method.Parameters.SequenceEqual(@override.Parameters, ParameterTypeComparer.Instance)) ||
+                method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType).SequenceEqual(
+                    @override.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType),
+                    ParameterTypeComparer.Instance)) ||
                 (@override.IsDestructor && method.IsDestructor && method.IsVirtual);
         }
     }
