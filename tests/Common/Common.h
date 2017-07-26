@@ -901,12 +901,17 @@ class DLL_API HasVirtualProperty
 public:
     virtual int getProperty();
     virtual void setProperty(int target);
+protected:
+    virtual int getProtectedProperty();
+    virtual void setProtectedProperty(int value);
 };
 
 class DLL_API ChangedAccessOfInheritedProperty : public HasVirtualProperty
 {
 public:
     ChangedAccessOfInheritedProperty();
+    int getProtectedProperty();
+    void setProtectedProperty(int value);
 protected:
     int getProperty();
     void setProperty(int value);

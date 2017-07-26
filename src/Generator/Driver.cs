@@ -311,6 +311,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+
             if (Options.IsCSharpGenerator)
             {
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
@@ -319,16 +320,11 @@ namespace CppSharp
                     TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
                     TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
                 }
-            }
-
-            if (Options.IsCSharpGenerator)
-            {
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
-            }
-
-            if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new DelegatesPass());
+                TranslationUnitPasses.AddPass(new EqualiseAccessOfOverrideAndBasePass());
+            }
 
             TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());

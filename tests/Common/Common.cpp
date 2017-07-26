@@ -592,6 +592,15 @@ void HasVirtualProperty::setProperty(int target)
 {
 }
 
+int HasVirtualProperty::getProtectedProperty()
+{
+    return 2;
+}
+
+void HasVirtualProperty::setProtectedProperty(int value)
+{
+}
+
 ChangedAccessOfInheritedProperty::ChangedAccessOfInheritedProperty()
 {
 }
@@ -602,6 +611,15 @@ int ChangedAccessOfInheritedProperty::getProperty()
 }
 
 void ChangedAccessOfInheritedProperty::setProperty(int value)
+{
+}
+
+int ChangedAccessOfInheritedProperty::getProtectedProperty()
+{
+    return 3;
+}
+
+void ChangedAccessOfInheritedProperty::setProtectedProperty(int value)
 {
 }
 

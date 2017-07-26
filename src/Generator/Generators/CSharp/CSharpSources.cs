@@ -1238,7 +1238,7 @@ namespace CppSharp.Generators.CSharp
                 var printedType = prop.Type.Visit(TypePrinter);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
-                    Write(Helpers.GetAccess(GetValidPropertyAccess(prop)));
+                    Write(Helpers.GetAccess(prop.Access));
 
                     if (prop.IsStatic)
                         Write("static ");
@@ -2227,7 +2227,7 @@ namespace CppSharp.Generators.CSharp
 
             if (method.ExplicitInterfaceImpl == null)
             {
-                Write(Helpers.GetAccess(GetValidMethodAccess(method)));
+                Write(Helpers.GetAccess(method.Access));
             }
 
             GenerateMethodSpecifier(method, @class);
@@ -2429,25 +2429,6 @@ namespace CppSharp.Generators.CSharp
                 }
                 WriteCloseBraceIndent();
             }
-        }
-
-        private static AccessSpecifier GetValidMethodAccess(Method method)
-        {
-            if (!method.IsOverride)
-                return method.Access;
-            var baseMethod = ((Class) method.Namespace).GetBaseMethod(method);
-            return baseMethod.IsGenerated ? baseMethod.Access : method.Access;
-        }
-
-        private static AccessSpecifier GetValidPropertyAccess(Property property)
-        {
-            if (property.Access == AccessSpecifier.Public)
-                return AccessSpecifier.Public;
-            if (!property.IsOverride)
-                return property.Access;
-            var baseProperty = ((Class) property.Namespace).GetBaseProperty(property);
-            // access can be changed from private to other while overriding in C++
-            return baseProperty != null ? baseProperty.Access : property.Access;
         }
 
         private void GenerateVirtualPropertyCall(Method method, Class @class,
