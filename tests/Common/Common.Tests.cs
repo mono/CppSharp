@@ -45,6 +45,7 @@ public class CommonTests : GeneratorTestFixture
         e = EnumWithUnderscores.UsesDigits1_0;
         e.GetHashCode();
         Common.SMallFollowedByCapital();
+        using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) {}
 
 #pragma warning restore 0168
 #pragma warning restore 0219

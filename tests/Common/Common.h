@@ -1327,3 +1327,21 @@ protected:
     };
     HasProtectedCtorWithProtectedParam(ProtectedEnum protectedParam);
 };
+
+class DLL_API SecondaryBaseWithIgnoredVirtualMethod
+{
+public:
+    SecondaryBaseWithIgnoredVirtualMethod();
+    ~SecondaryBaseWithIgnoredVirtualMethod();
+    virtual void generated();
+    virtual void ignored(const IgnoredType& ignoredParam);
+};
+
+class DLL_API DerivedFromSecondaryBaseWithIgnoredVirtualMethod : public Foo, public SecondaryBaseWithIgnoredVirtualMethod
+{
+public:
+    DerivedFromSecondaryBaseWithIgnoredVirtualMethod();
+    ~DerivedFromSecondaryBaseWithIgnoredVirtualMethod();
+    void generated();
+    void ignored(const IgnoredType& ignoredParam);
+};

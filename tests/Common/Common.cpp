@@ -843,3 +843,35 @@ bool HasVirtualFunctionWithBoolParams::virtualFunctionWithBoolParamAndReturnsBoo
 {
     return testBool;
 }
+
+SecondaryBaseWithIgnoredVirtualMethod::SecondaryBaseWithIgnoredVirtualMethod()
+{
+}
+
+SecondaryBaseWithIgnoredVirtualMethod::~SecondaryBaseWithIgnoredVirtualMethod()
+{
+}
+
+void SecondaryBaseWithIgnoredVirtualMethod::generated()
+{
+}
+
+void SecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType& ignoredParam)
+{
+}
+
+DerivedFromSecondaryBaseWithIgnoredVirtualMethod::DerivedFromSecondaryBaseWithIgnoredVirtualMethod()
+{
+}
+
+DerivedFromSecondaryBaseWithIgnoredVirtualMethod::~DerivedFromSecondaryBaseWithIgnoredVirtualMethod()
+{
+}
+
+void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::generated()
+{
+}
+
+void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType& ignoredParam)
+{
+}
