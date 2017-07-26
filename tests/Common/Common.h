@@ -1312,3 +1312,13 @@ public:
     ~HasVirtualFunctionWithBoolParams();
     virtual bool virtualFunctionWithBoolParamAndReturnsBool(bool testBool);
 };
+
+class HasProtectedCtorWithProtectedParam
+{
+protected:
+    enum ProtectedEnum
+    {
+        Member
+    };
+    HasProtectedCtorWithProtectedParam(ProtectedEnum protectedParam);
+};
