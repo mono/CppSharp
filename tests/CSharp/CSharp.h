@@ -1198,12 +1198,20 @@ struct HasComplexArray
 class DLL_API TestIndexedProperties
 {
 public:
+    mutable int field;
     int operator[](const int& key);
+    void* operator[](size_t n) const;
 };
 
 int TestIndexedProperties::operator[](const int& key)
 {
     return key;
+}
+
+void* TestIndexedProperties::operator[](size_t n) const
+{
+    field = n;
+    return &field;
 }
 
 extern const ComplexArrayElement ArrayOfVariableSize[];
