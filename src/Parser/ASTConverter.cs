@@ -1209,7 +1209,6 @@ namespace CppSharp
             _method.IsConst = decl.IsConst;
             _method.IsImplicit = decl.IsImplicit;
             _method.IsExplicit = decl.IsExplicit;
-            _method.IsOverride = decl.IsOverride;
 
             switch (decl.RefQualifier)
             {
@@ -1231,6 +1230,12 @@ namespace CppSharp
             _method.IsMoveConstructor = decl.IsMoveConstructor;
 
             _method.ConversionType = typeConverter.VisitQualified(decl.ConversionType);
+
+            for (uint i = 0; i < decl.OverriddenMethodsCount; i++)
+            {
+                var @override = decl.GetOverriddenMethods(i);
+                _method.OverriddenMethods.Add((AST.Method) Visit(@override));
+            }
 
             return _method;
         }

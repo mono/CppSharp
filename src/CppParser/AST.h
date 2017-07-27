@@ -762,7 +762,6 @@ public:
     bool isStatic;
     bool isConst;
     bool isExplicit;
-    bool isOverride;
 
     CXXMethodKind methodKind;
 
@@ -772,6 +771,7 @@ public:
 
     QualifiedType conversionType;
     RefQualifierKind refQualifier;
+    VECTOR(Method*, OverriddenMethods)
 };
 
 class CS_API Enumeration : public DeclarationContext

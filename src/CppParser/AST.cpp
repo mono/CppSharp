@@ -650,7 +650,6 @@ Method::Method()
     , isStatic(false)
     , isConst(false)
     , isExplicit(false)
-    , isOverride(false)
     , isDefaultConstructor(false)
     , isCopyConstructor(false)
     , isMoveConstructor(false)
@@ -660,6 +659,8 @@ Method::Method()
 }
 
 Method::~Method() {}
+
+DEF_VECTOR(Method, Method*, OverriddenMethods)
 
 // Enumeration
 

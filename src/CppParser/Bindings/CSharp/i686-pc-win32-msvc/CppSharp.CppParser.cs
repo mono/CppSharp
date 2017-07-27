@@ -7583,7 +7583,7 @@ namespace CppSharp
 
             public unsafe partial class Method : global::CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 420)]
+                [StructLayout(LayoutKind.Explicit, Size = 428)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -7743,25 +7743,25 @@ namespace CppSharp
                     internal byte isExplicit;
 
                     [FieldOffset(396)]
-                    internal byte isOverride;
-
-                    [FieldOffset(400)]
                     internal global::CppSharp.Parser.AST.CXXMethodKind methodKind;
 
-                    [FieldOffset(404)]
+                    [FieldOffset(400)]
                     internal byte isDefaultConstructor;
 
-                    [FieldOffset(405)]
+                    [FieldOffset(401)]
                     internal byte isCopyConstructor;
 
-                    [FieldOffset(406)]
+                    [FieldOffset(402)]
                     internal byte isMoveConstructor;
 
-                    [FieldOffset(408)]
+                    [FieldOffset(404)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal conversionType;
 
-                    [FieldOffset(416)]
+                    [FieldOffset(412)]
                     internal global::CppSharp.Parser.AST.RefQualifierKind refQualifier;
+
+                    [FieldOffset(416)]
+                    internal global::Std.Vector.__Internal OverriddenMethods;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -7777,6 +7777,26 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1Method@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor(global::System.IntPtr instance, int delete);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?getOverriddenMethods@Method@AST@CppParser@CppSharp@@QAEPAV1234@I@Z")]
+                    internal static extern global::System.IntPtr GetOverriddenMethods(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addOverriddenMethods@Method@AST@CppParser@CppSharp@@QAEXAAPAV1234@@Z")]
+                    internal static extern void AddOverriddenMethods(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?clearOverriddenMethods@Method@AST@CppParser@CppSharp@@QAEXXZ")]
+                    internal static extern void ClearOverriddenMethods(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?getOverriddenMethodsCount@Method@AST@CppParser@CppSharp@@QAEIXZ")]
+                    internal static extern uint GetOverriddenMethodsCount(global::System.IntPtr instance);
                 }
 
                 internal static new global::CppSharp.Parser.AST.Method __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
@@ -7846,6 +7866,30 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
+                public global::CppSharp.Parser.AST.Method GetOverriddenMethods(uint i)
+                {
+                    var __ret = __Internal.GetOverriddenMethods((__Instance + __PointerAdjustment), i);
+                    global::CppSharp.Parser.AST.Method __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (global::CppSharp.Parser.AST.Method.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (global::CppSharp.Parser.AST.Method) global::CppSharp.Parser.AST.Method.NativeToManagedMap[__ret];
+                    else __result0 = global::CppSharp.Parser.AST.Method.__CreateInstance(__ret);
+                    return __result0;
+                }
+
+                public void AddOverriddenMethods(global::CppSharp.Parser.AST.Method s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddOverriddenMethods((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearOverriddenMethods()
+                {
+                    __Internal.ClearOverriddenMethods((__Instance + __PointerAdjustment));
+                }
+
                 public bool IsVirtual
                 {
                     get
@@ -7895,19 +7939,6 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isExplicit = (byte) (value ? 1 : 0);
-                    }
-                }
-
-                public bool IsOverride
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isOverride != 0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isOverride = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7986,6 +8017,15 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->refQualifier = value;
+                    }
+                }
+
+                public uint OverriddenMethodsCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetOverriddenMethodsCount((__Instance + __PointerAdjustment));
+                        return __ret;
                     }
                 }
             }

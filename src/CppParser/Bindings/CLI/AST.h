@@ -2180,12 +2180,6 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property bool IsOverride
-                {
-                    bool get();
-                    void set(bool);
-                }
-
                 property CppSharp::Parser::AST::CXXMethodKind MethodKind
                 {
                     CppSharp::Parser::AST::CXXMethodKind get();
@@ -2221,6 +2215,23 @@ namespace CppSharp
                     CppSharp::Parser::AST::RefQualifierKind get();
                     void set(CppSharp::Parser::AST::RefQualifierKind);
                 }
+
+                property System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ OverriddenMethods
+                {
+                    System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ get();
+                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^);
+                }
+
+                property unsigned int OverriddenMethodsCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::Method^ GetOverriddenMethods(unsigned int i);
+
+                void AddOverriddenMethods(CppSharp::Parser::AST::Method^ s);
+
+                void ClearOverriddenMethods();
             };
 
             public ref class Enumeration : CppSharp::Parser::AST::DeclarationContext

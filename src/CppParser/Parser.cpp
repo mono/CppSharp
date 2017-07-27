@@ -1603,7 +1603,11 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
     Method->isStatic = MD->isStatic();
     Method->isVirtual = MD->isVirtual();
     Method->isConst = MD->isConst();
-    Method->isOverride = MD->size_overridden_methods() > 0;
+    for (auto OverriddenMethod : MD->overridden_methods())
+    {
+        auto OM = WalkMethodCXX(OverriddenMethod);
+        Method->OverriddenMethods.push_back(OM);
+    }
     switch (MD->getRefQualifier())
     {
     case clang::RefQualifierKind::RQ_None:

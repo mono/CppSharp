@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
@@ -103,6 +105,7 @@ namespace CppSharp.AST
             Conversion = method.Conversion;
             SynthKind = method.SynthKind;
             AdjustedOffset = method.AdjustedOffset;
+            OverriddenMethods.AddRange(method.OverriddenMethods);
         }
 
         public Method(Function function)
@@ -115,9 +118,13 @@ namespace CppSharp.AST
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
         public bool IsExplicit { get; set; }
-        public bool IsOverride { get; set; }
+        public bool IsOverride
+        {
+            get { return isOverride ?? OverriddenMethods.Any(); }
+            set { isOverride = value; }
+        }
 
-         // True if the method is final / sealed.
+        // True if the method is final / sealed.
         public bool IsFinal { get; set; }
 
         public bool IsProxy { get; set; }
@@ -161,9 +168,13 @@ namespace CppSharp.AST
 
         public int AdjustedOffset { get; set; }
 
+        public List<Method> OverriddenMethods { get; } = new List<Method>();
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitMethodDecl(this);
         }
+
+        private bool? isOverride;
     }
 }

@@ -3739,6 +3739,26 @@ CppSharp::Parser::AST::Method::Method()
     NativePtr = new ::CppSharp::CppParser::AST::Method();
 }
 
+CppSharp::Parser::AST::Method^ CppSharp::Parser::AST::Method::GetOverriddenMethods(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Method*)NativePtr)->getOverriddenMethods(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Method((::CppSharp::CppParser::AST::Method*)__ret);
+}
+
+void CppSharp::Parser::AST::Method::AddOverriddenMethods(CppSharp::Parser::AST::Method^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (::CppSharp::CppParser::AST::Method*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->addOverriddenMethods(__arg0);
+}
+
+void CppSharp::Parser::AST::Method::ClearOverriddenMethods()
+{
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->clearOverriddenMethods();
+}
+
 CppSharp::Parser::AST::Method::Method(CppSharp::Parser::AST::Method^ _0)
     : CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)nullptr)
 {
@@ -3787,16 +3807,6 @@ bool CppSharp::Parser::AST::Method::IsExplicit::get()
 void CppSharp::Parser::AST::Method::IsExplicit::set(bool value)
 {
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->isExplicit = value;
-}
-
-bool CppSharp::Parser::AST::Method::IsOverride::get()
-{
-    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->isOverride;
-}
-
-void CppSharp::Parser::AST::Method::IsOverride::set(bool value)
-{
-    ((::CppSharp::CppParser::AST::Method*)NativePtr)->isOverride = value;
 }
 
 CppSharp::Parser::AST::CXXMethodKind CppSharp::Parser::AST::Method::MethodKind::get()
@@ -3857,6 +3867,34 @@ CppSharp::Parser::AST::RefQualifierKind CppSharp::Parser::AST::Method::RefQualif
 void CppSharp::Parser::AST::Method::RefQualifier::set(CppSharp::Parser::AST::RefQualifierKind value)
 {
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->refQualifier = (::CppSharp::CppParser::AST::RefQualifierKind)value;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ CppSharp::Parser::AST::Method::OverriddenMethods::get()
+{
+    auto _tmp__OverriddenMethods = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Method^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Method*)NativePtr)->OverriddenMethods)
+    {
+        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Method((::CppSharp::CppParser::AST::Method*)_element);
+        _tmp__OverriddenMethods->Add(_marshalElement);
+    }
+    return _tmp__OverriddenMethods;
+}
+
+void CppSharp::Parser::AST::Method::OverriddenMethods::set(System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Method*>();
+    for each(CppSharp::Parser::AST::Method^ _element in value)
+    {
+        auto _marshalElement = (::CppSharp::CppParser::AST::Method*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->OverriddenMethods = _tmpvalue;
+}
+
+unsigned int CppSharp::Parser::AST::Method::OverriddenMethodsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Method*)NativePtr)->getOverriddenMethodsCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::Enumeration::Item::Item(::CppSharp::CppParser::AST::Enumeration::Item* native)
