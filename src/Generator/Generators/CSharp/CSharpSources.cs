@@ -2437,37 +2437,25 @@ namespace CppSharp.Generators.CSharp
             if (property.IsOverride && !property.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
                 @class.HasNonAbstractBasePropertyInPrimaryBase(property))
-            {
                 WriteLine(parameters == null ?
                     "return base.{0};" : "base.{0} = value;", property.Name);
-            }
             else
-            {
-                string delegateId;
-                GetVirtualCallDelegate(method, @class, out delegateId);
-                GenerateFunctionCall(delegateId, parameters ?? method.Parameters, method);
-            }
+                GenerateFunctionCall(GetVirtualCallDelegate(method, @class),
+                    parameters ?? method.Parameters, method);
         }
 
         private void GenerateVirtualFunctionCall(Method method, Class @class,
             bool forceVirtualCall = false)
         {
-            if (!forceVirtualCall && method.IsOverride && !method.IsPure &&
-                method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                @class.HasCallableBaseMethodInPrimaryBase(method))
-            {
+            if (!forceVirtualCall && method.IsGeneratedOverride() &&
+                !method.BaseMethod.IsPure)
                 GenerateManagedCall(method, true);
-            }
             else
-            {
-                string delegateId;
-                GetVirtualCallDelegate(method, @class, out delegateId);
-                GenerateFunctionCall(delegateId, method.Parameters, method);
-            }
+                GenerateFunctionCall(GetVirtualCallDelegate(method, @class),
+                    method.Parameters, method);
         }
 
-        private void GetVirtualCallDelegate(Method method, Class @class,
-            out string delegateId)
+        private string GetVirtualCallDelegate(Method method, Class @class)
         {
             Function @virtual = method;
             if (method.OriginalFunction != null &&
@@ -2488,11 +2476,13 @@ namespace CppSharp.Generators.CSharp
             }
 
             var @delegate = GetVTableMethodDelegateName(@virtual);
-            delegateId = Generator.GeneratedIdentifier(@delegate);
+            var delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
                 delegateId, Context.Delegates[method].Signature,
                 Helpers.SlotIdentifier);
+
+            return delegateId;
         }
 
         private void GenerateOperator(Method method)

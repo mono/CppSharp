@@ -66,6 +66,7 @@ namespace CppSharp.Passes
                         IsPure = false,
                         SynthKind = FunctionSynthKind.AbstractImplCall
                     };
+                impl.OverriddenMethods.Clear();
                 impl.OverriddenMethods.Add(abstractMethod);
                 internalImpl.Methods.Add(impl);
             }
@@ -110,7 +111,7 @@ namespace CppSharp.Passes
                         var rootBaseMethod = abstractMethod;
                         do
                         {
-                            rootBaseMethod = @class.GetBaseMethod(rootBaseMethod, false, true);
+                            rootBaseMethod = rootBaseMethod.BaseMethod;
                             if (found = (rootBaseMethod == @override))
                                 break;
                         } while (rootBaseMethod != null);

@@ -72,13 +72,6 @@ namespace CppSharp.AST
             return null;
         }
 
-        public static bool HasCallableBaseMethodInPrimaryBase(this Class @class, Method method)
-        {
-            var baseMethod = @class.GetBaseMethod(method, true, true);
-            return baseMethod != null && !baseMethod.IsPure && baseMethod.IsGenerated &&
-                !((Class) baseMethod.OriginalNamespace).IsInterface;
-        }
-
         public static Property GetBaseProperty(this Class @class, Property @override,
             bool onlyFirstBase = false, bool getTopmost = false)
         {
