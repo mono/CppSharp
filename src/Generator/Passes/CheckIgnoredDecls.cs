@@ -12,8 +12,6 @@ namespace CppSharp.Passes
 
         public bool CheckDeclarationAccess(Declaration decl)
         {
-            var generateNonPublicDecls = Options.IsCSharpGenerator;
-
             switch (decl.Access)
             {
                 case AccessSpecifier.Public:
@@ -22,16 +20,9 @@ namespace CppSharp.Passes
                     var @class = decl.Namespace as Class;
                     if (@class != null && @class.IsValueType)
                         return false;
-                    return generateNonPublicDecls;
+                    return Options.IsCSharpGenerator;
                 case AccessSpecifier.Private:
-                    var method = decl as Method;
-                    var isOverride = false;
-                    if (method != null && method.IsOverride)
-                    {
-                        var baseMethod = ((Class) method.Namespace).GetBaseMethod(method);
-                        isOverride = baseMethod.IsGenerated;
-                    }
-                    return generateNonPublicDecls && (isOverride || decl.IsExplicitlyGenerated);
+                    return false;
             }
 
             return true;
