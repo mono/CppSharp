@@ -9,7 +9,7 @@ namespace CppSharp.Passes
             if (!method.IsOverride || method.IsSynthetized)
                 return true;
 
-            Method rootBaseMethod = ((Class)method.Namespace).GetBaseMethod(method);
+            Method rootBaseMethod = method.GetRootBaseMethod();
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var rootBaseParameter = rootBaseMethod.Parameters[i];

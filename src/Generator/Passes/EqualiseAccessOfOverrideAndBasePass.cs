@@ -25,7 +25,7 @@ namespace CppSharp.Passes
             if (!base.VisitMethodDecl(method) || !method.IsOverride)
                 return false;
 
-            var baseMethod = ((Class) method.Namespace).GetBaseMethod(method);
+            var baseMethod = method.GetRootBaseMethod();
             if (!baseMethod.IsGenerated)
                 return false;
 

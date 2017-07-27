@@ -64,7 +64,7 @@ namespace CppSharp
                 GenerateEquals(@class, block, method);
 
             if (method.Name == "ToString" && method.Parameters.Count == 0)
-                GenerateToString(@class, block, method);
+                GenerateToString(block);
         }
 
         void GenerateGetHashCode(Block block)
@@ -86,7 +86,7 @@ namespace CppSharp
             block.Write("return __Instance == obj->__Instance;");
         }
 
-        void GenerateToString(Class @class, Block block, Method method)
+        void GenerateToString(Block block)
         {
             needsStreamInclude = true;
             block.WriteLine("std::ostringstream os;");
@@ -129,7 +129,7 @@ namespace CppSharp
                     SynthKind = FunctionSynthKind.ComplementOperator,
                     IsProxy = true
                 };
-                toStringMethod.OverriddenMethods.Add(new Method { Name = "Equals" });
+                toStringMethod.OverriddenMethods.Add(new Method { Name = "ToString" });
                 @class.Methods.Add(toStringMethod);
 
                 Diagnostics.Debug("Function converted to ToString: {0}::{1}",

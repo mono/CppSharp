@@ -118,6 +118,7 @@ namespace CppSharp.AST
         public bool IsConst { get; set; }
         public bool IsExplicit { get; set; }
         public bool IsOverride => OverriddenMethods.Any();
+        public Method BaseMethod => IsOverride ? OverriddenMethods[0] : null;
 
         // True if the method is final / sealed.
         public bool IsFinal { get; set; }
@@ -164,6 +165,12 @@ namespace CppSharp.AST
         public int AdjustedOffset { get; set; }
 
         public List<Method> OverriddenMethods { get; } = new List<Method>();
+
+        public Method GetRootBaseMethod()
+        {
+            return BaseMethod == null || BaseMethod.BaseMethod == null ?
+                BaseMethod : BaseMethod.GetRootBaseMethod();
+        }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
