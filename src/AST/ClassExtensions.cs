@@ -41,33 +41,21 @@ namespace CppSharp.AST
             }
         }
 
-        public static Method GetBaseMethod(this Class @class, Method @override,
-            bool onlyPrimaryBase = false, bool getTopmost = false)
+        public static Method GetBaseMethod(this Class @class, Method @override)
         {
             foreach (var @base in @class.Bases.Where(
-                b => b.IsClass && b.Class.OriginalClass != @class && (!onlyPrimaryBase || !b.Class.IsInterface)))
+                b => b.IsClass && b.Class.OriginalClass != @class && !b.Class.IsInterface))
             {
                 var baseClass = @base.Class.OriginalClass ?? @base.Class;
-                Method baseMethod;
-                if (!getTopmost)
-                {
-                    baseMethod = baseClass.GetBaseMethod(@override, onlyPrimaryBase);
-                    if (baseMethod != null)
-                        return baseMethod;
-                }
+                Method baseMethod = baseClass.GetBaseMethod(@override);
+                if (baseMethod != null)
+                    return baseMethod;
 
                 baseMethod = (from method in baseClass.Methods
                               where @override.CanOverride(method)
                               select method).FirstOrDefault();
                 if (baseMethod != null)
                     return baseMethod;
-
-                if (getTopmost)
-                {
-                    baseMethod = (baseClass.GetBaseMethod(@override, onlyPrimaryBase, true));
-                    if (baseMethod != null)
-                        return baseMethod;
-                }
             }
             return null;
         }

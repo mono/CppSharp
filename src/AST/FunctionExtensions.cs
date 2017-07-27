@@ -81,7 +81,7 @@ namespace CppSharp.AST
             var @class = method.Namespace as Class;
             Method rootBaseMethod;
             return method.IsOverride &&
-                (rootBaseMethod = @class.GetBaseMethod(method, true)) != null &&
+                (rootBaseMethod = @class.GetBaseMethod(method)) != null &&
                 rootBaseMethod.IsGenerated && rootBaseMethod.IsVirtual;
         }
 

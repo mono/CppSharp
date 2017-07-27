@@ -181,7 +181,7 @@ namespace CppSharp.Passes
                         OriginalNamespace = @interface,
                         OriginalFunction = method.OriginalFunction
                     };
-                var rootBaseMethod = @class.GetBaseMethod(method, true);
+                var rootBaseMethod = @class.GetBaseMethod(method);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
                 @class.Methods.Add(impl);
