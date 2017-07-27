@@ -94,7 +94,6 @@ namespace CppSharp.AST
             Access = method.Access;
             IsVirtual = method.IsVirtual;
             IsConst = method.IsConst;
-            IsOverride = method.IsOverride;
             IsFinal = method.IsFinal;
             IsProxy = method.IsProxy;
             IsStatic = method.IsStatic;
@@ -118,11 +117,7 @@ namespace CppSharp.AST
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
         public bool IsExplicit { get; set; }
-        public bool IsOverride
-        {
-            get { return isOverride ?? OverriddenMethods.Any(); }
-            set { isOverride = value; }
-        }
+        public bool IsOverride => OverriddenMethods.Any();
 
         // True if the method is final / sealed.
         public bool IsFinal { get; set; }
@@ -174,7 +169,5 @@ namespace CppSharp.AST
         {
             return visitor.VisitMethodDecl(this);
         }
-
-        private bool? isOverride;
     }
 }

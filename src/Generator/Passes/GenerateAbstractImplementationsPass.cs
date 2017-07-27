@@ -57,17 +57,18 @@ namespace CppSharp.Passes
             var internalImpl = GetInternalImpl(@class);
 
             var abstractMethods = GetRelevantAbstractMethods(@class);
-
-            internalImpl.Methods.AddRange(
-                from method in abstractMethods
-                select new Method(method)
-                {
-                    Namespace = internalImpl,
-                    OriginalFunction = method,
-                    IsPure = false,
-                    IsOverride = true,
-                    SynthKind = FunctionSynthKind.AbstractImplCall
-                });
+            foreach (var abstractMethod in abstractMethods)
+            {
+                var impl = new Method(abstractMethod)
+                    {
+                        Namespace = internalImpl,
+                        OriginalFunction = abstractMethod,
+                        IsPure = false,
+                        SynthKind = FunctionSynthKind.AbstractImplCall
+                    };
+                impl.OverriddenMethods.Add(abstractMethod);
+                internalImpl.Methods.Add(impl);
+            }
 
             internalImpl.Layout = @class.Layout;
 

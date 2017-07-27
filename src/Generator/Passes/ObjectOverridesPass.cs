@@ -127,10 +127,9 @@ namespace CppSharp
                     Namespace = @class,
                     ReturnType = new QualifiedType(stringType),
                     SynthKind = FunctionSynthKind.ComplementOperator,
-                    IsOverride = true,
                     IsProxy = true
                 };
-
+                toStringMethod.OverriddenMethods.Add(new Method { Name = "Equals" });
                 @class.Methods.Add(toStringMethod);
 
                 Diagnostics.Debug("Function converted to ToString: {0}::{1}",
@@ -152,9 +151,9 @@ namespace CppSharp
                 ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Bool)),
                 Parameters = new List<Parameter> { methodEqualsParam },
                 SynthKind = FunctionSynthKind.ComplementOperator,
-                IsOverride = true,
                 IsProxy = true
             };
+            methodEquals.OverriddenMethods.Add(new Method { Name = "Equals" });
             @class.Methods.Add(methodEquals);
 
             var methodHashCode = new Method
@@ -163,9 +162,9 @@ namespace CppSharp
                 Namespace = @class,
                 ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
                 SynthKind = FunctionSynthKind.ComplementOperator,
-                IsOverride = true,
                 IsProxy = true
             };
+            methodHashCode.OverriddenMethods.Add(new Method { Name = "GetHashCode" });
 
             @class.Methods.Add(methodHashCode);
             return true;
