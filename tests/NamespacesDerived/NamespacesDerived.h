@@ -71,6 +71,13 @@ public:
     int callManagedOverride();
 };
 
+class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public SecondaryBase
+{
+public:
+    DerivedFromSecondaryBaseInDependency();
+    ~DerivedFromSecondaryBaseInDependency();
+};
+
 namespace NamespacesBase
 {
     class DLL_API ClassInNamespaceNamedAfterDependency

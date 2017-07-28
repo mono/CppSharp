@@ -70,3 +70,11 @@ int HasVirtualInDependency::callManagedOverride()
 {
     return managedObject->virtualInCore(0);
 }
+
+DerivedFromSecondaryBaseInDependency::DerivedFromSecondaryBaseInDependency()
+{
+}
+
+DerivedFromSecondaryBaseInDependency::~DerivedFromSecondaryBaseInDependency()
+{
+}

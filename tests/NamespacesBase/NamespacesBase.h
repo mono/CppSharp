@@ -65,3 +65,14 @@ public:
     HasVirtualInCore();
     virtual int virtualInCore(int parameter);
 };
+
+class DLL_API DerivedFromSecondaryBaseInDependency;
+typedef DerivedFromSecondaryBaseInDependency RenameDerivedBeforeBase;
+
+class DLL_API SecondaryBase
+{
+public:
+    SecondaryBase();
+    ~SecondaryBase();
+    void function();
+};

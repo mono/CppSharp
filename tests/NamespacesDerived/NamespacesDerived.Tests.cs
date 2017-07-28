@@ -5,6 +5,12 @@ using NUnit.Framework;
 public class NamespaceDerivedTests
 {
     [Test]
+    public void TestCodeGeneration()
+    {
+        using (new DerivedFromSecondaryBaseInDependency()) { }
+    }
+
+    [Test]
     public void TestNonRenamedMethod()
     {
         var derived = new Derived();
@@ -27,9 +33,6 @@ public class NamespaceDerivedTests
 
     private class OverrideMethodFromDependency : HasVirtualInDependency
     {
-        public override int VirtualInCore(int parameter)
-        {
-            return 2;
-        }
+        public override int VirtualInCore(int parameter) => 2;
     }
 }

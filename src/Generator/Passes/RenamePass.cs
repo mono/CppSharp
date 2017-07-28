@@ -30,6 +30,7 @@ namespace CppSharp.Passes
 
         protected RenamePass()
         {
+            VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitTemplateArguments = false;
             // these need to be visited but in a different order (see VisitClassDecl) so disable the default order
@@ -225,6 +226,9 @@ namespace CppSharp.Passes
         {
             if (!base.VisitClassDecl(@class))
                 return false;
+
+            if (@class.OriginalClass != null)
+                VisitClassDecl(@class.OriginalClass);
 
             foreach (var property in @class.Properties.OrderByDescending(p => p.Access))
                 VisitProperty(property);
