@@ -261,6 +261,7 @@ public:
     typedef int typedefInOverride;
     virtual int pureFunction(typedefInOverride i = 0);
     virtual int pureFunction1();
+private:
     virtual int pureFunction2(bool* ok = 0);
 };
 
