@@ -130,21 +130,6 @@ namespace CppSharp.AST
             return null;
         }
 
-        public static Method GetMethodByName(this Class @class, string methodName)
-        {
-            var method = @class.Methods.FirstOrDefault(m => m.Name == methodName);
-            if (method != null)
-                return method;
-
-            foreach (var @base in @class.Bases.Where(b => b.Type.IsClass()))
-            {
-                method = @base.Class.GetMethodByName(methodName);
-                if (method != null)
-                    return method;
-            }
-            return null;
-        }
-
         public static bool HasRefBase(this Class @class)
         {
             Class @base = null;
