@@ -393,31 +393,31 @@ namespace CppSharp.Generator.Tests.AST
 // <para>Get the string that needs to be written to the debugger stdin file</para>
 // <para>handle when a control character is typed.</para>
 // </summary>
-// <remarks>
-// <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
-// <para>to have them do what normally would happen when using a real</para>
-// <para>terminal, so this function allows GUI programs to emulate this</para>
-// <para>functionality.</para>
-// </remarks>
 // <param name=""ch"">The character that was typed along with the control key</param>
 // <returns>
 // <para>The string that should be written into the file handle that is</para>
 // <para>feeding the input stream for the debugger, or NULL if there is</para>
 // <para>no string for this control key.</para>
-// </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
+// </returns>
+// <remarks>
+// <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
+// <para>to have them do what normally would happen when using a real</para>
+// <para>terminal, so this function allows GUI programs to emulate this</para>
+// <para>functionality.</para>
+// </remarks>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
 
             var methodTestDoxygen = @class.Methods.First(m => m.Name == "SBAttachInfo");
             var commentMethodDoxygen = methodTestDoxygen.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Attach to a process by name.</summary>
-/// <remarks>
-/// <para>This function implies that a future call to SBTarget::Attach(...)</para>
-/// <para>will be synchronous.</para>
-/// </remarks>
 /// <param name=""path"">A full or partial name for the process to attach to.</param>
 /// <param name=""wait_for"">
 /// <para>If <c>false,</c> attach to an existing process whose name matches.</para>
 /// <para>If <c>true,</c> then wait for the next process whose name matches.</para>
-/// </param>".Replace("\r", string.Empty), commentMethodDoxygen.Replace("\r", string.Empty));
+/// </param>
+/// <remarks>
+/// <para>This function implies that a future call to SBTarget::Attach(...)</para>
+/// <para>will be synchronous.</para>
+/// </remarks>".Replace("\r", string.Empty), commentMethodDoxygen.Replace("\r", string.Empty));
         }
 
         [Test]
