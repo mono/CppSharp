@@ -138,6 +138,14 @@ namespace CppSharp.Generators.CSharp
         {
             var commentPrefix = Comment.GetMultiLineCommentPrologue(kind);
             var commentBuilder = new StringBuilder();
+
+            sections.Sort((x, y) => x.Type.CompareTo(y.Type));
+            var remarks = sections.Where(s => s.Type == CommentElement.Remarks).ToList();
+            if (remarks.Any())
+                remarks.First().GetLines().AddRange(remarks.Skip(1).SelectMany(s => s.GetLines()));
+            if (remarks.Count > 1)
+                sections.RemoveRange(sections.IndexOf(remarks.First()) + 1, remarks.Count - 1);
+
             foreach (var section in sections.Where(s => s.HasLines))
             {
                 var lines = section.GetLines();
@@ -201,9 +209,12 @@ namespace CppSharp.Generators.CSharp
         private enum CommentElement
         {
             Summary,
-            Remarks,
+            Typeparam,
             Param,
-            Returns
+            Returns,
+            Exception,
+            Remarks,
+            Example
         }
     }
 }
