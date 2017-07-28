@@ -489,7 +489,7 @@ std::string& HasStdString::getStdString()
     return s;
 }
 
-TestProperties::TestProperties() : Field(0)
+TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0)
 {
 }
 
@@ -510,6 +510,16 @@ bool TestProperties::isVirtual()
 
 void TestProperties::setVirtual(bool value)
 {
+}
+
+double TestProperties::refToPrimitiveInSetter() const
+{
+    return _refToPrimitiveInSetter;
+}
+
+void TestProperties::setRefToPrimitiveInSetter(const double& value)
+{
+    _refToPrimitiveInSetter = value;
 }
 
 HasOverridenSetter::HasOverridenSetter()

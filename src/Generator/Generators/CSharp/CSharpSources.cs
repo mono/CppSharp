@@ -795,7 +795,8 @@ namespace CppSharp.Generators.CSharp
             var param = new Parameter
             {
                 Name = "value",
-                QualifiedType = property.SetMethod.Parameters[0].QualifiedType
+                QualifiedType = property.SetMethod.Parameters[0].QualifiedType,
+                Kind = ParameterKind.PropertyValue
             };
 
             if (!property.Type.Equals(param.Type) && property.Type.IsEnumType())

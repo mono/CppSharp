@@ -45,7 +45,7 @@ public class CommonTests : GeneratorTestFixture
         e = EnumWithUnderscores.UsesDigits1_0;
         e.GetHashCode();
         Common.SMallFollowedByCapital();
-        using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) {}
+        using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
 
 #pragma warning restore 0168
 #pragma warning restore 0219
@@ -792,5 +792,16 @@ This is a very long string. This is a very long string. This is a very long stri
     {
         using (var hasVirtualFunctionWithBoolParam = new HasVirtualFunctionWithBoolParams())
             Assert.That(hasVirtualFunctionWithBoolParam.VirtualFunctionWithBoolParamAndReturnsBool(true));
+    }
+
+    [Test]
+    public void TestRefToPrimitiveInSetter()
+    {
+        using (var testProperties = new TestProperties())
+        {
+            const double value = 5.5;
+            testProperties.RefToPrimitiveInSetter = value;
+            Assert.That(testProperties.RefToPrimitiveInSetter, Is.EqualTo(value));
+        }
     }
 }

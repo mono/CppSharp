@@ -582,8 +582,12 @@ public:
 
     bool isVirtual();
     virtual void setVirtual(bool value);
+
+    double refToPrimitiveInSetter() const;
+    void setRefToPrimitiveInSetter(const double& value);
 private:
     int FieldValue;
+    double _refToPrimitiveInSetter;
 };
 
 class DLL_API HasOverridenSetter : public TestProperties

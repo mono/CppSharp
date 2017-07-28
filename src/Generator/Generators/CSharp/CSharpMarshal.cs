@@ -507,11 +507,18 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    Context.Before.WriteLine(
-                        $"fixed ({pointer} {refParamPtr} = &{Context.Parameter.Name})");
-                    Context.HasCodeBlock = true;
-                    Context.Before.WriteStartBraceIndent();
-                    Context.Return.Write(refParamPtr);
+                    if (Context.Parameter.Kind == ParameterKind.PropertyValue)
+                    {
+                        Context.Return.Write($"&{Context.Parameter.Name}");
+                    }
+                    else
+                    {
+                        Context.Before.WriteLine(
+                            $"fixed ({pointer} {refParamPtr} = &{Context.Parameter.Name})");
+                        Context.HasCodeBlock = true;
+                        Context.Before.WriteStartBraceIndent();
+                        Context.Return.Write(refParamPtr);
+                    }
                 }
                 return true;
             }
