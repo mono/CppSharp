@@ -12,6 +12,7 @@ namespace CppSharp.Passes
         public TrimSpecializationsPass()
         {
             VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitEventParameters = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
