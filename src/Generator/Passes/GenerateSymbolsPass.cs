@@ -40,11 +40,9 @@ namespace CppSharp.Passes
 
         private void GenerateSymbols()
         {
-            var modules = (from module in Options.Modules
-                           where symbolsCodeGenerators.ContainsKey(module)
-                           select module).ToList();
+            var modules = Options.Modules.Where(symbolsCodeGenerators.ContainsKey).ToList();
             remainingCompilationTasks = modules.Count;
-            foreach (var module in modules.Where(symbolsCodeGenerators.ContainsKey))
+            foreach (var module in modules)
             {
                 var symbolsCodeGenerator = symbolsCodeGenerators[module];
                 if (specializations.ContainsKey(module))
@@ -205,6 +203,7 @@ namespace CppSharp.Passes
             else specs = specializations[specialization.TranslationUnit.Module] =
                 new HashSet<ClassTemplateSpecialization>();
             specs.Add(specialization);
+            GetSymbolsCodeGenerator(specialization.TranslationUnit.Module);
         }
 
         private int RemainingCompilationTasks
