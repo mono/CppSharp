@@ -39,18 +39,12 @@ namespace CppSharp.Passes
             if (!@class.IsDependent)
                 return false;
 
-            if (Options.IsCLIGenerator || @class.TranslationUnit.IsSystemHeader ||
-                @class.Specializations.Count == 0)
-            {
-                bool hasExplicitlyGeneratedSpecializations = false;
-                foreach (var specialization in @class.Specializations)
-                    if (specialization.IsExplicitlyGenerated)
-                        hasExplicitlyGeneratedSpecializations = true;
-                    else
-                        specialization.ExplicitlyIgnore();
-                if (!hasExplicitlyGeneratedSpecializations)
-                    @class.ExplicitlyIgnore();
-            }
+            if (Options.GenerateClassTemplates)
+                IgnoreUnsupportedTemplates(@class);
+            else
+                foreach (var specialization in @class.Specializations.Where(
+                    s => !s.IsExplicitlyGenerated))
+                    specialization.ExplicitlyIgnore();
 
             return true;
         }
@@ -350,11 +344,11 @@ namespace CppSharp.Passes
 
         #region Helpers
 
-        /// <remarks>
+        /// <summary>
         /// Checks if a given type is invalid, which can happen for a number of
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
-        /// </remarks>
+        /// </summary>
         private bool HasInvalidType(Type type, Module module, out string msg)
         {
             if (type == null)
@@ -457,6 +451,22 @@ namespace CppSharp.Passes
 
             TypeMap typeMap;
             return TypeMaps.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
+        }
+
+        private void IgnoreUnsupportedTemplates(Class @class)
+        {
+            if (!Options.IsCLIGenerator && !@class.TranslationUnit.IsSystemHeader &&
+                @class.Specializations.Count > 0)
+                return;
+
+            bool hasExplicitlyGeneratedSpecializations = false;
+            foreach (var specialization in @class.Specializations)
+                if (specialization.IsExplicitlyGenerated)
+                    hasExplicitlyGeneratedSpecializations = true;
+                else
+                    specialization.ExplicitlyIgnore();
+            if (!hasExplicitlyGeneratedSpecializations)
+                @class.ExplicitlyIgnore();
         }
 
         #endregion

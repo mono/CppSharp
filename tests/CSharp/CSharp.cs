@@ -26,6 +26,7 @@ namespace CppSharp.Tests
             driver.Context.TranslationUnitPasses.AddPass(new TestAttributesPass());
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
+            driver.Options.GenerateClassTemplates = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)

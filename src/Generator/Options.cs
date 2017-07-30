@@ -92,6 +92,13 @@ namespace CppSharp
 
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
+        /// <summary>
+        /// C# only: gets or sets a value indicating whether to generate class templates.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> to generate class templates; otherwise, <c>false</c>.
+        /// </value>
+        public bool GenerateClassTemplates { get; set; } = false;
         public bool GenerateInternalImports;
         public bool GenerateSequentialLayout { get; set; }
         public bool UseHeaderDirectories;
