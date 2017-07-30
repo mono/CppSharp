@@ -100,6 +100,10 @@ class DerivedChangesTypeName : public IndependentFields<X>
 template <typename T>
 class DLL_API DependentValueFields
 {
+public:
+    class Nested
+    {
+    };
 private:
     T field;
     union {
@@ -341,15 +345,17 @@ struct MapResultType<InputSequence<T>, MapFunctor>
 // we optimise specialisations so that only actually used ones are wrapped
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
-                             VirtualTemplate<int> _5, VirtualTemplate<bool> _6,
-                             HasDefaultTemplateArgument<int, int> _7, DerivedChangesTypeName<T1> _8,
-                             TemplateWithIndexer<int> _9, TemplateWithIndexer<T1> _10, std::string s);
+                             DependentValueFields<int> _5,
+                             VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
+                             HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
+                             TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11, std::string s);
 
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
 template class DLL_API IndependentFields<bool>;
 template class DLL_API IndependentFields<T1>;
 template class DLL_API IndependentFields<std::string>;
+template class DLL_API DependentValueFields<int>;
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;
