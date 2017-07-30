@@ -274,8 +274,10 @@ namespace CppSharp.Generators.CSharp
 
             if (generateNested)
             {
-                foreach (var nestedClass in classTemplate.Classes.Where(c => !c.IsDependent).Union(
-                    generated.First().Classes.Where(c => !c.IsDependent)))
+                var specialization = generated.FirstOrDefault(s => !s.Ignore) ??
+                    generated.First();
+                foreach (var nestedClass in classTemplate.Classes.Union(
+                    specialization.Classes).Where(c => !c.IsDependent))
                 {
                     GenerateClassInternalsOnly(nestedClass);
                     foreach (var nestedNestedClass in nestedClass.Classes)
