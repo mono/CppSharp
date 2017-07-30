@@ -168,15 +168,24 @@ namespace CppSharp.Passes
         private void CheckForInternalSpecialization(Declaration container, AST.Type type)
         {
             ASTUtils.CheckTypeForSpecialization(type, container,
-                s =>
+                specialization =>
                 {
-                    if (!specializations.Contains(s))
+                    if (!specializations.Contains(specialization))
                     {
-                        internalSpecializations.Add(s);
-                        foreach (var f in s.Fields)
-                            f.Visit(this);
+                        internalSpecializations.Add(specialization);
+                        CheckLayoutFields(specialization);
                     }
                 }, Context.TypeMaps, true);
+        }
+
+        private void CheckLayoutFields(Class @class)
+        {
+            foreach (var field in @class.Fields)
+                field.Visit(this);
+            foreach (var @base in from @base in @class.Bases
+                                  where @base.IsClass
+                                  select @base.Class)
+                CheckLayoutFields(@base);
         }
 
         private HashSet<ClassTemplateSpecialization> specializations = new HashSet<ClassTemplateSpecialization>();

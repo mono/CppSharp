@@ -90,38 +90,19 @@ namespace CppSharp.AST
         {
             type = type.Desugar();
             type = (type.GetFinalPointee() ?? type).Desugar();
-            ClassTemplateSpecialization specialization;
-            type.TryGetDeclaration(out specialization);
+            ClassTemplateSpecialization specialization = GetParentSpecialization(type);
             if (specialization == null)
                 return;
 
-            TypeMap typeMap;
-            typeMaps.FindTypeMap(specialization, out typeMap);
-
-            if ((!internalOnly && (((specialization.Ignore ||
-                 specialization.TemplatedDecl.TemplatedClass.Ignore) && typeMap == null) ||
-                 specialization.Arguments.Any(a => UnsupportedTemplateArgument(
-                     specialization, a, typeMaps)))) ||
-                specialization.IsIncomplete ||
-                (!internalOnly && specialization.TemplatedDecl.TemplatedClass.IsIncomplete) ||
-                specialization is ClassTemplatePartialSpecialization ||
-                container.Namespace == specialization)
+            if (IsSpecializationNeeded(container, typeMaps, internalOnly, specialization))
                 return;
 
-            while (container.Namespace != null)
+            if (!internalOnly)
             {
-                if (container.Namespace == specialization)
+                if (IsSpecializationSelfContained(specialization, container))
                     return;
-                container = container.Namespace;
-            }
 
-            if (!internalOnly && typeMaps.FindTypeMap(specialization, out typeMap))
-            {
-                var typePrinterContext = new TypePrinterContext { Type = type };
-                var mappedTo = typeMap.CSharpSignatureType(typePrinterContext);
-                mappedTo = mappedTo.Desugar();
-                mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo);
-                if (mappedTo.IsPrimitiveType() || mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum())
+                if (IsMappedToPrimitive(typeMaps, type, specialization))
                     return;
             }
 
@@ -168,6 +149,66 @@ namespace CppSharp.AST
             var typeIgnoreChecker = new TypeIgnoreChecker(typeMaps);
             a.Type.Type.Visit(typeIgnoreChecker);
             return typeIgnoreChecker.IsIgnored;
+        }
+
+        private static bool IsSpecializationNeeded(Declaration container,
+            ITypeMapDatabase typeMaps, bool internalOnly,
+            ClassTemplateSpecialization specialization)
+        {
+            TypeMap typeMap;
+            typeMaps.FindTypeMap(specialization, out typeMap);
+
+            return (!internalOnly && (((specialization.Ignore ||
+                specialization.TemplatedDecl.TemplatedClass.Ignore) && typeMap == null) ||
+                specialization.Arguments.Any(a => UnsupportedTemplateArgument(
+                    specialization, a, typeMaps)) ||
+                container.Namespace == specialization)) ||
+                specialization.IsIncomplete ||
+                (!internalOnly && specialization.TemplatedDecl.TemplatedClass.IsIncomplete) ||
+                specialization is ClassTemplatePartialSpecialization;
+        }
+
+        private static ClassTemplateSpecialization GetParentSpecialization(Type type)
+        {
+            Declaration declaration;
+            if (type.TryGetDeclaration(out declaration))
+            {
+                ClassTemplateSpecialization specialization = null;
+                do
+                {
+                    specialization = declaration as ClassTemplateSpecialization;
+                    declaration = declaration.Namespace;
+                } while (declaration != null && specialization == null);
+                return specialization;
+            }
+            return null;
+        }
+
+        private static bool IsSpecializationSelfContained(
+            ClassTemplateSpecialization specialization, Declaration container)
+        {
+            while (container.Namespace != null)
+            {
+                if (container.Namespace == specialization)
+                    return true;
+                container = container.Namespace;
+            }
+            return false;
+        }
+
+        private static bool IsMappedToPrimitive(ITypeMapDatabase typeMaps,
+            Type type, ClassTemplateSpecialization specialization)
+        {
+            TypeMap typeMap;
+            if (!typeMaps.FindTypeMap(specialization, out typeMap))
+                return false;
+
+            var typePrinterContext = new TypePrinterContext { Type = type };
+            var mappedTo = typeMap.CSharpSignatureType(typePrinterContext);
+            mappedTo = mappedTo.Desugar();
+            mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo).Desugar();
+            return (mappedTo.IsPrimitiveType() ||
+                mappedTo.IsPointerToPrimitiveType() || mappedTo.IsEnum());
         }
     }
 

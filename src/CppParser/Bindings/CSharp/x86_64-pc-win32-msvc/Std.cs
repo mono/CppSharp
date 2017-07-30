@@ -162,27 +162,6 @@ namespace Std
             internal global::Std.StringVal.__Internal _Myval2;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__W___N_std_S__String_val____N_std_S__Simple_types__W_Vb1
-        {
-            [FieldOffset(0)]
-            internal global::Std.StringVal.__Internal _Myval2;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__q___N_std_S__String_val____N_std_S__Simple_types__q_Vb1
-        {
-            [FieldOffset(0)]
-            internal global::Std.StringVal.__Internal _Myval2;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator__w___N_std_S__String_val____N_std_S__Simple_types__w_Vb1
-        {
-            [FieldOffset(0)]
-            internal global::Std.StringVal.__Internal _Myval2;
-        }
-
         [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S__Wrap_alloc____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S2__Vb1
         {
