@@ -114,7 +114,7 @@ function SetupLLVMLibs()
     filter { "configurations:Debug", "action:vs*" }
       libdirs { path.join(LLVMBuildDir, "Debug/lib") }
 
-    filter { "configurations:Release", "actoin:vs*" }
+    filter { "configurations:Release", "action:vs*" }
       libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
   end
 
