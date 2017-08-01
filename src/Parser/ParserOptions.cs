@@ -21,6 +21,10 @@ namespace CppSharp.Parser
         public void SetupMSVC()
         {
             VisualStudioVersion vsVersion = VisualStudioVersion.Latest;
+
+            // Silence "warning CS0162: Unreachable code detected"
+            #pragma warning disable 162
+
             switch (BuildConfig.Choice)
             {
                 case "vs2012":
@@ -35,6 +39,9 @@ namespace CppSharp.Parser
                 case "vs2017":
                     vsVersion = VisualStudioVersion.VS2017;
                     break;
+
+            #pragma warning restore 162
+
             }
             SetupMSVC(vsVersion);
         }
