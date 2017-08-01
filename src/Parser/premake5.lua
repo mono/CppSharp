@@ -1,3 +1,18 @@
+local buildconfig = path.join(builddir, "BuildConfig.cs")
+
+local function GenerateBuildConfig()
+  print("Generating CppSharp build configuration file 'BuildConfig.cs'")
+
+  local file = io.open(buildconfig, "w+")
+  file:write("namespace CppSharp.Parser", "\n{\n    ")
+  file:write("public static class BuildConfig", "\n    {\n        ")
+  file:write("public const string Choice = \"" .. _ACTION .. "\";\n")
+  file:write("    }\n}")
+  file:close()
+end
+
+GenerateBuildConfig()
+
 project "CppSharp.Parser"
 
   SetupManagedProject()
@@ -6,7 +21,7 @@ project "CppSharp.Parser"
   language "C#"
   clr "Unsafe"
 
-  files { "**.cs", "../../BuildConfig.cs" }
+  files { "**.cs", buildconfig }
   vpaths { ["*"] = "*" }
 
   links
