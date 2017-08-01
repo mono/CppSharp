@@ -99,18 +99,12 @@ function SetupManagedProject()
   language "C#"
   location ("%{wks.location}/projects")
 
+  framework "4.6"
+
   if not os.istarget("macosx") then
     filter { "action:vs*" }
       location "."
     filter {}
-  end
-
-  if action == "vs2017" then
-      filter { "action:vs2017" }
-        framework "4.6"
-  elseif action == "vs2015" then
-      filter { "action:vs2015" }
-        framework "4.6"
   end
 
   filter { "action:vs2013" }
