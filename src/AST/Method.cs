@@ -117,7 +117,13 @@ namespace CppSharp.AST
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
         public bool IsExplicit { get; set; }
-        public bool IsOverride => OverriddenMethods.Any();
+
+        public bool IsOverride
+        {
+            get { return isOverride ?? OverriddenMethods.Any(); }
+            set { isOverride = value; }
+        }
+
         public Method BaseMethod => IsOverride ? OverriddenMethods[0] : null;
 
         // True if the method is final / sealed.
@@ -176,5 +182,7 @@ namespace CppSharp.AST
         {
             return visitor.VisitMethodDecl(this);
         }
+
+        private bool? isOverride;
     }
 }
