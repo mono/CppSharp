@@ -124,7 +124,7 @@ namespace CppSharp.AST
             set { isOverride = value; }
         }
 
-        public Method BaseMethod => IsOverride ? OverriddenMethods[0] : null;
+        public Method BaseMethod => OverriddenMethods.FirstOrDefault();
 
         // True if the method is final / sealed.
         public bool IsFinal { get; set; }
