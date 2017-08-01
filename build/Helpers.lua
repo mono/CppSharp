@@ -22,7 +22,7 @@ function target_architecture()
   if explicit_target_architecture ~= nil then
     return explicit_target_architecture
   end
-  if os.istarget("windows") then return "x86" end
+  if os.ishost("windows") then return "x86" end
   return is_64_bits_mono_runtime() and "x64" or "x86"
 end
 
