@@ -50,6 +50,8 @@ namespace CppSharp.Generators.CSharp
                             if (inlineContentComment.HasTrailingNewline)
                                 sections.Last().NewLine();
                         }
+                    if (!string.IsNullOrEmpty(sections.Last().CurrentLine.ToString()))
+                        sections.Add(new Section(CommentElement.Remarks));
                     break;
                 case DocumentationCommentKind.TParamCommandComment:
                     break;
@@ -60,13 +62,18 @@ namespace CppSharp.Generators.CSharp
                 case DocumentationCommentKind.ParagraphComment:
                     var summaryParagraph = sections.Count == 1;
                     var paragraphComment = (ParagraphComment) comment;
+                    var lastParagraphSection = sections.Last();
                     foreach (var inlineContentComment in paragraphComment.Content)
                     {
                         inlineContentComment.GetCommentSections(sections);
                         if (inlineContentComment.HasTrailingNewline)
-                            sections.Last().NewLine();
+                            lastParagraphSection.NewLine();
                     }
-                    if (summaryParagraph)
+
+                    if (!string.IsNullOrEmpty(lastParagraphSection.CurrentLine.ToString()))
+                        lastParagraphSection.NewLine();
+
+                    if (sections[0].GetLines().Count > 0 && summaryParagraph)
                     {
                         sections[0].GetLines().AddRange(sections.Skip(1).SelectMany(s => s.GetLines()));
                         sections.RemoveRange(1, sections.Count - 1);
@@ -80,20 +87,21 @@ namespace CppSharp.Generators.CSharp
                 case DocumentationCommentKind.HTMLEndTagComment:
                     break;
                 case DocumentationCommentKind.TextComment:
-                    var section = sections.Last();
-                    section.CurrentLine.Append(GetText(comment,
-                        section.Type == CommentElement.Returns || section.Type == CommentElement.Param).Trim());
+                    var lastTextsection = sections.Last();
+                    lastTextsection.CurrentLine.Append(GetText(comment,
+                        lastTextsection.Type == CommentElement.Returns ||
+                        lastTextsection.Type == CommentElement.Param).Trim());
                     break;
                 case DocumentationCommentKind.InlineContentComment:
                     break;
                 case DocumentationCommentKind.InlineCommandComment:
-                    var lastSection = sections.Last();
+                    var lastInlineSection = sections.Last();
                     var inlineCommand = (InlineCommandComment) comment;
 
                     if (inlineCommand.CommandKind == CommentCommandKind.B)
                     {
                         var argText = $" <c>{inlineCommand.Arguments[0].Text}</c> ";
-                        lastSection.CurrentLine.Append(argText);
+                        lastInlineSection.CurrentLine.Append(argText);
                     }
                     break;
                 case DocumentationCommentKind.VerbatimBlockLineComment:
