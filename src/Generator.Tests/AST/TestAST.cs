@@ -406,8 +406,8 @@ namespace CppSharp.Generator.Tests.AST
 // <para>functionality.</para>
 // </remarks>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
 
-            var methodTestDoxygen = @class.Methods.First(m => m.Name == "SBAttachInfo");
-            var commentMethodDoxygen = methodTestDoxygen.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
+            var methodTestDoxygenBold = @class.Methods.First(m => m.Name == "SBAttachInfo");
+            var commentMethodDoxygen = methodTestDoxygenBold.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Attach to a process by name.</summary>
 /// <param name=""path"">A full or partial name for the process to attach to.</param>
 /// <param name=""wait_for"">
