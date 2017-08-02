@@ -98,18 +98,58 @@ class DerivedChangesTypeName : public IndependentFields<X>
 };
 
 template <typename T>
+class DLL_API DependentValueFieldForArray
+{
+private:
+    T field;
+};
+
+template <typename T>
 class DLL_API DependentValueFields
 {
 public:
     class Nested
     {
     };
+    DependentValueFields();
+    ~DependentValueFields();
+    DependentValueFields& returnInjectedClass();
+    T getDependentValue();
+    void setDependentValue(const T& value);
 private:
     T field;
     union {
         int unionField;
     };
 };
+
+template <typename T>
+DependentValueFields<T>::DependentValueFields()
+{
+}
+
+template <typename T>
+DependentValueFields<T>::~DependentValueFields()
+{
+}
+
+template <typename T>
+T DependentValueFields<T>::getDependentValue()
+{
+    return field;
+}
+
+template <typename T>
+void DependentValueFields<T>::setDependentValue(const T& value)
+{
+    field = value;
+}
+
+template <typename T>
+DependentValueFields<T>& DependentValueFields<T>::returnInjectedClass()
+{
+    return *this;
+}
 
 template <typename T>
 class DLL_API DependentPointerFields
@@ -291,7 +331,7 @@ private:
     NestedTemplate<int> nestedTemplate;
     DependentValueFields<DependentValueFields<int*>> nestedDependentPointer1;
     DependentValueFields<DependentValueFields<char*>> nestedDependentPointer2;
-    DependentValueFields<char[3]> dependentFieldArray;
+    DependentValueFieldForArray<char[3]> dependentFieldArray;
     void completeSpecializationInParameter(DependentValueFields<float> p1,
                                            DependentValueFields<int*> p2,
                                            DependentValueFields<float*> p3);

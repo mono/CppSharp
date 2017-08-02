@@ -373,6 +373,13 @@ namespace CppSharp.Generators.CSharp
                 Context.Before.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
                     Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
             }
+            Class returnedClass;
+            var pointee = Context.ReturnType.Type.Desugar().GetFinalPointee().Desugar();
+            if (pointee.TryGetClass(out returnedClass) && returnedClass.IsDependent)
+            {
+                var result = returnedClass.Visit(typePrinter);
+                return $"{ret} as {result}{result.NameSuffix}";
+            }
             return ret;
         }
 

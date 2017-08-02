@@ -2273,7 +2273,8 @@ namespace CppSharp.Generators.CSharp
                     method.IsConstructor;
                 this.GenerateMember(@class, c => GenerateMethodBody(
                     c is ClassTemplateSpecialization ?
-                        c.Methods.First(m => m.InstantiatedFrom == method) : method), isVoid);
+                        c.Methods.First(m => m.InstantiatedFrom == method) : method,
+                    method.OriginalReturnType), isVoid);
             }
 
             SkipImpl:
@@ -2288,7 +2289,8 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateMethodBody(Method method)
+        private void GenerateMethodBody(Method method,
+            QualifiedType returnType = default(QualifiedType))
         {
             var @class = (Class) method.Namespace;
             if (@class.IsRefType)
@@ -2311,7 +2313,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    GenerateInternalFunctionCall(method);
+                    GenerateInternalFunctionCall(method, returnType: returnType);
                 }
             }
             else if (@class.IsValueType)

@@ -778,6 +778,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestReturnInjectedClass()
+    {
+        using (var dependentValueFields = new DependentValueFields<int>())
+        {
+            dependentValueFields.DependentValue = 5;
+            Assert.That(dependentValueFields.ReturnInjectedClass().DependentValue,
+                Is.EqualTo(dependentValueFields.DependentValue));
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())
