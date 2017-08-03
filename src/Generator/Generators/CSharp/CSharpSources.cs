@@ -2959,9 +2959,9 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(typedef);
 
-            FunctionType functionType;
+            var functionType = typedef.Type as FunctionType;
 
-            if (typedef.Type.IsPointerTo(out functionType))
+            if (functionType != null || typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(BlockKind.Typedef);
                 var attributedType = typedef.Type.GetPointee() as AttributedType;

@@ -143,9 +143,10 @@ namespace CppSharp.Passes
         private void VisitFunctionTypeParameters(Function function)
         {
             foreach (var param in from param in function.Parameters
+                                  where !(param.Type is TypedefType)
                                   let paramType = param.Type.Desugar()
                                   where paramType.IsAddress() &&
-                                      paramType.GetFinalPointee().Desugar() is FunctionType
+                                      paramType.GetPointee() is FunctionType
                                   select param)
             {
                 var module = function.TranslationUnit.Module;

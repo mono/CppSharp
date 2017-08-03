@@ -320,8 +320,8 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            FunctionType func;
-            if (decl.Type.IsPointerTo(out func))
+            FunctionType func = decl.Type as FunctionType;
+            if (func != null || decl.Type.IsPointerTo(out func))
             {
                 if (ContextKind == TypePrinterContextKind.Native)
                     return IntPtrType;

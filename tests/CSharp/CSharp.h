@@ -1218,5 +1218,5 @@ extern const ComplexArrayElement ArrayOfVariableSize[];
 
 void useStdStringJustAsParameter(std::string s);
 
-typedef int (typedefedFuncPtr)(Foo *a, Bar b);
-int DLL_API funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr *func);
+typedef int (typedefedFuncPtr)(Foo* a, Bar b);
+int DLL_API funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func);

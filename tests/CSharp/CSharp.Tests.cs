@@ -856,10 +856,10 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
-    [Test, Platform(Exclude = "Win", Reason = "This test crashes our Windows build, possibly a problem with the NUnit runner there.")]
+    [Test]
     public void TestFuncWithTypedefedFuncPtrAsParam()
     {
-        Func_int_IntPtr_CSharp_Bar___Internal function = (a, b) => 5;
+        TypedefedFuncPtr function = (a, b) => 5;
         Assert.That(CSharp.CSharp.FuncWithTypedefedFuncPtrAsParam(function), Is.EqualTo(5));
     }
 }

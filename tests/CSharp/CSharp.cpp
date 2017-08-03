@@ -1355,7 +1355,7 @@ void useStdStringJustAsParameter(std::string s)
 {
 }
 
-int funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr *func)
+int funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func)
 {
     Foo* a = 0;
     Bar b;
