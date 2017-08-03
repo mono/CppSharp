@@ -53,17 +53,33 @@ namespace CppSharp.Passes
             return result;
         }
 
-        public override bool VisitMethodDecl(Method method)
+        private void AddDelegatesToDictionary(Declaration decl, Module module)
         {
-            if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
-                return false;
+            CallingConvention callingConvention;
+            bool isDependent = false;
+            QualifiedType returnType;
+            List<Parameter> @params;
+            if (decl is Method)
+            {
+                var method = (Method) decl;
+                @params = method.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, true).ToList();
+                callingConvention = method.CallingConvention;
+                isDependent = method.IsDependent;
+                returnType = method.ReturnType;
+            }
+            else
+            {
+                var param = (Parameter) decl;
+                var funcTypeParam = param.Type.Desugar().GetFinalPointee().Desugar() as FunctionType;
+                @params = funcTypeParam.Parameters;
+                callingConvention = funcTypeParam.CallingConvention;
+                isDependent = funcTypeParam.IsDependent;
+                returnType = funcTypeParam.ReturnType;
+            }
 
-            var @params = method.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, true).ToList();
-            var delegateName = GenerateDelegateSignature(@params, method.ReturnType);
-
-            var module = method.TranslationUnit.Module;
-
+            var delegateName = GenerateDelegateSignature(@params, returnType);
             Namespace namespaceDelegates;
+
             if (namespacesDelegates.ContainsKey(module))
             {
                 namespaceDelegates = namespacesDelegates[module];
@@ -96,36 +112,71 @@ namespace CppSharp.Passes
                             new QualifiedType(
                                 new FunctionType
                                 {
-                                    CallingConvention = method.CallingConvention,
-                                    IsDependent = method.IsDependent,
+                                    CallingConvention = callingConvention,
+                                    IsDependent = isDependent,
                                     Parameters = @params,
-                                    ReturnType = method.ReturnType
+                                    ReturnType = returnType
                                 }))),
                     Namespace = namespaceDelegates,
                     IsSynthetized = true,
-                    Access = AccessSpecifier.Private
+                    Access = decl is Method ? AccessSpecifier.Private : AccessSpecifier.Public
                 };
 
             var delegateString = @delegate.Visit(TypePrinter).Type;
             var existingDelegate = GetExistingDelegate(
-                method.TranslationUnit.Module, delegateString);
+                module, delegateString);
 
             if (existingDelegate != null)
             {
-                Context.Delegates.Add(method, existingDelegate);
-                return true;
+                Context.Delegates.Add(decl, existingDelegate);
+                return;
             }
 
             existingDelegate = new DelegateDefinition(module.OutputNamespace, delegateString);
-            Context.Delegates.Add(method, existingDelegate);
+            Context.Delegates.Add(decl, existingDelegate);
 
             libsDelegates[module].Add(delegateString, existingDelegate);
 
             namespaceDelegates.Declarations.Add(@delegate);
+        }
+
+        private void VisitFunctionTypeParameters(Function function)
+        {
+            foreach (var param in from param in function.Parameters
+                                  let paramType = param.Type.Desugar()
+                                  where paramType.IsAddress() &&
+                                      paramType.GetFinalPointee().Desugar() is FunctionType
+                                  select param)
+            {
+                var module = function.TranslationUnit.Module;
+                AddDelegatesToDictionary(param, module);
+            }
+        }
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (!base.VisitFunctionDecl(function) || function.Ignore)
+                return false;
+
+            // HACK : We should shift this call to VisitFunctionTypeParameters in VisitParameter. We can't do it now
+            // because we need to use the module and a since a parameter's namespace is null, we can't reach the
+            // translation unit and thus the module
+            VisitFunctionTypeParameters(function);
 
             return true;
         }
 
+        public override bool VisitMethodDecl(Method method)
+        {
+            if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
+                return false;
+            
+            var module = method.TranslationUnit.Module;
+            AddDelegatesToDictionary(method, module);
+
+            return true;
+        }
+        
         private DelegateDefinition GetExistingDelegate(Module module, string delegateString)
         {
             if (module.Libraries.Count == 0)

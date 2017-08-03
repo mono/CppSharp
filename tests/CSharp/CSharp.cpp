@@ -1354,3 +1354,10 @@ DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s)
 void useStdStringJustAsParameter(std::string s)
 {
 }
+
+int funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr *func)
+{
+    Foo* a = 0;
+    Bar b;
+    return func(a, b);
+}

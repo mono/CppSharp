@@ -655,6 +655,9 @@ namespace CppSharp.Generators.CSharp
             typeBuilder.Append(printedType.NameSuffix);
             var type = typeBuilder.ToString();
 
+            if (Context.Delegates.ContainsKey(param))
+                return $"{Context.Delegates[param].Signature} {param.Name}";
+
             if (ContextKind == TypePrinterContextKind.Native)
                 return $"{type} {param.Name}";
 
