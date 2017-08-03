@@ -2932,7 +2932,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     for (const auto& VD : FD->parameters())
     {
         auto P = WalkParameter(VD, ParamStartLoc);
-        P->_namespace = NS;
+        P->_namespace = F;
         F->Parameters.push_back(P);
 
         ParamStartLoc = VD->getLocEnd();
