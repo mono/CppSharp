@@ -20,7 +20,7 @@ namespace CppSharp.Generators
         public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
         public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
 
-        public Dictionary<Function, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
+        public Dictionary<Declaration, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
 
         public BindingContext(DriverOptions options, ParserOptions parserOptions = null)
         {
@@ -28,7 +28,7 @@ namespace CppSharp.Generators
             ParserOptions = parserOptions;
 
             Symbols = new SymbolContext();
-            Delegates = new Dictionary<Function, DelegatesPass.DelegateDefinition>();
+            Delegates = new Dictionary<Declaration, DelegatesPass.DelegateDefinition>();
 
             TypeMaps = new TypeMapDatabase();
 

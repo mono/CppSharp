@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
+using CSharp.Delegates;
 
 public unsafe class CSharpTests : GeneratorTestFixture
 {
@@ -853,5 +854,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
             uint n = 21;
             Assert.That(*((int*) indexproperty[n]), Is.EqualTo(21));
         }
+    }
+
+    [Test, Platform(Exclude = "Win", Reason = "This test crashes our Windows build, possibly a problem with the NUnit runner there.")]
+    public void TestFuncWithTypedefedFuncPtrAsParam()
+    {
+        Func_int_IntPtr_CSharp_Bar___Internal function = (a, b) => 5;
+        Assert.That(CSharp.CSharp.FuncWithTypedefedFuncPtrAsParam(function), Is.EqualTo(5));
     }
 }
