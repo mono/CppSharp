@@ -84,7 +84,8 @@ namespace CppSharp.Passes
                 {
                     Name = Generator.GeneratedIdentifier("op"),
                     QualifiedType = new QualifiedType(type),
-                    Kind = ParameterKind.OperatorParameter
+                    Kind = ParameterKind.OperatorParameter,
+                    Namespace = @operator
                 });
             }
         }

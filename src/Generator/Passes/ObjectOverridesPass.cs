@@ -141,7 +141,7 @@ namespace CppSharp
             var methodEqualsParam = new Parameter
             {
                 Name = "object",
-                QualifiedType = new QualifiedType(new CILType(typeof(Object))),
+                QualifiedType = new QualifiedType(new CILType(typeof(Object)))
             };
 
             var methodEquals = new Method

@@ -946,7 +946,7 @@ namespace CppSharp.Generators.CLI
             {
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
-                var param = new Parameter { Name = "(*this)" };
+                var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
                 var ctx = new MarshalContext(Context)
                     {
                         MarshalVarPrefix = valueMarshalName,

@@ -21,7 +21,8 @@ namespace CppSharp.AST
                 @params.Add(new Parameter
                     {
                         QualifiedType = pointer,
-                        Name = "instance"
+                        Name = "instance",
+                        Namespace = function
                     });
             }
 
@@ -31,7 +32,8 @@ namespace CppSharp.AST
                 @params.Add(new Parameter
                     {
                         QualifiedType = pointer,
-                        Name = "instance"
+                        Name = "instance",
+                        Namespace = function
                     });
             }
 
@@ -45,7 +47,8 @@ namespace CppSharp.AST
                             pointer : param.QualifiedType,
                         Kind = param.Kind,
                         Usage = param.Usage,
-                        Name = universalDelegate ? "arg" + ++i : param.Name
+                        Name = universalDelegate ? $"arg{++i}": param.Name,
+                        Namespace = param.Namespace
                     });
 
                 if (param.Kind == ParameterKind.IndirectReturnType &&
@@ -54,7 +57,8 @@ namespace CppSharp.AST
                     @params.Add(new Parameter
                         {
                             QualifiedType = pointer,
-                            Name = "instance"
+                            Name = "instance",
+                            Namespace = function
                         });
                 }
             }
@@ -67,7 +71,8 @@ namespace CppSharp.AST
                     @params.Add(new Parameter
                         {
                             QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
-                            Name = "__forBases"
+                            Name = "__forBases",
+                            Namespace = function
                         });
                 }
             }

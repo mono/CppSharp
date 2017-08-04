@@ -48,6 +48,7 @@ namespace CppSharp.Passes
                         Kind = ParameterKind.IndirectReturnType,
                         QualifiedType = function.ReturnType,
                         Name = "return",
+                        Namespace = function
                     };
 
                 function.Parameters.Insert(0, indirectParam);
@@ -73,7 +74,8 @@ namespace CppSharp.Passes
                 {
                     Kind = ParameterKind.ImplicitDestructorParameter,
                     QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
-                    Name = "delete"
+                    Name = "delete",
+                    Namespace = method
                 });
             }
 
