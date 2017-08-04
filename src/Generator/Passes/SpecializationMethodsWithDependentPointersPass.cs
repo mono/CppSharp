@@ -120,6 +120,7 @@ namespace CppSharp.Passes
                         new QualifiedType(new TagType(specializedMethod.Namespace))));
                     thisParameter.Name = "@this";
                     thisParameter.Kind = ParameterKind.Extension;
+                    thisParameter.Namespace = extensionMethod;
                     extensionMethod.Parameters.Insert(0, thisParameter);
                 }
             }

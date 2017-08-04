@@ -1608,7 +1608,8 @@ namespace CppSharp.Generators.CSharp
                 var param = new Parameter
                 {
                     Name = Helpers.ReturnIdentifier,
-                    QualifiedType = method.OriginalReturnType
+                    QualifiedType = method.OriginalReturnType,
+                    Namespace = method
                 };
 
                 // Marshal the managed result to native
