@@ -2301,7 +2301,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GenerateOperator(method);
+                    GenerateOperator(method, returnType);
                 }
                 else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
@@ -2324,7 +2324,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GenerateOperator(method);
+                    GenerateOperator(method, returnType);
                 }
                 else
                 {
@@ -2482,7 +2482,7 @@ namespace CppSharp.Generators.CSharp
             return delegateId;
         }
 
-        private void GenerateOperator(Method method)
+        private void GenerateOperator(Method method, QualifiedType returnType)
         {
             if (method.SynthKind == FunctionSynthKind.ComplementOperator)
             {
@@ -2533,7 +2533,7 @@ namespace CppSharp.Generators.CSharp
                     method.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : ")");
             }
 
-            GenerateInternalFunctionCall(method);
+            GenerateInternalFunctionCall(method, returnType: returnType);
         }
 
         private void GenerateClassConstructor(Method method, Class @class)

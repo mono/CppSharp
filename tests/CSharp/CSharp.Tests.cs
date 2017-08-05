@@ -800,6 +800,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestOperatorReturnTemplateValue()
+    {
+        using (var dependentValueFields = new DependentValueFields<int>())
+        {
+            using (var other = new DependentValueFields<int>())
+            {
+                dependentValueFields.DependentValue = 10;
+                other.DependentValue = 15;
+                Assert.That((dependentValueFields + other).DependentValue, Is.EqualTo(25));
+            }
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())

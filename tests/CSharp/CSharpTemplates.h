@@ -115,6 +115,7 @@ public:
     ~DependentValueFields();
     DependentValueFields& returnInjectedClass();
     DependentValueFields returnValue();
+    DependentValueFields operator+(const DependentValueFields& other);
     T getDependentValue();
     void setDependentValue(const T& value);
 private:
@@ -156,6 +157,14 @@ template <typename T>
 DependentValueFields<T> DependentValueFields<T>::returnValue()
 {
     return *this;
+}
+
+template <typename T>
+DependentValueFields<T> DependentValueFields<T>::operator+(const DependentValueFields& other)
+{
+    DependentValueFields<T> sum;
+    sum.field = field + other.field;
+    return sum;
 }
 
 template <typename T>
