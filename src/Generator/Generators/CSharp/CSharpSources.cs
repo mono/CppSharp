@@ -1068,7 +1068,7 @@ namespace CppSharp.Generators.CSharp
             else if (property.GetMethod.IsVirtual)
                 GenerateVirtualPropertyCall(property.GetMethod, @class, property);
             else GenerateInternalFunctionCall(property.GetMethod,
-                property.GetMethod.Parameters, property.QualifiedType.Type);
+                property.GetMethod.Parameters, property.QualifiedType);
         }
 
         private static Property GetActualProperty(Property property, Class c)
@@ -2574,7 +2574,8 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateInternalFunctionCall(Function function,
-            List<Parameter> parameters = null, Type returnType = null)
+            List<Parameter> parameters = null,
+            QualifiedType returnType = default(QualifiedType))
         {
             if (parameters == null)
                 parameters = function.Parameters;
@@ -2595,7 +2596,7 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
-            Function function, Type returnType = null)
+            Function function, QualifiedType returnType = default(QualifiedType))
         {
             if (function.IsPure)
             {
@@ -2604,8 +2605,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             var retType = function.OriginalReturnType;
-            if (returnType == null)
-                returnType = retType.Type;
+            if (returnType.Type == null)
+                returnType = retType;
 
             var method = function as Method;
             var hasThisReturnStructor = method != null && (method.IsConstructor || method.IsDestructor);
@@ -2752,7 +2753,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     ReturnVarName = Helpers.ReturnIdentifier,
-                    ReturnType = retType,
+                    ReturnType = returnType,
                     Parameter = operatorParam
                 };
 
@@ -2768,8 +2769,8 @@ namespace CppSharp.Generators.CSharp
                 // Special case for indexer - needs to dereference if the internal
                 // function is a pointer type and the property is not.
                 if (retType.Type.IsAddress() &&
-                    retType.Type.GetPointee().Equals(returnType) &&
-                    returnType.IsPrimitiveType())
+                    retType.Type.GetPointee().Equals(returnType.Type) &&
+                    returnType.Type.IsPrimitiveType())
                     WriteLine("return *{0};", marshal.Context.Return);
                 else
                     WriteLine("return {0};", marshal.Context.Return);
