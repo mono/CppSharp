@@ -114,6 +114,7 @@ public:
     DependentValueFields();
     ~DependentValueFields();
     DependentValueFields& returnInjectedClass();
+    DependentValueFields returnValue();
     T getDependentValue();
     void setDependentValue(const T& value);
 private:
@@ -147,6 +148,12 @@ void DependentValueFields<T>::setDependentValue(const T& value)
 
 template <typename T>
 DependentValueFields<T>& DependentValueFields<T>::returnInjectedClass()
+{
+    return *this;
+}
+
+template <typename T>
+DependentValueFields<T> DependentValueFields<T>::returnValue()
 {
     return *this;
 }
