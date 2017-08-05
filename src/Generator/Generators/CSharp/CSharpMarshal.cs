@@ -843,45 +843,4 @@ namespace CppSharp.Generators.CSharp
 
         private readonly CSharpTypePrinter typePrinter;
     }
-
-    public static class CSharpMarshalExtensions
-    {
-        public static void CSharpMarshalToNative(this QualifiedType type,
-            CSharpMarshalManagedToNativePrinter printer)
-        {
-            printer.Context.FullType = type;
-            type.Visit(printer);
-        }
-
-        public static void CSharpMarshalToNative(this Type type,
-            CSharpMarshalManagedToNativePrinter printer)
-        {
-            CSharpMarshalToNative(new QualifiedType(type), printer);
-        }
-
-        public static void CSharpMarshalToNative(this ITypedDecl decl,
-            CSharpMarshalManagedToNativePrinter printer)
-        {
-            CSharpMarshalToNative(decl.QualifiedType, printer);
-        }
-
-        public static void CSharpMarshalToManaged(this QualifiedType type,
-            CSharpMarshalNativeToManagedPrinter printer)
-        {
-            printer.Context.FullType = type;
-            type.Visit(printer);
-        }
-
-        public static void CSharpMarshalToManaged(this Type type,
-            CSharpMarshalNativeToManagedPrinter printer)
-        {
-            CSharpMarshalToManaged(new QualifiedType(type), printer);
-        }
-
-        public static void CSharpMarshalToManaged(this ITypedDecl decl,
-            CSharpMarshalNativeToManagedPrinter printer)
-        {
-            CSharpMarshalToManaged(decl.QualifiedType, printer);
-        }
-    }
 }

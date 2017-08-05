@@ -583,10 +583,10 @@ namespace CppSharp.Generators.CSharp
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-            retType = function.ReturnType.CSharpType(TypePrinter);
+            retType = function.ReturnType.Visit(TypePrinter);
 
             var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
-                string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
+                $"{p.Visit(TypePrinter)} {p.Name}").ToList();
 
             TypePrinter.PopContext();
 
@@ -775,7 +775,7 @@ namespace CppSharp.Generators.CSharp
             ctx.PushMarshalKind(MarshalKind.Variable);
 
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            decl.CSharpMarshalToNative(marshal);
+            decl.QualifiedType.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 Write(marshal.Context.Before);
@@ -1046,7 +1046,7 @@ namespace CppSharp.Generators.CSharp
             };
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-            decl.CSharpMarshalToManaged(marshal);
+            decl.QualifiedType.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 Write(marshal.Context.Before);
@@ -1105,7 +1105,7 @@ namespace CppSharp.Generators.CSharp
                 ctx.ReturnVarName = HandleValueArray(arrayType, field);
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-            field.CSharpMarshalToManaged(marshal);
+            field.QualifiedType.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 Write(marshal.Context.Before);
@@ -2759,7 +2759,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                retType.CSharpMarshalToManaged(marshal);
+                retType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
@@ -2849,7 +2849,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                param.CSharpMarshalToManaged(marshal);
+                param.QualifiedType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
@@ -2919,7 +2919,7 @@ namespace CppSharp.Generators.CSharp
 
             paramMarshal.Context = ctx;
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            param.CSharpMarshalToNative(marshal);
+            param.QualifiedType.Visit(marshal);
             paramMarshal.HasUsingBlock = ctx.HasCodeBlock;
 
             if (string.IsNullOrEmpty(marshal.Context.Return))

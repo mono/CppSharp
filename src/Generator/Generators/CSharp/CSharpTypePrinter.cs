@@ -756,32 +756,4 @@ namespace CppSharp.Generators.CSharp
             return returnTypePrinter;
         }
     }
-
-    public static class CSharpTypePrinterExtensions
-    {
-        public static TypePrinterResult CSharpType(this QualifiedType type,
-            CSharpTypePrinter printer)
-        {
-            printer.FullType = type;
-            return type.Visit(printer);
-        }
-
-        public static TypePrinterResult CSharpType(this Type type,
-            CSharpTypePrinter printer)
-        {
-            return CSharpType(new QualifiedType(type), printer);
-        }
-
-        public static TypePrinterResult CSharpType(this Declaration decl,
-            CSharpTypePrinter printer)
-        {
-            if (decl is ITypedDecl)
-            {
-                var type = (decl as ITypedDecl).QualifiedType;
-                printer.FullType = type;
-            }
-
-            return decl.Visit(printer);
-        }
-    }
 }

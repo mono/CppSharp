@@ -57,8 +57,6 @@ namespace CppSharp.Generators
 
         public Declaration Declaration;
         public Parameter Parameter;
-        public CppSharp.AST.Type Type;
-        public QualifiedType FullType;
 
         #region Dummy implementations
 

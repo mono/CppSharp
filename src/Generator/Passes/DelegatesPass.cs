@@ -197,12 +197,12 @@ namespace CppSharp.Passes
             var typesBuilder = new StringBuilder();
             if (!returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
-                typesBuilder.Insert(0, returnType.Type.CSharpType(TypePrinter));
+                typesBuilder.Insert(0, returnType.Visit(TypePrinter));
                 typesBuilder.Append('_');
             }
             foreach (var parameter in @params)
             {
-                typesBuilder.Append(parameter.CSharpType(TypePrinter));
+                typesBuilder.Append(parameter.Visit(TypePrinter));
                 typesBuilder.Append('_');
             }
             if (typesBuilder.Length > 0)
