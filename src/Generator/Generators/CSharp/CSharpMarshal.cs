@@ -169,6 +169,10 @@ namespace CppSharp.Generators.CSharp
 
                 if (Context.Context.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
                     Context.Return.Write(string.Format("({0}) ", pointer));
+                if (Context.Function != null &&
+                    Context.Function.OperatorKind == CXXOperatorKind.Subscript &&
+                    Context.ReturnType.Type.Desugar().IsPrimitiveType(primitive))
+                    Context.Return.Write("*");
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
             }

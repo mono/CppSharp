@@ -2754,7 +2754,8 @@ namespace CppSharp.Generators.CSharp
                     ArgName = Helpers.ReturnIdentifier,
                     ReturnVarName = Helpers.ReturnIdentifier,
                     ReturnType = returnType,
-                    Parameter = operatorParam
+                    Parameter = operatorParam,
+                    Function = function
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -2766,14 +2767,7 @@ namespace CppSharp.Generators.CSharp
                 if (ctx.HasCodeBlock)
                     PushIndent();
 
-                // Special case for indexer - needs to dereference if the internal
-                // function is a pointer type and the property is not.
-                if (retType.Type.IsAddress() &&
-                    retType.Type.GetPointee().Equals(returnType.Type) &&
-                    returnType.Type.IsPrimitiveType())
-                    WriteLine("return *{0};", marshal.Context.Return);
-                else
-                    WriteLine("return {0};", marshal.Context.Return);
+                WriteLine($"return {marshal.Context.Return};");
 
                 if (ctx.HasCodeBlock)
                     WriteCloseBraceIndent();
