@@ -1526,6 +1526,7 @@ static CXXMethodKind GetMethodKindFromDecl(clang::DeclarationName Name)
     switch(Name.getNameKind())
     {
     case DeclarationName::Identifier:
+    case DeclarationName::CXXDeductionGuideName:
     case DeclarationName::ObjCZeroArgSelector:
     case DeclarationName::ObjCOneArgSelector:
     case DeclarationName::ObjCMultiArgSelector:
@@ -2526,6 +2527,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         {
         case clang::NestedNameSpecifier::SpecifierKind::TypeSpec:
         case clang::NestedNameSpecifier::SpecifierKind::TypeSpecWithTemplate:
+        {
             const auto& Qualifier = clang::QualType(DN->getQualifier()->getAsType(), 0);
             if (LocValid)
             {
@@ -2546,6 +2548,8 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 DNT->qualifier = GetQualifiedType(Qualifier, 0);
             }
             break;
+        }
+        default: break;
         }
         DNT->identifier = DN->getIdentifier()->getName();
 
