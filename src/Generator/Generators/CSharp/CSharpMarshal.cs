@@ -609,11 +609,8 @@ namespace CppSharp.Generators.CSharp
                     if (!marshalAsString &&
                         Context.Context.Options.MarshalCharAsManagedChar &&
                         primitive == PrimitiveType.Char)
-                    {
-                        typePrinter.PushContext(TypePrinterContextKind.Native);
-                        Context.Return.Write(string.Format("({0}) ", pointer.Visit(typePrinter)));
-                        typePrinter.PopContext();
-                    }
+                        Context.Return.Write($"({typePrinter.PrintNative(pointer)}) ");
+
                     if (marshalAsString && (Context.MarshalKind == MarshalKind.NativeField ||
                         Context.MarshalKind == MarshalKind.VTableReturnValue ||
                         Context.MarshalKind == MarshalKind.Variable))
@@ -784,9 +781,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var realClass = @class.OriginalClass ?? @class;
-            typePrinter.PushContext(TypePrinterContextKind.Native);
-            var qualifiedIdentifier = realClass.Visit(typePrinter);
-            typePrinter.PopContext();
+            var qualifiedIdentifier = typePrinter.PrintNative(realClass);
             Context.Return.Write(
                 "ReferenceEquals({0}, null) ? new {1}() : *({1}*) {2}",
                 param, qualifiedIdentifier, paramInstance);

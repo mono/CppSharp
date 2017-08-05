@@ -731,8 +731,6 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);
-
         public override TypePrinterResult VisitFieldDecl(Field field)
         {
             var cSharpSourcesDummy = new CSharpSources(Context, new List<TranslationUnit>());
@@ -755,5 +753,31 @@ namespace CppSharp.Generators.CSharp
 
             return returnTypePrinter;
         }
+
+        public TypePrinterResult PrintNative(Declaration declaration)
+        {
+            PushContext(TypePrinterContextKind.Native);
+            var typePrinterResult = declaration.Visit(this);
+            PopContext();
+            return typePrinterResult;
+        }
+
+        public TypePrinterResult PrintNative(Type type)
+        {
+            PushContext(TypePrinterContextKind.Native);
+            var typePrinterResult = type.Visit(this);
+            PopContext();
+            return typePrinterResult;
+        }
+
+        public TypePrinterResult PrintNative(QualifiedType type)
+        {
+            PushContext(TypePrinterContextKind.Native);
+            var typePrinterResult = type.Visit(this);
+            PopContext();
+            return typePrinterResult;
+        }
+
+        private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);
     }
 }

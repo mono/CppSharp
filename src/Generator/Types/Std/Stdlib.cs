@@ -63,10 +63,8 @@ namespace CppSharp.Types.Std
             var type = ctx.Parameter.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var typePrinter = new CSharpTypePrinter(ctx.Context);
-            typePrinter.PushContext(TypePrinterContextKind.Native);
             if (!ctx.Parameter.Type.Desugar().IsAddress())
-                ctx.Return.Write($"*({basicString.Visit(typePrinter)}*) ");
-            typePrinter.PopContext();
+                ctx.Return.Write($"*({typePrinter.PrintNative(basicString)}*) ");
             var allocator = ctx.Context.ASTContext.FindClass("allocator", false, true).First(
                 a => a.IsDependent && a.TranslationUnit.IsSystemHeader);
             var allocatorChar = allocator.Specializations.First(s => !s.Ignore);

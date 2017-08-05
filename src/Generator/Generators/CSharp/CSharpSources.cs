@@ -847,15 +847,13 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                TypePrinter.PushContext(TypePrinterContextKind.Native);
+                var printed = TypePrinter.PrintNative(@class);
                 ctx.ReturnVarName = string.Format("{0}{1}{2}",
                     @class.IsValueType
                         ? Helpers.InstanceField
-                        : string.Format("(({0}*) {1})", @class.Visit(TypePrinter),
-                            Helpers.InstanceIdentifier),
+                        : $"(({printed}*) {Helpers.InstanceIdentifier})",
                     @class.IsValueType ? "." : "->",
                     SafeIdentifier(name));
-                TypePrinter.PopContext();
             }
             param.Visit(marshal);
 
@@ -889,15 +887,9 @@ namespace CppSharp.Generators.CSharp
 
             string type;
             if (Context.Options.MarshalCharAsManagedChar && isChar)
-            {
-                var typePrinter = new CSharpTypePrinter(Context);
-                typePrinter.PushContext(TypePrinterContextKind.Native);
-                type = originalType.Visit(typePrinter).Type;
-            }
+                type = TypePrinter.PrintNative(originalType).Type;
             else
-            {
                 type = originalType.ToString();
-            }
 
             var name = ((Class) field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
@@ -1085,19 +1077,16 @@ namespace CppSharp.Generators.CSharp
         private void GenerateFieldGetter(Field field, Class @class)
         {
             var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-            TypePrinter.PushContext(TypePrinterContextKind.Native);
             var ctx = new CSharpMarshalContext(Context)
             {
                 ArgName = field.Name,
                 Declaration = field,
                 ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
-                    $"(({@class.Visit(TypePrinter)}*) {Helpers.InstanceIdentifier})")}{
+                    $"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})")}{
                     (@class.IsValueType ? "." : "->")}{SafeIdentifier(name)}",
                 ReturnType = field.QualifiedType
             };
             ctx.PushMarshalKind(MarshalKind.NativeField);
-            
-            TypePrinter.PopContext();
 
             var arrayType = field.Type.Desugar() as ArrayType;
 
@@ -1442,7 +1431,6 @@ namespace CppSharp.Generators.CSharp
 
         private void SaveOriginalVTablePointers(Class @class)
         {
-            TypePrinter.PushContext(TypePrinterContextKind.Native);
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
@@ -1452,7 +1440,6 @@ namespace CppSharp.Generators.CSharp
                 WriteLine(
                     $@"__OriginalVTables = new void*[] {{ *(void**) ({
                         Helpers.InstanceIdentifier} + {@class.Layout.VTablePointers[0].Offset}) }};");
-            TypePrinter.PopContext();
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1630,10 +1617,9 @@ namespace CppSharp.Generators.CSharp
                 if (method.HasIndirectReturnTypeParameter)
                 {
                     var retParam = method.Parameters.First(p => p.Kind == ParameterKind.IndirectReturnType);
-                    TypePrinter.PushContext(TypePrinterContextKind.Native);
                     WriteLine("*({0}*) {1} = {2};",
-                        method.OriginalReturnType.Visit(TypePrinter), retParam.Name, marshal.Context.Return);
-                    TypePrinter.PopContext();
+                        TypePrinter.PrintNative(method.OriginalReturnType),
+                        retParam.Name, marshal.Context.Return);
                 }
                 else
                 {
@@ -1924,9 +1910,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine($"{printedClass}{printedClass.NameSuffix} {Helpers.DummyIdentifier};");
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
-                TypePrinter.PushContext(TypePrinterContextKind.Native);
-                var classInternal = @class.Visit(TypePrinter);
-                TypePrinter.PopContext();
+                var classInternal = TypePrinter.PrintNative(@class);
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
                     if (Context.ParserOptions.IsMicrosoftAbi)
@@ -2062,9 +2046,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                TypePrinter.PushContext(TypePrinterContextKind.Native);
-                WriteLine($"{Helpers.InstanceField} = *({@class.Visit(TypePrinter)}*) native;");
-                TypePrinter.PopContext();
+                WriteLine($"{Helpers.InstanceField} = *({TypePrinter.PrintNative(@class)}*) native;");
             }
 
             WriteCloseBraceIndent();
@@ -2073,9 +2055,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateNativeConstructorByValue(Class @class, string returnType)
         {
-            TypePrinter.PushContext(TypePrinterContextKind.Native);
-            var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
-            TypePrinter.PopContext();
+            var @internal = TypePrinter.PrintNative(@class.IsAbstractImpl ? @class.BaseClass : @class);
 
             if (!@class.IsAbstractImpl)
             {
@@ -2101,11 +2081,9 @@ namespace CppSharp.Generators.CSharp
                 {
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
-                    TypePrinter.PushContext(TypePrinterContextKind.Native);
-                    WriteLine($"{@class.Visit(TypePrinter)}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
-                        @class.Visit(TypePrinter),
-                        GetFunctionNativeIdentifier(copyCtorMethod));
-                    TypePrinter.PopContext();
+                    var printed = TypePrinter.PrintNative(@class);
+                    WriteLine($"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
+                        printed, GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ret.ToPointer();");
                 }
                 else
@@ -2420,10 +2398,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("if ({0} == global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
                     WriteLineIndent("return global::System.IntPtr.Zero.GetHashCode();");
-                    TypePrinter.PushContext(TypePrinterContextKind.Native);
-                    WriteLine($@"return (*({@class.Visit(TypePrinter)}*) {
+                    WriteLine($@"return (*({TypePrinter.PrintNative(@class)}*) {
                         Helpers.InstanceIdentifier}).GetHashCode();");
-                    TypePrinter.PopContext();
                 }
                 else
                 {
@@ -2544,9 +2520,8 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassConstructor(Method method, Class @class)
         {
-            TypePrinter.PushContext(TypePrinterContextKind.Native);
-            var @internal = (@class.IsAbstractImpl ? @class.BaseClass : @class).Visit(TypePrinter);
-            TypePrinter.PopContext();
+            var @internal = TypePrinter.PrintNative(
+                @class.IsAbstractImpl ? @class.BaseClass : @class);
             WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(sizeof({@internal}));");
             WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
             WriteLine($"NativeToManagedMap[{Helpers.InstanceIdentifier}] = this;");
@@ -2557,9 +2532,7 @@ namespace CppSharp.Generators.CSharp
                     GenerateInternalFunctionCall(method);
                 else
                 {
-                    TypePrinter.PushContext(TypePrinterContextKind.Native);
-                    var classInternal = @class.Visit(TypePrinter);
-                    TypePrinter.PopContext();
+                    var classInternal = TypePrinter.PrintNative(@class);
                     WriteLine($@"*(({classInternal}*) {Helpers.InstanceIdentifier}) = *(({
                         classInternal}*) {method.Parameters[0].Name}.{Helpers.InstanceIdentifier});");
                 }
@@ -2583,12 +2556,8 @@ namespace CppSharp.Generators.CSharp
             var @class = function.Namespace as Class;
 
             string @internal = Helpers.InternalStruct;
-            if (@class != null && @class is ClassTemplateSpecialization)
-            {
-                TypePrinter.PushContext(TypePrinterContextKind.Native);
-                @internal = @class.Visit(TypePrinter).Type;
-                TypePrinter.PopContext();
-            }
+            if (@class is ClassTemplateSpecialization)
+                @internal = TypePrinter.PrintNative(@class).Type;
 
             var nativeFunction = GetFunctionNativeIdentifier(function);
             var functionName = $"{@internal}.{nativeFunction}";
@@ -2646,9 +2615,8 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     var @class = retClass.OriginalClass ?? retClass;
-                    TypePrinter.PushContext(TypePrinterContextKind.Native);
-                    WriteLine($"var {Helpers.ReturnIdentifier} = new {@class.Visit(TypePrinter)}();");
-                    TypePrinter.PopContext();
+                    WriteLine($@"var {Helpers.ReturnIdentifier} = new {
+                        TypePrinter.PrintNative(@class)}();");
                 }
                 else
                 {
