@@ -22,12 +22,11 @@ namespace CppSharp.Generators.CSharp
             this CSharpSources gen, Class @class)
         {
             var printedClass = @class.Visit(gen.TypePrinter);
-            var returnType = $"{printedClass}{printedClass.NameSuffix}";
             if (@class.IsDependent)
                 foreach (var specialization in @class.GetSpecializationsToGenerate().Where(s => !s.Ignore))
-                    gen.GenerateNativeConstructorByValue(specialization, returnType);
+                    gen.GenerateNativeConstructorByValue(specialization, printedClass.Type);
             else
-                gen.GenerateNativeConstructorByValue(@class, returnType);
+                gen.GenerateNativeConstructorByValue(@class, printedClass.Type);
         }
 
         public static void GenerateField(this CSharpSources gen, Class @class,

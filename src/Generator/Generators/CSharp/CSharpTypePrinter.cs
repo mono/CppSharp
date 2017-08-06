@@ -343,7 +343,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (ContextKind == TypePrinterContextKind.Managed &&
                     decl == template.Template.TemplatedDecl)
-                    return $@"{decl.Visit(this)}<{string.Join(", ",
+                    return $@"{VisitDeclaration(decl)}<{string.Join(", ",
                         template.Arguments.Select(VisitTemplateArgument))}>";
                 return decl.Visit(this);
             }
@@ -549,12 +549,11 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native)
                 return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
 
-            var typePrinterResult = new TypePrinterResult();
-            typePrinterResult.Type = VisitDeclaration(@class).Type;
-            if (@class.IsDependent)
-                typePrinterResult.NameSuffix = $@"<{
-                    string.Join(", ", @class.TemplateParameters.Select(p => p.Name))}>";
-            return typePrinterResult;
+            var printed = VisitDeclaration(@class).Type;
+            if (!@class.IsDependent)
+                return printed;
+            return $@"{printed}<{string.Join(", ",
+                @class.TemplateParameters.Select(p => p.Name))}>";
         }
 
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
@@ -652,7 +651,6 @@ namespace CppSharp.Generators.CSharp
                 typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
             var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             typeBuilder.Append(printedType);
-            typeBuilder.Append(printedType.NameSuffix);
             var type = typeBuilder.ToString();
 
             if (Context.Delegates.ContainsKey(param))

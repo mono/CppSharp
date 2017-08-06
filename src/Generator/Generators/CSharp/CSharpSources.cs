@@ -394,7 +394,7 @@ namespace CppSharp.Generators.CSharp
                         c => c.IsInterface && c.OriginalClass == @class);
                     var printedClass = (@interface ?? @class).Visit(TypePrinter);
                     var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {
-                        printedClass}{printedClass.NameSuffix}>";
+                        printedClass}>";
                     WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
                     WriteLine("protected void*[] __OriginalVTables;");
                 }
@@ -1247,11 +1247,11 @@ namespace CppSharp.Generators.CSharp
                     if (prop.IsVirtual && !isOverride && !prop.IsPure)
                         Write("virtual ");
 
-                    WriteLine($"{printedType}{printedType.NameSuffix} {GetPropertyName(prop)}");
+                    WriteLine($"{printedType} {GetPropertyName(prop)}");
                 }
                 else
                 {
-                    WriteLine($@"{printedType}{printedType.NameSuffix} {
+                    WriteLine($@"{printedType} {
                         prop.ExplicitInterfaceImpl.Name}.{GetPropertyName(prop)}");
                 }
                 WriteStartBraceIndent();
@@ -1682,8 +1682,7 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             var printedClass = @class.Visit(TypePrinter);
-            WriteLine($@"var {Helpers.TargetIdentifier} = ({printedClass}{
-                printedClass.NameSuffix}) NativeToManagedMap[instance];");
+            WriteLine($"var {Helpers.TargetIdentifier} = ({printedClass}) NativeToManagedMap[instance];");
             WriteLine("if ({0}.{1})", Helpers.TargetIdentifier, Helpers.OwnsNativeInstanceIdentifier);
             WriteLineIndent("{0}.SetupVTables();", Helpers.TargetIdentifier);
             GenerateVTableManagedCall(method);
@@ -1907,7 +1906,7 @@ namespace CppSharp.Generators.CSharp
                 // The local var must be of the exact type in the object map because of TryRemove
                 var printedClass = (@interface ?? (
                     @base.IsAbstractImpl ? @base.BaseClass : @base)).Visit(TypePrinter);
-                WriteLine($"{printedClass}{printedClass.NameSuffix} {Helpers.DummyIdentifier};");
+                WriteLine($"{printedClass} {Helpers.DummyIdentifier};");
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
                 var classInternal = TypePrinter.PrintNative(@class);
@@ -1987,12 +1986,12 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(BlockKind.Method);
                 var printedClass = @class.Visit(TypePrinter);
-                WriteLine("internal static {0}{1}{2} {3}(global::System.IntPtr native, bool skipVTables = false)",
+                WriteLine("internal static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
-                    printedClass, printedClass.NameSuffix, Helpers.CreateInstanceIdentifier);
+                    printedClass, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
                 var suffix = @class.IsAbstract ? "Internal" : string.Empty;
-                var ctorCall = $"{printedClass}{printedClass.NameSuffix}{suffix}";
+                var ctorCall = $"{printedClass}{suffix}";
                 WriteLine("return new {0}(native.ToPointer(), skipVTables);", ctorCall);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2189,7 +2188,7 @@ namespace CppSharp.Generators.CSharp
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
                 var printedType = method.OriginalReturnType.Visit(TypePrinter);
-                Write($"{functionName} {printedType}{printedType.NameSuffix}(");
+                Write($"{functionName} {printedType}(");
             }
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
@@ -2484,11 +2483,10 @@ namespace CppSharp.Generators.CSharp
                     if (@interface != null)
                     {
                         var printedInterface = @interface.Visit(TypePrinter);
-                        WriteLine($@"return new {printedType}{printedType.NameSuffix}(({
-                            printedInterface}{printedInterface.NameSuffix}) {paramName});");
+                        WriteLine($@"return new {printedType}(({printedInterface}) {paramName});");
                     }
                     else
-                        WriteLine($"return new {printedType}{printedType.NameSuffix}({paramName});");
+                        WriteLine($"return new {printedType}({paramName});");
                 }
                 else
                 {
