@@ -132,7 +132,7 @@ namespace CppSharp.Generators.CSharp
             var managedTypes = string.Join(", ", @class.TemplateParameters.Select(p => $"typeof({p.Name}).FullName"));
             gen.WriteLine($"throw new ArgumentOutOfRangeException(\"{typeArguments}\", "
                 + $@"string.Join("", "", new[] {{ {managedTypes} }}), "
-                + $"\"{@class.Visit(typePrinter)}<{typeArguments}> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: {supportedTypes}.\");");
+                + $"\"{@class.Visit(typePrinter)} maps a C++ template class and therefore it only supports a limited set of types and their subclasses: {supportedTypes}.\");");
         }
     }
 }
