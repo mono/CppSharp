@@ -105,7 +105,12 @@ private:
 };
 
 template <typename T>
-class DLL_API DependentValueFields
+class DLL_API Base
+{
+};
+
+template <typename T>
+class DLL_API DependentValueFields : public Base<T>
 {
 public:
     class Nested
@@ -166,6 +171,13 @@ DependentValueFields<T> DependentValueFields<T>::operator+(const DependentValueF
     sum.field = field + other.field;
     return sum;
 }
+
+class DLL_API DerivedFromSpecializationOfUnsupportedTemplate : public DependentValueFields<int>
+{
+public:
+    DerivedFromSpecializationOfUnsupportedTemplate();
+    ~DerivedFromSpecializationOfUnsupportedTemplate();
+};
 
 template <typename T>
 class DLL_API DependentPointerFields
@@ -411,6 +423,7 @@ template class DLL_API IndependentFields<int>;
 template class DLL_API IndependentFields<bool>;
 template class DLL_API IndependentFields<T1>;
 template class DLL_API IndependentFields<std::string>;
+template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;

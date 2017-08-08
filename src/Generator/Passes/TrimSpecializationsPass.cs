@@ -51,18 +51,7 @@ namespace CppSharp.Passes
                 }
             }
             else
-                foreach (var @base in @class.Bases.Where(b => b.IsClass))
-                {
-                    var specialization = @base.Class as ClassTemplateSpecialization;
-                    if (specialization != null)
-                    {
-                        specializations.Add(specialization);
-                        foreach (var field in specialization.Fields)
-                            field.Visit(this);
-                        foreach (var method in specialization.Methods)
-                            method.Visit(this);
-                    }
-                }
+                CheckBasesForSpecialization(@class);
 
             return true;
         }
@@ -189,6 +178,23 @@ namespace CppSharp.Passes
                                   where @base.IsClass
                                   select @base.Class)
                 CheckLayoutFields(@base);
+        }
+
+        private void CheckBasesForSpecialization(Class @class)
+        {
+            foreach (var @base in @class.Bases.Where(b => b.IsClass))
+            {
+                var specialization = @base.Class as ClassTemplateSpecialization;
+                if (specialization != null)
+                {
+                    specializations.Add(specialization);
+                    foreach (var field in specialization.Fields)
+                        field.Visit(this);
+                    foreach (var method in specialization.Methods)
+                        method.Visit(this);
+                }
+                CheckBasesForSpecialization(@base.Class);
+            }
         }
 
         private HashSet<ClassTemplateSpecialization> specializations = new HashSet<ClassTemplateSpecialization>();

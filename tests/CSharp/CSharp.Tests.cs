@@ -67,6 +67,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             int i = typeMappedWithOperator | 5;
         }
+        using (Base<int> @base = new DerivedFromSpecializationOfUnsupportedTemplate())
+        {
+        }
 
 #pragma warning restore 0168
 #pragma warning restore 0219

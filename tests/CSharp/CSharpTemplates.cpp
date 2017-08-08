@@ -18,6 +18,14 @@ int T1::getField() const
     return field;
 }
 
+DerivedFromSpecializationOfUnsupportedTemplate::DerivedFromSpecializationOfUnsupportedTemplate()
+{
+}
+
+DerivedFromSpecializationOfUnsupportedTemplate::~DerivedFromSpecializationOfUnsupportedTemplate()
+{
+}
+
 HasDefaultTemplateArgument<bool, bool>::HasDefaultTemplateArgument()
 {
 }
