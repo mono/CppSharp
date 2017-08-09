@@ -420,6 +420,7 @@ namespace CppSharp.Generator.Tests.AST
 /// </remarks>".Replace("\r", string.Empty), commentMethodDoxygen.Replace("\r", string.Empty));
 
             var methodDoxygenCustomTags = @class.Methods.First(m => m.Name == "glfwDestroyWindow");
+            new CleanCommentsPass { }.VisitFull(methodDoxygenCustomTags.Comment.FullComment);
             var commentMethodDoxygenCustomTag = methodDoxygenCustomTags.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Destroys the specified window and its context.</summary>
 /// <param name=""window"">The window to destroy.</param>
@@ -431,6 +432,7 @@ namespace CppSharp.Generator.Tests.AST
 /// <para>The context of the specified window must not be current on any other</para>
 /// <para>thread when this function is called.</para>
 /// <para>This function must not be called from a callback.</para>
+/// <para>This function must only be called from the main thread.</para>
 /// <para>Added in version 3.0.  Replaces `glfwCloseWindow`.</para>
 /// </remarks>".Replace("\r", string.Empty), commentMethodDoxygenCustomTag.Replace("\r", string.Empty));
         }

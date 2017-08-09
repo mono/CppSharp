@@ -184,6 +184,8 @@ public:
     *
     *  @reentrancy This function must not be called from a callback.
     *
+    *  @thread_safety This function must only be called from the main thread.
+    *
     *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
     */
     void glfwDestroyWindow(int* window);

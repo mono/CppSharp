@@ -395,6 +395,7 @@ namespace CppSharp.Generators
     public static class Helpers
     {
         public static Regex RegexTag = new Regex(@"^(<|</)[a-zA-Z][\w\-]*?>?$");
+        public static Regex RegexCommentCommandLeftover = new Regex(@"^\S*");
         public static readonly string InternalStruct = Generator.GeneratedIdentifier("Internal");
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
