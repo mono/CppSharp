@@ -731,6 +731,7 @@ public:
     bool isInline;
     bool isPure;
     bool isDeleted;
+    bool isDefaulted;
     FriendKind friendKind;
     CXXOperatorKind operatorKind;
     std::string mangled;

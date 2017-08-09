@@ -1170,6 +1170,7 @@ namespace CppSharp
             _function.IsInline = function.IsInline;
             _function.IsPure = function.IsPure;
             _function.IsDeleted = function.IsDeleted;
+            _function.IsDefaulted = function.IsDefaulted;
             _function.FriendKind = VisitFriendKind(function.FriendKind);
             _function.OperatorKind = VisitCXXOperatorKind(function.OperatorKind);
             _function.Mangled = function.Mangled;

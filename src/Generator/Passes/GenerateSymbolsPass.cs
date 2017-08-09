@@ -31,7 +31,8 @@ namespace CppSharp.Passes
         {
             var result = base.VisitASTContext(context);
             var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
-            findSymbolsPass.Wait = true;
+            if (remainingCompilationTasks > 0)
+                findSymbolsPass.Wait = true;
             GenerateSymbols();
             return result;
         }
@@ -50,7 +51,8 @@ namespace CppSharp.Passes
                     symbolsCodeGenerator.NewLine();
                     foreach (var specialization in specializations[module])
                         foreach (var method in specialization.Methods.Where(
-                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit && !m.IsDeleted))
+                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit &&
+                                !m.IsDeleted && !m.IsDefaulted))
                             symbolsCodeGenerator.VisitMethodDecl(method);
                 }
 
@@ -124,8 +126,8 @@ namespace CppSharp.Passes
         {
             var mangled = function.Mangled;
             var method = function as Method;
-            return function.IsGenerated && !function.IsDeleted && !function.IsDependent &&
-                !function.IsPure &&
+            return function.IsGenerated && !function.IsDeleted && !function.IsDefaulted &&
+                !function.IsDependent && !function.IsPure &&
                 (!string.IsNullOrEmpty(function.Body) || function.IsImplicit) &&
                 !(function.Namespace is ClassTemplateSpecialization) &&
                 // we don't need symbols for virtual functions anyway

@@ -158,6 +158,10 @@ namespace CppSharp.AST
             IsVariadic = function.IsVariadic;
             IsInline = function.IsInline;
             IsPure = function.IsPure;
+            IsDeleted = function.IsDeleted;
+            IsDefaulted = function.IsDefaulted;
+            IsAmbiguous = function.IsAmbiguous;
+            FriendKind = function.FriendKind;
             OperatorKind = function.OperatorKind;
             CallingConvention = function.CallingConvention;
             SynthKind = function.SynthKind;
@@ -182,6 +186,7 @@ namespace CppSharp.AST
         public bool IsInline { get; set; }
         public bool IsPure { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsDefaulted { get; set; }
         public bool IsAmbiguous { get; set; }
         public FriendKind FriendKind { get; set; }
         public CXXOperatorKind OperatorKind { get; set; }

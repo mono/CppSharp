@@ -2859,6 +2859,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->isDependent = FD->isDependentContext();
     F->isPure = FD->isPure();
     F->isDeleted = FD->isDeleted();
+    F->isDefaulted = FD->isDefaulted();
     SetBody(FD, F);
     if (auto InstantiatedFrom = FD->getTemplateInstantiationPattern())
         F->instantiatedFrom = static_cast<Function*>(WalkDeclaration(InstantiatedFrom));

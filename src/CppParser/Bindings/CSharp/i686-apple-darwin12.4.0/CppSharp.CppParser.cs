@@ -7168,6 +7168,9 @@ namespace CppSharp
                     [FieldOffset(246)]
                     internal byte isDeleted;
 
+                    [FieldOffset(247)]
+                    internal byte isDefaulted;
+
                     [FieldOffset(248)]
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
 
@@ -7426,6 +7429,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isDeleted = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsDefaulted
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isDefaulted != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isDefaulted = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7699,6 +7715,9 @@ namespace CppSharp
 
                     [FieldOffset(246)]
                     internal byte isDeleted;
+
+                    [FieldOffset(247)]
+                    internal byte isDefaulted;
 
                     [FieldOffset(248)]
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;

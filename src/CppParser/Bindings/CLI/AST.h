@@ -2072,6 +2072,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsDefaulted
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::FriendKind FriendKind
                 {
                     CppSharp::Parser::AST::FriendKind get();

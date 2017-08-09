@@ -3594,6 +3594,16 @@ void CppSharp::Parser::AST::Function::IsDeleted::set(bool value)
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->isDeleted = value;
 }
 
+bool CppSharp::Parser::AST::Function::IsDefaulted::get()
+{
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->isDefaulted;
+}
+
+void CppSharp::Parser::AST::Function::IsDefaulted::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->isDefaulted = value;
+}
+
 CppSharp::Parser::AST::FriendKind CppSharp::Parser::AST::Function::FriendKind::get()
 {
     return (CppSharp::Parser::AST::FriendKind)((::CppSharp::CppParser::AST::Function*)NativePtr)->friendKind;
