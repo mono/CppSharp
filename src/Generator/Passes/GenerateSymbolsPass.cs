@@ -31,9 +31,9 @@ namespace CppSharp.Passes
         {
             var result = base.VisitASTContext(context);
             var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
+            GenerateSymbols();
             if (remainingCompilationTasks > 0)
                 findSymbolsPass.Wait = true;
-            GenerateSymbols();
             return result;
         }
 
@@ -126,7 +126,7 @@ namespace CppSharp.Passes
         {
             var mangled = function.Mangled;
             var method = function as Method;
-            return function.IsGenerated && !function.IsDeleted && !function.IsDefaulted &&
+            return function.IsGenerated && !function.IsDeleted &&
                 !function.IsDependent && !function.IsPure &&
                 (!string.IsNullOrEmpty(function.Body) || function.IsImplicit) &&
                 !(function.Namespace is ClassTemplateSpecialization) &&
