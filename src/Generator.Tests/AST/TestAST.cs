@@ -418,6 +418,21 @@ namespace CppSharp.Generator.Tests.AST
 /// <para>This function implies that a future call to SBTarget::Attach(...)</para>
 /// <para>will be synchronous.</para>
 /// </remarks>".Replace("\r", string.Empty), commentMethodDoxygen.Replace("\r", string.Empty));
+
+            var methodDoxygenCustomTags = @class.Methods.First(m => m.Name == "glfwDestroyWindow");
+            var commentMethodDoxygenCustomTag = methodDoxygenCustomTags.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
+            Assert.AreEqual(@"/// <summary>Destroys the specified window and its context.</summary>
+/// <param name=""window"">The window to destroy.</param>
+/// <remarks>
+/// <para>This function destroys the specified window and its context.  On calling</para>
+/// <para>this function, no further callbacks will be called for that window.</para>
+/// <para>If the context of the specified window is current on the main thread, it is</para>
+/// <para>detached before being destroyed.</para>
+/// <para>The context of the specified window must not be current on any other</para>
+/// <para>thread when this function is called.</para>
+/// <para>This function must not be called from a callback.</para>
+/// <para>Added in version 3.0.  Replaces `glfwCloseWindow`.</para>
+/// </remarks>".Replace("\r", string.Empty), commentMethodDoxygenCustomTag.Replace("\r", string.Empty));
         }
 
         [Test]

@@ -29,12 +29,33 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case DocumentationCommentKind.BlockCommandComment:
                     var blockCommandComment = (BlockCommandComment) comment;
-                    if (blockCommandComment.CommandKind == CommentCommandKind.Return &&
-                        blockCommandComment.ParagraphComment != null)
+                    if (blockCommandComment.ParagraphComment == null)
+                        break;
+                    switch (blockCommandComment.CommandKind)
                     {
-                        sections.Add(new Section(CommentElement.Returns));
-                        blockCommandComment.ParagraphComment.GetCommentSections(sections);
+                        case CommentCommandKind.Brief:
+                            blockCommandComment.ParagraphComment.GetCommentSections(sections);
+                            break;
+                        case CommentCommandKind.Return:
+                            sections.Add(new Section(CommentElement.Returns));
+                            blockCommandComment.ParagraphComment.GetCommentSections(sections);
+                            break;
+                        case CommentCommandKind.Since:
+                            var lastBlockSection = sections.Last();
+                            foreach (var inlineContentComment in blockCommandComment.ParagraphComment.Content)
+                            {
+                                inlineContentComment.GetCommentSections(sections);
+                                if (inlineContentComment.HasTrailingNewline)
+                                    lastBlockSection.NewLine();
+                            }
+                            break;
+                        default:
+                            sections.Add(new Section(CommentElement.Remarks));
+                            blockCommandComment.ParagraphComment.GetCommentSections(sections);
+                            break;
                     }
+
+
                     break;
                 case DocumentationCommentKind.ParamCommandComment:
                     var paramCommandComment = (ParamCommandComment) comment;
