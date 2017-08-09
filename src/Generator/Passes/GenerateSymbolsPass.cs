@@ -50,7 +50,7 @@ namespace CppSharp.Passes
                     symbolsCodeGenerator.NewLine();
                     foreach (var specialization in specializations[module])
                         foreach (var method in specialization.Methods.Where(
-                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit))
+                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit && !m.IsDeleted))
                             symbolsCodeGenerator.VisitMethodDecl(method);
                 }
 
@@ -79,12 +79,7 @@ namespace CppSharp.Passes
                     s => s.IsExplicitlyGenerated))
                     specialization.Visit(this);
             else
-                foreach (var @base in @class.Bases.Where(b => b.IsClass))
-                {
-                    var specialization = @base.Class as ClassTemplateSpecialization;
-                    if (specialization != null && !specialization.IsExplicitlyGenerated)
-                        Add(specialization);
-                }
+                CheckBasesForSpecialization(@class);
 
             return true;
         }
@@ -192,6 +187,18 @@ namespace CppSharp.Passes
                     else
                         Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");
                 }
+            }
+        }
+
+        private void CheckBasesForSpecialization(Class @class)
+        {
+            foreach (var @base in @class.Bases.Where(b => b.IsClass))
+            {
+                var specialization = @base.Class as ClassTemplateSpecialization;
+                if (specialization != null && !specialization.IsExplicitlyGenerated &&
+                    specialization.SpecializationKind != TemplateSpecializationKind.ExplicitSpecialization)
+                    Add(specialization);
+                CheckBasesForSpecialization(@base.Class);
             }
         }
 
