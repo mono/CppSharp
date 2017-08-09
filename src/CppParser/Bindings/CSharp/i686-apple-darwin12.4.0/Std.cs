@@ -122,21 +122,6 @@ namespace Std
 {
     namespace __1
     {
-        namespace Vector
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr __begin_;
-
-                [FieldOffset(4)]
-                internal global::System.IntPtr __end_;
-
-                [FieldOffset(8)]
-                internal global::Std.__1.CompressedPair.__Internal __end_cap_;
-            }
-        }
     }
 }
 
