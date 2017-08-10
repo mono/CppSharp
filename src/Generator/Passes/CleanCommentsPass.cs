@@ -5,6 +5,7 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators.CSharp;
 using System.Text.RegularExpressions;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -54,11 +55,23 @@ namespace CppSharp.Passes
 
         public bool VisitParagraphCommand(ParagraphComment comment)
         {
+            for (int i = 0; i < comment.Content.Count; i++)
+            {
+                if (comment.Content[i].Kind == DocumentationCommentKind.InlineCommandComment)
+                {
+                    if (i + 1 < comment.Content.Count &&
+                        comment.Content[i + 1].Kind == DocumentationCommentKind.TextComment)
+                    {
+                        TextComment com = (TextComment) comment.Content[i + 1];
+                        com.Text = Helpers.RegexCommentCommandLeftover.Replace(com.Text, string.Empty);
+                    }
+                }
+            }
             bool tag = false;
             foreach (var item in comment.Content.Where(c => c.Kind == DocumentationCommentKind.TextComment))
             {
                 TextComment com = (TextComment) item;
-                if (Generators.Helpers.RegexTag.IsMatch(com.Text))
+                if (Helpers.RegexTag.IsMatch(com.Text))
                     tag = true;
                 else if (tag)
                     com.Text = com.Text.Substring(1);
