@@ -222,7 +222,13 @@ namespace CppSharp.Passes
                 // Only prefix operators can be overloaded
                 case CXXOperatorKind.PlusPlus:
                 case CXXOperatorKind.MinusMinus:
-                    return @operator.Parameters.Count == 0;
+                    Class @class;
+                    var returnType = @operator.OriginalReturnType.Type.Desugar();
+                    returnType = (returnType.GetFinalPointee() ?? returnType).Desugar();
+                    return returnType.TryGetClass(out @class) &&
+                        @class.GetNonIgnoredRootBase() ==
+                            ((Class) @operator.Namespace).GetNonIgnoredRootBase() &&
+                        @operator.Parameters.Count == 0;
 
                 // Bitwise shift operators can only be overloaded if the second parameter is int
                 case CXXOperatorKind.LessLess:

@@ -51,7 +51,7 @@ namespace CppSharp.AST
             if (baseMethod != null)
                 return baseMethod;
 
-            return baseClass.Methods.FirstOrDefault(m => @override.CanOverride(m));
+            return baseClass.Methods.FirstOrDefault(@override.CanOverride);
         }
 
         public static Property GetBaseProperty(this Class @class, Property @override,

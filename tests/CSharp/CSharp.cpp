@@ -75,6 +75,16 @@ int Foo::getGetPropertyCall()
     return 1;
 }
 
+int Foo::operator ++()
+{
+    return 5;
+}
+
+int Foo::operator --()
+{
+    return 4;
+}
+
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;
@@ -194,8 +204,18 @@ const Bar& Bar::operator ++()
 Bar Bar::operator ++(int i)
 {
     Bar bar = *this;
-    index++;
+    bar.index++;
     return bar;
+}
+
+int Bar::getIndex()
+{
+    return index;
+}
+
+void Bar::setIndex(int value)
+{
+    index = value;
 }
 
 ForceCreationOfInterface::ForceCreationOfInterface()

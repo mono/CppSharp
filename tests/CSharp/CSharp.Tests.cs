@@ -1023,6 +1023,16 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(CSharp.CSharp.FuncWithTypedefedFuncPtrAsParam(function), Is.EqualTo(5));
     }
 
+    [Test]
+    public void TestIncrement()
+    {
+        var bar = new Bar();
+        bar.Index = 5;
+        bar++;
+        Assert.That(bar.Index, Is.EqualTo(6));
+        bar.Dispose();
+    }
+
     private class OverrideVirtualTemplate : VirtualTemplate<int>
     {
         public override int Function

@@ -29,6 +29,9 @@ public:
     static int propertyCall();
     static int getGetPropertyCall();
 
+    int operator ++();
+    int operator --();
+
 protected:
     int P;
     TemplateInAnotherUnit<int> templateInAnotherUnit;
@@ -82,13 +85,15 @@ public:
     Bar operator++(int i);
     void* arrayOfPrimitivePointers[1];
     Foo foos[4];
+    int getIndex();
+    void setIndex(int value);
 
 private:
     int index;
     Foo m_foo;
 };
 
-Bar::Bar() {}
+Bar::Bar() : index(0) {}
 
 class DLL_API ForceCreationOfInterface : public Foo, public Bar
 {
