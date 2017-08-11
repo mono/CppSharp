@@ -297,7 +297,7 @@ namespace CppSharp.Generators.CSharp
             var finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
             Class returnedClass;
             if (finalType.TryGetClass(out returnedClass) && returnedClass.IsDependent)
-                Context.Return.Write($" as {returnedClass.Visit(typePrinter)}");
+                Context.Return.Write($" as {returnType.Visit(typePrinter)}");
             return true;
         }
 

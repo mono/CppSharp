@@ -205,6 +205,7 @@ public:
     static T staticProperty();
     static void setStaticProperty(const T& t);
     bool operator==(const HasDefaultTemplateArgument& other);
+    DependentValueFields<D> returnTemplateWithRenamedTypeArg(const DependentValueFields<D> &value);
 private:
     T field;
     static T staticField;
@@ -224,34 +225,6 @@ private:
     bool field;
     static bool staticField;
 };
-
-template <typename T>
-class TemplateWithIndexer
-{
-public:
-    TemplateWithIndexer();
-    T& operator[](int i);
-    T& operator[](const char* string);
-private:
-    T t[1];
-};
-
-template <typename T>
-TemplateWithIndexer<T>::TemplateWithIndexer()
-{
-}
-
-template <typename T>
-T& TemplateWithIndexer<T>::operator[](int i)
-{
-    return t[0];
-}
-
-template <typename T>
-T& TemplateWithIndexer<T>::operator[](const char* string)
-{
-    return t[0];
-}
 
 template <typename T, typename D>
 HasDefaultTemplateArgument<T, D>::HasDefaultTemplateArgument()
@@ -294,7 +267,41 @@ bool HasDefaultTemplateArgument<T, D>::operator==(const HasDefaultTemplateArgume
 }
 
 template <typename T, typename D>
+DependentValueFields<D> HasDefaultTemplateArgument<T, D>::returnTemplateWithRenamedTypeArg(const DependentValueFields<D>& value)
+{
+    return value;
+}
+
+template <typename T, typename D>
 T HasDefaultTemplateArgument<T, D>::staticField;
+
+template <typename T>
+class TemplateWithIndexer
+{
+public:
+    TemplateWithIndexer();
+    T& operator[](int i);
+    T& operator[](const char* string);
+private:
+    T t[1];
+};
+
+template <typename T>
+TemplateWithIndexer<T>::TemplateWithIndexer()
+{
+}
+
+template <typename T>
+T& TemplateWithIndexer<T>::operator[](int i)
+{
+    return t[0];
+}
+
+template <typename T>
+T& TemplateWithIndexer<T>::operator[](const char* string)
+{
+    return t[0];
+}
 
 template <typename T>
 class VirtualTemplate
