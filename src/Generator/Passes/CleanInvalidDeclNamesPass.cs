@@ -47,8 +47,10 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            Function function = decl as Function;
-            if ((function == null || !function.IsOperator) && !(decl is Enumeration))
+            var function = decl as Function;
+            var method = function as Method;
+            if ((function == null || !function.IsOperator) && !(decl is Enumeration) &&
+                (method == null || method.Kind == CXXMethodKind.Normal))
                 decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);

@@ -553,5 +553,14 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That($"{type}",
                 Is.EqualTo("global::Test.TestTemplateClass<T>.NestedInTemplate"));
         }
+
+        [Test]
+        public void TestTemplateConstructorName()
+        {
+            new CleanInvalidDeclNamesPass { Context = Driver.Context }.VisitASTContext(AstContext);
+            var template = AstContext.FindClass("TestTemplateClass").First();
+            foreach (var constructor in template.Constructors)
+                Assert.That(constructor.Name, Is.EqualTo("TestTemplateClass<T>"));
+        }
     }
 }
