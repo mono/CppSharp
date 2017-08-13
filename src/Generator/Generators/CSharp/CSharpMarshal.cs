@@ -711,8 +711,8 @@ namespace CppSharp.Generators.CSharp
         {
             var replacement = param.Replacement.Type.Desugar();
             Class @class;
-            Context.Return.Write($@"{(replacement.TryGetClass(out @class) ?
-                string.Empty : $"({replacement}) (object) ")}");
+            if (!replacement.IsAddress() && !replacement.TryGetClass(out @class))
+                Context.Return.Write($"({replacement}) (object) ");
             return base.VisitTemplateParameterSubstitutionType(param, quals);
         }
 
@@ -756,10 +756,10 @@ namespace CppSharp.Generators.CSharp
             Class @interface;
             var finalType = type.GetFinalPointee() ?? type;
             var templateType = finalType as TemplateParameterSubstitutionType;
+            type = Context.Parameter.Type.Desugar();
             if (finalType.TryGetClass(out @interface) &&
                 @interface.IsInterface)
-                paramInstance = string.Format("{0}.__PointerTo{1}",
-                    param, @interface.OriginalClass.Name);
+                paramInstance = $"{param}.__PointerTo{@interface.OriginalClass.Name}";
             else
                 paramInstance = $@"{
                     (templateType != null ? $"(({@class.Visit(typePrinter)}) (object) " : string.Empty)}{
@@ -777,7 +777,7 @@ namespace CppSharp.Generators.CSharp
                         Context.Return.Write("{0}{1}",
                             method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
                                 ? string.Empty
-                                : string.Format("ReferenceEquals({0}, null) ? global::System.IntPtr.Zero : ", param),
+                                : $"ReferenceEquals({param}, null) ? global::System.IntPtr.Zero : ",
                             paramInstance);
                     }
                     else

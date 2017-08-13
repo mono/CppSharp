@@ -455,7 +455,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              DependentValueFields<int> _5,
                              VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
                              HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
-                             TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11, std::string s);
+                             TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
+                             TemplateWithIndexer<T2*> _12, std::string s);
 
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
@@ -470,3 +471,4 @@ template class DLL_API HasDefaultTemplateArgument<int, int>;
 template class DLL_API DerivedChangesTypeName<T1>;
 template class DLL_API TemplateWithIndexer<int>;
 template class DLL_API TemplateWithIndexer<T1>;
+template class DLL_API TemplateWithIndexer<T2*>;
