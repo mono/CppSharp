@@ -937,7 +937,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateIndexerSetter(Function function)
         {
             Type type;
-            function.Type.IsPointerTo(out type);
+            function.OriginalReturnType.Type.IsPointerTo(out type);
 
             var @internal = TypePrinter.PrintNative(function.Namespace);
             var ctx = new CSharpMarshalContext(Context)

@@ -258,7 +258,7 @@ namespace CppSharp.AST
             return visitor.VisitFunctionDecl(this);
         }
 
-        public Type Type => ReturnType.Type;
-        public QualifiedType QualifiedType => ReturnType;
+        public Type Type => OriginalReturnType.Type;
+        public QualifiedType QualifiedType => OriginalReturnType;
     }
 }
