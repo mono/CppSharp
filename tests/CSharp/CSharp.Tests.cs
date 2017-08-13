@@ -832,6 +832,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPropertyReturnsTemplateWithRenamedTypeArg()
+    {
+        using (var hasDefaultTemplateArgument = new HasDefaultTemplateArgument<int, int>())
+        {
+            var returnTemplateWithRenamedTypeArg =
+                hasDefaultTemplateArgument.PropertyReturnsTemplateWithRenamedTypeArg;
+            Assert.That(returnTemplateWithRenamedTypeArg.DependentValue, Is.EqualTo(0));
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())

@@ -1086,13 +1086,14 @@ namespace CppSharp.Generators.CSharp
                     @class.Visit(TypePrinter)}."");");
                 return;
             }
-            property = actualProperty;
-            if (property.GetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
-                GenerateVirtualPropertyCall(property.GetMethod, @class.BaseClass, property);
-            else if (property.GetMethod.IsVirtual)
-                GenerateVirtualPropertyCall(property.GetMethod, @class, property);
-            else GenerateInternalFunctionCall(property.GetMethod,
-                property.GetMethod.Parameters, property.QualifiedType);
+            if (actualProperty.GetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
+                GenerateVirtualPropertyCall(actualProperty.GetMethod,
+                    @class.BaseClass, actualProperty);
+            else if (actualProperty.GetMethod.IsVirtual)
+                GenerateVirtualPropertyCall(actualProperty.GetMethod,
+                    @class, actualProperty);
+            else GenerateInternalFunctionCall(actualProperty.GetMethod,
+                actualProperty.GetMethod.Parameters, property.QualifiedType);
         }
 
         private static Property GetActualProperty(Property property, Class c)

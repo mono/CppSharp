@@ -101,7 +101,7 @@ template <typename T>
 class DLL_API DependentValueFieldForArray
 {
 private:
-    T field;
+    T field{};
 };
 
 template <typename T>
@@ -124,7 +124,7 @@ public:
     T getDependentValue();
     void setDependentValue(const T& value);
 private:
-    T field;
+    T field{};
     union {
         int unionField;
     };
@@ -205,9 +205,10 @@ public:
     static T staticProperty();
     static void setStaticProperty(const T& t);
     bool operator==(const HasDefaultTemplateArgument& other);
-    DependentValueFields<D> returnTemplateWithRenamedTypeArg(const DependentValueFields<D> &value);
+    DependentValueFields<D> returnTemplateWithRenamedTypeArg(const DependentValueFields<D>& value);
+    DependentValueFields<D> propertyReturnsTemplateWithRenamedTypeArg();
 private:
-    T field;
+    T field{};
     static T staticField;
 };
 
@@ -270,6 +271,12 @@ template <typename T, typename D>
 DependentValueFields<D> HasDefaultTemplateArgument<T, D>::returnTemplateWithRenamedTypeArg(const DependentValueFields<D>& value)
 {
     return value;
+}
+
+template <typename T, typename D>
+DependentValueFields<D> HasDefaultTemplateArgument<T, D>::propertyReturnsTemplateWithRenamedTypeArg()
+{
+    return DependentValueFields<D>();
 }
 
 template <typename T, typename D>

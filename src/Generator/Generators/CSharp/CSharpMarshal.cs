@@ -174,14 +174,18 @@ namespace CppSharp.Generators.CSharp
                 var type = Context.ReturnType.Type.Desugar(
                     resolveTemplateSubstitution: false);
                 if (Context.Function != null &&
-                    Context.Function.OperatorKind == CXXOperatorKind.Subscript &&
-                    type.IsPrimitiveType(primitive))
+                    Context.Function.OperatorKind == CXXOperatorKind.Subscript)
                 {
-                    var substitute = type as TemplateParameterSubstitutionType;
-                    if (substitute != null)
-                        Context.Return.Write($@"({
-                            substitute.ReplacedParameter.Parameter.Name}) (object) ");
-                    Context.Return.Write("*");
+                    if (type.IsPrimitiveType(primitive))
+                    {
+                        Context.Return.Write("*");
+                    }
+                    else
+                    {
+                        var templateParameter = type as TemplateParameterType;
+                        if (templateParameter != null)
+                            Context.Return.Write($@"({templateParameter.Parameter.Name}) (object) *");
+                    }
                 }
 
                 Context.Return.Write(Context.ReturnVarName);
