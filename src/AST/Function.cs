@@ -248,11 +248,6 @@ namespace CppSharp.AST
         public string Signature { get; set; }
         public string Body { get; set; }
 
-        /// <summary>
-        /// Field associated in case of synthetized field acessors.
-        /// </summary>
-        public Field Field { get; set; }
-
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitFunctionDecl(this);
