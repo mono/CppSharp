@@ -275,6 +275,31 @@ DependentValueFields<D> HasDefaultTemplateArgument<T, D>::returnTemplateWithRena
 template <typename T, typename D>
 T HasDefaultTemplateArgument<T, D>::staticField;
 
+template <typename T, typename D>
+class DerivesFromTemplateWithExplicitSpecialization : public HasDefaultTemplateArgument<T, D>
+{
+public:
+    DerivesFromTemplateWithExplicitSpecialization();
+    ~DerivesFromTemplateWithExplicitSpecialization();
+};
+
+template <typename T, typename D>
+DerivesFromTemplateWithExplicitSpecialization<T, D>::DerivesFromTemplateWithExplicitSpecialization()
+{
+}
+
+template <typename T, typename D>
+DerivesFromTemplateWithExplicitSpecialization<T, D>::~DerivesFromTemplateWithExplicitSpecialization()
+{
+}
+
+class DerivesFromExplicitSpecialization : public DerivesFromTemplateWithExplicitSpecialization<bool, bool>
+{
+public:
+    DerivesFromExplicitSpecialization();
+    ~DerivesFromExplicitSpecialization();
+};
+
 template <typename T>
 class TemplateWithIndexer
 {

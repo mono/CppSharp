@@ -799,7 +799,15 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateFunctionSetter(Class @class, Property property)
         {
-            property = GetActualProperty(property, @class);
+            var actualProperty = GetActualProperty(property, @class);
+            if (actualProperty == null)
+            {
+                WriteLine($@"throw new MissingMethodException(""Method {
+                    property.Name} missing from explicit specialization {
+                    @class.Visit(TypePrinter)}."");");
+                return;
+            }
+            property = actualProperty;
             var param = new Parameter
             {
                 Name = "value",
@@ -1070,7 +1078,15 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateFunctionGetter(Class @class, Property property)
         {
-            property = GetActualProperty(property, @class);
+            var actualProperty = GetActualProperty(property, @class);
+            if (actualProperty == null)
+            {
+                WriteLine($@"throw new MissingMethodException(""Method {
+                    property.Name} missing from explicit specialization {
+                    @class.Visit(TypePrinter)}."");");
+                return;
+            }
+            property = actualProperty;
             if (property.GetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
                 GenerateVirtualPropertyCall(property.GetMethod, @class.BaseClass, property);
             else if (property.GetMethod.IsVirtual)
@@ -1083,11 +1099,8 @@ namespace CppSharp.Generators.CSharp
         {
             if (!(c is ClassTemplateSpecialization))
                 return property;
-            if (property.GetMethod != null
-                && property.GetMethod.OperatorKind == CXXOperatorKind.Subscript)
-                return c.Properties.Single(p => p.GetMethod != null
-                    && p.GetMethod.InstantiatedFrom == property.GetMethod);
-            return c.Properties.Single(p => p.Name == property.Name);
+            return c.Properties.SingleOrDefault(p => p.GetMethod != null &&
+                p.GetMethod.InstantiatedFrom == property.GetMethod);
         }
 
         private void GenerateFieldGetter(Field field, Class @class)
@@ -1956,9 +1969,7 @@ namespace CppSharp.Generators.CSharp
                             c is ClassTemplateSpecialization ?
                                 c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor), true);
                     else
-                        this.GenerateMember(@class, c => GenerateInternalFunctionCall(
-                            c is ClassTemplateSpecialization ?
-                                c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor), true);
+                        this.GenerateMember(@class, c => GenerateMethodBody(c, dtor), true);
                     if (@class.IsDependent || dtor.IsVirtual)
                         WriteCloseBraceIndent();
                     else
@@ -2265,16 +2276,14 @@ namespace CppSharp.Generators.CSharp
             if (method.SynthKind == FunctionSynthKind.DefaultValueOverload ||
                 method.SynthKind == FunctionSynthKind.ComplementOperator)
             {
-                GenerateMethodBody(method);
+                GenerateMethodBody(@class, method);
             }
             else
             {
                 var isVoid = method.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
                     method.IsConstructor;
                 this.GenerateMember(@class, c => GenerateMethodBody(
-                    c is ClassTemplateSpecialization ?
-                        c.Methods.First(m => m.InstantiatedFrom == method) : method,
-                    method.OriginalReturnType), isVoid);
+                    c, method, method.OriginalReturnType), isVoid);
             }
 
             SkipImpl:
@@ -2289,10 +2298,24 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateMethodBody(Method method,
+        private void GenerateMethodBody(Class @class, Method method,
             QualifiedType returnType = default(QualifiedType))
         {
-            var @class = (Class) method.Namespace;
+            var specialization = @class as ClassTemplateSpecialization;
+            if (specialization != null)
+            {
+                var specializedMethod = @class.Methods.FirstOrDefault(
+                    m => m.InstantiatedFrom == method);
+                if (specializedMethod != null)
+                    method = specializedMethod;
+                else
+                {
+                    WriteLine($@"throw new MissingMethodException(""Method {
+                        method.Name} missing from explicit specialization {
+                        @class.Visit(TypePrinter)}."");");
+                    return;
+                }
+            }
             if (@class.IsRefType)
             {
                 if (method.IsConstructor)

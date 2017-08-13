@@ -56,6 +56,14 @@ void HasDefaultTemplateArgument<bool, bool>::setStaticProperty(const bool& t)
 
 bool HasDefaultTemplateArgument<bool, bool>::staticField;
 
+DerivesFromExplicitSpecialization::DerivesFromExplicitSpecialization()
+{
+}
+
+DerivesFromExplicitSpecialization::~DerivesFromExplicitSpecialization()
+{
+}
+
 HasVirtualTemplate::HasVirtualTemplate()
 {
 }
