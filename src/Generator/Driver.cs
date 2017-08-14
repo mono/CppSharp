@@ -295,7 +295,6 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckStaticClass());
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
             TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
-            TranslationUnitPasses.AddPass(new GenerateAnonymousDelegatesPass());
             TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
             TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
@@ -321,8 +320,8 @@ namespace CppSharp
                 }
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
-                TranslationUnitPasses.AddPass(new DelegatesPass());
             }
+            TranslationUnitPasses.AddPass(new DelegatesPass());
 
             TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());

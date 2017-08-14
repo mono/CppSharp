@@ -256,8 +256,8 @@ namespace CppSharp.Generators.CSharp
 
             var decl = typedef.Declaration;
 
-            FunctionType function;
-            if (decl.Type.IsPointerTo(out function))
+            var functionType = decl.Type as FunctionType;
+            if (functionType != null || decl.Type.IsPointerTo(out functionType))
             {
                 var ptrName = Generator.GeneratedIdentifier("ptr") +
                     Context.ParameterIndex;

@@ -556,7 +556,7 @@ public class CommonTests : GeneratorTestFixture
         new TestDelegates().MarshalUnattributedDelegate(i => i);
     }
 
-    [Test, Platform(Exclude = "Win", Reason = "This test crashes our Windows build, possibly a problem with the NUnit runner there.")]
+    [Test]
     public void TestPassAnonymousDelegate()
     {
         var testDelegates = new TestDelegates();

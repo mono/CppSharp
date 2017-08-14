@@ -1688,7 +1688,7 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PopMarshalKind();
 
             WriteLine("private static {0} {1}Instance;",
-                Context.Delegates[method].Signature,
+                method.FunctionType.ToString(),
                 vTableMethodDelegateName);
             NewLine();
 
@@ -2490,7 +2490,7 @@ namespace CppSharp.Generators.CSharp
             var delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
-                delegateId, Context.Delegates[method].Signature,
+                delegateId, method.FunctionType.ToString(),
                 Helpers.SlotIdentifier);
 
             return delegateId;

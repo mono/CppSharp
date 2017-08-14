@@ -745,31 +745,27 @@ namespace CppSharp.Generators.CLI
             if (!typedef.IsGenerated)
                 return false;
 
-            FunctionType function;
-            if (typedef.Type.IsPointerTo(out function))
+            var functionType = typedef.Type as FunctionType;
+            if (functionType != null || typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(BlockKind.Typedef, typedef);
                 GenerateDeclarationCommon(typedef);
 
                 var insideClass = typedef.Namespace is Class;
 
-                var attributedType = typedef.Type.GetPointee() as AttributedType;
-                if (attributedType != null)
-                {
-                    var equivalentFunctionType = attributedType.Equivalent.Type as FunctionType;
-                    var callingConvention = equivalentFunctionType.CallingConvention.ToInteropCallConv();
-                    if (callingConvention != System.Runtime.InteropServices.CallingConvention.Winapi)
-                    {
-                        WriteLine("[{0}({1}::{2})] ",
-                            "System::Runtime::InteropServices::UnmanagedFunctionPointer",
-                            "System::Runtime::InteropServices::CallingConvention",
-                            callingConvention);
-                    }
-                }
+                var attributedType = typedef.Type.GetPointee().Desugar();
+                var callingConvention = attributedType == null && functionType != null
+                    ? functionType.CallingConvention
+                    : ((FunctionType)attributedType).CallingConvention;
+                var interopCallConv = callingConvention.ToInteropCallConv();
+                if (interopCallConv != System.Runtime.InteropServices.CallingConvention.Winapi)
+                    WriteLine("[System::Runtime::InteropServices::UnmanagedFunctionPointer" + 
+                        "(System::Runtime::InteropServices::CallingConvention::{0})] ",
+                        interopCallConv);
 
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
-                    string.Format(TypePrinter.VisitDelegate(function).ToString(),
+                    string.Format(TypePrinter.VisitDelegate(functionType).ToString(),
                     typedef.Name));
                 PopBlock(NewLineKind.BeforeNextBlock);
 

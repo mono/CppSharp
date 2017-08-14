@@ -260,6 +260,7 @@ namespace CppSharp.AST
             ReturnType = new QualifiedType((Type) type.ReturnType.Type.Clone(), type.ReturnType.Qualifiers);
             Parameters.AddRange(type.Parameters.Select(p => new Parameter(p)).ToList());
             CallingConvention = type.CallingConvention;
+            IsDependent = type.IsDependent;
         }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())

@@ -1382,6 +1382,12 @@ int funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func)
     return func(a, b);
 }
 
+typedefedFuncPtr* TestDuplicateDelegate::testDuplicateDelegate(int a)
+{
+    typedefedFuncPtr* func;
+    return func;
+}
+
 void InlineNamespace::FunctionInsideInlineNamespace()
 {
 }
