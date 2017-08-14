@@ -1381,3 +1381,9 @@ int funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func)
     Bar b;
     return func(a, b);
 }
+
+typedefedFuncPtr* TestDuplicateDelegate::testDuplicateDelegate(int a)
+{
+    typedefedFuncPtr* func;
+    return func;
+}
