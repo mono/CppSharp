@@ -11,7 +11,9 @@ local function GenerateBuildConfig()
   file:close()
 end
 
-GenerateBuildConfig()
+if generate_build_config == true then
+  GenerateBuildConfig()
+end
 
 project "CppSharp.Parser"
 
@@ -21,7 +23,15 @@ project "CppSharp.Parser"
   language "C#"
   clr "Unsafe"
 
-  files { "**.cs", buildconfig }
+  files { "**.cs" }
+  removefiles { "BuildConfig.cs" }
+
+  if generate_build_config == true then
+    files { buildconfig }
+  else
+    files { "BuildConfig.cs" }
+  end
+
   vpaths { ["*"] = "*" }
 
   links

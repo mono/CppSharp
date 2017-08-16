@@ -53,6 +53,8 @@ msvc_buildflags = { "/wd4267" }
 
 msvc_cpp_defines = { }
 
+generate_build_config = true
+
 function string.starts(str, start)
    return string.sub(str, 1, string.len(start)) == start
 end
