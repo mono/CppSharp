@@ -22,5 +22,7 @@ project "CppSharp.Generator"
 
   SetupParser()
 
-  configuration '**verbs.txt'
+  filter { 'files:**verbs.txt' }
     buildaction "Embed"
+
+  filter {}
