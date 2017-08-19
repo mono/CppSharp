@@ -44,5 +44,7 @@ namespace CppSharp
         public bool Cpp11ABI { get; set; }
 
         public bool Compile { get; set; }
+
+        public bool Debug { get; set; }
     }
 }
