@@ -61,7 +61,7 @@ namespace CppSharp.Generators
 
         public override string Generate()
         {
-            if (Options.IsCSharpGenerator && Options.CompileCode)
+            if (Options.IsCSharpGenerator && Options.CompileCode && !Options.GenerateDebugOutput)
                 return base.GenerateUnformatted();
 
             return base.Generate();
