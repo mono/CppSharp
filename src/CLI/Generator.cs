@@ -39,6 +39,37 @@ namespace CppSharp
             throw new System.NotImplementedException("Unknown host platform");
         }
 
+        void SetupTargetTriple()
+        {
+            var tripleBuilder = new StringBuilder();
+
+            if (options.Architecture == TargetArchitecture.x64)
+                tripleBuilder.Append("x86_64-");
+            else if(options.Architecture == TargetArchitecture.x86)
+                tripleBuilder.Append("i686-");
+
+            if (options.Platform == TargetPlatform.Windows)
+            {
+                tripleBuilder.Append("pc-win32-msvc");
+                abi = CppAbi.Microsoft;
+            }
+            else if (options.Platform == TargetPlatform.MacOS)
+            {
+                tripleBuilder.Append("apple-darwin12.4.0");
+                abi = CppAbi.Itanium;
+            }
+            else if (options.Platform == TargetPlatform.Linux)
+            {
+                tripleBuilder.Append("linux-gnu");
+                abi = CppAbi.Itanium;
+
+                if(options.Cpp11ABI)
+                    tripleBuilder.Append("-cxx11abi");
+            }
+
+            triple = tripleBuilder.ToString();
+        }
+
         public bool ValidateOptions(List<string> messages)
         {
             if (!options.Platform.HasValue)
@@ -101,33 +132,9 @@ namespace CppSharp
                 messages.Add("Input library name not specified and check symbols is enabled but no libraries were given.\nEither set the input library name or add at least one library.");
                 return false;
             }
-            
-            StringBuilder tripleBuilder = new StringBuilder();
-            if (options.Architecture == TargetArchitecture.x64)
-                tripleBuilder.Append("x86_64-");
-            else if(options.Architecture == TargetArchitecture.x86)
-                tripleBuilder.Append("i686-");
 
-            if (options.Platform == TargetPlatform.Windows)
-            {
-                tripleBuilder.Append("pc-win32-msvc");
-                abi = CppAbi.Microsoft;
-            }
-            else if (options.Platform == TargetPlatform.MacOS)
-            {
-                tripleBuilder.Append("apple-darwin12.4.0");
-                abi = CppAbi.Itanium;
-            }
-            else if (options.Platform == TargetPlatform.Linux)
-            {
-                tripleBuilder.Append("linux-gnu");
-                abi = CppAbi.Itanium;
+            SetupTargetTriple();
 
-                if(options.Cpp11ABI)
-                    tripleBuilder.Append("-cxx11abi");
-            }
-
-            triple = tripleBuilder.ToString();
 
             return true;
         }
