@@ -215,23 +215,13 @@ namespace CppSharp
             if (Platform.IsMacOS)
             {
                 var headersPaths = new List<string> {
-                    // Path.Combine(GetSourceDirectory("deps"), "llvm/tools/clang/lib/Headers"),
-                    // Path.Combine(GetSourceDirectory("deps"), "libcxx", "include"),
                     "/usr/include"
                 };
-
-                foreach (var header in headersPaths)
-                    Console.WriteLine(header);
 
                 foreach (var header in headersPaths)
                     options.AddSystemIncludeDirs(header);
             }
 
-            // var headersPath = Path.Combine(GetSourceDirectory("build"), "headers", "osx");
-
-            // options.AddSystemIncludeDirs(Path.Combine(headersPath, "include"));
-            // options.AddSystemIncludeDirs(Path.Combine(headersPath, "clang", "4.2", "include"));
-            // options.AddSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
             options.AddArguments("-stdlib=libc++");
         }
 
