@@ -42,5 +42,7 @@ namespace CppSharp
         public bool UnityBuild { get; set; }
 
         public bool Cpp11ABI { get; set; }
+
+        public bool Compile { get; set; }
     }
 }

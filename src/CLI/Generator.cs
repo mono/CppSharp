@@ -175,6 +175,7 @@ namespace CppSharp
                     parserOptions.AddDefines(d.Key + "=" + d.Value);
             }
 
+            driverOptions.CompileCode = options.Compile;
             driverOptions.OutputDir = options.OutputDir;
             driverOptions.CheckSymbols = options.CheckSymbols;
             driverOptions.UnityBuild = options.UnityBuild;

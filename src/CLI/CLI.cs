@@ -24,7 +24,7 @@ namespace CppSharp
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
 
             optionSet.Add("iln=|inputlibraryname=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
-
+            optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);
             optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, messages); } );
             optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, messages); } );
             optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, messages); } );
