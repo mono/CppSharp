@@ -132,9 +132,7 @@ namespace CppSharp
             try
             {
                 bool searchQuery = args.IndexOf('*') >= 0 || args.IndexOf('?') >= 0;
-                bool isDirectory = searchQuery || (File.GetAttributes(args) & FileAttributes.Directory) == FileAttributes.Directory;
-
-                if (isDirectory)
+                if (searchQuery || Directory.Exists(args))
                     GetFilesFromPath(args, messages);
                 else if (File.Exists(args))
                     options.HeaderFiles.Add(args);
