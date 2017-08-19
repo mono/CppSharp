@@ -29,6 +29,8 @@ namespace CppSharp
             optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, messages); } );
             optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, messages); } );
 
+            optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.Arguments.Add("-fcxx-exceptions"); });
+
             optionSet.Add("c++11", "enables GCC C++ 11 compilation (valid only for Linux platform)", cpp11 => { options.Cpp11ABI = (cpp11 != null); } );
             optionSet.Add("cs|checksymbols", "enable the symbol check for the generated code", cs => { options.CheckSymbols = (cs != null); } );
             optionSet.Add("ub|unitybuild", "enable unity build", ub => { options.UnityBuild = (ub != null); } );
