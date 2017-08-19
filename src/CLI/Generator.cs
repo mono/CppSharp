@@ -80,7 +80,7 @@ namespace CppSharp
 
             if (string.IsNullOrEmpty(options.OutputNamespace))
             {
-                messages.Add("Output namespace not specified (see --output-namespace option).");
+                messages.Add("Output namespace not specified (see --outputnamespace option).");
                 return false;
             }
 
