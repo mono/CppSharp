@@ -263,8 +263,6 @@ namespace CppSharp
 
                 if (validOptions)
                     gen.Run();
-                else if (!helpShown)
-                    ShowHelp();
             }
             catch (Exception ex)
             {
