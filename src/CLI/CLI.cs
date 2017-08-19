@@ -104,11 +104,11 @@ namespace CppSharp
         {
             try
             {
-                string dir = Path.GetDirectoryName(arg);
                 string file = Path.GetFileNameWithoutExtension(arg);
-
-                options.OutputDir = dir;
                 options.OutputFileName = file;
+
+                var dir = Path.HasExtension(arg) ? Path.GetDirectoryName(arg) : Path.GetFullPath(arg);
+                options.OutputDir = dir;
             }
             catch(Exception e)
             {
