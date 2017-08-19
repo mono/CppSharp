@@ -40,7 +40,6 @@ project "CppSharp.CppParser"
   CopyClangIncludes()
   
   filter {}
-end
 
 project "Std-symbols"
 
@@ -72,3 +71,5 @@ project "Std-symbols"
   end
 
   filter {}
+
+end
