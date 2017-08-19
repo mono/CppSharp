@@ -29,7 +29,7 @@ namespace CppSharp
 
         public string InputLibraryName { get; set; }
         
-        public TargetPlatform Platform { get; set; } = TargetPlatform.Windows;
+        public TargetPlatform? Platform { get; set; }
 
         public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x86;
 

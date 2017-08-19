@@ -25,8 +25,24 @@ namespace CppSharp
             this.options = options;
         }
 
+        static TargetPlatform GetCurrentPlatform()
+        {
+            if (Platform.IsWindows)
+                return TargetPlatform.Windows;
+
+            if (Platform.IsMacOS)
+                return TargetPlatform.MacOS;
+
+            if (Platform.IsLinux)
+                return TargetPlatform.Linux;
+
+            throw new System.NotImplementedException("Unknown host platform");
+        }
+
         public bool ValidateOptions(List<string> messages)
         {
+            if (!options.Platform.HasValue)
+                options.Platform = GetCurrentPlatform();
             if (Platform.IsWindows && options.Platform != TargetPlatform.Windows)
             {
                 messages.Add("Cannot create bindings for a platform other that Windows from a Windows running machine");
