@@ -94,7 +94,7 @@ namespace CppSharp
             if (Directory.Exists(dir))
                 options.IncludeDirs.Add(dir);
             else
-                messages.Add(string.Format("Directory {0} doesn't exist. Not adding as include directory.", dir));
+                messages.Add(string.Format("Directory '{0}' doesn't exist. Ignoring as include directory.", dir));
         }
 
         static void HandleOutputArg(string arg, List<string> messages)
@@ -138,12 +138,12 @@ namespace CppSharp
                     options.HeaderFiles.Add(args);
                 else
                 {
-                    messages.Add(string.Format("File {0} doesn't exist. Not adding to the list of files to generate bindings from.", args));
+                    messages.Add(string.Format("File '{0}' could not be found.", args));
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                messages.Add(string.Format("Error while looking for files inside path {0}. Ignoring.", args));
+                messages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", args));
             }
         }
 
@@ -182,7 +182,7 @@ namespace CppSharp
             }
             catch (Exception)
             {
-                messages.Add(string.Format("Error while looking for files inside path {0}. Ignoring.", path));
+                messages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", path));
             }
         }
 

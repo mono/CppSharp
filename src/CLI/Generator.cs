@@ -43,61 +43,62 @@ namespace CppSharp
         {
             if (!options.Platform.HasValue)
                 options.Platform = GetCurrentPlatform();
+
             if (Platform.IsWindows && options.Platform != TargetPlatform.Windows)
             {
-                messages.Add("Cannot create bindings for a platform other that Windows from a Windows running machine");
+                messages.Add("Cannot create bindings for a platform other that Windows from a Windows host.");
                 return false;
             }
             else if (Platform.IsMacOS && options.Platform != TargetPlatform.MacOS)
             {
-                messages.Add("Cannot create bindings for a platform other that MacOS from a MacOS running machine");
+                messages.Add("Cannot create bindings for a platform other that macOS from a macOS host.");
                 return false;
             }
             else if (Platform.IsLinux && options.Platform != TargetPlatform.Linux)
             {
-                messages.Add("Cannot create bindings for a platform other that Linux from a Linux running machine");
+                messages.Add("Cannot create bindings for a platform other that Linux from a Linux host.");
                 return false;
             }
 
             if (options.Platform != TargetPlatform.Windows && options.Kind != GeneratorKind.CSharp)
             {
-                messages.Add("Cannot create bindings for languages other than C# from a non Windows machine");
+                messages.Add("Cannot create bindings for languages other than C# from a non-Windows host.");
                 return false;
             }
 
             if (options.Platform == TargetPlatform.Linux && options.Architecture != TargetArchitecture.x64)
             {
-                messages.Add("Cannot create bindings for architectures other than x64 for Linux machines");
+                messages.Add("Cannot create bindings for architectures other than x64 for Linux targets.");
                 return false;
             }
 
             if (options.HeaderFiles.Count == 0)
             {
-                messages.Add("No source header file has been given to generate bindings from");
+                messages.Add("No source header file has been given to generate bindings from.");
                 return false;
             }
 
             if (string.IsNullOrEmpty(options.OutputNamespace))
             {
-                messages.Add("Output namespace is empty");
+                messages.Add("Output namespace not specified (see --output-namespace option).");
                 return false;
             }
 
             if (string.IsNullOrEmpty(options.OutputFileName))
             {
-                messages.Add("Output not specified");
+                messages.Add("Output directory not specified (see --output option).");
                 return false;
             }
 
             if (string.IsNullOrEmpty(options.InputLibraryName) && !options.CheckSymbols)
             {
-                messages.Add("Input library name not specified and check symbols not enabled. Either set the input library name or the check symbols flag");
+                messages.Add("Input library name not specified and check symbols option not enabled.\nEither set the input library name (see  or the check symbols flag.");
                 return false;
             }
 
             if (string.IsNullOrEmpty(options.InputLibraryName) && options.CheckSymbols && options.Libraries.Count == 0)
             {
-                messages.Add("Input library name not specified and check symbols is enabled but no libraries were given. Either set the input library name or add at least one library");
+                messages.Add("Input library name not specified and check symbols is enabled but no libraries were given.\nEither set the input library name or add at least one library.");
                 return false;
             }
             
