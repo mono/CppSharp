@@ -19,6 +19,8 @@ namespace CppSharp
 
         public List<string> Libraries { get; } = new List<string>();
 
+        public List<string> Arguments { get; } = new List<string>();
+
         public Dictionary<string, string> Defines { get; } = new Dictionary<string, string>();
 
         public string OutputDir { get; set; }

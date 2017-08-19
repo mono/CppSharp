@@ -18,6 +18,7 @@ namespace CppSharp
             optionSet.Add("l=", "{LIBRARY} that that contains the symbols of the generated code", l => options.Libraries.Add(l) );
             optionSet.Add("L=", "the {PATH} of a folder to search for additional libraries", l => options.LibraryDirs.Add(l) );
             optionSet.Add("D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v, messages) );
+            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", (v) => AddArgument(v, messages) );
 
             optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, messages) );
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
@@ -114,6 +115,14 @@ namespace CppSharp
                 options.OutputDir = "";
                 options.OutputFileName = "";
             }
+        }
+
+        static void AddArgument(string value, List<string> messages)
+        {
+            if (value == null)
+                messages.Add("Invalid compiler argument name for option -A.");
+            else
+                options.Arguments.Add(value);
         }
 
         static void AddDefine(string name, string value, List<string> messages)

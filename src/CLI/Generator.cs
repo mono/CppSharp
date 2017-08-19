@@ -157,7 +157,10 @@ namespace CppSharp
 
             if (triple.Contains("linux"))
                 SetupLinuxOptions(parserOptions);
-            
+
+            foreach (string s in options.Arguments)
+                parserOptions.AddArguments(s);
+
             foreach (string s in options.IncludeDirs)
                 parserOptions.AddIncludeDirs(s);
 
