@@ -123,7 +123,9 @@ namespace CppSharp.Types.Std
             var names = new Stack<string>();
             while (!(declContext is TranslationUnit))
             {
-                names.Push(declContext.Name);
+                var isInlineNamespace = declContext is Namespace && ((Namespace)declContext).IsInline;
+                if (!isInlineNamespace)
+                    names.Push(declContext.Name);
                 declContext = declContext.Namespace;
             }
             var qualifiedBasicString = string.Join(".", names);

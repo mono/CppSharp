@@ -185,7 +185,7 @@ namespace CppSharp.Generators.CLI
         public void GenerateNamespace(Namespace @namespace)
         {
             var isTopLevel = @namespace is TranslationUnit;
-            var generateNamespace = !isTopLevel ||
+            var generateNamespace = !isTopLevel || !@namespace.IsInline &&
                 !string.IsNullOrEmpty(@namespace.TranslationUnit.Module.OutputNamespace);
 
             if (generateNamespace)

@@ -622,7 +622,8 @@ namespace CppSharp.Generators.CSharp
 
             while (!(ctx is TranslationUnit))
             {
-                if (!string.IsNullOrWhiteSpace(ctx.Name))
+                var isInlineNamespace = ctx is Namespace && ((Namespace)ctx).IsInline;
+                if (!string.IsNullOrWhiteSpace(ctx.Name) && !isInlineNamespace)
                     names.Push(ctx.Name);
 
                 ctx = ctx.Namespace;

@@ -1361,3 +1361,11 @@ template<typename T> void TemplatedFunction(T type)
 {
 
 }
+
+inline namespace InlineNamespace
+{
+    void FunctionInsideInlineNamespace()
+    {
+        
+    }
+}
