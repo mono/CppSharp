@@ -1356,3 +1356,8 @@ public:
     void generated();
     void ignored(const IgnoredType& ignoredParam);
 };
+
+template<typename T> void TemplatedFunction(T type)
+{
+
+}

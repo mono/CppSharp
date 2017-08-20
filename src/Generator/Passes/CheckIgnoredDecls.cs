@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
-using System.Collections.Generic;
 
 namespace CppSharp.Passes
 {
@@ -92,6 +92,19 @@ namespace CppSharp.Passes
 
             Diagnostics.Debug("Field '{0}::{1}' was ignored due to {2} type '{3}'",
                 @class.Name, field.Name, msg, typeName);
+
+            return true;
+        }
+
+        public override bool VisitFunctionTemplateDecl(FunctionTemplate decl)
+        {
+            if (decl.TemplatedFunction.IsDependent && !decl.IsExplicitlyGenerated)
+            {
+                decl.TemplatedFunction.GenerationKind = GenerationKind.None;
+                Diagnostics.Debug("Decl '{0}' was ignored due to dependent context",
+                    decl.Name);
+                return true;
+            }
 
             return true;
         }
