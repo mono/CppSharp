@@ -23,7 +23,7 @@ namespace CppSharp
             optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, messages) );
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
 
-            optionSet.Add("iln=|inputlibraryname=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
+            optionSet.Add("iln=|inputlibraryname=|inputlib=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
             optionSet.Add("d|debug", "enables debug mode which generates more verbose code to aid debugging", v => options.Debug = true);
             optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);
             optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, messages); } );
@@ -34,7 +34,7 @@ namespace CppSharp
 
             optionSet.Add("c++11", "enables GCC C++ 11 compilation (valid only for Linux platform)", cpp11 => { options.Cpp11ABI = (cpp11 != null); } );
             optionSet.Add("cs|checksymbols", "enable the symbol check for the generated code", cs => { options.CheckSymbols = (cs != null); } );
-            optionSet.Add("ub|unitybuild", "enable unity build", ub => { options.UnityBuild = (ub != null); } );
+            optionSet.Add("ub|unitybuild|unity", "enable unity build", ub => { options.UnityBuild = (ub != null); } );
 
             optionSet.Add("h|help", "shows the help", hl => { showHelp = (hl != null); });
 
