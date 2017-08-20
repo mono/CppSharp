@@ -49,7 +49,7 @@ function clone_llvm()
 end
 function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
-    if major == "19" and minor == "10" then return "vs2017"
+    if major == "19" and minor >= "10" then return "vs2017"
     elseif major == "19" then return "vs2015"
     elseif major == "18" then return "vs2013"
     elseif major == "17" then return "vs2012"
