@@ -1224,3 +1224,9 @@ void useStdStringJustAsParameter(std::string s);
 
 typedef int (typedefedFuncPtr)(Foo* a, Bar b);
 int DLL_API funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func);
+
+
+inline namespace InlineNamespace
+{
+    DLL_API void FunctionInsideInlineNamespace();
+}

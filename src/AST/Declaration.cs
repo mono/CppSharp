@@ -144,7 +144,8 @@ namespace CppSharp.AST
             var currentNamespace = @namespace;
             while (currentNamespace != null)
             {
-                var isInlineNamespace = currentNamespace is Namespace && ((Namespace)currentNamespace).IsInline;
+                var isInlineNamespace = currentNamespace is Namespace &&
+                    ((Namespace) currentNamespace).IsInline;
                 if (!isInlineNamespace)
                     namespaces.Push(currentNamespace);
                 currentNamespace = currentNamespace.Namespace;

@@ -1381,3 +1381,7 @@ int funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func)
     Bar b;
     return func(a, b);
 }
+
+void InlineNamespace::FunctionInsideInlineNamespace()
+{
+}

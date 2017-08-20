@@ -807,10 +807,4 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(testProperties.RefToPrimitiveInSetter, Is.EqualTo(value));
         }
     }
-
-    [Test]
-    public void TestInlineNamespaces()
-    {
-        Common.FunctionInsideInlineNamespace();
-    }
 }

@@ -54,10 +54,9 @@ namespace CppSharp.Generators.CLI
             if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
             {
                 if (string.IsNullOrEmpty(decl.QualifiedName))
-                    return string.Format("{0}", decl.TranslationUnit.Module.OutputNamespace);
+                    return $"{decl.TranslationUnit.Module.OutputNamespace}";
 
-                return string.Format("{0}::{1}",
-                    decl.TranslationUnit.Module.OutputNamespace, decl.QualifiedName);
+                return $"{decl.TranslationUnit.Module.OutputNamespace}::{decl.QualifiedName}";
             }
                 
             return decl.QualifiedName;
