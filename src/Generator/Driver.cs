@@ -222,9 +222,6 @@ namespace CppSharp
 
         public void SortModulesByDependencies()
         {
-            if (!Options.DoAllModulesHaveLibraries())
-                return;
-
             var sortedModules = Options.Modules.TopologicalSort(m =>
             {
                 var dependencies = (from library in Context.Symbols.Libraries
@@ -235,7 +232,7 @@ namespace CppSharp
                 if (m != Options.SystemModule)
                     m.Dependencies.Add(Options.SystemModule);
                 m.Dependencies.AddRange(dependencies);
-                return dependencies;
+                return m.Dependencies;
             });
             Options.Modules.Clear();
             Options.Modules.AddRange(sortedModules);
