@@ -49,7 +49,13 @@ namespace CppSharp.Passes
                 {
                     var type = (Class) setter.Namespace;
                     var firstWord = GetFirstWord(setter.Name);
-                    var nameBuilder = new StringBuilder(setter.Name.Substring(firstWord.Length));
+                    string property;
+                    if ((firstWord == "set" || firstWord == "set_") &&
+                        firstWord.Length < setter.Name.Length)
+                        property = setter.Name.Substring(firstWord.Length);
+                    else
+                        property = setter.Name;
+                    var nameBuilder = new StringBuilder(property);
                     if (char.IsLower(setter.Name[0]))
                         nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
                     string afterSet = nameBuilder.ToString();
@@ -241,9 +247,7 @@ namespace CppSharp.Passes
 
             private void DistributeMethod(Method method)
             {
-                var firstWord = GetFirstWord(method.Name);
-                if (Match(firstWord, new[] { "set" }) && method.Name.Length > firstWord.Length &&
-                    method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+                if (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
                 {
                     if (method.Parameters.Count == 1)
                         setters.Add(method);

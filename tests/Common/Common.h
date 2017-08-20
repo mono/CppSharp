@@ -585,9 +585,15 @@ public:
 
     double refToPrimitiveInSetter() const;
     void setRefToPrimitiveInSetter(const double& value);
+
+    int getterAndSetterWithTheSameName();
+    void getterAndSetterWithTheSameName(int value);
+
+    void set(int value);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
+    int _getterAndSetterWithTheSameName;
 };
 
 class DLL_API HasOverridenSetter : public TestProperties

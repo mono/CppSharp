@@ -489,7 +489,7 @@ std::string& HasStdString::getStdString()
     return s;
 }
 
-TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0)
+TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0), _getterAndSetterWithTheSameName(0)
 {
 }
 
@@ -520,6 +520,20 @@ double TestProperties::refToPrimitiveInSetter() const
 void TestProperties::setRefToPrimitiveInSetter(const double& value)
 {
     _refToPrimitiveInSetter = value;
+}
+
+int TestProperties::getterAndSetterWithTheSameName()
+{
+    return _getterAndSetterWithTheSameName;
+}
+
+void TestProperties::getterAndSetterWithTheSameName(int value)
+{
+    _getterAndSetterWithTheSameName = value;
+}
+
+void TestProperties::set(int value)
+{
 }
 
 HasOverridenSetter::HasOverridenSetter()

@@ -470,6 +470,9 @@ public class CommonTests : GeneratorTestFixture
         Assert.That(prop.FieldValue, Is.EqualTo(20));
         prop.FieldValue = 10;
         Assert.That(prop.FieldValue, Is.EqualTo(10));
+
+        prop.GetterAndSetterWithTheSameName = 25;
+        Assert.That(prop.GetterAndSetterWithTheSameName, Is.EqualTo(25));
     }
 
     [Test]
