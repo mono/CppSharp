@@ -2,7 +2,6 @@ using CppSharp.AST;
 using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Parser;
-using System.Collections.Generic;
 
 namespace CppSharp.Generators
 {
@@ -20,16 +19,12 @@ namespace CppSharp.Generators
         public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
         public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
 
-        public Dictionary<Declaration, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
-
         public BindingContext(DriverOptions options, ParserOptions parserOptions = null)
         {
             Options = options;
             ParserOptions = parserOptions;
 
             Symbols = new SymbolContext();
-            Delegates = new Dictionary<Declaration, DelegatesPass.DelegateDefinition>();
-
             TypeMaps = new TypeMapDatabase();
 
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
