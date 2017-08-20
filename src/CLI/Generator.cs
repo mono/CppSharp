@@ -255,7 +255,7 @@ namespace CppSharp
         public void Run()
         {
             StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.Append("Generating the ");
+            messageBuilder.Append("Generating ");
 
             switch(options.Kind)
             {
@@ -267,7 +267,7 @@ namespace CppSharp
                     break;
             }
 
-            messageBuilder.Append(" parser bindings for ");
+            messageBuilder.Append(" bindings for ");
             
             switch (options.Platform)
             {
