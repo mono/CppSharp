@@ -98,6 +98,9 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate decl)
         {
+             if (!base.VisitFunctionTemplateDecl(decl))
+                 return false;
+
             if (decl.TemplatedFunction.IsDependent && !decl.IsExplicitlyGenerated)
             {
                 decl.TemplatedFunction.GenerationKind = GenerationKind.None;
