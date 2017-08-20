@@ -589,11 +589,15 @@ public:
     int getterAndSetterWithTheSameName();
     void getterAndSetterWithTheSameName(int value);
 
+    int setterReturnsBoolean();
+    bool setterReturnsBoolean(int value);
+
     void set(int value);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
     int _getterAndSetterWithTheSameName;
+    int _setterReturnsBoolean;
 };
 
 class DLL_API HasOverridenSetter : public TestProperties

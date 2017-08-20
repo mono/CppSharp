@@ -473,6 +473,8 @@ public class CommonTests : GeneratorTestFixture
 
         prop.GetterAndSetterWithTheSameName = 25;
         Assert.That(prop.GetterAndSetterWithTheSameName, Is.EqualTo(25));
+
+        prop.SetterReturnsBoolean(10);
     }
 
     [Test]
