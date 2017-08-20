@@ -145,6 +145,11 @@ namespace CppSharp
         public bool MarshalCharAsManagedChar { get; set; }
 
         /// <summary>
+        /// Generates a single C# file.
+        /// </summary>
+        public bool GenerateSingleCSharpFile { get; set; } = true;
+
+        /// <summary>
         /// Generates default values of arguments in the C# code.
         /// </summary>
         public bool GenerateDefaultValuesForArguments { get; set; }

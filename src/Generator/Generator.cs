@@ -39,7 +39,7 @@ namespace CppSharp.Generators
     /// </summary>
     public abstract class Generator : IDisposable
     {
-        public BindingContext Context { get; private set; }
+        public BindingContext Context { get; }
 
         protected Generator(BindingContext context)
         {
@@ -74,7 +74,8 @@ namespace CppSharp.Generators
 
             var units = Context.ASTContext.TranslationUnits.GetGenerated().ToList();
 
-            if (Context.Options.IsCSharpGenerator)
+            if (Context.Options.IsCSharpGenerator &&
+                Context.Options.GenerateSingleCSharpFile)
                 GenerateSingleTemplate(outputs);
             else
                 GenerateTemplates(outputs, units.Where(u => !u.IsSystemHeader));
@@ -115,7 +116,7 @@ namespace CppSharp.Generators
                 {
                     TranslationUnit = new TranslationUnit
                     {
-                        FilePath = string.Format("{0}.cs", module.LibraryName),
+                        FilePath = $"{module.LibraryName}.cs",
                         Module = module
                     },
                     Outputs = Generate(module.Units.GetGenerated())
@@ -128,8 +129,9 @@ namespace CppSharp.Generators
         }
 
         /// <summary>
-        /// Generates the outputs for a given translation unit.
+        /// Generates the outputs for the given translation units.
         /// </summary>
+        /// <param name="units">The units to generate outputs for.</param>
         public abstract List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units);
 
         protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);
