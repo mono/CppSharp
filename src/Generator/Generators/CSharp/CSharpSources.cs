@@ -816,22 +816,16 @@ namespace CppSharp.Generators.CSharp
             if (!property.Type.Equals(param.Type) && property.Type.IsEnumType())
                 param.Name = "&" + param.Name;
 
-            var function = property.SetMethod;
-            var method = function as Method;
-            if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
-                GenerateVirtualPropertyCall(method, @class.BaseClass, property,
-                    new List<Parameter> { param });
-            else if (method != null && method.IsVirtual)
-                GenerateVirtualPropertyCall(method, @class, property, new List<Parameter> { param });
-            else if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
-            {
-                if (method.OperatorKind == CXXOperatorKind.Subscript)
-                    GenerateIndexerSetter(method);
-                else
-                    GenerateInternalFunctionCall(property.SetMethod, new List<Parameter> { param });
-            }
+            var parameters = new List<Parameter> { param };
+            if (property.SetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
+                GenerateVirtualPropertyCall(property.SetMethod, @class.BaseClass,
+                   property, parameters);
+            else if (property.SetMethod.IsVirtual)
+                GenerateVirtualPropertyCall(property.SetMethod, @class, property, parameters);
+            else if (property.SetMethod.OperatorKind == CXXOperatorKind.Subscript)
+                GenerateIndexerSetter(property.SetMethod);
             else
-                GenerateInternalFunctionCall(function, new List<Parameter> { param });
+                GenerateInternalFunctionCall(property.SetMethod, parameters);
         }
 
         private void GenerateFieldSetter(Field field, Class @class)
