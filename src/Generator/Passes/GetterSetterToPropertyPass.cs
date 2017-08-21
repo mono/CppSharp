@@ -177,6 +177,8 @@ namespace CppSharp.Passes
                 }
                 property.GetMethod = getter;
                 property.SetMethod = setter;
+                if (setter != null && !setter.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+                    setter.ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Void));
                 property.ExplicitInterfaceImpl = getter.ExplicitInterfaceImpl;
                 if (property.ExplicitInterfaceImpl == null && setter != null)
                 {
@@ -247,7 +249,9 @@ namespace CppSharp.Passes
 
             private void DistributeMethod(Method method)
             {
-                if (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+                if (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) ||
+                    (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Bool) &&
+                     method.Parameters.Count > 1))
                 {
                     if (method.Parameters.Count == 1)
                         setters.Add(method);

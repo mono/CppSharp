@@ -583,7 +583,7 @@ namespace CppSharp.Generators.CSharp
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-            retType = function.ReturnType.Visit(TypePrinter);
+            retType = function.OriginalReturnType.Visit(TypePrinter);
 
             var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
                 $"{p.Visit(TypePrinter)} {p.Name}").ToList();
