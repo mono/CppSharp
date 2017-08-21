@@ -2445,7 +2445,8 @@ namespace CppSharp.Generators.CSharp
         }
 
         private void GenerateVirtualPropertyCall(Method method, Class @class,
-            Property property, List<Parameter> parameters = null)
+            Property property, List<Parameter> parameters = null,
+            QualifiedType returnType = default(QualifiedType))
         {
             if (property.IsOverride && !property.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
@@ -2454,7 +2455,7 @@ namespace CppSharp.Generators.CSharp
                     "return base.{0};" : "base.{0} = value;", property.Name);
             else
                 GenerateFunctionCall(GetVirtualCallDelegate(method, @class),
-                    parameters ?? method.Parameters, method);
+                    parameters ?? method.Parameters, method, returnType);
         }
 
         private void GenerateVirtualFunctionCall(Method method, Class @class,
@@ -2613,7 +2614,7 @@ namespace CppSharp.Generators.CSharp
 
             var method = function as Method;
             var hasThisReturnStructor = method != null && (method.IsConstructor || method.IsDestructor);
-            var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void) && !hasThisReturnStructor;
+            var needsReturn = !returnType.Type.IsPrimitiveType(PrimitiveType.Void) && !hasThisReturnStructor;
 
             var isValueType = false;
             var needsInstance = false;

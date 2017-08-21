@@ -391,11 +391,9 @@ namespace CppSharp.Generators.CLI
 
                 string variable;
                 if (decl is Variable)
-                    variable = string.Format("::{0}::{1}",
-                                             @class.QualifiedOriginalName, decl.OriginalName);
+                    variable = $"::{@class.QualifiedOriginalName}::{decl.OriginalName}";
                 else
-                    variable = string.Format("((::{0}*)NativePtr)->{1}",
-                                             @class.QualifiedOriginalName, decl.OriginalName);
+                    variable = $"((::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
                 var ctx = new MarshalContext(Context)
                 {
@@ -938,7 +936,7 @@ namespace CppSharp.Generators.CLI
             var retType = function.ReturnType;
             if (publicRetType == null)
                 publicRetType = retType.Type;
-            var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
+            var needsReturn = !publicRetType.IsPrimitiveType(PrimitiveType.Void);
 
             const string valueMarshalName = "_this0";
             var isValueType = @class != null && @class.IsValueType;
