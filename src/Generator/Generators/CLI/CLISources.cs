@@ -372,7 +372,8 @@ namespace CppSharp.Generators.CLI
             if (decl is Function && !isIndexer)
             {
                 var func = decl as Function;
-                GenerateFunctionCall(func, @class);
+                var @void = new BuiltinType(PrimitiveType.Void);
+                GenerateFunctionCall(func, @class, @void);
             }
             else
             {

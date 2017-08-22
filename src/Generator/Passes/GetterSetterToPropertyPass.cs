@@ -247,7 +247,10 @@ namespace CppSharp.Passes
 
             private void DistributeMethod(Method method)
             {
-                if (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+                Type returnType = method.OriginalReturnType.Type.Desugar();
+                if ((returnType.IsPrimitiveType(PrimitiveType.Void) ||
+                     returnType.IsPrimitiveType(PrimitiveType.Bool)) &&
+                     method.Parameters.Any(p => p.Kind == ParameterKind.Regular))
                 {
                     if (method.Parameters.Count == 1)
                         setters.Add(method);

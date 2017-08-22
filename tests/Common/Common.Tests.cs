@@ -473,6 +473,12 @@ public class CommonTests : GeneratorTestFixture
 
         prop.GetterAndSetterWithTheSameName = 25;
         Assert.That(prop.GetterAndSetterWithTheSameName, Is.EqualTo(25));
+
+        prop.SetterReturnsBoolean = 35;
+        Assert.That(prop.SetterReturnsBoolean, Is.EqualTo(35));
+
+        prop.VirtualSetterReturnsBoolean = 45;
+        Assert.That(prop.VirtualSetterReturnsBoolean, Is.EqualTo(45));
     }
 
     [Test]

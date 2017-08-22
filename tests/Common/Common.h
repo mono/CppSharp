@@ -590,10 +590,18 @@ public:
     void getterAndSetterWithTheSameName(int value);
 
     void set(int value);
+
+    int setterReturnsBoolean();
+    bool setterReturnsBoolean(int value);
+
+    virtual int virtualSetterReturnsBoolean();
+    virtual bool setVirtualSetterReturnsBoolean(int value);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
     int _getterAndSetterWithTheSameName;
+    int _setterReturnsBoolean;
+    int _virtualSetterReturnsBoolean;
 };
 
 class DLL_API HasOverridenSetter : public TestProperties
@@ -601,6 +609,9 @@ class DLL_API HasOverridenSetter : public TestProperties
 public:
     HasOverridenSetter();
     void setVirtual(bool value);
+
+    int virtualSetterReturnsBoolean() override;
+    bool setVirtualSetterReturnsBoolean(int value) override;
 };
 
 class DLL_API TypeMappedIndex

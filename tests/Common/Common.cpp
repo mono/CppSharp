@@ -489,7 +489,8 @@ std::string& HasStdString::getStdString()
     return s;
 }
 
-TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0), _getterAndSetterWithTheSameName(0)
+TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0),
+    _getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0), _virtualSetterReturnsBoolean(0)
 {
 }
 
@@ -536,12 +537,46 @@ void TestProperties::set(int value)
 {
 }
 
+int TestProperties::setterReturnsBoolean()
+{
+    return _setterReturnsBoolean;
+}
+
+bool TestProperties::setterReturnsBoolean(int value)
+{
+    bool changed = _setterReturnsBoolean != value;
+    _setterReturnsBoolean = value;
+    return changed;
+}
+
+int TestProperties::virtualSetterReturnsBoolean()
+{
+    return _virtualSetterReturnsBoolean;
+}
+
+bool TestProperties::setVirtualSetterReturnsBoolean(int value)
+{
+    bool changed = _virtualSetterReturnsBoolean != value;
+    _virtualSetterReturnsBoolean = value;
+    return changed;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }
 
 void HasOverridenSetter::setVirtual(bool value)
 {
+}
+
+int HasOverridenSetter::virtualSetterReturnsBoolean()
+{
+    return TestProperties::virtualSetterReturnsBoolean();
+}
+
+bool HasOverridenSetter::setVirtualSetterReturnsBoolean(int value)
+{
+    return TestProperties::setVirtualSetterReturnsBoolean(value);
 }
 
 TypeMappedIndex::TypeMappedIndex()

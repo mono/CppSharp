@@ -817,15 +817,17 @@ namespace CppSharp.Generators.CSharp
                 param.Name = "&" + param.Name;
 
             var parameters = new List<Parameter> { param };
+            var @void = new QualifiedType(new BuiltinType(PrimitiveType.Void));
             if (property.SetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
                 GenerateVirtualPropertyCall(property.SetMethod, @class.BaseClass,
-                   property, parameters);
+                   property, parameters, @void);
             else if (property.SetMethod.IsVirtual)
-                GenerateVirtualPropertyCall(property.SetMethod, @class, property, parameters);
+                GenerateVirtualPropertyCall(property.SetMethod, @class,
+                    property, parameters, @void);
             else if (property.SetMethod.OperatorKind == CXXOperatorKind.Subscript)
                 GenerateIndexerSetter(property.SetMethod);
             else
-                GenerateInternalFunctionCall(property.SetMethod, parameters);
+                GenerateInternalFunctionCall(property.SetMethod, parameters, @void);
         }
 
         private void GenerateFieldSetter(Field field, Class @class)
@@ -1597,20 +1599,29 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            var hasReturn = !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
+            bool isVoid = method.OriginalReturnType.Type.Desugar().IsPrimitiveType(
+                PrimitiveType.Void);
+            var property = ((Class) method.Namespace).Properties.Find(
+                p => p.GetMethod == method || p.SetMethod == method);
+            bool isSetter = property != null && property.SetMethod == method;
+            var hasReturn = !isVoid && !isSetter;
 
             if (hasReturn)
-                Write("var {0} = ", Helpers.ReturnIdentifier);
+                Write($"var {Helpers.ReturnIdentifier} = ");
 
-            if (method.IsGenerated)
+            Write($"{Helpers.TargetIdentifier}.");
+            string marshalsCode = string.Join(", ", marshals);
+            if (property == null)
             {
-                WriteLine("{0}.{1}({2});", Helpers.TargetIdentifier,
-                    method.Name, string.Join(", ", marshals));
+                Write($"{method.Name}({marshalsCode})");
             }
             else
             {
-                InvokeProperty(method, marshals);
+                Write($"{property.Name}");
+                if (isSetter)
+                    Write($" = {marshalsCode}");
             }
+            WriteLine(";");
 
             if (hasReturn)
             {
@@ -1649,25 +1660,11 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
+            if (!isVoid && isSetter)
+                WriteLine("return false;");
+
             for (var i = 0; i < numBlocks; ++i)
                 WriteCloseBraceIndent();
-        }
-
-        private void InvokeProperty(Declaration method, IEnumerable<string> marshals)
-        {
-            var property = ((Class) method.Namespace).Properties.FirstOrDefault(
-                p => p.GetMethod == method);
-            if (property == null)
-            {
-                property = ((Class) method.Namespace).Properties.First(
-                    p => p.SetMethod == method);
-                WriteLine("{0}.{1} = {2};", Helpers.TargetIdentifier, property.Name,
-                    string.Join(", ", marshals));
-            }
-            else
-            {
-                WriteLine("{0}.{1};", Helpers.TargetIdentifier, property.Name);
-            }
         }
 
         private void GenerateVTableMethodDelegates(Class @class, Method method)
