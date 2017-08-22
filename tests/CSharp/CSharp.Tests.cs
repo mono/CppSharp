@@ -387,9 +387,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
         dervClass = new TestParamToInterfacePass(dervClass + baseInterface);
         Assert.AreEqual(dervClass.M, 2);
     }
-
-    // TODO: fails on the Linux CI but works locally on Vagrant - both have the same Mono version; it also works on OS X; go figure
-    [Test, Platform(Exclude = "Linux")]
+    
+    [Test]
     public unsafe void TestMultiOverLoadPtrToRef()
     {
         var r = 0;
