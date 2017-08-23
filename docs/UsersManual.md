@@ -193,12 +193,11 @@ do is provide some conversion operators in .NET to get access to them.
 
 ### Virtual methods
 
-Support for overriding virtual methods is being worked on and it will provide
-a way for managed code to override virtual methods in bound classes.
+Overriding virtual methods from managed classes is supported.
 
 Instances of these types can be passed to native code and and whenever the
 native code calls one of those functions there will be a transition to the
-C# code. 
+C# code.
 
 ## Templates
 
