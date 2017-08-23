@@ -2070,6 +2070,13 @@ namespace CppSharp
 
         protected override AST.Comment VisitTextComment(TextComment comment)
         {
+            if (comment.Text.Contains(">") 
+                || comment.Text.Contains("<"))
+            {
+                comment.Text=comment.Text.TrimStart('<','>');
+            }
+            if (comment.Text.Contains("summary"))
+                comment.Text = "";
             return new AST.TextComment
             {
                 Text = comment.Text,

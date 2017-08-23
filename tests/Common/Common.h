@@ -364,7 +364,7 @@ DLL_API int operator==(const Foo2& a, const Foo2& b)
         return 0;
 }
 
-// Tests delegates
+/// <summary> Tests delegates </summary>
 typedef int (*DelegateInGlobalNamespace)(int);
 typedef int (STDCALL *DelegateStdCall)(int);
 typedef int (CDECL *DelegateCDecl)(int n);
