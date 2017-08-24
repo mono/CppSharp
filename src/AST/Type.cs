@@ -244,7 +244,7 @@ namespace CppSharp.AST
         public QualifiedType ReturnType;
 
         // Argument types.
-        public List<Parameter> Parameters;
+        public List<Parameter> Parameters { get; } = new List<Parameter>();
 
         public CallingConvention CallingConvention { get; set; }
 
@@ -252,14 +252,13 @@ namespace CppSharp.AST
 
         public FunctionType()
         {
-            Parameters = new List<Parameter>();
         }
 
         public FunctionType(FunctionType type)
             : base(type)
         {
             ReturnType = new QualifiedType((Type) type.ReturnType.Type.Clone(), type.ReturnType.Qualifiers);
-            Parameters = type.Parameters.Select(p => new Parameter(p)).ToList();
+            Parameters.AddRange(type.Parameters.Select(p => new Parameter(p)).ToList());
             CallingConvention = type.CallingConvention;
         }
 

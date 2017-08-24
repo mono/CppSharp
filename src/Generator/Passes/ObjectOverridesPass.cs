@@ -149,10 +149,13 @@ namespace CppSharp
                 Name = "Equals",
                 Namespace = @class,
                 ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Bool)),
-                Parameters = new List<Parameter> { methodEqualsParam },
                 SynthKind = FunctionSynthKind.ComplementOperator,
                 IsProxy = true
             };
+
+            methodEqualsParam.Namespace = methodEquals;
+            methodEquals.Parameters.Add(methodEqualsParam);
+
             methodEquals.OverriddenMethods.Add(new Method { Name = "Equals" });
             @class.Methods.Add(methodEquals);
 

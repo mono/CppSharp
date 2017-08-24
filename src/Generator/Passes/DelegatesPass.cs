@@ -104,19 +104,18 @@ namespace CppSharp.Passes
                 namespacesDelegates.Add(module, namespaceDelegates);
             }
 
-            var @delegate = new TypedefDecl
+            var functionType = new FunctionType
                 {
+                    CallingConvention = callingConvention,
+                    IsDependent = isDependent,
+                    ReturnType = returnType
+                };
+            functionType.Parameters.AddRange(@params);
+            var @delegate = new TypedefDecl
+            {
                     Name = delegateName,
                     QualifiedType = new QualifiedType(
-                        new PointerType(
-                            new QualifiedType(
-                                new FunctionType
-                                {
-                                    CallingConvention = callingConvention,
-                                    IsDependent = isDependent,
-                                    Parameters = @params,
-                                    ReturnType = returnType
-                                }))),
+                        new PointerType(new QualifiedType(functionType))),
                     Namespace = namespaceDelegates,
                     IsSynthetized = true,
                     Access = decl is Method ? AccessSpecifier.Private : AccessSpecifier.Public

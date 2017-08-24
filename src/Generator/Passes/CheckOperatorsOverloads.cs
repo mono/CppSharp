@@ -70,7 +70,7 @@ namespace CppSharp.Passes
         private static void CreateOperator(Class @class, Method @operator)
         {
             if (@operator.IsStatic)
-                @operator.Parameters = @operator.Parameters.Skip(1).ToList();
+                @operator.Parameters.RemoveAt(0);
 
             if (@operator.ConversionType.Type == null || @operator.Parameters.Count == 0)
             {
@@ -148,9 +148,14 @@ namespace CppSharp.Passes
                         SynthKind = FunctionSynthKind.ComplementOperator,
                         Kind = CXXMethodKind.Operator,
                         OperatorKind = missingKind,
-                        ReturnType = op.ReturnType,
-                        Parameters = op.Parameters
+                        ReturnType = op.ReturnType
                     };
+
+                foreach (var parameter in op.Parameters)
+                {
+                    var newParameter = new Parameter(parameter) { Namespace = method };
+                    method.Parameters.Add(newParameter);
+                }
 
                 @class.Methods.Insert(index, method);
             }

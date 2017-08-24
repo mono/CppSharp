@@ -142,7 +142,6 @@ namespace CppSharp.AST
     {
         public Function()
         {
-            Parameters = new List<Parameter>();
             CallingConvention = CallingConvention.Default;
             Signature = string.Empty;
         }
@@ -150,7 +149,6 @@ namespace CppSharp.AST
         public Function(Function function)
             : base(function)
         {
-            Parameters = new List<Parameter>();
             ReturnType = function.ReturnType;
             IsReturnIndirect = function.IsReturnIndirect;
             HasThisReturn = function.HasThisReturn;
@@ -180,7 +178,7 @@ namespace CppSharp.AST
         public bool IsReturnIndirect { get; set; }
         public bool HasThisReturn { get; set; }
 
-        public List<Parameter> Parameters { get; set; }
+        public List<Parameter> Parameters { get; } = new List<Parameter>();
         public bool IsConstExpr { get; set; }
         public bool IsVariadic { get; set; }
         public bool IsInline { get; set; }

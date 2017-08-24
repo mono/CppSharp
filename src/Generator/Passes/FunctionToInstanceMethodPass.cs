@@ -52,7 +52,6 @@ namespace CppSharp.Passes
                     Access = AccessSpecifier.Public,
                     Kind = CXXMethodKind.Normal,
                     ReturnType = function.ReturnType,
-                    Parameters = function.Parameters,
                     CallingConvention = function.CallingConvention,
                     IsVariadic = function.IsVariadic,
                     IsInline = function.IsInline,
@@ -60,8 +59,13 @@ namespace CppSharp.Passes
                     FunctionType = function.FunctionType
                 };
 
+            foreach (var parameter in function.Parameters)
+            {
+                var newParameter = new Parameter(parameter) { Namespace = method };
+                method.Parameters.Add(newParameter);
+            }
             if (Options.GeneratorKind == GeneratorKind.CSharp)
-                method.Parameters = method.Parameters.Skip(1).ToList();
+                method.Parameters.RemoveAt(0);
 
             @class.Methods.Add(method);
 

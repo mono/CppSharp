@@ -46,13 +46,18 @@ namespace CppSharp.Passes
                 Access = AccessSpecifier.Public,
                 Kind = CXXMethodKind.Normal,
                 ReturnType = function.ReturnType,
-                Parameters = function.Parameters,
                 CallingConvention = function.CallingConvention,
                 IsVariadic = function.IsVariadic,
                 IsInline = function.IsInline,
                 IsStatic = true,
                 Conversion = MethodConversionKind.FunctionToStaticMethod
             };
+
+            foreach (var parameter in function.Parameters)
+            {
+                var newParameter = new Parameter(parameter) { Namespace = method };
+                method.Parameters.Add(newParameter);
+            }
 
             @class.Methods.Add(method);
 
