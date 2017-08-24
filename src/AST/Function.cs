@@ -153,6 +153,8 @@ namespace CppSharp.AST
             IsReturnIndirect = function.IsReturnIndirect;
             HasThisReturn = function.HasThisReturn;
             Parameters.AddRange(function.Parameters.Select(p => new Parameter(p)));
+            foreach (var parameter in Parameters)
+                parameter.Namespace = this;
             IsVariadic = function.IsVariadic;
             IsInline = function.IsInline;
             IsPure = function.IsPure;

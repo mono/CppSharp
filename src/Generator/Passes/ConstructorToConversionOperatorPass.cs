@@ -83,6 +83,7 @@ namespace CppSharp.Passes
             };
             conversionOperator.Parameters.Add(new Parameter(parameter)
                 {
+                    Namespace = conversionOperator,
                     DefaultArgument = null,
                     OriginalDefaultArgument = null
                 });

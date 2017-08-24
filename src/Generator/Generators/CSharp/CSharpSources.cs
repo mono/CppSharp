@@ -1570,7 +1570,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var param = method.Parameters[i];
-                if (!param.IsGenerated)
+                if (param.Ignore)
                     continue;
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
@@ -2517,7 +2517,7 @@ namespace CppSharp.Generators.CSharp
                     if (@interface != null)
                     {
                         var printedInterface = @interface.Visit(TypePrinter);
-                        WriteLine($@"return new {printedType}(({printedInterface}) {paramName});");
+                        WriteLine($"return new {printedType}(({printedInterface}) {paramName});");
                     }
                     else
                         WriteLine($"return new {printedType}({paramName});");

@@ -1179,10 +1179,6 @@ namespace CppSharp
             _function.CallingConvention = VisitCallingConvention(function.CallingConvention);
             if (function.InstantiatedFrom != null)
                 _function.InstantiatedFrom = (AST.Function) Visit(function.InstantiatedFrom);
-            _function.FunctionType = typeConverter.VisitQualified(function.QualifiedType);
-            if (function.SpecializationInfo != null)
-                _function.SpecializationInfo = VisitFunctionTemplateSpecialization(
-                    function.SpecializationInfo);
 
             for (uint i = 0; i < function.ParametersCount; ++i)
             {
@@ -1190,6 +1186,11 @@ namespace CppSharp
                 var _param = Visit(param) as AST.Parameter;
                 _function.Parameters.Add(_param);
             }
+
+            _function.FunctionType = typeConverter.VisitQualified(function.QualifiedType);
+            if (function.SpecializationInfo != null)
+                _function.SpecializationInfo = VisitFunctionTemplateSpecialization(
+                    function.SpecializationInfo);
         }
 
         public override AST.Declaration VisitFunction(Function decl)
