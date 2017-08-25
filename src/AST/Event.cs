@@ -2,13 +2,8 @@
 
 namespace CppSharp.AST
 {
-    public class Event : Declaration, ITypedDecl
+    public class Event : DeclarationContext, ITypedDecl
     {
-        public Event()
-        {
-            Parameters = new List<Parameter>();
-        }
-
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitEvent(this);
@@ -17,7 +12,7 @@ namespace CppSharp.AST
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
 
-        public List<Parameter> Parameters;
+        public List<Parameter> Parameters { get; } = new List<Parameter>();
 
         public Declaration OriginalDeclaration { get; set; }
     }

@@ -59,11 +59,9 @@ namespace CppSharp.Passes
                     FunctionType = function.FunctionType
                 };
 
-            foreach (var parameter in function.Parameters)
-            {
-                var newParameter = new Parameter(parameter) { Namespace = method };
-                method.Parameters.Add(newParameter);
-            }
+            method.Parameters.AddRange(function.Parameters.Select(
+                p => new Parameter(p) { Namespace = method }));
+
             if (Options.GeneratorKind == GeneratorKind.CSharp)
                 method.Parameters.RemoveAt(0);
 

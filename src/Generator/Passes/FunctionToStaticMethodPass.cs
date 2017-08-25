@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -53,11 +54,8 @@ namespace CppSharp.Passes
                 Conversion = MethodConversionKind.FunctionToStaticMethod
             };
 
-            foreach (var parameter in function.Parameters)
-            {
-                var newParameter = new Parameter(parameter) { Namespace = method };
-                method.Parameters.Add(newParameter);
-            }
+            method.Parameters.AddRange(function.Parameters.Select(
+                p => new Parameter(p) { Namespace = method }));
 
             @class.Methods.Add(method);
 

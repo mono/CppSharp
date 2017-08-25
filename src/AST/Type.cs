@@ -258,7 +258,7 @@ namespace CppSharp.AST
             : base(type)
         {
             ReturnType = new QualifiedType((Type) type.ReturnType.Type.Clone(), type.ReturnType.Qualifiers);
-            Parameters.AddRange(type.Parameters.Select(p => new Parameter(p)).ToList());
+            Parameters.AddRange(type.Parameters.Select(p => new Parameter(p)));
             CallingConvention = type.CallingConvention;
             IsDependent = type.IsDependent;
         }

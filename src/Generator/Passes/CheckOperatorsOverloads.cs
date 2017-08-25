@@ -151,11 +151,8 @@ namespace CppSharp.Passes
                         ReturnType = op.ReturnType
                     };
 
-                foreach (var parameter in op.Parameters)
-                {
-                    var newParameter = new Parameter(parameter) { Namespace = method };
-                    method.Parameters.Add(newParameter);
-                }
+                method.Parameters.AddRange(op.Parameters.Select(
+                    p => new Parameter(p) { Namespace = method }));
 
                 @class.Methods.Insert(index, method);
             }
