@@ -10,7 +10,7 @@ namespace CppSharp.AST
         C,
         Cpp,
         ObjC
-    } 
+    }
 
     public enum TypePrintScopeKind
     {
@@ -41,7 +41,7 @@ namespace CppSharp.AST
         public virtual string VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var qual = GetStringQuals(quals);
-            return $@"{qual}{tag.Declaration.Visit(this)}";
+            return $"{qual}{tag.Declaration.Visit(this)}";
         }
 
         public virtual string VisitArrayType(ArrayType array, TypeQualifiers quals)
@@ -51,18 +51,17 @@ namespace CppSharp.AST
             switch (array.SizeType)
             {
             case ArrayType.ArraySize.Constant:
-                return string.Format("{0}[{1}]", typeName, array.Size);
+                return $"{typeName}[{array.Size}]";
             case ArrayType.ArraySize.Variable:
             case ArrayType.ArraySize.Dependent:
             case ArrayType.ArraySize.Incomplete:
-                return string.Format("{0}{1}", typeName,
-                                     PrintVariableArrayAsPointers ? "*" : "[]");
+                return $"{typeName}{(PrintVariableArrayAsPointers ? "*" : "[]")}";
             }
 
             throw new NotSupportedException();
         }
 
-        static string ConvertModifierToString(PointerType.TypeModifier modifier)
+        private static string ConvertModifierToString(PointerType.TypeModifier modifier)
         {
             switch (modifier)
             {
@@ -102,7 +101,7 @@ namespace CppSharp.AST
             var qual = GetStringQuals(quals, false);
             var pointeeType = pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
-            return $@"{pointeeType}{mod}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{qual}";
+            return $"{pointeeType}{mod}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{qual}";
         }
 
         public virtual string VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
@@ -113,7 +112,7 @@ namespace CppSharp.AST
         public virtual string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             var qual = GetStringQuals(quals);
-            return $@"{qual}{VisitPrimitiveType(builtin.Type)}";
+            return $"{qual}{VisitPrimitiveType(builtin.Type)}";
         }
 
         public virtual string VisitPrimitiveType(PrimitiveType primitive)
@@ -155,7 +154,7 @@ namespace CppSharp.AST
                     case CppTypePrintFlavorKind.Cpp:
                         return "std::string";
                     case CppTypePrintFlavorKind.ObjC:
-                        return "NSString";;
+                        return "NSString";
                     default:
                         throw new ArgumentOutOfRangeException();
                     }
@@ -168,7 +167,7 @@ namespace CppSharp.AST
                     case CppTypePrintFlavorKind.Cpp:
                         return "_Decimal32";
                     case CppTypePrintFlavorKind.ObjC:
-                        return "NSDecimalNumber";;
+                        return "NSDecimalNumber";
                     default:
                         throw new ArgumentOutOfRangeException();
                     }
@@ -184,7 +183,7 @@ namespace CppSharp.AST
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
                 return typedef.Declaration.Type.Visit(this);
             var qual = GetStringQuals(quals);
-            return $@"{qual}{typedef.Declaration.Visit(this)}";
+            return $"{qual}{typedef.Declaration.Visit(this)}";
         }
 
         public virtual string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
@@ -204,7 +203,7 @@ namespace CppSharp.AST
                 return string.Empty;
 
             var qual = GetStringQuals(quals);
-            return $@"{qual}{VisitClassTemplateSpecializationDecl(specialization)}";
+            return $"{qual}{VisitClassTemplateSpecializationDecl(specialization)}";
         }
 
         public virtual string VisitDependentTemplateSpecializationType(
@@ -300,12 +299,12 @@ namespace CppSharp.AST
 
         public virtual string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public virtual string VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public virtual string VisitFunctionType(FunctionType function, TypeQualifiers quals)
@@ -349,7 +348,7 @@ namespace CppSharp.AST
 
         public virtual string VisitDelegate(FunctionType function)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public virtual string GetDeclName(Declaration declaration, TypePrintScopeKind scope)
@@ -428,7 +427,7 @@ namespace CppSharp.AST
             var exceptionType =
                 functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept ?
                 " noexcept" : string.Empty;
-            return $@"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
+            return $"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
         }
 
         public virtual string VisitParameterDecl(Parameter parameter)
@@ -519,8 +518,7 @@ namespace CppSharp.AST
             if (templateParameter.DefaultArgument.Type == null)
                 return templateParameter.Name;
 
-            return string.Format("{0} = {1}", templateParameter.Name,
-                templateParameter.DefaultArgument.Visit(this));
+            return $"{templateParameter.Name} = {templateParameter.DefaultArgument.Visit(this)}";
         }
 
         public virtual string VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
@@ -528,8 +526,7 @@ namespace CppSharp.AST
             if (nonTypeTemplateParameter.DefaultArgument == null)
                 return nonTypeTemplateParameter.Name;
 
-            return string.Format("{0} = {1}",  nonTypeTemplateParameter.Name,
-                nonTypeTemplateParameter.DefaultArgument.String);
+            return $"{nonTypeTemplateParameter.Name} = {nonTypeTemplateParameter.DefaultArgument.String}";
         }
 
         public string VisitTypedefNameDecl(TypedefNameDecl typedef)
