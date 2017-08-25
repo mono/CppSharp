@@ -89,7 +89,14 @@ namespace CppSharp.AST
                 if (arguments.Count > 0)
                     args = VisitParameters(function.Parameters, hasNames: false);
 
-                return string.Format("{0} (*)({1})", returnType.Visit(this), args);
+                var callingConvention = string.Empty;
+                if (function.CallingConvention != CallingConvention.Default &&
+                    function.CallingConvention != CallingConvention.C)
+                {
+                    string conventionString = function.CallingConvention.ToString();
+                    callingConvention = $"__{conventionString.ToLowerInvariant()} ";
+                }
+                return $"{returnType.Visit(this)} ({callingConvention}*)({args})";
             }
 
             var qual = GetStringQuals(quals, false);

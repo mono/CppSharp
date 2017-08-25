@@ -115,7 +115,10 @@ namespace CppSharp.Passes
                     return existingDelegate;
 
                 // Add a new delegate with the calling convention appended to its name
-                delegateName += newFunctionType.CallingConvention;
+                delegateName += '_' + newFunctionType.CallingConvention.ToString();
+                existingDelegate = delegates.SingleOrDefault(t => t.Name == delegateName);
+                if (existingDelegate != null)
+                    return existingDelegate;
             }
 
             var namespaceDelegates = GetDeclContextForDelegates(((Declaration) decl).Namespace);

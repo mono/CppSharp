@@ -562,6 +562,10 @@ public class CommonTests : GeneratorTestFixture
         var testDelegates = new TestDelegates();
         int value = testDelegates.MarshalAnonymousDelegate(i => i * 2);
         Assert.AreEqual(2, value);
+        int value5 = testDelegates.MarshalAnonymousDelegate5(i => i * 2);
+        Assert.AreEqual(4, value5);
+        int value6 = testDelegates.MarshalAnonymousDelegate6(i => i * 2);
+        Assert.AreEqual(6, value6);
     }
 
     [Test]

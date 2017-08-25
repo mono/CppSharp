@@ -434,6 +434,16 @@ int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
     return f;
 }
 
+int TestDelegates::MarshalAnonymousDelegate5(int (STDCALL *del)(int))
+{
+    return del(2);
+}
+
+int TestDelegates::MarshalAnonymousDelegate6(int (STDCALL *del)(int))
+{
+    return del(3);
+}
+
 ClassA::ClassA(int value)
 {
     Value = value;

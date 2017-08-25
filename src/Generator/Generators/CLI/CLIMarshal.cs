@@ -488,7 +488,7 @@ namespace CppSharp.Generators.CLI
             return returnType.Visit(this);
         }
 
-        public bool VisitDelegateType(FunctionType function, string type)
+        public bool VisitDelegateType(string type)
         {
             // We marshal function pointer types by calling
             // GetFunctionPointerForDelegate to get a native function
@@ -533,7 +533,7 @@ namespace CppSharp.Generators.CLI
                 var cppTypePrinter = new CppTypePrinter();
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
-                return VisitDelegateType(function, cppTypeName);
+                return VisitDelegateType(cppTypeName);
             }
 
             Enumeration @enum;
@@ -631,7 +631,7 @@ namespace CppSharp.Generators.CLI
                     cppTypeName = decl.Type.Visit(cppTypePrinter, quals);
                 }
 
-                VisitDelegateType(func, cppTypeName);
+                VisitDelegateType(cppTypeName);
                 return true;
             }
 

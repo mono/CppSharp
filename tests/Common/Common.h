@@ -387,6 +387,8 @@ struct DLL_API TestDelegates
     void MarshalAnonymousDelegate2(int (*del)(int n));
     void MarshalAnonymousDelegate3(float (*del)(float n));
     int (*MarshalAnonymousDelegate4())(int n);
+    int MarshalAnonymousDelegate5(int (STDCALL *del)(int n));
+    int MarshalAnonymousDelegate6(int (STDCALL *del)(int n));
 
     void MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del);
 
