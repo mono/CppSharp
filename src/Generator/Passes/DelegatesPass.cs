@@ -29,12 +29,6 @@ namespace CppSharp.Passes
             if (!Options.IsCSharpGenerator)
                 return result;
 
-            var generatedUnits = context.TranslationUnits.GetGenerated();
-            var unit = generatedUnits.LastOrDefault();
-
-            if (unit == null)
-                return false;
-
             foreach (var module in Options.Modules.Where(namespacesDelegates.ContainsKey))
             {
                 var @namespace = namespacesDelegates[module];
