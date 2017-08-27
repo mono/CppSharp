@@ -8,7 +8,8 @@ project "CppSharp.Parser.CLI"
   SetupLLVMIncludes()
   
   dependson { "CppSharp.CppParser" }
-  flags { common_flags, "Managed" }
+  flags { common_flags }
+  clr "On"
 
   filter "action:vs*"
     buildoptions { clang_msvc_flags }  

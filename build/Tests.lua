@@ -94,7 +94,7 @@ function SetupTestGeneratorBuildEvent(name)
 end
 
 function SetupTestNativeProject(name, depends)
-  if string.starts(action, "vs") and not os.is("windows") then
+  if string.starts(action, "vs") and not os.ishost("windows") then
     return
   end
 
@@ -179,7 +179,7 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
 
     kind "SharedLib"
     language "C++"
-    flags { "Managed" }
+    clr "On"
 
     dependson { name .. ".Gen", name .. ".Native" }
     SetupTestGeneratorBuildEvent(name)
