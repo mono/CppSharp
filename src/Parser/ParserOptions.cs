@@ -52,16 +52,17 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
             Abi = CppAbi.Microsoft;
-            var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
+
+            VisualStudioVersion foundVsVersion;
+            var includes = MSVCToolchain.GetSystemIncludes(vsVersion, out foundVsVersion);
+            foreach (var include in includes)
+                AddSystemIncludeDirs(include);
+            var clVersion = MSVCToolchain.GetCLVersion(foundVsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
 
             AddArguments("-fms-extensions");
             AddArguments("-fms-compatibility");
             AddArguments("-fdelayed-template-parsing");
-
-            var includes = MSVCToolchain.GetSystemIncludes(vsVersion);
-            foreach (var include in includes)
-                AddSystemIncludeDirs(include);
         }
 
         public void SetupXcode()
