@@ -34,10 +34,7 @@ namespace CppSharp
 
         public bool IsValid => Version > 0 && !string.IsNullOrEmpty(Directory);
 
-        public override string ToString()
-        {
-            return string.Format("{0} (version: {1})", Directory, Version);
-        }
+        public override string ToString() => $"{Directory} (version: {Version})";
     }
 
     /// <summary>
@@ -53,13 +50,6 @@ namespace CppSharp
 
     public static class MSVCToolchain
     {
-        static void DumpSdks(string sku, IEnumerable<ToolchainVersion> sdks)
-        {
-            Console.WriteLine("\n{0} SDKs:", sku);
-            foreach (var sdk in sdks)
-                Console.WriteLine("\t({0}) {1}", sdk.Version, sdk.Directory);
-        }
-
         /// <summary>Dumps the detected SDK versions.</summary>
         public static void DumpSdks()
         {
@@ -120,24 +110,6 @@ namespace CppSharp
             return clVersion;
         }
 
-        static int GetVisualStudioVersion(VisualStudioVersion version)
-        {
-            switch (version)
-            {
-                case VisualStudioVersion.VS2012:
-                    return 11;
-                case VisualStudioVersion.VS2013:
-                    return 12;
-                case VisualStudioVersion.VS2015:
-                    return 14;
-                case VisualStudioVersion.VS2017:
-                case VisualStudioVersion.Latest:
-                    return 15;
-                default:
-                    throw new Exception("Unknown Visual Studio version");
-            }
-        }
-
         public static ToolchainVersion GetVSToolchain(VisualStudioVersion vsVersion)
         {
             List<ToolchainVersion> vsSdks;
@@ -173,7 +145,7 @@ namespace CppSharp
             if (match.Success)
                 windowsSdkMajorVer = int.Parse(match.Groups[1].Value);
 
-            match = Regex.Match(vcVarsFile, @"KitsRoot([1-9][0-9]*)");
+            match = Regex.Match(vcVarsFile, "KitsRoot([1-9][0-9]*)");
             if (match.Success)
                 kitsRootKey = match.Groups[0].Value;
 
@@ -186,7 +158,7 @@ namespace CppSharp
             // If for some reason we cannot find the SDK version reported by VS
             // in the system, then fallback to the latest version found.
             if (windowsKitSdk.Value == null)
-                windowsKitSdk = windowsKitsSdks.Last();   
+                windowsKitSdk = windowsKitsSdks.Last();
             return windowsKitSdk;
         }
 
@@ -223,6 +195,31 @@ namespace CppSharp
 
             foundVsVersion = VisualStudioVersion.Latest;
             return new List<string>();
+        }
+
+        private static void DumpSdks(string sku, IEnumerable<ToolchainVersion> sdks)
+        {
+            Console.WriteLine("\n{0} SDKs:", sku);
+            foreach (var sdk in sdks)
+                Console.WriteLine("\t({0}) {1}", sdk.Version, sdk.Directory);
+        }
+
+        private static int GetVisualStudioVersion(VisualStudioVersion version)
+        {
+            switch (version)
+            {
+                case VisualStudioVersion.VS2012:
+                    return 11;
+                case VisualStudioVersion.VS2013:
+                    return 12;
+                case VisualStudioVersion.VS2015:
+                    return 14;
+                case VisualStudioVersion.VS2017:
+                case VisualStudioVersion.Latest:
+                    return 15;
+                default:
+                    throw new Exception("Unknown Visual Studio version");
+            }
         }
 
         private static List<string> GetSystemIncludes(VisualStudioVersion vsVersion, string vsDir)
@@ -405,7 +402,7 @@ namespace CppSharp
                 GetToolchainsFromSystemRegistry(
                     "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SDKs\\Windows",
                     "InstallationFolder", versions, RegistryView.Registry64);
-            }         
+            }
             versions.Sort((v1, v2) => (int)(v1.Version - v2.Version));
             return versions.Count != 0;
         }
@@ -473,7 +470,13 @@ namespace CppSharp
             return true;
         }
 
+        /// <summary>
         /// Read registry strings looking for matching values.
+        /// </summary>
+        /// <param name="keyPath">The path to the key in the registry.</param>
+        /// <param name="matchValue">The value to match in the located key, if any.</param>
+        /// <param name="entries">The collected tool-chains.</param>
+        /// <param name="view">The type of registry, 32 or 64, to target.</param>
         public static bool GetToolchainsFromSystemRegistryValues(string keyPath,
             string matchValue, ICollection<ToolchainVersion> entries, RegistryView view)
         {
@@ -518,6 +521,7 @@ namespace CppSharp
             return true;
         }
 
+        /// <summary>
         /// Read registry string.
         /// This also supports a means to look for high-versioned keys by use
         /// of a $VERSION placeholder in the key path.
@@ -526,7 +530,12 @@ namespace CppSharp
         /// I.e. "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio".
         /// There can be additional characters in the component.  Only the numeric
         /// characters are compared.
-        static bool GetToolchainsFromSystemRegistry(string keyPath, string valueName,
+        /// </summary>
+        /// <param name="keyPath">The path to the key in the registry.</param>
+        /// <param name="matchValue">The value to match in the located key, if any.</param>
+        /// <param name="entries">The collected tool-chains.</param>
+        /// <param name="view">The type of registry, 32 or 64, to target.</param>
+        private static bool GetToolchainsFromSystemRegistry(string keyPath, string valueName,
             ICollection<ToolchainVersion> entries, RegistryView view)
         {
             string subKey;
@@ -549,7 +558,7 @@ namespace CppSharp
             return true;
         }
 
-        static bool HandleToolchainRegistrySubKey(out ToolchainVersion entry,
+        private static bool HandleToolchainRegistrySubKey(out ToolchainVersion entry,
             RegistryKey key, string valueName, string subKeyName)
         {
             entry = new ToolchainVersion();
@@ -585,7 +594,7 @@ namespace CppSharp
             return true;
         }
 
-        static RegistryHive GetRegistryHive(string keyPath, out string subKey)
+        private static RegistryHive GetRegistryHive(string keyPath, out string subKey)
         {
             var hive = (RegistryHive)0;
             subKey = null;
@@ -647,7 +656,7 @@ namespace CppSharp
                                        where package.GetId().Contains("Microsoft.VisualStudio.Component.VC.Tools")
                                        orderby package.GetId()
                                        select package;
-                        if (vc_tools.Count() > 0)
+                        if (vc_tools.Any())
                         { // Tools found, get path
                             var path = instance.GetInstallationPath();
                             var versionFilePath = path + @"\VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt";
@@ -664,7 +673,7 @@ namespace CppSharp
                         var win8sdks = from sdk in sdks
                                        where sdk.GetId().Contains("Windows81SDK")
                                        select sdk;
-                        if (win10sdks.Count() > 0)
+                        if (win10sdks.Any())
                         {
                             var sdk = win10sdks.Last();
                             var matchVersion = regexWinSDK10Version.Match(sdk.GetId());
@@ -697,7 +706,7 @@ namespace CppSharp
                                 includes.Add(ucrt);
                             }
                         }
-                        else if (win8sdks.Count() > 0)
+                        else if (win8sdks.Any())
                         {
                             includes.Add(@"C:\Program Files (x86)\Windows Kits\8.1\include\shared");
                             includes.Add(@"C:\Program Files (x86)\Windows Kits\8.1\include\um");
