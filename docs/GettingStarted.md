@@ -36,7 +36,8 @@ premake5-osx --file=scripts/LLVM.lua download_llvm # on OSX
 premake5-linux-64 --file=scripts/LLVM.lua download_llvm # on Linux
 ```
 
-Alternatively, if on Windows, just double click on `<CppSharp>/build/DownloadDeps.bat`.
+Alternatively, if on Windows, just run `<CppSharp>/build/DownloadDeps.bat` from a Visual Studio command prompt
+corresponding to the VS version you want to use.
 
 After this, you should end up with one or multiple `<CppSharp>/build/scripts/llvm-<revision>-<os>-<configuration>` folders
 containing the headers and libraries for LLVM.
@@ -50,64 +51,66 @@ Please check the guide in [Compiling LLVM and Clang from source](BuildingLLVM.md
 
 ## Compiling on Windows/Visual Studio
 
+1. Generate the VS solution and project files 
+
 ```shell
 cd <CppSharp>\build
-
 GenerateProjects.bat
-msbuild vs2013\CppSharp.sln /p:Configuration=Release;Platform=x86
 ```
 
-Building in *Release* is recommended because else the Clang parser will be
-excruciatingly slow.
+2. Compile the project
 
-It has been reported that running the solution upgrade process under VS 2013 breaks the build due
-to an incompatibility of .NET versions between projects (4.5 and 4.0). If you experience this
-problem you can change the targetted .NET version of the projects to be the same or just do not
-run the upgrade process after generation. 
+You can open `CppSharp.sln` and hit F5 or compile via the command line:
 
-## Compiling on Mac OS X
+```
+msbuild vs2017\CppSharp.sln /p:Configuration=Release;Platform=x86
+```
 
-1. Run `./premake5-osx gmake` in `<CppSharp>\build`
+Building in *Release* is recommended because else we will use the Clang parser
+debug configuration, which will be too slow for practical use beyond debugging.
+
+## Compiling on macOS or Linux
+
+1. Change directory to `<CppSharp>\build`
+2. Run `./Compile.sh` to generate the project files and compile the code.
+
+If the above script fails, you can try these equivalent manual steps:
+
+1. Generate the Makefiles
+
+```
+./premake5-osx gmake # if on OSX
+./premake5-linux-64 gmake # if on Linux
+```
+
 2. Build the generated makefiles:
-    - 32-bit builds: `config=release_x86 make -C gmake`
-    - 64-bit builds: `config=release_x64 make -C gmake`
+    - 32-bit builds: `make -C gmake config=release_x86`
+    - 64-bit builds: `make -C gmake config=release_x64`
 
 The version you compile needs to match the version of the Mono VM installed on your 
 system which you can find by running `mono --version`. The reason for this is because
 a 32-bit VM will only be able to load 32-bit shared libraries and vice-versa for 64-bits.
 
-## Compiling on Linux
-
-Only 64-bits builds are supported at the moment. 
-
-We depend on a somewhat recent version of Mono (.NET 4.5).
-Ubuntu 14.04 contains recent enough Mono by default, which you can install with:
-
-```shell
-sudo apt-get install mono-devel
-```
-
-If you are using another distribution then please look into the [download page](http://www.mono-project.com/download/#download-lin) on the Mono website.
-
-Generate the makefiles, and build CppSharp:
-
-```shell
-cd <CppSharp>/build
-./premake5-linux-64 gmake
-make -C gmake config=release_x64
-```
-
 If you need more verbosity from the builds invoke `make` as:
 
 ```shell
-verbose=true make -C gmake config=release_x64
+make -C gmake config=release_x64 verbose=true
 ```
 
-If you get the following error, please see [issue #625](https://github.com/mono/CppSharp/issues/625#issuecomment-189283549):
+## Running the testsuite
 
-```
-/usr/include/wchar.h(39,11): fatal: 'stdarg.h' file not found CppSharp has encountered an error while parsing code.
-```
+1. Change directory to `<CppSharp>\build`
+2. Run `./InstallNugets.sh` to install the NUnit test runner from Nuget.
+3. Run `./RunTests.sh` to run the tests.
+
+## Linux notes
+
+Only 64-bits builds are supported. 
+
+We depend on a recent version of Mono.
+
+Please look into the [download page](http://www.mono-project.com/download/#download-lin) on the
+Mono website for official install instructions.
 
 # Generating bindings
 
