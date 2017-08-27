@@ -16,12 +16,12 @@ SWIG. So how is it different from SWIG?
 
  * Cleaner bindings
  * No need to generate a C layer to interop with C++.
- * Easily extensible semantics via user passes
- * Strongly-typed customization APIs
- * Can be used as a library
  * Based on an actual C++ parser (Clang) so very accurate.
  * Understands C++ at the ABI (application binary interface) level
  * Supports virtual method overriding
+ * Easily extensible semantics via user passes
+ * Strongly-typed customization APIs
+ * Can be used as a library
 
 # 2. Targets
 
@@ -39,23 +39,31 @@ In this section we will go through how the generator deals C/C++ types.
 
 ### Integral types
 
-  - char      **→** System::Byte
-  - bool      **→** System::Boolean
-  - short     **→** System::Int16
-  - int, long **→** System::Int32
-  - long long **→** System::Int64
+  - char      **→** `byte` / `System::Byte`
+  - bool      **→** `bool` / `System::Boolean`
+  - short     **→** `short` / `System::Int16`
+  - int, long **→** `int` / `System::Int32`
+  - long long **→** `long` / `System::Int64`
   
   Note: Signedness is also preserved in the conversions.
 
+  These size of these types are dependent on environment and compiler, so the mappings
+  above are only representative of some environments (the specific data model is usually
+  abbreviated as LP32, ILP32, LLP64, LP64).
+
+  Please check the fundamental types properties table at [cppreference.com](http://en.cppreference.com/w/cpp/language/types)
+  for more information about this.
+
+
 ### Floating-point types
 
-  - float     **→** System::Single
-  - double    **→** System::Double
+  - float     **→** `float` / `System::Single`
+  - double    **→** `double` / `System::Double`
 
 ### Other types
 
-  - wchar_t   **→** System::Char
-  - void      **→** System::Void
+  - wchar_t   **→** `char` / `System::Char`
+  - void      **→** `void` / `System::Void`
 
 ## Derived types
 
@@ -69,12 +77,14 @@ In this section we will go through how the generator deals C/C++ types.
 
 These are mapped to .NET CLR delegates.
 
+This is implemented by the [`DelegatesPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/DelegatesPass.cs) pass.
+
 #### Primitive types
 
  These are mapped to .NET CLR references unless:
 
-  - void*        **→** System::IntPtr
-  - const char*  **→** System::String
+  - void*        **→** `System.IntPtr` / `System::IntPtr`
+  - const char*  **→** `string` / `System::String`
 
 #### References
 
@@ -104,6 +114,8 @@ Some enumerations represent bitfield patterns. The generator tries to check for
 this with some heuristics. If there are enough values in the enum to make a good
 guess, we apply the [Flags] .NET attribute to the wrapper enum.
 
+This is implemented by the [`CheckFlagEnumsPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/CheckFlagEnumsPass.cs) pass.
+
 ## Functions
 
 Since global scope functions are not supported in C# (though they are available
@@ -113,7 +125,10 @@ any CLS-compliant language.
 By default all globals functions of a translation unit are mapped to a static
 class with the name of of the unit prefixed by the namespace.
 
-Special cases to be aware of:
+We also provide special passes that try to move these free functions either as
+instance or static functions of some class.
+
+See the [`FunctionToInstanceMethodPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/FunctionToInstanceMethodPass.cs) and [`FunctionToStaticMethodPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/FunctionToStaticMethodPass.cs) passes.
 
 ### Variadic arguments (TODO)
 
@@ -136,13 +151,14 @@ idiomatic to use. By default we use this to wrap variadic functions.
   
 ### Default arguments
 
-Default arguments values are not supported yet since potentially all C++ constant
-expressions can be used as default arguments.
+A subset of default arguments values are supported.
+
+This is implemented by the [`HandleDefaultParamValuesPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/HandleDefaultParamValuesPass.cs) pass.
 
 ## Classes / Structs
 
 In C++, both classes and structs are identical and can be used in both heap
-(malloc/new) and automatic (stack) allocations.
+(`malloc` / `new`) and automatic (stack) allocations.
 
 This is unlike .NET, in which there is an explicit differentiation of the
 allocation semantics of the type in the form of classes (reference types)
@@ -157,12 +173,27 @@ TODO: If the native type is a POD type, that means we can safely convert it to
 a value type. This would make the generator do the right thing by default and is
 pretty easy to implement.
 
+### Static classes
+
+Classes that respect the following constraints are bound as static managed classes.
+
+- Do not provide any non-private constructors
+- Do not provide non-static fields or methods
+- Do not provide any static function that return a pointer to the class
+
+This is implemented by the [`CheckStaticClass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/CheckStaticClass.cs) pass.
+
 ### Constructors
 
 Constructors are mapped to .NET class constructors.
 
 Note: An extra constructor is generated that takes a native pointer to the class.
 This allows construction of managed instances from native instances.
+
+Additionally we will create C# conversion operators out of compatible single-argument
+constructors.
+
+This is implemented by the [`ConstructorToConversionOperatorPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/ConstructorToConversionOperatorPass.cs) pass.
 
 ### Destructors
 
@@ -174,6 +205,8 @@ Most of the regular C++ operators can be mapped to .NET operator overloads.
 
 In case an operator has no match in C# then its added as a named method with
 the same parameters.
+
+This is implemented by the [`CheckOperatorsOverloads`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/CheckOperatorsOverloads.cs) pass.
 
 ### Inheritance
 
@@ -199,9 +232,21 @@ Instances of these types can be passed to native code and and whenever the
 native code calls one of those functions there will be a transition to the
 C# code.
 
+This is done by mirroring the virtual methods table with our own table at runtime,
+and replacing the table entries with unmanaged function pointers that transition to
+managed code as needed.
+
+### Fields
+
+Class instance fields are translated to managed properties.
+
+This is implemented by the [`FieldToPropertyPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/FieldToPropertyPass.cs) pass.
+
 ## Templates
 
 Template parsing is supported and you can type map them to other types.
+
+Code generation for templates is experimental and can be enabled by the `GenerateClassTemplates` option.
 
 ## Preprocessor defines
 
@@ -224,11 +269,70 @@ This case is not supported and probably never will.
  
 This case is not supported and probably never will.
 
+### Helper defines
+
+We support a set of helper defines that can be used to annotate the native code with:
+
+- `CS_IGNORE_FILE` (translation units)
+
+   Used to ignore whole translation units.
+
+- `CS_IGNORE` (declarations)
+
+   Used to ignore declarations from being processed.
+
+- `CS_IGNORE_GEN` (declarations)
+
+   Used to ignore declaration from being generated.
+
+- `CS_IGNORE_FILE` (translation units)
+
+   Used to ignore all declarations of one header.
+
+- `CS_VALUE_TYPE` (classes and structs)
+
+   Used to flag that a class or struct is a value type.
+
+- `CS_IN_OUT` / `CS_OUT` (parameters)
+
+   Used in function parameters to specify their usage kind.
+
+- `CS_FLAGS` (enums)
+
+   Used to specify that enumerations represent bitwise flags.
+
+- `CS_READONLY` (fields and properties)
+
+   Used in fields and properties to specify read-only semantics.
+
+- `CS_EQUALS` / `CS_HASHCODE` (methods)
+
+   Used to flag method as representing the .NET Equals or
+   Hashcode methods.
+
+- `CS_CONSTRAINT(TYPE [, TYPE]*)` (templates)
+
+   Used to define constraint of generated generic type or generic method.
+
+- `CS_INTERNAL` (methods)
+
+   Used to flag a method as internal to an assembly. So, it is
+   not accessible outside that assembly.
+
+These are implemented by the [`CheckMacrosPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/CheckMacrosPass.cs) pass.
+
 ## Comments
 
 There is full support for parsing of Doxygen-style C++ comments syntax.
 
-They are translated to .NET XML-style comments.
+  They are translated to .NET XML-style comments.
+
+We can also figure out the intended semantic usage (`ref` or `out`) for parameters from Doxyxen tags.
+
+Related passes:
+
+- [`CleanCommentsPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/CleanCommentsPass.cs) pass
+- [`FixParameterUsageFromComments`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/FixParameterUsageFromComments.cs) pass
 
 ## Limitations
 
@@ -244,16 +348,16 @@ standard library types:
 
 ### Strings
 
- - std::string
- - std::wstring
+ - `std::string`
+ - `std::wstring`
   
  These are mapped automatically to .NET strings. 
 
 ### Containers
 
-- std::vector
-- std::map
-- std::set
+- `std::vector`
+- `std::map`
+- `std::set`
 
 Support for wrapping these is experimental and only currently works on the
 CLI backend.
