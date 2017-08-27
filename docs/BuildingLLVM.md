@@ -48,14 +48,14 @@ cd llvm/tools
 git clone http://llvm.org/git/clang.git
 ```
 
-Official LLVM instructions can be found here: [http://llvm.org/docs/GettingStarted.html#git-mirror]
-(http://llvm.org/docs/GettingStarted.html#git-mirror)
+Official LLVM instructions can be found here: [http://llvm.org/docs/GettingStarted.html#git-mirror](http://llvm.org/docs/GettingStarted.html#git-mirror)
 
 Make sure to use the revisions specified below, or you will most likely get compilation errors.
 
 Required LLVM/Clang commits:
 
 [LLVM: see /build/LLVM-commit.](https://github.com/mono/CppSharp/tree/master/build/LLVM-commit)
+
 [Clang: see /build/Clang-commit.](https://github.com/mono/CppSharp/tree/master/build/Clang-commit)
 
 To change to the revisions specified above you can run the following commands:
