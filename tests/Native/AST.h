@@ -208,3 +208,12 @@ template<>
 bool functionWithSpecInfo(const float& t11, const float& t12, const float& t2);
 
 void functionWithSpecializationArg(const TestTemplateClass<int>);
+
+#ifdef _WIN32
+#ifndef _WIN64
+void testMSStyleAssembly()
+{
+    __asm mov eax, 1
+}
+#endif
+#endif
