@@ -208,3 +208,14 @@ template<>
 bool functionWithSpecInfo(const float& t11, const float& t12, const float& t2);
 
 void functionWithSpecializationArg(const TestTemplateClass<int>);
+
+void testInlineAssembly()
+{
+#ifdef _WIN32
+#ifndef _WIN64
+    __asm mov eax, 1
+#endif
+#elif __linux__
+    asm("mov eax, 1");
+#endif
+}

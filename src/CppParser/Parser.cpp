@@ -15,6 +15,7 @@
 #include <llvm/Support/Host.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/TargetSelect.h>
 #include <llvm/Object/Archive.h>
 #include <llvm/Object/COFF.h>
 #include <llvm/Object/ObjectFile.h>
@@ -63,7 +64,7 @@
 using namespace CppSharp::CppParser;
 
 // We use this as a placeholder for pointer values that should be ignored.
-void* IgnorePtr = (void*) 0x1;
+void* IgnorePtr = reinterpret_cast<void*>(0x1);
 
 //-----------------------------------//
 
@@ -232,6 +233,10 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
 
 void Parser::SetupHeader()
 {
+    llvm::InitializeAllTargets();
+    llvm::InitializeAllTargetMCs();
+    llvm::InitializeAllAsmParsers();
+
     using namespace clang;
 
     std::vector<const char*> args;
