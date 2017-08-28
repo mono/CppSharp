@@ -24,6 +24,7 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
+#include <llvm/Support/TargetSelect.h>
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
@@ -63,12 +64,23 @@
 using namespace CppSharp::CppParser;
 
 // We use this as a placeholder for pointer values that should be ignored.
-void* IgnorePtr = (void*) 0x1;
+void* IgnorePtr = reinterpret_cast<void*>(0x1);
+
+static bool initializedLLVM = false;
 
 //-----------------------------------//
 
 Parser::Parser(CppParserOptions* Opts) : lib(Opts->ASTContext), opts(Opts), index(0)
 {
+    if (!initializedLLVM)
+    {
+        llvm::InitializeAllTargets();
+        llvm::InitializeAllTargetMCs();
+        llvm::InitializeAllAsmPrinters();
+        llvm::InitializeAllAsmParsers();
+
+        initializedLLVM = true;
+    }
 }
 
 LayoutField Parser::WalkVTablePointer(Class* Class,
