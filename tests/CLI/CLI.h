@@ -56,3 +56,10 @@ typedef struct IncompleteStruct IncompleteStruct;
 
 DLL_API IncompleteStruct* createIncompleteStruct();
 DLL_API void useIncompleteStruct(IncompleteStruct* a);
+
+#ifdef _WIN32
+void testMSStyleAssembly() 
+{
+    __asm mov eax, 1
+}
+#endif
