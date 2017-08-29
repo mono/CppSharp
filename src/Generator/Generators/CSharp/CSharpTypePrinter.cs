@@ -69,22 +69,22 @@ namespace CppSharp.Generators.CSharp
                     (arrayType.IsPrimitiveType() && MarshalKind != MarshalKind.NativeField))
                 {
                     if (primitiveType == PrimitiveType.Void)
-                    {
                         return "void*";
-                    }
-                    return string.Format("{0}", array.Type.Visit(this, quals));
+
+                    return array.Type.Visit(this, quals);
                 }
 
                 if (Parameter != null)
-                    return string.Format("global::System.IntPtr");
+                    return IntPtrType;
+
 
                 Enumeration @enum;
                 if (arrayType.TryGetEnum(out @enum))
                 {
                     return new TypePrinterResult
                     {
-                        Type = string.Format("fixed {0}", @enum.BuiltinType),
-                        NameSuffix = string.Format("[{0}]", array.Size)
+                        Type = $"fixed {@enum.BuiltinType}",
+                        NameSuffix = $"[{array.Size}]"
                     };
                 }
 
@@ -94,7 +94,7 @@ namespace CppSharp.Generators.CSharp
                     return new TypePrinterResult
                     {
                         Type = "fixed byte",
-                        NameSuffix = string.Format("[{0}]", array.Size * @class.Layout.Size)
+                        NameSuffix = $"[{array.Size * @class.Layout.Size}]"
                     };
                 }
 
@@ -109,8 +109,8 @@ namespace CppSharp.Generators.CSharp
                 var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
                 return new TypePrinterResult
                 {
-                    Type = string.Format("{0}{1}", fixedKeyword, arrayElemType),
-                    NameSuffix = string.Format("[{0}]", array.Size)
+                    Type = $"{fixedKeyword}{arrayElemType}",
+                    NameSuffix = $"[{array.Size}]",
                 };
             }
 
