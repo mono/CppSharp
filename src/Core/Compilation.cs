@@ -12,7 +12,7 @@ namespace CppSharp
         /// <summary>
         /// Target platform for code compilation.
         /// </summary>
-        public TargetPlatform Platform;
+        public TargetPlatform? Platform;
 
         /// <summary>
         /// Specifies the VS version.

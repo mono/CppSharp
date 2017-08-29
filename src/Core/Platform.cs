@@ -77,5 +77,22 @@ namespace CppSharp
                 return platform == PlatformID.Unix || platform == PlatformID.MacOSX;
             }
         }
+
+        public static TargetPlatform Host
+        {
+            get
+            {
+                if (IsWindows)
+                    return TargetPlatform.Windows;
+    
+                if (IsMacOS)
+                    return TargetPlatform.MacOS;
+    
+                if (IsLinux)
+                    return TargetPlatform.Linux;
+    
+                throw new NotImplementedException();
+            }
+        }
     }
 }

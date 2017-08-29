@@ -48,6 +48,9 @@ namespace CppSharp
 
         void ValidateOptions()
         {
+            if (!Options.Compilation.Platform.HasValue)
+                Options.Compilation.Platform = Platform.Host;
+
             foreach (var module in Options.Modules)
             {
                 if (string.IsNullOrWhiteSpace(module.LibraryName))
