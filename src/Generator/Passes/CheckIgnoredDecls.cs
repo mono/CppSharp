@@ -80,7 +80,7 @@ namespace CppSharp.Passes
             string msg = "internal";
             if (!(type is FunctionType) && (decl == null ||
                 (decl.GenerationKind != GenerationKind.Internal &&
-                 !HasInvalidType(type, field.TranslationUnit.Module, out msg))))
+                 !HasInvalidType(field, out msg))))
                 return false;
 
             field.GenerationKind = GenerationKind.Internal;
@@ -129,7 +129,7 @@ namespace CppSharp.Passes
             var ret = function.OriginalReturnType;
 
             string msg;
-            if (HasInvalidType(ret.Type, function.TranslationUnit.Module, out msg))
+            if (HasInvalidType(ret.Type, function, out msg))
             {
                 function.ExplicitlyIgnore();
                 Diagnostics.Debug("Function '{0}' was ignored due to {1} return decl",
@@ -147,7 +147,7 @@ namespace CppSharp.Passes
                     return false;
                 }
 
-                if (HasInvalidType(param.Type, function.TranslationUnit.Module, out msg))
+                if (HasInvalidType(param, out msg))
                 {
                     function.ExplicitlyIgnore();
                     Diagnostics.Debug("Function '{0}' was ignored due to {1} param",
@@ -250,7 +250,7 @@ namespace CppSharp.Passes
                 return false;
 
             string msg;
-            if (HasInvalidType(typedef.Type, typedef.TranslationUnit.Module, out msg) &&
+            if (HasInvalidType(typedef, out msg) &&
                 !(typedef.Type.Desugar() is MemberPointerType))
             {
                 typedef.ExplicitlyIgnore();
@@ -276,7 +276,8 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            if (HasInvalidType(property.Type, property.TranslationUnit.Module, out msg))
+
+            if (HasInvalidType(property, out msg))
             {
                 property.ExplicitlyIgnore();
                 Diagnostics.Debug("Property '{0}' was ignored due to {1} type",
@@ -302,6 +303,8 @@ namespace CppSharp.Passes
             }
 
             if (HasInvalidType(variable.Type, variable.TranslationUnit.Module, out msg))
+
+            if (HasInvalidType(variable, out msg))
             {
                 variable.ExplicitlyIgnore();
                 Diagnostics.Debug("Variable '{0}' was ignored due to {1} type",
@@ -337,6 +340,8 @@ namespace CppSharp.Passes
                 }
 
                 if (HasInvalidType(param.Type, @event.TranslationUnit.Module, out msg))
+
+                if (HasInvalidType(param, out msg))
                 {
                     @event.ExplicitlyIgnore();
                     Diagnostics.Debug("Event '{0}' was ignored due to {1} param",
@@ -365,7 +370,12 @@ namespace CppSharp.Passes
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
         /// </summary>
-        private bool HasInvalidType(Type type, Module module, out string msg)
+        private bool HasInvalidType(ITypedDecl decl, out string msg)
+        {
+            return HasInvalidType(decl.Type, (Declaration)decl, out msg);
+        }
+
+        private bool HasInvalidType(Type type, Declaration decl, out string msg)
         {
             if (type == null)
             {
@@ -385,6 +395,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            var module = decl.TranslationUnit.Module;
             if (Options.DoAllModulesHaveLibraries() &&
                 module != Options.SystemModule && ASTUtils.IsTypeExternal(module, type))
             {
