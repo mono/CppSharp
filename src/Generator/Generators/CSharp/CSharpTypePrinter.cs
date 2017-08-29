@@ -63,6 +63,12 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == TypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
+                if (array.Size == 0)
+                {
+                    var pointer = new PointerType(array.QualifiedType);
+                    return pointer.Visit(this);
+                }
+
                 PrimitiveType primitiveType;
                 if ((arrayType.IsPointerToPrimitiveType(out primitiveType) &&
                     !(arrayType is FunctionType)) ||
@@ -71,12 +77,11 @@ namespace CppSharp.Generators.CSharp
                     if (primitiveType == PrimitiveType.Void)
                         return "void*";
 
-                    return array.Type.Visit(this, quals);
+                    return array.QualifiedType.Visit(this);
                 }
 
                 if (Parameter != null)
                     return IntPtrType;
-
 
                 Enumeration @enum;
                 if (arrayType.TryGetEnum(out @enum))
@@ -98,7 +103,7 @@ namespace CppSharp.Generators.CSharp
                     };
                 }
 
-                var arrayElemType = array.Type.Visit(this, quals).ToString();
+                var arrayElemType = array.QualifiedType.Visit(this).ToString();
 
                 // C# does not support fixed arrays of machine pointer type (void* or IntPtr).
                 // In that case, replace it by a pointer to an integer type of the same size.
