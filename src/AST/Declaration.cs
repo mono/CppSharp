@@ -12,7 +12,7 @@ namespace CppSharp.AST
     public interface ITypedDecl
     {
         Type Type { get; }
-        QualifiedType QualifiedType { get; }
+        QualifiedType QualifiedType { get; set; }
     }
 
     public interface INamedDecl

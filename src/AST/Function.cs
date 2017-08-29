@@ -259,6 +259,10 @@ namespace CppSharp.AST
         }
 
         public Type Type => ReturnType.Type;
-        public QualifiedType QualifiedType => ReturnType;
+        public QualifiedType QualifiedType
+        {
+            get { return ReturnType; }
+            set { ReturnType = value; }
+        }
     }
 }
