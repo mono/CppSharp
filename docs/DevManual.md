@@ -86,7 +86,7 @@ In comparison, CppSharp generates different code at compile-time for each ABI an
 - Sharppy - .NET bindings generator for unmanaged C++
 [https://code.google.com/p/sharppy/](https://code.google.com/p/sharppy/)
 
-Lokos abandoned at this point.
+Looks abandoned at this point.
 
 - XInterop
 [http://xinterop.com/](http://xinterop.com/)
