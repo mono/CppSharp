@@ -711,6 +711,9 @@ class DLL_API TestFixedArrays
 public:
     TestFixedArrays();
     VoidPtrRetFunctionTypedef Array[10];
+    TestWideStrings ZeroSizedClassArray[0];
+    MyEnum ZeroSizedEnumArray[0];
+    int ZeroSizedArray[0];
 };
 
 TestFixedArrays::TestFixedArrays() {}

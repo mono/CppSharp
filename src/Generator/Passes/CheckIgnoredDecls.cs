@@ -403,6 +403,14 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            var arrayType = type as ArrayType;
+            if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
+                arrayType.Size == 0)
+            {
+                msg = "zero-sized array";
+                return true;
+            }
+
             msg = null;
             return false;
         }
