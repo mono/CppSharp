@@ -13,8 +13,8 @@ namespace CppSharp
                 return @"C:\Program Files (x86)\Mono";
             else if (Platform.IsMacOS)
                 return "/Library/Frameworks/Mono.framework/Versions/Current";
-
-            throw new NotImplementedException();
+            else
+                return "/usr";
         }
 
         public static string FindCSharpCompilerDir()
