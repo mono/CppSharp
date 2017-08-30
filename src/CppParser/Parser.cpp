@@ -4210,22 +4210,6 @@ ParserTargetInfo* Parser::GetTargetInfo()
 
     AST = &c->getASTContext();
 
-    // Initialize enough Clang codegen machinery so we can get at ABI details.
-    llvm::LLVMContext Ctx;
-    std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
-
-    M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST->getTargetInfo().getDataLayout());
-
-    std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
-        new clang::CodeGen::CodeGenModule(c->getASTContext(), c->getHeaderSearchOpts(),
-        c->getPreprocessorOpts(), c->getCodeGenOpts(), *M, c->getDiagnostics()));
-
-    std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
-        new clang::CodeGen::CodeGenTypes(*CGM.get()));
-
-    codeGenTypes = CGT.get();
-
     auto parserTargetInfo = new ParserTargetInfo();
 
     auto& TI = AST->getTargetInfo();

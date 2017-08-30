@@ -20,7 +20,6 @@ namespace CppSharp
     {
         public DriverOptions Options { get; private set; }
         public ParserOptions ParserOptions { get; set; }
-        public Project Project { get; private set; }
         public BindingContext Context { get; private set; }
         public Generator Generator { get; private set; }
 
@@ -29,7 +28,6 @@ namespace CppSharp
         public Driver(DriverOptions options)
         {
             Options = options;
-            Project = new Project();
             ParserOptions = new ParserOptions();
         }
 
@@ -74,9 +72,9 @@ namespace CppSharp
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 
-        void OnSourceFileParsed(IList<SourceFile> files, ParserResult result)
+        void OnSourceFileParsed(IEnumerable<string> files, ParserResult result)
         {
-            OnFileParsed(files.Select(f => f.Path), result);
+            OnFileParsed(files, result);
         }
 
         void OnFileParsed(string file, ParserResult result)
@@ -117,7 +115,7 @@ namespace CppSharp
             }
         }
 
-        public ParserOptions BuildParserOptions(SourceFile file = null)
+        public ParserOptions BuildParserOptions(string file = null)
         {
             var options = new ParserOptions
             {
@@ -177,7 +175,7 @@ namespace CppSharp
             }
 
             foreach (var module in Options.Modules.Where(
-                m => file == null || m.Headers.Contains(file.Path)))
+                m => file == null || m.Headers.Contains(file)))
             {
                 foreach (var include in module.IncludeDirs)
                     options.AddIncludeDirs(include);
@@ -197,30 +195,37 @@ namespace CppSharp
 
         public bool ParseCode()
         {
-            var parser = new ClangParser(new Parser.AST.ASTContext());
+            var astContext = new Parser.AST.ASTContext();
 
+            var parser = new ClangParser(astContext);
             parser.SourcesParsed += OnSourceFileParsed;
-            parser.ParseProject(Project, Options.UnityBuild);
 
-            foreach (var source in Project.Sources.Where(s => s.Options != null))
-                source.Options.Dispose();
+            var sourceFiles = Options.Modules.SelectMany(m => m.Headers);
+
+            if (Options.UnityBuild)
+            {
+                var parserOptions = BuildParserOptions();
+                var result = parser.ParseSourceFiles(sourceFiles, parserOptions);
+                result.Dispose();
+            }
+            else
+            {
+                var results = new List<ParserResult>();
+
+                foreach (var sourceFile in sourceFiles)
+                {
+                    var parserOptions = BuildParserOptions(sourceFile);
+                    results.Add(parser.ParseSourceFile(sourceFile, parserOptions));
+                }
+
+                foreach (var result in results)
+                    result.Dispose();
+            }
 
             Context.TargetInfo = parser.GetTargetInfo(ParserOptions);
-            Context.ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
+            Context.ASTContext = ClangParser.ConvertASTContext(astContext);
 
             return !hasParsingErrors;
-        }
-
-        public void BuildParseOptions()
-        {
-            foreach (var header in Options.Modules.SelectMany(m => m.Headers))
-            {
-                var source = Project.AddFile(header);
-                if (!Options.UnityBuild)
-                    source.Options = BuildParserOptions(source);
-            }
-            if (Options.UnityBuild)
-                Project.Sources[0].Options = BuildParserOptions();
         }
 
         public void SortModulesByDependencies()
@@ -479,8 +484,6 @@ namespace CppSharp
 
             if (!options.Quiet)
                 Diagnostics.Message("Parsing code...");
-
-            driver.BuildParseOptions();
 
             if (!driver.ParseCode())
             {

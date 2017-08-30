@@ -1,8 +1,45 @@
 ﻿using CppSharp.Parser.AST;
 using System.Reflection;
+using LanguageVersion = CppSharp.Parser.LanguageVersion;
 
 namespace CppSharp.Parser
 {
+    public enum LanguageVersion
+    {
+        /// <summary>
+        /// C programming language (year 1999).
+        /// </summary>
+        C99,
+        /// <summary>
+        /// C programming language (year 1999, GNU variant).
+        /// </summary>
+        C99_GNU,
+        /// <summary>
+        /// C++ programming language (year 1998).
+        /// </summary>
+        CPP98,
+        /// <summary>
+        /// C++ programming language (year 1998, GNU variant).
+        /// </summary>
+        CPP98_GNU,
+        /// <summary>
+        /// C++ programming language (year 2011).
+        /// </summary>
+        CPP11,
+        /// <summary>
+        /// C++ programming language (year 2011, GNU variant).
+        /// </summary>
+        CPP11_GNU,
+        /// <summary>
+        /// C++ programming language (year 2014).
+        /// </summary>
+        CPP14,
+        /// <summary>
+        /// C++ programming language (year 2014, GNU variant).
+        /// </summary>
+        CPP14_GNU
+    };
+
     public class ParserOptions : CppParserOptions
     {
         public ParserOptions()
@@ -12,12 +49,12 @@ namespace CppSharp.Parser
             CurrentDir = Assembly.GetExecutingAssembly().Location;
         }
 
-        public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
-        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
-        public bool EnableRtti { get; set; }
-        public LanguageVersion LanguageVersion { get; set; } = LanguageVersion.GNUPlusPlus11;
+        public bool IsItaniumLikeAbi => Abi != CppAbi.Microsoft;
+        public bool IsMicrosoftAbi => Abi == CppAbi.Microsoft;
 
-        /// Sets up the parser options to work with the given Visual Studio toolchain.
+        public bool EnableRTTI { get; set; }
+        public LanguageVersion? LanguageVersion { get; set; }
+
         public void SetupMSVC()
         {
             VisualStudioVersion vsVersion = VisualStudioVersion.Latest;
@@ -43,9 +80,13 @@ namespace CppSharp.Parser
             #pragma warning restore 162
 
             }
+
             SetupMSVC(vsVersion);
         }
 
+        /// <summary>
+        /// Sets up the parser options to work with the given Visual Studio toolchain.
+        /// </summary>
         public void SetupMSVC(VisualStudioVersion vsVersion)
         {
             MicrosoftMode = true;
@@ -57,6 +98,10 @@ namespace CppSharp.Parser
             var includes = MSVCToolchain.GetSystemIncludes(vsVersion, out foundVsVersion);
             foreach (var include in includes)
                 AddSystemIncludeDirs(include);
+
+            if (!LanguageVersion.HasValue)
+                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+
             var clVersion = MSVCToolchain.GetCLVersion(foundVsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
 
@@ -85,15 +130,20 @@ namespace CppSharp.Parser
         public void Setup()
         {
             SetupArguments();
-            SetupIncludes();
+
+            if (!NoBuiltinIncludes)
+                SetupIncludes();
         }
 
         private void SetupArguments()
         {
+            if (!LanguageVersion.HasValue)
+                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+
             switch (LanguageVersion)
             {
-                case LanguageVersion.C:
-                case LanguageVersion.GNUC:
+                case CppSharp.Parser.LanguageVersion.C99:
+                case CppSharp.Parser.LanguageVersion.C99_GNU:
                     AddArguments("-xc");
                     break;
                 default:
@@ -103,64 +153,47 @@ namespace CppSharp.Parser
 
             switch (LanguageVersion)
             {
-                case LanguageVersion.C:
+                case CppSharp.Parser.LanguageVersion.C99:
                     AddArguments("-std=c99");
                     break;
-                case LanguageVersion.GNUC:
+                case CppSharp.Parser.LanguageVersion.C99_GNU:
                     AddArguments("-std=gnu99");
                     break;
-                case LanguageVersion.CPlusPlus98:
+                case CppSharp.Parser.LanguageVersion.CPP98:
                     AddArguments("-std=c++98");
                     break;
-                case LanguageVersion.GNUPlusPlus98:
+                case CppSharp.Parser.LanguageVersion.CPP98_GNU:
                     AddArguments("-std=gnu++98");
                     break;
-                case LanguageVersion.CPlusPlus11:
-                    AddArguments(MicrosoftMode ? "-std=c++14" : "-std=c++11");
+                case CppSharp.Parser.LanguageVersion.CPP11:
+                    AddArguments("-std=c++11");
                     break;
-                default:
-                    AddArguments(MicrosoftMode ? "-std=gnu++14" : "-std=gnu++11");
+                case CppSharp.Parser.LanguageVersion.CPP11_GNU:
+                    AddArguments("-std=gnu++11");
+                    break;
+                case CppSharp.Parser.LanguageVersion.CPP14:
+                    AddArguments("-std=c++14");
+                    break;
+                case CppSharp.Parser.LanguageVersion.CPP14_GNU:
+                    AddArguments("-std=gnu++14");
                     break;
             }
 
-            if (!EnableRtti)
+            if (!EnableRTTI)
                 AddArguments("-fno-rtti");
         }
 
         private void SetupIncludes()
         {
-            if (Platform.IsMacOS)
-                SetupXcode();
-            else if (Platform.IsWindows && !NoBuiltinIncludes)
-                SetupMSVC();
+            switch(Platform.Host)
+            {
+                case TargetPlatform.Windows:
+                    SetupMSVC();
+                    break;
+                case TargetPlatform.MacOS:
+                    SetupXcode();
+                    break;
+            }
         }
     }
-
-    public enum LanguageVersion
-    {
-        /**
-        * The C programming language.
-        */
-        C,
-        /**
-        * The C programming language (GNU version).
-        */
-        GNUC,
-        /**
-        * The C++ programming language year 1998; supports deprecated constructs.
-        */
-        CPlusPlus98,
-        /**
-        * The C++ programming language year 1998; supports deprecated constructs (GNU version).
-        */
-        GNUPlusPlus98,
-        /**
-        * The C++ programming language year 2011.
-        */
-        CPlusPlus11,
-        /**
-        * The C++ programming language year 2011 (GNU version).
-        */
-        GNUPlusPlus11
-    };
 }
