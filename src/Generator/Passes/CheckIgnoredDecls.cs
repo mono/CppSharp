@@ -302,7 +302,7 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            if (HasInvalidType(variable.Type, variable.TranslationUnit.Module, out msg))
+            if (HasInvalidType(variable.Type, variable, out msg))
 
             if (HasInvalidType(variable, out msg))
             {
@@ -339,7 +339,7 @@ namespace CppSharp.Passes
                     return false;
                 }
 
-                if (HasInvalidType(param.Type, @event.TranslationUnit.Module, out msg))
+                if (HasInvalidType(param.Type, param, out msg))
 
                 if (HasInvalidType(param, out msg))
                 {
@@ -372,7 +372,7 @@ namespace CppSharp.Passes
         /// </summary>
         private bool HasInvalidType(ITypedDecl decl, out string msg)
         {
-            return HasInvalidType(decl.Type, (Declaration)decl, out msg);
+            return HasInvalidType(decl.Type, (Declaration) decl, out msg);
         }
 
         private bool HasInvalidType(Type type, Declaration decl, out string msg)

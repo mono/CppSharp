@@ -711,8 +711,10 @@ class DLL_API TestFixedArrays
 public:
     TestFixedArrays();
     VoidPtrRetFunctionTypedef Array[10];
+#ifndef _MSC_VER
     TestWideStrings ZeroSizedClassArray[0];
     MyEnum ZeroSizedEnumArray[0];
+#endif
     int ZeroSizedArray[0];
 };
 
