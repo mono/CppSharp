@@ -37,7 +37,15 @@ namespace CppSharp.Parser
         /// <summary>
         /// C++ programming language (year 2014, GNU variant).
         /// </summary>
-        CPP14_GNU
+        CPP14_GNU,
+        /// <summary>
+        /// C++ programming language (year 2017).
+        /// </summary>
+        CPP17,
+        /// <summary>
+        /// C++ programming language (year 2017, GNU variant).
+        /// </summary>
+        CPP17_GNU,
     };
 
     public class ParserOptions : CppParserOptions
@@ -176,6 +184,12 @@ namespace CppSharp.Parser
                     break;
                 case CppSharp.Parser.LanguageVersion.CPP14_GNU:
                     AddArguments("-std=gnu++14");
+                    break;
+                case CppSharp.Parser.LanguageVersion.CPP17:
+                    AddArguments("-std=c++1z");
+                    break;
+                case CppSharp.Parser.LanguageVersion.CPP17_GNU:
+                    AddArguments("-std=gnu++1z");
                     break;
             }
 
