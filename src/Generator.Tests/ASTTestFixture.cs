@@ -30,7 +30,6 @@ namespace CppSharp.Generator.Tests
             };
 
             Driver.Setup();
-            Driver.BuildParseOptions();
             if (!Driver.ParseCode())
                 throw new Exception("Error parsing the code");
 
