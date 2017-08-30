@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#set -e
+set -e
 
 CUR_DIR=$(cd "$(dirname "$0")"; pwd)
 
