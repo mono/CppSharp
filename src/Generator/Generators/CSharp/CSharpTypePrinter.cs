@@ -111,11 +111,11 @@ namespace CppSharp.Generators.CSharp
                     arrayElemType = Context.TargetInfo.PointerWidth == 64 ? "long" : "int";
 
                 // Do not write the fixed keyword multiple times for nested array types
-                var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
+                var fixedKeyword = arrayType is ArrayType ? string.Empty : "fixed ";
                 return new TypePrinterResult
                 {
                     Type = $"{fixedKeyword}{arrayElemType}",
-                    NameSuffix = $"[{array.Size}]",
+                    NameSuffix = $"[{array.Size}]"
                 };
             }
 
@@ -128,12 +128,10 @@ namespace CppSharp.Generators.CSharp
             if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
                 return "char**";
 
-            return string.Format("{0}{1}", array.Type.Visit(this),
-                array.SizeType == ArrayType.ArraySize.Constant ? "[]" :
-                   (ContextKind == TypePrinterContextKind.Managed ? "*" : string.Empty));
-
-            // C# only supports fixed arrays in unsafe sections
-            // and they are constrained to a set of built-in types.
+            var arraySuffix = array.SizeType == ArrayType.ArraySize.Constant ||
+                !arrayType.IsPrimitiveType() ? "[]" :
+                (ContextKind == TypePrinterContextKind.Managed ? "*" : string.Empty);
+            return $"{arrayType.Visit(this)}{arraySuffix}";
         }
 
         public override TypePrinterResult VisitFunctionType(FunctionType function,

@@ -426,6 +426,7 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
+            var arrayType = array.Type.Desugar();
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
@@ -447,8 +448,7 @@ namespace CppSharp.Generators.CSharp
                         supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
                         supportBefore.WriteStartBraceIndent();
                         Class @class;
-                        var arrayType = array.Type.Desugar();
-                        if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                        if (arrayType.TryGetClass(out @class) && @class.IsRefType)
                         {
                             supportBefore.WriteLine("if (value.Length != {0})", array.Size);
                             ThrowArgumentOutOfRangeException();
@@ -458,7 +458,7 @@ namespace CppSharp.Generators.CSharp
                         {
                             supportBefore.WriteLineIndent(
                                 "*({1}.{2}*) &{0}[i * sizeof({1}.{2})] = *({1}.{2}*){3}[i].{4};",
-                                Context.ReturnVarName, array.Type, Helpers.InternalStruct,
+                                Context.ReturnVarName, arrayType, Helpers.InternalStruct,
                                 Context.ArgName, Helpers.InstanceIdentifier);
                         }
                         else
@@ -475,7 +475,7 @@ namespace CppSharp.Generators.CSharp
                                 supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
                                     Context.ReturnVarName,
                                     Context.ArgName,
-                                    array.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
+                                    arrayType.IsPointerToPrimitiveType(PrimitiveType.Void)
                                         ? ".ToPointer()"
                                         : string.Empty);
                             }
@@ -484,27 +484,12 @@ namespace CppSharp.Generators.CSharp
                     }
                     break;
                 case ArrayType.ArraySize.Incomplete:
-                    Context.Return.Write(Context.Parameter.Name);
+                    MarshalVariableArray(arrayType);
                     break;
                 default:
                     Context.Return.Write("null");
                     break;
             }
-            return true;
-        }
-
-        private void ThrowArgumentOutOfRangeException()
-        {
-            Context.Before.WriteLineIndent(
-                "throw new ArgumentOutOfRangeException(\"{0}\", " +
-                "\"The dimensions of the provided array don't match the required size.\");",
-                Context.Parameter.Name);
-        }
-
-        public bool VisitDelegateType(FunctionType function, string type)
-        {
-            Context.Return.Write("{0} == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate({0})",
-                  Context.Parameter.Name);
             return true;
         }
 
@@ -572,7 +557,7 @@ namespace CppSharp.Generators.CSharp
             if (pointee is FunctionType)
             {
                 var function = pointee as FunctionType;
-                return VisitDelegateType(function, function.ToString());
+                return VisitDelegateType();
             }
 
             Class @class;
@@ -700,7 +685,7 @@ namespace CppSharp.Generators.CSharp
             FunctionType func;
             if (decl.Type.IsPointerTo(out func))
             {
-                VisitDelegateType(func, typedef.Declaration.OriginalName);
+                VisitDelegateType();
                 return true;
             }
 
@@ -853,6 +838,50 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             return template.TemplatedFunction.Visit(this);
+        }
+
+        private bool VisitDelegateType()
+        {
+            Context.Return.Write("{0} == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate({0})",
+                  Context.Parameter.Name);
+            return true;
+        }
+
+        private void ThrowArgumentOutOfRangeException()
+        {
+            Context.Before.WriteLineIndent(
+                "throw new ArgumentOutOfRangeException(\"{0}\", " +
+                "\"The dimensions of the provided array don't match the required size.\");",
+                Context.Parameter.Name);
+        }
+
+        private void MarshalVariableArray(Type arrayType)
+        {
+            var intermediateArray = $"__{Context.Parameter.Name}";
+            var intermediateArrayType = typePrinter.PrintNative(arrayType);
+            const string intPtrType = CSharpTypePrinter.IntPtrType;
+
+            Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
+
+            Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
+            Context.Before.WriteLineIndent($"{intermediateArray} = new[] {{ {intPtrType}.Zero }};");
+            Context.Before.WriteLine("else");
+
+            Context.Before.WriteStartBraceIndent();
+            Context.Before.WriteLine($@"{intermediateArray} = new {
+                intermediateArrayType}[{Context.Parameter.Name}.Length];");
+            Context.Before.WriteLine($"for (int i = 0; i < {intermediateArray}.Length; i++)");
+
+            Context.Before.WriteStartBraceIndent();
+            const string element = "__element";
+            Context.Before.WriteLine($"var {element} = {Context.Parameter.Name}[i];");
+            Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
+                element}, null) ? {intPtrType}.Zero : {element}.{Helpers.InstanceIdentifier};");
+            Context.Before.WriteCloseBraceIndent();
+
+            Context.Before.WriteCloseBraceIndent();
+
+            Context.Return.Write(intermediateArray);
         }
 
         private readonly CSharpTypePrinter typePrinter;

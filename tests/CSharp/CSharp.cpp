@@ -1391,3 +1391,8 @@ typedefedFuncPtr* TestDuplicateDelegate::testDuplicateDelegate(int a)
 void InlineNamespace::FunctionInsideInlineNamespace()
 {
 }
+
+int takeArrayOfPointersToObjects(Foo* arrayOfPointersToObjects[])
+{
+    return arrayOfPointersToObjects[0]->A + arrayOfPointersToObjects[1]->A;
+}

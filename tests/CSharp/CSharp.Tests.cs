@@ -1060,6 +1060,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
         bar.Dispose();
     }
 
+    [Test]
+    public void TestArrayParams()
+    {
+        Foo[] foos = { new Foo { A = 2 }, new Foo { A = 5 } };
+        Assert.That(CSharp.CSharp.TakeArrayOfPointersToObjects(foos), Is.EqualTo(7));
+    }
+
     private class OverrideVirtualTemplate : VirtualTemplate<int>
     {
         public override int Function

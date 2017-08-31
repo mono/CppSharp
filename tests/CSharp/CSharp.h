@@ -1236,3 +1236,5 @@ inline namespace InlineNamespace
 {
     DLL_API void FunctionInsideInlineNamespace();
 }
+
+DLL_API int takeArrayOfPointersToObjects(Foo* arrayOfPointersToObjects[]);
