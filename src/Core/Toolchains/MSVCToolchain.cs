@@ -80,8 +80,7 @@ namespace CppSharp
             VisualStudioVersion.Latest)
         {
             Console.WriteLine("\nInclude search path (VS: {0}):", vsVersion);
-            VisualStudioVersion foundVsVersion;
-            foreach (var include in GetSystemIncludes(vsVersion, out foundVsVersion))
+            foreach (var include in GetSystemIncludes(vsVersion))
                 Console.WriteLine($"\t{include}");
         }
 
@@ -162,15 +161,33 @@ namespace CppSharp
             return windowsKitSdk;
         }
 
-        /// <summary>Gets the system include folders for the given Visual Studio version.</summary>
-        /// <param name="wantedVsVersion">The version of Visual Studio to get
-        /// system includes from.</param>
-        /// <param name="foundVsVersion">The found version of Visual Studio
-        /// system includes are actually got from.</param>
-        public static List<string> GetSystemIncludes(VisualStudioVersion wantedVsVersion,
-            out VisualStudioVersion foundVsVersion)
+        public static VisualStudioVersion FindVSVersion(VisualStudioVersion vsVersion)
         {
-            var vsSdk = GetVisualStudioSdk(wantedVsVersion, out foundVsVersion);
+            if (vsVersion != VisualStudioVersion.Latest)
+            {
+                var vsSdk = GetVSToolchain(vsVersion);
+                if (vsSdk.IsValid)
+                    return vsVersion;
+            }
+
+            // we don't know what "latest" is on a given machine
+            // so start from the latest specified version and loop until a match is found 
+            for (var i = VisualStudioVersion.Latest - 1; i >= VisualStudioVersion.VS2012; i--)
+            {
+                vsVersion = FindVSVersion(i);
+                if (vsVersion != VisualStudioVersion.Latest)
+                    return vsVersion;
+            }
+
+            return VisualStudioVersion.Latest;
+        }
+
+        /// <summary>Gets the system include folders for the given Visual Studio version.</summary>
+        /// <param name="vsVersion">The version of Visual Studio to get
+        /// system includes from.</param>
+        public static List<string> GetSystemIncludes(VisualStudioVersion vsVersion)
+        {
+            var vsSdk = GetVSToolchain(vsVersion);
             var vsDir = vsSdk.Directory;
             if (Path.GetFileName(vsDir) == "IDE")
             {
@@ -178,33 +195,7 @@ namespace CppSharp
                 if (Path.GetFileName(secondToLastDirPath) == "Common7")
                     vsDir = Path.GetDirectoryName(secondToLastDirPath);
             }
-            return GetSystemIncludes(foundVsVersion, vsDir);
-        }
-
-        private static ToolchainVersion GetVisualStudioSdk(
-            VisualStudioVersion wantedVsVersion, out VisualStudioVersion foundVsVersion)
-        {
-            if (wantedVsVersion != VisualStudioVersion.Latest)
-            {
-                var vsSdk = GetVSToolchain(wantedVsVersion);
-                if (vsSdk.IsValid)
-                {
-                    foundVsVersion = wantedVsVersion;
-                    return vsSdk;
-                }
-            }
-
-            // we don't know what "latest" is on a given machine
-            // so start from the latest specified version and loop until a match is found 
-            for (var i = VisualStudioVersion.Latest - 1; i >= VisualStudioVersion.VS2012; i--)
-            {
-                var vsSdk = GetVisualStudioSdk(i, out foundVsVersion);
-                if (vsSdk.IsValid)
-                    return vsSdk;
-            }
-
-            foundVsVersion = VisualStudioVersion.Latest;
-            return new ToolchainVersion();
+            return GetSystemIncludes(vsVersion, vsDir);
         }
 
         private static void DumpSdks(string sku, IEnumerable<ToolchainVersion> sdks)

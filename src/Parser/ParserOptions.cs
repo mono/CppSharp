@@ -95,6 +95,7 @@ namespace CppSharp.Parser
         /// <summary>
         /// Sets up the parser options to work with the given Visual Studio toolchain.
         /// </summary>
+        /// <param name="vsVersion">The version of Visual Studio to look for.</param>
         public void SetupMSVC(VisualStudioVersion vsVersion)
         {
             MicrosoftMode = true;
@@ -102,15 +103,14 @@ namespace CppSharp.Parser
             NoStandardIncludes = true;
             Abi = CppAbi.Microsoft;
 
-            VisualStudioVersion foundVsVersion;
-            var includes = MSVCToolchain.GetSystemIncludes(vsVersion, out foundVsVersion);
-            foreach (var include in includes)
+            vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
+            foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
                 AddSystemIncludeDirs(include);
 
             if (!LanguageVersion.HasValue)
                 LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
-            var clVersion = MSVCToolchain.GetCLVersion(foundVsVersion);
+            var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
 
             AddArguments("-fms-extensions");
