@@ -21,8 +21,8 @@ namespace CppSharp
         {
             if (Platform.IsWindows)
             {
-                List<ToolchainVersion> versions;
-                if (!MSVCToolchain.GetMSBuildSdks(out versions))
+                List<ToolchainVersion> versions = MSVCToolchain.GetMSBuildSdks();
+                if (versions.Count == 0)
                     throw new Exception("Could not find MSBuild SDK paths");
 
                 var sdk = versions.Last();
