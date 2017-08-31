@@ -170,17 +170,27 @@ namespace CppSharp
         public static List<string> GetSystemIncludes(VisualStudioVersion wantedVsVersion,
             out VisualStudioVersion foundVsVersion)
         {
+            var vsSdk = GetVisualStudioSdk(wantedVsVersion, out foundVsVersion);
+            var vsDir = vsSdk.Directory;
+            if (Path.GetFileName(vsDir) == "IDE")
+            {
+                string secondToLastDirPath = Path.GetDirectoryName(vsDir);
+                if (Path.GetFileName(secondToLastDirPath) == "Common7")
+                    vsDir = Path.GetDirectoryName(secondToLastDirPath);
+            }
+            return GetSystemIncludes(foundVsVersion, vsDir);
+        }
+
+        private static ToolchainVersion GetVisualStudioSdk(
+            VisualStudioVersion wantedVsVersion, out VisualStudioVersion foundVsVersion)
+        {
             if (wantedVsVersion != VisualStudioVersion.Latest)
             {
                 var vsSdk = GetVSToolchain(wantedVsVersion);
                 if (vsSdk.IsValid)
                 {
-                    var vsDir = vsSdk.Directory;
-                    vsDir = vsDir.Substring(0, vsDir.LastIndexOf(@"\Common7\IDE",
-                        StringComparison.Ordinal));
-
                     foundVsVersion = wantedVsVersion;
-                    return GetSystemIncludes(wantedVsVersion, vsDir);
+                    return vsSdk;
                 }
             }
 
@@ -188,13 +198,13 @@ namespace CppSharp
             // so start from the latest specified version and loop until a match is found 
             for (var i = VisualStudioVersion.Latest - 1; i >= VisualStudioVersion.VS2012; i--)
             {
-                var includes = GetSystemIncludes(i, out foundVsVersion);
-                if (includes.Count > 0)
-                    return includes;
+                var vsSdk = GetVisualStudioSdk(i, out foundVsVersion);
+                if (vsSdk.IsValid)
+                    return vsSdk;
             }
 
             foundVsVersion = VisualStudioVersion.Latest;
-            return new List<string>();
+            return new ToolchainVersion();
         }
 
         private static void DumpSdks(string sku, IEnumerable<ToolchainVersion> sdks)
