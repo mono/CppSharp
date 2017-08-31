@@ -82,13 +82,14 @@ namespace CppSharp.Passes
 
             if (@class.Namespace.Classes.Any(d => d != @class && d.Name == @class.Name))
             {
-                StringBuilder str = new StringBuilder();
-                str.Append(@class.Name);
+                // we need the new name in each iteration so no point in StringBuilder
+                var name = @class.Name;
                 do
                 {
-                    str.Append('_');
-                } while (@class.Classes.Any(d => d != @class && d.Name == str.ToString()));
-                @class.Name = str.ToString();
+                    name += '_';
+                } while (@class.Namespace.Name == name ||
+                    @class.Classes.Any(d => d != @class && d.Name == name));
+                @class.Name = name;
             }
 
             return true;

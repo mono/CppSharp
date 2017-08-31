@@ -1387,3 +1387,18 @@ inline namespace InlineNamespace
         
     }
 }
+
+union
+{
+    struct
+    {
+        struct
+        {
+            long Capabilities;
+        } Server;
+        struct
+        {
+            long Capabilities;
+        } Share;
+    } Smb2;
+} ProtocolSpecific;
