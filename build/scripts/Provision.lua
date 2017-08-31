@@ -2,11 +2,11 @@ require "Utils"
 
 function download_ninja()
 	local system = "";
-	if os.is("windows") then
+	if os.ishost("windows") then
 		system = "win"
-	elseif os.is("macosx") then
+	elseif os.ishost("macosx") then
 		system = "mac"
-	elseif os.is("linux") then
+	elseif os.ishost("linux") then
 		system = "linux"
 	else
 		error("Error downloading Ninja for unknown system")
@@ -27,11 +27,11 @@ end
 
 function download_cmake()
 	local system = "";
-	if os.is("windows") then
+	if os.ishost("windows") then
 		system = "win32-x86.zip"
-	elseif os.is("macosx") then
+	elseif os.ishost("macosx") then
 		system = "Darwin-x86_64.dmg"
-	elseif os.is("linux") then
+	elseif os.ishost("linux") then
 		system = "Linux-x86_64.sh"
 	else
 		error("Error downloading CMake for unknown system")
@@ -56,7 +56,7 @@ function download_nuget()
 end
 
 function restore_nuget_packages()
-  local nugetexe = os.is("windows") and "NuGet.exe" or "mono ./NuGet.exe"
+  local nugetexe = os.ishost("windows") and "NuGet.exe" or "mono ./NuGet.exe"
   execute(nugetexe .. " restore packages.config -PackagesDirectory " .. depsdir)
 end
 
@@ -106,9 +106,9 @@ if _ACTION == "cmake" then
 end
 
 if _ACTION == "provision" then
-  if os.is("linux") then
+  if os.ishost("linux") then
   	provision_linux()
-  elseif os.is("macosx") then
+  elseif os.ishost("macosx") then
   	provision_osx()
   end
   os.exit()
