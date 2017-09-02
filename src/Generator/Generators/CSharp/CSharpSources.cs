@@ -327,7 +327,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (@class.IsIncomplete && !@class.IsOpaque)
+            if ((@class.IsIncomplete && !@class.IsOpaque) || @class.Ignore)
                 return false;
 
             if (@class.IsInterface)

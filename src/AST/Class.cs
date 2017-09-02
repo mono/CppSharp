@@ -164,7 +164,7 @@ namespace CppSharp.AST
             {
                 foreach (var @base in Bases)
                 {
-                    if (@base.IsClass && @base.Class.IsDeclared)
+                    if (@base.IsClass && @base.Class.IsGenerated)
                         return @base.Class;
                 }
 
@@ -179,7 +179,7 @@ namespace CppSharp.AST
                 return HasBaseClass && !IsValueType
                        && Bases[0].Class != null
                        && !Bases[0].Class.IsValueType
-                       && Bases[0].Class.GenerationKind != GenerationKind.None;
+                       && Bases[0].Class.IsGenerated;
             }
         }
 

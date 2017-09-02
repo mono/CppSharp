@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace CppSharp.AST
@@ -19,7 +18,6 @@ namespace CppSharp.AST
 
     public class AstVisitorOptions
     {
-        public bool VisitDeclaration = true;
         public bool VisitClassBases = true;
         public bool VisitClassFields = true;
         public bool VisitClassProperties = true;

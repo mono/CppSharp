@@ -337,6 +337,8 @@ namespace CppSharp
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new SpecializationMethodsWithDependentPointersPass());
 
+            TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
+
             if (Options.GeneratorKind == GeneratorKind.CLI ||
                 Options.GeneratorKind == GeneratorKind.CSharp)
                 TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any &~ RenameTargets.Parameter);

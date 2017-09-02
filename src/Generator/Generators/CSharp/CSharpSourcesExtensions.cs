@@ -74,7 +74,7 @@ namespace CppSharp.Generators.CSharp
                 foreach (var parameter in @class.TemplateParameters)
                     gen.WriteLine($"var __{parameter.Name} = typeof({parameter.Name});");
 
-                foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
+                foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                 {
                     WriteTemplateSpecializationCheck(gen, @class, specialization);
                     gen.WriteStartBraceIndent();
