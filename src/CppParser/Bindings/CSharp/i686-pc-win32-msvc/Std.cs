@@ -15,15 +15,6 @@ using System.Runtime.CompilerServices;
 
 namespace Std
 {
-    public unsafe partial class Lockit
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal int _Locktype;
-        }
-    }
 }
 
 namespace Std
@@ -32,31 +23,6 @@ namespace Std
 
 namespace Std
 {
-    public unsafe partial class ExceptionPtr
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr _Data1;
-
-            [FieldOffset(4)]
-            internal global::System.IntPtr _Data2;
-        }
-    }
-}
-
-public unsafe partial class StdExceptionData
-{
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal global::System.IntPtr _What;
-
-        [FieldOffset(4)]
-        internal byte _DoFree;
-    }
 }
 
 namespace Std
@@ -134,29 +100,6 @@ namespace Std
 
 namespace Std
 {
-    namespace Yarn
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public unsafe partial struct __Internalc__N_std_S__Yarn__C
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr _Myptr;
-
-            [FieldOffset(4)]
-            internal sbyte _Nul;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public unsafe partial struct __Internalc__N_std_S__Yarn__W
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr _Myptr;
-
-            [FieldOffset(4)]
-            internal char _Nul;
-        }
-    }
-
     namespace CompressedPair
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -439,6 +382,10 @@ namespace Std
             internal global::Std.VectorVal.__Internal _Myval2;
         }
     }
+
+    public unsafe partial class CompressedPair<_Ty1, _Ty2, _73>
+    {
+    }
 }
 
 namespace Std
@@ -691,6 +638,19 @@ namespace Std
             }
         }
     }
+
+    public unsafe partial class StringVal<_Val_types>
+    {
+        public enum BUF_SIZE
+        {
+            BUF_SIZE = 0
+        }
+
+        public enum ALLOC_MASK
+        {
+            ALLOC_MASK = 0
+        }
+    }
 }
 
 namespace Std
@@ -711,6 +671,10 @@ namespace Std
         }
     }
 
+    public unsafe partial class VectorVal<_Val_types>
+    {
+    }
+
     namespace Vector
     {
         [StructLayout(LayoutKind.Explicit, Size = 12)]
@@ -719,6 +683,10 @@ namespace Std
             [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
         }
+    }
+
+    public unsafe partial class Vector<_Ty, _Alloc>
+    {
     }
 }
 
@@ -740,6 +708,15 @@ namespace Std
             internal uint _Mysize;
         }
     }
+
+    public unsafe partial class TreeVal<_Val_types>
+    {
+        public enum Redbl
+        {
+            Red = 0,
+            Black = 0
+        }
+    }
 }
 
 namespace Std
@@ -753,56 +730,9 @@ namespace Std
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S7__Vb1_Vb1 _Mypair;
         }
     }
-}
 
-public unsafe partial class StdTypeInfoData
-{
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct __Internal
+    public unsafe partial class Map<_Kty, _Ty, _Pr, _Alloc>
     {
-        [FieldOffset(0)]
-        internal global::System.IntPtr _UndecoratedName;
-
-        [FieldOffset(4)]
-        internal fixed sbyte _DecoratedName[1];
-    }
-}
-
-public unsafe partial class Ctypevec
-{
-    [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal uint _Page;
-
-        [FieldOffset(4)]
-        internal global::System.IntPtr _Table;
-
-        [FieldOffset(8)]
-        internal int _Delfl;
-
-        [FieldOffset(12)]
-        internal global::System.IntPtr _LocaleName;
-    }
-}
-
-public unsafe partial class Cvtvec
-{
-    [StructLayout(LayoutKind.Explicit, Size = 44)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal uint _Page;
-
-        [FieldOffset(4)]
-        internal uint _Mbcurmax;
-
-        [FieldOffset(8)]
-        internal int _Isclocale;
-
-        [FieldOffset(12)]
-        internal fixed byte _Isleadbyte[32];
     }
 }
 
@@ -818,23 +748,8 @@ namespace Std
 
 namespace Std
 {
-    public unsafe partial class ErrorCode
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal int _Myval;
-
-            [FieldOffset(4)]
-            internal global::System.IntPtr _Mycat;
-        }
-    }
 }
 
 namespace Std
 {
-    namespace Literals
-    {
-    }
 }

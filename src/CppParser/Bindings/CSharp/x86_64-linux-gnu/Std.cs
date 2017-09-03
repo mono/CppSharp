@@ -25,15 +25,6 @@ namespace Std
 {
     namespace ExceptionPtr
     {
-        public unsafe partial class ExceptionPtr
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr _M_exception_object;
-            }
-        }
     }
 }
 
@@ -177,6 +168,10 @@ namespace Std
         }
     }
 
+    public unsafe partial class VectorBase<_Tp, _Alloc>
+    {
+    }
+
     namespace Vector
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -186,24 +181,15 @@ namespace Std
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
     }
+
+    public unsafe partial class Vector<_Tp, _Alloc>
+    {
+    }
 }
 
 namespace Std
 {
     public unsafe partial class BitIterator
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr _M_p;
-
-            [FieldOffset(8)]
-            internal uint _M_offset;
-        }
-    }
-
-    public unsafe partial class BitConstIterator
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public partial struct __Internal
@@ -225,6 +211,10 @@ namespace Std
         public unsafe partial struct __Internal
         {
         }
+    }
+
+    public unsafe partial class Less<_Tp>
+    {
     }
 }
 
@@ -281,6 +271,10 @@ namespace Std
         }
     }
 
+    public unsafe partial class RbTree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>
+    {
+    }
+
     public unsafe partial class RbTreeNodeBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
@@ -324,6 +318,10 @@ namespace Std
             {
             }
         }
+    }
+
+    public unsafe partial class Map<_Key, _Tp, _Compare, _Alloc>
+    {
     }
 }
 
@@ -427,32 +425,6 @@ namespace Std
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
         }
-    }
-}
-
-public unsafe partial class Timespec
-{
-    [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal long tv_sec;
-
-        [FieldOffset(8)]
-        internal long tv_nsec;
-    }
-}
-
-public unsafe partial class Timeval
-{
-    [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal long tv_sec;
-
-        [FieldOffset(8)]
-        internal long tv_usec;
     }
 }
 
@@ -618,32 +590,6 @@ public unsafe partial struct PthreadRwlockT
 
             [FieldOffset(48)]
             internal uint __flags;
-        }
-    }
-}
-
-public unsafe partial class PthreadUnwindBufT
-{
-    [StructLayout(LayoutKind.Explicit, Size = 104)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal fixed byte __cancel_jmp_buf[72];
-
-        [FieldOffset(72)]
-        internal void* __pad;
-    }
-
-    public unsafe partial class _
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 72)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal fixed long __cancel_jmp_buf[8];
-
-            [FieldOffset(64)]
-            internal int __mask_was_saved;
         }
     }
 }

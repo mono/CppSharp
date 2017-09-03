@@ -19,318 +19,138 @@ namespace Std
 
 namespace Std
 {
-    namespace __1
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+    namespace Allocator
     {
-    }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-    namespace __1
-    {
-    }
-}
-
-namespace Std
-{
-    public unsafe partial class ExceptionPtr
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct __Internal
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
         {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __ptr_;
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
+            internal static extern void ctorc__N_std_N___1_S_allocator__C(global::System.IntPtr instance);
         }
     }
-}
 
-namespace Std
-{
-}
-
-public unsafe partial class Sbuf
-{
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct __Internal
+    public unsafe partial class Allocator<_Tp> : IDisposable
     {
-        [FieldOffset(0)]
-        internal global::System.IntPtr _base;
+        public global::System.IntPtr __Instance { get; protected set; }
 
-        [FieldOffset(4)]
-        internal int _size;
-    }
-}
+        protected int __PointerAdjustment;
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>>();
+        protected void*[] __OriginalVTables;
 
-public unsafe partial class DarwinSigaltstack
-{
-    [StructLayout(LayoutKind.Explicit, Size = 12)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal global::System.IntPtr ss_sp;
+        protected bool __ownsNativeInstance;
 
-        [FieldOffset(4)]
-        internal uint ss_size;
-
-        [FieldOffset(8)]
-        internal int ss_flags;
-    }
-}
-
-public unsafe partial class Timeval
-{
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal int tv_sec;
-
-        [FieldOffset(4)]
-        internal int tv_usec;
-    }
-}
-
-public unsafe partial class RuneRange
-{
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal int __nranges;
-
-        [FieldOffset(4)]
-        internal global::System.IntPtr __ranges;
-    }
-}
-
-namespace Std
-{
-    namespace __1
-    {
-    }
-}
-
-namespace Std
-{
-    namespace __1
-    {
-    }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-    namespace __1
-    {
-    }
-}
-
-namespace Std
-{
-    namespace __1
-    {
-        namespace Allocator
+        internal static global::Std.Allocator<_Tp> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct __Internal
-            {
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
-                internal static extern void ctorc__N_std_N___1_S_allocator__C(global::System.IntPtr instance);
-            }
+            return new global::Std.Allocator<_Tp>(native.ToPointer(), skipVTables);
         }
 
-        public unsafe partial class Allocator<_Tp> : IDisposable
+        internal static global::Std.Allocator<_Tp> __CreateInstance(global::Std.Allocator.__Internal native, bool skipVTables = false)
         {
-            public global::System.IntPtr __Instance { get; protected set; }
+            return new global::Std.Allocator<_Tp>(native, skipVTables);
+        }
 
-            protected int __PointerAdjustment;
-            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.Allocator<_Tp>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.Allocator<_Tp>>();
-            protected void*[] __OriginalVTables;
+        private static void* __CopyValue(global::Std.Allocator.__Internal native)
+        {
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
+            *(global::Std.Allocator.__Internal*) ret = native;
+            return ret.ToPointer();
+        }
 
-            protected bool __ownsNativeInstance;
+        private Allocator(global::Std.Allocator.__Internal native, bool skipVTables = false)
+            : this(__CopyValue(native), skipVTables)
+        {
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+        }
 
-            internal static global::Std.__1.Allocator<_Tp> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        protected Allocator(void* native, bool skipVTables = false)
+        {
+            if (native == null)
+                return;
+            __Instance = new global::System.IntPtr(native);
+        }
+
+        public Allocator()
+        {
+            var ___Tp = typeof(_Tp);
+            if (___Tp.IsAssignableFrom(typeof(sbyte)))
             {
-                return new global::Std.__1.Allocator<_Tp>(native.ToPointer(), skipVTables);
-            }
-
-            internal static global::Std.__1.Allocator<_Tp> __CreateInstance(global::Std.__1.Allocator.__Internal native, bool skipVTables = false)
-            {
-                return new global::Std.__1.Allocator<_Tp>(native, skipVTables);
-            }
-
-            private static void* __CopyValue(global::Std.__1.Allocator.__Internal native)
-            {
-                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.Allocator.__Internal));
-                *(global::Std.__1.Allocator.__Internal*) ret = native;
-                return ret.ToPointer();
-            }
-
-            private Allocator(global::Std.__1.Allocator.__Internal native, bool skipVTables = false)
-                : this(__CopyValue(native), skipVTables)
-            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
+                global::Std.Allocator.__Internal.ctorc__N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
+                return;
             }
-
-            protected Allocator(void* native, bool skipVTables = false)
-            {
-                if (native == null)
-                    return;
-                __Instance = new global::System.IntPtr(native);
-            }
-
-            public Allocator()
-            {
-                var ___Tp = typeof(_Tp);
-                if (___Tp.IsAssignableFrom(typeof(sbyte)))
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::Std.__1.Allocator.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    global::Std.__1.Allocator.__Internal.ctorc__N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
-                    return;
-                }
-                throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.__1.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
-            }
-
-            public void Dispose()
-            {
-                Dispose(disposing: true);
-            }
-
-            public virtual void Dispose(bool disposing)
-            {
-                if (__Instance == IntPtr.Zero)
-                    return;
-                global::Std.__1.Allocator<_Tp> __dummy;
-                NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
-                __Instance = IntPtr.Zero;
-            }
+            throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
         }
 
-        namespace CompressedPair
+        public void Dispose()
         {
-            [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.__1.BasicString.Rep.__Internal __first_;
-            }
+            Dispose(disposing: true);
         }
 
-        public unsafe partial class PointerSafety
+        public virtual void Dispose(bool disposing)
         {
-            [StructLayout(LayoutKind.Explicit, Size = 4)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.__1.PointerSafety.Lx __v_;
-            }
-
-            public enum Lx : uint
-            {
-                Relaxed = 0,
-                Preferred = 1,
-                Strict = 2
-            }
+            if (__Instance == IntPtr.Zero)
+                return;
+            global::Std.Allocator<_Tp> __dummy;
+            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            if (__ownsNativeInstance)
+                Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
         }
     }
-}
 
-public unsafe partial struct Sigval
-{
-    [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public partial struct __Internal
+    namespace CompressedPair
     {
-        [FieldOffset(0)]
-        internal int sival_int;
-
-        [FieldOffset(0)]
-        internal global::System.IntPtr sival_ptr;
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.BasicString.Rep.__Internal __first_;
+        }
     }
-}
 
-public unsafe partial struct SigactionU
-{
-    [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public partial struct __Internal
+    public unsafe partial class CompressedPair<_T1, _T2>
     {
-        [FieldOffset(0)]
-        internal global::System.IntPtr __sa_handler;
-
-        [FieldOffset(0)]
-        internal global::System.IntPtr __sa_sigaction;
-    }
-}
-
-public unsafe partial class DarwinI386ThreadState
-{
-    [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal uint __eax;
-
-        [FieldOffset(4)]
-        internal uint __ebx;
-
-        [FieldOffset(8)]
-        internal uint __ecx;
-
-        [FieldOffset(12)]
-        internal uint __edx;
-
-        [FieldOffset(16)]
-        internal uint __edi;
-
-        [FieldOffset(20)]
-        internal uint __esi;
-
-        [FieldOffset(24)]
-        internal uint __ebp;
-
-        [FieldOffset(28)]
-        internal uint __esp;
-
-        [FieldOffset(32)]
-        internal uint __ss;
-
-        [FieldOffset(36)]
-        internal uint __eflags;
-
-        [FieldOffset(40)]
-        internal uint __eip;
-
-        [FieldOffset(44)]
-        internal uint __cs;
-
-        [FieldOffset(48)]
-        internal uint __ds;
-
-        [FieldOffset(52)]
-        internal uint __es;
-
-        [FieldOffset(56)]
-        internal uint __fs;
-
-        [FieldOffset(60)]
-        internal uint __gs;
     }
 }
 
@@ -446,652 +266,6 @@ public unsafe partial class DarwinXmmReg
     }
 }
 
-public unsafe partial class DarwinI386FloatState
-{
-    [StructLayout(LayoutKind.Explicit, Size = 524)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal fixed int __fpu_reserved[2];
-
-        [FieldOffset(8)]
-        internal global::DarwinFpControl.__Internal __fpu_fcw;
-
-        [FieldOffset(10)]
-        internal global::DarwinFpStatus.__Internal __fpu_fsw;
-
-        [FieldOffset(12)]
-        internal byte __fpu_ftw;
-
-        [FieldOffset(13)]
-        internal byte __fpu_rsrv1;
-
-        [FieldOffset(14)]
-        internal ushort __fpu_fop;
-
-        [FieldOffset(16)]
-        internal uint __fpu_ip;
-
-        [FieldOffset(20)]
-        internal ushort __fpu_cs;
-
-        [FieldOffset(22)]
-        internal ushort __fpu_rsrv2;
-
-        [FieldOffset(24)]
-        internal uint __fpu_dp;
-
-        [FieldOffset(28)]
-        internal ushort __fpu_ds;
-
-        [FieldOffset(30)]
-        internal ushort __fpu_rsrv3;
-
-        [FieldOffset(32)]
-        internal uint __fpu_mxcsr;
-
-        [FieldOffset(36)]
-        internal uint __fpu_mxcsrmask;
-
-        [FieldOffset(40)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm0;
-
-        [FieldOffset(56)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm1;
-
-        [FieldOffset(72)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm2;
-
-        [FieldOffset(88)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm3;
-
-        [FieldOffset(104)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm4;
-
-        [FieldOffset(120)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm5;
-
-        [FieldOffset(136)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm6;
-
-        [FieldOffset(152)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm7;
-
-        [FieldOffset(168)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm0;
-
-        [FieldOffset(184)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm1;
-
-        [FieldOffset(200)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm2;
-
-        [FieldOffset(216)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm3;
-
-        [FieldOffset(232)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm4;
-
-        [FieldOffset(248)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm5;
-
-        [FieldOffset(264)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm6;
-
-        [FieldOffset(280)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm7;
-
-        [FieldOffset(296)]
-        internal fixed sbyte __fpu_rsrv4[224];
-
-        [FieldOffset(520)]
-        internal int __fpu_reserved1;
-    }
-}
-
-public unsafe partial class DarwinI386AvxState
-{
-    [StructLayout(LayoutKind.Explicit, Size = 716)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal fixed int __fpu_reserved[2];
-
-        [FieldOffset(8)]
-        internal global::DarwinFpControl.__Internal __fpu_fcw;
-
-        [FieldOffset(10)]
-        internal global::DarwinFpStatus.__Internal __fpu_fsw;
-
-        [FieldOffset(12)]
-        internal byte __fpu_ftw;
-
-        [FieldOffset(13)]
-        internal byte __fpu_rsrv1;
-
-        [FieldOffset(14)]
-        internal ushort __fpu_fop;
-
-        [FieldOffset(16)]
-        internal uint __fpu_ip;
-
-        [FieldOffset(20)]
-        internal ushort __fpu_cs;
-
-        [FieldOffset(22)]
-        internal ushort __fpu_rsrv2;
-
-        [FieldOffset(24)]
-        internal uint __fpu_dp;
-
-        [FieldOffset(28)]
-        internal ushort __fpu_ds;
-
-        [FieldOffset(30)]
-        internal ushort __fpu_rsrv3;
-
-        [FieldOffset(32)]
-        internal uint __fpu_mxcsr;
-
-        [FieldOffset(36)]
-        internal uint __fpu_mxcsrmask;
-
-        [FieldOffset(40)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm0;
-
-        [FieldOffset(56)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm1;
-
-        [FieldOffset(72)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm2;
-
-        [FieldOffset(88)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm3;
-
-        [FieldOffset(104)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm4;
-
-        [FieldOffset(120)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm5;
-
-        [FieldOffset(136)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm6;
-
-        [FieldOffset(152)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm7;
-
-        [FieldOffset(168)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm0;
-
-        [FieldOffset(184)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm1;
-
-        [FieldOffset(200)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm2;
-
-        [FieldOffset(216)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm3;
-
-        [FieldOffset(232)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm4;
-
-        [FieldOffset(248)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm5;
-
-        [FieldOffset(264)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm6;
-
-        [FieldOffset(280)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm7;
-
-        [FieldOffset(296)]
-        internal fixed sbyte __fpu_rsrv4[224];
-
-        [FieldOffset(520)]
-        internal int __fpu_reserved1;
-
-        [FieldOffset(524)]
-        internal fixed sbyte __avx_reserved1[64];
-
-        [FieldOffset(588)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh0;
-
-        [FieldOffset(604)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh1;
-
-        [FieldOffset(620)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh2;
-
-        [FieldOffset(636)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh3;
-
-        [FieldOffset(652)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh4;
-
-        [FieldOffset(668)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh5;
-
-        [FieldOffset(684)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh6;
-
-        [FieldOffset(700)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh7;
-    }
-}
-
-public unsafe partial class DarwinI386ExceptionState
-{
-    [StructLayout(LayoutKind.Explicit, Size = 12)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal ushort __trapno;
-
-        [FieldOffset(2)]
-        internal ushort __cpu;
-
-        [FieldOffset(4)]
-        internal uint __err;
-
-        [FieldOffset(8)]
-        internal uint __faultvaddr;
-    }
-}
-
-public unsafe partial class DarwinX86ThreadState64
-{
-    [StructLayout(LayoutKind.Explicit, Size = 168)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal ulong __rax;
-
-        [FieldOffset(8)]
-        internal ulong __rbx;
-
-        [FieldOffset(16)]
-        internal ulong __rcx;
-
-        [FieldOffset(24)]
-        internal ulong __rdx;
-
-        [FieldOffset(32)]
-        internal ulong __rdi;
-
-        [FieldOffset(40)]
-        internal ulong __rsi;
-
-        [FieldOffset(48)]
-        internal ulong __rbp;
-
-        [FieldOffset(56)]
-        internal ulong __rsp;
-
-        [FieldOffset(64)]
-        internal ulong __r8;
-
-        [FieldOffset(72)]
-        internal ulong __r9;
-
-        [FieldOffset(80)]
-        internal ulong __r10;
-
-        [FieldOffset(88)]
-        internal ulong __r11;
-
-        [FieldOffset(96)]
-        internal ulong __r12;
-
-        [FieldOffset(104)]
-        internal ulong __r13;
-
-        [FieldOffset(112)]
-        internal ulong __r14;
-
-        [FieldOffset(120)]
-        internal ulong __r15;
-
-        [FieldOffset(128)]
-        internal ulong __rip;
-
-        [FieldOffset(136)]
-        internal ulong __rflags;
-
-        [FieldOffset(144)]
-        internal ulong __cs;
-
-        [FieldOffset(152)]
-        internal ulong __fs;
-
-        [FieldOffset(160)]
-        internal ulong __gs;
-    }
-}
-
-public unsafe partial class DarwinX86FloatState64
-{
-    [StructLayout(LayoutKind.Explicit, Size = 524)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal fixed int __fpu_reserved[2];
-
-        [FieldOffset(8)]
-        internal global::DarwinFpControl.__Internal __fpu_fcw;
-
-        [FieldOffset(10)]
-        internal global::DarwinFpStatus.__Internal __fpu_fsw;
-
-        [FieldOffset(12)]
-        internal byte __fpu_ftw;
-
-        [FieldOffset(13)]
-        internal byte __fpu_rsrv1;
-
-        [FieldOffset(14)]
-        internal ushort __fpu_fop;
-
-        [FieldOffset(16)]
-        internal uint __fpu_ip;
-
-        [FieldOffset(20)]
-        internal ushort __fpu_cs;
-
-        [FieldOffset(22)]
-        internal ushort __fpu_rsrv2;
-
-        [FieldOffset(24)]
-        internal uint __fpu_dp;
-
-        [FieldOffset(28)]
-        internal ushort __fpu_ds;
-
-        [FieldOffset(30)]
-        internal ushort __fpu_rsrv3;
-
-        [FieldOffset(32)]
-        internal uint __fpu_mxcsr;
-
-        [FieldOffset(36)]
-        internal uint __fpu_mxcsrmask;
-
-        [FieldOffset(40)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm0;
-
-        [FieldOffset(56)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm1;
-
-        [FieldOffset(72)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm2;
-
-        [FieldOffset(88)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm3;
-
-        [FieldOffset(104)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm4;
-
-        [FieldOffset(120)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm5;
-
-        [FieldOffset(136)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm6;
-
-        [FieldOffset(152)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm7;
-
-        [FieldOffset(168)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm0;
-
-        [FieldOffset(184)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm1;
-
-        [FieldOffset(200)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm2;
-
-        [FieldOffset(216)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm3;
-
-        [FieldOffset(232)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm4;
-
-        [FieldOffset(248)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm5;
-
-        [FieldOffset(264)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm6;
-
-        [FieldOffset(280)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm7;
-
-        [FieldOffset(296)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm8;
-
-        [FieldOffset(312)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm9;
-
-        [FieldOffset(328)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm10;
-
-        [FieldOffset(344)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm11;
-
-        [FieldOffset(360)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm12;
-
-        [FieldOffset(376)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm13;
-
-        [FieldOffset(392)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm14;
-
-        [FieldOffset(408)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm15;
-
-        [FieldOffset(424)]
-        internal fixed sbyte __fpu_rsrv4[96];
-
-        [FieldOffset(520)]
-        internal int __fpu_reserved1;
-    }
-}
-
-public unsafe partial class DarwinX86AvxState64
-{
-    [StructLayout(LayoutKind.Explicit, Size = 844)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal fixed int __fpu_reserved[2];
-
-        [FieldOffset(8)]
-        internal global::DarwinFpControl.__Internal __fpu_fcw;
-
-        [FieldOffset(10)]
-        internal global::DarwinFpStatus.__Internal __fpu_fsw;
-
-        [FieldOffset(12)]
-        internal byte __fpu_ftw;
-
-        [FieldOffset(13)]
-        internal byte __fpu_rsrv1;
-
-        [FieldOffset(14)]
-        internal ushort __fpu_fop;
-
-        [FieldOffset(16)]
-        internal uint __fpu_ip;
-
-        [FieldOffset(20)]
-        internal ushort __fpu_cs;
-
-        [FieldOffset(22)]
-        internal ushort __fpu_rsrv2;
-
-        [FieldOffset(24)]
-        internal uint __fpu_dp;
-
-        [FieldOffset(28)]
-        internal ushort __fpu_ds;
-
-        [FieldOffset(30)]
-        internal ushort __fpu_rsrv3;
-
-        [FieldOffset(32)]
-        internal uint __fpu_mxcsr;
-
-        [FieldOffset(36)]
-        internal uint __fpu_mxcsrmask;
-
-        [FieldOffset(40)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm0;
-
-        [FieldOffset(56)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm1;
-
-        [FieldOffset(72)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm2;
-
-        [FieldOffset(88)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm3;
-
-        [FieldOffset(104)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm4;
-
-        [FieldOffset(120)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm5;
-
-        [FieldOffset(136)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm6;
-
-        [FieldOffset(152)]
-        internal global::DarwinMmstReg.__Internal __fpu_stmm7;
-
-        [FieldOffset(168)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm0;
-
-        [FieldOffset(184)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm1;
-
-        [FieldOffset(200)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm2;
-
-        [FieldOffset(216)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm3;
-
-        [FieldOffset(232)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm4;
-
-        [FieldOffset(248)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm5;
-
-        [FieldOffset(264)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm6;
-
-        [FieldOffset(280)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm7;
-
-        [FieldOffset(296)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm8;
-
-        [FieldOffset(312)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm9;
-
-        [FieldOffset(328)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm10;
-
-        [FieldOffset(344)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm11;
-
-        [FieldOffset(360)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm12;
-
-        [FieldOffset(376)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm13;
-
-        [FieldOffset(392)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm14;
-
-        [FieldOffset(408)]
-        internal global::DarwinXmmReg.__Internal __fpu_xmm15;
-
-        [FieldOffset(424)]
-        internal fixed sbyte __fpu_rsrv4[96];
-
-        [FieldOffset(520)]
-        internal int __fpu_reserved1;
-
-        [FieldOffset(524)]
-        internal fixed sbyte __avx_reserved1[64];
-
-        [FieldOffset(588)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh0;
-
-        [FieldOffset(604)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh1;
-
-        [FieldOffset(620)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh2;
-
-        [FieldOffset(636)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh3;
-
-        [FieldOffset(652)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh4;
-
-        [FieldOffset(668)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh5;
-
-        [FieldOffset(684)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh6;
-
-        [FieldOffset(700)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh7;
-
-        [FieldOffset(716)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh8;
-
-        [FieldOffset(732)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh9;
-
-        [FieldOffset(748)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh10;
-
-        [FieldOffset(764)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh11;
-
-        [FieldOffset(780)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh12;
-
-        [FieldOffset(796)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh13;
-
-        [FieldOffset(812)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh14;
-
-        [FieldOffset(828)]
-        internal global::DarwinXmmReg.__Internal __fpu_ymmh15;
-    }
-}
-
-public unsafe partial class DarwinX86ExceptionState64
-{
-    [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal ushort __trapno;
-
-        [FieldOffset(2)]
-        internal ushort __cpu;
-
-        [FieldOffset(4)]
-        internal uint __err;
-
-        [FieldOffset(8)]
-        internal ulong __faultvaddr;
-    }
-}
-
 public unsafe partial struct Wait
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
@@ -1149,7 +323,72 @@ namespace Std
 
 namespace Std
 {
-    namespace __1
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+    namespace Vector
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(4)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(8)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+    }
+
+    public unsafe partial class Vector<_Tp, _Allocator>
+    {
+    }
+}
+
+namespace Std
+{
+    namespace Tree
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_node_;
+
+            [FieldOffset(4)]
+            internal global::Std.CompressedPair.__Internal __pair1_;
+
+            [FieldOffset(8)]
+            internal global::Std.CompressedPair.__Internal __pair3_;
+        }
+    }
+
+    public unsafe partial class Tree<_Tp, _Compare, _Allocator>
+    {
+    }
+
+    namespace TreeEndNode
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 4)]
+        public unsafe partial struct __Internal_Ptr
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __left_;
+        }
+    }
+
+    public unsafe partial class TreeEndNode<_Pointer>
     {
     }
 }
@@ -1160,418 +399,351 @@ namespace Std
 
 namespace Std
 {
-}
-
-namespace Std
-{
-    namespace __1
+    namespace Map
     {
-        namespace Vector
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internal
         {
-            [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr __begin_;
-
-                [FieldOffset(4)]
-                internal global::System.IntPtr __end_;
-
-                [FieldOffset(8)]
-                internal global::Std.__1.CompressedPair.__Internal __end_cap_;
-            }
-        }
-    }
-}
-
-namespace Std
-{
-    namespace __1
-    {
-        namespace Tree
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr __begin_node_;
-
-                [FieldOffset(4)]
-                internal global::Std.__1.CompressedPair.__Internal __pair1_;
-
-                [FieldOffset(8)]
-                internal global::Std.__1.CompressedPair.__Internal __pair3_;
-            }
+            [FieldOffset(0)]
+            internal global::Std.Tree.__Internal __tree_;
         }
 
-        namespace TreeEndNode
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 4)]
-            public unsafe partial struct __Internal_Ptr
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr __left_;
-            }
-        }
-    }
-}
 
-namespace Std
-{
-    namespace __1
-    {
-    }
-}
-
-namespace Std
-{
-    namespace __1
-    {
-        namespace Map
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.__1.Tree.__Internal __tree_;
-            }
-
-
-            public unsafe partial class ValueCompare
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 0)]
-                public partial struct __Internal
-                {
-                }
-            }
-        }
-    }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-    namespace __1
-    {
-        namespace CharTraits
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct __Internal
-            {
-            }
-        }
-
-        public unsafe partial class CharTraits<_CharT> : IDisposable
-        {
-            public global::System.IntPtr __Instance { get; protected set; }
-
-            protected int __PointerAdjustment;
-            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.CharTraits<_CharT>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.CharTraits<_CharT>>();
-            protected void*[] __OriginalVTables;
-
-            protected bool __ownsNativeInstance;
-
-            internal static global::Std.__1.CharTraits<_CharT> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-            {
-                return new global::Std.__1.CharTraits<_CharT>(native.ToPointer(), skipVTables);
-            }
-
-            internal static global::Std.__1.CharTraits<_CharT> __CreateInstance(global::Std.__1.CharTraits.__Internal native, bool skipVTables = false)
-            {
-                return new global::Std.__1.CharTraits<_CharT>(native, skipVTables);
-            }
-
-            private static void* __CopyValue(global::Std.__1.CharTraits.__Internal native)
-            {
-                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.CharTraits.__Internal));
-                *(global::Std.__1.CharTraits.__Internal*) ret = native;
-                return ret.ToPointer();
-            }
-
-            private CharTraits(global::Std.__1.CharTraits.__Internal native, bool skipVTables = false)
-                : this(__CopyValue(native), skipVTables)
-            {
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
-            }
-
-            protected CharTraits(void* native, bool skipVTables = false)
-            {
-                if (native == null)
-                    return;
-                __Instance = new global::System.IntPtr(native);
-            }
-
-            public void Dispose()
-            {
-                Dispose(disposing: true);
-            }
-
-            public virtual void Dispose(bool disposing)
-            {
-                if (__Instance == IntPtr.Zero)
-                    return;
-                global::Std.__1.CharTraits<_CharT> __dummy;
-                NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
-                __Instance = IntPtr.Zero;
-            }
-        }
-
-        public unsafe static partial class BasicStringExtensions
+        public unsafe partial class ValueCompare
         {
             [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
             {
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2EPKcRKS4_")]
-                internal static extern global::System.IntPtr BasicString(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string __s, global::System.IntPtr __a);
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
-                internal static extern global::System.IntPtr CStr(global::System.IntPtr instance);
-            }
-
-            public static global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>> BasicString(string __s, global::Std.__1.Allocator<sbyte> __a)
-            {
-                if (ReferenceEquals(__a, null))
-                    throw new global::System.ArgumentNullException("__a", "Cannot be null because it is a C++ reference (&).");
-                var __arg1 = __a.__Instance;
-                var __ret = Marshal.AllocHGlobal(12);
-                __Internal.BasicString(__ret, __s, __arg1);
-                global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>> __result0;
-                if (__ret == IntPtr.Zero) __result0 = null;
-                else if (global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>>.NativeToManagedMap.ContainsKey(__ret))
-                    __result0 = (global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>>) global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>>.NativeToManagedMap[__ret];
-                else __result0 = global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>>.__CreateInstance(__ret);
-                return __result0;
-            }
-
-            public static string CStr(this global::Std.__1.BasicString<sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>> @this)
-            {
-                var __arg0 = ReferenceEquals(@this, null) ? global::System.IntPtr.Zero : @this.__Instance;
-                var __ret = __Internal.CStr(__arg0);
-                return Marshal.PtrToStringAnsi(__ret);
             }
         }
+    }
 
-        namespace BasicString
+    public unsafe partial class Map<_95, _96, _97, _98>
+    {
+    }
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+    namespace CharTraits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class CharTraits<_CharT> : IDisposable
+    {
+        public global::System.IntPtr __Instance { get; protected set; }
+
+        protected int __PointerAdjustment;
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>>();
+        protected void*[] __OriginalVTables;
+
+        protected bool __ownsNativeInstance;
+
+        internal static global::Std.CharTraits<_CharT> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        {
+            return new global::Std.CharTraits<_CharT>(native.ToPointer(), skipVTables);
+        }
+
+        internal static global::Std.CharTraits<_CharT> __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+        {
+            return new global::Std.CharTraits<_CharT>(native, skipVTables);
+        }
+
+        private static void* __CopyValue(global::Std.CharTraits.__Internal native)
+        {
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
+            *(global::Std.CharTraits.__Internal*) ret = native;
+            return ret.ToPointer();
+        }
+
+        private CharTraits(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+            : this(__CopyValue(native), skipVTables)
+        {
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+        }
+
+        protected CharTraits(void* native, bool skipVTables = false)
+        {
+            if (native == null)
+                return;
+            __Instance = new global::System.IntPtr(native);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (__Instance == IntPtr.Zero)
+                return;
+            global::Std.CharTraits<_CharT> __dummy;
+            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            if (__ownsNativeInstance)
+                Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
+        }
+    }
+
+    public unsafe static partial class BasicStringExtensions
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public partial struct __Internal
+        {
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2EPKcRKS4_")]
+            internal static extern global::System.IntPtr BasicString(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string __s, global::System.IntPtr __a);
+
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
+            internal static extern global::System.IntPtr CStr(global::System.IntPtr instance);
+        }
+
+        public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> BasicString(string __s, global::Std.Allocator<sbyte> __a)
+        {
+            if (ReferenceEquals(__a, null))
+                throw new global::System.ArgumentNullException("__a", "Cannot be null because it is a C++ reference (&).");
+            var __arg1 = __a.__Instance;
+            var __ret = Marshal.AllocHGlobal(12);
+            __Internal.BasicString(__ret, __s, __arg1);
+            global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> __result0;
+            if (__ret == IntPtr.Zero) __result0 = null;
+            else if (global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.NativeToManagedMap.ContainsKey(__ret))
+                __result0 = (global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>) global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.NativeToManagedMap[__ret];
+            else __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(__ret);
+            return __result0;
+        }
+
+        public static string CStr(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
+        {
+            var __arg0 = ReferenceEquals(@this, null) ? global::System.IntPtr.Zero : @this.__Instance;
+            var __ret = __Internal.CStr(__arg0);
+            return Marshal.PtrToStringAnsi(__ret);
+        }
+    }
+
+    namespace BasicString
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.CompressedPair.__Internal __r_;
+
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
+            internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr instance);
+
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
+            internal static extern global::System.IntPtr CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr instance);
+        }
+
+
+        public unsafe partial class Rep
         {
             [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public unsafe partial struct __Internal
+            public partial struct __Internal
             {
                 [FieldOffset(0)]
-                internal global::Std.__1.CompressedPair.__Internal __r_;
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
-                internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr instance);
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE5c_strEv")]
-                internal static extern global::System.IntPtr CStrc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr instance);
+                internal global::Std.BasicString.Rep._.__Internal _;
             }
 
 
-            public unsafe partial class Rep
+            public unsafe partial struct _
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::Std.__1.BasicString.Rep._.__Internal _;
-                }
-
-
-                public unsafe partial struct _
-                {
-                    [StructLayout(LayoutKind.Explicit, Size = 12)]
-                    public partial struct __Internal
-                    {
-                        [FieldOffset(0)]
-                        internal global::Std.__1.BasicString.Long.__Internal __l;
-
-                        [FieldOffset(0)]
-                        internal global::Std.__1.BasicString.Short.__Internal __s;
-
-                        [FieldOffset(0)]
-                        internal global::Std.__1.BasicString.Raw.__Internal __r;
-                    }
-
-                }
-            }
-
-            public unsafe partial class Long
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal uint __cap_;
-
-                    [FieldOffset(4)]
-                    internal uint __size_;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr __data_;
-                }
-
-            }
-
-            public unsafe partial class Short
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::Std.__1.BasicString.Short._.__Internal _;
-
-                    [FieldOffset(1)]
-                    internal fixed sbyte __data_[11];
-                }
-
-
-                public unsafe partial struct _
-                {
-                    [StructLayout(LayoutKind.Explicit, Size = 1)]
-                    public partial struct __Internal
-                    {
-                        [FieldOffset(0)]
-                        internal byte __size_;
-
-                        [FieldOffset(0)]
-                        internal sbyte __lx;
-                    }
-
-                }
-            }
-
-            public unsafe partial class Raw
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal fixed uint __words[3];
-                }
-
-            }
-
-            public unsafe partial struct Ulx
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::Std.__1.BasicString.Long.__Internal __lx;
+                    internal global::Std.BasicString.Long.__Internal __l;
 
                     [FieldOffset(0)]
-                    internal global::Std.__1.BasicString.Short.__Internal __lxx;
+                    internal global::Std.BasicString.Short.__Internal __s;
+
+                    [FieldOffset(0)]
+                    internal global::Std.BasicString.Raw.__Internal __r;
                 }
+
             }
         }
 
-        public unsafe partial class BasicString<_CharT, _Traits, _Allocator> : IDisposable
+        public unsafe partial class Long
         {
-            internal enum ShortMask
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
+            public partial struct __Internal
             {
-                ShortMask = 0
+                [FieldOffset(0)]
+                internal uint __cap_;
+
+                [FieldOffset(4)]
+                internal uint __size_;
+
+                [FieldOffset(8)]
+                internal global::System.IntPtr __data_;
             }
 
-            internal enum LongMask
+        }
+
+        public unsafe partial class Short
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
+            public partial struct __Internal
             {
-                LongMask = 0
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Short._.__Internal _;
+
+                [FieldOffset(1)]
+                internal fixed sbyte __data_[11];
             }
 
-            internal enum MinCap
+
+            public unsafe partial struct _
             {
-                MinCap = 0
-            }
-
-            internal enum NWords
-            {
-                NWords = 0
-            }
-
-            internal enum Alignment
-            {
-                Alignment = 0
-            }
-
-            public global::System.IntPtr __Instance { get; protected set; }
-
-            protected int __PointerAdjustment;
-            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.BasicString<_CharT, _Traits, _Allocator>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.__1.BasicString<_CharT, _Traits, _Allocator>>();
-            protected void*[] __OriginalVTables;
-
-            protected bool __ownsNativeInstance;
-
-            internal static global::Std.__1.BasicString<_CharT, _Traits, _Allocator> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-            {
-                return new global::Std.__1.BasicString<_CharT, _Traits, _Allocator>(native.ToPointer(), skipVTables);
-            }
-
-            internal static global::Std.__1.BasicString<_CharT, _Traits, _Allocator> __CreateInstance(global::Std.__1.BasicString.__Internal native, bool skipVTables = false)
-            {
-                return new global::Std.__1.BasicString<_CharT, _Traits, _Allocator>(native, skipVTables);
-            }
-
-            private static void* __CopyValue(global::Std.__1.BasicString.__Internal native)
-            {
-                var ret = Marshal.AllocHGlobal(sizeof(global::Std.__1.BasicString.__Internal));
-                *(global::Std.__1.BasicString.__Internal*) ret = native;
-                return ret.ToPointer();
-            }
-
-            private BasicString(global::Std.__1.BasicString.__Internal native, bool skipVTables = false)
-                : this(__CopyValue(native), skipVTables)
-            {
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
-            }
-
-            protected BasicString(void* native, bool skipVTables = false)
-            {
-                if (native == null)
-                    return;
-                __Instance = new global::System.IntPtr(native);
-            }
-
-            public void Dispose()
-            {
-                Dispose(disposing: true);
-            }
-
-            public virtual void Dispose(bool disposing)
-            {
-                if (__Instance == IntPtr.Zero)
-                    return;
-                global::Std.__1.BasicString<_CharT, _Traits, _Allocator> __dummy;
-                NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                if (disposing)
+                [StructLayout(LayoutKind.Explicit, Size = 1)]
+                public partial struct __Internal
                 {
-                    var ___CharT = typeof(_CharT);
-                    var ___Traits = typeof(_Traits);
-                    var ___Allocator = typeof(_Allocator);
-                    if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.__1.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.__1.Allocator<sbyte>)))
-                    {
-                        global::Std.__1.BasicString.__Internal.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
-                        return;
-                    }
-                    throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.__1.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.__1.CharTraits<sbyte>, global::Std.__1.Allocator<sbyte>>.");
+                    [FieldOffset(0)]
+                    internal byte __size_;
+
+                    [FieldOffset(0)]
+                    internal sbyte __lx;
                 }
-                if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
-                __Instance = IntPtr.Zero;
+
             }
+        }
+
+        public unsafe partial class Raw
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal fixed uint __words[3];
+            }
+
+        }
+
+        public unsafe partial struct Ulx
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Long.__Internal __lx;
+
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Short.__Internal __lxx;
+            }
+        }
+    }
+
+    public unsafe partial class BasicString<_CharT, _Traits, _Allocator> : IDisposable
+    {
+        internal enum ShortMask
+        {
+            ShortMask = 0
+        }
+
+        internal enum LongMask
+        {
+            LongMask = 0
+        }
+
+        internal enum MinCap
+        {
+            MinCap = 0
+        }
+
+        internal enum NWords
+        {
+            NWords = 0
+        }
+
+        internal enum Alignment
+        {
+            Alignment = 0
+        }
+
+        public global::System.IntPtr __Instance { get; protected set; }
+
+        protected int __PointerAdjustment;
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>>();
+        protected void*[] __OriginalVTables;
+
+        protected bool __ownsNativeInstance;
+
+        internal static global::Std.BasicString<_CharT, _Traits, _Allocator> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        {
+            return new global::Std.BasicString<_CharT, _Traits, _Allocator>(native.ToPointer(), skipVTables);
+        }
+
+        internal static global::Std.BasicString<_CharT, _Traits, _Allocator> __CreateInstance(global::Std.BasicString.__Internal native, bool skipVTables = false)
+        {
+            return new global::Std.BasicString<_CharT, _Traits, _Allocator>(native, skipVTables);
+        }
+
+        private static void* __CopyValue(global::Std.BasicString.__Internal native)
+        {
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
+            *(global::Std.BasicString.__Internal*) ret = native;
+            return ret.ToPointer();
+        }
+
+        private BasicString(global::Std.BasicString.__Internal native, bool skipVTables = false)
+            : this(__CopyValue(native), skipVTables)
+        {
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+        }
+
+        protected BasicString(void* native, bool skipVTables = false)
+        {
+            if (native == null)
+                return;
+            __Instance = new global::System.IntPtr(native);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (__Instance == IntPtr.Zero)
+                return;
+            global::Std.BasicString<_CharT, _Traits, _Allocator> __dummy;
+            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            if (disposing)
+            {
+                var ___CharT = typeof(_CharT);
+                var ___Traits = typeof(_Traits);
+                var ___Allocator = typeof(_Allocator);
+                if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
+                {
+                    global::Std.BasicString.__Internal.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
+                    return;
+                }
+                throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
+            }
+            if (__ownsNativeInstance)
+                Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
         }
     }
 }
