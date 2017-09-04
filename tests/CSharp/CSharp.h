@@ -1237,4 +1237,4 @@ inline namespace InlineNamespace
     DLL_API void FunctionInsideInlineNamespace();
 }
 
-DLL_API int takeArrayOfPointersToObjects(Foo* arrayOfPointersToObjects[]);
+DLL_API int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[]);

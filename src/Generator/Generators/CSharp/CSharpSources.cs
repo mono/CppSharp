@@ -1028,21 +1028,28 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-            var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
-                GetLibraryOf(decl), var.Mangled);
+            string library = GetLibraryOf(decl);
+            var location = $"CppSharp.SymbolResolver.ResolveSymbol(\"{library}\", \"{var.Mangled}\")";
+
+            var ptr = Generator.GeneratedIdentifier("ptr");
 
             var arrayType = decl.Type as ArrayType;
             var @class = decl.Namespace as Class;
             var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
             if (isRefTypeArray)
-                WriteLine("var {0} = {1}{2};", Generator.GeneratedIdentifier("ptr"),
-                    arrayType.Type.IsPrimitiveType(PrimitiveType.Char) &&
+            {
+                string cast = arrayType.Type.IsPrimitiveType(PrimitiveType.Char) &&
                     arrayType.QualifiedType.Qualifiers.IsConst
-                        ? string.Empty : "(byte*)",
-                    location);
+                        ? string.Empty : "(byte*)";
+                WriteLine($"var {ptr} = {cast}{location};");
+            }
             else
-                WriteLine("var {0} = ({1}*){2};", Generator.GeneratedIdentifier("ptr"),
-                    @var.Type, location);
+            {
+                TypePrinter.PushMarshalKind(MarshalKind.ReturnVariableArray);
+                var varType = var.Type.Visit(TypePrinter);
+                TypePrinter.PopMarshalKind();
+                WriteLine($"var {ptr} = ({varType}*){location};");
+            }
 
             TypePrinter.PopContext();
 
@@ -1322,7 +1329,10 @@ namespace CppSharp.Generators.CSharp
             PushBlock(BlockKind.Variable);
 
             GenerateDeclarationCommon(variable);
-            WriteLine("public static {0} {1}", variable.Type, variable.Name);
+            TypePrinter.PushMarshalKind(MarshalKind.ReturnVariableArray);
+            var variableType = variable.Type.Visit(TypePrinter);
+            TypePrinter.PopMarshalKind();
+            WriteLine($"public static {variableType} {variable.Name}");
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable, @class);

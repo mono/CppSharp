@@ -555,10 +555,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (pointee is FunctionType)
-            {
-                var function = pointee as FunctionType;
                 return VisitDelegateType();
-            }
 
             Class @class;
             if (pointee.TryGetClass(out @class) && @class.IsValueType)
@@ -857,6 +854,12 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalVariableArray(Type arrayType)
         {
+            if (arrayType.IsPrimitiveType())
+            {
+                Context.Return.Write(Context.Parameter.Name);
+                return;
+            }
+
             var intermediateArray = $"__{Context.Parameter.Name}";
             var intermediateArrayType = typePrinter.PrintNative(arrayType);
             const string intPtrType = CSharpTypePrinter.IntPtrType;

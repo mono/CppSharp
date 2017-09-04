@@ -148,15 +148,6 @@ namespace CppSharp.Generators.CLI
             }
 
             return translationUnit.FileName;
-
-            var rel = PathHelpers.GetRelativePath(
-                TranslationUnit.FileRelativeDirectory,
-                translationUnit.FileRelativeDirectory);
-
-            if (string.IsNullOrEmpty(rel))
-                return translationUnit.FileName;
-
-            return Path.Combine(rel, translationUnit.FileName);
         }
 
         private bool IsBuiltinTypedef(Declaration decl)

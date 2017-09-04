@@ -128,9 +128,9 @@ namespace CppSharp.Generators.CSharp
             if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
                 return "char**";
 
-            var arraySuffix = array.SizeType == ArrayType.ArraySize.Constant ||
-                !arrayType.IsPrimitiveType() ? "[]" :
-                (ContextKind == TypePrinterContextKind.Managed ? "*" : string.Empty);
+            var arraySuffix = array.SizeType != ArrayType.ArraySize.Constant &&
+                MarshalKind == MarshalKind.ReturnVariableArray ?
+                (ContextKind == TypePrinterContextKind.Managed ? "*" : string.Empty) : "[]";
             return $"{arrayType.Visit(this)}{arraySuffix}";
         }
 

@@ -1392,7 +1392,7 @@ void InlineNamespace::FunctionInsideInlineNamespace()
 {
 }
 
-int takeArrayOfPointersToObjects(Foo* arrayOfPointersToObjects[])
+int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[])
 {
-    return arrayOfPointersToObjects[0]->A + arrayOfPointersToObjects[1]->A;
+    return arrayOfPointersToObjects[0]->A + arrayOfPointersToObjects[1]->A + arrayOfPrimitives[0] + arrayOfPrimitives[1];
 }

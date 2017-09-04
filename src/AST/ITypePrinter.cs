@@ -19,7 +19,8 @@ namespace CppSharp.AST
         GenericDelegate,
         DefaultExpression,
         VTableReturnValue,
-        Variable
+        Variable,
+        ReturnVariableArray
     }
 
     public class TypePrinterContext

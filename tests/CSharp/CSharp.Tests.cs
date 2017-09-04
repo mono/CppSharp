@@ -1064,7 +1064,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
     public void TestArrayParams()
     {
         Foo[] foos = { new Foo { A = 2 }, new Foo { A = 5 } };
-        Assert.That(CSharp.CSharp.TakeArrayOfPointersToObjects(foos), Is.EqualTo(7));
+        int[] ints = { 6, 7 };
+        Assert.That(CSharp.CSharp.TakeArrays(foos, ints), Is.EqualTo(20));
     }
 
     private class OverrideVirtualTemplate : VirtualTemplate<int>

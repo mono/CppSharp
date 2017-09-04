@@ -528,8 +528,6 @@ namespace CppSharp.Generators.CLI
 
             if (pointee is FunctionType)
             {
-                var function = pointee as FunctionType;
-
                 var cppTypePrinter = new CppTypePrinter();
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
