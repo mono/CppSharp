@@ -862,12 +862,15 @@ namespace CppSharp.Generators.CSharp
 
             var intermediateArray = $"__{Context.Parameter.Name}";
             var intermediateArrayType = typePrinter.PrintNative(arrayType);
-            const string intPtrType = CSharpTypePrinter.IntPtrType;
+            var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
 
             Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
-            Context.Before.WriteLineIndent($"{intermediateArray} = new[] {{ {intPtrType}.Zero }};");
+            if (arrayType.IsAddress())
+                Context.Before.WriteLineIndent($"{intermediateArray} = new[] {{ {intPtrZero} }};");
+            else
+                Context.Before.WriteLineIndent($"{intermediateArray} = new[] {{ new {intermediateArrayType}() }};");
             Context.Before.WriteLine("else");
 
             Context.Before.WriteStartBraceIndent();
@@ -878,8 +881,13 @@ namespace CppSharp.Generators.CSharp
             Context.Before.WriteStartBraceIndent();
             const string element = "__element";
             Context.Before.WriteLine($"var {element} = {Context.Parameter.Name}[i];");
-            Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
-                element}, null) ? {intPtrType}.Zero : {element}.{Helpers.InstanceIdentifier};");
+            if (arrayType.IsAddress())
+                Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
+                    element}, null) ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
+            else
+                Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
+                    element}, null) ? new {intermediateArrayType}() : *({
+                    intermediateArrayType}*) {element}.{Helpers.InstanceIdentifier};");
             Context.Before.WriteCloseBraceIndent();
 
             Context.Before.WriteCloseBraceIndent();
