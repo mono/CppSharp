@@ -862,15 +862,11 @@ namespace CppSharp.Generators.CSharp
 
             var intermediateArray = $"__{Context.Parameter.Name}";
             var intermediateArrayType = typePrinter.PrintNative(arrayType);
-            var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
 
             Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
-            if (arrayType.IsAddress())
-                Context.Before.WriteLineIndent($"{intermediateArray} = new[] {{ {intPtrZero} }};");
-            else
-                Context.Before.WriteLineIndent($"{intermediateArray} = new[] {{ new {intermediateArrayType}() }};");
+                Context.Before.WriteLineIndent($"{intermediateArray} = null;");
             Context.Before.WriteLine("else");
 
             Context.Before.WriteStartBraceIndent();
@@ -882,8 +878,11 @@ namespace CppSharp.Generators.CSharp
             const string element = "__element";
             Context.Before.WriteLine($"var {element} = {Context.Parameter.Name}[i];");
             if (arrayType.IsAddress())
+            {
+                var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
                 Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
                     element}, null) ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
+            }
             else
                 Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
                     element}, null) ? new {intermediateArrayType}() : *({
