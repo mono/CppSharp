@@ -126,7 +126,11 @@ namespace CppSharp.Generators.CSharp
                 return "string";
 
             if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
-                return "char**";
+            {
+                var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
+                    "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ";
+                return $"{prefix}string[]";
+            }
 
             var arraySuffix = array.SizeType != ArrayType.ArraySize.Constant &&
                 MarshalKind == MarshalKind.ReturnVariableArray ?

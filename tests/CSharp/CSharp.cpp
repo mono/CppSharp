@@ -1398,3 +1398,13 @@ int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arr
            arrayOfPrimitives[0] + arrayOfPrimitives[1] +
            arrayOfObjects[0].A + arrayOfObjects[1].A;
 }
+
+std::string takeStringArray(const char* arrayOfStrings[])
+{
+    std::string result;
+    for (int i = 0; i < 3; i++)
+    {
+        result += arrayOfStrings[i];
+    }
+    return result;
+}

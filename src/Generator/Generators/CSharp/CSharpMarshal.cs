@@ -854,7 +854,8 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalVariableArray(Type arrayType)
         {
-            if (arrayType.IsPrimitiveType())
+            if (arrayType.IsPrimitiveType() ||
+                arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
             {
                 Context.Return.Write(Context.Parameter.Name);
                 return;
