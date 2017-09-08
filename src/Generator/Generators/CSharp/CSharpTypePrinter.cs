@@ -134,7 +134,8 @@ namespace CppSharp.Generators.CSharp
 
             var arraySuffix = array.SizeType != ArrayType.ArraySize.Constant &&
                 MarshalKind == MarshalKind.ReturnVariableArray ?
-                (ContextKind == TypePrinterContextKind.Managed ? "*" : string.Empty) : "[]";
+                (ContextKind == TypePrinterContextKind.Managed &&
+                 arrayType.IsPrimitiveType() ? "*" : string.Empty) : "[]";
             return $"{arrayType.Visit(this)}{arraySuffix}";
         }
 

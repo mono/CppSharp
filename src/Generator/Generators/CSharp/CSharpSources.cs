@@ -1032,11 +1032,12 @@ namespace CppSharp.Generators.CSharp
 
             Type varType = var.Type.Desugar();
             var arrayType = varType as ArrayType;
+            var elementType = arrayType?.Type.Desugar();
             var @class = var.Namespace as Class;
             var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
             if (isRefTypeArray)
             {
-                string cast = arrayType.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                string cast = elementType.IsPrimitiveType(PrimitiveType.Char) &&
                     arrayType.QualifiedType.Qualifiers.IsConst
                         ? string.Empty : "(byte*)";
                 WriteLine($"var {ptr} = {cast}{location};");
@@ -1054,11 +1055,18 @@ namespace CppSharp.Generators.CSharp
             var ctx = new CSharpMarshalContext(Context)
             {
                 ArgName = var.Name,
-                ReturnVarName = (isRefTypeArray ||
-                    (arrayType != null && arrayType.Type.Desugar().IsPrimitiveType()) ? string.Empty : "*")
-                    + Generator.GeneratedIdentifier("ptr"),
                 ReturnType = new QualifiedType(var.Type)
             };
+            var prefix = string.Empty;
+            if (!isRefTypeArray && elementType == null)
+                ctx.ReturnVarName = $"*{ptr}";
+            else if (elementType == null || elementType.IsPrimitiveType() ||
+                arrayType.SizeType == ArrayType.ArraySize.Constant)
+                ctx.ReturnVarName = ptr;
+            else
+                ctx.ReturnVarName = $@"{elementType}.{
+                    Helpers.CreateInstanceIdentifier}(new {
+                        CSharpTypePrinter.IntPtrType}({ptr}))";
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             var.QualifiedType.Visit(marshal);

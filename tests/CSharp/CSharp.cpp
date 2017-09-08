@@ -1408,3 +1408,8 @@ std::string takeStringArray(const char* arrayOfStrings[])
     }
     return result;
 }
+
+std::string takeConstStringArray(const char* const arrayOfStrings[])
+{
+    return takeStringArray(const_cast<const char**>(arrayOfStrings));
+}

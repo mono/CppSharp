@@ -138,21 +138,13 @@ namespace CppSharp
                 return false;
             }
 
-            var arrayElemType = array.Type.Desugar();
-
-            if (array.SizeType == ArrayType.ArraySize.Incomplete &&
-                array.QualifiedType.Qualifiers.IsConst &&
-                !arrayElemType.IsPrimitiveType())
-            {
-                Ignore();
-                return false;
-            }
-
             if (!array.QualifiedType.Visit(this))
                 return false;
 
             if (array.SizeType != ArrayType.ArraySize.Constant)
                 return true;
+
+            var arrayElemType = array.Type.Desugar();
 
             Class @class;
             if (arrayElemType.TryGetClass(out @class) && @class.IsRefType)

@@ -1240,3 +1240,5 @@ inline namespace InlineNamespace
 DLL_API int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]);
 
 DLL_API std::string takeStringArray(const char* arrayOfStrings[]);
+
+DLL_API std::string takeConstStringArray(const char* const arrayOfStrings[]);

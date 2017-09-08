@@ -1074,6 +1074,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         string[] strings = { "The ", "test ", "works." };
         Assert.That(CSharp.CSharp.TakeStringArray(strings), Is.EqualTo("The test works."));
+        Assert.That(CSharp.CSharp.TakeConstStringArray(strings), Is.EqualTo("The test works."));
     }
 
     private class OverrideVirtualTemplate : VirtualTemplate<int>
