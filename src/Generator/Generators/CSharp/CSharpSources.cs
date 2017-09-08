@@ -743,18 +743,17 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVariableSetter<T>(T decl) where T : Declaration, ITypedDecl
+        private void GenerateVariableSetter(Variable var)
         {
-            var var = decl as Variable;
-
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
             var location = $@"CppSharp.SymbolResolver.ResolveSymbol(""{
-                GetLibraryOf(decl)}"", ""{var.Mangled}"")";
+                GetLibraryOf(var)}"", ""{var.Mangled}"")";
 
             string ptr = Generator.GeneratedIdentifier("ptr");
-            var arrayType = decl.Type as ArrayType;
-            var @class = decl.Namespace as Class;
+            Type varType = var.Type.Desugar();
+            var arrayType = varType as ArrayType;
+            var @class = var.Namespace as Class;
             var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
             if (isRefTypeArray)
                 WriteLine($@"var {ptr} = {
@@ -762,26 +761,26 @@ namespace CppSharp.Generators.CSharp
                      arrayType.QualifiedType.Qualifiers.IsConst ?
                         string.Empty : "(byte*)")}{location};");
             else
-                WriteLine($"var {ptr} = ({var.Type}*){location};");
+                WriteLine($"var {ptr} = ({varType}*){location};");
 
             TypePrinter.PopContext();
 
             var param = new Parameter
             {
                 Name = "value",
-                QualifiedType = decl.QualifiedType
+                QualifiedType = var.QualifiedType
             };
 
             var ctx = new CSharpMarshalContext(Context)
             {
                 Parameter = param,
                 ArgName = param.Name,
-                ReturnType = new QualifiedType(var.Type)
+                ReturnType = new QualifiedType(varType)
             };
             ctx.PushMarshalKind(MarshalKind.Variable);
 
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            decl.QualifiedType.Visit(marshal);
+            var.QualifiedType.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 Write(marshal.Context.Before);
@@ -1022,19 +1021,18 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVariableGetter<T>(T decl) where T : Declaration, ITypedDecl
+        private void GenerateVariableGetter(Variable var)
         {
-            var var = decl as Variable;
-
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-            string library = GetLibraryOf(decl);
+            string library = GetLibraryOf(var);
             var location = $"CppSharp.SymbolResolver.ResolveSymbol(\"{library}\", \"{var.Mangled}\")";
 
             var ptr = Generator.GeneratedIdentifier("ptr");
 
-            var arrayType = decl.Type as ArrayType;
-            var @class = decl.Namespace as Class;
+            Type varType = var.Type.Desugar();
+            var arrayType = varType as ArrayType;
+            var @class = var.Namespace as Class;
             var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
             if (isRefTypeArray)
             {
@@ -1046,16 +1044,16 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 TypePrinter.PushMarshalKind(MarshalKind.ReturnVariableArray);
-                var varType = var.Type.Visit(TypePrinter);
+                var varReturnType = varType.Visit(TypePrinter);
                 TypePrinter.PopMarshalKind();
-                WriteLine($"var {ptr} = ({varType}*){location};");
+                WriteLine($"var {ptr} = ({varReturnType}*){location};");
             }
 
             TypePrinter.PopContext();
 
             var ctx = new CSharpMarshalContext(Context)
             {
-                ArgName = decl.Name,
+                ArgName = var.Name,
                 ReturnVarName = (isRefTypeArray ||
                     (arrayType != null && arrayType.Type.Desugar().IsPrimitiveType()) ? string.Empty : "*")
                     + Generator.GeneratedIdentifier("ptr"),
@@ -1063,7 +1061,7 @@ namespace CppSharp.Generators.CSharp
             };
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-            decl.QualifiedType.Visit(marshal);
+            var.QualifiedType.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 Write(marshal.Context.Before);
