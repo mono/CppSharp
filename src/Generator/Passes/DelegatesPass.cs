@@ -38,6 +38,14 @@ namespace CppSharp.Passes
             return result;
         }
 
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (@class.Ignore)
+                return false;
+
+            return base.VisitClassDecl(@class);
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
             if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
@@ -59,7 +67,7 @@ namespace CppSharp.Passes
 
         public override bool VisitParameterDecl(Parameter parameter)
         {
-            if (!base.VisitParameterDecl(parameter) || parameter.Namespace == null ||
+            if (!base.VisitDeclaration(parameter) || parameter.Namespace == null ||
                 parameter.Namespace.Ignore)
                 return false;
 
@@ -89,13 +97,15 @@ namespace CppSharp.Passes
             return new QualifiedType(new TypedefType { Declaration = @delegate });
         }
 
-        private TypedefDecl GetDelegate(QualifiedType type, ITypedDecl decl)
+        private TypedefDecl GetDelegate(QualifiedType type, ITypedDecl typedDecl)
         {
-            FunctionType newFunctionType = GetNewFunctionType(decl, type);
+            FunctionType newFunctionType = GetNewFunctionType(typedDecl, type);
 
             var delegateName = GetDelegateName(newFunctionType);
-            var access = decl is Method ? AccessSpecifier.Private : AccessSpecifier.Public;
-            var existingDelegate = delegates.SingleOrDefault(t => t.Name == delegateName);
+            var access = typedDecl is Method ? AccessSpecifier.Private : AccessSpecifier.Public;
+            var decl = (Declaration) typedDecl;
+            Module module = decl.TranslationUnit.Module;
+            var existingDelegate = delegates.Find(t => Match(t, delegateName, module));
             if (existingDelegate != null)
             {
                 // Ensure a delegate used for a virtual method and a type is public
@@ -110,12 +120,12 @@ namespace CppSharp.Passes
 
                 // Add a new delegate with the calling convention appended to its name
                 delegateName += '_' + newFunctionType.CallingConvention.ToString();
-                existingDelegate = delegates.SingleOrDefault(t => t.Name == delegateName);
+                existingDelegate = delegates.Find(t => Match(t, delegateName, module));
                 if (existingDelegate != null)
                     return existingDelegate;
             }
 
-            var namespaceDelegates = GetDeclContextForDelegates(((Declaration) decl).Namespace);
+            var namespaceDelegates = GetDeclContextForDelegates(decl.Namespace);
             var delegateType = new QualifiedType(new PointerType(new QualifiedType(newFunctionType)));
             existingDelegate = new TypedefDecl
                 {
@@ -152,6 +162,13 @@ namespace CppSharp.Passes
                 functionType.Parameters[i].Name = $"_{i}";
 
             return functionType;
+        }
+
+        private static bool Match(TypedefDecl t, string delegateName, Module module)
+        {
+            return t.Name == delegateName &&
+                (module == t.TranslationUnit.Module ||
+                 module.Dependencies.Contains(t.TranslationUnit.Module));
         }
 
         private DeclarationContext GetDeclContextForDelegates(DeclarationContext @namespace)
