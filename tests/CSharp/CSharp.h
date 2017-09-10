@@ -62,7 +62,7 @@ public:
     void obsolete();
     Qux* getInterface();
     void setInterface(Qux* qux);
-    virtual void v();
+    virtual void v(int array[]);
 };
 
 class DLL_API Bar : public Qux

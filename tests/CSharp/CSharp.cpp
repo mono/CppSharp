@@ -162,7 +162,7 @@ void Qux::setInterface(Qux *qux)
 {
 }
 
-void Qux::v()
+void Qux::v(int array[])
 {
 }
 
