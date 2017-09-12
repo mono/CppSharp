@@ -1077,6 +1077,18 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(CSharp.CSharp.TakeConstStringArray(strings), Is.EqualTo("The test works."));
     }
 
+    [Test]
+    public void TestArrayParamsInVirtual()
+    {
+        Foo[] pointers = { new Foo { A = 2 }, new Foo { A = 5 } };
+        int[] ints = { 6, 7 };
+        Foo[] values = { new Foo { A = 10 }, new Foo { A = 20 } };
+        using (var qux = new Qux())
+        {
+            Assert.That(qux.VirtualTakesArrays(pointers, ints, values), Is.EqualTo(50));
+        }
+    }
+
     private class OverrideVirtualTemplate : VirtualTemplate<int>
     {
         public override int Function

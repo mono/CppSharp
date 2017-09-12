@@ -128,8 +128,8 @@ namespace CppSharp.Generators.CSharp
                             {
                                 QualifiedPointee = array.QualifiedType
                             }, quals);
-
-                    goto case ArrayType.ArraySize.Variable;
+                    MarshalVariableArray(array);
+                    break;
                 case ArrayType.ArraySize.Variable:
                     Context.Return.Write(Context.ReturnVarName);
                     break;
@@ -382,6 +382,52 @@ namespace CppSharp.Generators.CSharp
                     Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
             }
             return ret;
+        }
+
+        private void MarshalVariableArray(ArrayType array)
+        {
+            Type arrayType = array.Type.Desugar();
+            if (arrayType.IsPrimitiveType() ||
+                arrayType.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                Context.MarshalKind != MarshalKind.GenericDelegate)
+            {
+                Context.Return.Write(Context.ReturnVarName);
+                return;
+            }
+
+            var intermediateArray = Generator.GeneratedIdentifier(Context.ReturnVarName);
+            var intermediateArrayType = arrayType.Visit(typePrinter);
+
+            Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
+
+            Context.Before.WriteLine($"if (ReferenceEquals({Context.ReturnVarName}, null))");
+            Context.Before.WriteLineIndent($"{intermediateArray} = null;");
+            Context.Before.WriteLine("else");
+
+            Context.Before.WriteStartBraceIndent();
+            Context.Before.WriteLine($@"{intermediateArray} = new {
+                intermediateArrayType}[{Context.ReturnVarName}.Length];");
+            Context.Before.WriteLine($"for (int i = 0; i < {intermediateArray}.Length; i++)");
+
+            if (arrayType.IsAddress())
+            {
+                Context.Before.WriteStartBraceIndent();
+                string element = Generator.GeneratedIdentifier("element");
+                Context.Before.WriteLine($"var {element} = {Context.ReturnVarName}[i];");
+                var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
+                Context.Before.WriteLine($@"{intermediateArray}[i] = {element} == {
+                    intPtrZero} ? null : {intermediateArrayType}.{
+                    Helpers.CreateInstanceIdentifier}({element});");
+                Context.Before.WriteCloseBraceIndent();
+            }
+            else
+                Context.Before.WriteLineIndent($@"{intermediateArray}[i] = {
+                    intermediateArrayType}.{Helpers.CreateInstanceIdentifier}({
+                    Context.ReturnVarName}[i]);");
+
+            Context.Before.WriteCloseBraceIndent();
+
+            Context.Return.Write(intermediateArray);
         }
 
         private readonly CSharpTypePrinter typePrinter;
@@ -861,7 +907,7 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            var intermediateArray = $"__{Context.Parameter.Name}";
+            var intermediateArray = Generator.GeneratedIdentifier(Context.Parameter.Name);
             var intermediateArrayType = typePrinter.PrintNative(arrayType);
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
@@ -876,7 +922,7 @@ namespace CppSharp.Generators.CSharp
             Context.Before.WriteLine($"for (int i = 0; i < {intermediateArray}.Length; i++)");
 
             Context.Before.WriteStartBraceIndent();
-            const string element = "__element";
+            string element = Generator.GeneratedIdentifier("element");
             Context.Before.WriteLine($"var {element} = {Context.Parameter.Name}[i];");
             if (arrayType.IsAddress())
             {
