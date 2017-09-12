@@ -1066,15 +1066,21 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Foo[] pointers = { new Foo { A = 2 }, new Foo { A = 5 } };
         int[] ints = { 6, 7 };
         Foo[] values = { new Foo { A = 10 }, new Foo { A = 20 } };
-        Assert.That(CSharp.CSharp.TakeArrays(pointers, ints, values), Is.EqualTo(50));
+        using (var testArrays = new TestArrays())
+        {
+            Assert.That(testArrays.TakeArrays(pointers, ints, values), Is.EqualTo(50));
+        }
     }
 
     [Test]
     public void TestStringArrayParams()
     {
         string[] strings = { "The ", "test ", "works." };
-        Assert.That(CSharp.CSharp.TakeStringArray(strings), Is.EqualTo("The test works."));
-        Assert.That(CSharp.CSharp.TakeConstStringArray(strings), Is.EqualTo("The test works."));
+        using (var testArrays = new TestArrays())
+        {
+            Assert.That(testArrays.TakeStringArray(strings), Is.EqualTo("The test works."));
+            Assert.That(testArrays.TakeConstStringArray(strings), Is.EqualTo("The test works."));
+        }
     }
 
     [Test]
@@ -1083,9 +1089,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Foo[] pointers = { new Foo { A = 2 }, new Foo { A = 5 } };
         int[] ints = { 6, 7 };
         Foo[] values = { new Foo { A = 10 }, new Foo { A = 20 } };
-        using (var qux = new Qux())
+        using (var testArrays = new TestArrays())
         {
-            Assert.That(qux.VirtualTakesArrays(pointers, ints, values), Is.EqualTo(50));
+            Assert.That(testArrays.VirtualTakesArrays(pointers, ints, values), Is.EqualTo(50));
         }
     }
 

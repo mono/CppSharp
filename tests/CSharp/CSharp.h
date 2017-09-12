@@ -50,12 +50,6 @@ private:
 
 class Bar;
 
-DLL_API int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]);
-
-DLL_API std::string takeStringArray(const char* arrayOfStrings[]);
-
-DLL_API std::string takeConstStringArray(const char* const arrayOfStrings[]);
-
 class DLL_API Qux
 {
 public:
@@ -68,7 +62,7 @@ public:
     void obsolete();
     Qux* getInterface();
     void setInterface(Qux* qux);
-    virtual int virtualTakesArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
+    virtual void makeClassDynamic();
 };
 
 class DLL_API Bar : public Qux
@@ -1242,3 +1236,14 @@ inline namespace InlineNamespace
 {
     DLL_API void FunctionInsideInlineNamespace();
 }
+
+class DLL_API TestArrays
+{
+public:
+    TestArrays();
+    ~TestArrays();
+    int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
+    std::string takeStringArray(const char* arrayOfStrings[]);
+    std::string takeConstStringArray(const char* const arrayOfStrings[]);
+    virtual int virtualTakesArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
+};
