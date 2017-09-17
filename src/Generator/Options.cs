@@ -94,6 +94,7 @@ namespace CppSharp
         public bool GenerateFunctionTemplates;
         /// <summary>
         /// C# only: gets or sets a value indicating whether to generate class templates.
+        /// Still experimental - do not use in production.
         /// </summary>
         /// <value>
         ///   <c>true</c> to generate class templates; otherwise, <c>false</c>.
