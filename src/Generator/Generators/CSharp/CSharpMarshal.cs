@@ -478,15 +478,7 @@ namespace CppSharp.Generators.CSharp
                 case ArrayType.ArraySize.Constant:
                     if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
-                        Context.Before.WriteLine("if ({0} == null || {0}.Length != {1})",
-                            Context.Parameter.Name, array.Size);
-                        ThrowArgumentOutOfRangeException();
-                        var ptr = "__ptr" + Context.ParameterIndex;
-                        Context.Before.WriteLine("fixed ({0}* {1} = {2})",
-                            array.Type, ptr, Context.Parameter.Name);
-                        Context.Before.WriteStartBraceIndent();
-                        Context.Return.Write("new global::System.IntPtr({0})", ptr);
-                        Context.HasCodeBlock = true;
+                        goto case ArrayType.ArraySize.Incomplete;
                     }
                     else
                     {
@@ -530,7 +522,7 @@ namespace CppSharp.Generators.CSharp
                     }
                     break;
                 case ArrayType.ArraySize.Incomplete:
-                    MarshalVariableArray(arrayType);
+                    MarshalArray(array);
                     break;
                 default:
                     Context.Return.Write("null");
@@ -898,17 +890,26 @@ namespace CppSharp.Generators.CSharp
                 Context.Parameter.Name);
         }
 
-        private void MarshalVariableArray(Type arrayType)
+        private void MarshalArray(ArrayType arrayType)
         {
-            if (arrayType.IsPrimitiveType() ||
-                arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
+            if (arrayType.SizeType == ArrayType.ArraySize.Constant)
+            {
+                Context.Before.WriteLine("if ({0} == null || {0}.Length != {1})",
+                      Context.Parameter.Name, arrayType.Size);
+                ThrowArgumentOutOfRangeException();
+            }
+
+            var elementType = arrayType.Type.Desugar();
+
+            if (elementType.IsPrimitiveType() ||
+                elementType.IsPointerToPrimitiveType())
             {
                 Context.Return.Write(Context.Parameter.Name);
                 return;
             }
 
             var intermediateArray = Generator.GeneratedIdentifier(Context.Parameter.Name);
-            var intermediateArrayType = typePrinter.PrintNative(arrayType);
+            var intermediateArrayType = typePrinter.PrintNative(elementType);
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
 
@@ -924,7 +925,7 @@ namespace CppSharp.Generators.CSharp
             Context.Before.WriteStartBraceIndent();
             string element = Generator.GeneratedIdentifier("element");
             Context.Before.WriteLine($"var {element} = {Context.Parameter.Name}[i];");
-            if (arrayType.IsAddress())
+            if (elementType.IsAddress())
             {
                 var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
                 Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({

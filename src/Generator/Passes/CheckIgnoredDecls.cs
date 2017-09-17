@@ -472,7 +472,7 @@ namespace CppSharp.Passes
 
         private bool IsTypeIgnored(Type type)
         {
-            var checker = new TypeIgnoreChecker(TypeMaps);
+            var checker = new TypeIgnoreChecker(TypeMaps, Options.GeneratorKind);
             type.Visit(checker);
 
             return checker.IsIgnored;

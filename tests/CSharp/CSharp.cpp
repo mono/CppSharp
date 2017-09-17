@@ -1407,6 +1407,14 @@ int TestArrays::takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitive
            arrayOfObjects[0].A + arrayOfObjects[1].A;
 }
 
+int TestArrays::takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
+                           int* fixedArrayOfPointersToPrimitives[5]) const
+{
+    return fixedArrayOfPointersToObjects[0]->A + fixedArrayOfPointersToObjects[1]->A +
+           fixedArrayOfPrimitives[0] + fixedArrayOfPrimitives[1] +
+           *fixedArrayOfPointersToPrimitives[0] + *fixedArrayOfPointersToPrimitives[1];
+}
+
 std::string TestArrays::takeStringArray(const char* arrayOfStrings[])
 {
     std::string result;

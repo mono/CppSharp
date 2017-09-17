@@ -60,7 +60,9 @@ namespace CppSharp.Generators.CSharp
             TypeQualifiers quals)
         {
             Type arrayType = array.Type.Desugar();
-            if (ContextKind == TypePrinterContextKind.Native &&
+            if ((MarshalKind == MarshalKind.NativeField ||
+                (ContextKind == TypePrinterContextKind.Native &&
+                 MarshalKind == MarshalKind.ReturnVariableArray)) &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
                 if (array.Size == 0)
@@ -278,8 +280,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if ((desugared.IsDependent || desugared.TryGetClass(out @class) ||
-                (desugared is ArrayType && Parameter != null))
+            if ((desugared.IsDependent || desugared.TryGetClass(out @class))
                 && ContextKind == TypePrinterContextKind.Native)
             {
                 return IntPtrType;

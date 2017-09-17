@@ -1,5 +1,6 @@
 ﻿using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
 using CppSharp.Types;
 
 namespace CppSharp
@@ -9,14 +10,16 @@ namespace CppSharp
     /// </summary>
     public class TypeIgnoreChecker : AstVisitor
     {
-        ITypeMapDatabase TypeMapDatabase { get; set; }
+        ITypeMapDatabase TypeMapDatabase { get; }
         public bool IsIgnored;
 
-        public TypeIgnoreChecker(ITypeMapDatabase database)
+        public TypeIgnoreChecker(ITypeMapDatabase database,
+            GeneratorKind generatorKind = GeneratorKind.CSharp)
         {
             TypeMapDatabase = database;
             VisitOptions.VisitClassBases = false;
             VisitOptions.VisitTemplateArguments = false;
+            this.generatorKind = generatorKind;
         }
 
         void Ignore()
@@ -138,13 +141,28 @@ namespace CppSharp
                 return false;
             }
 
+            var arrayElemType = array.Type.Desugar();
+            Enumeration @enum;
+            FunctionType functionType;
+            if (arrayElemType is ArrayType ||
+                arrayElemType is FunctionType ||
+                arrayElemType.IsPointerTo(out functionType) ||
+                (arrayElemType.TryGetEnum(out @enum) &&
+                 array.SizeType == ArrayType.ArraySize.Constant))
+            {
+                Ignore();
+                return false;
+            }
+
+            if (generatorKind == GeneratorKind.CSharp)
+                return true;
+
+            // the C++/CLI generator needs work to support arrays
             if (!array.QualifiedType.Visit(this))
                 return false;
 
             if (array.SizeType != ArrayType.ArraySize.Constant)
                 return true;
-
-            var arrayElemType = array.Type.Desugar();
 
             Class @class;
             if (arrayElemType.TryGetClass(out @class) && @class.IsRefType)
@@ -170,6 +188,8 @@ namespace CppSharp
             Ignore();
             return false;
         }
-    }
 
+
+        private readonly GeneratorKind generatorKind;
+    }
 }
