@@ -1057,6 +1057,7 @@ namespace CppSharp.Generators.CSharp
                 ArgName = var.Name,
                 ReturnType = new QualifiedType(var.Type)
             };
+            ctx.PushMarshalKind(MarshalKind.ReturnVariableArray);
             var prefix = string.Empty;
             if (!isRefTypeArray && elementType == null)
                 ctx.ReturnVarName = $"*{ptr}";

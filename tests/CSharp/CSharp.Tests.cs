@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
-using CSharp.Delegates;
 
 public unsafe class CSharpTests : GeneratorTestFixture
 {
@@ -1069,6 +1068,24 @@ public unsafe class CSharpTests : GeneratorTestFixture
         using (var testArrays = new TestArrays())
         {
             Assert.That(testArrays.TakeArrays(pointers, ints, values), Is.EqualTo(50));
+            Assert.That(testArrays.VirtualTakeArrays(pointers, ints, values), Is.EqualTo(50));
+        }
+    }
+
+    [Test]
+    public void TestFixedArrayParams()
+    {
+        Foo[] pointers = { new Foo { A = 2 }, new Foo { A = 5 }, new Foo { A = 7 } };
+        var int1 = 6;
+        var int2 = 7;
+        var int3 = 8;
+        var int4 = 9;
+        int[] ints = { int1, int2, int3, int4 };
+        int*[] intPointers = { &int1, &int2, &int3, &int4, &int1 };
+        using (var testArrays = new TestArrays())
+        {
+            Assert.That(testArrays.TakeArrays(pointers, ints, intPointers), Is.EqualTo(80));
+            Assert.That(testArrays.VirtualTakeArrays(pointers, ints, intPointers), Is.EqualTo(80));
         }
     }
 
@@ -1080,18 +1097,6 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             Assert.That(testArrays.TakeStringArray(strings), Is.EqualTo("The test works."));
             Assert.That(testArrays.TakeConstStringArray(strings), Is.EqualTo("The test works."));
-        }
-    }
-
-    [Test]
-    public void TestArrayParamsInVirtual()
-    {
-        Foo[] pointers = { new Foo { A = 2 }, new Foo { A = 5 } };
-        int[] ints = { 6, 7 };
-        Foo[] values = { new Foo { A = 10 }, new Foo { A = 20 } };
-        using (var testArrays = new TestArrays())
-        {
-            Assert.That(testArrays.VirtualTakesArrays(pointers, ints, values), Is.EqualTo(50));
         }
     }
 

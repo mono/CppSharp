@@ -1410,9 +1410,20 @@ int TestArrays::takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitive
 int TestArrays::takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
                            int* fixedArrayOfPointersToPrimitives[5]) const
 {
-    return fixedArrayOfPointersToObjects[0]->A + fixedArrayOfPointersToObjects[1]->A +
-           fixedArrayOfPrimitives[0] + fixedArrayOfPrimitives[1] +
-           *fixedArrayOfPointersToPrimitives[0] + *fixedArrayOfPointersToPrimitives[1];
+    int sum = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        sum += fixedArrayOfPointersToObjects[i]->A;
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        sum += fixedArrayOfPrimitives[i];
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        sum += *fixedArrayOfPointersToPrimitives[i];
+    }
+    return sum;
 }
 
 std::string TestArrays::takeStringArray(const char* arrayOfStrings[])
@@ -1430,7 +1441,12 @@ std::string TestArrays::takeConstStringArray(const char* const arrayOfStrings[])
     return takeStringArray(const_cast<const char**>(arrayOfStrings));
 }
 
-int TestArrays::virtualTakesArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const
+int TestArrays::virtualTakeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const
 {
     return takeArrays(arrayOfPointersToObjects, arrayOfPrimitives, arrayOfObjects);
+}
+
+int TestArrays::virtualTakeArrays(Foo *fixedArrayOfPointersToObjects[], int fixedArrayOfPrimitives[], int *fixedArrayOfPointersToPrimitives[]) const
+{
+    return takeArrays(fixedArrayOfPointersToObjects, fixedArrayOfPrimitives, fixedArrayOfPointersToPrimitives);
 }

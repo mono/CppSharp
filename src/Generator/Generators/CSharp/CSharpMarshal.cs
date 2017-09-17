@@ -82,43 +82,51 @@ namespace CppSharp.Generators.CSharp
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    var supportBefore = Context.Before;
-                    string value = Generator.GeneratedIdentifier("value");
-                    supportBefore.WriteLine("{0}[] {1} = null;", array.Type, value, array.Size);
-                    supportBefore.WriteLine("if ({0} != null)", Context.ReturnVarName);
-                    supportBefore.WriteStartBraceIndent();
-                    supportBefore.WriteLine("{0} = new {1}[{2}];", value, array.Type, array.Size);
-                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
-                        supportBefore.WriteLineIndent("{0}[i] = new global::System.IntPtr({1}[i]);",
-                            value, Context.ReturnVarName);
-                    else
+                    if (Context.MarshalKind == MarshalKind.NativeField ||
+                        Context.MarshalKind == MarshalKind.ReturnVariableArray)
                     {
-                        var arrayType = array.Type.Desugar();
-                        Class @class;
-                        if (arrayType.TryGetClass(out @class) && @class.IsRefType)
-                            supportBefore.WriteLineIndent(
-                                "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
-                                value, array.Type, Helpers.CreateInstanceIdentifier,
-                                Helpers.InternalStruct, Context.ReturnVarName);
+                        var supportBefore = Context.Before;
+                        string value = Generator.GeneratedIdentifier("value");
+                        supportBefore.WriteLine("{0}[] {1} = null;", array.Type, value, array.Size);
+                        supportBefore.WriteLine("if ({0} != null)", Context.ReturnVarName);
+                        supportBefore.WriteStartBraceIndent();
+                        supportBefore.WriteLine("{0} = new {1}[{2}];", value, array.Type, array.Size);
+                        supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                        if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
+                            supportBefore.WriteLineIndent("{0}[i] = new global::System.IntPtr({1}[i]);",
+                                value, Context.ReturnVarName);
                         else
                         {
-                            if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
-                                Context.Context.Options.MarshalCharAsManagedChar)
-                            {
+                            var arrayType = array.Type.Desugar();
+                            Class @class;
+                            if (arrayType.TryGetClass(out @class) && @class.IsRefType)
                                 supportBefore.WriteLineIndent(
-                                    "{0}[i] = global::System.Convert.ToChar({1}[i]);",
-                                    value, Context.ReturnVarName);
-                            }
+                                    "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
+                                    value, array.Type, Helpers.CreateInstanceIdentifier,
+                                    Helpers.InternalStruct, Context.ReturnVarName);
                             else
                             {
-                                supportBefore.WriteLineIndent("{0}[i] = {1}[i];",
-                                    value, Context.ReturnVarName);
+                                if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
+                                    Context.Context.Options.MarshalCharAsManagedChar)
+                                {
+                                    supportBefore.WriteLineIndent(
+                                        "{0}[i] = global::System.Convert.ToChar({1}[i]);",
+                                        value, Context.ReturnVarName);
+                                }
+                                else
+                                {
+                                    supportBefore.WriteLineIndent("{0}[i] = {1}[i];",
+                                        value, Context.ReturnVarName);
+                                }
                             }
                         }
+                        supportBefore.WriteCloseBraceIndent();
+                        Context.Return.Write(value);
                     }
-                    supportBefore.WriteCloseBraceIndent();
-                    Context.Return.Write(value);
+                    else
+                    {
+                        goto case ArrayType.ArraySize.Incomplete;
+                    }
                     break;
                 case ArrayType.ArraySize.Incomplete:
                     // const char* and const char[] are the same so we can use a string
@@ -128,7 +136,7 @@ namespace CppSharp.Generators.CSharp
                             {
                                 QualifiedPointee = array.QualifiedType
                             }, quals);
-                    MarshalVariableArray(array);
+                    MarshalArray(array);
                     break;
                 case ArrayType.ArraySize.Variable:
                     Context.Return.Write(Context.ReturnVarName);
@@ -384,11 +392,11 @@ namespace CppSharp.Generators.CSharp
             return ret;
         }
 
-        private void MarshalVariableArray(ArrayType array)
+        private void MarshalArray(ArrayType array)
         {
             Type arrayType = array.Type.Desugar();
             if (arrayType.IsPrimitiveType() ||
-                arrayType.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                arrayType.IsPointerToPrimitiveType() ||
                 Context.MarshalKind != MarshalKind.GenericDelegate)
             {
                 Context.Return.Write(Context.ReturnVarName);

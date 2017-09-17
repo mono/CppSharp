@@ -1247,5 +1247,7 @@ public:
                    int* fixedArrayOfPointersToPrimitives[5]) const;
     std::string takeStringArray(const char* arrayOfStrings[]);
     std::string takeConstStringArray(const char* const arrayOfStrings[]);
-    virtual int virtualTakesArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
+    virtual int virtualTakeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
+    virtual int virtualTakeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
+                                  int* fixedArrayOfPointersToPrimitives[5]) const;
 };
