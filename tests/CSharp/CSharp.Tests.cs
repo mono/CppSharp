@@ -1072,7 +1072,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
-    [Test, Platform(Exclude = "MacOsX")]
+    [Test]
     public void TestFixedArrayParams()
     {
         Foo[] pointers = { new Foo { A = 2 }, new Foo { A = 5 }, new Foo { A = 7 } };
