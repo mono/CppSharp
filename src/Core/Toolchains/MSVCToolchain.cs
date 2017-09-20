@@ -615,7 +615,7 @@ namespace CppSharp
 
                 int fetched;
                 var instances = new ISetupInstance[1];
-                var regexWinSDK10Version = new Regex(@"Windows10SDK\.(\d+)\.");
+                var regexWinSDK10Version = new Regex(@"Windows10SDK\.(\d+)\.?");
                 do
                 {
                     e.Next(1, instances, out fetched);
