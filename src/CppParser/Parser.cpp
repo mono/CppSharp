@@ -1809,7 +1809,7 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
         {
             auto D = cast<Decl>(Ctx);
             auto Decl = WalkDeclaration(D);
-            DC = cast<DeclarationContext>(Decl);
+            DC = static_cast<DeclarationContext*>(Decl);
         } }
     }
 
