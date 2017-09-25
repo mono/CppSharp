@@ -110,6 +110,12 @@ namespace CppSharp.Passes
                 if (!qualifiedPointee.Qualifiers.IsConst)
                     property.SetMethod = @operator;
             }
+            // Non-primitive indexers can set if they are not const
+            else if (!returnType.IsPrimitiveType())
+            {
+                if (!@operator.ReturnType.Qualifiers.IsConst)
+                    property.SetMethod = @operator;
+            }
             
             // If we've a setter use the pointee as the type of the property.
             var pointerType = property.Type as PointerType;

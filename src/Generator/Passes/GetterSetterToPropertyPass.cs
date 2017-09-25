@@ -256,6 +256,14 @@ namespace CppSharp.Passes
                         setters.Add(method);
                     else if (method.Parameters.Count > 1)
                         setMethods.Add(method);
+
+                    // If the set function returns a bool, still allow access to the set method
+                    // directly in order to get the return value.
+                    if (method.Parameters.Count == 1 &&
+                        returnType.IsPrimitiveType(PrimitiveType.Bool))
+                    {
+                        setMethods.Add(method);
+                    }
                 }
                 else
                 {
