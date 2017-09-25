@@ -1220,9 +1220,10 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
 
 //-----------------------------------//
 
+template<typename TypeLoc>
 std::vector<CppSharp::CppParser::TemplateArgument>
 Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
-    clang::TemplateSpecializationTypeLoc* TSTL)
+    TypeLoc* TSTL)
 {
     using namespace clang;
 
@@ -2433,11 +2434,11 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
             assert(TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization);
         }
 
-        TemplateSpecializationTypeLoc TSpecTL;
-        TemplateSpecializationTypeLoc *TSTL = 0;
+        DependentTemplateSpecializationTypeLoc TSpecTL;
+        DependentTemplateSpecializationTypeLoc *TSTL = 0;
         if (LocValid)
         {
-            TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+            TSpecTL = TL->getAs<DependentTemplateSpecializationTypeLoc>();
             TSTL = &TSpecTL;
         }
 

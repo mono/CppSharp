@@ -101,7 +101,8 @@ private:
     WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl* VTS);
     VarTemplatePartialSpecialization*
     WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpecializationDecl* VTS);
-    std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
+    template<typename TypeLoc>
+    std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, TypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
     QualifiedType GetQualifiedType(const clang::QualType& qual, const clang::TypeLoc* TL = 0);
