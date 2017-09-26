@@ -1228,16 +1228,17 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
     using namespace clang;
 
     auto params = std::vector<CppSharp::CppParser::TemplateArgument>();
+    auto typeLocNumArgs = TSTL ? TSTL->getNumArgs() : 0;
 
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
         auto TA = TAL->get(i);
-        TemplateArgumentLoc TAL;
+        TemplateArgumentLoc TArgLoc;
         TemplateArgumentLoc *ArgLoc = 0;
-        if (TSTL && TSTL->getTypePtr() && i < TSTL->getNumArgs())
+        if (TSTL && TSTL->getTypePtr() && i < typeLocNumArgs && e == typeLocNumArgs)
         {
-            TAL = TSTL->getArgLoc(i);
-            ArgLoc = &TAL;
+            TArgLoc = TSTL->getArgLoc(i);
+            ArgLoc = &TArgLoc;
         }
         auto Arg = WalkTemplateArgument(TA, ArgLoc);
         params.push_back(Arg);
