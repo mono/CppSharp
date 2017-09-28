@@ -566,9 +566,15 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestClassContext()
         {
-            var @class = AstContext.FindClass("ClassA").First();
-            Assert.That(@class.Classes.Count, Is.EqualTo(0));
-            Assert.That(@class.Redeclarations.Count, Is.EqualTo(1));
+            var @classA = AstContext.FindClass("ClassA").First();
+            Assert.That(@classA.Classes.Count, Is.EqualTo(0));
+            Assert.That(@classA.Redeclarations.Count, Is.EqualTo(0));
+
+            var @classB = AstContext.FindClass("ClassB").First();
+            Assert.That(@classB.Redeclarations.Count, Is.EqualTo(1));
+
+            var @classC = AstContext.FindClass("ClassC").First();
+            Assert.That(@classC.Redeclarations.Count, Is.EqualTo(2));
         }
     }
 }

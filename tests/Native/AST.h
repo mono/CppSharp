@@ -220,6 +220,12 @@ void testInlineAssembly()
 #endif
 }
 
-class ClassA
-{
-};
+// Tests redeclarations
+class ClassA {};
+
+class ClassB {};
+class ClassB;
+
+class ClassC {};
+class ClassC;
+class ClassC;
