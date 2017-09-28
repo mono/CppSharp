@@ -785,6 +785,14 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
     HandleDeclaration(Record, RC);
     EnsureCompleteRecord(Record, NS, RC);
 
+    for (auto Redecl : Record->redecls())
+    {
+        if (Redecl->isImplicit() || Redecl == Record)
+            continue;
+
+        RC->Redeclarations.push_back(WalkDeclaration(Redecl, false));
+    }
+
     if (HasEmptyName)
     {
         auto USR = GetDeclUSR(Record);
@@ -3474,8 +3482,7 @@ Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
     return WalkDeclaration(D, /*CanBeDefinition=*/true);
 }
 
-Declaration* Parser::WalkDeclaration(const clang::Decl* D,
-                                           bool CanBeDefinition, bool WalkRedecls)
+Declaration* Parser::WalkDeclaration(const clang::Decl* D, bool CanBeDefinition)
 {
     using namespace clang;
 
@@ -3487,7 +3494,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::Record:
     {
         auto RD = cast<RecordDecl>(D);
-
         auto Record = WalkRecord(RD);
 
         // We store a definition order index into the declarations.
@@ -3508,12 +3514,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D,
     case Decl::CXXRecord:
     {
         auto RD = cast<CXXRecordDecl>(D);
-
         auto Class = WalkRecordCXX(RD);
-
-        if (WalkRedecls)
-            for (auto redecl : RD->redecls())
-                Class->Redeclarations.push_back(WalkDeclaration(redecl, false, false));
 
         // We store a definition order index into the declarations.
         // This is needed because declarations are added to their contexts as
