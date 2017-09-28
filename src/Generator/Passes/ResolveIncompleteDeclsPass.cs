@@ -1,11 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
-using System.Collections.Generic;
 
 namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {
+        public ResolveIncompleteDeclsPass()
+        {
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitClassMethods = false;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))
@@ -25,7 +31,7 @@ namespace CppSharp.Passes
             EnsureCompleteDeclaration(template.TemplatedDecl);
 
             template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
-            // store all spesializations in the real template class because ClassTemplateDecl only forwards
+            // store all specializations in the real template class because ClassTemplateDecl only forwards
             foreach (var specialization in template.Specializations.Where(
                 s => !s.IsIncomplete && !template.TemplatedClass.Specializations.Contains(s)))
                 template.TemplatedClass.Specializations.Add(specialization);
@@ -73,16 +79,9 @@ namespace CppSharp.Passes
                 return;
 
             var @class = declaration as Class;
-            var redecls = @class?.Redeclarations;
-            if (@class != null && @class.IsOpaque)
-            {
-                if (redecls.Count == 0 ||
-                   (redecls.Last() == @class && !redecls.Exists(decl => !decl.IsIncomplete)))
-                    return;
-                duplicateClasses.Add(@class);
-            }
-                
-            
+            if (CheckForDuplicateForwardClass(@class))
+                return;
+
             declaration.CompleteDeclaration =
                 ASTContext.FindCompleteClass(declaration.QualifiedName);
 
@@ -92,6 +91,21 @@ namespace CppSharp.Passes
                 Diagnostics.Debug("Unresolved declaration: {0}",
                     declaration.Name);
             }
+        }
+
+        bool CheckForDuplicateForwardClass(Class @class)
+        {
+            var redecls = @class?.Redeclarations;
+            if (@class != null && @class.IsOpaque)
+            {
+                if (redecls.Count == 0 ||
+                   (redecls.Last() == @class && !redecls.Exists(decl => !decl.IsIncomplete)))
+                    return true;
+
+                duplicateClasses.Add(@class);
+            }
+
+            return false;
         }
 
         public override bool VisitASTContext(ASTContext c)
