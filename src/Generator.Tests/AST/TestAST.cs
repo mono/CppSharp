@@ -562,5 +562,13 @@ namespace CppSharp.Generator.Tests.AST
             foreach (var constructor in template.Constructors)
                 Assert.That(constructor.Name, Is.EqualTo("TestTemplateClass<T>"));
         }
+
+        [Test]
+        public void TestClassContext()
+        {
+            var @class = AstContext.FindClass("ClassA").First();
+            Assert.That(@class.Classes.Count, Is.EqualTo(0));
+            Assert.That(@class.Redeclarations.Count, Is.EqualTo(1));
+        }
     }
 }

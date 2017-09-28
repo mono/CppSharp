@@ -898,6 +898,12 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         }
         case Decl::IndirectField: // FIXME: Handle indirect fields
             break;
+        case Decl::CXXRecord:
+            // Handle implicit records inside the class.
+            if (D->isImplicit())
+                continue;
+            WalkDeclaration(D);
+            break;
         default:
         {
             WalkDeclaration(D);
