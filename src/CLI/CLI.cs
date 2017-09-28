@@ -36,6 +36,7 @@ namespace CppSharp
             optionSet.Add("cs|checksymbols", "enable the symbol check for the generated code", cs => { options.CheckSymbols = (cs != null); } );
             optionSet.Add("ub|unitybuild|unity", "enable unity build", ub => { options.UnityBuild = (ub != null); } );
 
+            optionSet.Add("v|verbose", "enables verbose mode", v => { options.Verbose = true; });
             optionSet.Add("h|help", "shows the help", hl => { showHelp = (hl != null); });
 
             List<string> additionalArguments = null;

@@ -475,7 +475,7 @@ namespace CppSharp
 
             driver.Setup();
 
-            if(driver.ParserOptions.Verbose)
+            if(driver.Options.Verbose)
                 Diagnostics.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)

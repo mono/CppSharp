@@ -144,6 +144,7 @@ namespace CppSharp
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = triple;
             parserOptions.Abi = abi;
+            parserOptions.Verbose = options.Verbose;
 
             var driverOptions = driver.Options;
             driverOptions.GeneratorKind = options.Kind;
@@ -187,6 +188,7 @@ namespace CppSharp
             driverOptions.OutputDir = options.OutputDir;
             driverOptions.CheckSymbols = options.CheckSymbols;
             driverOptions.UnityBuild = options.UnityBuild;
+            driverOptions.Verbose = options.Verbose;
         }
 
         private void SetupLinuxOptions(ParserOptions parserOptions)

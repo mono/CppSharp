@@ -46,5 +46,7 @@ namespace CppSharp
         public bool Compile { get; set; }
 
         public bool Debug { get; set; }
+
+        public bool Verbose { get; set; }
     }
 }
