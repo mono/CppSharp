@@ -219,3 +219,7 @@ void testInlineAssembly()
     asm("mov eax, 1");
 #endif
 }
+
+class ClassA
+{
+};
