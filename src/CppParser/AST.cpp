@@ -358,7 +358,7 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
     {
         auto _class = std::find_if(Classes.begin(), Classes.end(),
             [&](Class* klass) { return klass->name == Name &&
-                (!klass->isIncomplete || !IsComplete); });
+                (klass->isIncomplete == !IsComplete); });
 
         return _class != Classes.end() ? *_class : nullptr;
     }
