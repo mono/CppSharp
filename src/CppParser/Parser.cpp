@@ -91,7 +91,7 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     auto CXXRD = dyn_cast<CXXRecordDecl>(RD);
 
     auto Parent = static_cast<AST::Class*>(
-        WalkDeclaration(RD, /*CanBeDefinition =*/false));
+        WalkDeclaration(RD));
 
     if (Class != Parent)
     {
@@ -790,7 +790,7 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
         if (Redecl->isImplicit() || Redecl == Record)
             continue;
 
-        RC->Redeclarations.push_back(WalkDeclaration(Redecl, false));
+        RC->Redeclarations.push_back(WalkDeclaration(Redecl));
     }
 
     if (HasEmptyName)
@@ -1063,7 +1063,7 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
         TS->isIncomplete = true;
         if (CTS->getDefinition())
         {
-            auto Complete = WalkDeclaration(CTS->getDefinition(), /*CanBeDefinition=*/true);
+            auto Complete = WalkDeclaration(CTS->getDefinition());
             if (!Complete->isIncomplete)
                 TS->completeDeclaration = Complete;
         }
@@ -1113,7 +1113,7 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
         TS->isIncomplete = true;
         if (CTS->getDefinition())
         {
-            auto Complete = WalkDeclaration(CTS->getDefinition(), /*CanBeDefinition=*/true);
+            auto Complete = WalkDeclaration(CTS->getDefinition());
             if (!Complete->isIncomplete)
                 TS->completeDeclaration = Complete;
         }
@@ -1131,7 +1131,7 @@ std::vector<Declaration*> Parser::WalkTemplateParameterList(const clang::Templat
     for (auto it = TPL->begin(); it != TPL->end(); ++it)
     {
         auto ND = *it;
-        auto TP = WalkDeclaration(ND, /*IgnoreSystemDecls=*/false);
+        auto TP = WalkDeclaration(ND);
         params.push_back(TP);
     }
 
@@ -1185,7 +1185,7 @@ TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(const clang::Te
     TP->isExpandedParameterPack = TTP->isExpandedParameterPack();
     if (TTP->getTemplatedDecl())
     {
-        auto TD = WalkDeclaration(TTP->getTemplatedDecl(), /*IgnoreSystemDecls=*/false);
+        auto TD = WalkDeclaration(TTP->getTemplatedDecl());
         TP->TemplatedDecl = TD;
     }
     walkedTemplateTemplateParameters[TTP] = TP;
@@ -1317,7 +1317,7 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
     }
     case clang::TemplateArgument::Declaration:
         Arg.kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Declaration;
-        Arg.declaration = WalkDeclaration(TA.getAsDecl(), 0);
+        Arg.declaration = WalkDeclaration(TA.getAsDecl());
         break;
     case clang::TemplateArgument::NullPtr:
         Arg.kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::NullPtr;
@@ -1600,7 +1600,7 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
         return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()));
 
     auto RD = MD->getParent();
-    auto Decl = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
+    auto Decl = WalkDeclaration(RD);
 
     auto Class = static_cast<CppSharp::CppParser::AST::Class*>(Decl);
 
@@ -2137,7 +2137,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         EnumDecl* ED = ET->getDecl();
 
         auto TT = new TagType();
-        TT->declaration = TT->declaration = WalkDeclaration(ED, /*IgnoreSystemDecls=*/false);
+        TT->declaration = TT->declaration = WalkDeclaration(ED);
 
         Ty = TT;
         break;
@@ -2164,8 +2164,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         auto TD = TT->getDecl();
 
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
-        auto TDD = static_cast<TypedefNameDecl*>(WalkDeclaration(TD,
-            /*IgnoreSystemDecls=*/false));
+        auto TDD = static_cast<TypedefNameDecl*>(WalkDeclaration(TD));
 
         auto Type = new TypedefType();
         Type->declaration = TDD;
@@ -2204,7 +2203,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         RecordDecl* RD = RT->getDecl();
 
         auto TT = new TagType();
-        TT->declaration = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
+        TT->declaration = WalkDeclaration(RD);
 
         Ty = TT;
         break;
@@ -2384,7 +2383,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         
         TemplateName Name = TS->getTemplateName();
         TST->_template = static_cast<Template*>(WalkDeclaration(
-            Name.getAsTemplateDecl(), 0));
+            Name.getAsTemplateDecl()));
         if (TS->isSugared())
             TST->desugared = GetQualifiedType(TS->desugar(), TL);
 
@@ -2535,7 +2534,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         auto ICN = Type->getAs<clang::InjectedClassNameType>();
         auto ICNT = new InjectedClassNameType();
         ICNT->_class = static_cast<Class*>(WalkDeclaration(
-            ICN->getDecl(), 0));
+            ICN->getDecl()));
         ICNT->injectedSpecializationType = GetQualifiedType(
             ICN->getInjectedSpecializationType());
 
@@ -3479,10 +3478,10 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
 
 Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
 {
-    return WalkDeclaration(D, /*CanBeDefinition=*/true);
+    return WalkDeclaration(D);
 }
 
-Declaration* Parser::WalkDeclaration(const clang::Decl* D, bool CanBeDefinition)
+Declaration* Parser::WalkDeclaration(const clang::Decl* D)
 {
     using namespace clang;
 
@@ -3501,7 +3500,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D, bool CanBeDefinition)
         // soon as they are referenced and we need to know the original order
         // of the declarations.
 
-        if (CanBeDefinition && Record->definitionOrder == 0 &&
+        if (Record->definitionOrder == 0 &&
             RD->isCompleteDefinition())
         {
             Record->definitionOrder = index++;
@@ -3521,7 +3520,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D, bool CanBeDefinition)
         // soon as they are referenced and we need to know the original order
         // of the declarations.
 
-        if (CanBeDefinition && Class->definitionOrder == 0 &&
+        if (Class->definitionOrder == 0 &&
             RD->isCompleteDefinition())
         {
             Class->definitionOrder = index++;
