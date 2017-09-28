@@ -64,7 +64,7 @@ QualifiedType::QualifiedType() : type(0) {}
 
 TagType::TagType() : Type(TypeKind::Tag) {}
 
-ArrayType::ArrayType() : Type(TypeKind::Array) {}
+ArrayType::ArrayType() : Type(TypeKind::Array), size(0), elementSize(0) {}
 
 FunctionType::FunctionType()
     : Type(TypeKind::Function)
