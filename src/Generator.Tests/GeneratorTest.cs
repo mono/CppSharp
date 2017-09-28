@@ -29,7 +29,7 @@ namespace CppSharp.Utils
             options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
             options.Quiet = true;
             var testModule = options.AddModule(name);
-            testModule.SharedLibraryName = name + ".Native";
+            testModule.SharedLibraryName = $"{name}.Native";
 
             Diagnostics.Message("");
             Diagnostics.Message("Generating bindings for {0} ({1})",
