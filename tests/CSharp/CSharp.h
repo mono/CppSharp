@@ -1251,3 +1251,9 @@ public:
     virtual int virtualTakeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
                                   int* fixedArrayOfPointersToPrimitives[5]) const;
 };
+
+
+class TestForwardedClassInAnotherUnit
+{
+};
+

@@ -78,12 +78,12 @@ namespace CppSharp.Passes
             if (declaration.CompleteDeclaration != null)
                 return;
 
+            declaration.CompleteDeclaration =
+                ASTContext.FindCompleteClass(declaration.QualifiedName);
+
             var @class = declaration as Class;
             if (CheckForDuplicateForwardClass(@class))
                 return;
-
-            declaration.CompleteDeclaration =
-                ASTContext.FindCompleteClass(declaration.QualifiedName);
 
             if (declaration.CompleteDeclaration == null)
             {

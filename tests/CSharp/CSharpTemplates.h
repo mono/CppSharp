@@ -472,3 +472,5 @@ template class DLL_API DerivedChangesTypeName<T1>;
 template class DLL_API TemplateWithIndexer<int>;
 template class DLL_API TemplateWithIndexer<T1>;
 template class DLL_API TemplateWithIndexer<T2*>;
+
+class TestForwardedClassInAnotherUnit;
