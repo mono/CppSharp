@@ -714,41 +714,16 @@ void Parser::EnsureCompleteRecord(const clang::RecordDecl* Record,
     if (!RC->isIncomplete || RC->completeDeclaration)
         return;
 
-    auto Complete = NS->FindClass(Record->getName(),
-        /*IsComplete=*/true, /*Create=*/false);
-    if (Complete)
-    {
-        RC->completeDeclaration = Complete;
-        return;
-    }
-
-    auto Definition = Record->getDefinition();
-    bool isCXX = false;
+    Decl* Definition;
     if (auto CXXRecord = dyn_cast<CXXRecordDecl>(Record))
-    {
         Definition = CXXRecord->getDefinition();
-        isCXX = true;
-    }
+    else
+        Definition = Record->getDefinition();
 
     if (!Definition)
         return;
 
-    auto DC = GetNamespace(Definition);
-    Complete = DC->FindClass(Record->getName(),
-        /*IsComplete=*/true, /*Create=*/false);
-    if (Complete)
-    {
-        RC->completeDeclaration = Complete;
-        return;
-    }
-    Complete = DC->FindClass(Record->getName(),
-        /*IsComplete=*/true, /*Create=*/true);
-    if (isCXX)
-        WalkRecordCXX(cast<CXXRecordDecl>(Definition), Complete);
-    else
-        WalkRecord(Definition, Complete);
-    HandleDeclaration(Definition, Complete);
-    RC->completeDeclaration = Complete;
+    RC->completeDeclaration = WalkDeclaration(Definition);
 }
 
 Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
