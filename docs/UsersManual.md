@@ -39,11 +39,11 @@ In this section we will go through how the generator deals C/C++ types.
 
 ### Integral types
 
-  - char      **→** `byte` / `System::Byte`
-  - bool      **→** `bool` / `System::Boolean`
-  - short     **→** `short` / `System::Int16`
-  - int, long **→** `int` / `System::Int32`
-  - long long **→** `long` / `System::Int64`
+  - `char`        **→** `byte` / `System::Byte`
+  - `bool`        **→** `bool` / `System::Boolean`
+  - `short`       **→** `short` / `System::Int16`
+  - `int`, `long` **→** `int` / `System::Int32`
+  - `long long`   **→** `long` / `System::Int64`
   
   Note: Signedness is also preserved in the conversions.
 
@@ -57,13 +57,13 @@ In this section we will go through how the generator deals C/C++ types.
 
 ### Floating-point types
 
-  - float     **→** `float` / `System::Single`
-  - double    **→** `double` / `System::Double`
+  - `float`     **→** `float` / `System::Single`
+  - `double`    **→** `double` / `System::Double`
 
 ### Other types
 
-  - wchar_t   **→** `char` / `System::Char`
-  - void      **→** `void` / `System::Void`
+  - `wchar_t`   **→** `char` / `System::Char`
+  - `void`      **→** `void` / `System::Void`
 
 ## Derived types
 
@@ -83,8 +83,8 @@ This is implemented by the [`DelegatesPass`](https://github.com/mono/CppSharp/bl
 
  These are mapped to .NET CLR references unless:
 
-  - void*        **→** `System.IntPtr` / `System::IntPtr`
-  - const char*  **→** `string` / `System::String`
+  - `void*`        **→** `System.IntPtr` / `System::IntPtr`
+  - `const char*`  **→** `string` / `System::String`
 
 Regular non-wide strings are assumed to be ASCII by default (marshaled with .NET `Marshal.PtrToStringAnsi`).
 Wide strings are marshaled either as UTF-16 or UTF-32, depending on the width of `wchar_t` for the target.
@@ -117,7 +117,7 @@ to an outer enclosing context and generate a new name.
  
 Some enumerations represent bitfield patterns. The generator tries to check for
 this with some heuristics. If there are enough values in the enum to make a good
-guess, we apply the [Flags] .NET attribute to the wrapper enum.
+guess, we apply the `[Flags]` .NET attribute to the wrapper enum.
 
 This is implemented by the [`CheckFlagEnumsPass`](https://github.com/mono/CppSharp/blob/master/src/Generator/Passes/CheckFlagEnumsPass.cs) pass.
 
