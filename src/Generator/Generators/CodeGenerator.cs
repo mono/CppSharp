@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
-using System.Text.RegularExpressions;
 
 namespace CppSharp.Generators
 {
