@@ -86,6 +86,11 @@ This is implemented by the [`DelegatesPass`](https://github.com/mono/CppSharp/bl
   - void*        **→** `System.IntPtr` / `System::IntPtr`
   - const char*  **→** `string` / `System::String`
 
+Regular non-wide strings are assumed to be ASCII by default (marshaled with .NET `Marshal.PtrToStringAnsi`).
+Wide strings are marshaled either as UTF-16 or UTF-32, depending on the width of `wchar_t` for the target.
+
+This behavior can be overriden by using the `Options.Encoding` setting.
+
 #### References
 
  References are mapped to .NET CLR references just like pointers.
@@ -351,7 +356,7 @@ standard library types:
  - `std::string`
  - `std::wstring`
   
- These are mapped automatically to .NET strings. 
+ These are mapped automatically to .NET strings.
 
 ### Containers
 
