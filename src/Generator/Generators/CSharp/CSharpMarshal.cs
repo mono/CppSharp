@@ -214,6 +214,9 @@ namespace CppSharp.Generators.CSharp
             if (Equals(encoding, Encoding.ASCII))
                 return $"Marshal.PtrToStringAnsi({varName})";
 
+            if (Equals(encoding, Encoding.UTF8))
+                return $"Marshal.PtrToStringUTF8({varName})";
+
             // If we reach this, we know the string is Unicode.
             if (type.Type == PrimitiveType.Char ||
                 Context.Context.TargetInfo.WCharWidth == 16)
