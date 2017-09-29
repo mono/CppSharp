@@ -212,18 +212,16 @@ namespace CppSharp.Generators.CSharp
                 encoding = Context.Context.Options.Encoding;
 
             if (Equals(encoding, Encoding.ASCII))
-                return string.Format("Marshal.PtrToStringAnsi({0})", varName);
+                return $"Marshal.PtrToStringAnsi({varName})";
 
             // If we reach this, we know the string is Unicode.
             if (type.Type == PrimitiveType.Char ||
                 Context.Context.TargetInfo.WCharWidth == 16)
-                return string.Format("Marshal.PtrToStringUni({0})", varName);
+                return $"Marshal.PtrToStringUni({varName})";
 
             // If we reach this, we should have an UTF-32 wide string.
             const string encodingName = "System.Text.Encoding.UTF32";
-            return string.Format(
-                "CppSharp.Runtime.Helpers.MarshalEncodedString({0}, {1})",
-                varName, encodingName);
+            return $"CppSharp.Runtime.Helpers.MarshalEncodedString({varName}, {encodingName})";
         }
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
