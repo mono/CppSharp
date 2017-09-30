@@ -385,6 +385,12 @@ public:
     {
     };
     IndependentFields<bool> getIndependentFields();
+    void completeSpecializationInParameter(DependentValueFields<float> p1,
+                                           DependentValueFields<int*> p2,
+                                           DependentValueFields<float*> p3);
+    void completeSpecializationInParameter(TwoTemplateArgs<int*, int*> p1,
+                                           TwoTemplateArgs<int*, int> p2,
+                                           TwoTemplateArgs<int*, float> p3);
 private:
     IndependentFields<int> independentFields;
     DependentValueFields<bool> dependentValueFields;
@@ -399,12 +405,6 @@ private:
     DependentValueFields<DependentValueFields<int*>> nestedDependentPointer1;
     DependentValueFields<DependentValueFields<char*>> nestedDependentPointer2;
     DependentValueFieldForArray<char[3]> dependentFieldArray;
-    void completeSpecializationInParameter(DependentValueFields<float> p1,
-                                           DependentValueFields<int*> p2,
-                                           DependentValueFields<float*> p3);
-    void completeSpecializationInParameter(TwoTemplateArgs<int*, int*> p1,
-                                           TwoTemplateArgs<int*, int> p2,
-                                           TwoTemplateArgs<int*, float> p3);
 };
 
 template <typename Key, typename T>
