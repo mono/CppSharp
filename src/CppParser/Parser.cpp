@@ -2020,15 +2020,13 @@ static const clang::Type* GetFinalType(const clang::Type* Ty)
 
 bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
 {
-    // HACK: the completion of types is temporarily suspended because of problems with QtWidgets; will restore when it's time to wrap functions in template types
-    return false;
     auto FinalType = GetFinalType(QualType.getTypePtr());
     if (auto Tag = FinalType->getAsTagDecl())
     {
         if (auto CTS = llvm::dyn_cast<clang::ClassTemplateSpecializationDecl>(Tag))
         {
             // we cannot get a location in some cases of template arguments
-            if (!LocValid)
+            if (!LocValid || CTS->isCompleteDefinition())
                 return false;
 
             auto TAL = &CTS->getTemplateArgs();
@@ -2042,15 +2040,15 @@ bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
                         return false;
                 }
             }
+            auto Unit = GetTranslationUnit(Tag);
+            // HACK: completing all system types overflows the managed stack
+            // while running the AST converter since the latter is a giant indirect recursion
+            // this solution is a hack because we might need to complete system template specialisations
+            // such as std:string or std::vector in order to represent them in the target language
+            return !Unit->isSystemHeader;
         }
-        auto Unit = GetTranslationUnit(Tag);
-        // HACK: completing all system types overflows the managed stack
-        // while running the AST converter since the latter is a giant indirect recursion
-        // this solution is a hack because we might need to complete system template specialisations
-        // such as std:string or std::vector in order to represent them in the target language
-        return !Unit->isSystemHeader;
     }
-    return true;
+    return false;
 }
 
 Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,

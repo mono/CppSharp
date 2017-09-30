@@ -351,7 +351,9 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
-            Context.Return.Write("({0}) (object) ", param.ReplacedParameter.Parameter.Name);
+            Context.Return.Write($"({param.ReplacedParameter.Parameter.Name}) (object) ");
+            if (param.Replacement.Type.Desugar().IsPointerToPrimitiveType())
+                Context.Return.Write($"({CSharpTypePrinter.IntPtrType}) ");
             return base.VisitTemplateParameterSubstitutionType(param, quals);
         }
 
@@ -545,19 +547,28 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
+            var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
+            PointerType realPointer = null;
+            if (templateSubstitution != null)
+                realPointer = templateSubstitution.Replacement.Type.Desugar() as PointerType;
+            realPointer = realPointer ?? pointer;
             var pointee = pointer.Pointee.Desugar();
-            if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef() &&
+            if (Context.Function != null && realPointer.IsPrimitiveTypeConvertibleToRef() &&
                 Context.MarshalKind != MarshalKind.VTableReturnValue &&
                 Context.Function.OperatorKind != CXXOperatorKind.Subscript)
             {
                 var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
-                var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
                 if (templateSubstitution != null)
                 {
                     var castParam = $"__{Context.Parameter.Name}{Context.ParameterIndex}";
-                    Context.Before.WriteLine(
-                        $"var {castParam} = ({templateSubstitution}) (object) {Context.Parameter.Name};");
-                    Context.Before.WriteLine($"{pointer} {refParamPtr} = &{castParam};");
+                    Context.Before.Write($"var {castParam} = ({templateSubstitution}) ");
+                    if (realPointer != pointer)
+                        Context.Before.Write($"({CSharpTypePrinter.IntPtrType}) ");
+                    Context.Before.WriteLine($"(object) {Context.Parameter.Name};");
+                    Context.Before.Write($"var {refParamPtr} = ");
+                    if (realPointer == pointer)
+                        Context.Before.Write("&");
+                    Context.Before.WriteLine($"{castParam};");
                     Context.Return.Write(refParamPtr);
                 }
                 else
@@ -569,7 +580,7 @@ namespace CppSharp.Generators.CSharp
                     else
                     {
                         Context.Before.WriteLine(
-                            $"fixed ({pointer} {refParamPtr} = &{Context.Parameter.Name})");
+                            $"fixed ({realPointer} {refParamPtr} = &{Context.Parameter.Name})");
                         Context.HasCodeBlock = true;
                         Context.Before.WriteStartBraceIndent();
                         Context.Return.Write(refParamPtr);

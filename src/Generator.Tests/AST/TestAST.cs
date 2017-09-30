@@ -282,7 +282,7 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(5, template.Specializations.Count);
             Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[0].SpecializationKind);
             Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[3].SpecializationKind);
-            Assert.AreEqual(TemplateSpecializationKind.Undeclared, template.Specializations[4].SpecializationKind);
+            Assert.AreEqual(TemplateSpecializationKind.ImplicitInstantiation, template.Specializations[4].SpecializationKind);
             var typeDef = AstContext.FindTypedef("TestTemplateClassInt").FirstOrDefault();
             Assert.IsNotNull(typeDef, "Couldn't find TestTemplateClassInt typedef.");
             var integerInst = typeDef.Type as TemplateSpecializationType;

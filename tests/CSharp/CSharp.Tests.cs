@@ -555,32 +555,31 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
     }
 
-    [Test, Ignore("The completion of types is temporarily suspended because of problems with QtWidgets.")]
+    [Test]
     public void TestTemplateInternals()
     {
         foreach (var internalType in new[]
             {
                 typeof(CSharp.IndependentFields.__Internal),
                 typeof(CSharp.DependentValueFields.__Internalc__S_DependentValueFields__b),
-                //typeof(CSharp.DependentValueFields.Internal_float),
+                typeof(CSharp.DependentValueFields.__Internalc__S_DependentValueFields__f),
                 typeof(CSharp.DependentPointerFields.__Internal),
-                //typeof(CSharp.DependentValueFields.Internal_Ptr),
+                typeof(CSharp.DependentValueFields.__Internal_Ptr),
                 typeof(CSharp.HasDefaultTemplateArgument.__Internalc__S_HasDefaultTemplateArgument__I___S_IndependentFields__I)
             })
         {
-            var independentFields = internalType.GetFields();
-            Assert.That(independentFields.Length, Is.EqualTo(1));
+            var independentFields = internalType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
             var fieldOffset = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
             Assert.That(fieldOffset.Value, Is.EqualTo(0));
         }
         foreach (var internalType in new Type[]
             {
-                //typeof(CSharp.TwoTemplateArgs.Internal_Ptr),
-                //typeof(CSharp.TwoTemplateArgs.Internal_intPtr_int),
-                //typeof(CSharp.TwoTemplateArgs.Internal_intPtr_float)
+                typeof(CSharp.TwoTemplateArgs.__Internal_Ptr),
+                typeof(CSharp.TwoTemplateArgs.__Internalc__S_TwoTemplateArgs___I_I),
+                typeof(CSharp.TwoTemplateArgs.__Internalc__S_TwoTemplateArgs___I_f)
             })
         {
-            var independentFields = internalType.GetFields();
+            var independentFields = internalType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
             Assert.That(independentFields.Length, Is.EqualTo(2));
             var fieldOffsetKey = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
             Assert.That(fieldOffsetKey.Value, Is.EqualTo(0));
