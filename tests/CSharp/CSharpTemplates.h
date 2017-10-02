@@ -474,3 +474,23 @@ template class DLL_API TemplateWithIndexer<T1>;
 template class DLL_API TemplateWithIndexer<T2*>;
 
 class TestForwardedClassInAnotherUnit;
+
+// Forward declaration of class as friend
+template<class T> class ForwardTemplateFriendClassContainer;
+template<class T> class ForwardTemplateFriendClass;
+
+template<class T>
+class ForwardTemplateFriendClassContainer
+{
+    template<class K> friend class ForwardTemplateFriendClass;
+};
+
+template<class T>
+class ForwardTemplateFriendClass
+{
+protected:
+    ForwardTemplateFriendClass() { }
+};
+
+class ForwardTemplateFriendClassUser : public ForwardTemplateFriendClass<ForwardTemplateFriendClassUser>
+{ };
