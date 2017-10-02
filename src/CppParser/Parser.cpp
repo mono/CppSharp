@@ -887,6 +887,23 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
                 continue;
             WalkDeclaration(D);
             break;
+        case Decl::Friend:
+        {
+            FriendDecl* FD = cast<FriendDecl>(D);
+            auto decl = FD->getFriendDecl();
+
+            // Skip every friend declaration that isn't a function declaration
+            if (decl && !isa<FunctionDecl>(decl))
+                continue;
+            WalkDeclaration(D);
+            break;
+        }
+        case Decl::FriendTemplate:
+        {
+            // In this case always skip the declaration since, unlike Decl::Friend handled above,
+            // it never is a declaration of a friend function or method
+            break;
+        }
         default:
         {
             WalkDeclaration(D);
