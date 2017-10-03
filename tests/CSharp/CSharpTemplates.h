@@ -449,6 +449,32 @@ struct MapResultType<InputSequence<T>, MapFunctor>
     typedef InputSequence<typename LazyResultType<MapFunctor>::Type> ResultType;
 };
 
+class RegularDynamic
+{
+public:
+    RegularDynamic();
+    ~RegularDynamic();
+    virtual void virtualFunction();
+};
+
+template<typename T>
+class TemplateDerivedFromRegularDynamic : public RegularDynamic
+{
+public:
+    TemplateDerivedFromRegularDynamic();
+    ~TemplateDerivedFromRegularDynamic();
+};
+
+template<typename T>
+TemplateDerivedFromRegularDynamic<T>::TemplateDerivedFromRegularDynamic()
+{
+}
+
+template<typename T>
+TemplateDerivedFromRegularDynamic<T>::~TemplateDerivedFromRegularDynamic()
+{
+}
+
 // we optimise specialisations so that only actually used ones are wrapped
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
@@ -456,7 +482,7 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
                              HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
                              TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
-                             TemplateWithIndexer<T2*> _12, std::string s);
+                             TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13, std::string s);
 
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
@@ -472,6 +498,7 @@ template class DLL_API DerivedChangesTypeName<T1>;
 template class DLL_API TemplateWithIndexer<int>;
 template class DLL_API TemplateWithIndexer<T1>;
 template class DLL_API TemplateWithIndexer<T2*>;
+template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
 
 class TestForwardedClassInAnotherUnit;
 

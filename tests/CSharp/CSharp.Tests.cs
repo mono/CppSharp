@@ -842,6 +842,15 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestTemplateDerivedFromRegularDynamic()
+    {
+        using (var templateDerivedFromRegularDynamic = new TemplateDerivedFromRegularDynamic<RegularDynamic>())
+        {
+            templateDerivedFromRegularDynamic.VirtualFunction();
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())
