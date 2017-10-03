@@ -108,9 +108,24 @@ void TemplateSpecializer::completeSpecializationInParameter(TwoTemplateArgs<int 
 {
 }
 
+RegularDynamic::RegularDynamic()
+{
+}
+
+RegularDynamic::~RegularDynamic()
+{
+}
+
+void RegularDynamic::virtualFunction()
+{
+}
+
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
-                             VirtualTemplate<int> _5, VirtualTemplate<bool> _6,
-                             HasDefaultTemplateArgument<int, int> _7, std::string s)
+                             DependentValueFields<int> _5,
+                             VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
+                             HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
+                             TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
+                             TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13, std::string s)
 {
 }

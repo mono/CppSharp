@@ -1379,7 +1379,7 @@ namespace CppSharp.Generators.CSharp
 
             // Generate a delegate type for each method.
             foreach (var method in wrappedEntries.Select(e => e.Method))
-                GenerateVTableMethodDelegates(containingClass, containingClass.IsDependent ?
+                GenerateVTableMethodDelegates(containingClass, method.Namespace.IsDependent ?
                    (Method) method.InstantiatedFrom : method);
 
             WriteLine("private static void*[] __ManagedVTables;");
