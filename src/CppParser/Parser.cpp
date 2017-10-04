@@ -1055,7 +1055,7 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
         TS->isIncomplete = true;
         if (CTS->getDefinition())
         {
-            auto Complete = WalkDeclaration(CTS->getDefinition());
+            auto Complete = WalkDeclarationDef(CTS->getDefinition());
             if (!Complete->isIncomplete)
                 TS->completeDeclaration = Complete;
         }
@@ -1105,7 +1105,7 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
         TS->isIncomplete = true;
         if (CTS->getDefinition())
         {
-            auto Complete = WalkDeclaration(CTS->getDefinition());
+            auto Complete = WalkDeclarationDef(CTS->getDefinition());
             if (!Complete->isIncomplete)
                 TS->completeDeclaration = Complete;
         }
@@ -3468,7 +3468,18 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
 
 Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
 {
-    return WalkDeclaration(D);
+    auto Decl = WalkDeclaration(D);
+    if (!Decl || Decl->definitionOrder > 0)
+        return Decl;
+    // We store a definition order index into the declarations.
+    // This is needed because declarations are added to their contexts as
+    // soon as they are referenced and we need to know the original order
+    // of the declarations.
+    clang::RecordDecl* RecordDecl;
+    if ((RecordDecl = llvm::dyn_cast<clang::RecordDecl>(D)) &&
+        RecordDecl->isCompleteDefinition())
+        Decl->definitionOrder = index++;
+    return Decl;
 }
 
 Declaration* Parser::WalkDeclaration(const clang::Decl* D)
@@ -3483,41 +3494,13 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     case Decl::Record:
     {
         auto RD = cast<RecordDecl>(D);
-        auto Record = WalkRecord(RD);
-
-        // We store a definition order index into the declarations.
-        // This is needed because declarations are added to their contexts as
-        // soon as they are referenced and we need to know the original order
-        // of the declarations.
-
-        if (Record->definitionOrder == 0 &&
-            RD->isCompleteDefinition())
-        {
-            Record->definitionOrder = index++;
-            //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());
-        }
-
-        Decl = Record;
+        Decl = WalkRecord(RD);
         break;
     }
     case Decl::CXXRecord:
     {
         auto RD = cast<CXXRecordDecl>(D);
-        auto Class = WalkRecordCXX(RD);
-
-        // We store a definition order index into the declarations.
-        // This is needed because declarations are added to their contexts as
-        // soon as they are referenced and we need to know the original order
-        // of the declarations.
-
-        if (Class->definitionOrder == 0 &&
-            RD->isCompleteDefinition())
-        {
-            Class->definitionOrder = index++;
-            //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());
-        }
-
-        Decl = Class;
+        Decl = WalkRecordCXX(RD);
         break;
     }
     case Decl::ClassTemplate:

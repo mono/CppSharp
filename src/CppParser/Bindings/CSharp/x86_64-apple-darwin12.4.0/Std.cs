@@ -55,6 +55,10 @@ namespace Std
 
 namespace Std
 {
+}
+
+namespace Std
+{
     namespace Allocator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -418,7 +422,7 @@ namespace Std
         }
     }
 
-    public unsafe partial class Map<_95, _96, _97, _98>
+    public unsafe partial class Map<_Key, _Tp, _Compare, _Allocator>
     {
     }
 }
