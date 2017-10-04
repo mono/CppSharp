@@ -3,20 +3,15 @@ using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
-    class SortDeclarationsPass : TranslationUnitPass
+    public class SortDeclarationsPass : TranslationUnitPass
     {
-        private static void SortDeclarations(Namespace @namespace)
+        public override bool VisitNamespace(Namespace @namespace)
         {
+            if (!base.VisitNamespace(@namespace) || @namespace.Ignore)
+                return false;
+
             @namespace.Declarations = @namespace.Declarations.OrderBy(
-                declaration => declaration.DefinitionOrder).ToList();
-
-            foreach (var childNamespace in @namespace.Namespaces)
-                SortDeclarations(childNamespace);
-        }
-
-        public override bool VisitTranslationUnit(TranslationUnit unit)
-        {
-            SortDeclarations(unit);
+                d => d.DefinitionOrder).ToList();
             return true;
         }
     }

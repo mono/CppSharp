@@ -311,7 +311,7 @@ namespace CppSharp.AST
             if (!VisitDeclaration(unit))
                 return false;
 
-            return VisitDeclarationContext(unit);
+            return VisitNamespace(unit);
         }
 
         public virtual bool VisitClassDecl(Class @class)
