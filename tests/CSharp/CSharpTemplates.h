@@ -521,3 +521,13 @@ protected:
 
 class ForwardTemplateFriendClassUser : public ForwardTemplateFriendClass<ForwardTemplateFriendClassUser>
 { };
+
+template<int I>
+class ClassWithNonTypeTemplateArgument
+{
+public:
+    ClassWithNonTypeTemplateArgument() { }
+};
+
+class SpecializationOfClassWithNonTypeTemplateArgument : public ClassWithNonTypeTemplateArgument<0>
+{ };

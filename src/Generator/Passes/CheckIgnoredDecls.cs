@@ -490,6 +490,10 @@ namespace CppSharp.Passes
 
         private void IgnoreUnsupportedTemplates(Class @class)
         {
+            if (@class.TemplateParameters.Any(param => param is NonTypeTemplateParameter))
+                foreach (var specialization in @class.Specializations)
+                    specialization.ExplicitlyIgnore();
+
             if (!Options.IsCLIGenerator && !@class.TranslationUnit.IsSystemHeader &&
                 @class.Specializations.Count > 0)
                 return;
@@ -500,6 +504,7 @@ namespace CppSharp.Passes
                     hasExplicitlyGeneratedSpecializations = true;
                 else
                     specialization.ExplicitlyIgnore();
+
             if (!hasExplicitlyGeneratedSpecializations)
                 @class.ExplicitlyIgnore();
         }
