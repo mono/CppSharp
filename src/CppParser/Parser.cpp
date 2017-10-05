@@ -2026,7 +2026,7 @@ bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
         if (auto CTS = llvm::dyn_cast<clang::ClassTemplateSpecializationDecl>(Tag))
         {
             // we cannot get a location in some cases of template arguments
-            if (!LocValid || CTS->isCompleteDefinition())
+            if (!LocValid || CTS->isCompleteDefinition() || CTS->getDefinition())
                 return false;
 
             auto TAL = &CTS->getTemplateArgs();
@@ -2968,7 +2968,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->specializationInfo = WalkFunctionTemplateSpec(FTSI, F);
-
+    return;
     const CXXMethodDecl* MD;
     if ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
         !CanCheckCodeGenInfo(c->getSema(), MD->getThisType(c->getASTContext()).getTypePtr()))
