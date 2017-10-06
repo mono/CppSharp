@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CppSharp.AST.Extensions;
 
@@ -8,6 +9,7 @@ namespace CppSharp.AST
     /// <summary>
     /// Represents a C++ type.
     /// </summary>
+    [DebuggerDisplay("{ToString()} [{GetType().Name}]")]
     public abstract class Type : ICloneable
     {
         public static Func<Type, string> TypePrinterDelegate;
