@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
-using Type = CppSharp.AST.Type;
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
-using System.Linq;
-using System.Text;
-using System.Globalization;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -751,7 +751,7 @@ namespace CppSharp.Generators.CSharp
 
             PushMarshalKind(MarshalKind.NativeField);   
             var fieldTypePrinted = field.QualifiedType.Visit(this);
-            PopMarshalKind();           
+            PopMarshalKind();
                      
             var returnTypePrinter = new TypePrinterResult();
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
