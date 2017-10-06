@@ -583,7 +583,7 @@ namespace CppSharp.Generators.CSharp
             if (a.Type.Type == null)
                 return a.Integral.ToString(CultureInfo.InvariantCulture);
             var type = a.Type.Type.Desugar();
-            return type.IsPointerToPrimitiveType() ? "global::System.IntPtr" : type.Visit(this);
+            return type.IsPointerToPrimitiveType() ? IntPtrType : type.Visit(this);
         }
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
