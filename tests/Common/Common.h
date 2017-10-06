@@ -1402,3 +1402,13 @@ union
         } Share;
     } Smb2;
 } ProtocolSpecific;
+
+
+template<class _Other>
+using UsingTemplatePtr = _Other *;
+
+struct TemplateWithUsingTemplateMember
+{
+    UsingTemplatePtr<TemplateWithUsingTemplateMember> _Ref;
+};
+

@@ -355,6 +355,10 @@ namespace CppSharp.Generators.CSharp
                     template.Arguments.All(IsValid))
                     return $@"{VisitDeclaration(decl)}<{string.Join(", ",
                         template.Arguments.Select(VisitTemplateArgument))}>";
+
+                if (ContextKind == TypePrinterContextKind.Native)
+                    return template.Desugared.Visit(this);
+
                 return decl.Visit(this);
             }
 
