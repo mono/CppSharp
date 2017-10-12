@@ -896,6 +896,18 @@ public:
     std::string& getStdString();
 };
 
+class DLL_API HasStdWString
+{
+public:
+    HasStdWString();
+    ~HasStdWString();
+    std::wstring testStdWString(const std::wstring& s);
+    std::wstring s;
+    std::wstring& getStdWString();
+};
+
+DLL_API wchar_t WideCharCompatibility(wchar_t c);
+
 class DLL_API InternalCtorAmbiguity
 {
 public:

@@ -55,6 +55,40 @@ namespace CppSharp.Passes
             switch (@class.Name)
             {
                 case "basic_string":
+                    foreach (var method in @class.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
+                        method.ExplicitlyIgnore();
+                    foreach (var basicString in GetCharSpecializations(@class))
+                    {
+                        basicString.GenerationKind = GenerationKind.Generate;
+                        foreach (var method in basicString.Methods)
+                        {
+                            if (method.IsDestructor || method.OriginalName == "c_str" ||
+                                (method.IsConstructor && method.Parameters.Count == 2 &&
+                                 (( method.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
+                                   !method.Parameters[1].Type.Desugar().IsPrimitiveType()) ||
+                                  ( method.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.WideChar) &&
+                                   !method.Parameters[1].Type.Desugar().IsPrimitiveType()))))
+                            {
+                                if(method.OriginalName == "c_str")
+                                {
+                                    if (basicString.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.WideChar))
+                                        method.Name = method.Name + "W";
+                                    else if(basicString.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char))
+                                        method.Name = method.Name + "A";
+                                }
+
+                                method.GenerationKind = GenerationKind.Generate;
+                                method.Namespace.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
+                            }
+                            else
+                            {
+                                method.ExplicitlyIgnore();
+                            }
+                        }
+                    }
+                    break;
                 case "allocator":
                 case "char_traits":
                     @class.GenerationKind = GenerationKind.Generate;

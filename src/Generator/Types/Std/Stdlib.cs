@@ -314,6 +314,8 @@ namespace CppSharp.Types.Std
 
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CSharp)]
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t>>", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t>>", GeneratorKind = GeneratorKind.CLI)]
     public class String : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
@@ -323,14 +325,24 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
-                ctx.Parameter.Name);
+            var type = ctx.Parameter.Type.Desugar();
+            ClassTemplateSpecialization basicString = GetBasicString(type);
+            
+            if(basicString.Arguments[0].Type.Type.IsPrimitiveType(PrimitiveType.Char))
+                ctx.Return.Write($"clix::marshalString<clix::E_UTF8>({ctx.Parameter.Name})");
+            else
+                ctx.Return.Write($"clix::marshalString<clix::E_UTF16>({ctx.Parameter.Name})");
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
-                ctx.ReturnVarName);
+            var type = ctx.ReturnType.Type.Desugar();
+            ClassTemplateSpecialization basicString = GetBasicString(type);
+
+            if (basicString.Arguments[0].Type.Type.IsPrimitiveType(PrimitiveType.Char))
+                ctx.Return.Write($"clix::marshalString<clix::E_UTF8>({ctx.ReturnVarName})");
+            else
+                ctx.Return.Write($"clix::marshalString<clix::E_UTF16>({ctx.ReturnVarName})");
         }
 
         public override Type CSharpSignatureType(TypePrinterContext ctx)
@@ -381,6 +393,7 @@ namespace CppSharp.Types.Std
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var data = basicString.Methods.First(m => m.OriginalName == "data");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
+
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
             string varBasicString = $"__basicStringRet{ctx.ParameterIndex}";
             bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField  ||

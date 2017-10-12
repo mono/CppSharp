@@ -963,6 +963,31 @@ This is a very long string. This is a very long string. This is a very long stri
         }
     }
 
+    public void TestStdWString()
+    {
+        const string unicodeString1 = "你好";
+        const string unicodeString2 = "Ÿ‰ϰ";
+
+        using (var hasStdWString = new HasStdWString())
+        {
+            Assert.That(hasStdWString.TestStdWString(t), Is.EqualTo(t + "_test"));
+            hasStdWString.S = t;
+            Assert.That(hasStdWString.S, Is.EqualTo(t));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(t));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(t));
+
+            Assert.That(hasStdWString.TestStdWString(unicodeString1), Is.EqualTo(unicodeString1 + "_test"));
+            hasStdWString.S = unicodeString1;
+            Assert.That(hasStdWString.S, Is.EqualTo(unicodeString1));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(unicodeString1));
+
+            Assert.That(hasStdWString.TestStdWString(unicodeString2), Is.EqualTo(unicodeString2 + "_test"));
+            hasStdWString.S = unicodeString2;
+            Assert.That(hasStdWString.S, Is.EqualTo(unicodeString2));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(unicodeString2));
+        }
+    }
+
     [Test]
     public void TestUTF8()
     {
@@ -994,6 +1019,23 @@ This is a very long string. This is a very long string. This is a very long stri
         {
             Assert.That(Common.TakeReturnUTF8(@string), Is.EqualTo(@string));
         }
+    }
+
+    public void TestWideCharCompatibility()
+    {
+        var c = new CppSharp.Runtime.WideChar('c');
+
+        Assert.That(c == 'a', Is.False);
+        Assert.That(Common.WideCharCompatibility('a') == 'c', Is.False);
+
+        Assert.That(c == 'c', Is.True);
+        Assert.That(Common.WideCharCompatibility('a') == 'a', Is.True);
+
+        Assert.That(c != 'c', Is.False);
+        Assert.That(Common.WideCharCompatibility('a') != 'a', Is.False);
+
+        Assert.That(c != 'a', Is.True);
+        Assert.That(Common.WideCharCompatibility('a') != 'c', Is.True);
     }
 
     private class CustomDerivedFromVirtual : AbstractWithVirtualDtor

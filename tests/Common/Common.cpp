@@ -604,6 +604,29 @@ std::string& HasStdString::getStdString()
     return s;
 }
 
+HasStdWString::HasStdWString()
+{
+}
+
+HasStdWString::~HasStdWString()
+{
+}
+
+std::wstring HasStdWString::testStdWString(const std::wstring& s)
+{
+    return s + L"_test";
+}
+
+std::wstring& HasStdWString::getStdWString()
+{
+    return s;
+}
+
+wchar_t WideCharCompatibility(wchar_t c)
+{
+    return c;
+}
+
 SomeNamespace::AbstractClass::~AbstractClass()
 {
 }

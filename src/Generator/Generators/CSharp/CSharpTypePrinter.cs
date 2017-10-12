@@ -408,6 +408,10 @@ namespace CppSharp.Generators.CSharp
                     width = targetInfo?.CharWidth ?? 8;
                     signed = true;
                     break;
+                case PrimitiveType.WideChar:
+                    width = targetInfo?.WCharWidth ?? 16;
+                    signed = false;
+                    break;
                 case PrimitiveType.UChar:
                     width = targetInfo?.CharWidth ?? 8;
                     signed = false;
@@ -482,8 +486,11 @@ namespace CppSharp.Generators.CSharp
                         "byte" : "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
-                case PrimitiveType.Char32:
-                case PrimitiveType.WideChar: return "char";
+                case PrimitiveType.Char32: return "char";
+                case PrimitiveType.WideChar:
+                    return (ContextKind == TypePrinterContextKind.Native)
+                        ? GetIntString(primitive, Context.TargetInfo)
+                        : "CppSharp.Runtime.WideChar";
                 case PrimitiveType.Char:
                     // returned structs must be blittable and char isn't
                     return Options.MarshalCharAsManagedChar &&
