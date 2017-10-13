@@ -398,8 +398,14 @@ namespace CppSharp
             for (uint i = 0; i < Context.TranslationUnitsCount; ++i)
             {
                 var unit = Context.GetTranslationUnits(i);
-                var _unit = declConverter.Visit(unit) as AST.TranslationUnit;
+                var _unit = (AST.TranslationUnit) declConverter.Visit(unit);
                 _ctx.TranslationUnits.Add(_unit);
+            }
+
+            for (uint i = 0; i < Context.TranslationUnitsCount; i++)
+            {
+                var unit = Context.GetTranslationUnits(i);
+                var _unit = (AST.TranslationUnit) declConverter.Visit(unit);
                 declConverter.VisitDeclContext(unit, _unit);
             }
 
@@ -832,12 +838,10 @@ namespace CppSharp
 
             // Check if the declaration was already handled and return its
             // existing instance.
-            if (CheckForDuplicates(decl))
-                if (Declarations.ContainsKey(originalPtr))
-                    return Declarations[originalPtr];
+            if (CheckForDuplicates(decl) && Declarations.ContainsKey(originalPtr))
+                return Declarations[originalPtr];
 
-            var newDecl = base.Visit(decl);
-            return newDecl;
+            return base.Visit(decl);
         }
 
         AST.AccessSpecifier VisitAccessSpecifier(AccessSpecifier access)
@@ -969,13 +973,10 @@ namespace CppSharp
 
         public void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)
         {
-            var namespaces = new Dictionary<Namespace, AST.Namespace>();
-
             for (uint i = 0; i < ctx.NamespacesCount; ++i)
             {
                 var decl = ctx.GetNamespaces(i);
                 var _decl = Visit(decl) as AST.Namespace;
-                namespaces.Add(decl, _decl);
                 _ctx.Namespaces.Add(_decl);
             }
 
@@ -1036,12 +1037,20 @@ namespace CppSharp
                 _ctx.Declarations.Add(_decl);
             }
 
-            foreach (var @namespace in namespaces)
+            for (uint i = 0; i < ctx.NamespacesCount; ++i)
             {
-                VisitDeclContext(@namespace.Key, @namespace.Value);
+                var decl = ctx.GetNamespaces(i);
+                var _decl = (AST.Namespace) Visit(decl);
+                VisitDeclContext(decl, _decl);
             }
 
-            namespaces.Clear();
+            for (uint i = 0, j = 0; i < ctx.ClassesCount; ++i)
+            {
+                var decl = ctx.GetClasses(i);
+                var _decl = (AST.Class) Visit(decl);
+                if (!_decl.IsIncomplete || _decl.IsOpaque)
+                    VisitClass(decl, _decl);
+            }
 
             // Anonymous types
         }
@@ -1487,7 +1496,6 @@ namespace CppSharp
 
         void VisitClass(Class @class, AST.Class _class)
         {
-            VisitDeclaration(@class, _class);
             VisitDeclContext(@class, _class);
 
             for (uint i = 0; i < @class.BasesCount; ++i)
@@ -1536,7 +1544,7 @@ namespace CppSharp
         public override AST.Declaration VisitClass(Class @class)
         {
             var _class = new AST.Class();
-            VisitClass(@class, _class);
+            VisitDeclaration(@class, _class);
 
             return _class;
         }
@@ -1717,6 +1725,7 @@ namespace CppSharp
         private void VisitClassTemplateSpecialization(ClassTemplateSpecialization decl,
             AST.ClassTemplateSpecialization _decl)
         {
+            VisitDeclaration(decl, _decl);
             VisitClass(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
             _decl.TemplatedDecl = (AST.ClassTemplate) Visit(decl.TemplatedDecl);
