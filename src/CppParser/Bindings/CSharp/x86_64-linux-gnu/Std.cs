@@ -189,18 +189,6 @@ namespace Std
 
 namespace Std
 {
-    public unsafe partial class BitIterator
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr _M_p;
-
-            [FieldOffset(8)]
-            internal uint _M_offset;
-        }
-    }
 }
 
 namespace Std
@@ -333,32 +321,6 @@ namespace Std
 {
 }
 
-public unsafe partial class MbstateT
-{
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal int __count;
-
-        [FieldOffset(4)]
-        internal global::MbstateT._.__Internal __value;
-    }
-
-    public unsafe partial struct _
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal uint __wch;
-
-            [FieldOffset(0)]
-            internal fixed sbyte __wchb[4];
-        }
-    }
-}
-
 namespace Std
 {
     namespace CharTraits
@@ -424,172 +386,6 @@ namespace Std
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
-        }
-    }
-}
-
-public unsafe partial class PthreadInternalList
-{
-    [StructLayout(LayoutKind.Explicit, Size = 16)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal global::System.IntPtr __prev;
-
-        [FieldOffset(8)]
-        internal global::System.IntPtr __next;
-    }
-}
-
-public unsafe partial struct PthreadMutexT
-{
-    [StructLayout(LayoutKind.Explicit, Size = 40)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal global::PthreadMutexT.PthreadMutexS.__Internal __data;
-
-        [FieldOffset(0)]
-        internal fixed sbyte __size[40];
-
-        [FieldOffset(0)]
-        internal long __align;
-    }
-
-    public unsafe partial class PthreadMutexS
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 40)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal int __lock;
-
-            [FieldOffset(4)]
-            internal uint __count;
-
-            [FieldOffset(8)]
-            internal int __owner;
-
-            [FieldOffset(12)]
-            internal uint __nusers;
-
-            [FieldOffset(16)]
-            internal int __kind;
-
-            [FieldOffset(20)]
-            internal short __spins;
-
-            [FieldOffset(22)]
-            internal short __elision;
-
-            [FieldOffset(24)]
-            internal global::PthreadInternalList.__Internal __list;
-        }
-    }
-}
-
-public unsafe partial struct PthreadCondT
-{
-    [StructLayout(LayoutKind.Explicit, Size = 48)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal global::PthreadCondT._.__Internal __data;
-
-        [FieldOffset(0)]
-        internal fixed sbyte __size[48];
-
-        [FieldOffset(0)]
-        internal long __align;
-    }
-
-    public unsafe partial class _
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal int __lock;
-
-            [FieldOffset(4)]
-            internal uint __futex;
-
-            [FieldOffset(8)]
-            internal ulong __total_seq;
-
-            [FieldOffset(16)]
-            internal ulong __wakeup_seq;
-
-            [FieldOffset(24)]
-            internal ulong __woken_seq;
-
-            [FieldOffset(32)]
-            internal global::System.IntPtr __mutex;
-
-            [FieldOffset(40)]
-            internal uint __nwaiters;
-
-            [FieldOffset(44)]
-            internal uint __broadcast_seq;
-        }
-    }
-}
-
-public unsafe partial struct PthreadRwlockT
-{
-    [StructLayout(LayoutKind.Explicit, Size = 56)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal global::PthreadRwlockT._.__Internal __data;
-
-        [FieldOffset(0)]
-        internal fixed sbyte __size[56];
-
-        [FieldOffset(0)]
-        internal long __align;
-    }
-
-    public unsafe partial class _
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 56)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal int __lock;
-
-            [FieldOffset(4)]
-            internal uint __nr_readers;
-
-            [FieldOffset(8)]
-            internal uint __readers_wakeup;
-
-            [FieldOffset(12)]
-            internal uint __writer_wakeup;
-
-            [FieldOffset(16)]
-            internal uint __nr_readers_queued;
-
-            [FieldOffset(20)]
-            internal uint __nr_writers_queued;
-
-            [FieldOffset(24)]
-            internal int __writer;
-
-            [FieldOffset(28)]
-            internal int __shared;
-
-            [FieldOffset(32)]
-            internal sbyte __rwelision;
-
-            [FieldOffset(33)]
-            internal fixed byte __pad1[7];
-
-            [FieldOffset(40)]
-            internal ulong __pad2;
-
-            [FieldOffset(48)]
-            internal uint __flags;
         }
     }
 }
@@ -771,55 +567,8 @@ namespace Std
     }
 }
 
-public unsafe partial struct Wait
+namespace Std
 {
-    [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public partial struct __Internal
-    {
-        [FieldOffset(0)]
-        internal int w_status;
-
-        [FieldOffset(0)]
-        internal global::Wait._.__Internal __wait_terminated;
-
-        [FieldOffset(0)]
-        internal global::Wait.__.__Internal __wait_stopped;
-    }
-
-    public unsafe partial class _
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal uint __w_termsig;
-
-            [FieldOffset(0)]
-            internal uint __w_coredump;
-
-            [FieldOffset(1)]
-            internal uint __w_retcode;
-
-            [FieldOffset(2)]
-            internal uint __;
-        }
-    }
-
-    public unsafe partial class __
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal uint __w_stopval;
-
-            [FieldOffset(1)]
-            internal uint __w_stopsig;
-
-            [FieldOffset(2)]
-            internal uint __;
-        }
-    }
 }
 
 namespace Std
@@ -828,65 +577,6 @@ namespace Std
 
 namespace Std
 {
-    public unsafe partial class SsoString
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.SsoString._.__Internal _;
-        }
-
-        public unsafe partial struct _
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 32)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.SsoString.Str.__Internal _M_s;
-
-                [FieldOffset(0)]
-                internal fixed sbyte _M_bytes[32];
-            }
-        }
-
-        public unsafe partial class Str
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 32)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr _M_p;
-
-                [FieldOffset(8)]
-                internal ulong _M_string_length;
-
-                [FieldOffset(16)]
-                internal fixed sbyte _M_local_buf[16];
-            }
-        }
-    }
-}
-
-namespace Std
-{
-    public unsafe partial class UsesAlloc0
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 1)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.UsesAlloc0.Sink.__Internal _M_a;
-        }
-
-        public unsafe partial class Sink
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
-            }
-        }
-    }
 }
 
 namespace Std

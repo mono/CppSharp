@@ -1,4 +1,6 @@
-﻿using CppSharp.AST;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
@@ -8,6 +10,7 @@ namespace CppSharp.Passes
         public MarkUsedClassInternalsPass()
         {
             VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassFields = false;
             VisitOptions.VisitClassMethods = false;
             VisitOptions.VisitClassProperties = false;
             VisitOptions.VisitEventParameters = false;
@@ -20,28 +23,43 @@ namespace CppSharp.Passes
             VisitOptions.VisitTemplateArguments = false;
         }
 
-        public override bool VisitFieldDecl(Field field)
+        public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitDeclaration(field))
+            if (!base.VisitClassDecl(@class) || @class.Ignore || @class.IsDependent)
                 return false;
 
-            Class @class;
-            if (field.Type.TryGetClass(out @class) && @class.Ignore)
+            MarkUsedFieldTypes(@class, new HashSet<Class>());
+
+            return true;
+        }
+
+        private static void MarkUsedFieldTypes(Class @class, HashSet<Class> visitedClasses)
+        {
+            if (visitedClasses.Contains(@class))
+                return;
+
+            visitedClasses.Add(@class);
+
+            Class type = null;
+            foreach (var field in @class.Layout.Fields.Where(
+                f => f.QualifiedType.Type.TryGetClass(out type)))
             {
-                DeclarationContext declarationContext = @class;
+                DeclarationContext declarationContext = type;
                 do
                 {
                     if (declarationContext.Ignore)
+                    {
                         declarationContext.GenerationKind = GenerationKind.Internal;
+
+                        var specialization = declarationContext as ClassTemplateSpecialization;
+                        if (specialization?.TemplatedDecl.TemplatedClass.Ignore == true)
+                            specialization.TemplatedDecl.TemplatedClass.GenerationKind = GenerationKind.Internal;
+                    }
                     declarationContext = declarationContext.Namespace;
                 } while (declarationContext != null);
 
-                var specialization = @class as ClassTemplateSpecialization;
-                if (specialization?.TemplatedDecl.TemplatedClass.Ignore == true)
-                    specialization.TemplatedDecl.TemplatedClass.GenerationKind = GenerationKind.Internal;
+                MarkUsedFieldTypes(type, visitedClasses);
             }
-
-            return true;
         }
     }
 }

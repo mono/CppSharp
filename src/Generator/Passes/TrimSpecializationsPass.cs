@@ -95,10 +95,12 @@ namespace CppSharp.Passes
                 !specializations.Contains(s) && !internalSpecializations.Contains(s));
 
             foreach (var specialization in template.Specializations.Where(
-                s => !s.IsExplicitlyGenerated &&
-                    (s is ClassTemplatePartialSpecialization ||
-                     internalSpecializations.Contains(s))))
+                s => s is ClassTemplatePartialSpecialization))
                 specialization.ExplicitlyIgnore();
+
+            foreach (var specialization in template.Specializations.Where(
+                s => !s.IsExplicitlyGenerated && internalSpecializations.Contains(s)))
+                specialization.GenerationKind = GenerationKind.Internal;
 
             Func<TemplateArgument, bool> allPointers =
                 a => a.Type.Type != null && a.Type.Type.IsAddress();
