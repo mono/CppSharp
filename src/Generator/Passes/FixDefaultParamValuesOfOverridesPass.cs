@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -10,10 +11,14 @@ namespace CppSharp.Passes
                 return true;
 
             Method rootBaseMethod = method.GetRootBaseMethod();
-            for (int i = 0; i < method.Parameters.Count; i++)
+            var rootBaseParameters = rootBaseMethod.Parameters.Where(
+                p => p.Kind != ParameterKind.IndirectReturnType).ToList();
+            var parameters = method.Parameters.Where(
+                p => p.Kind != ParameterKind.IndirectReturnType).ToList();
+            for (int i = 0; i < parameters.Count; i++)
             {
-                var rootBaseParameter = rootBaseMethod.Parameters[i];
-                var parameter = method.Parameters[i];
+                var rootBaseParameter = rootBaseParameters[i];
+                var parameter = parameters[i];
                 if (rootBaseParameter.DefaultArgument == null)
                     parameter.DefaultArgument = null;
                 else
