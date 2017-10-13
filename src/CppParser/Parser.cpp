@@ -2748,7 +2748,7 @@ Enumeration::Item* Parser::WalkEnumItem(clang::EnumConstantDecl* ECD)
 
 //-----------------------------------//
 
-static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
+static const clang::CodeGen::CGFunctionInfo& GetCodeGenFunctionInfo(
     clang::CodeGen::CodeGenTypes* CodeGenTypes, const clang::FunctionDecl* FD)
 {
     using namespace clang;
@@ -2981,7 +2981,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
         if (!CanCheckCodeGenInfo(c->getSema(), P->getType().getTypePtr()))
             return;
 
-    auto& CGInfo = GetCodeGenFuntionInfo(codeGenTypes, FD);
+    auto& CGInfo = GetCodeGenFunctionInfo(codeGenTypes, FD);
     F->isReturnIndirect = CGInfo.getReturnInfo().isIndirect();
 
     unsigned Index = 0;
