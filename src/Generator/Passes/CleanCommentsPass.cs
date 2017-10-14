@@ -57,29 +57,23 @@ namespace CppSharp.Passes
         {
             for (int i = 0; i < comment.Content.Count; i++)
             {
-                if (comment.Content[i].Kind == DocumentationCommentKind.InlineCommandComment)
+                if (comment.Content[i].Kind == DocumentationCommentKind.InlineCommandComment &&
+                    i + 1 < comment.Content.Count &&
+                    comment.Content[i + 1].Kind == DocumentationCommentKind.TextComment)
                 {
-                    if (i + 1 < comment.Content.Count &&
-                        comment.Content[i + 1].Kind == DocumentationCommentKind.TextComment)
-                    {
-                        TextComment com = (TextComment) comment.Content[i + 1];
-                        com.Text = Helpers.RegexCommentCommandLeftover.Replace(com.Text, string.Empty);
-                    }
+                    var textComment = (TextComment) comment.Content[i + 1];
+                    textComment.Text = Helpers.RegexCommentCommandLeftover.Replace(
+                        textComment.Text, string.Empty);
                 }
             }
-            bool tag = false;
             foreach (var item in comment.Content.Where(c => c.Kind == DocumentationCommentKind.TextComment))
             {
-                TextComment com = (TextComment) item;
-                if (Helpers.RegexTag.IsMatch(com.Text))
-                    tag = true;
-                else if (tag)
-                    com.Text = com.Text.Substring(1);
+                var textComment = (TextComment) item;
 
-                if (com.Text.StartsWith("<", StringComparison.Ordinal))
-                    com.Text = $"{com.Text}{">"}";
-                else if (com.Text.StartsWith(">", StringComparison.Ordinal))
-                    com.Text = com.Text.Substring(1);
+                if (textComment.Text.StartsWith("<", StringComparison.Ordinal))
+                    textComment.Text = $"{textComment.Text}{">"}";
+                else if (textComment.Text.StartsWith(">", StringComparison.Ordinal))
+                    textComment.Text = textComment.Text.Substring(1);
             }
             return true;
         }

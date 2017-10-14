@@ -189,6 +189,11 @@ public:
     *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
     */
     void glfwDestroyWindow(int* window);
+
+    /**
+     * <sip:alice@example.net>
+     */
+    class LinphoneAddress {};
 };
 
 template <typename T>
