@@ -3007,7 +3007,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            if (@enum.IsIncomplete)
+            if (@enum.IsIncomplete || @enum.Ignore)
                 return true;
 
             PushBlock(BlockKind.Enum);

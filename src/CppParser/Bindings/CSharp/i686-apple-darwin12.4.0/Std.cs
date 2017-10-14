@@ -495,31 +495,6 @@ namespace Std
 
     public unsafe partial class BasicString<_CharT, _Traits, _Allocator> : IDisposable
     {
-        internal enum ShortMask
-        {
-            ShortMask = 0
-        }
-
-        internal enum LongMask
-        {
-            LongMask = 0
-        }
-
-        internal enum MinCap
-        {
-            MinCap = 0
-        }
-
-        internal enum NWords
-        {
-            NWords = 0
-        }
-
-        internal enum Alignment
-        {
-            Alignment = 0
-        }
-
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;

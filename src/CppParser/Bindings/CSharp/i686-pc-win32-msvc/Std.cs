@@ -641,15 +641,6 @@ namespace Std
 
     public unsafe partial class StringVal<_Val_types>
     {
-        public enum BUF_SIZE
-        {
-            BUF_SIZE = 0
-        }
-
-        public enum ALLOC_MASK
-        {
-            ALLOC_MASK = 0
-        }
     }
 }
 
@@ -711,11 +702,6 @@ namespace Std
 
     public unsafe partial class TreeVal<_Val_types>
     {
-        public enum Redbl
-        {
-            Red = 0,
-            Black = 0
-        }
     }
 }
 
@@ -733,16 +719,6 @@ namespace Std
 
     public unsafe partial class Map<_Kty, _Ty, _Pr, _Alloc>
     {
-    }
-}
-
-namespace Std
-{
-    [Flags]
-    public enum CodecvtMode
-    {
-        ConsumeHeader = 4,
-        GenerateHeader = 2
     }
 }
 

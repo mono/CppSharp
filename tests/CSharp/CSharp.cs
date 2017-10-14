@@ -40,19 +40,18 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("StructTestArrayTypeFromTypedef");
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
 
-            var macroRegex = new Regex(@"(MY_MACRO_TEST_.*)");
-            List<string> list = new List<string>();
-            foreach (TranslationUnit unit in ctx.TranslationUnits)
-            {
-              if (unit.FilePath == "<invalid>" || unit.FileName == "CSharp.h")
-                foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
-                {
-                  Match match = macroRegex.Match(macro.Name);
-                  if (match.Success) list.Add(macro.Name);
-                }
-            }
+            var macroRegex = new Regex("(MY_MACRO_TEST_.*)");
+            var list = (from unit in ctx.TranslationUnits
+                        where !unit.IsValid || unit.FileName == "CSharp.h"
+                        from macro in unit.PreprocessedEntities.OfType<MacroDefinition>()
+                        where macroRegex.IsMatch(macro.Name)
+                        select macro.Name).ToList();
             var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", list.ToArray());
-              enumTest.Namespace = new Namespace() {Name = "MacroTest"};
+            enumTest.Namespace = new Namespace()
+                {
+                    Name = "MacroTest",
+                    Namespace = ctx.TranslationUnits.First(u => u.IsValid && !u.IsSystemHeader)
+                };
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

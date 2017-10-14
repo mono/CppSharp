@@ -71,7 +71,7 @@ namespace CppSharp.Passes
                 var textComment = (TextComment) item;
 
                 if (textComment.Text.StartsWith("<", StringComparison.Ordinal))
-                    textComment.Text = $"{textComment.Text}{">"}";
+                    textComment.Text = $"{textComment.Text}>";
                 else if (textComment.Text.StartsWith(">", StringComparison.Ordinal))
                     textComment.Text = textComment.Text.Substring(1);
             }

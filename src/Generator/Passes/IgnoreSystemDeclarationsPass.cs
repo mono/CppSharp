@@ -16,7 +16,6 @@ namespace CppSharp.Passes
             VisitOptions.VisitClassProperties = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
             VisitOptions.VisitNamespaceEvents = false;
             VisitOptions.VisitNamespaceTemplates = false;
             VisitOptions.VisitNamespaceTypedefs = false;
@@ -112,6 +111,17 @@ namespace CppSharp.Passes
         {
             return @class.Specializations.Where(s =>
                 s.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char));
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            if (!base.VisitEnumDecl(@enum))
+                return false;
+
+            if (@enum.TranslationUnit.IsSystemHeader)
+                @enum.ExplicitlyIgnore();
+
+            return true;
         }
 
         public override bool VisitFunctionDecl(Function function)

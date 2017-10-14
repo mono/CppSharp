@@ -483,11 +483,6 @@ namespace Std
 
     public unsafe partial class BasicString<_CharT, _Traits, _Alloc> : IDisposable
     {
-        internal enum S_localCapacity
-        {
-            S_localCapacity = 0
-        }
-
         public global::System.IntPtr __Instance { get; protected set; }
 
         protected int __PointerAdjustment;

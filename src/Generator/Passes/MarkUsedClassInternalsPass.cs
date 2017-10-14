@@ -28,23 +28,28 @@ namespace CppSharp.Passes
             if (!base.VisitClassDecl(@class) || @class.Ignore || @class.IsDependent)
                 return false;
 
-            MarkUsedFieldTypes(@class, new HashSet<Class>());
+            MarkUsedFieldTypes(@class, new HashSet<DeclarationContext>());
 
             return true;
         }
 
-        private static void MarkUsedFieldTypes(Class @class, HashSet<Class> visitedClasses)
+        private static void MarkUsedFieldTypes(DeclarationContext declContext,
+            HashSet<DeclarationContext> visitedDeclarationContexts)
         {
-            if (visitedClasses.Contains(@class))
+            if (visitedDeclarationContexts.Contains(declContext))
                 return;
 
-            visitedClasses.Add(@class);
+            visitedDeclarationContexts.Add(declContext);
 
-            Class type = null;
+            DeclarationContext decl = null;
+            var @class = declContext as Class;
+            if (@class == null)
+                return;
+
             foreach (var field in @class.Layout.Fields.Where(
-                f => f.QualifiedType.Type.TryGetClass(out type)))
+                f => f.QualifiedType.Type.TryGetDeclaration(out decl)))
             {
-                DeclarationContext declarationContext = type;
+                DeclarationContext declarationContext = decl;
                 do
                 {
                     if (declarationContext.Ignore)
@@ -58,7 +63,7 @@ namespace CppSharp.Passes
                     declarationContext = declarationContext.Namespace;
                 } while (declarationContext != null);
 
-                MarkUsedFieldTypes(type, visitedClasses);
+                MarkUsedFieldTypes(decl, visitedDeclarationContexts);
             }
         }
     }
