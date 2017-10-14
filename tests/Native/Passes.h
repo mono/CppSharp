@@ -1,3 +1,5 @@
+#include <string>
+
 enum FlagEnum
 {
   A = 1 << 0,

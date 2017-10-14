@@ -387,12 +387,11 @@ namespace CppSharp.AST
 
         public Enumeration FindEnumWithItem(string name)
         {
-            var result = Enums.Find(e => e.ItemsByName.ContainsKey(name));
-            if (result == null)
-                result = Namespaces.Select(ns => ns.FindEnumWithItem(name)).FirstOrDefault();
-            if (result == null)
-                result = Classes.Select(c => c.FindEnumWithItem(name)).FirstOrDefault();
-            return result;
+            return Enums.Find(e => e.ItemsByName.ContainsKey(name)) ??
+                (from declContext in Namespaces.Union<DeclarationContext>(Classes)
+                 let @enum = declContext.FindEnumWithItem(name)
+                 where @enum != null
+                 select @enum).FirstOrDefault();
         }
 
         public virtual IEnumerable<Function> FindOperator(CXXOperatorKind kind)

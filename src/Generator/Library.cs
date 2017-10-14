@@ -77,28 +77,22 @@ namespace CppSharp
 
         public static Enumeration GetEnumWithMatchingItem(this ASTContext context, string pattern)
         {
-            foreach (var module in context.TranslationUnits)
-            {
-                Enumeration @enum = module.FindEnumWithItem(pattern);
-                if (@enum == null) continue;
-                return @enum;
-            }
-
-            return null;
+            return (from unit in context.TranslationUnits
+                    let @enum = unit.FindEnumWithItem(pattern)
+                    where @enum != null
+                    select @enum).FirstOrDefault();
         }
 
         public static Enumeration.Item GenerateEnumItemFromMacro(this Enumeration @enum,
             MacroDefinition macro)
         {
-            var item = new Enumeration.Item
-            {
-                Name = macro.Name,
-                Expression = macro.Expression,
-                Value = ParseMacroExpression(macro.Expression),
-                Namespace = @enum
-            };
-
-            return item;
+            return new Enumeration.Item
+                {
+                    Name = macro.Name,
+                    Expression = macro.Expression,
+                    Value = ParseMacroExpression(macro.Expression),
+                    Namespace = @enum
+                };
         }
 
         static bool ParseToNumber(string num, out long val)
