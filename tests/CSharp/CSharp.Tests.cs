@@ -1108,6 +1108,21 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestHasFixedArrayOfPointers()
+    {
+        using (var hasFixedArrayOfPointers = new HasFixedArrayOfPointers())
+        {
+            var foos = new Foo[] { new Foo() { A = 5 }, new Foo { A = 15 }, new Foo { A = 20 } };
+            hasFixedArrayOfPointers.FixedArrayOfPointers = foos;
+            for (int i = 0; i < hasFixedArrayOfPointers.FixedArrayOfPointers.Length; i++)
+                Assert.That(hasFixedArrayOfPointers.FixedArrayOfPointers[i].A,
+                    Is.EqualTo(foos[i].A));
+            foreach (var foo in foos)
+                foo.Dispose();
+        }
+    }
+
     private class OverrideVirtualTemplate : VirtualTemplate<int>
     {
         public override int Function

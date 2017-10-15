@@ -1450,3 +1450,11 @@ int TestArrays::virtualTakeArrays(Foo *fixedArrayOfPointersToObjects[], int fixe
 {
     return takeArrays(fixedArrayOfPointersToObjects, fixedArrayOfPrimitives, fixedArrayOfPointersToPrimitives);
 }
+
+HasFixedArrayOfPointers::HasFixedArrayOfPointers()
+{
+}
+
+HasFixedArrayOfPointers::~HasFixedArrayOfPointers()
+{
+}

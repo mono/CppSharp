@@ -1257,3 +1257,10 @@ class TestForwardedClassInAnotherUnit
 {
 };
 
+class DLL_API HasFixedArrayOfPointers
+{
+public:
+    HasFixedArrayOfPointers();
+    ~HasFixedArrayOfPointers();
+    Foo* fixedArrayOfPointers[3];
+};

@@ -98,12 +98,20 @@ namespace CppSharp.Generators.CSharp
                         else
                         {
                             var arrayType = array.Type.Desugar();
+                            var finalArrayType = arrayType.GetPointee() ?? arrayType;
                             Class @class;
-                            if (arrayType.TryGetClass(out @class) && @class.IsRefType)
-                                supportBefore.WriteLineIndent(
-                                    "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
-                                    value, array.Type, Helpers.CreateInstanceIdentifier,
-                                    Helpers.InternalStruct, Context.ReturnVarName);
+                            if ((finalArrayType.TryGetClass(out @class)) && @class.IsRefType)
+                            {
+                                if (arrayType == finalArrayType)
+                                    supportBefore.WriteLineIndent(
+                                        "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
+                                        value, array.Type, Helpers.CreateInstanceIdentifier,
+                                        Helpers.InternalStruct, Context.ReturnVarName);
+                                else
+                                    supportBefore.WriteLineIndent(
+                                        $@"{value}[i] = {finalArrayType}.{Helpers.CreateInstanceIdentifier}(({
+                                            CSharpTypePrinter.IntPtrType}) {Context.ReturnVarName}[i]);");
+                            }
                             else
                             {
                                 if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
@@ -483,7 +491,6 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
-            var arrayType = array.Type.Desugar();
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
@@ -497,7 +504,9 @@ namespace CppSharp.Generators.CSharp
                         supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
                         supportBefore.WriteStartBraceIndent();
                         Class @class;
-                        if (arrayType.TryGetClass(out @class) && @class.IsRefType)
+                        var arrayType = array.Type.Desugar();
+                        var finalArrayType = arrayType.GetPointee() ?? arrayType;
+                        if (finalArrayType.TryGetClass(out @class) && @class.IsRefType)
                         {
                             supportBefore.WriteLine("if (value.Length != {0})", array.Size);
                             ThrowArgumentOutOfRangeException();
@@ -505,10 +514,15 @@ namespace CppSharp.Generators.CSharp
                         supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
                         if (@class != null && @class.IsRefType)
                         {
-                            supportBefore.WriteLineIndent(
-                                "*({1}.{2}*) &{0}[i * sizeof({1}.{2})] = *({1}.{2}*){3}[i].{4};",
-                                Context.ReturnVarName, arrayType, Helpers.InternalStruct,
-                                Context.ArgName, Helpers.InstanceIdentifier);
+                            if (finalArrayType == arrayType)
+                                supportBefore.WriteLineIndent(
+                                    "*({1}.{2}*) &{0}[i * sizeof({1}.{2})] = *({1}.{2}*){3}[i].{4};",
+                                    Context.ReturnVarName, arrayType, Helpers.InternalStruct,
+                                    Context.ArgName, Helpers.InstanceIdentifier);
+                            else
+                                supportBefore.WriteLineIndent($@"{Context.ReturnVarName}[i] = ({
+                                    (Context.Context.TargetInfo.PointerWidth == 64 ? "long" : "int")}) {
+                                    Context.ArgName}[i].{Helpers.InstanceIdentifier};");
                         }
                         else
                         {
