@@ -13,17 +13,6 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.CppParser")]
 
-namespace GnuCxx
-{
-}
-
-namespace Std
-{
-    namespace ExceptionPtr
-    {
-    }
-}
-
 namespace Std
 {
     namespace Allocator
@@ -128,6 +117,20 @@ namespace Std
 
 namespace Std
 {
+    namespace Vector
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
+        }
+    }
+
+    public unsafe partial class Vector<_Tp, _Alloc>
+    {
+    }
+
     namespace VectorBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -158,24 +161,6 @@ namespace Std
     public unsafe partial class VectorBase<_Tp, _Alloc>
     {
     }
-
-    namespace Vector
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
-        }
-    }
-
-    public unsafe partial class Vector<_Tp, _Alloc>
-    {
-    }
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -297,10 +282,6 @@ namespace Std
 
 namespace Std
 {
-}
-
-namespace Std
-{
     namespace CharTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -366,14 +347,6 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -537,26 +510,6 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
 }
 
 namespace Std

@@ -15,18 +15,6 @@ using System.Runtime.CompilerServices;
 
 namespace Std
 {
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
     namespace CharTraits
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -92,10 +80,6 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -383,7 +367,7 @@ namespace Std
         }
     }
 
-    public unsafe partial class CompressedPair<_Ty1, _Ty2, _73>
+    public unsafe partial class CompressedPair<_Ty1, _Ty2, _0>
     {
     }
 }
@@ -477,43 +461,6 @@ namespace Std
 
 namespace Std
 {
-    namespace StringVal
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.StringVal.Bxty.__Internal _Bx;
-
-            [FieldOffset(16)]
-            internal ulong _Mysize;
-
-            [FieldOffset(24)]
-            internal ulong _Myres;
-        }
-
-
-        public unsafe partial struct Bxty
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal fixed sbyte _Buf[16];
-
-                [FieldOffset(0)]
-                internal global::System.IntPtr _Ptr;
-
-                [FieldOffset(0)]
-                internal fixed sbyte _Alias[16];
-            }
-        }
-    }
-
-    public unsafe partial class StringVal<_Val_types>
-    {
-    }
-
     public unsafe static partial class BasicStringExtensions
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -642,10 +589,61 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
+
+    namespace StringVal
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 32)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.StringVal.Bxty.__Internal _Bx;
+
+            [FieldOffset(16)]
+            internal ulong _Mysize;
+
+            [FieldOffset(24)]
+            internal ulong _Myres;
+        }
+
+
+        public unsafe partial struct Bxty
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 16)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal fixed sbyte _Buf[16];
+
+                [FieldOffset(0)]
+                internal global::System.IntPtr _Ptr;
+
+                [FieldOffset(0)]
+                internal fixed sbyte _Alias[16];
+            }
+        }
+    }
+
+    public unsafe partial class StringVal<_Val_types>
+    {
+    }
 }
 
 namespace Std
 {
+    namespace Vector
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
+        }
+    }
+
+    public unsafe partial class Vector<_Ty, _Alloc>
+    {
+    }
+
     namespace VectorVal
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -665,24 +663,6 @@ namespace Std
     public unsafe partial class VectorVal<_Val_types>
     {
     }
-
-    namespace Vector
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
-        }
-    }
-
-    public unsafe partial class Vector<_Ty, _Alloc>
-    {
-    }
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -720,12 +700,4 @@ namespace Std
     public unsafe partial class Map<_Kty, _Ty, _Pr, _Alloc>
     {
     }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
 }

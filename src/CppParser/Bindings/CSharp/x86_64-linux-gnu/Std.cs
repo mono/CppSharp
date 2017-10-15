@@ -13,17 +13,6 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.CppParser")]
 
-namespace GnuCxx
-{
-}
-
-namespace Std
-{
-    namespace ExceptionPtr
-    {
-    }
-}
-
 namespace Std
 {
     namespace Allocator
@@ -128,6 +117,20 @@ namespace Std
 
 namespace Std
 {
+    namespace Vector
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
+        }
+    }
+
+    public unsafe partial class Vector<_Tp, _Alloc>
+    {
+    }
+
     namespace VectorBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -158,24 +161,6 @@ namespace Std
     public unsafe partial class VectorBase<_Tp, _Alloc>
     {
     }
-
-    namespace Vector
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
-        }
-    }
-
-    public unsafe partial class Vector<_Tp, _Alloc>
-    {
-    }
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -289,10 +274,6 @@ namespace Std
     public unsafe partial class Map<_Key, _Tp, _Compare, _Alloc>
     {
     }
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -437,40 +418,6 @@ namespace Std
                 [FieldOffset(0)]
                 internal global::System.IntPtr _M_p;
             }
-
-        }
-
-        public unsafe partial class RepBase
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal ulong _M_length;
-
-                [FieldOffset(8)]
-                internal ulong _M_capacity;
-
-                [FieldOffset(16)]
-                internal int _M_refcount;
-            }
-
-        }
-
-        public unsafe partial class Rep
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal ulong _M_length;
-
-                [FieldOffset(8)]
-                internal ulong _M_capacity;
-
-                [FieldOffset(16)]
-                internal int _M_refcount;
-            }
         }
     }
 
@@ -543,26 +490,6 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
 }
 
 namespace Std

@@ -60,7 +60,7 @@ public:
     ParserTargetInfo*  GetTargetInfo();
 
 private:
-    bool IsSupported(const clang::RecordDecl* RD);
+    bool IsSupported(const clang::NamedDecl* ND);
     bool IsSupported(const clang::CXXMethodDecl* MD);
     // AST traversers
     void WalkAST();

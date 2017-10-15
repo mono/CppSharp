@@ -35,30 +35,20 @@ namespace Std
 
 namespace Std
 {
-}
+    namespace CompressedPair
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.BasicString.Rep.__Internal __first_;
+        }
+    }
 
-namespace Std
-{
-}
+    public unsafe partial class CompressedPair<_T1, _T2>
+    {
+    }
 
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
     namespace Allocator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -142,36 +132,6 @@ namespace Std
             __Instance = IntPtr.Zero;
         }
     }
-
-    namespace CompressedPair
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 12)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.BasicString.Rep.__Internal __first_;
-        }
-    }
-
-    public unsafe partial class CompressedPair<_T1, _T2>
-    {
-    }
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
-}
-
-namespace Std
-{
 }
 
 namespace Std
@@ -236,10 +196,6 @@ namespace Std
 
 namespace Std
 {
-}
-
-namespace Std
-{
     namespace Map
     {
         [StructLayout(LayoutKind.Explicit, Size = 12)]
@@ -257,76 +213,6 @@ namespace Std
 
 namespace Std
 {
-}
-
-namespace Std
-{
-    namespace CharTraits
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-
-    public unsafe partial class CharTraits<_CharT> : IDisposable
-    {
-        public global::System.IntPtr __Instance { get; protected set; }
-
-        protected int __PointerAdjustment;
-        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>>();
-        protected void*[] __OriginalVTables;
-
-        protected bool __ownsNativeInstance;
-
-        internal static global::Std.CharTraits<_CharT> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-        {
-            return new global::Std.CharTraits<_CharT>(native.ToPointer(), skipVTables);
-        }
-
-        internal static global::Std.CharTraits<_CharT> __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
-        {
-            return new global::Std.CharTraits<_CharT>(native, skipVTables);
-        }
-
-        private static void* __CopyValue(global::Std.CharTraits.__Internal native)
-        {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
-            *(global::Std.CharTraits.__Internal*) ret = native;
-            return ret.ToPointer();
-        }
-
-        private CharTraits(global::Std.CharTraits.__Internal native, bool skipVTables = false)
-            : this(__CopyValue(native), skipVTables)
-        {
-            __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
-        }
-
-        protected CharTraits(void* native, bool skipVTables = false)
-        {
-            if (native == null)
-                return;
-            __Instance = new global::System.IntPtr(native);
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-        }
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (__Instance == IntPtr.Zero)
-                return;
-            global::Std.CharTraits<_CharT> __dummy;
-            NativeToManagedMap.TryRemove(__Instance, out __dummy);
-            if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
-            __Instance = IntPtr.Zero;
-        }
-    }
-
     public unsafe static partial class BasicStringExtensions
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -467,20 +353,6 @@ namespace Std
                 [FieldOffset(0)]
                 internal fixed uint __words[3];
             }
-
-        }
-
-        public unsafe partial struct Ulx
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 12)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.BasicString.Long.__Internal __lx;
-
-                [FieldOffset(0)]
-                internal global::Std.BasicString.Short.__Internal __lxx;
-            }
         }
     }
 
@@ -548,6 +420,72 @@ namespace Std
                 }
                 throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
             }
+            if (__ownsNativeInstance)
+                Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
+        }
+    }
+
+    namespace CharTraits
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        public unsafe partial struct __Internal
+        {
+        }
+    }
+
+    public unsafe partial class CharTraits<_CharT> : IDisposable
+    {
+        public global::System.IntPtr __Instance { get; protected set; }
+
+        protected int __PointerAdjustment;
+        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>>();
+        protected void*[] __OriginalVTables;
+
+        protected bool __ownsNativeInstance;
+
+        internal static global::Std.CharTraits<_CharT> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        {
+            return new global::Std.CharTraits<_CharT>(native.ToPointer(), skipVTables);
+        }
+
+        internal static global::Std.CharTraits<_CharT> __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+        {
+            return new global::Std.CharTraits<_CharT>(native, skipVTables);
+        }
+
+        private static void* __CopyValue(global::Std.CharTraits.__Internal native)
+        {
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
+            *(global::Std.CharTraits.__Internal*) ret = native;
+            return ret.ToPointer();
+        }
+
+        private CharTraits(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+            : this(__CopyValue(native), skipVTables)
+        {
+            __ownsNativeInstance = true;
+            NativeToManagedMap[__Instance] = this;
+        }
+
+        protected CharTraits(void* native, bool skipVTables = false)
+        {
+            if (native == null)
+                return;
+            __Instance = new global::System.IntPtr(native);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (__Instance == IntPtr.Zero)
+                return;
+            global::Std.CharTraits<_CharT> __dummy;
+            NativeToManagedMap.TryRemove(__Instance, out __dummy);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;

@@ -885,10 +885,11 @@ static bool HasLayout(const clang::RecordDecl* Record)
     return true;
 }
 
-bool Parser::IsSupported(const clang::RecordDecl* RD)
+bool Parser::IsSupported(const clang::NamedDecl* ND)
 {
-    return !c->getSourceManager().isInSystemHeader(RD->getLocStart()) ||
-        supportedStdTypes.find(RD->getName()) != supportedStdTypes.end();
+    return !c->getSourceManager().isInSystemHeader(ND->getLocStart()) ||
+        (llvm::isa<clang::RecordDecl>(ND) &&
+         supportedStdTypes.find(ND->getName()) != supportedStdTypes.end());
 }
 
 bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
@@ -944,8 +945,29 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     for (auto FD : Record->fields())
         WalkFieldCXX(FD, RC);
 
-    if (!IsSupported(Record))
+    if (c->getSourceManager().isInSystemHeader(Record->getLocStart()))
+    {
+        if (supportedStdTypes.find(Record->getName()) != supportedStdTypes.end())
+        {
+            for (auto D : Record->decls())
+            {
+                switch (D->getKind())
+                {
+                case Decl::CXXConstructor:
+                case Decl::CXXDestructor:
+                case Decl::CXXConversion:
+                case Decl::CXXMethod:
+                {
+                    auto MD = cast<CXXMethodDecl>(D);
+                    if (IsSupported(MD))
+                        WalkMethodCXX(MD);
+                    break;
+                }
+                }
+            }
+        }
         return;
+    }
 
     for (auto D : Record->decls())
     {
@@ -957,8 +979,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         case Decl::CXXMethod:
         {
             auto MD = cast<CXXMethodDecl>(D);
-            if (IsSupported(MD))
-                WalkMethodCXX(MD);
+            WalkMethodCXX(MD);
             break;
         }
         case Decl::AccessSpec:
@@ -1677,11 +1698,12 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
 
     // Check for an already existing method that came from the same declaration.
     auto USR = GetDeclUSR(MD);
-    for (unsigned I = 0, E = Class->Methods.size(); I != E; ++I)
+    for (auto& M : Class->Methods)
     {
-         Method* Method = Class->Methods[I];
-         if (Method->USR == USR)
-             return Method;
+        if (M->USR == USR)
+        {
+            return M;
+        }
     }
     for (unsigned I = 0, E = Class->Templates.size(); I != E; ++I)
     {
@@ -1716,16 +1738,9 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
         break;
     }
 
-    WalkFunction(MD, Method);
+    Class->Methods.push_back(Method);
 
-    for (auto& M : Class->Methods)
-    {
-        if (M->USR == USR)
-        {
-            delete Method;
-            return M;
-        }
-    }
+    WalkFunction(MD, Method);
 
     if (const CXXConstructorDecl* CD = dyn_cast<CXXConstructorDecl>(MD))
     {
@@ -1743,8 +1758,6 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
         auto RTL = TL.getReturnLoc();
         Method->conversionType = GetQualifiedType(CD->getConversionType(), &RTL);
     }
-    
-    Class->Methods.push_back(Method);
 
     return Method;
 }
@@ -3147,10 +3160,11 @@ bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 void Parser::WalkAST()
 {
     auto TU = AST->getTranslationUnitDecl();
-    for(auto it = TU->decls_begin(); it != TU->decls_end(); ++it)
+    for (auto D : TU->decls())
     {
-        clang::Decl* D = (*it);
-        WalkDeclarationDef(D);
+        if (D->getLocStart().isValid() &&
+            !c->getSourceManager().isInSystemHeader(D->getLocStart()))
+            WalkDeclarationDef(D);
     }
 }
 
@@ -3763,10 +3777,11 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     {
         auto ND = cast<NamespaceDecl>(D);
 
-        for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
+        for (auto D : ND->decls())
         {
-            clang::Decl* D = (*it);
-            Decl = WalkDeclarationDef(D);
+            auto ND = dyn_cast<NamedDecl>(D);
+            if (IsSupported(ND))
+                Decl = WalkDeclarationDef(D);
         }
 
         break;
