@@ -481,6 +481,17 @@ static clang::Decl* GetPreviousDeclInContext(const clang::Decl* D)
     return nullptr;
 }
 
+bool IsExplicit(const clang::Decl* D)
+{
+    using namespace clang;
+
+    auto CTS = llvm::dyn_cast<ClassTemplateSpecializationDecl>(D);
+    return !CTS ||
+        CTS->getSpecializationKind() == TSK_ExplicitSpecialization ||
+        CTS->getSpecializationKind() == TSK_ExplicitInstantiationDeclaration ||
+        CTS->getSpecializationKind() == TSK_ExplicitInstantiationDefinition;
+}
+
 static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
                                                   const clang::Decl* D)
 {
@@ -500,7 +511,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
         return lineBeginLoc;
 
     auto prevDecl = GetPreviousDeclInContext(D);
-    if(!prevDecl)
+    if(!prevDecl || !IsExplicit(prevDecl))
         return lineBeginLoc;
 
     auto prevDeclEndLoc = SM.getExpansionLoc(prevDecl->getLocEnd());
@@ -816,15 +827,18 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     if (Record->isImplicit())
         return;
 
-    auto headStartLoc = GetDeclStartLocation(c.get(), Record);
-    auto headEndLoc = Record->getLocation(); // identifier location
-    auto bodyEndLoc = Record->getLocEnd();
+    if (IsExplicit(Record))
+    {
+        auto headStartLoc = GetDeclStartLocation(c.get(), Record);
+        auto headEndLoc = Record->getLocation(); // identifier location
+        auto bodyEndLoc = Record->getLocEnd();
 
-    auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
-    auto bodyRange = clang::SourceRange(headEndLoc, bodyEndLoc);
+        auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
+        auto bodyRange = clang::SourceRange(headEndLoc, bodyEndLoc);
 
-    HandlePreprocessedEntities(RC, headRange, MacroLocation::ClassHead);
-    HandlePreprocessedEntities(RC, bodyRange, MacroLocation::ClassBody);
+        HandlePreprocessedEntities(RC, headRange, MacroLocation::ClassHead);
+        HandlePreprocessedEntities(RC, bodyRange, MacroLocation::ClassBody);
+    }
 
     auto& Sema = c->getSema();
 
@@ -3429,8 +3443,17 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
     Decl->USR = GetDeclUSR(D);
     Decl->isImplicit = D->isImplicit();
     Decl->location = SourceLocation(D->getLocation().getRawEncoding());
-    Decl->lineNumberStart = c->getSourceManager().getExpansionLineNumber(D->getLocStart());
-    Decl->lineNumberEnd = c->getSourceManager().getExpansionLineNumber(D->getLocEnd());
+    auto IsDeclExplicit = IsExplicit(D);
+    if (IsDeclExplicit)
+    {
+        Decl->lineNumberStart = c->getSourceManager().getExpansionLineNumber(D->getLocStart());
+        Decl->lineNumberEnd = c->getSourceManager().getExpansionLineNumber(D->getLocEnd());
+    }
+    else
+    {
+        Decl->lineNumberStart = -1;
+        Decl->lineNumberEnd = -1;
+    }
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {
@@ -3442,7 +3465,7 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
         {
             // Ignore function parameters as we already walk their preprocessed entities.
         }
-        else
+        else if (IsDeclExplicit)
         {
             auto startLoc = GetDeclStartLocation(c.get(), D);
             auto endLoc = D->getLocEnd();
@@ -3452,7 +3475,8 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
         }
     }
 
-    HandleOriginalText(D, Decl);
+    if (IsDeclExplicit)
+        HandleOriginalText(D, Decl);
     HandleComments(D, Decl);
 
     if (const clang::ValueDecl *VD = clang::dyn_cast_or_null<clang::ValueDecl>(D))
