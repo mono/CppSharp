@@ -3,6 +3,7 @@ using CppSharp.AST;
 using CppSharp.Utils;
 using CppSharp.Parser;
 using CppSharp.Passes;
+using CppSharp.Generators;
 
 namespace CppSharp.Generator.Tests
 {
@@ -15,7 +16,7 @@ namespace CppSharp.Generator.Tests
 
         protected void ParseLibrary(params string[] files)
         {
-            Options = new DriverOptions();
+            Options = new DriverOptions { GeneratorKind = GeneratorKind.CSharp };
             ParserOptions = new ParserOptions();
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");

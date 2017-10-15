@@ -231,31 +231,5 @@ namespace CppSharp.Generator.Tests.Passes
             var @class = AstContext.FindDecl<Class>("ClassWithAbstractOperator").First();
             Assert.AreEqual(@class.Operators.First().GenerationKind, GenerationKind.None);
         }
-
-        [Test]
-        public void TestRemovalOfUnusedStdTypes()
-        {
-            passBuilder.AddPass(new IgnoreSystemDeclarationsPass());
-            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
-            if (Platform.IsWindows)
-            {
-                Assert.That(AstContext.GetEnumWithMatchingItem("_ALLOC_MASK").Ignore, Is.True);
-                Assert.That(AstContext.FindClass("_Ctypevec").First().Ignore, Is.True);
-                return;
-            }
-            if (Platform.IsLinux)
-            {
-                Assert.That(AstContext.GetEnumWithMatchingItem("PTHREAD_RWLOCK_PREFER_READER_NP").Ignore, Is.True);
-                Assert.That(AstContext.FindClass("pthread_mutex_t").First().Ignore, Is.True);
-                return;
-
-            }
-            if (Platform.IsMacOS)
-            {
-                Assert.That(AstContext.GetEnumWithMatchingItem("__n_words").Ignore, Is.True);
-                Assert.That(AstContext.FindClass("__darwin_fp_control").First().Ignore, Is.True);
-                return;
-            }
-        }
     }
 }

@@ -303,13 +303,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(70, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
+            Assert.AreEqual(72, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(93, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(95, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         static string StripWindowsNewLines(string text)
@@ -350,7 +350,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestMacroLineNumber()
         {
-            Assert.AreEqual(103, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
+            Assert.AreEqual(105, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
 
         [Test]
@@ -575,6 +575,31 @@ namespace CppSharp.Generator.Tests.AST
 
             var @classC = AstContext.FindClass("ClassC").First();
             Assert.That(@classC.Redeclarations.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void TestRemovalOfUnusedStdTypes()
+        {
+            new IgnoreSystemDeclarationsPass { Context = Driver.Context }.VisitASTContext(AstContext);
+            if (Platform.IsWindows)
+            {
+                Assert.That(AstContext.GetEnumWithMatchingItem("_ALLOC_MASK").Ignore, Is.True);
+                Assert.That(AstContext.FindClass("_Ctypevec").First().Ignore, Is.True);
+                return;
+            }
+            if (Platform.IsLinux)
+            {
+                Assert.That(AstContext.GetEnumWithMatchingItem("PTHREAD_RWLOCK_PREFER_READER_NP").Ignore, Is.True);
+                Assert.That(AstContext.FindClass("pthread_mutex_t").First().Ignore, Is.True);
+                return;
+
+            }
+            if (Platform.IsMacOS)
+            {
+                Assert.That(AstContext.GetEnumWithMatchingItem("__n_words").Ignore, Is.True);
+                Assert.That(AstContext.FindClass("__darwin_fp_control").First().Ignore, Is.True);
+                return;
+            }
         }
     }
 }
