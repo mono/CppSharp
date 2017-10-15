@@ -820,6 +820,67 @@ Class* Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record)
 
 static int I = 0;
 
+static bool IsRecordValid(const clang::RecordDecl* RC,
+    std::vector<const clang::RecordDecl*>& Visited)
+{
+    using namespace clang;
+
+    if (std::find(Visited.begin(), Visited.end(), RC) != Visited.end())
+        return true;
+
+    Visited.push_back(RC);
+    if (RC->isInvalidDecl())
+        return false;
+    for (auto Field : RC->fields())
+    {
+        auto Type = Field->getType()->getUnqualifiedDesugaredType();
+        const auto* RD = const_cast<CXXRecordDecl*>(Type->getAsCXXRecordDecl());
+        if (!RD)
+            RD = Type->getPointeeCXXRecordDecl();
+        if (RD && !IsRecordValid(RD, Visited))
+            return false;
+    }
+    return true;
+}
+
+static bool IsRecordValid(const clang::RecordDecl* RC)
+{
+    std::vector<const clang::RecordDecl*> Visited;
+    return IsRecordValid(RC, Visited);
+}
+
+static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::QualType& Ty) {
+    using namespace clang;
+
+    if (auto RT = Ty->getAs<clang::RecordType>())
+        return dyn_cast<clang::CXXRecordDecl>(RT->getDecl());
+    else if (auto TST = Ty->getAs<clang::TemplateSpecializationType>())
+        return dyn_cast<clang::CXXRecordDecl>(
+            TST->getTemplateName().getAsTemplateDecl()->getTemplatedDecl());
+    else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
+        return Injected->getDecl();
+
+    assert("Could not get base CXX record from type");
+    return nullptr;
+}
+
+static bool HasLayout(const clang::RecordDecl* Record)
+{
+    if (Record->isDependentType() || !Record->getDefinition() ||
+        !IsRecordValid(Record))
+        return false;
+
+    if (auto CXXRecord = llvm::dyn_cast<clang::CXXRecordDecl>(Record))
+        for (auto Base : CXXRecord->bases())
+        {
+            auto CXXBase = GetCXXRecordDeclFromBaseType(Base.getType());
+            if (!CXXBase || !HasLayout(CXXBase))
+                return false;
+        }
+
+    return true;
+}
+
 void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 {
     using namespace clang;
@@ -846,7 +907,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     RC->isDependent = Record->isDependentType();
     RC->isExternCContext = Record->isExternCContext();
 
-    bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
+    bool hasLayout = HasLayout(Record);
 
     if (hasLayout)
     {
@@ -926,21 +987,6 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     }
 }
 
-static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::Type* Ty) {
-    using namespace clang;
-
-    if (auto RT = Ty->getAs<clang::RecordType>())
-        return dyn_cast<clang::CXXRecordDecl>(RT->getDecl());
-    else if (auto TST = Ty->getAs<clang::TemplateSpecializationType>())
-        return dyn_cast<clang::CXXRecordDecl>(
-            TST->getTemplateName().getAsTemplateDecl()->getTemplatedDecl());
-    else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
-        return Injected->getDecl();
-
-    assert("Could not get base CXX record from type");
-    return nullptr;
-}
-
 void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
 {
     using namespace clang;
@@ -961,7 +1007,7 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
     RC->hasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
     RC->hasNonTrivialDestructor = Record->hasNonTrivialDestructor();
 
-    bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl() &&
+    bool hasLayout = HasLayout(Record) &&
         Record->getDeclName() != c->getSema().VAListTagName;
 
     // Get the record layout information.
@@ -976,10 +1022,8 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
     }
 
     // Iterate through the record bases.
-    for (auto it = Record->bases_begin(); it != Record->bases_end(); ++it)
+    for (auto BS : Record->bases())
     {
-        auto& BS = *it;
-
         BaseClassSpecifier* Base = new BaseClassSpecifier();
         Base->access = ConvertToAccess(BS.getAccessSpecifier());
         Base->isVirtual = BS.isVirtual();
@@ -987,7 +1031,7 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
         auto BSTL = BS.getTypeSourceInfo()->getTypeLoc();
         Base->type = WalkType(BS.getType(), &BSTL);
 
-        auto BaseDecl = GetCXXRecordDeclFromBaseType(BS.getType().getTypePtr());
+        auto BaseDecl = GetCXXRecordDeclFromBaseType(BS.getType());
         if (BaseDecl && Layout)
         {
             auto Offset = BS.isVirtual() ? Layout->getVBaseClassOffset(BaseDecl)
@@ -2784,7 +2828,7 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
         return false;
 
     if (auto RT = FinalType->getAs<clang::RecordType>())
-        return RT->getDecl()->getDefinition() != 0;
+        return HasLayout(RT->getDecl());
 
     // Lock in the MS inheritance model if we have a member pointer to a class,
     // else we get an assertion error inside Clang's codegen machinery.
@@ -2985,7 +3029,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     const CXXMethodDecl* MD;
     if ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
-        !CanCheckCodeGenInfo(c->getSema(), MD->getThisType(c->getASTContext()).getTypePtr()))
+        !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext())))
         return;
 
     if (!CanCheckCodeGenInfo(c->getSema(), FD->getReturnType().getTypePtr()))
