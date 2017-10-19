@@ -1,5 +1,3 @@
-#include <string>
-
 #define Q_SIGNALS protected
 
 // Tests assignment of AST.Parameter properties

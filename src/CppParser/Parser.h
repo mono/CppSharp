@@ -21,6 +21,7 @@
 #include "CppParser.h"
 
 #include <string>
+#include <unordered_set>
 
 namespace clang {
   namespace CodeGen {
@@ -59,6 +60,8 @@ public:
     ParserTargetInfo*  GetTargetInfo();
 
 private:
+    bool IsSupported(const clang::RecordDecl* RD);
+    bool IsSupported(const clang::CXXMethodDecl* MD);
     // AST traversers
     void WalkAST();
     Declaration* WalkDeclaration(const clang::Decl* D);
@@ -143,6 +146,12 @@ private:
     void HandleComments(const clang::Decl* D, Declaration* Decl);
     void HandleDiagnostics(ParserResult* res);
 
+    ParserResultKind ReadSymbols(llvm::StringRef File,
+                                 llvm::object::basic_symbol_iterator Begin,
+                                 llvm::object::basic_symbol_iterator End,
+                                 CppSharp::CppParser::NativeLibrary*& NativeLib);
+    Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
+
     int index;
     CppSharp::CppParser::AST::ASTContext* lib;
     CppParserOptions* opts;
@@ -153,12 +162,7 @@ private:
     std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> walkedTypeTemplateParameters;
     std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> walkedTemplateTemplateParameters;
     std::unordered_map<const clang::NonTypeTemplateParmDecl*, NonTypeTemplateParameter*> walkedNonTypeTemplateParameters;
-
-    ParserResultKind ReadSymbols(llvm::StringRef File,
-                                 llvm::object::basic_symbol_iterator Begin,
-                                 llvm::object::basic_symbol_iterator End,
-                                 CppSharp::CppParser::NativeLibrary*& NativeLib);
-    Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
+    std::unordered_set<std::string> supportedStdTypes;
 };
 
 } }

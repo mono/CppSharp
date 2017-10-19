@@ -70,6 +70,8 @@ void* IgnorePtr = reinterpret_cast<void*>(0x1);
 
 Parser::Parser(CppParserOptions* Opts) : lib(Opts->ASTContext), opts(Opts), index(0)
 {
+    supportedStdTypes.insert("allocator");
+    supportedStdTypes.insert("basic_string");
 }
 
 LayoutField Parser::WalkVTablePointer(Class* Class,
@@ -821,14 +823,14 @@ Class* Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record)
 static int I = 0;
 
 static bool IsRecordValid(const clang::RecordDecl* RC,
-    std::vector<const clang::RecordDecl*>& Visited)
+    std::unordered_set<const clang::RecordDecl*>& Visited)
 {
     using namespace clang;
 
-    if (std::find(Visited.begin(), Visited.end(), RC) != Visited.end())
+    if (Visited.find(RC) != Visited.end())
         return true;
 
-    Visited.push_back(RC);
+    Visited.insert(RC);
     if (RC->isInvalidDecl())
         return false;
     for (auto Field : RC->fields())
@@ -845,7 +847,7 @@ static bool IsRecordValid(const clang::RecordDecl* RC,
 
 static bool IsRecordValid(const clang::RecordDecl* RC)
 {
-    std::vector<const clang::RecordDecl*> Visited;
+    std::unordered_set<const clang::RecordDecl*> Visited;
     return IsRecordValid(RC, Visited);
 }
 
@@ -879,6 +881,23 @@ static bool HasLayout(const clang::RecordDecl* Record)
         }
 
     return true;
+}
+
+bool Parser::IsSupported(const clang::RecordDecl* RD)
+{
+    return !c->getSourceManager().isInSystemHeader(RD->getLocStart()) ||
+        supportedStdTypes.find(RD->getName()) != supportedStdTypes.end();
+}
+
+bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
+{
+    using namespace clang;
+
+    return !c->getSourceManager().isInSystemHeader(MD->getLocStart()) ||
+        isa<CXXConstructorDecl>(MD) || isa<CXXDestructorDecl>(MD) ||
+        (MD->getName() == "c_str" &&
+         supportedStdTypes.find(MD->getParent()->getName()) !=
+            supportedStdTypes.end());
 }
 
 void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
@@ -920,11 +939,15 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         ReadClassLayout(RC, Record, CharUnits(), true);
     }
 
-    for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
-    {
-        auto D = *it;
+    for (auto FD : Record->fields())
+        WalkFieldCXX(FD, RC);
 
-        switch(D->getKind())
+    if (!IsSupported(Record))
+        return;
+
+    for (auto D : Record->decls())
+    {
+        switch (D->getKind())
         {
         case Decl::CXXConstructor:
         case Decl::CXXDestructor:
@@ -932,13 +955,8 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         case Decl::CXXMethod:
         {
             auto MD = cast<CXXMethodDecl>(D);
-            WalkMethodCXX(MD);
-            break;
-        }
-        case Decl::Field:
-        {
-            auto FD = cast<FieldDecl>(D);
-            WalkFieldCXX(FD, RC);
+            if (IsSupported(MD))
+                WalkMethodCXX(MD);
             break;
         }
         case Decl::AccessSpec:
@@ -954,6 +972,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
             RC->Specifiers.push_back(AccessDecl);
             break;
         }
+        case Decl::Field: // fields already handled
         case Decl::IndirectField: // FIXME: Handle indirect fields
             break;
         case Decl::CXXRecord:
