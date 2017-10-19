@@ -114,7 +114,7 @@ namespace CppSharp.Generators.CLI
 
             var translationUnit = decl.Namespace.TranslationUnit;
 
-            if (translationUnit.IsSystemHeader)
+            if (translationUnit.IsSystemHeader || !translationUnit.IsValid)
                 return;
 
             if (!decl.IsGenerated)

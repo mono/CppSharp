@@ -500,8 +500,9 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestFunctionSpecializationInfo()
         {
-            var functionWithSpecInfo = AstContext.FindFunction(
-                "functionWithSpecInfo").First(f => !f.IsDependent);
+            var functionWithSpecInfo = AstContext.TranslationUnits.Find(
+                t => t.IsValid && t.FileName == "AST.h").Functions.First(
+                f => f.Name == "functionWithSpecInfo" && !f.IsDependent);
             var @float = new QualifiedType(new BuiltinType(PrimitiveType.Float));
             Assert.That(functionWithSpecInfo.SpecializationInfo.Arguments.Count, Is.EqualTo(2));
             foreach (var arg in functionWithSpecInfo.SpecializationInfo.Arguments)

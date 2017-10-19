@@ -2889,10 +2889,16 @@ static clang::TypeLoc DesugarTypeLoc(const clang::TypeLoc& Loc)
 Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
     const clang::SourceLocation& ParamStartLoc)
 {
-    auto P = new Parameter();
+    using namespace clang;
+
+    auto P = walkedParameters[PVD];
+    if (P)
+        return P;
+
+    P = new Parameter();
     P->name = PVD->getNameAsString();
 
-    clang::TypeLoc PTL;
+    TypeLoc PTL;
     if (auto TSI = PVD->getTypeSourceInfo())
         PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
@@ -2912,6 +2918,9 @@ Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
             P->defaultArgument = WalkExpression(PVD->getDefaultArg());
     }
     HandleDeclaration(PVD, P);
+    walkedParameters[PVD] = P;
+    auto Context = cast<Decl>(PVD->getDeclContext());
+    P->_namespace = static_cast<DeclarationContext*>(WalkDeclaration(Context));
 
     return P;
 }
@@ -3028,7 +3037,6 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     for (const auto& VD : FD->parameters())
     {
         auto P = WalkParameter(VD, ParamStartLoc);
-        P->_namespace = F;
         F->Parameters.push_back(P);
 
         ParamStartLoc = VD->getLocEnd();
@@ -3093,10 +3101,10 @@ Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool IsDependent,
     F = new Function();
     HandleDeclaration(FD, F);
 
-    WalkFunction(FD, F, IsDependent);
-
     if (AddToNamespace)
         NS->Functions.push_back(F);
+
+    WalkFunction(FD, F, IsDependent);
 
     return F;
 }
@@ -3744,6 +3752,11 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
             TypeAlias->describedAliasTemplate = WalkTypeAliasTemplate(TAT);
 
         Decl = Existing;
+        break;
+    }
+    case Decl::TranslationUnit:
+    {
+        Decl = GetTranslationUnit(D);
         break;
     }
     case Decl::Namespace:

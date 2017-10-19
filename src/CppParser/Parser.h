@@ -162,6 +162,7 @@ private:
     std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> walkedTypeTemplateParameters;
     std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> walkedTemplateTemplateParameters;
     std::unordered_map<const clang::NonTypeTemplateParmDecl*, NonTypeTemplateParameter*> walkedNonTypeTemplateParameters;
+    std::unordered_map<const clang::ParmVarDecl*, Parameter*> walkedParameters;
     std::unordered_set<std::string> supportedStdTypes;
 };
 
