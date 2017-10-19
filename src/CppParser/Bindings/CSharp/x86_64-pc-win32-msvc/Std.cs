@@ -366,10 +366,6 @@ namespace Std
             internal global::Std.VectorVal.__Internal _Myval2;
         }
     }
-
-    public unsafe partial class CompressedPair<_Ty1, _Ty2, _0>
-    {
-    }
 }
 
 namespace Std
@@ -622,10 +618,6 @@ namespace Std
             }
         }
     }
-
-    public unsafe partial class StringVal<_Val_types>
-    {
-    }
 }
 
 namespace Std
@@ -638,10 +630,6 @@ namespace Std
             [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
         }
-    }
-
-    public unsafe partial class Vector<_Ty, _Alloc>
-    {
     }
 
     namespace VectorVal
@@ -659,10 +647,6 @@ namespace Std
             internal global::System.IntPtr _Myend;
         }
     }
-
-    public unsafe partial class VectorVal<_Val_types>
-    {
-    }
 }
 
 namespace Std
@@ -679,10 +663,6 @@ namespace Std
             internal ulong _Mysize;
         }
     }
-
-    public unsafe partial class TreeVal<_Val_types>
-    {
-    }
 }
 
 namespace Std
@@ -695,9 +675,5 @@ namespace Std
             [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_less____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Compressed_pair____N_std_S_allocator____N_std_S__Tree_node____N_std_S_pair__1S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration__v___N_std_S__Tree_val____N_std_S__Tree_simple_types__S7__Vb1_Vb1 _Mypair;
         }
-    }
-
-    public unsafe partial class Map<_Kty, _Ty, _Pr, _Alloc>
-    {
     }
 }

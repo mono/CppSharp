@@ -344,7 +344,7 @@ namespace CppSharp.Generators.CSharp
                 if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
 
-                if (@class.Specializations.All(s => s.Ignore))
+                if (@class.Specializations.All(s => !s.IsGenerated))
                     return true;
             }
 

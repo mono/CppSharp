@@ -45,10 +45,6 @@ namespace Std
         }
     }
 
-    public unsafe partial class CompressedPair<_T1, _T2>
-    {
-    }
-
     namespace Allocator
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -151,10 +147,6 @@ namespace Std
             internal global::Std.CompressedPair.__Internal __end_cap_;
         }
     }
-
-    public unsafe partial class Vector<_Tp, _Allocator>
-    {
-    }
 }
 
 namespace Std
@@ -175,10 +167,6 @@ namespace Std
         }
     }
 
-    public unsafe partial class Tree<_Tp, _Compare, _Allocator>
-    {
-    }
-
     namespace TreeEndNode
     {
         [StructLayout(LayoutKind.Explicit, Size = 4)]
@@ -187,10 +175,6 @@ namespace Std
             [FieldOffset(0)]
             internal global::System.IntPtr __left_;
         }
-    }
-
-    public unsafe partial class TreeEndNode<_Pointer>
-    {
     }
 }
 
@@ -204,10 +188,6 @@ namespace Std
             [FieldOffset(0)]
             internal global::Std.Tree.__Internal __tree_;
         }
-    }
-
-    public unsafe partial class Map<_Key, _Tp, _Compare, _Allocator>
-    {
     }
 }
 

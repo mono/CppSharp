@@ -127,10 +127,6 @@ namespace Std
         }
     }
 
-    public unsafe partial class Vector<_Tp, _Alloc>
-    {
-    }
-
     namespace VectorBase
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -157,10 +153,6 @@ namespace Std
             }
         }
     }
-
-    public unsafe partial class VectorBase<_Tp, _Alloc>
-    {
-    }
 }
 
 namespace Std
@@ -171,10 +163,6 @@ namespace Std
         public unsafe partial struct __Internal
         {
         }
-    }
-
-    public unsafe partial class Less<_Tp>
-    {
     }
 }
 
@@ -269,10 +257,6 @@ namespace Std
             [FieldOffset(0)]
             internal global::Std.RbTree.__Internal _M_t;
         }
-    }
-
-    public unsafe partial class Map<_Key, _Tp, _Compare, _Alloc>
-    {
     }
 }
 
