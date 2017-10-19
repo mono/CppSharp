@@ -1111,6 +1111,45 @@ WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
     llvm_unreachable("Unknown template specialization kind");
 }
 
+//-----------------------------------//
+
+struct Diagnostic
+{
+    clang::SourceLocation Location;
+    llvm::SmallString<100> Message;
+    clang::DiagnosticsEngine::Level Level;
+};
+
+struct DiagnosticConsumer : public clang::DiagnosticConsumer
+{
+    virtual void HandleDiagnostic(clang::DiagnosticsEngine::Level Level,
+        const clang::Diagnostic& Info) override {
+        // Update the base type NumWarnings and NumErrors variables.
+        if (Level == clang::DiagnosticsEngine::Warning)
+            NumWarnings++;
+
+        if (Level == clang::DiagnosticsEngine::Error ||
+            Level == clang::DiagnosticsEngine::Fatal)
+        {
+            NumErrors++;
+            if (Decl)
+            {
+                Decl->setInvalidDecl();
+                Decl = 0;
+            }
+        }
+
+        auto Diag = Diagnostic();
+        Diag.Location = Info.getLocation();
+        Diag.Level = Level;
+        Info.FormatDiagnostic(Diag.Message);
+        Diagnostics.push_back(Diag);
+    }
+
+    std::vector<Diagnostic> Diagnostics;
+    clang::Decl* Decl;
+};
+
 ClassTemplateSpecialization*
 Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecializationDecl* CTS)
 {
@@ -2110,39 +2149,6 @@ static const clang::Type* GetFinalType(const clang::Type* Ty)
     }
 }
 
-bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
-{
-    auto FinalType = GetFinalType(QualType.getTypePtr());
-    if (auto Tag = FinalType->getAsTagDecl())
-    {
-        if (auto CTS = llvm::dyn_cast<clang::ClassTemplateSpecializationDecl>(Tag))
-        {
-            // we cannot get a location in some cases of template arguments
-            if (!LocValid || CTS->isCompleteDefinition())
-                return false;
-
-            auto TAL = &CTS->getTemplateArgs();
-            for (size_t i = 0; i < TAL->size(); i++)
-            {
-                auto TA = TAL->get(i);
-                if (TA.getKind() == clang::TemplateArgument::ArgKind::Type)
-                {
-                    auto Type = TA.getAsType();
-                    if (Type->isVoidType())
-                        return false;
-                }
-            }
-            auto Unit = GetTranslationUnit(Tag);
-            // HACK: completing all system types overflows the managed stack
-            // while running the AST converter since the latter is a giant indirect recursion
-            // this solution is a hack because we might need to complete system template specialisations
-            // such as std:string or std::vector in order to represent them in the target language
-            return !Unit->isSystemHeader;
-        }
-    }
-    return false;
-}
-
 Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     bool DesugarType)
 {
@@ -2152,11 +2158,6 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         return nullptr;
 
     auto LocValid = TL && !TL->isNull();
-
-    auto CompleteType = ShouldCompleteType(QualType, LocValid);
-    if (CompleteType)
-        c->getSema().RequireCompleteType(
-            LocValid ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
 
     const clang::Type* Type = QualType.getTypePtr();
 
@@ -2857,8 +2858,8 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
 {
     auto FinalType = GetFinalType(Ty);
 
-    if (Ty->isDependentType() || FinalType->isDependentType() ||
-        FinalType->isInstantiationDependentType())
+    if (FinalType->isDependentType() ||
+        FinalType->isInstantiationDependentType() || FinalType->isUndeducedType())
         return false;
 
     if (auto RT = FinalType->getAs<clang::RecordType>())
@@ -2899,6 +2900,27 @@ static clang::TypeLoc DesugarTypeLoc(const clang::TypeLoc& Loc)
     return Loc;
 }
 
+void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
+{
+    using namespace clang;
+
+    auto Type = QualType->getUnqualifiedDesugaredType();
+    auto RD = Type->getAsCXXRecordDecl();
+    if (!RD)
+        RD = const_cast<CXXRecordDecl*>(Type->getPointeeCXXRecordDecl());
+    ClassTemplateSpecializationDecl* CTS;
+    if (!RD ||
+        !(CTS = llvm::dyn_cast<ClassTemplateSpecializationDecl>(RD)) ||
+        CTS->isCompleteDefinition())
+        return;
+
+    auto Diagnostics = c->getSema().getDiagnostics().getClient();
+    auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
+    SemaDiagnostics->Decl = CTS;
+    c->getSema().InstantiateClassTemplateSpecialization(CTS->getLocStart(),
+        CTS, TSK_ImplicitInstantiation, false);
+}
+
 Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
     const clang::SourceLocation& ParamStartLoc)
 {
@@ -2913,14 +2935,18 @@ Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
 
     TypeLoc PTL;
     if (auto TSI = PVD->getTypeSourceInfo())
-        PTL = PVD->getTypeSourceInfo()->getTypeLoc();
+        PTL = TSI->getTypeLoc();
 
     auto paramRange = PVD->getSourceRange();
     paramRange.setBegin(ParamStartLoc);
 
     HandlePreprocessedEntities(P, paramRange, MacroLocation::FunctionParameters);
 
-    P->qualifiedType = GetQualifiedType(PVD->getOriginalType(), &PTL);
+    const auto& Type = PVD->getOriginalType();
+    auto Function = PVD->getParentFunctionOrMethod();
+    if (Function && cast<NamedDecl>(Function)->isExternallyVisible())
+        CompleteIfSpecializationType(Type);
+    P->qualifiedType = GetQualifiedType(Type, &PTL);
     P->hasDefaultValue = PVD->hasDefaultArg();
     P->index = PVD->getFunctionScopeIndex();
     if (PVD->hasDefaultArg() && !PVD->hasUnparsedDefaultArg())
@@ -3008,8 +3034,11 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     }
     else
         F->qualifiedType = GetQualifiedType(FD->getType());
-
-    F->returnType = GetQualifiedType(FD->getReturnType(), &RTL);
+    
+    auto ReturnType = FD->getReturnType();
+    if (FD->isExternallyVisible())
+        CompleteIfSpecializationType(ReturnType);
+    F->returnType = GetQualifiedType(ReturnType, &RTL);
 
     const auto& Mangled = GetDeclMangledName(FD);
     F->mangled = Mangled;
@@ -3047,7 +3076,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     if (GetDeclText(Range, Sig))
         F->signature = Sig;
 
-    for (const auto& VD : FD->parameters())
+    for (auto VD : FD->parameters())
     {
         auto P = WalkParameter(VD, ParamStartLoc);
         F->Parameters.push_back(P);
@@ -3068,6 +3097,9 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->specializationInfo = WalkFunctionTemplateSpec(FTSI, F);
+
+    if (F->isDependent)
+        return;
 
     const CXXMethodDecl* MD;
     if ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
@@ -3873,39 +3905,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
 
     return Decl;
 }
-
-//-----------------------------------//
-
-struct Diagnostic
-{
-    clang::SourceLocation Location;
-    llvm::SmallString<100> Message;
-    clang::DiagnosticsEngine::Level Level;
-};
-
-struct DiagnosticConsumer : public clang::DiagnosticConsumer
-{
-    virtual ~DiagnosticConsumer() { }
-
-    virtual void HandleDiagnostic(clang::DiagnosticsEngine::Level Level,
-                                  const clang::Diagnostic& Info) override {
-        // Update the base type NumWarnings and NumErrors variables.
-        if (Level == clang::DiagnosticsEngine::Warning)
-            NumWarnings++;
-
-        if (Level == clang::DiagnosticsEngine::Error ||
-            Level == clang::DiagnosticsEngine::Fatal)
-            NumErrors++;
-
-        auto Diag = Diagnostic();
-        Diag.Location = Info.getLocation();
-        Diag.Level = Level;
-        Info.FormatDiagnostic(Diag.Message);
-        Diagnostics.push_back(Diag);
-    }
-
-    std::vector<Diagnostic> Diagnostics;
-};
 
 void Parser::HandleDiagnostics(ParserResult* res)
 {
