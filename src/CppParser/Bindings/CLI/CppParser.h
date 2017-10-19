@@ -127,6 +127,12 @@ namespace CppSharp
                 void set(System::Collections::Generic::List<System::String^>^);
             }
 
+            property System::Collections::Generic::List<System::String^>^ SupportedStdTypes
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
             property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
                 CppSharp::Parser::AST::ASTContext^ get();
@@ -222,6 +228,11 @@ namespace CppSharp
                 unsigned int get();
             }
 
+            property unsigned int SupportedStdTypesCount
+            {
+                unsigned int get();
+            }
+
             System::String^ GetArguments(unsigned int i);
 
             void AddArguments(System::String^ s);
@@ -263,6 +274,12 @@ namespace CppSharp
             void AddLibraryDirs(System::String^ s);
 
             void ClearLibraryDirs();
+
+            System::String^ GetSupportedStdTypes(unsigned int i);
+
+            void AddSupportedStdTypes(System::String^ s);
+
+            void ClearSupportedStdTypes();
 
             protected:
             bool __ownsNativeInstance;

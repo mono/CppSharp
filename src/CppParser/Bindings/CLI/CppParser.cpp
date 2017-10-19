@@ -166,6 +166,25 @@ void CppSharp::Parser::CppParserOptions::ClearLibraryDirs()
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->clearLibraryDirs();
 }
 
+System::String^ CppSharp::Parser::CppParserOptions::GetSupportedStdTypes(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypes(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::CppParserOptions::AddSupportedStdTypes(System::String^ s)
+{
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->addSupportedStdTypes(__arg0);
+}
+
+void CppSharp::Parser::CppParserOptions::ClearSupportedStdTypes()
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->clearSupportedStdTypes();
+}
+
 CppSharp::Parser::CppParserOptions::CppParserOptions(CppSharp::Parser::CppParserOptions^ _0)
 {
     __ownsNativeInstance = true;
@@ -349,6 +368,28 @@ void CppSharp::Parser::CppParserOptions::LibraryDirs::set(System::Collections::G
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->LibraryDirs = _tmpvalue;
 }
 
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::CppParserOptions::SupportedStdTypes::get()
+{
+    auto _tmp__SupportedStdTypes = gcnew System::Collections::Generic::List<System::String^>();
+    for(auto _element : ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->SupportedStdTypes)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__SupportedStdTypes->Add(_marshalElement);
+    }
+    return _tmp__SupportedStdTypes;
+}
+
+void CppSharp::Parser::CppParserOptions::SupportedStdTypes::set(System::Collections::Generic::List<System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->SupportedStdTypes = _tmpvalue;
+}
+
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::CppParserOptions::ASTContext::get()
 {
     return (((::CppSharp::CppParser::CppParserOptions*)NativePtr)->ASTContext == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->ASTContext);
@@ -488,6 +529,12 @@ unsigned int CppSharp::Parser::CppParserOptions::UndefinesCount::get()
 unsigned int CppSharp::Parser::CppParserOptions::LibraryDirsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getLibraryDirsCount();
+    return __ret;
+}
+
+unsigned int CppSharp::Parser::CppParserOptions::SupportedStdTypesCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypesCount();
     return __ret;
 }
 

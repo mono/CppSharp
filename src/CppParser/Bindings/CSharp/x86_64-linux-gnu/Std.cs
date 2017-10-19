@@ -13,10 +13,6 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.CppParser")]
 
-namespace Std
-{
-}
-
 namespace GnuCxx
 {
 }
@@ -44,15 +40,6 @@ namespace Std
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSaIcED2Ev")]
             internal static extern void dtorc__N_std_S_allocator__C(global::System.IntPtr instance);
-        }
-
-
-        public unsafe partial class Rebind
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct __Internal
-            {
-            }
         }
     }
 
@@ -296,15 +283,6 @@ namespace Std
         {
             [FieldOffset(0)]
             internal global::Std.RbTree.__Internal _M_t;
-        }
-
-
-        public unsafe partial class ValueCompare
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
-            }
         }
     }
 

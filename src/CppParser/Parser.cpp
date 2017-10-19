@@ -70,6 +70,8 @@ void* IgnorePtr = reinterpret_cast<void*>(0x1);
 
 Parser::Parser(CppParserOptions* Opts) : lib(Opts->ASTContext), opts(Opts), index(0)
 {
+    for (const auto& SupportedStdType : Opts->SupportedStdTypes)
+        supportedStdTypes.insert(SupportedStdType);
     supportedStdTypes.insert("allocator");
     supportedStdTypes.insert("basic_string");
 }

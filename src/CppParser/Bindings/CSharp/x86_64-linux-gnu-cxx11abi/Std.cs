@@ -13,10 +13,6 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.CppParser")]
 
-namespace Std
-{
-}
-
 namespace GnuCxx
 {
 }
@@ -287,15 +283,6 @@ namespace Std
         {
             [FieldOffset(0)]
             internal global::Std.RbTree.__Internal _M_t;
-        }
-
-
-        public unsafe partial class ValueCompare
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
-            }
         }
     }
 

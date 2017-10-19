@@ -17948,7 +17948,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 140)]
+            [StructLayout(LayoutKind.Explicit, Size = 152)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -17976,33 +17976,36 @@ namespace CppSharp
                 internal global::Std.Vector.__Internal LibraryDirs;
 
                 [FieldOffset(96)]
+                internal global::Std.Vector.__Internal SupportedStdTypes;
+
+                [FieldOffset(108)]
                 internal global::System.IntPtr ASTContext;
 
-                [FieldOffset(100)]
+                [FieldOffset(112)]
                 internal int toolSetToUse;
 
-                [FieldOffset(104)]
+                [FieldOffset(116)]
                 internal global::Std.BasicString.__Internal targetTriple;
 
-                [FieldOffset(116)]
+                [FieldOffset(128)]
                 internal global::Std.BasicString.__Internal currentDir;
 
-                [FieldOffset(128)]
+                [FieldOffset(140)]
                 internal global::CppSharp.Parser.AST.CppAbi abi;
 
-                [FieldOffset(132)]
+                [FieldOffset(144)]
                 internal byte noStandardIncludes;
 
-                [FieldOffset(133)]
+                [FieldOffset(145)]
                 internal byte noBuiltinIncludes;
 
-                [FieldOffset(134)]
+                [FieldOffset(146)]
                 internal byte microsoftMode;
 
-                [FieldOffset(135)]
+                [FieldOffset(147)]
                 internal byte verbose;
 
-                [FieldOffset(136)]
+                [FieldOffset(148)]
                 internal global::System.IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -18127,6 +18130,21 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions20getSupportedStdTypesEj")]
+                internal static extern global::System.IntPtr GetSupportedStdTypes(global::System.IntPtr instance, uint i);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions20addSupportedStdTypesEPKc")]
+                internal static extern void AddSupportedStdTypes(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions22clearSupportedStdTypesEv")]
+                internal static extern void ClearSupportedStdTypes(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions17getArgumentsCountEv")]
                 internal static extern uint GetArgumentsCount(global::System.IntPtr instance);
 
@@ -18159,6 +18177,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions19getLibraryDirsCountEv")]
                 internal static extern uint GetLibraryDirsCount(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions25getSupportedStdTypesCountEv")]
+                internal static extern uint GetSupportedStdTypesCount(global::System.IntPtr instance);
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
@@ -18347,6 +18370,22 @@ namespace CppSharp
             public void ClearLibraryDirs()
             {
                 __Internal.ClearLibraryDirs((__Instance + __PointerAdjustment));
+            }
+
+            public string GetSupportedStdTypes(uint i)
+            {
+                var __ret = __Internal.GetSupportedStdTypes((__Instance + __PointerAdjustment), i);
+                return Marshal.PtrToStringAnsi(__ret);
+            }
+
+            public void AddSupportedStdTypes(string s)
+            {
+                __Internal.AddSupportedStdTypes((__Instance + __PointerAdjustment), s);
+            }
+
+            public void ClearSupportedStdTypes()
+            {
+                __Internal.ClearSupportedStdTypes((__Instance + __PointerAdjustment));
             }
 
             public string LibraryFile
@@ -18576,6 +18615,15 @@ namespace CppSharp
                 get
                 {
                     var __ret = __Internal.GetLibraryDirsCount((__Instance + __PointerAdjustment));
+                    return __ret;
+                }
+            }
+
+            public uint SupportedStdTypesCount
+            {
+                get
+                {
+                    var __ret = __Internal.GetSupportedStdTypesCount((__Instance + __PointerAdjustment));
                     return __ret;
                 }
             }

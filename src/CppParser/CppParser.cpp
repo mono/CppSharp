@@ -31,6 +31,7 @@ DEF_VECTOR_STRING(CppParserOptions, SystemIncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, Defines)
 DEF_VECTOR_STRING(CppParserOptions, Undefines)
 DEF_VECTOR_STRING(CppParserOptions, LibraryDirs)
+DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 
 ParserResult::ParserResult()
     : ASTContext(0)

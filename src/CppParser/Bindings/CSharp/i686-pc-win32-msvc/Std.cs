@@ -477,6 +477,43 @@ namespace Std
 
 namespace Std
 {
+    namespace StringVal
+    {
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internal
+        {
+            [FieldOffset(0)]
+            internal global::Std.StringVal.Bxty.__Internal _Bx;
+
+            [FieldOffset(16)]
+            internal uint _Mysize;
+
+            [FieldOffset(20)]
+            internal uint _Myres;
+        }
+
+
+        public unsafe partial struct Bxty
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 16)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal fixed sbyte _Buf[16];
+
+                [FieldOffset(0)]
+                internal global::System.IntPtr _Ptr;
+
+                [FieldOffset(0)]
+                internal fixed sbyte _Alias[16];
+            }
+        }
+    }
+
+    public unsafe partial class StringVal<_Val_types>
+    {
+    }
+
     public unsafe static partial class BasicStringExtensions
     {
         [StructLayout(LayoutKind.Explicit, Size = 0)]
@@ -604,43 +641,6 @@ namespace Std
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
         }
-    }
-
-    namespace StringVal
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.StringVal.Bxty.__Internal _Bx;
-
-            [FieldOffset(16)]
-            internal uint _Mysize;
-
-            [FieldOffset(20)]
-            internal uint _Myres;
-        }
-
-
-        public unsafe partial struct Bxty
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal fixed sbyte _Buf[16];
-
-                [FieldOffset(0)]
-                internal global::System.IntPtr _Ptr;
-
-                [FieldOffset(0)]
-                internal fixed sbyte _Alias[16];
-            }
-        }
-    }
-
-    public unsafe partial class StringVal<_Val_types>
-    {
     }
 }
 

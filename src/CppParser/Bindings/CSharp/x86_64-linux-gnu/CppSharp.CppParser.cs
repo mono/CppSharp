@@ -17947,7 +17947,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 224)]
+            [StructLayout(LayoutKind.Explicit, Size = 248)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -17975,33 +17975,36 @@ namespace CppSharp
                 internal global::Std.Vector.__Internal LibraryDirs;
 
                 [FieldOffset(176)]
-                internal global::System.IntPtr ASTContext;
-
-                [FieldOffset(184)]
-                internal int toolSetToUse;
-
-                [FieldOffset(192)]
-                internal global::Std.BasicString.__Internal targetTriple;
+                internal global::Std.Vector.__Internal SupportedStdTypes;
 
                 [FieldOffset(200)]
-                internal global::Std.BasicString.__Internal currentDir;
+                internal global::System.IntPtr ASTContext;
 
                 [FieldOffset(208)]
-                internal global::CppSharp.Parser.AST.CppAbi abi;
-
-                [FieldOffset(212)]
-                internal byte noStandardIncludes;
-
-                [FieldOffset(213)]
-                internal byte noBuiltinIncludes;
-
-                [FieldOffset(214)]
-                internal byte microsoftMode;
-
-                [FieldOffset(215)]
-                internal byte verbose;
+                internal int toolSetToUse;
 
                 [FieldOffset(216)]
+                internal global::Std.BasicString.__Internal targetTriple;
+
+                [FieldOffset(224)]
+                internal global::Std.BasicString.__Internal currentDir;
+
+                [FieldOffset(232)]
+                internal global::CppSharp.Parser.AST.CppAbi abi;
+
+                [FieldOffset(236)]
+                internal byte noStandardIncludes;
+
+                [FieldOffset(237)]
+                internal byte noBuiltinIncludes;
+
+                [FieldOffset(238)]
+                internal byte microsoftMode;
+
+                [FieldOffset(239)]
+                internal byte verbose;
+
+                [FieldOffset(240)]
                 internal global::System.IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -18126,6 +18129,21 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions20getSupportedStdTypesEj")]
+                internal static extern global::System.IntPtr GetSupportedStdTypes(global::System.IntPtr instance, uint i);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions20addSupportedStdTypesEPKc")]
+                internal static extern void AddSupportedStdTypes(global::System.IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions22clearSupportedStdTypesEv")]
+                internal static extern void ClearSupportedStdTypes(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions17getArgumentsCountEv")]
                 internal static extern uint GetArgumentsCount(global::System.IntPtr instance);
 
@@ -18158,6 +18176,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions19getLibraryDirsCountEv")]
                 internal static extern uint GetLibraryDirsCount(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions25getSupportedStdTypesCountEv")]
+                internal static extern uint GetSupportedStdTypesCount(global::System.IntPtr instance);
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
@@ -18346,6 +18369,22 @@ namespace CppSharp
             public void ClearLibraryDirs()
             {
                 __Internal.ClearLibraryDirs((__Instance + __PointerAdjustment));
+            }
+
+            public string GetSupportedStdTypes(uint i)
+            {
+                var __ret = __Internal.GetSupportedStdTypes((__Instance + __PointerAdjustment), i);
+                return Marshal.PtrToStringAnsi(__ret);
+            }
+
+            public void AddSupportedStdTypes(string s)
+            {
+                __Internal.AddSupportedStdTypes((__Instance + __PointerAdjustment), s);
+            }
+
+            public void ClearSupportedStdTypes()
+            {
+                __Internal.ClearSupportedStdTypes((__Instance + __PointerAdjustment));
             }
 
             public string LibraryFile
@@ -18575,6 +18614,15 @@ namespace CppSharp
                 get
                 {
                     var __ret = __Internal.GetLibraryDirsCount((__Instance + __PointerAdjustment));
+                    return __ret;
+                }
+            }
+
+            public uint SupportedStdTypesCount
+            {
+                get
+                {
+                    var __ret = __Internal.GetSupportedStdTypesCount((__Instance + __PointerAdjustment));
                     return __ret;
                 }
             }
