@@ -199,7 +199,7 @@ namespace CppSharp.Passes
                 var specialization = @base.Class as ClassTemplateSpecialization;
                 if (specialization != null && !specialization.IsExplicitlyGenerated &&
                     specialization.SpecializationKind != TemplateSpecializationKind.ExplicitSpecialization)
-                    Add(specialization);
+                    ASTUtils.CheckTypeForSpecialization(@base.Type, @class, Add, Context.TypeMaps);
                 CheckBasesForSpecialization(@base.Class);
             }
         }
