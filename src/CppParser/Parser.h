@@ -87,7 +87,6 @@ private:
     void WalkVariable(const clang::VarDecl* VD, Variable* Var);
     Friend* WalkFriend(const clang::FriendDecl* FD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
-    bool ShouldCompleteType(const clang::QualType& QualType, bool LocValid);
     Type* WalkType(clang::QualType QualType, const clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
@@ -124,6 +123,7 @@ private:
     std::string GetDeclMangledName(const clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
     bool CanCheckCodeGenInfo(clang::Sema & S, const clang::Type * Ty);
+    void CompleteIfSpecializationType(const clang::QualType& QualType);
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
         const clang::SourceLocation& ParamStartLoc);
     void SetBody(const clang::FunctionDecl* FD, Function* F);
