@@ -84,7 +84,7 @@ namespace CppSharp.AST
             return !prop.IsGenerated;
         }
 
-        public static void CheckTypeForSpecialization(Type type, Declaration container,
+        public static bool CheckTypeForSpecialization(Type type, Declaration container,
             Action<ClassTemplateSpecialization> addSpecialization,
             ITypeMapDatabase typeMaps, bool internalOnly = false)
         {
@@ -92,21 +92,28 @@ namespace CppSharp.AST
             type = (type.GetFinalPointee() ?? type).Desugar();
             ClassTemplateSpecialization specialization = GetParentSpecialization(type);
             if (specialization == null)
-                return;
+                return true;
 
             if (IsSpecializationNeeded(container, typeMaps, internalOnly, specialization))
-                return;
+                return false;
 
             if (!internalOnly)
             {
                 if (IsSpecializationSelfContained(specialization, container))
-                    return;
+                    return true;
 
                 if (IsMappedToPrimitive(typeMaps, type, specialization))
-                    return;
+                    return true;
             }
 
+            if (specialization.Arguments.Select(
+                a => a.Type.Type).Any(t => t != null &&
+                    !CheckTypeForSpecialization(t, container, addSpecialization,
+                        typeMaps, internalOnly)))
+                return false;
+
             addSpecialization(specialization);
+            return true;
         }
 
         public static bool IsTypeExternal(Module module, Type type)
