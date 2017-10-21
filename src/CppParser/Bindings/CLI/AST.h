@@ -1514,6 +1514,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsInvalid
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::Declaration^ CompleteDeclaration
                 {
                     CppSharp::Parser::AST::Declaration^ get();

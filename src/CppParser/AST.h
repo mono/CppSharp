@@ -483,6 +483,7 @@ public:
     bool isIncomplete;
     bool isDependent;
     bool isImplicit;
+    bool isInvalid;
     Declaration* completeDeclaration;
     unsigned definitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)

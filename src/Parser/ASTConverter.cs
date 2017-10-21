@@ -944,6 +944,9 @@ namespace CppSharp
             _decl.DebugText = decl.DebugText;
             _decl.IsIncomplete = decl.IsIncomplete;
             _decl.IsDependent = decl.IsDependent;
+            _decl.IsImplicit = decl.IsImplicit;
+            if (decl.IsInvalid)
+                _decl.GenerationKind = AST.GenerationKind.None;
             _decl.DefinitionOrder = decl.DefinitionOrder;
             _decl.MaxFieldAlignment = decl.MaxFieldAlignment;
 

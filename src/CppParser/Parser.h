@@ -120,6 +120,7 @@ private:
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
         const clang::SourceLocation& ParamStartLoc);
     void SetBody(const clang::FunctionDecl* FD, Function* F);
+    void MarkValidity(Function* F);
     void WalkFunction(const clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(Declaration* Decl);

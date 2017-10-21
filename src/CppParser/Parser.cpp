@@ -259,7 +259,7 @@ void Parser::Setup()
     CompilerInvocation::CreateFromArgs(*Inv, args.data(), args.data() + args.size(),
       c->getDiagnostics());
     c->setInvocation(std::shared_ptr<CompilerInvocation>(Inv));
-
+    c->getLangOpts() = *Inv->LangOpts;
 
     auto& TO = Inv->TargetOpts;
     targetABI = ConvertToClangTargetCXXABI(opts->abi);
@@ -1136,7 +1136,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
             NumErrors++;
             if (Decl)
             {
-                Decl->setInvalidDecl();
+                Decl->isInvalid = true;
                 Decl = 0;
             }
         }
@@ -1149,7 +1149,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
     }
 
     std::vector<Diagnostic> Diagnostics;
-    clang::Decl* Decl;
+    Declaration* Decl;
 };
 
 ClassTemplateSpecialization*
@@ -2919,7 +2919,6 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
 
     auto Diagnostics = c->getSema().getDiagnostics().getClient();
     auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
-    SemaDiagnostics->Decl = CTS;
     c->getSema().InstantiateClassTemplateSpecialization(CTS->getLocStart(),
         CTS, TSK_ImplicitInstantiation, false);
 }
@@ -2981,6 +2980,27 @@ void Parser::SetBody(const clang::FunctionDecl* FD, Function* F)
         if (!F->body.empty() && F->isInline)
             break;
     }
+}
+
+void Parser::MarkValidity(Function* F)
+{
+    using namespace clang;
+
+    auto FD = static_cast<FunctionDecl*>(F->originalPtr);
+
+    if (!FD->getTemplateInstantiationPattern() ||
+        FD->getTemplateInstantiationPattern()->isLateTemplateParsed() ||
+        !FD->isExternallyVisible() ||
+        c->getSourceManager().isInSystemHeader(FD->getLocStart()))
+        return;
+
+    auto Diagnostics = c->getSema().getDiagnostics().getClient();
+    auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
+    SemaDiagnostics->Decl = F;
+    c->getSema().InstantiateFunctionDefinition(FD->getLocStart(), FD,
+        /*Recursive*/true);
+    if (!F->isInvalid)
+        F->isInvalid = FD->isInvalidDecl();
 }
 
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
@@ -3101,7 +3121,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->specializationInfo = WalkFunctionTemplateSpec(FTSI, F);
 
-    if (F->isDependent)
+    if (FD->isDependentContext())
         return;
 
     const CXXMethodDecl* MD;
@@ -3129,6 +3149,8 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             continue;
         F->Parameters[Index++]->isIndirect = I->info.isIndirect();
     }
+
+    MarkValidity(F);
 }
 
 Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool IsDependent,

@@ -4258,6 +4258,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -4650,6 +4653,19 @@ namespace CppSharp
                     }
                 }
 
+                public bool IsInvalid
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isInvalid != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isInvalid = (byte) (value ? 1 : 0);
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.Declaration CompleteDeclaration
                 {
                     get
@@ -4774,6 +4790,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -5449,6 +5468,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -5616,6 +5638,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -5764,6 +5789,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -5934,6 +5962,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -6861,6 +6892,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -7091,6 +7125,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -7640,6 +7677,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -8092,6 +8132,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -8247,6 +8290,9 @@ namespace CppSharp
 
                         [FieldOffset(66)]
                         internal byte isImplicit;
+
+                        [FieldOffset(67)]
+                        internal byte isInvalid;
 
                         [FieldOffset(72)]
                         internal global::System.IntPtr completeDeclaration;
@@ -8597,6 +8643,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -8937,6 +8986,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -9152,6 +9204,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -9297,6 +9352,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -9882,6 +9940,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -10124,6 +10185,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -10275,6 +10339,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -10474,6 +10541,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -10675,6 +10745,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -10845,6 +10918,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -11069,6 +11145,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -11319,6 +11398,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -11633,6 +11715,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -11865,6 +11950,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -12303,6 +12391,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -12553,6 +12644,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -12794,6 +12888,9 @@ namespace CppSharp
                     [FieldOffset(66)]
                     internal byte isImplicit;
 
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -12954,6 +13051,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -13618,6 +13718,9 @@ namespace CppSharp
 
                     [FieldOffset(66)]
                     internal byte isImplicit;
+
+                    [FieldOffset(67)]
+                    internal byte isInvalid;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;

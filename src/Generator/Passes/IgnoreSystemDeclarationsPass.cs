@@ -77,19 +77,26 @@ namespace CppSharp.Passes
                     }
                     break;
                 case "allocator":
-                    foreach (var method in @class.Methods.Where(m => !m.IsConstructor || m.Parameters.Any()))
+                    foreach (var method in @class.Methods.Where(Unused))
                         method.ExplicitlyIgnore();
                     foreach (var allocator in GetCharSpecializations(@class))
                     {
                         allocator.GenerationKind = GenerationKind.Generate;
                         foreach (var method in allocator.Methods)
-                            method.ExplicitlyIgnore();
-                        var ctor = allocator.Methods.Single(m => m.IsConstructor && !m.Parameters.Any());
-                        ctor.GenerationKind = GenerationKind.Generate;
-                        ctor.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
-                        ctor.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
-                        foreach (var parameter in ctor.Parameters)
-                            parameter.DefaultArgument = null;
+                        {
+                            if (Unused(method))
+                                method.ExplicitlyIgnore();
+                            else
+                            {
+                                method.GenerationKind = GenerationKind.Generate;
+                                if (method.InstantiatedFrom != null)
+                                    method.InstantiatedFrom.GenerationKind =
+                                        method.InstantiatedFrom.Namespace.GenerationKind =
+                                        GenerationKind.Generate;
+                                foreach (var parameter in method.Parameters)
+                                    parameter.DefaultArgument = null;
+                            }
+                        }
                     }
                     break;
                 case "char_traits":
@@ -105,6 +112,11 @@ namespace CppSharp.Passes
                     break;
             }
             return true;
+        }
+
+        private static bool Unused(Method m)
+        {
+            return !m.IsDestructor && (!m.IsConstructor || m.Parameters.Count > 0);
         }
 
         private static IEnumerable<ClassTemplateSpecialization> GetCharSpecializations(Class @class)

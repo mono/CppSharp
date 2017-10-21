@@ -2240,6 +2240,16 @@ void CppSharp::Parser::AST::Declaration::IsImplicit::set(bool value)
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->isImplicit = value;
 }
 
+bool CppSharp::Parser::AST::Declaration::IsInvalid::get()
+{
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->isInvalid;
+}
+
+void CppSharp::Parser::AST::Declaration::IsInvalid::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->isInvalid = value;
+}
+
 CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Declaration::CompleteDeclaration::get()
 {
     return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->completeDeclaration == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->completeDeclaration);

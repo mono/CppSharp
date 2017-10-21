@@ -2313,15 +2313,22 @@ namespace CppSharp.Generators.CSharp
             {
                 var specializedMethod = @class.Methods.FirstOrDefault(
                     m => m.InstantiatedFrom == method);
-                if (specializedMethod != null)
-                    method = specializedMethod;
-                else
+                if (specializedMethod == null)
                 {
                     WriteLine($@"throw new MissingMethodException(""Method {
                         method.Name} missing from explicit specialization {
                         @class.Visit(TypePrinter)}."");");
                     return;
                 }
+                if (specializedMethod.Ignore)
+                {
+                    WriteLine($@"throw new MissingMethodException(""Method {
+                        method.Name} ignored in specialization {
+                        @class.Visit(TypePrinter)}."");");
+                    return;
+                }
+
+                method = specializedMethod;
             }
             if (@class.IsRefType)
             {
