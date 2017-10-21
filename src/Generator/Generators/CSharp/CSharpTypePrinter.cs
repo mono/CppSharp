@@ -205,13 +205,26 @@ namespace CppSharp.Generators.CSharp
 
         private bool allowStrings = true;
 
+        static System.Text.RegularExpressions.Regex ptrSelector = new System.Text.RegularExpressions.Regex(@"[\*&]*$");
         public override TypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
         {
-            if (MarshalKind == MarshalKind.NativeField)
-                return IntPtrType;
-
             var pointee = pointer.Pointee;
+
+            if (Context.Options.GenerateRawCBindings && !(pointee is FunctionType))
+            {
+                var ptrStr = ptrSelector.Match(pointer.ToNativeString()).Value;
+                var d = pointee.Desugar();
+                var res = string.Concat(d, ptrStr);
+                return res;
+            }
+
+
+            if (MarshalKind == MarshalKind.NativeField)
+            {
+
+                return IntPtrType;
+            }
 
             if (pointee is FunctionType)
             {
@@ -535,16 +548,32 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
                     return GetIntString(primitive, Context.TargetInfo);
-                case PrimitiveType.Int128: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = "[16]"}; // The type is always 128 bits wide
-                case PrimitiveType.UInt128: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = "[16]"}; // The type is always 128 bits wide
-                case PrimitiveType.Half: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = $"[{Context.TargetInfo.HalfWidth}]"};
+                case PrimitiveType.Int128:
+                    return new TypePrinterResult
+                    {
+                        Type = "fixed byte",
+                        NameSuffix = "[16]"
+                    }; // The type is always 128 bits wide
+                case PrimitiveType.UInt128:
+                    return new TypePrinterResult
+                    {
+                        Type = "fixed byte",
+                        NameSuffix = "[16]"
+                    }; // The type is always 128 bits wide
+                case PrimitiveType.Half:
+                    return new TypePrinterResult
+                    {
+                        Type = "fixed byte",
+                        NameSuffix = $"[{Context.TargetInfo.HalfWidth}]"
+                    };
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
-                case PrimitiveType.LongDouble: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = $"[{Context.TargetInfo.LongDoubleWidth}]"};
+                case PrimitiveType.LongDouble:
+                    return new TypePrinterResult
+                    {
+                        Type = "fixed byte",
+                        NameSuffix = $"[{Context.TargetInfo.LongDoubleWidth}]"
+                    };
                 case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
                 case PrimitiveType.Null: return "void*";
@@ -557,13 +586,16 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitDeclaration(Declaration decl)
         {
-            return GetName(decl);
+            return Context.Options.GenerateRawCBindings && !decl.GetType().Equals(typeof(Enumeration)) ?  decl.OriginalName : GetName(decl);
         }
 
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
+                if (Context.Options.GenerateRawCBindings)
+                    return $"{VisitDeclaration(@class.OriginalClass ?? @class)}";
+                else return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
+
 
             var printed = VisitDeclaration(@class).Type;
             if (!@class.IsDependent)
@@ -594,9 +626,10 @@ namespace CppSharp.Generators.CSharp
         {
             var paramType = parameter.Type;
 
-            if (parameter.Kind == ParameterKind.IndirectReturnType)
+            if (parameter.Kind == ParameterKind.IndirectReturnType && !Context.Options.GenerateRawCBindings)
+            {
                 return IntPtrType;
-
+            }
             Parameter = parameter;
             var ret = paramType.Visit(this);
             Parameter = null;
@@ -753,15 +786,15 @@ namespace CppSharp.Generators.CSharp
                 safeIdentifier = cSharpSourcesDummy.SafeIdentifier(field.Name);
             }
 
-            PushMarshalKind(MarshalKind.NativeField);   
+            PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.Visit(this);
             PopMarshalKind();
-                     
+
             var returnTypePrinter = new TypePrinterResult();
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
                 returnTypePrinter.NameSuffix = fieldTypePrinted.NameSuffix;
 
-            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {safeIdentifier}"; 
+            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {safeIdentifier}";
 
             return returnTypePrinter;
         }
