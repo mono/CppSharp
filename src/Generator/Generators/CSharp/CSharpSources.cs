@@ -508,7 +508,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternalsField(field, @class);
             if (@class.IsGenerated && !@class.IsExternCContext)
             {
-                var functions = GatherClassInternalFunctions(@class);
+                var functions = GatherClassInternalFunctions(@class, !Context.Options.GenerateRawCBindings);
 
                 foreach (var function in functions)
                     GenerateInternalFunction(function);
@@ -3060,7 +3060,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("{0}unsafe {1};",
                    Context.Options.GenerateRawCBindings ? "internal " : Helpers.GetAccess(typedef.Access),
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
-                        typedef.Name));
+                        Context.Options.GenerateRawCBindings ? typedef.OriginalName : typedef.Name));
                 TypePrinter.PopContext();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }

@@ -99,11 +99,15 @@ namespace CppSharp.Passes
 
         private TypedefDecl GetDelegate(QualifiedType type, ITypedDecl typedDecl)
         {
+            var decl = (Declaration)typedDecl;
+            string delegateName = null;
             FunctionType newFunctionType = GetNewFunctionType(typedDecl, type);
+            if (Options.GenerateRawCBindings && decl.Namespace is Function)
+                delegateName = $"{decl.Namespace.OriginalName}_delegate";
 
-            var delegateName = GetDelegateName(newFunctionType);
+            else delegateName = GetDelegateName(newFunctionType);
             var access = typedDecl is Method ? AccessSpecifier.Private : AccessSpecifier.Public;
-            var decl = (Declaration) typedDecl;
+         
             Module module = decl.TranslationUnit.Module;
             var existingDelegate = delegates.Find(t => Match(t, delegateName, module));
             if (existingDelegate != null)
@@ -173,7 +177,7 @@ namespace CppSharp.Passes
 
         private DeclarationContext GetDeclContextForDelegates(DeclarationContext @namespace)
         {
-            if (Options.IsCLIGenerator)
+            if (Options.IsCLIGenerator || Options.GenerateRawCBindings)
                 return @namespace is Function ? @namespace.Namespace : @namespace;
 
             var module = @namespace.TranslationUnit.Module;
@@ -204,6 +208,8 @@ namespace CppSharp.Passes
 
         private string GetDelegateName(FunctionType functionType)
         {
+        
+
             var typesBuilder = new StringBuilder();
             if (!functionType.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {

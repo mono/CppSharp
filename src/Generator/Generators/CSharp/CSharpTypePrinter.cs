@@ -215,6 +215,9 @@ namespace CppSharp.Generators.CSharp
             {
                 var ptrStr = ptrSelector.Match(pointer.ToNativeString()).Value;
                 var d = pointee.Desugar();
+                if (ptrStr.Equals("&"))
+                    return $"ref {d}";
+                
                 var res = string.Concat(d, ptrStr);
                 return res;
             }
@@ -630,6 +633,18 @@ namespace CppSharp.Generators.CSharp
             {
                 return IntPtrType;
             }
+
+            if(Context.Options.GenerateRawCBindings && paramType is TypedefType)
+            {
+               var typedef = ((TypedefType)paramType);
+                if(typedef.Declaration.Type is PointerType && ((PointerType)typedef.Declaration.Type).Pointee is FunctionType)
+                {
+                    var tDefName = typedef.Declaration.LogicalOriginalName;
+                    return tDefName;
+                  //  return paramType.dec
+                }
+            }
+
             Parameter = parameter;
             var ret = paramType.Visit(this);
             Parameter = null;
@@ -699,6 +714,7 @@ namespace CppSharp.Generators.CSharp
             if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool)
                 && MarshalKind == MarshalKind.GenericDelegate)
                 typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
+            
             var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             typeBuilder.Append(printedType);
             var type = typeBuilder.ToString();
