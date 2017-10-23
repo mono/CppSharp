@@ -150,6 +150,8 @@ namespace CppSharp
         /// </summary>
         public bool GenerateSingleCSharpFile { get; set; } = true;
 
+        public bool GenerateRawCBindings { get; set; } = false;
+
         /// <summary>
         /// Generates default values of arguments in the C# code.
         /// </summary>

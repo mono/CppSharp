@@ -343,7 +343,7 @@ namespace CppSharp.Passes
         /// <param name="decl"></param>
         /// <param name="pattern">The cases.</param>
         /// <returns>string</returns>
-        static string ConvertCaseString(Declaration decl, RenameCasePattern pattern)
+        public static string ConvertCaseString(Declaration decl, RenameCasePattern pattern)
         {
             if (decl.Name.All(c => !char.IsLetter(c)))
                 return decl.Name;

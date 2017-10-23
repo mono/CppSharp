@@ -105,6 +105,16 @@ namespace CppSharp.Passes
             if (!NeedsSymbol(function))
                 return false;
 
+            //Is NeedSymbol broken? Functions without symbols are included...
+            //Let's add these lines (raizam)
+            string fnName = function.OriginalName;
+            string mangledName = function.Mangled;
+            if (!(Context.Symbols.FindSymbol(ref fnName) || Context.Symbols.FindSymbol(ref mangledName)))
+            {
+                function.GenerationKind = GenerationKind.None;
+                return false;
+            }
+
             var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
             return function.Visit(symbolsCodeGenerator);
         }
