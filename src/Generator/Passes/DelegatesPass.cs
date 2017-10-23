@@ -56,6 +56,26 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitFieldDecl(Field field)
+        {
+            if((field.QualifiedType.Type is PointerType) && ((PointerType)field.QualifiedType.Type).Pointee is FunctionType)
+            {
+                field.QualifiedType = CheckForDelegate(field.QualifiedType, field);
+                return true;
+            }
+            return false;
+        }
+
+        public override bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        {
+            return base.VisitInjectedClassNameType(injected, quals);
+        }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            return base.VisitVariableDecl(variable);
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (!base.VisitFunctionDecl(function) || function.Ignore)
@@ -103,9 +123,9 @@ namespace CppSharp.Passes
             string delegateName = null;
             FunctionType newFunctionType = GetNewFunctionType(typedDecl, type);
             if (Options.GenerateRawCBindings && decl.Namespace is Function)
-                delegateName = $"{decl.Namespace.OriginalName}_delegate";
+                delegateName = $"{decl.Namespace.Name}_delegate";
 
-            else delegateName = GetDelegateName(newFunctionType);
+            else delegateName = GetDelegateName(newFunctionType, TypePrinter);
             var access = typedDecl is Method ? AccessSpecifier.Private : AccessSpecifier.Public;
          
             Module module = decl.TranslationUnit.Module;
@@ -177,8 +197,14 @@ namespace CppSharp.Passes
 
         private DeclarationContext GetDeclContextForDelegates(DeclarationContext @namespace)
         {
+            if (Options.GenerateRawCBindings && @namespace is Class)
+            {
+                return @namespace.Namespace;
+            }
             if (Options.IsCLIGenerator || Options.GenerateRawCBindings)
                 return @namespace is Function ? @namespace.Namespace : @namespace;
+
+            
 
             var module = @namespace.TranslationUnit.Module;
             if (namespacesDelegates.ContainsKey(module))
@@ -206,20 +232,20 @@ namespace CppSharp.Passes
             return namespaceDelegates;
         }
 
-        private string GetDelegateName(FunctionType functionType)
+        internal static string GetDelegateName(FunctionType functionType, CppSharp.Generators.TypePrinter typePrinter)
         {
         
 
             var typesBuilder = new StringBuilder();
             if (!functionType.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
-                typesBuilder.Insert(0, functionType.ReturnType.Visit(TypePrinter));
+                typesBuilder.Insert(0, functionType.ReturnType.Visit(typePrinter));
                 typesBuilder.Append('_');
             }
 
             foreach (var parameter in functionType.Parameters)
             {
-                typesBuilder.Append(parameter.Visit(TypePrinter));
+                typesBuilder.Append(parameter.Visit(typePrinter));
                 typesBuilder.Append('_');
             }
 

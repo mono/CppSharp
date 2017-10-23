@@ -589,7 +589,7 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitDeclaration(Declaration decl)
         {
-            return Context.Options.GenerateRawCBindings && !decl.GetType().Equals(typeof(Enumeration)) ?  decl.OriginalName : GetName(decl);
+            return GetName(decl);
         }
 
         public override TypePrinterResult VisitClassDecl(Class @class)
@@ -634,19 +634,33 @@ namespace CppSharp.Generators.CSharp
                 return IntPtrType;
             }
 
-            if(Context.Options.GenerateRawCBindings && paramType is TypedefType)
+            if(Context.Options.GenerateRawCBindings)
             {
-               var typedef = ((TypedefType)paramType);
-                if(typedef.Declaration.Type is PointerType && ((PointerType)typedef.Declaration.Type).Pointee is FunctionType)
+                if (paramType is TypedefType)
                 {
-                    var tDefName = typedef.Declaration.LogicalOriginalName;
-                    return tDefName;
-                  //  return paramType.dec
+                    var typedef = ((TypedefType)paramType);
+                    if (typedef.Declaration.Type is PointerType && ((PointerType)typedef.Declaration.Type).Pointee is FunctionType)
+                    {
+                        var tDefName = typedef.Declaration.Name;
+                        return tDefName;
+                        //  return paramType.dec
+                    }
                 }
+                //else if (paramType is PointerType && !(((PointerType)paramType).Pointee is FunctionType) && !((PointerType)paramType).GetFinalPointee().ToString().Equals("void"))
+                //{
+                //    // return $"ref {((PointerType)paramType).Pointee} {parameter.Name}";
+                //    parameter.QualifiedType = new QualifiedType(((PointerType)paramType).Pointee);
+                   
+
+                //        return $"ref {parameter.Type}";
+
+                //}
             }
+          
 
             Parameter = parameter;
-            var ret = paramType.Visit(this);
+            var pType = parameter.Type;
+            var ret = pType.Visit(this);
             Parameter = null;
 
             return ret;
@@ -695,7 +709,7 @@ namespace CppSharp.Generators.CSharp
                 !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
                 names.Push(unit.Module.OutputNamespace);
 
-            return $"global::{string.Join(".", names)}";
+            return string.Join(".", names);
         }
 
         public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,

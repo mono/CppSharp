@@ -334,7 +334,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (Context.Options.GenerateRawCBindings)
             {
-                GenerateClassInternals(@class, @class.OriginalName);
+                GenerateClassInternals(@class, @class.Name);
                 return true;
             }
             else return GenerateClass(@class);
@@ -608,7 +608,10 @@ namespace CppSharp.Generators.CSharp
             retType = function.ReturnType.Visit(TypePrinter);
 
             var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
-                $"{p.Visit(TypePrinter)} {p.Name}").ToList();
+            {
+                var print = p.Visit(TypePrinter);
+                return $"{print} {p.Name}";
+            }).ToList();
 
             TypePrinter.PopContext();
 
@@ -699,24 +702,51 @@ namespace CppSharp.Generators.CSharp
         {
             //Here a GenerateRawCBinding only behavior,
             //Workaround C# limitation on Fixed Sized Buffers which allows only primitive types, by spliting the fixed array field into multiple regular fields
-            var shouldExpandFixedSizedBuffer = Context.Options.GenerateRawCBindings && field.QualifiedType.Type is ArrayType;
+            var shouldHandleFixedSizedBuffer = Context.Options.GenerateRawCBindings && field.QualifiedType.Type is ArrayType
+            && (((ArrayType)field.QualifiedType.Type).QualifiedType.Type is TagType || ((ArrayType)field.QualifiedType.Type).QualifiedType.Type is PointerType);
 
-            if (shouldExpandFixedSizedBuffer
-                && (((ArrayType)field.QualifiedType.Type).QualifiedType.Type is TagType || ((ArrayType)field.QualifiedType.Type).QualifiedType.Type is PointerType) )
+
+            if (shouldHandleFixedSizedBuffer)
             {
-
                 var arrayType = ((ArrayType)field.QualifiedType.Type);
                 var fieldQualifiedType = arrayType.QualifiedType;
-                var offset = field.Offset;
+                var offset = 0;
+                var elementSize = fieldQualifiedType.Type is TagType ? ((Class)((TagType)fieldQualifiedType.Type).Declaration).Layout.Size : IntPtr.Size;
 
-                var offsetIncr = fieldQualifiedType.Type is TagType ? ((Class)((TagType)fieldQualifiedType.Type).Declaration).Layout.Size : IntPtr.Size;
+                PushBlock(BlockKind.InternalsClass);
+                if (!Options.GenerateSequentialLayout || @class.IsUnion)
+                    WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {elementSize * arrayType.Size})]");
+                else if (@class.MaxFieldAlignment > 0)
+                    WriteLine($"[StructLayout(LayoutKind.Sequential, Pack = {@class.MaxFieldAlignment})]");
+                WriteLine($"internal unsafe struct {field.Name}_buffer");
+                WriteStartBraceIndent();
+
+
+
+                //   Write($"#region {field.Name}_FixedSizeBuffer");
 
                 for (int i = 0; i < arrayType.Size; i++)
                 {
-                    GenerateClassInternalsFieldImpl(new LayoutField { QualifiedType = fieldQualifiedType, Name = $"{field.Name}{i}", Offset = offset, Expression = field.Expression, FieldPtr = field.FieldPtr }, @class);
-                    offset += (uint)offsetIncr;// ((CppSharp.AST.TagType)fieldQualifiedType.Type).Declaration.la;// (uint)fieldQualifiedType.;
+                    GenerateClassInternalsFieldImpl(new LayoutField { QualifiedType = fieldQualifiedType, Name = $"_{i}", Offset = (uint)offset, Expression = field.Expression, FieldPtr = field.FieldPtr }, @class);
+                    offset += elementSize;// ((CppSharp.AST.TagType)fieldQualifiedType.Type).Declaration.la;// (uint)fieldQualifiedType.;
                 }
+                PushBlock(BlockKind.Property);
+                WriteLine($"public {fieldQualifiedType} this[int i]");
+                WriteStartBraceIndent();
 
+                WriteLine($"get {{ fixed ({fieldQualifiedType}* addr = &_0) {{ return *(addr + i); }} }}");
+                WriteLine($"set {{ fixed ({fieldQualifiedType}* addr = &_0) {{ *(addr + i) = value; }} }}");
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+
+                PushBlock(BlockKind.Field);
+                if (!Options.GenerateSequentialLayout || @class.IsUnion)
+                    WriteLine($"[FieldOffset({field.Offset})]");
+                WriteLine($"internal {field.Name}_buffer {field.Name};");
+                //   Write($"#endregion //{field.Name}_FixedSizeBuffer");
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
             else
             {
@@ -725,24 +755,50 @@ namespace CppSharp.Generators.CSharp
 
         }
 
-        private void GenerateClassInternalsFieldImpl(LayoutField field, Class @class)
+        private void GenerateClassInternalsFieldImpl(LayoutField layoutField, Class @class, string accessModifier = "internal")
         {
-            TypePrinterResult retType = TypePrinter.VisitFieldDecl(
-            new Field { Name = field.Name, QualifiedType = field.QualifiedType });
+            var field = new Field { Name = layoutField.Name, QualifiedType = layoutField.QualifiedType };
+
+            TypePrinterResult retType = TypePrinter.VisitFieldDecl(field);
+
+            bool isDelegateField = (layoutField.QualifiedType.Type is TypedefType && layoutField.QualifiedType.ToString().EndsWith("IntPtr"))
+                || (layoutField.QualifiedType.Type is PointerType) && ((PointerType)layoutField.QualifiedType.Type).Pointee is FunctionType;
+            if (isDelegateField && Options.GenerateRawCBindings)
+            {
+                accessModifier = "private";
+                retType.NameSuffix = "_ptr";
+            }
 
             PushBlock(BlockKind.Field);
 
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
-                WriteLine($"[FieldOffset({field.Offset})]");
-            Write($"internal {retType}{retType.NameSuffix}");
-            if (field.Expression != null)
+                WriteLine($"[FieldOffset({layoutField.Offset})]");
+            Write($"{accessModifier} {retType}{retType.NameSuffix}");
+            if (layoutField.Expression != null)
             {
-                var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
+                var fieldValuePrinted = layoutField.Expression.CSharpValue(ExpressionPrinter);
                 Write($" = {fieldValuePrinted}");
             }
             Write(";");
 
             PopBlock(NewLineKind.BeforeNextBlock);
+
+            if (Options.GenerateRawCBindings && isDelegateField)
+            {
+                //  TypePrinter.VisitParameter(new Parameter {  })
+                PushBlock(BlockKind.Property);
+                var delegateName = layoutField.QualifiedType.Type is TypedefType
+                    ? ((TypedefType)layoutField.QualifiedType.Type).Declaration.QualifiedName
+                    : Passes.DelegatesPass.GetDelegateName((FunctionType)((PointerType)layoutField.QualifiedType.Type).Pointee, TypePrinter);
+                WriteLine($"internal {delegateName} {layoutField.Name}");
+                WriteStartBraceIndent();
+
+                WriteLine($"get => {layoutField.Name}_ptr == IntPtr.Zero ? null : Marshal.GetDelegateForFunctionPointer<{delegateName}>({layoutField.Name}_ptr);");
+                WriteLine($"set => {layoutField.Name}_ptr = Marshal.GetFunctionPointerForDelegate(value);");
+
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
         }
 
         private void GenerateClassField(Field field, bool @public = false)
@@ -3059,8 +3115,7 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("{0}unsafe {1};",
                    Context.Options.GenerateRawCBindings ? "internal " : Helpers.GetAccess(typedef.Access),
-                    string.Format(TypePrinter.VisitDelegate(functionType).Type,
-                        Context.Options.GenerateRawCBindings ? typedef.OriginalName : typedef.Name));
+                    string.Format(TypePrinter.VisitDelegate(functionType).Type, typedef.Name));
                 TypePrinter.PopContext();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -3142,7 +3197,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    identifier.Append(Context.Options.GenerateRawCBindings ? function.OriginalName : function.Name);
+                    identifier.Append(function.Name);
                 }
             }
 
