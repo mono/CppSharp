@@ -119,7 +119,7 @@ namespace CppSharp.Generators.CSharp
                     }
 
                     GenerateClassTemplateSpecializationsInternals(
-                        template.Key, template.ToList(), false);
+                        template.Key, template.ToList());
 
                     foreach (var declarationContext in declarationContexts)
                         WriteCloseBraceIndent();
@@ -253,11 +253,11 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             GenerateClassTemplateSpecializationsInternals(classTemplate,
-                classTemplate.Specializations, true);
+                classTemplate.Specializations);
         }
 
         private void GenerateClassTemplateSpecializationsInternals(Class classTemplate,
-            IList<ClassTemplateSpecialization> specializations, bool generateNested)
+            IList<ClassTemplateSpecialization> specializations)
         {
             PushBlock(BlockKind.Namespace);
             var generated = GetGenerated(specializations);
@@ -270,21 +270,14 @@ namespace CppSharp.Generators.CSharp
             foreach (var specialization in generated)
                 GenerateClassInternals(specialization);
 
-            if (generateNested)
+            foreach (var group in generated.SelectMany(s => s.Classes).GroupBy(c => c.Name))
             {
-                var specialization = generated.FirstOrDefault(s => !s.Ignore) ??
-                    generated.First();
-                foreach (var nestedClass in classTemplate.Classes.Union(
-                    specialization.Classes).Where(c => !c.IsDependent))
-                {
-                    GenerateClassInternalsOnly(nestedClass);
-                    foreach (var nestedNestedClass in nestedClass.Classes)
-                    {
-                        GenerateClassInternalsOnly(nestedNestedClass);
-                        WriteCloseBraceIndent();
-                    }
-                    WriteCloseBraceIndent();
-                }
+                WriteLine($"namespace {group.Key}");
+                WriteStartBraceIndent();
+                foreach (var nestedClass in group)
+                    GenerateClassInternals(nestedClass);
+                WriteCloseBraceIndent();
+                NewLine();
             }
 
             WriteCloseBraceIndent();
@@ -299,20 +292,10 @@ namespace CppSharp.Generators.CSharp
                 specialization = specializations[0];
 
             Class classTemplate = specialization.TemplatedDecl.TemplatedClass;
-            if (classTemplate.Fields.Any(
-                f => f.Type.Desugar() is TemplateParameterType))
+            if (classTemplate.HasDependentValueFieldInLayout())
                 return specializations;
 
             return new List<ClassTemplateSpecialization> { specialization };
-        }
-
-        private void GenerateClassInternalsOnly(Class c)
-        {
-            NewLine();
-            GenerateClassSpecifier(c);
-            NewLine();
-            WriteStartBraceIndent();
-            GenerateClassInternals(c);
         }
 
         public override void GenerateDeclarationCommon(Declaration decl)
@@ -597,8 +580,17 @@ namespace CppSharp.Generators.CSharp
         {
             Write("public ");
 
-            var isSpecialization = @class is ClassTemplateSpecialization;
-            if (@class != null && @class.NeedsBase && !@class.BaseClass.IsInterface & !isSpecialization)
+            bool isSpecialization = false;
+            DeclarationContext declContext = @class;
+            while (declContext != null)
+            {
+                isSpecialization = declContext is ClassTemplateSpecialization;
+                if (isSpecialization)
+                    break;
+                declContext = declContext.Namespace;
+            }
+            if (@class != null && @class.NeedsBase &&
+                !@class.BaseClass.IsInterface && !isSpecialization)
                 Write("new ");
 
             WriteLine($@"{(isSpecialization ? "unsafe " : string.Empty)}partial struct {
@@ -947,17 +939,17 @@ namespace CppSharp.Generators.CSharp
             Write(marshal.Context.Before);
 
             var internalFunction = GetFunctionNativeIdentifier(function);
+            var paramMarshal = GenerateFunctionParamMarshal(
+                function.Parameters[0], 0, function);
             if (type.IsPrimitiveType())
             {
                 WriteLine($@"*{@internal}.{internalFunction}({
-                    GetInstanceParam(function)}, {function.Parameters[0].Name}) = {
-                    marshal.Context.Return};");
+                    GetInstanceParam(function)}, {(paramMarshal.Context == null ?
+                    paramMarshal.Name : paramMarshal.Context.Return)}) = {marshal.Context.Return};");
             }
             else
             {
                 var typeInternal = TypePrinter.PrintNative(type);
-                var paramMarshal = GenerateFunctionParamMarshal(
-                    function.Parameters[0], 0, function);
                 WriteLine($@"*({typeInternal}*) {@internal}.{internalFunction}({
                     GetInstanceParam(function)}, {(paramMarshal.Context == null ?
                     paramMarshal.Name : paramMarshal.Context.Return)}) = {marshal.Context.Return};");
@@ -1058,7 +1050,7 @@ namespace CppSharp.Generators.CSharp
                 ReturnType = new QualifiedType(var.Type)
             };
             ctx.PushMarshalKind(MarshalKind.ReturnVariableArray);
-            var prefix = string.Empty;
+
             if (!isRefTypeArray && elementType == null)
                 ctx.ReturnVarName = $"*{ptr}";
             else if (elementType == null || elementType.IsPrimitiveType() ||

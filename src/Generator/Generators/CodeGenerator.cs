@@ -409,25 +409,32 @@ namespace CppSharp.Generators
 
         public static readonly string CreateInstanceIdentifier = Generator.GeneratedIdentifier("CreateInstance");
 
-        public static string GetSuffixForInternal(Declaration context)
+        public static string GetSuffixForInternal(DeclarationContext @class)
         {
-            var specialization = context as ClassTemplateSpecialization;
+            ClassTemplateSpecialization specialization = null;
+            DeclarationContext declContext = @class;
+            while (declContext != null)
+            {
+                specialization = declContext as ClassTemplateSpecialization;
+                if (specialization != null)
+                    break;
+                declContext = declContext.Namespace;
+            }
 
             if (specialization == null ||
-                specialization.TemplatedDecl.TemplatedClass.Fields.All(
-                f => !(f.Type.Desugar() is TemplateParameterType)))
+                !specialization.TemplatedDecl.TemplatedClass.HasDependentValueFieldInLayout())
                 return string.Empty;
 
             if (specialization.Arguments.All(
-                a => a.Type.Type != null && a.Type.Type.IsAddress()))
+                a => a.Type.Type?.IsAddress() == true))
                 return "_Ptr";
 
             return GetSuffixFor(specialization);
         }
 
-        public static string GetSuffixFor(ClassTemplateSpecialization specialization)
+        public static string GetSuffixFor(Declaration decl)
         {
-            var suffixBuilder = new StringBuilder(specialization.USR);
+            var suffixBuilder = new StringBuilder(decl.USR);
             for (int i = 0; i < suffixBuilder.Length; i++)
                 if (!char.IsLetterOrDigit(suffixBuilder[i]))
                     suffixBuilder[i] = '_';

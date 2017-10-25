@@ -137,9 +137,7 @@ namespace CppSharp.AST
             if (@class.HasBaseClass)
                 @base = @class.Bases[0].Class;
 
-            var hasRefBase = @base != null && @base.IsRefType && @base.IsGenerated;
-
-            return hasRefBase;
+            return @base?.IsRefType == true && @base.IsGenerated;
         }
 
         public static IEnumerable<TranslationUnit> GetGenerated(this IEnumerable<TranslationUnit> units)
@@ -150,8 +148,7 @@ namespace CppSharp.AST
         public static List<ClassTemplateSpecialization> GetSpecializationsToGenerate(
             this Class classTemplate)
         {
-            if (classTemplate.Fields.Any(
-                f => f.Type.Desugar() is TemplateParameterType))
+            if (classTemplate.HasDependentValueFieldInLayout())
                 return classTemplate.Specializations;
 
             var specializations = new List<ClassTemplateSpecialization>();
@@ -161,6 +158,31 @@ namespace CppSharp.AST
             else
                 specializations.Add(specialization);
             return specializations;
+        }
+
+        public static bool HasDependentValueFieldInLayout(this Class @class)
+        {
+            if (@class.Fields.Any(f => IsValueDependent(f.Type)))
+                return true;
+
+            return @class.Bases.Where(b => b.IsClass).Select(
+                b => b.Class).Any(HasDependentValueFieldInLayout);
+        }
+
+        private static bool IsValueDependent(Type type)
+        {
+            var desugared = type.Desugar();
+            if (desugared is TemplateParameterType)
+                return true;
+            var tagType = desugared as TagType;
+            if (tagType?.IsDependent == true)
+                return true;
+            var templateType = desugared as TemplateSpecializationType;
+            if (templateType?.Arguments.Any(
+                a => a.Type.Type?.Desugar().IsDependent == true) == true)
+                return true;
+            var arrayType = desugared as ArrayType;
+            return arrayType != null && IsValueDependent(arrayType.Type);
         }
     }
 }

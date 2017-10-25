@@ -563,7 +563,8 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}";
+                return $@"{VisitDeclaration(@class.OriginalClass ?? @class)}.{
+                    Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
 
             var printed = VisitDeclaration(@class).Type;
             if (!@class.IsDependent)
@@ -576,8 +577,7 @@ namespace CppSharp.Generators.CSharp
             ClassTemplateSpecialization specialization)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $@"{VisitClassDecl(specialization)}{
-                    Helpers.GetSuffixForInternal(specialization)}";
+                return $"{VisitClassDecl(specialization)}";
             var args = string.Join(", ", specialization.Arguments.Select(VisitTemplateArgument));
             return $"{VisitClassDecl(specialization)}<{args}>";
         }
