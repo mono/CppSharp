@@ -271,17 +271,24 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternals(specialization);
 
             foreach (var group in generated.SelectMany(s => s.Classes).GroupBy(c => c.Name))
-            {
-                WriteLine($"namespace {group.Key}");
-                WriteStartBraceIndent();
-                foreach (var nestedClass in group)
-                    GenerateClassInternals(nestedClass);
-                WriteCloseBraceIndent();
-                NewLine();
-            }
+                GenerateNestedInternals(group.Key, group);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateNestedInternals(string name, IEnumerable<Class> nestedClasses)
+        {
+            WriteLine($"namespace {name}");
+            WriteStartBraceIndent();
+            foreach (var nestedClass in nestedClasses)
+            {
+                GenerateClassInternals(nestedClass);
+                foreach (var nestedInNested in nestedClass.Classes)
+                    GenerateNestedInternals(nestedInNested.Name, new[] { nestedInNested });
+            }
+            WriteCloseBraceIndent();
+            NewLine();
         }
 
         private IEnumerable<ClassTemplateSpecialization> GetGenerated(
