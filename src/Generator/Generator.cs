@@ -15,7 +15,8 @@ namespace CppSharp.Generators
         C,
         CPlusPlus,
         ObjectiveC,
-        Java
+        Java,
+        Swift
     }
 
     /// <summary>
