@@ -887,6 +887,7 @@ static bool HasLayout(const clang::RecordDecl* Record)
 
 bool Parser::IsSupported(const clang::NamedDecl* ND)
 {
+
 	return !ND->getSourceRange().isValid() ||
 		!c->getSourceManager().isInSystemHeader(ND->getLocStart()) ||
 		(llvm::isa<clang::RecordDecl>(ND) &&
