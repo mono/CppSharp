@@ -887,9 +887,11 @@ static bool HasLayout(const clang::RecordDecl* Record)
 
 bool Parser::IsSupported(const clang::NamedDecl* ND)
 {
-    return !c->getSourceManager().isInSystemHeader(ND->getLocStart()) ||
-        (llvm::isa<clang::RecordDecl>(ND) &&
-         supportedStdTypes.find(ND->getName()) != supportedStdTypes.end());
+
+	return !ND->getSourceRange().isValid() ||
+		!c->getSourceManager().isInSystemHeader(ND->getLocStart()) ||
+		(llvm::isa<clang::RecordDecl>(ND) &&
+			supportedStdTypes.find(ND->getName()) != supportedStdTypes.end());
 }
 
 bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
@@ -3812,7 +3814,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         for (auto D : ND->decls())
         {
             auto ND = dyn_cast<NamedDecl>(D);
-            if (IsSupported(ND))
+            if (!isa<NamedDecl>(D) || IsSupported(cast<NamedDecl>(D)))
                 Decl = WalkDeclarationDef(D);
         }
 
