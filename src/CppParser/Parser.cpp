@@ -3814,7 +3814,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         for (auto D : ND->decls())
         {
             auto ND = dyn_cast<NamedDecl>(D);
-            if (!isa<NamedDecl>(D) || IsSupported(ND))
+            if (!isa<NamedDecl>(D) || IsSupported(cast<NamedDecl>(D)))
                 Decl = WalkDeclarationDef(D);
         }
 
