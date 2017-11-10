@@ -1412,3 +1412,9 @@ struct TemplateWithUsingTemplateMember
     UsingTemplatePtr<TemplateWithUsingTemplateMember> _Ref;
 };
 
+namespace hasUnnamedDecl
+{
+    extern "C"
+    {
+    }
+}
