@@ -113,8 +113,10 @@ template <typename T>
 class DLL_API DependentValueFields : public Base<T>
 {
 public:
+    class Nested;
     class Nested
     {
+        T field;
     };
     DependentValueFields();
     ~DependentValueFields();

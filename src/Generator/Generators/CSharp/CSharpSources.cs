@@ -270,7 +270,8 @@ namespace CppSharp.Generators.CSharp
             foreach (var specialization in generated)
                 GenerateClassInternals(specialization);
 
-            foreach (var group in generated.SelectMany(s => s.Classes).GroupBy(c => c.Name))
+            foreach (var group in generated.SelectMany(s => s.Classes).Where(
+                c => !c.IsIncomplete).GroupBy(c => c.Name))
                 GenerateNestedInternals(group.Key, group);
 
             WriteCloseBraceIndent();
