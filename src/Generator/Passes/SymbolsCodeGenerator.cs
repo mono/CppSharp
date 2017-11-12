@@ -69,7 +69,7 @@ namespace CppSharp.Passes
 
         private static string GetDerivedType(string @namespace, string wrapper)
         {
-            return $@"class {wrapper}{@namespace} : public {@namespace} {{ public: ";
+            return $"class {wrapper}{@namespace} : public {@namespace} {{ public: ";
         }
 
         private void WrapConstructor(Method method)
@@ -135,7 +135,7 @@ namespace CppSharp.Passes
             bool isProtected = method.Access == AccessSpecifier.Protected;
             string @namespace = method.Namespace.Visit(cppTypePrinter);
             if (isProtected)
-                Write($"{GetDerivedType(@namespace, wrapper)}");
+                Write(GetDerivedType(@namespace, wrapper));
             else
                 Write("extern \"C\" { ");
             Write($"void {wrapper}");
@@ -173,12 +173,16 @@ namespace CppSharp.Passes
                 Write($@"{returnType} ({(method != null && !method.IsStatic ?
                     (@namespace + "::") : string.Empty)}*{wrapper}){signature}");
             else
-                Write($@"auto {wrapper}");
-            Write($@" = &{functionName};");
+                Write($"auto {wrapper}");
             if (function.Access == AccessSpecifier.Protected)
             {
+                Write($" = &{wrapper}{@namespace}::{functionName};");
                 WriteLine(" };");
                 Write($"auto {wrapper}protected = {wrapper}{@namespace}::{wrapper};");
+            }
+            else
+            {
+                Write($" = &{functionName};");
             }
             NewLine();
         }
@@ -189,19 +193,19 @@ namespace CppSharp.Passes
 
             var paramTypes = string.Join(", ", function.Parameters.Where(
                 p => p.Kind == ParameterKind.Regular).Select(
-                p => cppTypePrinter.VisitParameterDecl(p)));
+                cppTypePrinter.VisitParameterDecl));
 
             var variadicType = function.IsVariadic ?
-                (function.Parameters.Where(
-                    p => p.Kind == ParameterKind.Regular).Any() ? ", ..." : "...") :
+                (function.Parameters.Any(
+                    p => p.Kind == ParameterKind.Regular) ? ", ..." : "...") :
                 string.Empty;
 
-            var @const = method != null && method.IsConst ? " const" : string.Empty;
+            var @const = method?.IsConst == true ? " const" : string.Empty;
 
             var refQualifier = method == null || method.RefQualifier == RefQualifier.None ?
                 string.Empty : (method.RefQualifier == RefQualifier.LValue ? " &" : " &&");
 
-            return $@"({paramTypes}{variadicType}){@const}{refQualifier}";
+            return $"({paramTypes}{variadicType}){@const}{refQualifier}";
         }
 
         private string GetFunctionName(Function function, string @namespace)
@@ -219,16 +223,16 @@ namespace CppSharp.Passes
         {
             Stack<string> parentsOpen = GenerateNamespace(function);
             var functionType = (FunctionType) function.FunctionType.Type;
-            Write($@"{string.Join(string.Empty, parentsOpen)}");
+            Write($"{string.Concat(parentsOpen)}");
             if (function.IsConstExpr)
                 Write("constexpr ");
             Write(returnType);
             Write(" ");
-            Write(parentsOpen.Any() ? function.OriginalName : functionName);
+            Write(parentsOpen.Count > 0 ? function.OriginalName : functionName);
             Write(paramTypes);
             if (functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept)
                 Write(" noexcept");
-            WriteLine($";{string.Join(string.Empty, parentsOpen.Select(p => " }"))}");
+            WriteLine($";{string.Concat(parentsOpen.Select(p => " }"))}");
         }
 
         private static Stack<string> GenerateNamespace(Function function)
