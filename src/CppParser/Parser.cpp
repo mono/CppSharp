@@ -900,7 +900,7 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
 
     return !c->getSourceManager().isInSystemHeader(MD->getLocStart()) ||
         isa<CXXConstructorDecl>(MD) || isa<CXXDestructorDecl>(MD) ||
-        (MD->getName() == "c_str" &&
+        (MD->getDeclName().isIdentifier() && MD->getName() == "c_str" &&
          supportedStdTypes.find(MD->getParent()->getName()) !=
             supportedStdTypes.end());
 }
@@ -1136,7 +1136,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
             NumErrors++;
             if (Decl)
             {
-                Decl->isInvalid = true;
+                Decl->setInvalidDecl();
                 Decl = 0;
             }
         }
@@ -1149,7 +1149,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
     }
 
     std::vector<Diagnostic> Diagnostics;
-    Declaration* Decl;
+    clang::Decl* Decl;
 };
 
 ClassTemplateSpecialization*
@@ -2982,6 +2982,38 @@ void Parser::SetBody(const clang::FunctionDecl* FD, Function* F)
     }
 }
 
+static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodies)
+{
+    using namespace clang;
+
+    if (Bodies.find(Body) != Bodies.end())
+        return false;
+    Bodies.insert(Body);
+
+    Decl* D = 0;
+    switch (Body->getStmtClass())
+    {
+    case Stmt::StmtClass::DeclRefExprClass:
+        D = cast<DeclRefExpr>(Body)->getDecl();
+        break;
+    case Stmt::StmtClass::MemberExprClass:
+        D = cast<MemberExpr>(Body)->getMemberDecl();
+        break;
+    }
+    if (D)
+    {
+        if (D->isInvalidDecl())
+            return true;
+        if (auto F = cast<FunctionDecl>(D))
+            if (IsInvalid(F->getBody(), Bodies))
+                return true;
+    }
+    for (auto C : Body->children())
+        if (IsInvalid(C, Bodies))
+            return true;
+    return false;
+}
+
 void Parser::MarkValidity(Function* F)
 {
     using namespace clang;
@@ -2996,11 +3028,15 @@ void Parser::MarkValidity(Function* F)
 
     auto Diagnostics = c->getSema().getDiagnostics().getClient();
     auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
-    SemaDiagnostics->Decl = F;
+    SemaDiagnostics->Decl = FD;
     c->getSema().InstantiateFunctionDefinition(FD->getLocStart(), FD,
         /*Recursive*/true);
+    F->isInvalid = FD->isInvalidDecl();
     if (!F->isInvalid)
-        F->isInvalid = FD->isInvalidDecl();
+    {
+        std::unordered_set<Stmt*> Bodies{ 0 };
+        F->isInvalid = IsInvalid(FD->getBody(), Bodies);
+    }
 }
 
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
