@@ -115,84 +115,6 @@ namespace CppSharp
             }
         }
 
-        public ParserOptions BuildParserOptions(string file = null)
-        {
-            var options = new ParserOptions
-            {
-                Abi = ParserOptions.Abi,
-                ToolSetToUse = ParserOptions.ToolSetToUse,
-                TargetTriple = ParserOptions.TargetTriple,
-                NoStandardIncludes = ParserOptions.NoStandardIncludes,
-                NoBuiltinIncludes = ParserOptions.NoBuiltinIncludes,
-                MicrosoftMode = ParserOptions.MicrosoftMode,
-                Verbose = ParserOptions.Verbose,
-                LanguageVersion = ParserOptions.LanguageVersion
-            };
-
-            // This eventually gets passed to Clang's MSCompatibilityVersion, which
-            // is in turn used to derive the value of the built-in define _MSC_VER.
-            // It used to receive a 4-digit based identifier but now expects a full
-            // version MSVC digit, so check if we still have the old version and
-            // convert to the right format.
-
-            if (ParserOptions.ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
-                ParserOptions.ToolSetToUse *= 100000;
-
-            for (uint i = 0; i < ParserOptions.ArgumentsCount; ++i)
-            {
-                var arg = ParserOptions.GetArguments(i);
-                options.AddArguments(arg);
-            }
-
-            for (uint i = 0; i < ParserOptions.IncludeDirsCount; ++i)
-            {
-                var include = ParserOptions.GetIncludeDirs(i);
-                options.AddIncludeDirs(include);
-            }
-
-            for (uint i = 0; i < ParserOptions.SystemIncludeDirsCount; ++i)
-            {
-                var include = ParserOptions.GetSystemIncludeDirs(i);
-                options.AddSystemIncludeDirs(include);
-            }
-
-            for (uint i = 0; i < ParserOptions.DefinesCount; ++i)
-            {
-                var define = ParserOptions.GetDefines(i);
-                options.AddDefines(define);
-            }
-
-            for (uint i = 0; i < ParserOptions.UndefinesCount; ++i)
-            {
-                var define = ParserOptions.GetUndefines(i);
-                options.AddUndefines(define);
-            }
-
-            for (uint i = 0; i < ParserOptions.LibraryDirsCount; ++i)
-            {
-                var lib = ParserOptions.GetLibraryDirs(i);
-                options.AddLibraryDirs(lib);
-            }
-
-            foreach (var module in Options.Modules.Where(
-                m => file == null || m.Headers.Contains(file)))
-            {
-                foreach (var include in module.IncludeDirs)
-                    options.AddIncludeDirs(include);
-
-                foreach (var define in module.Defines)
-                    options.AddDefines(define);
-
-                foreach (var undefine in module.Undefines)
-                    options.AddUndefines(undefine);
-
-                foreach (var libraryDir in module.LibraryDirs)
-                    options.AddLibraryDirs(libraryDir);
-            }
-
-            return options;
-        }
-
         public bool ParseCode()
         {
             var astContext = new Parser.AST.ASTContext();
@@ -204,7 +126,7 @@ namespace CppSharp
 
             if (Options.UnityBuild)
             {
-                var parserOptions = BuildParserOptions();
+                var parserOptions = ParserOptions.BuildForSourceFile(Options.Modules);
                 var result = parser.ParseSourceFiles(sourceFiles, parserOptions);
                 result.Dispose();
             }
@@ -214,7 +136,8 @@ namespace CppSharp
 
                 foreach (var sourceFile in sourceFiles)
                 {
-                    var parserOptions = BuildParserOptions(sourceFile);
+                    var parserOptions = ParserOptions.BuildForSourceFile(
+                        Options.Modules, sourceFile);
                     results.Add(parser.ParseSourceFile(sourceFile, parserOptions));
                 }
 

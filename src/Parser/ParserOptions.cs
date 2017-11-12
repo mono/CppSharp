@@ -1,6 +1,9 @@
 ﻿using CppSharp.Parser.AST;
 using System.Reflection;
 using LanguageVersion = CppSharp.Parser.LanguageVersion;
+using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.Parser
 {
@@ -46,7 +49,7 @@ namespace CppSharp.Parser
         /// C++ programming language (year 2017, GNU variant).
         /// </summary>
         CPP17_GNU,
-    };
+    }
 
     public class ParserOptions : CppParserOptions
     {
@@ -63,9 +66,88 @@ namespace CppSharp.Parser
         public bool EnableRTTI { get; set; }
         public LanguageVersion? LanguageVersion { get; set; }
 
+        public ParserOptions BuildForSourceFile(
+            IEnumerable<CppSharp.AST.Module> modules, string file = null)
+        {
+            var options = new ParserOptions
+            {
+                Abi = this.Abi,
+                ToolSetToUse = this.ToolSetToUse,
+                TargetTriple = this.TargetTriple,
+                NoStandardIncludes = this.NoStandardIncludes,
+                NoBuiltinIncludes = this.NoBuiltinIncludes,
+                MicrosoftMode = this.MicrosoftMode,
+                Verbose = this.Verbose,
+                LanguageVersion = this.LanguageVersion
+            };
+
+            // This eventually gets passed to Clang's MSCompatibilityVersion, which
+            // is in turn used to derive the value of the built-in define _MSC_VER.
+            // It used to receive a 4-digit based identifier but now expects a full
+            // version MSVC digit, so check if we still have the old version and
+            // convert to the right format.
+
+            if (ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
+                ToolSetToUse *= 100000;
+
+            for (uint i = 0; i < ArgumentsCount; ++i)
+            {
+                var arg = GetArguments(i);
+                options.AddArguments(arg);
+            }
+
+            for (uint i = 0; i < IncludeDirsCount; ++i)
+            {
+                var include = GetIncludeDirs(i);
+                options.AddIncludeDirs(include);
+            }
+
+            for (uint i = 0; i < SystemIncludeDirsCount; ++i)
+            {
+                var include = GetSystemIncludeDirs(i);
+                options.AddSystemIncludeDirs(include);
+            }
+
+            for (uint i = 0; i < DefinesCount; ++i)
+            {
+                var define = GetDefines(i);
+                options.AddDefines(define);
+            }
+
+            for (uint i = 0; i < UndefinesCount; ++i)
+            {
+                var define = GetUndefines(i);
+                options.AddUndefines(define);
+            }
+
+            for (uint i = 0; i < LibraryDirsCount; ++i)
+            {
+                var lib = GetLibraryDirs(i);
+                options.AddLibraryDirs(lib);
+            }
+
+            foreach (var module in modules.Where(
+                m => file == null || m.Headers.Contains(file)))
+            {
+                foreach (var include in module.IncludeDirs)
+                    options.AddIncludeDirs(include);
+
+                foreach (var define in module.Defines)
+                    options.AddDefines(define);
+
+                foreach (var undefine in module.Undefines)
+                    options.AddUndefines(undefine);
+
+                foreach (var libraryDir in module.LibraryDirs)
+                    options.AddLibraryDirs(libraryDir);
+            }
+
+            return options;
+        }
+
         public void SetupMSVC()
         {
-            VisualStudioVersion vsVersion = VisualStudioVersion.Latest;
+            var vsVersion = VisualStudioVersion.Latest;
 
             // Silence "warning CS0162: Unreachable code detected"
             #pragma warning disable 162
@@ -107,6 +189,7 @@ namespace CppSharp.Parser
             foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
                 AddSystemIncludeDirs(include);
 
+            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
                 LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
@@ -145,6 +228,7 @@ namespace CppSharp.Parser
 
         private void SetupArguments()
         {
+            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
                 LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
