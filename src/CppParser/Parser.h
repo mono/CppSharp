@@ -48,7 +48,7 @@ class Parser
 public:
     Parser(CppParserOptions* Opts);
 
-    void SetupHeader();
+    void Setup();
     ParserResult* ParseHeader(const std::vector<std::string>& SourceFiles, ParserResult* res);
     ParserResult* ParseLibrary(const std::string& File, ParserResult* res);
     ParserResultKind ParseArchive(llvm::StringRef File,

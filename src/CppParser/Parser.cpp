@@ -235,7 +235,7 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
     llvm_unreachable("Unsupported C++ ABI.");
 }
 
-void Parser::SetupHeader()
+void Parser::Setup()
 {
     llvm::InitializeAllTargets();
     llvm::InitializeAllTargetMCs();
@@ -3970,7 +3970,7 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, P
         return res;
     }
 
-    SetupHeader();
+    Setup();
 
     std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
     c->setASTConsumer(std::move(SC));
@@ -4296,7 +4296,7 @@ ParserTargetInfo* Parser::GetTargetInfo()
 {
     assert(opts->ASTContext && "Expected a valid ASTContext");
 
-    SetupHeader();
+    Setup();
 
     std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
     c->setASTConsumer(std::move(SC));
