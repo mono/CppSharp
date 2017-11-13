@@ -75,8 +75,6 @@ enum class ParserResultKind
     FileNotFound
 };
 
-class Parser;
-
 struct CS_API ParserResult
 {
     ParserResult();
@@ -88,7 +86,6 @@ struct CS_API ParserResult
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
     NativeLibrary* library;
-    Parser* codeParser;
 };
 
 enum class SourceLocationKind

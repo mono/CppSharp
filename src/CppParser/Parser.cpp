@@ -3958,10 +3958,11 @@ void Parser::HandleDiagnostics(ParserResult* res)
     }
 }
 
-ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles, ParserResult* res)
+ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
 {
     assert(opts->ASTContext && "Expected a valid ASTContext");
 
+    auto res = new ParserResult();
     res->ASTContext = lib;
 
     if (SourceFiles.empty())
@@ -4214,8 +4215,9 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
     return ParserResultKind::Success;
 }
 
-ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
+ParserResult* Parser::ParseLibrary(const std::string& File)
 {
+    auto res = new ParserResult();
     if (File.empty())
     {
         res->kind = ParserResultKind::FileNotFound;
@@ -4268,9 +4270,8 @@ ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
     if (!Opts)
         return nullptr;
 
-    auto res = new ParserResult();
-    res->codeParser = new Parser(Opts);
-    return res->codeParser->ParseHeader(Opts->SourceFiles, res);
+    Parser Parser(Opts);
+    return Parser.ParseHeader(Opts->SourceFiles);
 }
 
 ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)
@@ -4278,9 +4279,8 @@ ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)
     if (!Opts)
         return nullptr;
 
-    auto res = new ParserResult();
-    res->codeParser = new Parser(Opts);
-    return res->codeParser->ParseLibrary(Opts->libraryFile, res);
+    Parser Parser(Opts);
+    return Parser.ParseLibrary(Opts->libraryFile);
 }
 
 ParserTargetInfo* ClangParser::GetTargetInfo(CppParserOptions* Opts)

@@ -36,7 +36,6 @@ DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 ParserResult::ParserResult()
     : ASTContext(0)
     , library(0)
-    , codeParser(0)
 {
 }
 
@@ -45,12 +44,10 @@ ParserResult::ParserResult(const ParserResult& rhs)
     , Diagnostics(rhs.Diagnostics)
     , ASTContext(rhs.ASTContext)
     , library(rhs.library)
-    , codeParser(rhs.codeParser)
 {}
 
 ParserResult::~ParserResult()
 {
-    delete codeParser;
 }
 
 ParserDiagnostic::ParserDiagnostic() {}
