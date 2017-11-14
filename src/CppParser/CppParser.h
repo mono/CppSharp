@@ -84,7 +84,6 @@ struct CS_API ParserResult
     ParserResultKind kind;
     VECTOR(ParserDiagnostic, Diagnostics)
 
-    CppSharp::CppParser::AST::ASTContext* ASTContext;
     NativeLibrary* library;
 };
 

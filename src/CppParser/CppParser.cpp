@@ -34,15 +34,13 @@ DEF_VECTOR_STRING(CppParserOptions, LibraryDirs)
 DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 
 ParserResult::ParserResult()
-    : ASTContext(0)
-    , library(0)
+    : library(0)
 {
 }
 
 ParserResult::ParserResult(const ParserResult& rhs)
     : kind(rhs.kind)
     , Diagnostics(rhs.Diagnostics)
-    , ASTContext(rhs.ASTContext)
     , library(rhs.library)
 {}
 

@@ -153,10 +153,8 @@ private:
     Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
 
     int index;
-    CppSharp::CppParser::AST::ASTContext* lib;
     CppParserOptions* opts;
     std::unique_ptr<clang::CompilerInstance> c;
-    clang::ASTContext* AST;
     clang::TargetCXXABI::Kind targetABI;
     clang::CodeGen::CodeGenTypes* codeGenTypes;
     std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> walkedTypeTemplateParameters;

@@ -368,12 +368,6 @@ namespace CppSharp
                 void set(System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^);
             }
 
-            property CppSharp::Parser::AST::ASTContext^ ASTContext
-            {
-                CppSharp::Parser::AST::ASTContext^ get();
-                void set(CppSharp::Parser::AST::ASTContext^);
-            }
-
             property CppSharp::Parser::AST::NativeLibrary^ Library
             {
                 CppSharp::Parser::AST::NativeLibrary^ get();

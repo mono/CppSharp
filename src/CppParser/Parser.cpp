@@ -68,7 +68,7 @@ void* IgnorePtr = reinterpret_cast<void*>(0x1);
 
 //-----------------------------------//
 
-Parser::Parser(CppParserOptions* Opts) : lib(Opts->ASTContext), opts(Opts), index(0)
+Parser::Parser(CppParserOptions* Opts) : opts(Opts), index(0)
 {
     for (const auto& SupportedStdType : Opts->SupportedStdTypes)
         supportedStdTypes.insert(SupportedStdType);
@@ -396,13 +396,14 @@ std::string Parser::GetDeclMangledName(const clang::Decl* D)
     auto ND = cast<NamedDecl>(D);
     std::unique_ptr<MangleContext> MC;
     
+    auto& AST = c->getASTContext();
     switch(targetABI)
     {
     default:
-       MC.reset(ItaniumMangleContext::create(*AST, AST->getDiagnostics()));
+       MC.reset(ItaniumMangleContext::create(AST, AST.getDiagnostics()));
        break;
     case TargetCXXABI::Microsoft:
-       MC.reset(MicrosoftMangleContext::create(*AST, AST->getDiagnostics()));
+       MC.reset(MicrosoftMangleContext::create(AST, AST.getDiagnostics()));
        break;
     }
 
@@ -686,12 +687,13 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
     if (!C->layout)
         C->layout = new ClassLayout();
 
+    auto& AST = c->getASTContext();
     switch(targetABI)
     {
     case TargetCXXABI::Microsoft:
     {
         C->layout->ABI = CppAbi::Microsoft;
-        MicrosoftVTableContext VTContext(*AST);
+        MicrosoftVTableContext VTContext(AST);
 
         const auto& VFPtrs = VTContext.getVFPtrOffsets(RD);
         for (const auto& VFPtrInfo : VFPtrs)
@@ -710,7 +712,7 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
     case TargetCXXABI::GenericItanium:
     {
         C->layout->ABI = CppAbi::Itanium;
-        ItaniumVTableContext VTContext(*AST);
+        ItaniumVTableContext VTContext(AST);
 
         auto& VTLayout = VTContext.getVTableLayout(RD);
         C->layout->layout = WalkVTableLayout(VTLayout);
@@ -1868,7 +1870,7 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
     if (Kind)
         *Kind = LocKind;
 
-    auto Unit = lib->FindOrCreateModule(File);
+    auto Unit = opts->ASTContext->FindOrCreateModule(File);
 
     Unit->originalPtr = (void*) Unit;
     assert(Unit->originalPtr != nullptr);
@@ -2161,9 +2163,10 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
 
     const clang::Type* Type = QualType.getTypePtr();
 
+    auto& AST = c->getASTContext();
     if (DesugarType)
     {
-        clang::QualType Desugared = QualType.getDesugaredType(*AST);
+        clang::QualType Desugared = QualType.getDesugaredType(AST);
         assert(!Desugared.isNull() && "Expected a valid desugared type");
         Type = Desugared.getTypePtr();
     }
@@ -2303,7 +2306,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     }
     case clang::Type::ConstantArray:
     {
-        auto AT = AST->getAsConstantArrayType(QualType);
+        auto AT = AST.getAsConstantArrayType(QualType);
 
         TypeLoc Next;
         if (LocValid) Next = TL->getNextTypeLoc();
@@ -2312,16 +2315,16 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         auto ElemTy = AT->getElementType();
         A->qualifiedType = GetQualifiedType(ElemTy, &Next);
         A->sizeType = ArrayType::ArraySize::Constant;
-        A->size = AST->getConstantArrayElementCount(AT);
+        A->size = AST.getConstantArrayElementCount(AT);
         if (!ElemTy->isDependentType())
-            A->elementSize = (long)AST->getTypeSize(ElemTy);
+            A->elementSize = (long)AST.getTypeSize(ElemTy);
 
         Ty = A;
         break;
     }
     case clang::Type::IncompleteArray:
     {
-        auto AT = AST->getAsIncompleteArrayType(QualType);
+        auto AT = AST.getAsIncompleteArrayType(QualType);
 
         TypeLoc Next;
         if (LocValid) Next = TL->getNextTypeLoc();
@@ -2335,7 +2338,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     }
     case clang::Type::DependentSizedArray:
     {
-        auto AT = AST->getAsDependentSizedArrayType(QualType);
+        auto AT = AST.getAsDependentSizedArrayType(QualType);
 
         TypeLoc Next;
         if (LocValid) Next = TL->getNextTypeLoc();
@@ -3191,7 +3194,7 @@ bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 
 void Parser::WalkAST()
 {
-    auto TU = AST->getTranslationUnitDecl();
+    auto TU = c->getASTContext().getTranslationUnitDecl();
     for (auto D : TU->decls())
     {
         if (D->getLocStart().isValid() &&
@@ -3963,7 +3966,6 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
     assert(opts->ASTContext && "Expected a valid ASTContext");
 
     auto res = new ParserResult();
-    res->ASTContext = lib;
 
     if (SourceFiles.empty())
     {
@@ -4031,13 +4033,13 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
         return res;
     }
 
-    AST = &c->getASTContext();
+    auto& AST = c->getASTContext();
 
     auto FileEntry = FileEntries[0];
     auto FileName = FileEntry->getName();
-    auto Unit = lib->FindOrCreateModule(FileName);
+    auto Unit = opts->ASTContext->FindOrCreateModule(FileName);
 
-    auto TU = AST->getTranslationUnitDecl();
+    auto TU = AST.getTranslationUnitDecl();
     HandleDeclaration(TU, Unit);
 
     if (Unit->originalPtr == nullptr)
@@ -4047,8 +4049,8 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
     llvm::LLVMContext Ctx;
     std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
-    M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST->getTargetInfo().getDataLayout());
+    M->setTargetTriple(AST.getTargetInfo().getTriple().getTriple());
+    M->setDataLayout(AST.getTargetInfo().getDataLayout());
 
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
         new clang::CodeGen::CodeGenModule(c->getASTContext(), c->getHeaderSearchOpts(),
@@ -4306,11 +4308,9 @@ ParserTargetInfo* Parser::GetTargetInfo()
     auto DiagClient = new DiagnosticConsumer();
     c->getDiagnostics().setClient(DiagClient);
 
-    AST = &c->getASTContext();
-
     auto parserTargetInfo = new ParserTargetInfo();
 
-    auto& TI = AST->getTargetInfo();
+    auto& TI = c->getASTContext().getTargetInfo();
     parserTargetInfo->ABI = TI.getABI();
 
     parserTargetInfo->char16Type = ConvertIntType(TI.getChar16Type());

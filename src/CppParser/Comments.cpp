@@ -42,7 +42,7 @@ RawComment* Parser::WalkRawComment(const clang::RawComment* RC)
     auto Comment = new RawComment();
     Comment->kind = ConvertRawCommentKind(RC->getKind());
     Comment->text = RC->getRawText(SM);
-    Comment->briefText = RC->getBriefText(*AST);
+    Comment->briefText = RC->getBriefText(c->getASTContext());
 
     return Comment;
 }
@@ -261,13 +261,13 @@ void Parser::HandleComments(const clang::Decl* D, Declaration* Decl)
     using namespace clang;
 
     const clang::RawComment* RC = 0;
-    if (!(RC = AST->getRawCommentForAnyRedecl(D)))
+    if (!(RC = c->getASTContext().getRawCommentForAnyRedecl(D)))
         return;
 
     auto RawComment = WalkRawComment(RC);
     Decl->comment = RawComment;
 
-    if (clang::comments::FullComment* FC = RC->parse(*AST, &c->getPreprocessor(), D))
+    if (clang::comments::FullComment* FC = RC->parse(c->getASTContext(), &c->getPreprocessor(), D))
     {
         auto CB = static_cast<FullComment*>(ConvertCommentBlock(FC));
         RawComment->fullCommentBlock = CB;

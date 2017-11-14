@@ -18772,7 +18772,7 @@ namespace CppSharp
 
         public unsafe partial class ParserResult : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 20)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -18782,9 +18782,6 @@ namespace CppSharp
                 internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S0_ Diagnostics;
 
                 [FieldOffset(16)]
-                internal global::System.IntPtr ASTContext;
-
-                [FieldOffset(20)]
                 internal global::System.IntPtr library;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -18929,24 +18926,6 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->kind = value;
-                }
-            }
-
-            public global::CppSharp.Parser.AST.ASTContext ASTContext
-            {
-                get
-                {
-                    global::CppSharp.Parser.AST.ASTContext __result0;
-                    if (((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->ASTContext == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.AST.ASTContext.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->ASTContext))
-                        __result0 = (global::CppSharp.Parser.AST.ASTContext) global::CppSharp.Parser.AST.ASTContext.NativeToManagedMap[((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->ASTContext];
-                    else __result0 = global::CppSharp.Parser.AST.ASTContext.__CreateInstance(((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->ASTContext);
-                    return __result0;
-                }
-
-                set
-                {
-                    ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
