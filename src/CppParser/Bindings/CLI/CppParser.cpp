@@ -480,16 +480,6 @@ void CppSharp::Parser::CppParserOptions::Verbose::set(bool value)
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->verbose = value;
 }
 
-CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::CppParserOptions::TargetInfo::get()
-{
-    return (((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo);
-}
-
-void CppSharp::Parser::CppParserOptions::TargetInfo::set(CppSharp::Parser::ParserTargetInfo^ value)
-{
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetInfo = (::CppSharp::CppParser::ParserTargetInfo*)value->NativePtr;
-}
-
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();

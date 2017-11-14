@@ -17901,7 +17901,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 188)]
+            [StructLayout(LayoutKind.Explicit, Size = 184)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -17957,9 +17957,6 @@ namespace CppSharp
 
                 [FieldOffset(183)]
                 internal byte verbose;
-
-                [FieldOffset(184)]
-                internal global::System.IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -18488,24 +18485,6 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->verbose = (byte) (value ? 1 : 0);
-                }
-            }
-
-            public global::CppSharp.Parser.ParserTargetInfo TargetInfo
-            {
-                get
-                {
-                    global::CppSharp.Parser.ParserTargetInfo __result0;
-                    if (((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetInfo == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.ParserTargetInfo.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetInfo))
-                        __result0 = (global::CppSharp.Parser.ParserTargetInfo) global::CppSharp.Parser.ParserTargetInfo.NativeToManagedMap[((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetInfo];
-                    else __result0 = global::CppSharp.Parser.ParserTargetInfo.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetInfo);
-                    return __result0;
-                }
-
-                set
-                {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 

@@ -186,12 +186,6 @@ namespace CppSharp
                 void set(bool);
             }
 
-            property CppSharp::Parser::ParserTargetInfo^ TargetInfo
-            {
-                CppSharp::Parser::ParserTargetInfo^ get();
-                void set(CppSharp::Parser::ParserTargetInfo^);
-            }
-
             property unsigned int ArgumentsCount
             {
                 unsigned int get();
