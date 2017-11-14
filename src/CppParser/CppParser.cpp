@@ -34,6 +34,7 @@ DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 
 ParserResult::ParserResult()
     : library(0)
+    , targetInfo(0)
 {
 }
 
@@ -41,10 +42,13 @@ ParserResult::ParserResult(const ParserResult& rhs)
     : kind(rhs.kind)
     , Diagnostics(rhs.Diagnostics)
     , library(rhs.library)
+    , targetInfo(rhs.targetInfo)
 {}
 
 ParserResult::~ParserResult()
 {
+    if (library)
+        delete library;
 }
 
 ParserDiagnostic::ParserDiagnostic() {}

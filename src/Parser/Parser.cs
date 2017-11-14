@@ -36,16 +36,6 @@ namespace CppSharp
         }
 
         /// <summary>
-        /// Gets target information for a specific target triple.
-        /// </summary>
-        public ParserTargetInfo GetTargetInfo(ParserOptions options)
-        {
-            options.ASTContext = ASTContext;
-
-            return Parser.ClangParser.GetTargetInfo(options);
-        }
-
-        /// <summary>
         /// Parses a C++ source file as a translation unit.
         /// </summary>
         public ParserResult ParseSourceFile(string file, ParserOptions options)

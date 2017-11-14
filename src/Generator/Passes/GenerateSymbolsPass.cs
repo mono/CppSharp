@@ -184,7 +184,6 @@ namespace CppSharp.Passes
                             Context.Symbols.Libraries.Add(nativeLibrary);
                             Context.Symbols.IndexSymbols();
                         }
-                        parserResult.Library.Dispose();
                     }
                     else
                         Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");

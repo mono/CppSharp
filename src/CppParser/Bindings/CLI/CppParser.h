@@ -368,6 +368,12 @@ namespace CppSharp
                 void set(CppSharp::Parser::AST::NativeLibrary^);
             }
 
+            property CppSharp::Parser::ParserTargetInfo^ TargetInfo
+            {
+                CppSharp::Parser::ParserTargetInfo^ get();
+                void set(CppSharp::Parser::ParserTargetInfo^);
+            }
+
             property unsigned int DiagnosticsCount
             {
                 unsigned int get();
@@ -405,8 +411,6 @@ namespace CppSharp
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::CppParserOptions^ Opts);
 
             static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::CppParserOptions^ Opts);
-
-            static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::CppParserOptions^ Opts);
 
             protected:
             bool __ownsNativeInstance;

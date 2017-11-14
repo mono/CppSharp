@@ -127,25 +127,27 @@ namespace CppSharp
             if (Options.UnityBuild)
             {
                 var parserOptions = ParserOptions.BuildForSourceFile(Options.Modules);
-                var result = parser.ParseSourceFiles(sourceFiles, parserOptions);
-                result.Dispose();
+                using (var result = parser.ParseSourceFiles(sourceFiles, parserOptions))
+                    Context.TargetInfo = result.TargetInfo;
+                if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
+                    ParserOptions.TargetTriple = parserOptions.TargetTriple;
             }
             else
             {
-                var results = new List<ParserResult>();
-
                 foreach (var sourceFile in sourceFiles)
                 {
                     var parserOptions = ParserOptions.BuildForSourceFile(
                         Options.Modules, sourceFile);
-                    results.Add(parser.ParseSourceFile(sourceFile, parserOptions));
+                    using (ParserResult result = parser.ParseSourceFile(sourceFile, parserOptions))
+                        if (Context.TargetInfo == null)
+                            Context.TargetInfo = result.TargetInfo;
+                        else
+                            result.TargetInfo.Dispose();
+                    if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
+                        ParserOptions.TargetTriple = parserOptions.TargetTriple;
                 }
-
-                foreach (var result in results)
-                    result.Dispose();
             }
 
-            Context.TargetInfo = parser.GetTargetInfo(ParserOptions);
             Context.ASTContext = ClangParser.ConvertASTContext(astContext);
 
             return !hasParsingErrors;
@@ -190,8 +192,6 @@ namespace CppSharp
                             continue;
 
                         Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
-
-                        res.Library.Dispose();
                     }
                 }
             }

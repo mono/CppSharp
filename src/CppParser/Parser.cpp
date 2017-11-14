@@ -4063,6 +4063,8 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
 
     WalkAST();
 
+    res->targetInfo = GetTargetInfo();
+
     res->kind = ParserResultKind::Success;
     return res;
  }
@@ -4285,29 +4287,8 @@ ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)
     return Parser.ParseLibrary(Opts->libraryFile);
 }
 
-ParserTargetInfo* ClangParser::GetTargetInfo(CppParserOptions* Opts)
-{
-    if (!Opts)
-        return nullptr;
-
-    Parser parser(Opts);
-    return parser.GetTargetInfo();
-}
-
 ParserTargetInfo* Parser::GetTargetInfo()
 {
-    assert(opts->ASTContext && "Expected a valid ASTContext");
-
-    Setup();
-
-    std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
-    c->setASTConsumer(std::move(SC));
-
-    c->createSema(clang::TU_Complete, 0);
-
-    auto DiagClient = new DiagnosticConsumer();
-    c->getDiagnostics().setClient(DiagClient);
-
     auto parserTargetInfo = new ParserTargetInfo();
 
     auto& TI = c->getASTContext().getTargetInfo();

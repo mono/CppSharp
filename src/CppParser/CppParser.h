@@ -83,6 +83,7 @@ struct CS_API ParserResult
     VECTOR(ParserDiagnostic, Diagnostics)
 
     NativeLibrary* library;
+    ParserTargetInfo* targetInfo;
 };
 
 enum class SourceLocationKind
@@ -100,7 +101,6 @@ public:
 
     static ParserResult* ParseHeader(CppParserOptions* Opts);
     static ParserResult* ParseLibrary(CppParserOptions* Opts);
-    static ParserTargetInfo* GetTargetInfo(CppParserOptions* Opts);
 };
 
 } }

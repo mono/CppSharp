@@ -51,13 +51,6 @@ public:
     void Setup();
     ParserResult* ParseHeader(const std::vector<std::string>& SourceFiles);
     ParserResult* ParseLibrary(const std::string& File);
-    ParserResultKind ParseArchive(llvm::StringRef File,
-                                  llvm::object::Archive* Archive,
-                                  CppSharp::CppParser::NativeLibrary*& NativeLib);
-    ParserResultKind ParseSharedLib(llvm::StringRef File,
-                                    llvm::object::ObjectFile* ObjectFile,
-                                    CppSharp::CppParser::NativeLibrary*& NativeLib);
-    ParserTargetInfo*  GetTargetInfo();
 
 private:
     bool IsSupported(const clang::NamedDecl* ND);
@@ -151,6 +144,11 @@ private:
                                  llvm::object::basic_symbol_iterator End,
                                  CppSharp::CppParser::NativeLibrary*& NativeLib);
     Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
+    ParserResultKind ParseArchive(llvm::StringRef File,
+        llvm::object::Archive* Archive, CppSharp::CppParser::NativeLibrary*& NativeLib);
+    ParserResultKind ParseSharedLib(llvm::StringRef File,
+        llvm::object::ObjectFile* ObjectFile, CppSharp::CppParser::NativeLibrary*& NativeLib);
+    ParserTargetInfo* GetTargetInfo();
 
     int index;
     CppParserOptions* opts;

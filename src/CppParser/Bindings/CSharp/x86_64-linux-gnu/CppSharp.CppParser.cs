@@ -18750,7 +18750,7 @@ namespace CppSharp
 
         public unsafe partial class ParserResult : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 40)]
+            [StructLayout(LayoutKind.Explicit, Size = 48)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -18761,6 +18761,9 @@ namespace CppSharp
 
                 [FieldOffset(32)]
                 internal global::System.IntPtr library;
+
+                [FieldOffset(40)]
+                internal global::System.IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -18925,6 +18928,24 @@ namespace CppSharp
                 }
             }
 
+            public global::CppSharp.Parser.ParserTargetInfo TargetInfo
+            {
+                get
+                {
+                    global::CppSharp.Parser.ParserTargetInfo __result0;
+                    if (((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->targetInfo == IntPtr.Zero) __result0 = null;
+                    else if (global::CppSharp.Parser.ParserTargetInfo.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->targetInfo))
+                        __result0 = (global::CppSharp.Parser.ParserTargetInfo) global::CppSharp.Parser.ParserTargetInfo.NativeToManagedMap[((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->targetInfo];
+                    else __result0 = global::CppSharp.Parser.ParserTargetInfo.__CreateInstance(((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->targetInfo);
+                    return __result0;
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->targetInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                }
+            }
+
             public uint DiagnosticsCount
             {
                 get
@@ -18954,11 +18975,6 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser11ClangParser12ParseLibraryEPNS0_16CppParserOptionsE")]
                 internal static extern global::System.IntPtr ParseLibrary(global::System.IntPtr Opts);
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZN8CppSharp9CppParser11ClangParser13GetTargetInfoEPNS0_16CppParserOptionsE")]
-                internal static extern global::System.IntPtr GetTargetInfo(global::System.IntPtr Opts);
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
@@ -19052,18 +19068,6 @@ namespace CppSharp
                 else if (global::CppSharp.Parser.ParserResult.NativeToManagedMap.ContainsKey(__ret))
                     __result0 = (global::CppSharp.Parser.ParserResult) global::CppSharp.Parser.ParserResult.NativeToManagedMap[__ret];
                 else __result0 = global::CppSharp.Parser.ParserResult.__CreateInstance(__ret);
-                return __result0;
-            }
-
-            public static global::CppSharp.Parser.ParserTargetInfo GetTargetInfo(global::CppSharp.Parser.CppParserOptions Opts)
-            {
-                var __arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
-                var __ret = __Internal.GetTargetInfo(__arg0);
-                global::CppSharp.Parser.ParserTargetInfo __result0;
-                if (__ret == IntPtr.Zero) __result0 = null;
-                else if (global::CppSharp.Parser.ParserTargetInfo.NativeToManagedMap.ContainsKey(__ret))
-                    __result0 = (global::CppSharp.Parser.ParserTargetInfo) global::CppSharp.Parser.ParserTargetInfo.NativeToManagedMap[__ret];
-                else __result0 = global::CppSharp.Parser.ParserTargetInfo.__CreateInstance(__ret);
                 return __result0;
             }
         }
