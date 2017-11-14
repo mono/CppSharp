@@ -68,7 +68,7 @@ namespace CppSharp
 
             // First we will convert the output, bindings for the native Clang AST,
             // to CppSharp's managed AST representation.
-            var astContext = ClangParser.ConvertASTContext(parserResult.ASTContext);
+            var astContext = ClangParser.ConvertASTContext(parserOptions.ASTContext);
 
             // After its converted, we can dispose of the native AST bindings.
             parserResult.Dispose();

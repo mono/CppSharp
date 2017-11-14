@@ -113,7 +113,7 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
 
         // Vtable pointer.
         if (CXXRD->isDynamicClass() && !PrimaryBase &&
-            !c->getASTContext().getTargetInfo().getCXXABI().isMicrosoft()) {
+            !c->getTarget().getCXXABI().isMicrosoft()) {
             auto VPtr = WalkVTablePointer(Parent, Offset, "vptr");
             Class->layout->Fields.push_back(VPtr);
         }
@@ -2870,7 +2870,7 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
 
     // Lock in the MS inheritance model if we have a member pointer to a class,
     // else we get an assertion error inside Clang's codegen machinery.
-    if (c->getASTContext().getTargetInfo().getCXXABI().isMicrosoft())
+    if (c->getTarget().getCXXABI().isMicrosoft())
     {
         if (auto MPT = Ty->getAs<clang::MemberPointerType>())
             if (!MPT->isDependentType())
@@ -4049,8 +4049,8 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
     llvm::LLVMContext Ctx;
     std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
-    M->setTargetTriple(AST.getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST.getTargetInfo().getDataLayout());
+    M->setTargetTriple(c->getTarget().getTriple().getTriple());
+    M->setDataLayout(c->getTarget().getDataLayout());
 
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
         new clang::CodeGen::CodeGenModule(c->getASTContext(), c->getHeaderSearchOpts(),
@@ -4291,7 +4291,7 @@ ParserTargetInfo* Parser::GetTargetInfo()
 {
     auto parserTargetInfo = new ParserTargetInfo();
 
-    auto& TI = c->getASTContext().getTargetInfo();
+    auto& TI = c->getTarget();
     parserTargetInfo->ABI = TI.getABI();
 
     parserTargetInfo->char16Type = ConvertIntType(TI.getChar16Type());
