@@ -126,25 +126,32 @@ namespace CppSharp
 
             if (Options.UnityBuild)
             {
-                var parserOptions = ParserOptions.BuildForSourceFile(Options.Modules);
-                using (var result = parser.ParseSourceFiles(sourceFiles, parserOptions))
-                    Context.TargetInfo = result.TargetInfo;
-                if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
-                    ParserOptions.TargetTriple = parserOptions.TargetTriple;
+                using (var parserOptions = ParserOptions.BuildForSourceFile(
+                    Options.Modules))
+                {
+                    using (var result = parser.ParseSourceFiles(
+                        sourceFiles, parserOptions))
+                        Context.TargetInfo = result.TargetInfo;
+                    if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
+                        ParserOptions.TargetTriple = parserOptions.TargetTriple;
+                }
             }
             else
             {
                 foreach (var sourceFile in sourceFiles)
                 {
-                    var parserOptions = ParserOptions.BuildForSourceFile(
-                        Options.Modules, sourceFile);
-                    using (ParserResult result = parser.ParseSourceFile(sourceFile, parserOptions))
-                        if (Context.TargetInfo == null)
-                            Context.TargetInfo = result.TargetInfo;
-                        else
-                            result.TargetInfo.Dispose();
-                    if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
-                        ParserOptions.TargetTriple = parserOptions.TargetTriple;
+                    using (var parserOptions = ParserOptions.BuildForSourceFile(
+                        Options.Modules, sourceFile))
+                    {
+                        using (ParserResult result = parser.ParseSourceFile(
+                            sourceFile, parserOptions))
+                            if (Context.TargetInfo == null)
+                                Context.TargetInfo = result.TargetInfo;
+                            else
+                                result.TargetInfo.Dispose();
+                        if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
+                            ParserOptions.TargetTriple = parserOptions.TargetTriple;
+                    }
                 }
             }
 
