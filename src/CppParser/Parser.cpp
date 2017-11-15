@@ -4274,8 +4274,9 @@ ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
     if (!Opts)
         return nullptr;
 
-    Parser Parser(Opts);
-    return Parser.ParseHeader(Opts->SourceFiles);
+    auto res = new ParserResult();
+    res->codeParser = new Parser(Opts);
+    return res->codeParser->ParseHeader(Opts->SourceFiles);
 }
 
 ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)

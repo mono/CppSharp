@@ -73,6 +73,8 @@ enum class ParserResultKind
     FileNotFound
 };
 
+class Parser;
+
 struct CS_API ParserResult
 {
     ParserResult();
@@ -84,6 +86,7 @@ struct CS_API ParserResult
 
     NativeLibrary* library;
     ParserTargetInfo* targetInfo;
+    Parser* codeParser;
 };
 
 enum class SourceLocationKind
