@@ -201,6 +201,8 @@ namespace CppSharp.AST
             return name;
         }
 
+        public Declaration AssociatedDeclaration { get; set; }
+
         // Comment associated with declaration.
         public RawComment Comment;
 
