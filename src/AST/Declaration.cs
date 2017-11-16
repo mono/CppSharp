@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CppSharp.AST
@@ -47,6 +48,7 @@ namespace CppSharp.AST
     /// <summary>
     /// Represents a C++ declaration.
     /// </summary>
+    [DebuggerDisplay("{ToString()} [{GetType().Name}]")]
     public abstract class Declaration : INamedDecl
     {
         public SourceLocation Location;
