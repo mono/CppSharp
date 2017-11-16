@@ -46,6 +46,8 @@ namespace CppSharp.Generators
 
         public ISet<object> Visited { get; } = new HashSet<object>();
 
+        public AstVisitorOptions VisitOptions { get; } = new AstVisitorOptions();
+
         protected CodeGenerator(BindingContext context, TranslationUnit unit)
             : this(context, new List<TranslationUnit> { unit })
         {
@@ -331,7 +333,19 @@ namespace CppSharp.Generators
 
         public virtual bool VisitProperty(Property property)
         {
-            throw new NotImplementedException();
+            if (!VisitDeclaration(property))
+                return false;
+
+            if (VisitOptions.VisitPropertyAccessors)
+            {
+                if (property.GetMethod != null)
+                    property.GetMethod.Visit(this);
+        
+                if (property.SetMethod != null)
+                    property.SetMethod.Visit(this);
+            }
+
+            return true;
         }
 
         public virtual bool VisitFriend(Friend friend)

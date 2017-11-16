@@ -13,7 +13,7 @@ namespace CppSharp.AST
 
     public interface IAstVisitor<out T> : ITypeVisitor<T>, IDeclVisitor<T>
     {
-        
+        AstVisitorOptions VisitOptions { get; }
     }
 
     public class AstVisitorOptions
@@ -23,6 +23,7 @@ namespace CppSharp.AST
         public bool VisitClassProperties = true;
         public bool VisitClassMethods = true;
         public bool VisitClassTemplateSpecializations { get; set; } = true;
+        public bool VisitPropertyAccessors = false;
 
         public bool VisitNamespaceEnums = true;
         public bool VisitNamespaceTemplates = true;
@@ -376,7 +377,16 @@ namespace CppSharp.AST
                 return false;
 
             if (VisitOptions.VisitFunctionReturnType)
-                return property.Type.Visit(this);
+                property.Type.Visit(this);
+
+            if (VisitOptions.VisitPropertyAccessors)
+            {
+                if (property.GetMethod != null)
+                    property.GetMethod.Visit(this);
+        
+                if (property.SetMethod != null)
+                    property.SetMethod.Visit(this);
+            }
 
             return true;
         }
