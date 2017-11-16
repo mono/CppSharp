@@ -10,7 +10,7 @@ using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Generators
 {
-    public abstract class CodeGenerator : BlockGenerator, IDeclVisitor<bool>, IAstVisited
+    public abstract class CodeGenerator : BlockGenerator, IAstVisitor<bool>
     {
         public BindingContext Context { get; }
 
@@ -385,6 +385,116 @@ namespace CppSharp.Generators
         }
 
         public virtual bool VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTagType(TagType tag, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDependentTemplateSpecializationType(DependentTemplateSpecializationType template, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
