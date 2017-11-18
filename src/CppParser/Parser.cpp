@@ -4184,9 +4184,14 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
                 NativeLib->Dependencies.push_back(lib);
             }
         }
-        for (const auto& Entry : MachOObjectFile->exports())
+        auto Error = llvm::Error::success();
+        for (const auto& Entry : MachOObjectFile->exports(Error))
         {
             NativeLib->Symbols.push_back(Entry.name());
+        }
+        if (Error)
+        {
+            return ParserResultKind::Error;
         }
         return ParserResultKind::Success;
     }

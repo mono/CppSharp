@@ -240,6 +240,7 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DCLANG_TOOL_SCAN_VIEW_BUILD=false'
  		.. ' -DLLVM_TARGETS_TO_BUILD="X86"'
  		.. ' -DCMAKE_BUILD_TYPE=' .. conf .. ' ..'
+ 		.. ' -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11'
  		.. ' ' .. options
  	execute_or_die(cmd)
  	os.chdir(cwd)

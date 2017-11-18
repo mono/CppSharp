@@ -75,7 +75,11 @@ ELFDumper<ELFT>::ELFDumper(const llvm::object::ELFFile<ELFT> *Obj) {
 
     auto toMappedAddr = [&](uint64_t VAddr) -> const uint8_t *{
         const Elf_Phdr **I = std::upper_bound(
-        LoadSegments.begin(), LoadSegments.end(), VAddr, llvm::object::compareAddr<ELFT>);
+        LoadSegments.begin(), LoadSegments.end(), VAddr,
+            [](uint64_t VAddr, const Elf_Phdr *Phdr)
+            {
+                return VAddr < Phdr->p_vaddr;
+            });
         if (I == LoadSegments.begin())
             llvm::report_fatal_error("Virtual address is not in any segment");
         --I;
