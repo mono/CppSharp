@@ -29,23 +29,25 @@ function clone_llvm()
     error("LLVM directory is not a git repository.")
   end
 
+  local quotedLLVM = '"' .. llvm .. '"'
   if not os.isdir(llvm) then
-    git.clone(llvm, "https://github.com/llvm-mirror/llvm.git")
+    git.clone(quotedLLVM, "https://github.com/llvm-mirror/llvm.git")
   else
-    git.reset_hard(llvm, "HEAD")
-    git.pull_rebase(llvm)
+    git.reset_hard(quotedLLVM, "HEAD")
+    git.pull_rebase(quotedLLVM)
   end
 
   local clang = llvm .. "/tools/clang"
+  local quotedClang = '"' .. clang .. '"'
   if not os.isdir(clang) then
-    git.clone(clang, "https://github.com/llvm-mirror/clang.git")
+    git.clone(quotedClang, "https://github.com/llvm-mirror/clang.git")
   else
-    git.reset_hard(clang, "HEAD")
-    git.pull_rebase(clang)
+    git.reset_hard(quotedClang, "HEAD")
+    git.pull_rebase(quotedClang)
   end
 
-  git.reset_hard(llvm, llvm_release)
-  git.reset_hard(clang, clang_release)
+  git.reset_hard(quotedLLVM, llvm_release)
+  git.reset_hard(quotedClang, clang_release)
 end
 function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
@@ -280,13 +282,13 @@ function build_llvm(llvm_build)
 			options = options .. (is32bits and " -DLLVM_BUILD_32_BITS=true" or "")
 		end
 		cmake("Ninja", conf, llvm_build, options)
-		ninja(llvm_build)
-		ninja(llvm_build, "clang-headers")
+		ninja('"' .. llvm_build .. '"')
+		ninja('"' .. llvm_build .. '"', "clang-headers")
 	end
 end
 
 function package_llvm(conf, llvm, llvm_build)
-	local rev = git.rev_parse(llvm, "HEAD")
+	local rev = git.rev_parse('"' .. llvm .. '"', "HEAD")
 	if string.is_empty(rev) then
 		rev = get_llvm_rev()
 	end
