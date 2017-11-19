@@ -115,7 +115,10 @@ namespace CppSharp.Generators.CSharp
                         }
                         else
                         {
-                            if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
+                            if (arrayType.IsPrimitiveType(PrimitiveType.Bool))
+                                supportBefore.WriteLineIndent($@"{value}[i] = {
+                                    Context.ReturnVarName}[i] != 0;");
+                            else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
                                 Context.Context.Options.MarshalCharAsManagedChar)
                                 supportBefore.WriteLineIndent($@"{value}[i] = global::System.Convert.ToChar({
                                     Context.ReturnVarName}[i]);");
@@ -514,7 +517,11 @@ namespace CppSharp.Generators.CSharp
                     }
                     else
                     {
-                        if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
+                        if (arrayType.IsPrimitiveType(PrimitiveType.Bool))
+                            supportBefore.WriteLineIndent($@"{
+                                Context.ReturnVarName}[i] = (byte)({
+                                Context.ArgName}[i] ? 1 : 0);");
+                        else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
                             Context.Context.Options.MarshalCharAsManagedChar)
                             supportBefore.WriteLineIndent($@"{
                                 Context.ReturnVarName}[i] = global::System.Convert.ToSByte({

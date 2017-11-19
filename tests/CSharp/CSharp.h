@@ -32,6 +32,8 @@ public:
     int operator ++();
     int operator --();
 
+    bool btest[5];
+
 protected:
     int P;
     TemplateInAnotherUnit<int> templateInAnotherUnit;
