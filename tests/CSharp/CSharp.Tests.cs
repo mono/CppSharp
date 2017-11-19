@@ -285,8 +285,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     public void TestBooleanArray()
     {
         Foo foo = new Foo { A = 10 };
-        for (int i = 0; i < foo.Btest.Length; ++i)
-            foo.Btest[i] = i % 2 == 0;
+        var new_values = new bool[5];
+        for(int i = 0; i < new_values.Length; ++i)
+        {
+            new_values[i] = i % 2 == 0;
+        }
+        foo.Btest = new_values;
         Assert.AreEqual(true, foo.Btest[0]);
         Assert.AreEqual(false, foo.Btest[1]);
         Assert.AreEqual(true, foo.Btest[2]);
