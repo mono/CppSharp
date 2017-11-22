@@ -129,3 +129,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13, std::string s)
 {
 }
+
+DependentValueFields<double> specialiseReturnOnly()
+{
+    return DependentValueFields<double>();
+}

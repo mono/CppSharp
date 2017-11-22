@@ -3034,14 +3034,13 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->operatorKind = GetOperatorKindFromDecl(FD->getDeclName());
 
     TypeLoc RTL;
+    FunctionTypeLoc FTL;
     if (auto TSI = FD->getTypeSourceInfo())
     {
         auto Loc = DesugarTypeLoc(TSI->getTypeLoc());
-        auto FTL = Loc.getAs<FunctionTypeLoc>();
+        FTL = Loc.getAs<FunctionTypeLoc>();
         if (FTL)
         {
-            F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
-
             RTL = FTL.getReturnLoc();
 
             auto& SM = c->getSourceManager();
@@ -3052,16 +3051,13 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             HandlePreprocessedEntities(F, headRange, MacroLocation::FunctionHead);
             HandlePreprocessedEntities(F, FTL.getParensRange(), MacroLocation::FunctionParameters);
         }
-        else
-            F->qualifiedType = GetQualifiedType(FD->getType());
     }
-    else
-        F->qualifiedType = GetQualifiedType(FD->getType());
     
     auto ReturnType = FD->getReturnType();
     if (FD->isExternallyVisible())
         CompleteIfSpecializationType(ReturnType);
     F->returnType = GetQualifiedType(ReturnType, &RTL);
+    F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
 
     const auto& Mangled = GetDeclMangledName(FD);
     F->mangled = Mangled;

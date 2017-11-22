@@ -486,6 +486,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
                              TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13, std::string s);
 
+DLL_API DependentValueFields<double> specialiseReturnOnly();
+
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
 template class DLL_API IndependentFields<bool>;

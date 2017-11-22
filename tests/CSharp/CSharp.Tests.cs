@@ -71,6 +71,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
 
         CSharp.CSharp.FunctionInsideInlineNamespace();
+        using (CSharpTemplates.SpecialiseReturnOnly())
+        {
+        }
 
 #pragma warning restore 0168
 #pragma warning restore 0219
