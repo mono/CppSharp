@@ -51,7 +51,8 @@ namespace CppSharp.AST
             if (baseMethod != null)
                 return baseMethod;
 
-            return baseClass.Methods.FirstOrDefault(@override.CanOverride);
+            var methods = baseClass.Methods.Concat(baseClass.Declarations.OfType<Method>());
+            return methods.FirstOrDefault(@override.CanOverride);
         }
 
         public static Property GetBaseProperty(this Class @class, Property @override,
@@ -71,11 +72,13 @@ namespace CppSharp.AST
                         return baseProperty;
                 }
 
-                baseProperty = (from property in @base.Class.Properties
+                var properties = @base.Class.Properties.Concat(@base.Class.Declarations.OfType<Property>());
+                baseProperty = (from property in properties
                     where property.OriginalName == @override.OriginalName &&
                         property.Parameters.SequenceEqual(@override.Parameters,
                             ParameterTypeComparer.Instance)
                     select property).FirstOrDefault();
+
                 if (baseProperty != null)
                     return baseProperty;
 
