@@ -364,6 +364,7 @@ namespace CppSharp.AST
             LineNumberStart = declaration.LineNumberStart;
             LineNumberEnd = declaration.LineNumberEnd;
             IsImplicit = declaration.IsImplicit;
+            AssociatedDeclaration = declaration.AssociatedDeclaration;
         }
 
         public override string ToString()
