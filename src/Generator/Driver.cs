@@ -339,9 +339,9 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 
-            if ((Options.GeneratorKind == GeneratorKind.CLI ||
-                Options.GeneratorKind == GeneratorKind.CSharp) && !Options.GenerateRawCBindings)
-                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any &~ RenameTargets.Parameter);
+            //if ((Options.GeneratorKind == GeneratorKind.CLI ||
+            //    Options.GeneratorKind == GeneratorKind.CSharp))
+            TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Enum | RenameTargets.EnumItem);
         }
 
         public void ProcessCode()
@@ -403,13 +403,13 @@ namespace CppSharp
             compilerOptions.Append(" /unsafe");
 
             var compilerParameters = new CompilerParameters
-                {
-                    GenerateExecutable = false,
-                    TreatWarningsAsErrors = false,
-                    OutputAssembly = assemblyFile,
-                    GenerateInMemory = false,
-                    CompilerOptions = compilerOptions.ToString()
-                };
+            {
+                GenerateExecutable = false,
+                TreatWarningsAsErrors = false,
+                OutputAssembly = assemblyFile,
+                GenerateInMemory = false,
+                CompilerOptions = compilerOptions.ToString()
+            };
 
             if (module != Options.SystemModule)
                 compilerParameters.ReferencedAssemblies.Add(
@@ -475,7 +475,7 @@ namespace CppSharp
 
             driver.Setup();
 
-            if(driver.Options.Verbose)
+            if (driver.Options.Verbose)
                 Diagnostics.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)

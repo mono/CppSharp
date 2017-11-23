@@ -65,6 +65,10 @@ namespace CppSharp.Generators.CSharp
         {
             GenerateFilePreamble(CommentKind.BCPL);
 
+            PushBlock(BlockKind.Header);
+            WriteLine("#if {0}x64", Context.ParserOptions.TargetTriple.StartsWith("x86_64") ? "" : "!");
+            PopBlock();
+
             GenerateUsings();
 
             if (!string.IsNullOrEmpty(Module.OutputNamespace))
@@ -84,6 +88,10 @@ namespace CppSharp.Generators.CSharp
             }
 
             GenerateExternalClassTemplateSpecializations();
+
+            PushBlock(BlockKind.Header);
+            WriteLine("#endif");
+            PopBlock();
         }
 
         private void GenerateExternalClassTemplateSpecializations()
@@ -161,7 +169,7 @@ namespace CppSharp.Generators.CSharp
             var isTranslationUnit = context is TranslationUnit;
 
             var shouldGenerateNamespace = !@namespace.IsInline && !isTranslationUnit &&
-                context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete));
+                context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete)) && false;
 
             if (shouldGenerateNamespace)
             {
@@ -211,45 +219,53 @@ namespace CppSharp.Generators.CSharp
             if (!context.Functions.Any(f => f.IsGenerated) && !hasGlobalVariables)
                 return;
 
-            PushBlock(BlockKind.Functions);
-            var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
-            WriteLine("public unsafe partial class {0}", parentName);
-            WriteStartBraceIndent();
+          
 
-            if (!Context.Options.GenerateRawCBindings)
+           var funcByNamespace = context.Functions.Where(w => w.Namespace != null).GroupBy(g => g.Namespace.OriginalName);
+
+            foreach (var fGroup in funcByNamespace)
             {
-                PushBlock(BlockKind.InternalsClass);
-                GenerateClassInternalHead();
+                PushBlock(BlockKind.Functions);
+
+                var parentName = fGroup.Key;
+                WriteLine("public unsafe partial class {0}", parentName);
                 WriteStartBraceIndent();
-            }
-            // Generate all the internal function declarations.
-            foreach (var function in context.Functions)
-            {
-                if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
-                    continue;
 
-                GenerateInternalFunction(function);
-            }
-
-
-            if (!Context.Options.GenerateRawCBindings)
-            {
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-
-                foreach (var function in context.Functions)
+                if (!Context.Options.GenerateRawCBindings)
                 {
-                    if (!function.IsGenerated) continue;
+                    PushBlock(BlockKind.InternalsClass);
+                    GenerateClassInternalHead();
+                    WriteStartBraceIndent();
+                }
+                // Generate all the internal function declarations.
+                foreach (var function in fGroup)
+                {
+                    if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
+                        continue;
 
-                    GenerateFunction(function, parentName);
+                    GenerateInternalFunction(function);
                 }
 
-                foreach (var variable in context.Variables.Where(
-                    v => v.IsGenerated && v.Access == AccessSpecifier.Public))
-                    GenerateVariable(null, variable);
+
+                if (!Context.Options.GenerateRawCBindings)
+                {
+                    WriteCloseBraceIndent();
+                    PopBlock(NewLineKind.BeforeNextBlock);
+
+                    foreach (var function in context.Functions)
+                    {
+                        if (!function.IsGenerated) continue;
+
+                        GenerateFunction(function, parentName);
+                    }
+
+                    foreach (var variable in context.Variables.Where(
+                        v => v.IsGenerated && v.Access == AccessSpecifier.Public))
+                        GenerateVariable(null, variable);
+                }
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateClassTemplateSpecializationInternal(Class classTemplate)
@@ -514,6 +530,27 @@ namespace CppSharp.Generators.CSharp
                     GenerateInternalFunction(function);
             }
 
+            if (Options.GenerateRawCBindings)
+            {
+
+
+                PushBlock(BlockKind.InternalsClassMethod);
+                WriteLine($"public {@class.Name}* Ptr");
+                WriteStartBraceIndent();
+
+                WriteLine("get");
+                WriteStartBraceIndent();
+                WriteLine($"fixed({@class.Name}* p = &this) return p;");
+                WriteCloseBraceIndent();
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+
+                PushBlock(BlockKind.InternalsClassMethod);
+                WriteLine($"public static {@class.Name}* Null => ({@class.Name}*) IntPtr.Zero;");
+
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+
             TypePrinter.PopContext();
 
             WriteCloseBraceIndent();
@@ -609,7 +646,47 @@ namespace CppSharp.Generators.CSharp
 
             var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
             {
-                var print = p.Visit(TypePrinter);
+                var print = p.Visit(TypePrinter).ToString();
+                if (print.Equals("sbyte*"))
+                    print = "[MarshalAs(UnmanagedType.LPStr)]string";
+                if (p.QualifiedType.Type.GetQualifiedPointee().Type is BuiltinType)
+                {
+                    var builtIn = (BuiltinType)p.QualifiedType.Type.GetQualifiedPointee().Type;
+                    switch (builtIn.Type)
+                    {
+                        //case PrimitiveType.Null:
+                        //case PrimitiveType.Void:
+                        //case PrimitiveType.Bool:
+                        //case PrimitiveType.WideChar:
+                        //case PrimitiveType.Char:
+                        //case PrimitiveType.SChar:
+                        //case PrimitiveType.UChar:
+                        //case PrimitiveType.Char16:
+                        //case PrimitiveType.Char32:
+                        case PrimitiveType.Short:
+                        case PrimitiveType.UShort:
+                        case PrimitiveType.Int:
+                        case PrimitiveType.UInt:
+                        case PrimitiveType.Long:
+                        case PrimitiveType.ULong:
+                        case PrimitiveType.LongLong:
+                        case PrimitiveType.ULongLong:
+                        //case PrimitiveType.Int128:
+                        //case PrimitiveType.UInt128:
+                        case PrimitiveType.Half:
+                        case PrimitiveType.Float:
+                        case PrimitiveType.Double:
+                        case PrimitiveType.LongDouble:
+                        //case PrimitiveType.Float128:
+                        case PrimitiveType.IntPtr:
+                        case PrimitiveType.UIntPtr:
+                            //case PrimitiveType.String:
+                            //case PrimitiveType.Decimal:
+                            return $"ref {builtIn.ToString()} {p.Name}";
+
+
+                    }
+                }
                 return $"{print} {p.Name}";
             }).ToList();
 

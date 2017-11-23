@@ -30,7 +30,7 @@ namespace CppSharp.Generators.CSharp
             // CheckAbiParameters runs last because hidden structure parameters
             // should always occur first.
 
-            Context.TranslationUnitPasses.AddPass(new CheckAbiParameters());
+            //Context.TranslationUnitPasses.AddPass(new CheckAbiParameters());
 
             return true;
         }

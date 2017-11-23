@@ -35,6 +35,7 @@ src/generator/generator
 *DesignTime*
 *TemporaryGeneratedFile*
 *FileListAbsolute*
+/build
 /build/scripts/llvm*
 /build/scripts/.vagrant
 /build/vs2012
@@ -48,3 +49,10 @@ src/generator/generator
 /site
 /wip
 /.vs
+build/LLVM.lua
+build/LLVM.lua
+*.lua
+build/LLVM.lua
+build/vs2017/.vs/CppSharp/v15/ipch/AutoPCH/4b59b3a7203c7562/PARSER.ipch
+build/vs2017/obj/Release_x86/x86/Release/CppSharp.Parser.CLI/CppSharp.C75EB680.tlog/link.read.1.tlog
+build/vs2017/obj/Release_x86/x86/Release/CppSharp.Parser.CLI/CppSharp.C75EB680.tlog/metagen.read.1.tlog

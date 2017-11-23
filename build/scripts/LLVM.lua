@@ -7,7 +7,7 @@ local llvm = path.getabsolute(basedir .. "/../deps/llvm")
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
 -- otherwise file I/O performance will be terrible.
 if is_vagrant() then
-	llvm = os.getenv("HOME") .. "/llvm"
+	--llvm = os.getenv("HOME") .. "/llvm"
 end
 
 function get_llvm_rev()

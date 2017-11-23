@@ -1,5 +1,5 @@
 -- Setup the LLVM dependency directories
-
+depsdir = "D:/gamedev/NuklearSharp/CppSharp/deps"
 LLVMRootDir = depsdir .. "/llvm/"
 
 local LLVMDirPerConfiguration = false

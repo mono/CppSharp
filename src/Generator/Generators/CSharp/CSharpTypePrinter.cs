@@ -179,7 +179,7 @@ namespace CppSharp.Generators.CSharp
 
         public static bool IsConstCharString(PointerType pointer)
         {
-            var pointee = pointer.Pointee.Desugar();
+            var pointee = pointer.Pointee;//.Desugar();
 
             return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
                     pointee.IsPrimitiveType(PrimitiveType.Char16) ||
@@ -214,10 +214,13 @@ namespace CppSharp.Generators.CSharp
             if (Context.Options.GenerateRawCBindings && !(pointee is FunctionType))
             {
                 var ptrStr = ptrSelector.Match(pointer.ToNativeString()).Value;
-                var d = pointee.Desugar();
+                var d = pointee.Desugar().ToString();
                 if (ptrStr.Equals("&"))
                     return $"ref {d}";
-                
+
+                //if (d.Equals("sbyte") && ptrStr.Length == 1)
+                //    return "[MarshalAs(UnmanagedType.LPStr)] string";
+
                 var res = string.Concat(d, ptrStr);
                 return res;
             }
@@ -251,6 +254,8 @@ namespace CppSharp.Generators.CSharp
                 throw new NotSupportedException(string.Format("{0} is not supported yet.",
                     Options.Encoding.EncodingName));
             }
+
+
 
             var desugared = pointee.Desugar();
 
