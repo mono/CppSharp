@@ -128,7 +128,8 @@ namespace CppSharp.AST
         ComplementOperator,
         AbstractImplCall,
         DefaultValueOverload,
-        InterfaceInstance
+        InterfaceInstance,
+        FieldAcessor
     }
 
     public enum FriendKind
