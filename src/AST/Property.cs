@@ -117,7 +117,11 @@ namespace CppSharp.AST
 
         public bool IsSynthetized
         {
-            get { return GetMethod != null && GetMethod.IsSynthetized; }
+            get
+            {
+                return (GetMethod != null && GetMethod.IsSynthetized) ||
+                       (SetMethod != null && SetMethod.IsSynthetized);
+            }
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
