@@ -310,6 +310,19 @@ public:
 };
 
 template <typename T>
+class InternalWithExtension
+{
+public:
+    const T* extension();
+};
+
+template <typename T>
+const T* InternalWithExtension<T>::extension()
+{
+    return 0;
+}
+
+template <typename T>
 class TemplateWithIndexer
 {
 public:
@@ -319,6 +332,7 @@ public:
 private:
     T t[1];
     HasDefaultTemplateArgument<char> h;
+    InternalWithExtension<char> i;
 };
 
 template <typename T>

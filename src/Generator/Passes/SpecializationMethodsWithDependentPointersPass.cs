@@ -57,7 +57,8 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || !@class.IsDependent)
+            if (!base.VisitClassDecl(@class) || !@class.IsDependent ||
+                @class.Specializations.All(s => !s.IsGenerated))
                 return false;
 
             var methodsWithDependentPointers = @class.Methods.Where(
