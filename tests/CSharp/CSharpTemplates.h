@@ -318,6 +318,7 @@ public:
     T& operator[](const char* string);
 private:
     T t[1];
+    HasDefaultTemplateArgument<char> h;
 };
 
 template <typename T>
