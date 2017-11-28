@@ -126,7 +126,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
                              HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
                              TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
-                             TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13, std::string s)
+                             TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13,
+                             IndependentFields<OnlySpecialisedInTypeArg<double> > _14, std::string s)
 {
 }
 

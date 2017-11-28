@@ -295,9 +295,8 @@ namespace CppSharp.Generators.CSharp
         private IEnumerable<ClassTemplateSpecialization> GetGenerated(
             IList<ClassTemplateSpecialization> specializations)
         {
-            var specialization = specializations.FirstOrDefault(s => !s.Ignore);
-            if (specialization == null)
-                specialization = specializations[0];
+            var specialization = specializations.FirstOrDefault(s => s.IsGenerated) ??
+                specializations[0];
 
             Class classTemplate = specialization.TemplatedDecl.TemplatedClass;
             if (classTemplate.HasDependentValueFieldInLayout())

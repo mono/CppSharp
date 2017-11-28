@@ -126,10 +126,7 @@ namespace CppSharp
                 return false;
             }
 
-            var result = base.VisitTemplateSpecializationType(template, quals);
-            if (!result)
-                Ignore();
-            return result;
+            return IsIgnored = !base.VisitTemplateSpecializationType(template, quals);
         }
 
         public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)

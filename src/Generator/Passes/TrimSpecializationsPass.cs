@@ -66,8 +66,7 @@ namespace CppSharp.Passes
                 Action<ClassTemplateSpecialization> add =
                     s =>
                     {
-                        if (internalSpecializations.Contains(s))
-                            internalSpecializations.Remove(s);
+                        internalSpecializations.Remove(s);
                         specializations.Add(s);
                     };
                 ASTUtils.CheckTypeForSpecialization(function.OriginalReturnType.Type,
@@ -189,6 +188,7 @@ namespace CppSharp.Passes
                 var specialization = @base.Class as ClassTemplateSpecialization;
                 if (specialization != null)
                 {
+                    internalSpecializations.Remove(specialization);
                     specializations.Add(specialization);
                     foreach (var field in specialization.Fields)
                         field.Visit(this);

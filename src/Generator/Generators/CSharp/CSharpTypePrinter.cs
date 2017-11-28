@@ -179,6 +179,9 @@ namespace CppSharp.Generators.CSharp
 
         public static bool IsConstCharString(PointerType pointer)
         {
+            if (pointer.IsReference)
+                return false;
+
             var pointee = pointer.Pointee.Desugar();
 
             return (pointee.IsPrimitiveType(PrimitiveType.Char) ||

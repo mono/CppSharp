@@ -1437,15 +1437,14 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
     case clang::TemplateArgument::Type:
     {
         Arg.kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Type;
+        clang::TypeLoc ArgTL;
         if (ArgLoc && ArgLoc->getTypeSourceInfo())
         {
-            auto ArgTL = ArgLoc->getTypeSourceInfo()->getTypeLoc();
-            Arg.type = GetQualifiedType(TA.getAsType(), &ArgTL);
+            ArgTL = ArgLoc->getTypeSourceInfo()->getTypeLoc();
         }
-        else
-        {
-            Arg.type = GetQualifiedType(TA.getAsType());
-        }
+        auto Type = TA.getAsType();
+        CompleteIfSpecializationType(Type);
+        Arg.type = GetQualifiedType(Type, &ArgTL);
         break;
     }
     case clang::TemplateArgument::Declaration:
