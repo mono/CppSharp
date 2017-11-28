@@ -37,7 +37,7 @@ namespace CppSharp.Passes
                 injectedClasses.Add(@class);
 
             if (!@class.IsDependent)
-                return false;
+                return true;
 
             if (Options.GenerateClassTemplates)
                 IgnoreUnsupportedTemplates(@class);
@@ -45,6 +45,26 @@ namespace CppSharp.Passes
                 foreach (var specialization in @class.Specializations.Where(
                     s => !s.IsExplicitlyGenerated))
                     specialization.ExplicitlyIgnore();
+
+            return true;
+        }
+
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (!base.VisitClassTemplateSpecializationDecl(specialization))
+                return false;
+
+            Declaration decl = null;
+            if (specialization.Arguments.Any(a =>
+                a.Type.Type?.TryGetDeclaration(out decl) == true))
+            {
+                decl.Visit(this);
+                if (decl.Ignore)
+                {
+                    specialization.ExplicitlyIgnore();
+                    return false;
+                }
+            }
 
             return true;
         }

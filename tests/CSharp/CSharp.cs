@@ -39,6 +39,7 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("QRect");
             ctx.SetClassAsValueType("StructTestArrayTypeFromTypedef");
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
+            ctx.IgnoreClassWithName("Ignored");
 
             var macroRegex = new Regex("(MY_MACRO_TEST_.*)");
             var list = (from unit in ctx.TranslationUnits

@@ -131,6 +131,10 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
 {
 }
 
+void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii)
+{
+}
+
 DependentValueFields<double> specialiseReturnOnly()
 {
     return DependentValueFields<double>();

@@ -18,6 +18,10 @@ class DLL_API T2
 {
 };
 
+class DLL_API Ignored
+{
+};
+
 template <typename T>
 class DLL_API IndependentFields : public T1
 {
@@ -506,6 +510,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
                              TemplateWithIndexer<T2*> _12, TemplateDerivedFromRegularDynamic<RegularDynamic> _13,
                              IndependentFields<OnlySpecialisedInTypeArg<double>> _14, std::string s);
+
+void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii);
 
 DLL_API DependentValueFields<double> specialiseReturnOnly();
 
