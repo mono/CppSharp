@@ -135,6 +135,11 @@ void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii)
 {
 }
 
+std::map<int, int> usesValidSpecialisationOfIgnoredTemplate()
+{
+    return std::map<int, int>();
+}
+
 DependentValueFields<double> specialiseReturnOnly()
 {
     return DependentValueFields<double>();

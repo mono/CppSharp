@@ -2,6 +2,7 @@
 #include "AnotherUnit.h"
 
 #include <string>
+#include <map>
 
 class DLL_API T1
 {
@@ -31,6 +32,7 @@ public:
     IndependentFields(const T& t);
     IndependentFields(int i);
     ~IndependentFields();
+    explicit IndependentFields(const std::map<T, T> &other);
     int getIndependent();
     const T* returnTakeDependentPointer(const T* p);
     T getDependent(const T& t);
@@ -65,6 +67,11 @@ template <typename T>
 IndependentFields<T>::IndependentFields(int i)
 {
     independent = i;
+}
+
+template <typename T>
+IndependentFields<T>::IndependentFields(const std::map<T, T> &v)
+{
 }
 
 template <typename T>
@@ -512,6 +519,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              IndependentFields<OnlySpecialisedInTypeArg<double>> _14, std::string s);
 
 void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii);
+
+std::map<int, int> usesValidSpecialisationOfIgnoredTemplate();
 
 DLL_API DependentValueFields<double> specialiseReturnOnly();
 

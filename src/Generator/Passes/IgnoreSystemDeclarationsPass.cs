@@ -48,6 +48,9 @@ namespace CppSharp.Passes
             if (!@class.IsDependent || @class.Specializations.Count == 0)
                 return false;
 
+            foreach (var specialization in @class.Specializations)
+                specialization.ExplicitlyIgnore();
+
             // we only need a few members for marshalling so strip the rest
             switch (@class.Name)
             {
