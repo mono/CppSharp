@@ -3013,6 +3013,29 @@ static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodie
     return false;
 }
 
+std::stack<clang::Scope> Parser::GetScopesFor(clang::FunctionDecl* FD)
+{
+    using namespace clang;
+
+    std::stack<DeclContext*> Contexts;
+    DeclContext* DC = FD;
+    while (DC)
+    {
+        Contexts.push(DC);
+        DC = DC->getParent();
+    }
+    std::stack<Scope> Scopes;
+    while (!Contexts.empty())
+    {
+        Scope S(Scopes.empty() ? 0 : &Scopes.top(),
+            Scope::ScopeFlags::DeclScope, c->getDiagnostics());
+        S.setEntity(Contexts.top());
+        Scopes.push(S);
+        Contexts.pop();
+    }
+    return Scopes;
+}
+
 void Parser::MarkValidity(Function* F)
 {
     using namespace clang;
@@ -3028,8 +3051,12 @@ void Parser::MarkValidity(Function* F)
     auto Diagnostics = c->getSema().getDiagnostics().getClient();
     auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
     SemaDiagnostics->Decl = FD;
+    auto TUScope = c->getSema().TUScope;
+    std::stack<Scope> Scopes = GetScopesFor(FD);
+    c->getSema().TUScope = &Scopes.top();
     c->getSema().InstantiateFunctionDefinition(FD->getLocStart(), FD,
         /*Recursive*/true);
+    c->getSema().TUScope = TUScope;
     F->isInvalid = FD->isInvalidDecl();
     if (!F->isInvalid)
     {

@@ -16,6 +16,7 @@
 #include <clang/AST/Type.h>
 #include <clang/Basic/TargetInfo.h>
 #include <clang/Frontend/CompilerInstance.h>
+#include <clang/Sema/Scope.h>
 
 #include "CXXABI.h"
 #include "CppParser.h"
@@ -120,6 +121,7 @@ private:
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
         const clang::SourceLocation& ParamStartLoc);
     void SetBody(const clang::FunctionDecl* FD, Function* F);
+    std::stack<clang::Scope> GetScopesFor(clang::FunctionDecl* FD);
     void MarkValidity(Function* F);
     void WalkFunction(const clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
