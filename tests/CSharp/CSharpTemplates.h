@@ -344,6 +344,7 @@ private:
     T t[1];
     HasDefaultTemplateArgument<char> h;
     InternalWithExtension<char> i;
+    HasDefaultTemplateArgument<T, double> specializationAsFieldOfAnother;
 };
 
 template <typename T>

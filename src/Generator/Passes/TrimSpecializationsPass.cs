@@ -63,17 +63,11 @@ namespace CppSharp.Passes
 
             if (function.IsGenerated)
             {
-                Action<ClassTemplateSpecialization> add =
-                    s =>
-                    {
-                        internalSpecializations.Remove(s);
-                        specializations.Add(s);
-                    };
                 ASTUtils.CheckTypeForSpecialization(function.OriginalReturnType.Type,
-                    function, add, Context.TypeMaps);
+                    function, AddSpecialization, Context.TypeMaps);
                 foreach (var parameter in function.Parameters)
                     ASTUtils.CheckTypeForSpecialization(parameter.Type, function,
-                        add, Context.TypeMaps);
+                        AddSpecialization, Context.TypeMaps);
             }
 
             return true;
@@ -86,6 +80,18 @@ namespace CppSharp.Passes
 
             CheckForInternalSpecialization(field, field.Type);
             return true;
+        }
+
+        private void AddSpecialization(ClassTemplateSpecialization specialization)
+        {
+            if (specializations.Contains(specialization))
+                return;
+            internalSpecializations.Remove(specialization);
+            specializations.Add(specialization);
+            foreach (var field in specialization.Fields)
+                field.Visit(this);
+            foreach (var method in specialization.Methods)
+                method.Visit(this);
         }
 
         private void CleanSpecializations(Class template)
@@ -187,14 +193,7 @@ namespace CppSharp.Passes
             {
                 var specialization = @base.Class as ClassTemplateSpecialization;
                 if (specialization != null)
-                {
-                    internalSpecializations.Remove(specialization);
-                    specializations.Add(specialization);
-                    foreach (var field in specialization.Fields)
-                        field.Visit(this);
-                    foreach (var method in specialization.Methods)
-                        method.Visit(this);
-                }
+                    AddSpecialization(specialization);
                 CheckBasesForSpecialization(@base.Class);
             }
         }
