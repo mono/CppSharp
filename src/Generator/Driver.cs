@@ -147,7 +147,7 @@ namespace CppSharp
                             sourceFile, parserOptions))
                             if (Context.TargetInfo == null)
                                 Context.TargetInfo = result.TargetInfo;
-                            else
+                            else if (result.TargetInfo != null)
                                 result.TargetInfo.Dispose();
                         if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
                             ParserOptions.TargetTriple = parserOptions.TargetTriple;
