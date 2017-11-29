@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp
 {
@@ -30,14 +31,13 @@ namespace CppSharp
 
         public void Setup(Driver driver)
         {
-            var options = driver.Options;
-            options.GeneratorKind = GeneratorKind.CSharp;
-            options.DryRun = true;
-            options.SetupXcode();
-            options.MicrosoftMode = false;
-            options.TargetTriple = "i686-apple-darwin12.4.0";
+            driver.Options.GeneratorKind = GeneratorKind.CSharp;
+            driver.Options.DryRun = true;
+            driver.ParserOptions.SetupXcode();
+            driver.ParserOptions.MicrosoftMode = false;
+            driver.ParserOptions.TargetTriple = "i686-apple-darwin12.4.0";
 
-            var module = options.AddModule("CppSharp");
+            var module = driver.Options.AddModule("CppSharp");
 
             module.Defines.Add("__STDC_LIMIT_MACROS");
             module.Defines.Add("__STDC_CONSTANT_MACROS");
