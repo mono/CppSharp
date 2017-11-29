@@ -154,7 +154,7 @@ namespace CppSharp
                     messages.Add(string.Format("File '{0}' could not be found.", args));
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 messages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", args));
             }
