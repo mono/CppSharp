@@ -157,15 +157,12 @@ namespace CppSharp.Passes
                     int error;
                     string errorMessage;
                     ProcessHelper.Run(compiler, arguments, out error, out errorMessage);
-                    if (string.IsNullOrEmpty(errorMessage))
-                        CollectSymbols(outputDir, symbols);
-                    else
-                        Diagnostics.Error(errorMessage);
+                    CollectSymbols(outputDir, symbols, errorMessage);
                     RemainingCompilationTasks--;
                 }).Start();
         }
 
-        private void CollectSymbols(string outputDir, string symbols)
+        private void CollectSymbols(string outputDir, string symbols, string errorMessage)
         {
             using (var parserOptions = new ParserOptions())
             {
@@ -173,6 +170,11 @@ namespace CppSharp.Passes
                 var output = Path.GetFileName($@"{(Platform.IsWindows ?
                     string.Empty : "lib")}{symbols}.{
                     (Platform.IsMacOS ? "dylib" : Platform.IsWindows ? "dll" : "so")}");
+                if (!File.Exists(Path.Combine(outputDir, output)))
+                {
+                    Diagnostics.Error(errorMessage);
+                    return;
+                }
                 parserOptions.LibraryFile = output;
                 using (var parserResult = Parser.ClangParser.ParseLibrary(parserOptions))
                 {

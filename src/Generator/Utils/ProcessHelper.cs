@@ -1,14 +1,13 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
 
 namespace CppSharp.Utils
 {
-    public class ProcessHelper
+    public static class ProcessHelper
     {
         public static string Run(string path, string args, out int error, out string errorMessage)
         {
-            using (Process process = new Process())
+            using (var process = new Process())
             {
                 process.StartInfo.FileName = path;
                 process.StartInfo.Arguments = args;
