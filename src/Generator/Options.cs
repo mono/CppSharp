@@ -99,7 +99,7 @@ namespace CppSharp
         /// <value>
         ///   <c>true</c> to generate class templates; otherwise, <c>false</c>.
         /// </value>
-        public bool GenerateClassTemplates { get; set; } = false;
+        public bool GenerateClassTemplates { get; set; }
         public bool GenerateInternalImports;
         public bool GenerateSequentialLayout { get; set; }
         public bool UseHeaderDirectories;

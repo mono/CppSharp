@@ -32,6 +32,10 @@ HasVirtualInCore::HasVirtualInCore()
 {
 }
 
+HasVirtualInCore::HasVirtualInCore(TemplateClass<HasVirtualInCore> t)
+{
+}
+
 int HasVirtualInCore::virtualInCore(int parameter)
 {
     return 1;

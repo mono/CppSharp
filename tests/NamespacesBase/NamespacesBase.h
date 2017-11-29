@@ -63,6 +63,7 @@ class DLL_API HasVirtualInCore
 {
 public:
     HasVirtualInCore();
+    HasVirtualInCore(TemplateClass<HasVirtualInCore> t);
     virtual int virtualInCore(int parameter);
 };
 

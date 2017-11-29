@@ -41,10 +41,6 @@ namespace CppSharp.Passes
 
             if (Options.GenerateClassTemplates)
                 IgnoreUnsupportedTemplates(@class);
-            else
-                foreach (var specialization in @class.Specializations.Where(
-                    s => !s.IsExplicitlyGenerated))
-                    specialization.ExplicitlyIgnore();
 
             return true;
         }
@@ -53,6 +49,12 @@ namespace CppSharp.Passes
         {
             if (!base.VisitClassTemplateSpecializationDecl(specialization))
                 return false;
+
+            if (!Options.GenerateClassTemplates && !specialization.IsExplicitlyGenerated)
+            {
+                specialization.ExplicitlyIgnore();
+                return false;
+            }
 
             Declaration decl = null;
             if (specialization.Arguments.Any(a =>
