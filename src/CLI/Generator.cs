@@ -212,7 +212,9 @@ namespace CppSharp
                 Path.Combine("usr", "include", "x86_64-linux-gnu", "c++", gccVersion),
                 Path.Combine("usr", "include", "c++", gccVersion, "backward"),
                 Path.Combine("usr", "lib", "gcc", "x86_64-linux-gnu", gccVersion, "include"),
+                Path.Combine("usr", "lib", "gcc", "x86_64-pc-linux-gnu", gccVersion, "include"),
                 Path.Combine("usr", "include", "x86_64-linux-gnu"),
+                Path.Combine("usr", "include", "x86_64-pc-linux-gnu"),
                 Path.Combine("usr", "include")
             };
 

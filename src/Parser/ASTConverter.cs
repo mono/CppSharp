@@ -1047,7 +1047,7 @@ namespace CppSharp
                 VisitDeclContext(decl, _decl);
             }
 
-            for (uint i = 0, j = 0; i < ctx.ClassesCount; ++i)
+            for (uint i = 0; i < ctx.ClassesCount; ++i)
             {
                 var decl = ctx.GetClasses(i);
                 var _decl = (AST.Class) Visit(decl);
