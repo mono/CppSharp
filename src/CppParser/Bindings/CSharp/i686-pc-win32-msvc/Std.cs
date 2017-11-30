@@ -84,6 +84,10 @@ namespace Std
 
 namespace Std
 {
+}
+
+namespace Std
+{
     namespace CompressedPair
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -478,6 +482,8 @@ namespace Std
             if (ReferenceEquals(_Al, null))
                 throw new global::System.ArgumentNullException("_Al", "Cannot be null because it is a C++ reference (&).");
             var __arg1 = _Al.__Instance;
+            if (ReferenceEquals(_Ptr, null))
+                throw new global::System.ArgumentNullException(_Ptr, "The underlying std::string cannot take null.");
             var __ret = Marshal.AllocHGlobal(24);
             __Internal.BasicString(__ret, _Ptr, __arg1);
             global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> __result0;

@@ -1325,6 +1325,8 @@ namespace Std
             if (ReferenceEquals(__a, null))
                 throw new global::System.ArgumentNullException("__a", "Cannot be null because it is a C++ reference (&).");
             var __arg1 = __a.__Instance;
+            if (ReferenceEquals(__s, null))
+                throw new global::System.ArgumentNullException(__s, "The underlying std::string cannot take null.");
             var __ret = Marshal.AllocHGlobal(32);
             __Internal.BasicString(__ret, __s, __arg1);
             global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> __result0;
