@@ -25,29 +25,38 @@ function clone_llvm()
   local clang_release = get_clang_rev()
   print("Clang release: " .. clang_release)
 
-  if os.isdir(llvm) and not os.isdir(llvm .. "/.git") then
-    error("LLVM directory is not a git repository.")
-  end
-
-  local quotedLLVM = '"' .. llvm .. '"'
-  if not os.isdir(llvm) then
-    git.clone(quotedLLVM, "https://github.com/llvm-mirror/llvm.git")
+  if os.ishost("windows") then
+    extract = extract_7z
   else
-    git.reset_hard(quotedLLVM, "HEAD")
-    git.pull_rebase(quotedLLVM)
+    extract = extract_tar_gz
   end
 
-  local clang = llvm .. "/tools/clang"
-  local quotedClang = '"' .. clang .. '"'
-  if not os.isdir(clang) then
-    git.clone(quotedClang, "https://github.com/llvm-mirror/clang.git")
+  local archive = 'llvm-'..llvm_release..'.tar.gz'
+  if os.isfile(archive) then
+    print('Archive '..archive..' already exists.')
   else
-    git.reset_hard(quotedClang, "HEAD")
-    git.pull_rebase(quotedClang)
+    download('https://github.com/llvm-mirror/llvm/archive/'..llvm_release..'.tar.gz', archive)
   end
 
-  git.reset_hard(quotedLLVM, llvm_release)
-  git.reset_hard(quotedClang, clang_release)
+  if os.isdir(llvm) then
+    os.rmdir(llvm)
+    if os.isdir(llvm) then
+      print('Removing '..llvm..' directory failed. Please remove it manually and restart.')
+      return
+    end
+  end
+
+  extract(archive, '.')
+  os.rename('llvm-'..llvm_release, llvm)
+
+  archive = 'clang-'..clang_release..'.tar.gz'
+  if os.isfile(archive) then
+    print('Archive '..archive..' already exists.')
+  else
+    download('https://github.com/llvm-mirror/clang/archive/'..clang_release..'.tar.gz', archive)
+  end
+  extract(archive, '.')
+  os.rename('clang-'..clang_release, llvm..'/tools/clang')
 end
 function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
@@ -127,6 +136,11 @@ end
 function extract_tar_xz(archive, dest_dir)
 	execute("mkdir -p " .. dest_dir, true)
 	return execute_or_die(string.format("tar xJf %s -C %s", archive, dest_dir), true)
+end
+
+function extract_tar_gz(archive, dest_dir)
+	execute("mkdir -p " .. dest_dir, true)
+	return execute_or_die(string.format("tar xf %s -C %s", archive, dest_dir), true)
 end
 
 local use_7zip = os.ishost("windows")
