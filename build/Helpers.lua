@@ -100,6 +100,7 @@ end
 function SetupManagedProject()
   language "C#"
   location ("%{wks.location}/projects")
+  buildoptions {"/platform:".._OPTIONS["arch"]}
 
   dotnetframework "4.6"
 
