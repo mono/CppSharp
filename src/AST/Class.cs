@@ -270,6 +270,11 @@ namespace CppSharp.AST
             }
         }
 
+        public bool IsTemplate
+        {
+            get { return IsDependent && TemplateParameters.Count > 0; }
+        }
+
         public override IEnumerable<Function> FindOperator(CXXOperatorKind kind)
         {
             return Methods.Where(m => m.OperatorKind == kind);

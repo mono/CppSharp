@@ -37,7 +37,7 @@ namespace CppSharp.Passes
             if (!base.VisitClassDecl(@class))
                 return false;
 
-            if (@class.IsDependent)
+            if (@class.IsTemplate)
             {
                 templates.Add(@class);
                 foreach (var specialization in @class.Specializations.Where(

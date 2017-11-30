@@ -570,7 +570,7 @@ namespace CppSharp.Generators.CSharp
                     Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
 
             var printed = VisitDeclaration(@class).Type;
-            if (!@class.IsDependent)
+            if (!@class.IsTemplate)
                 return printed;
             return $@"{printed}<{string.Join(", ",
                 @class.TemplateParameters.Select(p => p.Name))}>";
@@ -638,9 +638,7 @@ namespace CppSharp.Generators.CSharp
 
             while (!(ctx is TranslationUnit))
             {
-                var isInlineNamespace = ctx is Namespace && ((Namespace)ctx).IsInline;
-                if (!string.IsNullOrWhiteSpace(ctx.Name) && !isInlineNamespace)
-                    names.Push(ctx.Name);
+                AddContextName(names, ctx);
 
                 ctx = ctx.Namespace;
             }
@@ -800,6 +798,38 @@ namespace CppSharp.Generators.CSharp
             var templateParam = a.Type.Type.Desugar() as TemplateParameterType;
             // HACK: TemplateParameterType.Parameter is null in some corner cases, see the parser
             return templateParam == null || templateParam.Parameter != null;
+        }
+
+        private void AddContextName(Stack<string> names, Declaration ctx)
+        {
+            var isInlineNamespace = ctx is Namespace && ((Namespace) ctx).IsInline;
+            if (string.IsNullOrWhiteSpace(ctx.Name) || isInlineNamespace)
+                return;
+
+            if (ContextKind != TypePrinterContextKind.Managed)
+            {
+                names.Push(ctx.Name);
+                return;
+            }
+
+            string name = null;
+            var @class = ctx as Class;
+            if (@class != null)
+            {
+                if (@class.IsTemplate)
+                    name = $@"{ctx.Name}<{string.Join(", ",
+                        @class.TemplateParameters.Select(p => p.Name))}>";
+                else
+                {
+                    var specialization = @class as ClassTemplateSpecialization;
+                    if (specialization != null)
+                    {
+                        name = $@"{ctx.Name}<{string.Join(", ",
+                            specialization.Arguments.Select(VisitTemplateArgument))}>";
+                    }
+                }
+            }
+            names.Push(name ?? ctx.Name);
         }
 
         private CSharpExpressionPrinter expressionPrinter => new CSharpExpressionPrinter(this);

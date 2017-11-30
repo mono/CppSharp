@@ -36,7 +36,7 @@ namespace CppSharp.Passes
             if (@class.IsInjected)
                 injectedClasses.Add(@class);
 
-            if (!@class.IsDependent)
+            if (!@class.IsTemplate)
                 return true;
 
             if (Options.GenerateClassTemplates)
