@@ -2743,6 +2743,15 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
+            // special validation when constructing std::string as it cannot take null as a value
+            if (method != null && method.OriginalName == "basic_string" &&
+                method.TranslationUnit.IsSystemHeader)
+            {
+                WriteLine($"if (ReferenceEquals({method.Parameters[0].Name}, null))");
+                WriteLineIndent($@"throw new global::System.ArgumentNullException({
+                    method.Parameters[0].Name}, ""The underlying std::string cannot take null."");");
+            }
+
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
                 Write("var {0} = ", Helpers.ReturnIdentifier);
 

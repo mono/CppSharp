@@ -765,6 +765,15 @@ This is a very long string. This is a very long string. This is a very long stri
         }
     }
 
+    [Test, Platform(Exclude = "Win")]
+    public void TestNullStdString()
+    {
+        using (var hasStdString = new HasStdString())
+        {
+            Assert.That(() => hasStdString.TestStdString(null), Throws.ArgumentNullException);
+        }
+    }
+
     private class CustomDerivedFromVirtual : AbstractWithVirtualDtor
     {
         public override void Abstract()
