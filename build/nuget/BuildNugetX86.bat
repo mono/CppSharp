@@ -62,7 +62,6 @@ ECHO *** an error occurred, aborting ...
 PAUSE
 
 :quit
-goto :eof
 SET CPPSHARP_WGET_EXE=
 SET CPPSHARP_NUGET_EXE=
 SET CPPSHARP_PKG_DIR=
