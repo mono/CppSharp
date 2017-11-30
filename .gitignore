@@ -49,3 +49,6 @@ src/generator/generator
 /site
 /wip
 /.vs
+
+# Nuget: do not include produced packages
+/build/nuget/*.nupkg
