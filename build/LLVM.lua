@@ -25,7 +25,7 @@ function SearchLLVM()
 end
 
 function get_llvm_build_dir()
-  return path.join(LLVMRootDir, "build")
+  return path.join(LLVMRootDir, get_llvm_package_name())
 end
 
 function SetupLLVMIncludes()
