@@ -539,7 +539,6 @@ template class DLL_API IndependentFields<T1>;
 template class DLL_API IndependentFields<std::string>;
 template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
-template DLL_API IndependentFields<DependentValueFields<int>::Nested> DependentValueFields<int>::returnNestedInTemplate();
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;
