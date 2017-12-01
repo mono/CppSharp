@@ -25,7 +25,13 @@ function SearchLLVM()
 end
 
 function get_llvm_build_dir()
-  return path.join(LLVMRootDir, "build")
+  local packageDir = path.join(LLVMRootDir, get_llvm_package_name())
+  local buildDir = path.join(LLVMRootDir, "build")
+  if os.isdir(buildDir) then
+    return buildDir
+  else
+    return packageDir
+  end
 end
 
 function SetupLLVMIncludes()
@@ -94,12 +100,19 @@ function SetupLLVMLibs()
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
 
   filter { "system:macosx" }
-    links { "c++", "curses", "pthread", "z" }
-    
+    links { "c++", "curses" }
+
+  filter { "system:macosx or system:linux" }
+    links { "pthread", "z" }
+
   filter { "action:vs*" }
     links { "version" }
 
   filter {}
+
+  if os.ishost("linux") and os.isfile("/usr/lib/libtinfo.so") then
+    links { "tinfo" }
+  end
 
   if LLVMDirPerConfiguration then
     filter { "configurations:Debug" }
