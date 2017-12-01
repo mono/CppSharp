@@ -183,6 +183,10 @@ function cmake(gen, conf, builddir, options)
 		or "cmake"
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
  		.. ' -DLLVM_BUILD_TOOLS=false '
+ 		.. ' -DLLVM_ENABLE_LIBEDIT=false'
+ 		.. ' -DLLVM_ENABLE_ZLIB=false'
+ 		.. ' -DLLVM_ENABLE_TERMINFO=false'
+ 		.. ' -DLLVM_ENABLE_LIBXML2=false'
  		.. ' -DLLVM_INCLUDE_EXAMPLES=false '
  		.. ' -DLLVM_INCLUDE_DOCS=false '
  		.. ' -DLLVM_INCLUDE_TESTS=false'
