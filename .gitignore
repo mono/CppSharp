@@ -52,3 +52,5 @@ src/generator/generator
 
 # Nuget: do not include produced packages
 /build/nuget/*.nupkg
+/build/nuget/tools/*
+
