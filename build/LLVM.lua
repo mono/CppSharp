@@ -25,7 +25,13 @@ function SearchLLVM()
 end
 
 function get_llvm_build_dir()
-  return path.join(LLVMRootDir, get_llvm_package_name())
+  local packageDir = path.join(LLVMRootDir, get_llvm_package_name())
+  local buildDir = path.join(LLVMRootDir, "build")
+  if os.isdir(buildDir) then
+    return buildDir
+  else
+    return packageDir
+  end
 end
 
 function SetupLLVMIncludes()
