@@ -74,6 +74,9 @@ function git.checkout(dir, rev)
 end
 
 function git.rev_parse(dir, rev)
+  if not os.isdir(dir .. "/.git") then
+    return nil
+  end
   local cmd = "git -C " .. path.translate(dir, sep) .. " rev-parse " .. rev
   return outputof(cmd)
 end
