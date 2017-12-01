@@ -346,7 +346,7 @@ function package_llvm(conf, llvm, llvm_build)
 		os.rmfiles(out_lib_dir, "clang*Matchers*.lib")
 		os.rmfiles(out_lib_dir, "clang*Rewrite*.lib")
 		os.rmfiles(out_lib_dir, "clang*StaticAnalyzer*.lib")
-		os.rmfiles(out_lib_dir, "clang*Tooling*.lib")		
+		os.rmfiles(out_lib_dir, "clang*Tooling*.lib")
 	else
 		os.rmfiles(out_lib_dir, "libllvm*ObjCARCOpts*.a")
 		os.rmfiles(out_lib_dir, "libclang*ARC*.a")
@@ -382,7 +382,7 @@ if _ACTION == "clone_llvm" then
 end
 
 if _ACTION == "build_llvm" then
-  local llvm_build = path.join(llvm, get_llvm_package_name())	
+  local llvm_build = path.join(llvm, get_llvm_package_name())
   clean_llvm(llvm_build)
   build_llvm(llvm_build)
   os.exit()
@@ -390,7 +390,7 @@ end
 
 if _ACTION == "package_llvm" then
   local conf = get_llvm_configuration_name()
-  local llvm_build = path.join(llvm, get_llvm_package_name())	
+  local llvm_build = path.join(llvm, get_llvm_package_name())
   local pkg = package_llvm(conf, llvm, llvm_build)
   archive_llvm(pkg)
   os.exit()
