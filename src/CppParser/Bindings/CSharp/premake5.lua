@@ -25,7 +25,11 @@ project "CppSharp.Parser.CSharp"
       end
 
   elseif os.istarget("linux") then
-      files { "x86_64-linux-gnu/**.cs" }
+      local abi = ""
+      if UseCxx11ABI() then
+          abi = "-cxx11abi"
+      end
+      files { "x86_64-linux-gnu"..abi.."/**.cs" }
   else
       print "Unknown architecture"
   end

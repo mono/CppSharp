@@ -181,6 +181,14 @@ function cmake(gen, conf, builddir, options)
 	os.chdir(builddir)
 	local cmake = os.ishost("macosx") and "/Applications/CMake.app/Contents/bin/cmake"
 		or "cmake"
+
+	if options == nil then
+		options = ""
+	end
+	if os.istarget("linux") and _OPTIONS["no-cxx11-abi"] ~= nil then
+		options = options.." -DCMAKE_CXX_FLAGS='-D_GLIBCXX_USE_CXX11_ABI=0'"
+	end
+
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
  		.. ' -DLLVM_BUILD_TOOLS=false '
  		.. ' -DLLVM_ENABLE_LIBEDIT=false'

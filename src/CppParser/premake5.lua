@@ -22,9 +22,6 @@ project "CppSharp.CppParser"
     linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
   end
 
-  filter "system:linux"
-    defines { "_GLIBCXX_USE_CXX11_ABI=0" }
-
   filter {}
   
   files
@@ -65,7 +62,11 @@ project "Std-symbols"
       end
 
   elseif os.istarget("linux") then
-      files { "Bindings/CSharp/x86_64-linux-gnu/Std-symbols.cpp" }
+      local abi = ""
+      if UseCxx11ABI() then
+          abi = "-cxx11abi"
+      end
+      files { "Bindings/CSharp/x86_64-linux-gnu"..abi.."/Std-symbols.cpp" }
   else
       print "Unknown architecture"
   end

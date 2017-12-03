@@ -9,6 +9,11 @@ newoption {
    }
 }
 
+newoption {
+   trigger     = "no-cxx11-abi",
+   description = "disable cxx11 abi on gcc 4.9+"
+}
+
 explicit_target_architecture = _OPTIONS["arch"]
 
 function is_64_bits_mono_runtime()
@@ -95,6 +100,12 @@ function SetupNativeProject()
     defines { "WIN32", "_WINDOWS" }
   
   filter {}
+
+  if os.istarget("linux") then
+    if not UseCxx11ABI() then
+      defines { "_GLIBCXX_USE_CXX11_ABI=0" }
+    end
+  end
 end
 
 function SetupManagedProject()
@@ -163,4 +174,21 @@ function StaticLinksOpt(libnames)
   end
 
   links(existing_libnames)
+end
+
+function GccVersion()
+  local compiler = os.getenv("CXX")
+  if compiler == nil then
+    compiler = "gcc"
+  end
+  local out = os.outputof(compiler.." -v")
+  local version = string.match(out, "gcc version [0-9\\.]+")
+  return string.sub(version, 13)
+end
+
+function UseCxx11ABI()
+  if os.istarget("linux") and GccVersion() >= '4.9.0' and _OPTIONS["no-cxx11-abi"] == nil then
+    return true
+  end
+  return false
 end
