@@ -304,15 +304,16 @@ namespace CppSharp.Generators.CSharp
             // if the class is an abstract impl, use the original for the object map
             var qualifiedClass = originalClass.Visit(typePrinter);
 
+            var finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
+            Class returnedClass;
+            if (finalType.TryGetClass(out returnedClass) && returnedClass.IsDependent)
+                Context.Return.Write($"({returnType.Visit(typePrinter)}) (object) ");
+
             if (returnType.IsAddress())
                 Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass.Type));
             else
                 Context.Return.Write($"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName})");
 
-            var finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
-            Class returnedClass;
-            if (finalType.TryGetClass(out returnedClass) && returnedClass.IsDependent)
-                Context.Return.Write($" as {returnType.Visit(typePrinter)}");
             return true;
         }
 
