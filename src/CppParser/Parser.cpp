@@ -3003,7 +3003,7 @@ static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodie
     {
         if (D->isInvalidDecl())
             return true;
-        if (auto F = cast<FunctionDecl>(D))
+        if (auto F = dyn_cast<FunctionDecl>(D))
             if (IsInvalid(F->getBody(), Bodies))
                 return true;
     }
