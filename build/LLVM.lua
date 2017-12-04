@@ -100,19 +100,12 @@ function SetupLLVMLibs()
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
 
   filter { "system:macosx" }
-    links { "c++", "curses" }
-
-  filter { "system:macosx or system:linux" }
-    links { "pthread", "z" }
+    links { "c++", "curses", "pthread", "z" }
 
   filter { "action:vs*" }
     links { "version" }
 
   filter {}
-
-  if os.ishost("linux") and os.isfile("/usr/lib/libtinfo.so") then
-    links { "tinfo" }
-  end
 
   if LLVMDirPerConfiguration then
     filter { "configurations:Debug" }
