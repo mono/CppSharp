@@ -4,6 +4,14 @@ require "../Helpers"
 
 local llvm = path.getabsolute(basedir .. "/../deps/llvm")
 
+-- Prevent premake from inserting /usr/lib64 search path on linux. GCC does not need this path specified
+-- as compiler automatically knows where to look for system libs. Insertion of this path causes issues
+-- when system has clang/llvm libs installed. Build would link to system libraries instead of custom
+-- build required by CppSharp.
+if os.istarget("linux") then
+	premake.tools.gcc.libraryDirectories['architecture']['x86_64'] = function(cfg) return {} end
+end
+
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
 -- otherwise file I/O performance will be terrible.
 if is_vagrant() then
