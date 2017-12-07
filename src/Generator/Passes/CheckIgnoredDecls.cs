@@ -50,7 +50,9 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateSpecializationDecl(specialization))
                 return false;
 
-            if (!Options.GenerateClassTemplates && !specialization.IsExplicitlyGenerated)
+            TypeMap typeMap;
+            if (!Options.GenerateClassTemplates && !specialization.IsExplicitlyGenerated &&
+                !Context.TypeMaps.FindTypeMap(specialization, out typeMap))
             {
                 specialization.ExplicitlyIgnore();
                 return false;

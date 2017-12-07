@@ -392,7 +392,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::ostream", GeneratorKind.CLI)]
+    [TypeMap("basic_ostream<char, char_traits<char>>", GeneratorKind.CLI)]
     public class OStream : TypeMap
     {
         public override string CLISignature(TypePrinterContext ctx)
