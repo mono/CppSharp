@@ -61,14 +61,6 @@ namespace CppSharp.Generators
 
         public abstract void Process();
 
-        public override string Generate()
-        {
-            if (Options.IsCSharpGenerator && Options.CompileCode && !Options.GenerateDebugOutput)
-                return base.GenerateUnformatted();
-
-            return base.Generate();
-        }
-
         public virtual void GenerateFilePreamble(CommentKind kind, string generatorName = "CppSharp")
         {
             var lines = new List<string>
