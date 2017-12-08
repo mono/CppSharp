@@ -213,7 +213,9 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(BlockKind.Functions);
             var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
-            WriteLine("public unsafe partial class {0}", parentName);
+            var @class = context.Classes.Find(c => c.Name == parentName);
+            var keyword = @class != null && @class.IsValueType ? "struct" : "class";
+            WriteLine($"public unsafe partial {keyword} {parentName}");
             WriteStartBraceIndent();
 
             PushBlock(BlockKind.InternalsClass);
