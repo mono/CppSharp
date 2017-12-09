@@ -203,6 +203,27 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
+        private IEnumerable<Class> EnumerateClasses()
+        {
+            foreach (var tu in TranslationUnits)
+            {
+                foreach (var cls in EnumerateClasses(tu))
+                    yield return cls;
+            }
+        }
+
+        private IEnumerable<Class> EnumerateClasses(DeclarationContext context)
+        {
+            foreach (var cls in context.Classes)
+                yield return cls;
+
+            foreach (var ns in context.Namespaces)
+            {
+                foreach (var cls in EnumerateClasses(ns))
+                    yield return cls;
+            }
+        }
+
         void GenerateNamespaceFunctionsAndVariables(DeclarationContext context)
         {
             var hasGlobalVariables = !(context is Class) && context.Variables.Any(
@@ -213,8 +234,11 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(BlockKind.Functions);
             var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
-            var @class = context.Classes.Find(c => c.Name == parentName);
-            var keyword = @class != null && @class.IsValueType ? "struct" : "class";
+
+            var keyword = "class";
+            var classes = EnumerateClasses().ToList();
+            if (classes.FindAll(cls => cls.IsValueType && cls.Name == parentName && context.QualifiedLogicalName == cls.Namespace.QualifiedLogicalName).Any())
+                keyword = "struct";
             WriteLine($"public unsafe partial {keyword} {parentName}");
             WriteStartBraceIndent();
 
