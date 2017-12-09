@@ -4,9 +4,11 @@ using CppSharp.Parser;
 using CppSharp.Passes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
@@ -193,34 +195,7 @@ namespace CppSharp
 
         private void SetupLinuxOptions(ParserOptions parserOptions)
         {
-            parserOptions.MicrosoftMode = false;
-            parserOptions.NoBuiltinIncludes = true;
-
-            var headersPath = string.Empty;
-
-            // Search for the available GCC versions on the provided headers.
-            var versions = Directory.EnumerateDirectories(Path.Combine(headersPath, "usr/include/c++"));
-
-            if (versions.Count() == 0)
-                throw new Exception("No valid GCC version found on system include paths");
-
-            string gccVersionPath = versions.First();
-            string gccVersion = gccVersionPath.Substring(gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-
-            string[] systemIncludeDirs = {
-                Path.Combine("usr", "include", "c++", gccVersion),
-                Path.Combine("usr", "include", "x86_64-linux-gnu", "c++", gccVersion),
-                Path.Combine("usr", "include", "c++", gccVersion, "backward"),
-                Path.Combine("usr", "lib", "gcc", "x86_64-linux-gnu", gccVersion, "include"),
-                Path.Combine("usr", "lib", "gcc", "x86_64-pc-linux-gnu", gccVersion, "include"),
-                Path.Combine("usr", "include", "x86_64-linux-gnu"),
-                Path.Combine("usr", "include", "x86_64-pc-linux-gnu"),
-                Path.Combine("usr", "include")
-            };
-
-            foreach (var dir in systemIncludeDirs)
-                parserOptions.AddSystemIncludeDirs(Path.Combine(headersPath, dir));
-
+            parserOptions.SetupLinux();
             parserOptions.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (options.Cpp11ABI ? "1" : "0"));
         }
 

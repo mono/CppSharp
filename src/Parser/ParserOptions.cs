@@ -1,9 +1,12 @@
-﻿using CppSharp.Parser.AST;
+﻿using System;
+using CppSharp.Parser.AST;
 using System.Reflection;
 using LanguageVersion = CppSharp.Parser.LanguageVersion;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CppSharp.Parser
 {
@@ -218,6 +221,53 @@ namespace CppSharp.Parser
             AddArguments("-stdlib=libc++");
         }
 
+        private void GetUnixCompilerInfo(out string compiler, out string version)
+        {
+            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
+            info.RedirectStandardError = true;
+            info.CreateNoWindow = true;
+            info.UseShellExecute = false;
+            var process = Process.Start(info);
+            if (process == null)
+                throw new SystemException("GCC compiler was not found.");
+            process.WaitForExit();
+
+            var output = process.StandardError.ReadToEnd();
+            var match = Regex.Match(output, "(gcc|clang) version ([0-9\\.]+)");
+            if (!match.Success)
+                throw new SystemException("GCC compiler was not found.");
+
+            compiler = match.Groups[1].ToString();
+            version = match.Groups[2].ToString();
+        }
+
+        public void SetupLinux(string headersPath="")
+        {
+            MicrosoftMode = false;
+            NoBuiltinIncludes = true;
+            NoStandardIncludes = true;
+            Abi = CppAbi.Itanium;
+
+            string compiler, version;
+            GetUnixCompilerInfo(out compiler, out version);
+            Console.WriteLine($"Compiler version: {compiler}/{version}");
+            AddSystemIncludeDirs($"{headersPath}/usr/include");
+            if (compiler == "gcc")
+            {
+                AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}");
+                AddSystemIncludeDirs($"{headersPath}/usr/include/x86_64-linux-gnu/c++/{version}");
+                AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/backward");
+            }
+            string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
+            foreach (var tripple in tripples)
+            {
+                AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include");
+                AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++");
+                AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++/{tripple}");
+                AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}");
+            }
+        }
+
         public void Setup()
         {
             SetupArguments();
@@ -290,6 +340,9 @@ namespace CppSharp.Parser
                     break;
                 case TargetPlatform.MacOS:
                     SetupXcode();
+                    break;
+                case TargetPlatform.Linux:
+                    SetupLinux();
                     break;
             }
         }
