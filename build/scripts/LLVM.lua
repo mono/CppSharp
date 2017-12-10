@@ -112,11 +112,28 @@ function get_llvm_package_name(rev, conf, arch)
   local toolset = get_toolset_configuration_name(arch)
   table.insert(components, toolset)
 
+  if os.istarget("linux") then
+    local version = GccVersion()
+    if version < "5.0.0" then
+      -- Minor version matters only with gcc 4.8/4.9
+      version = string.match(version, "%d+.%d+")
+    else
+      version = string.match(version, "%d+")
+    end
+    table.insert(components, "gcc-"..version)
+  end
+
   if not conf then
   	conf = get_llvm_configuration_name()
   end
 
   table.insert(components, conf)
+
+  if os.istarget("linux") then
+    if GccVersion() >= "4.9.0" and not UseCxx11ABI() then
+      table.insert(components, "no-cxx11")
+    end
+  end
 
   return table.concat(components, "-")
 end
@@ -193,7 +210,7 @@ function cmake(gen, conf, builddir, options)
 	if options == nil then
 		options = ""
 	end
-	if os.istarget("linux") and _OPTIONS["no-cxx11-abi"] ~= nil then
+	if not UseCxx11ABI() then
 		options = options.." -DCMAKE_CXX_FLAGS='-D_GLIBCXX_USE_CXX11_ABI=0'"
 	end
 
