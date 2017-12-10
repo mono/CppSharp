@@ -260,7 +260,10 @@ namespace CppSharp.Parser
                     AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}");
                     AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/backward");
                     foreach (var tripple in tripples)
+                    {
+                        AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}/c++/{version}");
                         AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/{tripple}");
+                    }
                 }
             }
             foreach (var tripple in tripples)
