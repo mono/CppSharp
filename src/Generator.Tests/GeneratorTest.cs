@@ -28,6 +28,7 @@ namespace CppSharp.Utils
             options.GeneratorKind = kind;
             options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
             options.Quiet = true;
+            options.GenerateDebugOutput = true;
             var testModule = options.AddModule(name);
             testModule.SharedLibraryName = $"{name}.Native";
 
