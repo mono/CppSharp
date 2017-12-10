@@ -98,32 +98,7 @@ namespace CppSharp
 
             var headersPath = Platform.IsLinux ? string.Empty :
                 Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
-
-            // Search for the available GCC versions on the provided headers.
-            var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
-                "usr/include/c++"));
-
-            if (versions.Count() == 0)
-                throw new Exception("No valid GCC version found on system include paths");
-
-            string gccVersionPath = versions.First();
-            string gccVersion = gccVersionPath.Substring(
-                gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-
-            string[] systemIncludeDirs = {
-                Path.Combine("usr", "include", "c++", gccVersion),
-                Path.Combine("usr", "include", "x86_64-linux-gnu", "c++", gccVersion),
-                Path.Combine("usr", "include", "c++", gccVersion, "backward"),
-                Path.Combine("usr", "lib", "gcc", "x86_64-linux-gnu", gccVersion, "include"),
-                Path.Combine("usr", "lib", "gcc", "x86_64-pc-linux-gnu", gccVersion, "include"),
-                Path.Combine("usr", "include", "x86_64-linux-gnu"),
-                Path.Combine("usr", "include", "x86_64-pc-linux-gnu"),
-                Path.Combine("usr", "include")
-            };
-
-            foreach (var dir in systemIncludeDirs)
-                options.AddSystemIncludeDirs(Path.Combine(headersPath, dir));
-
+            options.SetupLinux(headersPath);
             options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
 

@@ -84,8 +84,9 @@ function SetupNativeProject()
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
 
-  filter { "action:gmake" }
+  filter { "system:linux" }
     buildoptions { gcc_buildflags }
+    links { "stdc++" }
 
   filter { "system:macosx", "language:C++" }
     buildoptions { gcc_buildflags, "-stdlib=libc++" }

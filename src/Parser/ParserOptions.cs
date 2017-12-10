@@ -1,9 +1,12 @@
-﻿using CppSharp.Parser.AST;
+﻿using System;
+using CppSharp.Parser.AST;
 using System.Reflection;
 using LanguageVersion = CppSharp.Parser.LanguageVersion;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CppSharp.Parser
 {
@@ -218,6 +221,64 @@ namespace CppSharp.Parser
             AddArguments("-stdlib=libc++");
         }
 
+        private void GetUnixCompilerInfo(out string compiler, out string longVersion, out string shortVersion)
+        {
+            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
+            info.RedirectStandardError = true;
+            info.CreateNoWindow = true;
+            info.UseShellExecute = false;
+            var process = Process.Start(info);
+            if (process == null)
+                throw new SystemException("GCC compiler was not found.");
+            process.WaitForExit();
+
+            var output = process.StandardError.ReadToEnd();
+            var match = Regex.Match(output, "(gcc|clang) version (([0-9]+\\.[0-9]+)\\.[0-9]+)");
+            if (!match.Success)
+                throw new SystemException("GCC compiler was not found.");
+
+            compiler = match.Groups[1].ToString();
+            longVersion = match.Groups[2].ToString();
+            shortVersion = match.Groups[3].ToString();
+        }
+
+        public void SetupLinux(string headersPath="")
+        {
+            MicrosoftMode = false;
+            NoBuiltinIncludes = true;
+            NoStandardIncludes = true;
+            Abi = CppAbi.Itanium;
+
+            string compiler, longVersion, shortVersion;
+            GetUnixCompilerInfo(out compiler, out longVersion, out shortVersion);
+            string[] versions = {longVersion, shortVersion};
+            string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
+            if (compiler == "gcc")
+            {
+                foreach (var version in versions)
+                {
+                    AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}");
+                    AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/backward");
+                    foreach (var tripple in tripples)
+                    {
+                        AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}/c++/{version}");
+                        AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/{tripple}");
+                    }
+                }
+            }
+            foreach (var tripple in tripples)
+            {
+                foreach (var version in versions)
+                {
+                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include");
+                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++");
+                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++/{tripple}");
+                }
+                AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}");
+            }
+            AddSystemIncludeDirs($"{headersPath}/usr/include");
+        }
+
         public void Setup()
         {
             SetupArguments();
@@ -290,6 +351,9 @@ namespace CppSharp.Parser
                     break;
                 case TargetPlatform.MacOS:
                     SetupXcode();
+                    break;
+                case TargetPlatform.Linux:
+                    SetupLinux();
                     break;
             }
         }

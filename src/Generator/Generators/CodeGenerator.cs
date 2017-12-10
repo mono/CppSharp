@@ -61,14 +61,6 @@ namespace CppSharp.Generators
 
         public abstract void Process();
 
-        public override string Generate()
-        {
-            if (Options.IsCSharpGenerator && Options.CompileCode && !Options.GenerateDebugOutput)
-                return base.GenerateUnformatted();
-
-            return base.Generate();
-        }
-
         public virtual void GenerateFilePreamble(CommentKind kind, string generatorName = "CppSharp")
         {
             var lines = new List<string>
@@ -91,16 +83,19 @@ namespace CppSharp.Generators
         public virtual void GenerateDeclarationCommon(Declaration decl)
         {
             if (decl.Comment != null)
-            {
                 GenerateComment(decl.Comment);
-                GenerateDebug(decl);
-            }
+
+            GenerateDebug(decl);
         }
 
         public virtual void GenerateDebug(Declaration decl)
         {
             if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
-                WriteLine("// DEBUG: " + decl.DebugText);
+            {
+                var debugText = decl.DebugText;
+                debugText = Regex.Replace(debugText.Trim(), "\r?\n", "\n// DEBUG: ");
+                WriteLine($"// DEBUG: {debugText}");
+            }
         }
 
         #endregion

@@ -183,55 +183,6 @@ namespace CppSharp
             return builder.ToString();
         }
 
-        public StringBuilder GenerateUnformatted()
-        {
-            if (CheckGenerate != null && !CheckGenerate())
-                return new StringBuilder(0);
-
-            if (Blocks.Count == 0)
-                return Text.StringBuilder;
-
-            var builder = new StringBuilder();
-            Block previousBlock = null;
-
-            var blockIndex = 0;
-            foreach (var childBlock in Blocks)
-            {
-                var childText = childBlock.GenerateUnformatted();
-
-                var nextBlock = (++blockIndex < Blocks.Count)
-                    ? Blocks[blockIndex]
-                    : null;
-
-                if (nextBlock != null)
-                {
-                    var nextText = nextBlock.GenerateUnformatted();
-                    if (nextText.Length == 0 &&
-                        childBlock.NewLineKind == NewLineKind.IfNotEmpty)
-                        continue;
-                }
-
-                if (childText.Length == 0)
-                    continue;
-
-                if (previousBlock != null &&
-                    previousBlock.NewLineKind == NewLineKind.BeforeNextBlock)
-                    builder.AppendLine();
-
-                builder.Append(childText);
-
-                if (childBlock.NewLineKind == NewLineKind.Always)
-                    builder.AppendLine();
-
-                previousBlock = childBlock;
-            }
-
-            if (Text.StringBuilder.Length != 0)
-                builder.Append(Text.StringBuilder);
-
-            return builder;
-        }
-
         public bool IsEmpty
         {
             get
@@ -321,11 +272,6 @@ namespace CppSharp
         public virtual string Generate()
         {
             return RootBlock.Generate();
-        }
-
-        public string GenerateUnformatted()
-        {
-            return RootBlock.GenerateUnformatted().ToString();
         }
 
         #region Block helpers

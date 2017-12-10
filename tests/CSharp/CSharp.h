@@ -1266,3 +1266,9 @@ public:
     ~HasFixedArrayOfPointers();
     Foo* fixedArrayOfPointers[3];
 };
+
+struct DLL_API CSharp
+{
+};
+
+static int FOOBAR_CONSTANT = 42;

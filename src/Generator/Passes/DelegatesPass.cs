@@ -187,6 +187,15 @@ namespace CppSharp.Passes
                     ).GroupBy(d => d.Name).Where(g => g.Any(d => d.HasDeclarations)).ToList();
                 if (groups.Count == 1)
                     parent = groups.Last().Last();
+                else
+                {
+                    foreach (var g in groups)
+                    {
+                        parent = g.ToList().Find(ns => ns.Name == module.LibraryName || ns.Name == module.OutputNamespace);
+                        if (parent != null)
+                            break;
+                    }
+                }
             }
 
             if (parent == null)
