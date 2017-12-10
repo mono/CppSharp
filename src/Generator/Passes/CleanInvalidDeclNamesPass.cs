@@ -53,7 +53,6 @@ namespace CppSharp.Passes
                 (method == null || method.Kind == CXXMethodKind.Normal))
                 decl.Name = CheckName(decl.Name);
 
-            StringHelpers.CleanupText(ref decl.DebugText);
             return true;
         }
 

@@ -43,20 +43,6 @@ namespace CppSharp
             return ss[0]; // all strings identical
         }
 
-        public static void CleanupText(ref string debugText)
-        {
-            // Strip off newlines from the debug text.
-            if (string.IsNullOrWhiteSpace(debugText))
-            {
-                debugText = string.Empty;
-                return;
-            }
-
-            // TODO: Make this transformation in the output.
-            debugText = Regex.Replace(debugText, " {2,}", " ");
-            debugText = debugText.Replace("\n", "");
-        }
-
         public static string[] SplitCamelCase(string input)
         {
             var str = Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled);

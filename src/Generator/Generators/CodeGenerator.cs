@@ -83,22 +83,18 @@ namespace CppSharp.Generators
         public virtual void GenerateDeclarationCommon(Declaration decl)
         {
             if (decl.Comment != null)
-            {
                 GenerateComment(decl.Comment);
-                GenerateDebug(decl);
-            }
+
+            GenerateDebug(decl);
         }
 
         public virtual void GenerateDebug(Declaration decl)
         {
             if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
             {
-                char[] newLineChars = {'\r', '\n'};
-                var text = decl.DebugText;
-                var index = text.IndexOfAny(newLineChars);
-                if (index >= 0)
-                    text = text.Substring(0, index);
-                WriteLine("// DEBUG: " + text);
+                var debugText = decl.DebugText;
+                debugText = Regex.Replace(debugText.Trim(), "\r?\n", "\n// DEBUG: ");
+                WriteLine($"// DEBUG: {debugText}");
             }
         }
 
