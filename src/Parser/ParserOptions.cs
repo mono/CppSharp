@@ -252,17 +252,17 @@ namespace CppSharp.Parser
             string compiler, longVersion, shortVersion;
             GetUnixCompilerInfo(out compiler, out longVersion, out shortVersion);
             string[] versions = {longVersion, shortVersion};
-            AddSystemIncludeDirs($"{headersPath}/usr/include");
+            string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
             if (compiler == "gcc")
             {
                 foreach (var version in versions)
                 {
                     AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}");
-                    AddSystemIncludeDirs($"{headersPath}/usr/include/x86_64-linux-gnu/c++/{version}");
                     AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/backward");
+                    foreach (var tripple in tripples)
+                        AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/{tripple}");
                 }
             }
-            string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
             foreach (var tripple in tripples)
             {
                 foreach (var version in versions)
@@ -273,6 +273,7 @@ namespace CppSharp.Parser
                 }
                 AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}");
             }
+            AddSystemIncludeDirs($"{headersPath}/usr/include");
         }
 
         public void Setup()
