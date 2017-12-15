@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace CppSharp.Parser
 {
@@ -221,8 +222,24 @@ namespace CppSharp.Parser
             AddArguments("-stdlib=libc++");
         }
 
-        private void GetUnixCompilerInfo(out string compiler, out string longVersion, out string shortVersion)
+        private void GetUnixCompilerInfo(string headersPath, out string compiler,
+            out string longVersion, out string shortVersion)
         {
+            if (!Platform.IsLinux)
+            {
+                compiler = "gcc";
+                // Search for the available GCC versions on the provided headers.
+                var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
+                    "usr", "include", "c++"));
+
+                if (versions.Count() == 0)
+                    throw new Exception("No valid GCC version found on system include paths");
+
+                string gccVersionPath = versions.First();
+                longVersion = shortVersion = gccVersionPath.Substring(
+                    gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                return;
+            }
             var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
             info.RedirectStandardError = true;
             info.CreateNoWindow = true;
@@ -242,7 +259,7 @@ namespace CppSharp.Parser
             shortVersion = match.Groups[3].ToString();
         }
 
-        public void SetupLinux(string headersPath="")
+        public void SetupLinux(string headersPath = "")
         {
             MicrosoftMode = false;
             NoBuiltinIncludes = true;
@@ -250,7 +267,7 @@ namespace CppSharp.Parser
             Abi = CppAbi.Itanium;
 
             string compiler, longVersion, shortVersion;
-            GetUnixCompilerInfo(out compiler, out longVersion, out shortVersion);
+            GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
             string[] versions = {longVersion, shortVersion};
             string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
             if (compiler == "gcc")
