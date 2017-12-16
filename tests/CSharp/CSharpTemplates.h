@@ -514,7 +514,14 @@ TemplateDerivedFromRegularDynamic<T>::~TemplateDerivedFromRegularDynamic()
 template <typename T>
 class OnlySpecialisedInTypeArg
 {
+public:
+    DependentValueFields<OnlySpecialisedInTypeArg<T>> returnSelfSpecialization();
 };
+
+template <typename T>
+DependentValueFields<OnlySpecialisedInTypeArg<T>> OnlySpecialisedInTypeArg<T>::returnSelfSpecialization()
+{
+}
 
 // we optimise specialisations so that only actually used ones are wrapped
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,

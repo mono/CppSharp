@@ -108,7 +108,7 @@ namespace CppSharp.AST
 
             if (specialization.Arguments.Select(
                 a => a.Type.Type).Any(t => t != null &&
-                    !CheckTypeForSpecialization(t, container, addSpecialization,
+                    !CheckTypeForSpecialization(t, specialization, addSpecialization,
                         typeMaps, internalOnly)))
                 return false;
 
