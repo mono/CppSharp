@@ -357,6 +357,8 @@ namespace CppSharp
                  where libraryMappings.ContainsKey(dependency)
                  select libraryMappings[dependency]).ToArray());
 
+            compilerParameters.ReferencedAssemblies.AddRange(module.ReferencedAssemblies.ToArray());
+
             Diagnostics.Message($"Compiling {module.LibraryName}...");
             CompilerResults compilerResults;
             using (var codeProvider = new CSharpCodeProvider(
