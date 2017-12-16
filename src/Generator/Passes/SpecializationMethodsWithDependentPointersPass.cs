@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -69,7 +68,7 @@ namespace CppSharp.Passes
                 return false;
 
             var classExtensions = new Class { Name = $"{@class.Name}Extensions", IsStatic = true };
-            foreach (var specialization in @class.Specializations.Where(s => !s.Ignore))
+            foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                 foreach (var method in methodsWithDependentPointers.Where(
                     m => m.SynthKind == FunctionSynthKind.None))
                 {
