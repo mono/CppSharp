@@ -286,7 +286,7 @@ namespace CppSharp.Generators.CSharp
             IList<ClassTemplateSpecialization> specializations)
         {
             PushBlock(BlockKind.Namespace);
-            var generated = GetGenerated(specializations);
+            var generated = GetGeneratedClasses(classTemplate, specializations);
             WriteLine("namespace {0}{1}",
                 classTemplate.OriginalNamespace is Class &&
                 !classTemplate.OriginalNamespace.IsDependent ?
@@ -304,7 +304,11 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var group in generated.SelectMany(s => s.Classes).Where(
                 c => !c.IsIncomplete).GroupBy(c => c.Name))
-                GenerateNestedInternals(group.Key, group);
+            {
+                var nested = classTemplate.Classes.FirstOrDefault(c => c.Name == group.Key);
+                if (nested != null)
+                    GenerateNestedInternals(group.Key, GetGeneratedClasses(nested, group));
+            }
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -324,17 +328,16 @@ namespace CppSharp.Generators.CSharp
             NewLine();
         }
 
-        private IEnumerable<ClassTemplateSpecialization> GetGenerated(
-            IList<ClassTemplateSpecialization> specializations)
+        private IEnumerable<Class> GetGeneratedClasses(
+            Class dependentClass, IEnumerable<Class> specializedClasses)
         {
-            var specialization = specializations.FirstOrDefault(s => s.IsGenerated) ??
-                specializations[0];
+            var specialization = specializedClasses.FirstOrDefault(s => s.IsGenerated) ??
+                specializedClasses.First();
 
-            Class classTemplate = specialization.TemplatedDecl.TemplatedClass;
-            if (classTemplate.HasDependentValueFieldInLayout())
-                return specializations;
+            if (dependentClass.HasDependentValueFieldInLayout())
+                return specializedClasses;
 
-            return new List<ClassTemplateSpecialization> { specialization };
+            return new[] { specialization };
         }
 
         public override void GenerateDeclarationCommon(Declaration decl)

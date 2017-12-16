@@ -530,18 +530,20 @@ namespace CppSharp.Generators
 
         public static string GetSuffixForInternal(DeclarationContext @class)
         {
-            ClassTemplateSpecialization specialization = null;
-            DeclarationContext declContext = @class;
-            while (declContext != null)
+            if (@class == null)
+                return string.Empty;
+
+            Class template = null;
+            var specialization = @class as ClassTemplateSpecialization ??
+                @class.Namespace as ClassTemplateSpecialization;
+            if (specialization != null)
             {
-                specialization = declContext as ClassTemplateSpecialization;
-                if (specialization != null)
-                    break;
-                declContext = declContext.Namespace;
+                template = specialization.TemplatedDecl.TemplatedClass;
+                if (@class != specialization)
+                    template = template.Classes.FirstOrDefault(c => c.Name == @class.Name);
             }
 
-            if (specialization == null ||
-                !specialization.TemplatedDecl.TemplatedClass.HasDependentValueFieldInLayout())
+            if (template == null || !template.HasDependentValueFieldInLayout())
                 return string.Empty;
 
             if (specialization.Arguments.All(
