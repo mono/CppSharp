@@ -303,16 +303,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternals(specialization);
 
             foreach (var group in generated.SelectMany(s => s.Classes).Where(
-                // HACK: the distinction is needed to eliminate duplicate nested types
-                // Since all template specialisations are incomplete by default,
-                // so are classes nested in them.
-                // When such classes are also forwarded, there are two incomplete declarations
-                // with the same name and in the same scope. Our parser searches by name and
-                // completion and it can therefore not make a difference between the two.
-                // Consequently, it always returns the first type it finds even if it isn't the right one.
-                // When clang::Sema later completes the specialisations, it completes the nested
-                // types too which leads to two identical complete types in the same scope.
-                c => !c.IsIncomplete).Distinct().GroupBy(c => c.Name))
+                c => !c.IsIncomplete).GroupBy(c => c.Name))
                 GenerateNestedInternals(group.Key, group);
 
             WriteCloseBraceIndent();
@@ -546,8 +537,8 @@ namespace CppSharp.Generators.CSharp
             Class template;
             if (currentSpecialization != null &&
                 (template = currentSpecialization.TemplatedDecl.TemplatedClass)
-                .GetSpecializationsToGenerate().Count == 1)
-                foreach (var specialization in template.Specializations.Where(s => !s.Ignore))
+                .GetSpecializedClassesToGenerate().Count() == 1)
+                foreach (var specialization in template.Specializations.Where(s => s.IsGenerated))
                     GatherClassInternalFunctions(specialization, includeCtors, functions);
             else
                 GatherClassInternalFunctions(@class, includeCtors, functions);

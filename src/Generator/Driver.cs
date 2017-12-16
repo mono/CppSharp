@@ -124,7 +124,7 @@ namespace CppSharp
 
             var sourceFiles = Options.Modules.SelectMany(m => m.Headers);
 
-            if (Options.UnityBuild)
+            if (ParserOptions.UnityBuild)
             {
                 using (var parserOptions = ParserOptions.BuildForSourceFile(
                     Options.Modules))

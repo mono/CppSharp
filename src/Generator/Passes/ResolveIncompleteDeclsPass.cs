@@ -19,6 +19,11 @@ namespace CppSharp.Passes
 
             EnsureCompleteDeclaration(@class);
 
+            if (@class.Namespace is ClassTemplateSpecialization &&
+                @class.IsIncomplete && @class.CompleteDeclaration == null &&
+                @class.IsGenerated)
+                @class.GenerationKind = GenerationKind.Internal;
+
             return true;
         }
 
@@ -46,6 +51,18 @@ namespace CppSharp.Passes
                 templatedClass.TemplateParameters.Clear();
                 templatedClass.TemplateParameters.AddRange(template.Parameters);
             }
+
+            return true;
+        }
+
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (!base.VisitClassTemplateSpecializationDecl(specialization))
+                return false;
+
+            if (specialization.IsIncomplete &&
+                specialization.CompleteDeclaration == null && specialization.IsGenerated)
+                specialization.GenerationKind = GenerationKind.Internal;
 
             return true;
         }
@@ -86,16 +103,25 @@ namespace CppSharp.Passes
             declaration.CompleteDeclaration =
                 ASTContext.FindCompleteClass(declaration.QualifiedName);
 
+            if (declaration.CompleteDeclaration != null)
+                return;
+
+            if (Context.ParserOptions.UnityBuild)
+            {
+                if (declaration.IsGenerated)
+                    foreach (var redecl in declaration.Redeclarations)
+                        redecl.GenerationKind = GenerationKind.None;
+                return;
+            }
+
             var @class = declaration as Class;
             if (CheckForDuplicateForwardClass(@class))
                 return;
 
-            if (declaration.CompleteDeclaration == null)
-            {
+            if (declaration.IsGenerated)
                 declaration.GenerationKind = GenerationKind.Internal;
-                Diagnostics.Debug("Unresolved declaration: {0}",
-                    declaration.Name);
-            }
+            Diagnostics.Debug("Unresolved declaration: {0}",
+                declaration.Name);
         }
 
         bool CheckForDuplicateForwardClass(Class @class)

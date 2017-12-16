@@ -1,6 +1,8 @@
 #include "../Tests.h"
 #include <string>
 
+#pragma once
+
 void DLL_API functionInAnotherUnit();
 
 struct DLL_API ForwardDeclaredStruct;

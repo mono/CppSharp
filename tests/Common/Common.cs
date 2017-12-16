@@ -58,7 +58,7 @@ namespace CppSharp.Tests
                 file.FileNameWithoutExtension + "_GenerateName";
 
             driver.Options.Modules[1].OutputNamespace = "CommonTest";
-            driver.Options.UnityBuild = true;
+            driver.ParserOptions.UnityBuild = true;
         }
 
         public override void SetupPasses(Driver driver)

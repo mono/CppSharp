@@ -23,7 +23,8 @@ namespace CppSharp.Generators.CSharp
         {
             var printedClass = @class.Visit(gen.TypePrinter);
             if (@class.IsDependent)
-                foreach (var specialization in @class.GetSpecializationsToGenerate().Where(s => !s.Ignore))
+                foreach (var specialization in @class.GetSpecializedClassesToGenerate(
+                    ).Where(s => s.IsGenerated))
                     gen.GenerateNativeConstructorByValue(specialization, printedClass.Type);
             else
                 gen.GenerateNativeConstructorByValue(@class, printedClass.Type);
@@ -127,7 +128,7 @@ namespace CppSharp.Generators.CSharp
             var typePrinter = new CSharpTypePrinter(gen.Context);
             var supportedTypes = string.Join(", ",
                 @class.Specializations.Where(s => !s.Ignore).Select(s => $@"<{string.Join(", ",
-                    s.Arguments.Select(a => typePrinter.VisitTemplateArgument(a)))}>"));
+                    s.Arguments.Select(typePrinter.VisitTemplateArgument))}>"));
             var typeArguments = string.Join(", ", @class.TemplateParameters.Select(p => p.Name));
             var managedTypes = string.Join(", ", @class.TemplateParameters.Select(p => $"typeof({p.Name}).FullName"));
             gen.WriteLine($"throw new ArgumentOutOfRangeException(\"{typeArguments}\", "

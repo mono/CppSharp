@@ -82,7 +82,8 @@ namespace CppSharp.Parser
                 NoBuiltinIncludes = this.NoBuiltinIncludes,
                 MicrosoftMode = this.MicrosoftMode,
                 Verbose = this.Verbose,
-                LanguageVersion = this.LanguageVersion
+                LanguageVersion = this.LanguageVersion,
+                UnityBuild = this.UnityBuild
             };
 
             // This eventually gets passed to Clang's MSCompatibilityVersion, which

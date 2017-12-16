@@ -88,7 +88,7 @@ namespace CppSharp
 
             options.CheckSymbols = false;
             //options.Verbose = true;
-            options.UnityBuild = true;
+            parserOptions.UnityBuild = true;
         }
 
         private void SetupLinuxOptions(ParserOptions options)

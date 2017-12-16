@@ -189,7 +189,7 @@ namespace CppSharp
             driverOptions.CompileCode = options.Compile;
             driverOptions.OutputDir = options.OutputDir;
             driverOptions.CheckSymbols = options.CheckSymbols;
-            driverOptions.UnityBuild = options.UnityBuild;
+            parserOptions.UnityBuild = options.UnityBuild;
             driverOptions.Verbose = options.Verbose;
         }
 

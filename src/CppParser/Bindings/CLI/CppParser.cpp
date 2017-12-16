@@ -480,6 +480,16 @@ void CppSharp::Parser::CppParserOptions::Verbose::set(bool value)
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->verbose = value;
 }
 
+bool CppSharp::Parser::CppParserOptions::UnityBuild::get()
+{
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->unityBuild;
+}
+
+void CppSharp::Parser::CppParserOptions::UnityBuild::set(bool value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->unityBuild = value;
+}
+
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();

@@ -44,6 +44,7 @@ struct CS_API CppParserOptions
     bool noBuiltinIncludes;
     bool microsoftMode;
     bool verbose;
+    bool unityBuild;
 };
 
 enum class ParserDiagnosticLevel

@@ -18050,7 +18050,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 240)]
+            [StructLayout(LayoutKind.Explicit, Size = 248)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -18106,6 +18106,9 @@ namespace CppSharp
 
                 [FieldOffset(239)]
                 internal byte verbose;
+
+                [FieldOffset(240)]
+                internal byte unityBuild;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -18634,6 +18637,19 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->verbose = (byte) (value ? 1 : 0);
+                }
+            }
+
+            public bool UnityBuild
+            {
+                get
+                {
+                    return ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->unityBuild != 0;
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->unityBuild = (byte) (value ? 1 : 0);
                 }
             }
 

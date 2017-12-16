@@ -18,6 +18,7 @@ CppParserOptions::CppParserOptions()
     , noBuiltinIncludes(false)
     , microsoftMode(false)
     , verbose(false)
+    , unityBuild(false)
 {
 }
 

@@ -52,17 +52,6 @@ namespace CppSharp
 
         #endregion
 
-        #region Parser options
-
-        /// <summary>
-        /// If this option is off (the default), each header is parsed separately
-        /// which is much slower but safer because of a clean state of the preprocessor
-        /// for each header.
-        /// </summary>
-        public bool UnityBuild { get; set; }
-
-        #endregion
-
         #region Module options
 
         public Module SystemModule { get; }

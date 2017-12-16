@@ -148,19 +148,34 @@ namespace CppSharp.AST
             return units.Where(u => u.IsGenerated && (u.HasDeclarations || u.IsSystemHeader) && u.IsValid);
         }
 
-        public static List<ClassTemplateSpecialization> GetSpecializationsToGenerate(
-            this Class classTemplate)
+        public static IEnumerable<Class> GetSpecializedClassesToGenerate(
+            this Class dependentClass)
         {
-            if (classTemplate.HasDependentValueFieldInLayout())
-                return classTemplate.Specializations;
+            IEnumerable<Class> specializedClasses = GetSpecializedClassesOf(dependentClass);
+            if (!specializedClasses.Any() || dependentClass.HasDependentValueFieldInLayout())
+                return specializedClasses;
 
-            var specializations = new List<ClassTemplateSpecialization>();
-            var specialization = classTemplate.Specializations.FirstOrDefault(s => !s.Ignore);
+            var specializations = new List<Class>();
+            var specialization = specializedClasses.FirstOrDefault(s => s.IsGenerated);
             if (specialization == null)
-                specializations.Add(classTemplate.Specializations[0]);
+                specializations.Add(specializedClasses.First());
             else
                 specializations.Add(specialization);
             return specializations;
+        }
+
+        private static IEnumerable<Class> GetSpecializedClassesOf(this Class dependentClass)
+        {
+            if (dependentClass.IsTemplate)
+                return dependentClass.Specializations;
+
+            Class template = dependentClass.Namespace as Class;
+            if (template == null || !template.IsTemplate)
+                // just one level of nesting supported for the time being
+                return Enumerable.Empty<Class>();
+
+            return template.Specializations.SelectMany(s => s.Classes.Where(
+                c => c.Name == dependentClass.Name)).ToList();
         }
 
         public static bool HasDependentValueFieldInLayout(this Class @class)

@@ -516,9 +516,9 @@ public:
     CS_IGNORE Namespace* FindNamespace(const std::vector<std::string>&);
     CS_IGNORE Namespace* FindCreateNamespace(const std::string& Name);
 
-    CS_IGNORE Class* CreateClass(std::string Name, bool IsComplete);
-    CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete);
-    CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
+    CS_IGNORE Class* CreateClass(const std::string& Name, bool IsComplete);
+    CS_IGNORE Class* FindClass(const void* OriginalPtr, const std::string& Name, bool IsComplete);
+    CS_IGNORE Class* FindClass(const void* OriginalPtr, const std::string& Name, bool IsComplete,
         bool Create);
 
     CS_IGNORE template<typename T> T* FindTemplate(const std::string& USR);

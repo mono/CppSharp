@@ -766,13 +766,15 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
     }
     else
     {
-        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+        RC = NS->FindClass(opts->unityBuild ? Record : 0, Name,
+            isCompleteDefinition, /*Create=*/false);
     }
 
     if (RC)
         return RC;
 
-    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    RC = NS->FindClass(opts->unityBuild ? Record : 0, Name,
+        isCompleteDefinition, /*Create=*/true);
     RC->isInjected = Record->isInjectedClassName();
     HandleDeclaration(Record, RC);
     EnsureCompleteRecord(Record, NS, RC);

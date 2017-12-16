@@ -350,7 +350,8 @@ Namespace* DeclarationContext::FindCreateNamespace(const std::string& Name)
     return _namespace;
 }
 
-Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
+Class* DeclarationContext::FindClass(const void* OriginalPtr,
+    const std::string& Name, bool IsComplete)
 {
     if (Name.empty()) return nullptr;
 
@@ -359,8 +360,9 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
     if (entries.size() == 1)
     {
         auto _class = std::find_if(Classes.begin(), Classes.end(),
-            [&](Class* klass) { return klass->name == Name &&
-                (klass->isIncomplete == !IsComplete); });
+            [OriginalPtr, Name, IsComplete](Class* klass) {
+                return (OriginalPtr && klass->originalPtr == OriginalPtr) ||
+                    (klass->name == Name && klass->isIncomplete == !IsComplete); });
 
         return _class != Classes.end() ? *_class : nullptr;
     }
@@ -374,10 +376,10 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
     if (!_namespace)
         return nullptr;
 
-    return _namespace->FindClass(className, IsComplete);
+    return _namespace->FindClass(OriginalPtr, className, IsComplete);
 }
 
-Class* DeclarationContext::CreateClass(std::string Name, bool IsComplete)
+Class* DeclarationContext::CreateClass(const std::string& Name, bool IsComplete)
 {
     auto _class = new Class();
     _class->name = Name;
@@ -387,10 +389,10 @@ Class* DeclarationContext::CreateClass(std::string Name, bool IsComplete)
     return _class;
 }
 
-Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
-        bool Create)
+Class* DeclarationContext::FindClass(const void* OriginalPtr,
+    const std::string& Name, bool IsComplete, bool Create)
 {
-    auto _class = FindClass(Name, IsComplete);
+    auto _class = FindClass(OriginalPtr, Name, IsComplete);
 
     if (!_class)
     {
