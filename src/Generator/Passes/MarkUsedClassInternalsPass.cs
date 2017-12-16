@@ -53,13 +53,17 @@ namespace CppSharp.Passes
                 do
                 {
                     if (declarationContext.Ignore)
-                    {
                         declarationContext.GenerationKind = GenerationKind.Internal;
 
-                        var specialization = declarationContext as ClassTemplateSpecialization;
-                        if (specialization?.TemplatedDecl.TemplatedClass.Ignore == true)
-                            specialization.TemplatedDecl.TemplatedClass.GenerationKind = GenerationKind.Internal;
-                    }
+                    var specialization = declarationContext as ClassTemplateSpecialization;
+                    Class template = specialization?.TemplatedDecl.TemplatedClass;
+                    if (template?.Ignore == true)
+                        template.GenerationKind = GenerationKind.Internal;
+
+                    Class nested = template?.Classes.Find(c => c.OriginalName == decl.OriginalName);
+                    if (nested?.Ignore == true)
+                        nested.GenerationKind = GenerationKind.Internal;
+
                     declarationContext = declarationContext.Namespace;
                 } while (declarationContext != null);
 

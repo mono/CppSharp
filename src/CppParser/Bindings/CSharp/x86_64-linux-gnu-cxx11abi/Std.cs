@@ -1148,15 +1148,7 @@ namespace Std
 
     namespace RbTree
     {
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_
-        {
-            [FieldOffset(0)]
-            internal global::Std.RbTree.RbTreeImpl.__Internal _M_impl;
-        }
-
-
-        public unsafe partial class RbTreeImpl
+        namespace RbTreeImpl
         {
             [StructLayout(LayoutKind.Explicit, Size = 48)]
             public unsafe partial struct __Internal
@@ -1170,26 +1162,14 @@ namespace Std
                 [FieldOffset(40)]
                 internal ulong _M_node_count;
             }
-
         }
 
-        public unsafe partial class ReuseOrAllocNode
+        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public partial struct __Internal
-            {
-            }
-
+            [FieldOffset(0)]
+            internal global::Std.RbTree.RbTreeImpl.__Internal _M_impl;
         }
-
-        public unsafe partial class AllocNode
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
-            public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_
-            {
-            }
-        }
-
     }
 
     public unsafe partial class RbTreeNodeBase

@@ -31,15 +31,20 @@ namespace CppSharp.Passes
             EnsureCompleteDeclaration(template.TemplatedDecl);
 
             template.TemplatedDecl = template.TemplatedDecl.CompleteDeclaration ?? template.TemplatedDecl;
+            Class templatedClass = template.TemplatedClass;
+            var parentSpecialization = templatedClass.Namespace as ClassTemplateSpecialization;
+            if (parentSpecialization != null)
+                templatedClass = parentSpecialization.TemplatedDecl.TemplatedClass.Classes.Find(
+                    c => c.OriginalName == template.OriginalName) ?? template.TemplatedClass;
             // store all specializations in the real template class because ClassTemplateDecl only forwards
             foreach (var specialization in template.Specializations.Where(
-                s => !template.TemplatedClass.Specializations.Contains(s)))
-                template.TemplatedClass.Specializations.Add(specialization);
+                s => !templatedClass.Specializations.Contains(s)))
+                templatedClass.Specializations.Add(specialization);
 
-            if (template.TemplatedClass.TemplateParameters.Count == 0 || complete)
+            if (templatedClass.TemplateParameters.Count == 0 || complete)
             {
-                template.TemplatedClass.TemplateParameters.Clear();
-                template.TemplatedClass.TemplateParameters.AddRange(template.Parameters);
+                templatedClass.TemplateParameters.Clear();
+                templatedClass.TemplateParameters.AddRange(template.Parameters);
             }
 
             return true;

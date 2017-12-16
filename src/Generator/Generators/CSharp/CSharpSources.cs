@@ -288,10 +288,16 @@ namespace CppSharp.Generators.CSharp
             PushBlock(BlockKind.Namespace);
             var generated = GetGenerated(specializations);
             WriteLine("namespace {0}{1}",
-                classTemplate.OriginalNamespace is Class ?
+                classTemplate.OriginalNamespace is Class &&
+                !classTemplate.OriginalNamespace.IsDependent ?
                     classTemplate.OriginalNamespace.Name + '_' : string.Empty,
                 classTemplate.Name);
             WriteStartBraceIndent();
+
+            foreach (var nestedTemplate in classTemplate.Classes.Where(
+                c => c.IsDependent && !c.Ignore && c.Specializations.Any(s => !s.Ignore)))
+                GenerateClassTemplateSpecializationsInternals(
+                    nestedTemplate, nestedTemplate.Specializations);
 
             foreach (var specialization in generated)
                 GenerateClassInternals(specialization);
@@ -361,8 +367,10 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            foreach (var nestedTemplate in @class.Classes.Where(c => !c.IsIncomplete && c.IsDependent))
-                GenerateClassTemplateSpecializationInternal(nestedTemplate);
+            if (!@class.IsDependent)
+                foreach (var nestedTemplate in @class.Classes.Where(
+                    c => !c.IsIncomplete && c.IsDependent))
+                    GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
             if (@class.IsTemplate)
             {
@@ -372,6 +380,9 @@ namespace CppSharp.Generators.CSharp
                 if (@class.Specializations.All(s => !s.IsGenerated))
                     return true;
             }
+
+            if (@class.IsDependent && !@class.IsGenerated)
+                return true;
 
             var typeMaps = new List<System.Type>();
             var keys = new List<string>();
