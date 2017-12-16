@@ -162,6 +162,8 @@ namespace CppSharp
         /// </summary>
         public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; }
 
+        public bool UsePropertyDetectionHeuristics { get; set; } = true;
+
         #endregion
     }
 
