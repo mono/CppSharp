@@ -25,7 +25,8 @@ namespace CppSharp.Passes
             {
                 this.useHeuristics = useHeuristics;
                 foreach (var method in @class.Methods.Where(
-                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated))
+                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
+                         !m.ExcludeFromPasses.Contains(typeof(GetterSetterToPropertyPass))))
                     DistributeMethod(method);
             }
 
@@ -261,7 +262,7 @@ namespace CppSharp.Passes
                 }
                 else
                 {
-                    if (IsGetter(method))
+                    if (method.ConvertToProperty || IsGetter(method))
                         getters.Add(method);
                     if (method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType))
                         nonSetters.Add(method);

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
+using CppSharp.Passes;
 
 namespace CppSharp
 {
@@ -348,6 +349,53 @@ namespace CppSharp
             {
                 foreach (var classField in @class.Fields.FindAll(f => f.Name == field))
                     classField.ExplicitlyIgnore();
+            }
+        }
+
+        private static IEnumerable<Class> GetClasses(DeclarationContext decl)
+        {
+            foreach (var @class in decl.Classes)
+            {
+                yield return @class;
+
+                foreach (var class2 in GetClasses(@class))
+                    yield return class2;
+            }
+
+            foreach (var ns in decl.Namespaces)
+            {
+                foreach (var @class in GetClasses(ns))
+                    yield return @class;
+            }
+        }
+
+        public static void IgnoreConversionToProperty(this ASTContext context, string pattern)
+        {
+            foreach (var unit in context.TranslationUnits)
+            {
+                foreach (var @class in GetClasses(unit))
+                {
+                    foreach (var method in @class.Methods)
+                    {
+                        if (Regex.Match(method.QualifiedLogicalOriginalName, pattern).Success)
+                            method.ExcludeFromPasses.Add(typeof(GetterSetterToPropertyPass));
+                    }
+                }
+            }
+        }
+
+        public static void ForceConversionToProperty(this ASTContext context, string pattern)
+        {
+            foreach (var unit in context.TranslationUnits)
+            {
+                foreach (var @class in GetClasses(unit))
+                {
+                    foreach (var method in @class.Methods)
+                    {
+                        if (Regex.Match(method.QualifiedLogicalOriginalName, pattern).Success)
+                            method.ConvertToProperty = true;
+                    }
+                }
             }
         }
 
