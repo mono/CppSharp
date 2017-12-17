@@ -27,16 +27,17 @@ namespace CppSharp.Passes
             NewLine();
         }
 
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            WriteLine($"template class {GetExporting()}{specialization.Visit(cppTypePrinter)};");
+            return true;
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
             if (method.Namespace is ClassTemplateSpecialization)
             {
-                var exporting = string.Empty;
-                if (Context.ParserOptions.IsMicrosoftAbi)
-                    exporting = "__declspec(dllexport) ";
-                else if (TargetTriple.IsMacOS(Context.ParserOptions.TargetTriple))
-                    exporting = "__attribute__((visibility(\"default\"))) ";
-                WriteLine($"template {exporting}{method.Visit(cppTypePrinter)};");
+                WriteLine($"template {GetExporting()}{method.Visit(cppTypePrinter)};");
                 return true;
             }
             if (method.IsConstructor)
@@ -56,6 +57,16 @@ namespace CppSharp.Passes
         {
             TakeFunctionAddress(function);
             return true;
+        }
+
+        private string GetExporting()
+        {
+            var exporting = string.Empty;
+            if (Context.ParserOptions.IsMicrosoftAbi)
+                exporting = "__declspec(dllexport) ";
+            else if (TargetTriple.IsMacOS(Context.ParserOptions.TargetTriple))
+                exporting = "__attribute__((visibility(\"default\"))) ";
+            return exporting;
         }
 
         private string GetWrapper(Module module)

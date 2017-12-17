@@ -206,6 +206,8 @@ namespace CppSharp.AST
         // Comment associated with declaration.
         public RawComment Comment;
 
+        public bool IsInvalid { get; set; }
+
         private GenerationKind? generationKind;
 
         public GenerationKind GenerationKind

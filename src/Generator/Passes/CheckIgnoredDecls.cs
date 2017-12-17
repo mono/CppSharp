@@ -81,6 +81,12 @@ namespace CppSharp.Passes
             if (decl.GenerationKind == GenerationKind.None)
                 return true;
 
+            if (decl.IsInvalid)
+            {
+                decl.ExplicitlyIgnore();
+                return true;
+            }
+
             if (!CheckDeclarationAccess(decl))
             {
                 Diagnostics.Debug("Decl '{0}' was ignored due to invalid access",

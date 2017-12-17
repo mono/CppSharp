@@ -50,10 +50,16 @@ namespace CppSharp.Passes
                 {
                     symbolsCodeGenerator.NewLine();
                     foreach (var specialization in specializations[module])
-                        foreach (var method in specialization.Methods.Where(
-                            m => m.IsGenerated && !m.IsDependent && !m.IsImplicit &&
-                                !m.IsDeleted && !m.IsDefaulted))
-                            symbolsCodeGenerator.VisitMethodDecl(method);
+                    {
+                        Func<Method, bool> exportable = m => !m.IsDependent &&
+                            !m.IsImplicit && !m.IsDeleted && !m.IsDefaulted;
+                        if (specialization.Methods.Any(m => m.IsInvalid && exportable(m)))
+                            foreach (var method in specialization.Methods.Where(
+                                m => m.IsGenerated && exportable(m)))
+                                symbolsCodeGenerator.VisitMethodDecl(method);
+                        else
+                            symbolsCodeGenerator.VisitClassTemplateSpecializationDecl(specialization);
+                    }
                 }
 
                 var cpp = $"{module.SymbolsLibraryName}.{symbolsCodeGenerator.FileExtension}";
