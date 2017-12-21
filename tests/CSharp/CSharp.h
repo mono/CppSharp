@@ -464,6 +464,8 @@ public:
     virtual void privateOverride(int i = 5);
 protected:
     virtual void publicOverride();
+private:
+    virtual void differentIncreasedAccessOverride();
 };
 
 class DLL_API HasOverridesWithChangedAccess : public HasOverridesWithChangedAccessBase
@@ -475,11 +477,20 @@ private:
     virtual void privateOverride(int i);
 };
 
+class DLL_API HasOverridesWithIncreasedProtectedAccess : public HasOverridesWithChangedAccess
+{
+public:
+    HasOverridesWithIncreasedProtectedAccess();
+protected:
+    virtual void differentIncreasedAccessOverride();
+};
+
 class DLL_API HasOverridesWithIncreasedAccess : public HasOverridesWithChangedAccess
 {
 public:
     HasOverridesWithIncreasedAccess();
     virtual void privateOverride(int i);
+    virtual void differentIncreasedAccessOverride();
 };
 
 class DLL_API AbstractWithProperty

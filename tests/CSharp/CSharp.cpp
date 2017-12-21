@@ -700,6 +700,10 @@ void HasOverridesWithChangedAccessBase::publicOverride()
 {
 }
 
+void HasOverridesWithChangedAccessBase::differentIncreasedAccessOverride()
+{
+}
+
 HasOverridesWithChangedAccess::HasOverridesWithChangedAccess()
 {
 }
@@ -712,11 +716,23 @@ void HasOverridesWithChangedAccess::publicOverride()
 {
 }
 
+HasOverridesWithIncreasedProtectedAccess::HasOverridesWithIncreasedProtectedAccess()
+{
+}
+
+void HasOverridesWithIncreasedProtectedAccess::differentIncreasedAccessOverride()
+{
+}
+
 HasOverridesWithIncreasedAccess::HasOverridesWithIncreasedAccess()
 {
 }
 
 void HasOverridesWithIncreasedAccess::privateOverride(int i)
+{
+}
+
+void HasOverridesWithIncreasedAccess::differentIncreasedAccessOverride()
 {
 }
 
