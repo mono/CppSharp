@@ -66,6 +66,13 @@ namespace CppSharp.Passes
         {
             var desugared = type.Desugar();
 
+            if (!desugared.IsPrimitiveTypeConvertibleToRef() &&
+                expression.String == "0")
+            {
+                result = $"default({desugared})";
+                return true;
+            }
+
             // constants are obtained through dynamic calls at present so they are not compile-time values in target languages
             if (expression.Declaration is Variable ||
                 (!Options.MarshalCharAsManagedChar &&
@@ -263,25 +270,6 @@ namespace CppSharp.Passes
         private string TranslateEnumExpression(Function function,
             Type desugared, string @params)
         {
-            TypeMap typeMap;
-            if ((function.Parameters.Count == 0 ||
-                 HasSingleZeroArgExpression(function)) &&
-                TypeMaps.FindTypeMap(desugared, out typeMap))
-            {
-                var typePrinterContext = new TypePrinterContext
-                {
-                    MarshalKind = MarshalKind.DefaultExpression,
-                    Type = desugared
-                };
-
-                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext)
-                    .SkipPointerRefs().Desugar();
-
-                Enumeration @enum;
-                if (typeInSignature.TryGetEnum(out @enum))
-                    return "0";
-            }
-
             if (@params.Contains("::"))
                 return regexDoubleColon.Replace(@params, desugared + ".");
 
