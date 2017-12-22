@@ -71,6 +71,13 @@ public:
     int callManagedOverride();
 };
 
+class DLL_API DerivedFromExternalSpecialization : public TemplateWithIndependentFields<Derived>
+{
+public:
+    DerivedFromExternalSpecialization();
+    ~DerivedFromExternalSpecialization();
+};
+
 class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public SecondaryBase
 {
 public:

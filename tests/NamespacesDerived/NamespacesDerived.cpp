@@ -62,6 +62,14 @@ Abstract* Derived2::getAbstract()
     return 0;
 }
 
+DerivedFromExternalSpecialization::DerivedFromExternalSpecialization()
+{
+}
+
+DerivedFromExternalSpecialization::~DerivedFromExternalSpecialization()
+{
+}
+
 HasVirtualInDependency::HasVirtualInDependency()
 {
 }

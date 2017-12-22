@@ -16,6 +16,7 @@ namespace CppSharp.Tests
         {
             base.Setup(driver);
             driver.Options.GenerateDefaultValuesForArguments = true;
+            driver.Options.GenerateClassTemplates = true;
 
             driver.Options.Modules[1].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
             var @base = "NamespacesBase";

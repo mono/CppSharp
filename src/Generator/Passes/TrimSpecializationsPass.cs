@@ -190,7 +190,11 @@ namespace CppSharp.Passes
             {
                 var specialization = @base.Class as ClassTemplateSpecialization;
                 if (specialization != null)
-                    AddSpecialization(specialization);
+                {
+                    if (!ASTUtils.CheckTypeForSpecialization(@base.Type, @class,
+                           AddSpecialization, Context.TypeMaps))
+                        CheckForInternalSpecialization(@class, @base.Type);
+                }
                 CheckBasesForSpecialization(@base.Class);
             }
         }

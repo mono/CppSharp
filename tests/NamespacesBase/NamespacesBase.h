@@ -59,6 +59,13 @@ class TemplateClass
     T t;
 };
 
+template <typename T>
+class TemplateWithIndependentFields
+{
+public:
+    void useDependentPointer(const T* t);
+};
+
 class DLL_API HasVirtualInCore
 {
 public:
