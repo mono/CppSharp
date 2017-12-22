@@ -356,8 +356,14 @@ namespace CppSharp.Generators.CSharp
                 if (ContextKind == TypePrinterContextKind.Managed &&
                     decl == template.Template.TemplatedDecl &&
                     template.Arguments.All(IsValid))
+                {
+                    List<TemplateArgument> args = template.Arguments;
+                    var @class = (Class) template.Template.TemplatedDecl;
+                    TemplateArgument lastArg = args.Last();
                     return $@"{VisitDeclaration(decl)}<{string.Join(", ",
-                        template.Arguments.Select(VisitTemplateArgument))}>";
+                       args.Concat(Enumerable.Range(0, @class.TemplateParameters.Count - args.Count).Select(
+                           i => lastArg)).Select(this.VisitTemplateArgument))}>";
+                }
 
                 if (ContextKind == TypePrinterContextKind.Native)
                     return template.Desugared.Visit(this);

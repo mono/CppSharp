@@ -374,17 +374,29 @@ T& TemplateWithIndexer<T>::operator[](const char* string)
     return t[0];
 }
 
+template <typename T1 = void, typename T2 = void, typename T3 = void, typename T4 = void,
+          typename T5 = void, typename T6 = void, typename T7 = void, typename T8 = void>
+class OptionalTemplateArgs
+{
+};
+
 template <typename T>
 class VirtualTemplate
 {
 public:
     VirtualTemplate();
+    VirtualTemplate(OptionalTemplateArgs<T> optionalTemplateArgs);
     virtual ~VirtualTemplate();
     virtual int function();
 };
 
 template <typename T>
 VirtualTemplate<T>::VirtualTemplate()
+{
+}
+
+template <typename T>
+VirtualTemplate<T>::VirtualTemplate(OptionalTemplateArgs<T> optionalTemplateArgs)
 {
 }
 
