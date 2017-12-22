@@ -32,7 +32,7 @@
 
         public static bool IsEnumType(this Type t)
         {
-            var tag = t as TagType;
+            var tag = t.Desugar() as TagType;
             
             if (tag == null)
                 return false;
