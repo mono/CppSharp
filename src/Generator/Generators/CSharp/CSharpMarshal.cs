@@ -556,11 +556,12 @@ namespace CppSharp.Generators.CSharp
                 realPointer = templateSubstitution.Replacement.Type.Desugar() as PointerType;
             realPointer = realPointer ?? pointer;
             var pointee = pointer.Pointee.Desugar();
-            if (Context.Function != null && realPointer.IsPrimitiveTypeConvertibleToRef() &&
-                Context.MarshalKind != MarshalKind.VTableReturnValue &&
-                Context.Function.OperatorKind != CXXOperatorKind.Subscript)
+            if (Context.Function != null &&
+                (realPointer.IsPrimitiveTypeConvertibleToRef() ||
+                 (templateSubstitution != null && realPointer.Pointee.IsEnumType())) &&
+                Context.MarshalKind != MarshalKind.VTableReturnValue)
             {
-                var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
+                var refParamPtr = $"__refParamPtr{Context.ParameterIndex}";
                 if (templateSubstitution != null)
                 {
                     var castParam = $"__{Context.Parameter.Name}{Context.ParameterIndex}";
@@ -573,8 +574,9 @@ namespace CppSharp.Generators.CSharp
                         Context.Before.Write("&");
                     Context.Before.WriteLine($"{castParam};");
                     Context.Return.Write(refParamPtr);
+                    return true;
                 }
-                else
+                if (Context.Function.OperatorKind != CXXOperatorKind.Subscript)
                 {
                     if (Context.Parameter.Kind == ParameterKind.PropertyValue)
                     {
@@ -588,8 +590,8 @@ namespace CppSharp.Generators.CSharp
                         Context.Before.WriteStartBraceIndent();
                         Context.Return.Write(refParamPtr);
                     }
+                    return true;
                 }
-                return true;
             }
 
             var param = Context.Parameter;

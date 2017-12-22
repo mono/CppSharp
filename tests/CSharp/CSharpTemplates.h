@@ -346,6 +346,7 @@ class TemplateWithIndexer
 public:
     TemplateWithIndexer();
     T& operator[](int i);
+    T& operator[](const T& key);
     T& operator[](const char* string);
 private:
     T t[1];
