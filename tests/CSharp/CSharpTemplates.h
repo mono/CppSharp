@@ -430,6 +430,7 @@ public:
     void completeSpecializationInParameter(TwoTemplateArgs<int*, int*> p1,
                                            TwoTemplateArgs<int*, int> p2,
                                            TwoTemplateArgs<int*, float> p3);
+    VirtualTemplate<void> returnSpecializedWithVoid();
 private:
     IndependentFields<int> independentFields;
     DependentValueFields<bool> dependentValueFields;

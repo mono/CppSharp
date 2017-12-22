@@ -108,6 +108,11 @@ void TemplateSpecializer::completeSpecializationInParameter(TwoTemplateArgs<int 
 {
 }
 
+VirtualTemplate<void> TemplateSpecializer::returnSpecializedWithVoid()
+{
+    return VirtualTemplate<void>();
+}
+
 RegularDynamic::RegularDynamic()
 {
 }
