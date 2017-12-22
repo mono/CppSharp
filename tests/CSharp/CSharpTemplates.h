@@ -137,6 +137,8 @@ public:
     T getDependentValue();
     void setDependentValue(const T& value);
     IndependentFields<Nested> returnNestedInTemplate();
+    typedef void (*DependentFunctionPointer)(T);
+    DependentFunctionPointer dependentFunctionPointerField;
 private:
     T field{};
     union {

@@ -270,13 +270,18 @@ namespace CppSharp.Generators.CSharp
             var functionType = decl.Type as FunctionType;
             if (functionType != null || decl.Type.IsPointerTo(out functionType))
             {
-                var ptrName = Generator.GeneratedIdentifier("ptr") +
-                    Context.ParameterIndex;
+                var ptrName = $"{Generator.GeneratedIdentifier("ptr")}{Context.ParameterIndex}";
 
-                Context.Before.WriteLine("var {0} = {1};", ptrName,
-                    Context.ReturnVarName);
+                Context.Before.WriteLine($"var {ptrName} = {Context.ReturnVarName};");
 
-                var res = $"{ptrName} == IntPtr.Zero? null : ({typedef})Marshal.GetDelegateForFunctionPointer({ptrName}, typeof({typedef}))";
+                var specialization = decl.Namespace as ClassTemplateSpecialization;
+                var res = string.Format(
+                    "{0} == IntPtr.Zero? null : {1}({2}) Marshal.GetDelegateForFunctionPointer({0}, typeof({2}))",
+                    ptrName,
+                    specialization == null ? string.Empty :
+                        $@"({specialization.TemplatedDecl.TemplatedClass.Typedefs.First(
+                            t => t.Name == decl.Name).Visit(this.typePrinter)}) (object) ",
+                    typedef);
                 Context.Return.Write(res);
                 return true;
             }
