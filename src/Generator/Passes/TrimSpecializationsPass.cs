@@ -97,8 +97,15 @@ namespace CppSharp.Passes
         private void CleanSpecializations(Class template)
         {
             template.Specializations.RemoveAll(s =>
-                s.SpecializationKind == TemplateSpecializationKind.Undeclared ||
-                (!specializations.Contains(s) && !internalSpecializations.Contains(s)));
+                {
+                    if (s.SpecializationKind == TemplateSpecializationKind.Undeclared ||
+                        (!specializations.Contains(s) && !internalSpecializations.Contains(s)))
+                    {
+                        s.ExplicitlyIgnore();
+                        return true;
+                    }
+                    return false;
+                });
 
             foreach (var specialization in template.Specializations.Where(
                 s => s is ClassTemplatePartialSpecialization))

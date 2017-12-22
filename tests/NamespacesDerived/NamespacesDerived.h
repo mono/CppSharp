@@ -76,6 +76,7 @@ class DLL_API DerivedFromExternalSpecialization : public TemplateWithIndependent
 public:
     DerivedFromExternalSpecialization();
     ~DerivedFromExternalSpecialization();
+    TemplateWithIndependentFields<Base3> returnExternalSpecialization();
 };
 
 class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public SecondaryBase

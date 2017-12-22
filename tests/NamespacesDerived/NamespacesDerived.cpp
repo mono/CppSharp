@@ -70,6 +70,11 @@ DerivedFromExternalSpecialization::~DerivedFromExternalSpecialization()
 {
 }
 
+TemplateWithIndependentFields<Base3> DerivedFromExternalSpecialization::returnExternalSpecialization()
+{
+    return TemplateWithIndependentFields<Base3>();
+}
+
 HasVirtualInDependency::HasVirtualInDependency()
 {
 }
