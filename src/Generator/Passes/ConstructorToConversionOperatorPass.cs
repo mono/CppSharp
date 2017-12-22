@@ -12,10 +12,10 @@ namespace CppSharp.Passes
     {
         public override bool VisitMethodDecl(Method method)
         {
-            if (AlreadyVisited(method) || !method.IsGenerated || !method.IsConstructor
-                || method.IsCopyConstructor
+            if (AlreadyVisited(method) || !method.IsGenerated || !method.IsConstructor ||
+                method.IsCopyConstructor ||
                 // conversion operators can only be public
-                || method.Access != AccessSpecifier.Public)
+                method.Access != AccessSpecifier.Public)
                 return false;
 
             var @params = method.Parameters.Where(p => p.Kind == ParameterKind.Regular).ToList();
@@ -29,7 +29,7 @@ namespace CppSharp.Passes
                      (p.DefaultArgument.Declaration == null ||
                       p.DefaultArgument.Declaration.Ignore)));
                 if (nonDefaultParams > 1)
-                    return false;   
+                    return false;
             }
             else
             {

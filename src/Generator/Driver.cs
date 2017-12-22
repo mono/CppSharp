@@ -224,6 +224,7 @@ namespace CppSharp
             {
                 TranslationUnitPasses.AddPass(new GenerateSymbolsPass());
                 TranslationUnitPasses.AddPass(new TrimSpecializationsPass());
+                TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             }
 
             library.SetupPasses(this);

@@ -74,7 +74,9 @@ public:
 class DLL_API DerivedFromExternalSpecialization : public TemplateWithIndependentFields<Derived>
 {
 public:
-    DerivedFromExternalSpecialization();
+    DerivedFromExternalSpecialization(int i,
+                                      TemplateWithIndependentFields<HasVirtualInDependency> defaultExternalSpecialization =
+                                          TemplateWithIndependentFields<HasVirtualInDependency>());
     ~DerivedFromExternalSpecialization();
     TemplateWithIndependentFields<Base3> returnExternalSpecialization();
 };

@@ -62,7 +62,8 @@ Abstract* Derived2::getAbstract()
     return 0;
 }
 
-DerivedFromExternalSpecialization::DerivedFromExternalSpecialization()
+DerivedFromExternalSpecialization::DerivedFromExternalSpecialization(int i,
+                                                                     TemplateWithIndependentFields<HasVirtualInDependency> defaultExternalSpecialization)
 {
 }
 
