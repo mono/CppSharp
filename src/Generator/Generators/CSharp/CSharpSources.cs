@@ -1979,7 +1979,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var @base = @class.GetNonIgnoredRootBase();
 
-                // Use interfaces if any - derived types with a this class as a seconary base, must be compatible with the map
+                // Use interfaces if any - derived types with a this class as a secondary base, must be compatible with the map
                 var @interface = @base.Namespace.Classes.FirstOrDefault(
                     c => c.IsInterface && c.OriginalClass == @base);
 

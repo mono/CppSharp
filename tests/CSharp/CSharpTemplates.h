@@ -432,7 +432,14 @@ private:
     HasDefaultTemplateArgument<bool, bool> explicitSpecialization;
 };
 
-class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>, IndependentFields<int>
+class DLL_API SpecializedInterfaceForMap : InternalWithExtension<char>
+{
+public:
+    SpecializedInterfaceForMap();
+    ~SpecializedInterfaceForMap();
+};
+
+class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>, IndependentFields<int>, InternalWithExtension<float>
 {
 public:
     HasSpecializationForSecondaryBase();
@@ -593,6 +600,7 @@ template class DLL_API TemplateWithIndexer<int>;
 template class DLL_API TemplateWithIndexer<UsedInTemplatedIndexer>;
 template class DLL_API TemplateWithIndexer<T1>;
 template class DLL_API TemplateWithIndexer<T2*>;
+template class DLL_API TemplateWithIndexer<float>;
 template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
 
 class TestForwardedClassInAnotherUnit;

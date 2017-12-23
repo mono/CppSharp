@@ -87,6 +87,14 @@ int HasVirtualTemplate::function()
     return v->function();
 }
 
+SpecializedInterfaceForMap::SpecializedInterfaceForMap()
+{
+}
+
+SpecializedInterfaceForMap::~SpecializedInterfaceForMap()
+{
+}
+
 HasSpecializationForSecondaryBase::HasSpecializationForSecondaryBase()
 {
 }

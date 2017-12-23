@@ -30,7 +30,7 @@ namespace CppSharp.Passes
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             bool result = base.VisitTranslationUnit(unit);
-            foreach (var @interface in interfaces)
+            foreach (var @interface in interfaces.Where(i => !(i.Key is ClassTemplateSpecialization)))
                 @interface.Key.Namespace.Classes.Add(@interface.Value);
             interfaces.Clear();
             return result;
@@ -79,11 +79,9 @@ namespace CppSharp.Passes
             else
             {
                 Class template = specialization.TemplatedDecl.TemplatedClass;
-                Class templatedInterface;
-                if (templatedInterfaces.ContainsKey(template))
-                    templatedInterface = templatedInterfaces[template];
-                else
-                    templatedInterfaces[template] = templatedInterface = GetInterface(template);
+                Class templatedInterface = GetInterface(template);
+                if (interfaces.ContainsKey(specialization))
+                    return interfaces[specialization];
                 var specializedInterface = new ClassTemplateSpecialization();
                 specializedInterface.Arguments.AddRange(specialization.Arguments);
                 specializedInterface.TemplatedDecl = new ClassTemplate { TemplatedDecl = templatedInterface };
@@ -94,11 +92,6 @@ namespace CppSharp.Passes
             @interface.Access = @base.Access;
             @interface.Type = ClassType.Interface;
             @interface.OriginalClass = @base;
-            if (@base.IsTemplate)
-            {
-                @interface.IsDependent = true;
-                @interface.TemplateParameters.AddRange(@base.TemplateParameters);
-            }
 
             @interface.Bases.AddRange(
                 from b in @base.Bases
@@ -157,8 +150,15 @@ namespace CppSharp.Passes
 
             @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
 
-            if (specialization == null)
-                interfaces.Add(@base, @interface);
+            interfaces.Add(@base, @interface);
+            if (@base.IsTemplate)
+            {
+                @interface.IsDependent = true;
+                @interface.TemplateParameters.AddRange(@base.TemplateParameters);
+                templatedInterfaces[@base] = @interface;
+                foreach (var spec in @base.Specializations)
+                    GetNewInterface(name, spec);
+            }
             return @interface;
         }
 
