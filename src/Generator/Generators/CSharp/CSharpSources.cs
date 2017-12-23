@@ -680,7 +680,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.NeedsBase)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
                 {
                     var typeMaps = new List<System.Type>();
                     var keys = new List<string>();
@@ -868,7 +868,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateInternalFunctionCall(property.SetMethod, parameters, @void);
         }
 
-        private void GenerateFieldSetter(Field field, Class @class)
+        private void GenerateFieldSetter(Field field, Class @class, QualifiedType fieldType)
         {
             var param = new Parameter
             {
@@ -1153,7 +1153,7 @@ namespace CppSharp.Generators.CSharp
                 p.GetMethod.InstantiatedFrom == property.GetMethod);
         }
 
-        private void GenerateFieldGetter(Field field, Class @class)
+        private void GenerateFieldGetter(Field field, Class @class, QualifiedType returnType)
         {
             var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
             var ctx = new CSharpMarshalContext(Context)
@@ -1163,7 +1163,7 @@ namespace CppSharp.Generators.CSharp
                 ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
                     $"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})")}{
                     (@class.IsValueType ? "." : "->")}{SafeIdentifier(name)}",
-                ReturnType = field.QualifiedType
+                ReturnType = returnType
             };
             ctx.PushMarshalKind(MarshalKind.NativeField);
 
@@ -3166,13 +3166,6 @@ namespace CppSharp.Generators.CSharp
         {
             if (function.IsPure)
                 return;
-
-            if (function.OriginalFunction != null)
-            {
-                var @class = function.OriginalNamespace as Class;
-                if (@class != null && @class.IsInterface)
-                    function = function.OriginalFunction;
-            }
 
             PushBlock(BlockKind.InternalsClassMethod);
             WriteLine("[SuppressUnmanagedCodeSecurity]");

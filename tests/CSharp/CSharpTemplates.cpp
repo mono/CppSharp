@@ -87,6 +87,14 @@ int HasVirtualTemplate::function()
     return v->function();
 }
 
+HasSpecializationForSecondaryBase::HasSpecializationForSecondaryBase()
+{
+}
+
+HasSpecializationForSecondaryBase::~HasSpecializationForSecondaryBase()
+{
+}
+
 TemplateSpecializer::TemplateSpecializer()
 {
 }

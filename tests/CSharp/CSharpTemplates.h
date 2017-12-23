@@ -425,6 +425,13 @@ private:
     HasDefaultTemplateArgument<bool, bool> explicitSpecialization;
 };
 
+class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>
+{
+public:
+    HasSpecializationForSecondaryBase();
+    ~HasSpecializationForSecondaryBase();
+};
+
 template <typename T>
 class TemplateInAnotherUnit;
 

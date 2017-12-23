@@ -46,7 +46,7 @@ namespace CppSharp.Passes
             {
                 var @base = @class.Bases[i];
                 var baseClass = @base.Class;
-                if (baseClass == null || baseClass.IsInterface) continue;
+                if (baseClass == null || baseClass.IsInterface || !baseClass.IsGenerated) continue;
 
                 var @interface = GetInterface(baseClass);
                 @class.Bases[i] = new BaseClassSpecifier(@base) { Type = new TagType(@interface) };
@@ -70,14 +70,35 @@ namespace CppSharp.Passes
 
         private Class GetNewInterface(string name, Class @base)
         {
-            var @interface = new Class
-                {
-                    Name = name,
-                    Namespace = @base.Namespace,
-                    Access = @base.Access,
-                    Type = ClassType.Interface,
-                    OriginalClass = @base
-                };
+            var specialization = @base as ClassTemplateSpecialization;
+            Class @interface;
+            if (specialization == null)
+            {
+                @interface = new Class();
+            }
+            else
+            {
+                Class template = specialization.TemplatedDecl.TemplatedClass;
+                Class templatedInterface;
+                if (templatedInterfaces.ContainsKey(template))
+                    templatedInterface = templatedInterfaces[template];
+                else
+                    templatedInterfaces[template] = templatedInterface = GetInterface(template);
+                var specializedInterface = new ClassTemplateSpecialization();
+                specializedInterface.Arguments.AddRange(specialization.Arguments);
+                specializedInterface.TemplatedDecl = new ClassTemplate { TemplatedDecl = templatedInterface };
+                @interface = specializedInterface;
+            }
+            @interface.Name = name;
+            @interface.Namespace = @base.Namespace;
+            @interface.Access = @base.Access;
+            @interface.Type = ClassType.Interface;
+            @interface.OriginalClass = @base;
+            if (@base.IsTemplate)
+            {
+                @interface.IsDependent = true;
+                @interface.TemplateParameters.AddRange(@base.TemplateParameters);
+            }
 
             @interface.Bases.AddRange(
                 from b in @base.Bases
@@ -136,7 +157,8 @@ namespace CppSharp.Passes
 
             @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
 
-            interfaces.Add(@base, @interface);
+            if (specialization == null)
+                interfaces.Add(@base, @interface);
             return @interface;
         }
 
@@ -204,5 +226,7 @@ namespace CppSharp.Passes
             foreach (var @base in @interface.Bases)
                 ImplementInterfaceProperties(@class, @base.Class);
         }
+
+        private readonly Dictionary<Class, Class> templatedInterfaces = new Dictionary<Class, Class>();
     }
 }

@@ -275,12 +275,13 @@ namespace CppSharp.Generators.CSharp
                 Context.Before.WriteLine($"var {ptrName} = {Context.ReturnVarName};");
 
                 var specialization = decl.Namespace as ClassTemplateSpecialization;
+                Type returnType = Context.ReturnType.Type.Desugar();
+                var finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
                 var res = string.Format(
                     "{0} == IntPtr.Zero? null : {1}({2}) Marshal.GetDelegateForFunctionPointer({0}, typeof({2}))",
                     ptrName,
-                    specialization == null ? string.Empty :
-                        $@"({specialization.TemplatedDecl.TemplatedClass.Typedefs.First(
-                            t => t.Name == decl.Name).Visit(this.typePrinter)}) (object) ",
+                    finalType.IsDependent ? $@"({specialization.TemplatedDecl.TemplatedClass.Typedefs.First(
+                        t => t.Name == decl.Name).Visit(this.typePrinter)}) (object) " : string.Empty,
                     typedef);
                 Context.Return.Write(res);
                 return true;
@@ -359,7 +360,10 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
-            Context.Return.Write($"({param.ReplacedParameter.Parameter.Name}) (object) ");
+            Type returnType = Context.ReturnType.Type.Desugar();
+            Type finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
+            if (finalType.IsDependent)
+                Context.Return.Write($"({param.ReplacedParameter.Parameter.Name}) (object) ");
             if (param.Replacement.Type.Desugar().IsPointerToPrimitiveType())
                 Context.Return.Write($"({CSharpTypePrinter.IntPtrType}) ");
             return base.VisitTemplateParameterSubstitutionType(param, quals);

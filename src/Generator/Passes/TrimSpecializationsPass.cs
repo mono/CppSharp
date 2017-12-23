@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Types;
 using CppSharp.Utils;
 
 namespace CppSharp.Passes
@@ -78,7 +79,14 @@ namespace CppSharp.Passes
             if (!base.VisitDeclaration(field))
                 return false;
 
-            if (field.Access == AccessSpecifier.Private ||
+            if (field.Access == AccessSpecifier.Private)
+            {
+                CheckForInternalSpecialization(field, field.Type);
+                return true;
+            }
+
+            TypeMap typeMap;
+            if (!Context.TypeMaps.FindTypeMap(field.Type, out typeMap) &&
                 !ASTUtils.CheckTypeForSpecialization(field.Type,
                     field, AddSpecialization, Context.TypeMaps))
                 CheckForInternalSpecialization(field, field.Type);
@@ -200,12 +208,10 @@ namespace CppSharp.Passes
             foreach (var @base in @class.Bases.Where(b => b.IsClass))
             {
                 var specialization = @base.Class as ClassTemplateSpecialization;
-                if (specialization != null)
-                {
-                    if (!ASTUtils.CheckTypeForSpecialization(@base.Type, @class,
-                           AddSpecialization, Context.TypeMaps))
-                        CheckForInternalSpecialization(@class, @base.Type);
-                }
+                if (specialization != null &&
+                    !ASTUtils.CheckTypeForSpecialization(@base.Type, @class,
+                        AddSpecialization, Context.TypeMaps))
+                    CheckForInternalSpecialization(@class, @base.Type);
                 CheckBasesForSpecialization(@base.Class);
             }
         }

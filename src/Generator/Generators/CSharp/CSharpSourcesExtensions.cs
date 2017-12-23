@@ -31,7 +31,7 @@ namespace CppSharp.Generators.CSharp
         }
 
         public static void GenerateField(this CSharpSources gen, Class @class,
-            Field field, Action<Field, Class> generate, bool isVoid)
+            Field field, Action<Field, Class, QualifiedType> generate, bool isVoid)
         {
             if (@class.IsDependent)
             {
@@ -46,7 +46,7 @@ namespace CppSharp.Generators.CSharp
                         gen.WriteStartBraceIndent();
                         var specializedField = specialization.Fields.First(
                             f => f.OriginalName == field.OriginalName);
-                        generate(specializedField, specialization);
+                        generate(specializedField, specialization, field.QualifiedType);
                         if (isVoid)
                             gen.WriteLine("return;");
                         gen.WriteCloseBraceIndent();
@@ -58,12 +58,13 @@ namespace CppSharp.Generators.CSharp
                     var specialization = @class.Specializations[0];
                     var specializedField = specialization.Fields.First(
                         f => f.OriginalName == field.OriginalName);
-                    generate(specializedField, specialization);
+                    generate(specializedField, specialization, field.QualifiedType);
                 }
             }
             else
             {
-                generate(field, @class.IsDependent ? @class.Specializations[0] : @class);
+                generate(field, @class.IsDependent ? @class.Specializations[0] : @class,
+                    field.QualifiedType);
             }
         }
 
