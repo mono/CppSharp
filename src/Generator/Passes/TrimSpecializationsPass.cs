@@ -78,7 +78,11 @@ namespace CppSharp.Passes
             if (!base.VisitDeclaration(field))
                 return false;
 
-            CheckForInternalSpecialization(field, field.Type);
+            if (field.Access == AccessSpecifier.Private ||
+                !ASTUtils.CheckTypeForSpecialization(field.Type,
+                    field, AddSpecialization, Context.TypeMaps))
+                CheckForInternalSpecialization(field, field.Type);
+
             return true;
         }
 

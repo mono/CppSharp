@@ -872,6 +872,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestFieldWithSpecializationType()
+    {
+        using (var virtualTemplate = new VirtualTemplate<int>())
+        {
+            using (var dependentValueFields = new DependentValueFields<float>())
+            {
+                dependentValueFields.DependentValue = 15;
+                virtualTemplate.FieldWithSpecializationType = dependentValueFields;
+                Assert.That(virtualTemplate.FieldWithSpecializationType.DependentValue, Is.EqualTo(15));
+            }
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())

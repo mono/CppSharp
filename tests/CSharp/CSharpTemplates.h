@@ -388,6 +388,7 @@ public:
     VirtualTemplate(OptionalTemplateArgs<T> optionalTemplateArgs);
     virtual ~VirtualTemplate();
     virtual int function();
+    DependentValueFields<float> fieldWithSpecializationType;
 };
 
 template <typename T>
@@ -569,6 +570,7 @@ template class DLL_API IndependentFields<T1>;
 template class DLL_API IndependentFields<std::string>;
 template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
+template class DLL_API DependentValueFields<float>;
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;
