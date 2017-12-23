@@ -463,14 +463,15 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
 
             foreach (var method in @class.Methods.Where(m =>
-                !ASTUtils.CheckIgnoreMethod(m) && m.Access == AccessSpecifier.Public))
+                !ASTUtils.CheckIgnoreFunction(m.OriginalFunction) &&
+                m.Access == AccessSpecifier.Public))
             {
                 PushBlock(BlockKind.Method);
                 GenerateDeclarationCommon(method);
 
                 var functionName = GetMethodIdentifier(method);
 
-                Write("{0} {1}(", method.OriginalReturnType, functionName);
+                Write($"{method.OriginalReturnType} {functionName}(");
 
                 Write(FormatMethodParameters(method.Parameters));
 
@@ -478,14 +479,19 @@ namespace CppSharp.Generators.CSharp
 
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            foreach (var prop in @class.Properties.Where(p => p.IsGenerated && p.Access == AccessSpecifier.Public))
+            foreach (var prop in @class.Properties.Where(p => p.IsGenerated &&
+                (p.GetMethod == null || p.GetMethod.OriginalFunction == null ||
+                 !p.GetMethod.OriginalFunction.Ignore) &&
+                (p.SetMethod == null || p.SetMethod.OriginalFunction == null ||
+                 !p.SetMethod.OriginalFunction.Ignore) &&
+                p.Access == AccessSpecifier.Public))
             {
                 PushBlock(BlockKind.Property);
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
                 GenerateDeclarationCommon(prop);
-                Write("{0} {1} {{ ", type, GetPropertyName(prop));
+                Write($"{type} {GetPropertyName(prop)} {{ ");
                 if (prop.HasGetter)
                     Write("get; ");
                 if (prop.HasSetter)

@@ -36,6 +36,7 @@ public:
     int getIndependent();
     const T* returnTakeDependentPointer(const T* p);
     T getDependent(const T& t);
+    const T* propertyReturnDependentPointer();
     static T staticDependent(const T& t);
     template <typename AdditionalDependentType>
     void usesAdditionalDependentType(AdditionalDependentType additionalDependentType);
@@ -89,6 +90,12 @@ template <typename T>
 T IndependentFields<T>::getDependent(const T& t)
 {
     return t;
+}
+
+template <typename T>
+const T* IndependentFields<T>::propertyReturnDependentPointer()
+{
+    return 0;
 }
 
 template <typename T>
@@ -425,7 +432,7 @@ private:
     HasDefaultTemplateArgument<bool, bool> explicitSpecialization;
 };
 
-class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>
+class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>, IndependentFields<int>
 {
 public:
     HasSpecializationForSecondaryBase();
