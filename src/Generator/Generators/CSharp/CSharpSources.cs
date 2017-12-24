@@ -2595,7 +2595,7 @@ namespace CppSharp.Generators.CSharp
                     Class paramClass;
                     Class @interface = null;
                     if (paramType.TryGetClass(out paramClass))
-                        @interface = paramClass.Namespace.Classes.Find(c => c.OriginalClass == paramClass);
+                        @interface = paramClass.GetInterface();
 
                     var paramName = string.Format("{0}{1}",
                         method.Parameters[0].Type.IsPrimitiveTypeConvertibleToRef() ?

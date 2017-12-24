@@ -178,6 +178,28 @@ namespace CppSharp.AST
                 c => c.Name == dependentClass.Name)).ToList();
         }
 
+        public static Class GetInterface(this Class @class)
+        {
+            var specialization = @class as ClassTemplateSpecialization;
+            Class @interface = null;
+            if (specialization == null)
+            {
+                @interface = @class.Namespace.Classes.Find(
+                    c => c.OriginalClass == @class && c.IsInterface);
+            }
+            else
+            {
+                Class template = specialization.TemplatedDecl.TemplatedClass;
+                Class templatedInterface = @class.Namespace.Classes.Find(
+                   c => c.OriginalClass == template && c.IsInterface);
+                if (templatedInterface != null)
+                    @interface = templatedInterface.Specializations.FirstOrDefault(
+                        s => s.OriginalClass == specialization && s.IsInterface);
+            }
+
+            return @interface;
+        }
+
         public static bool HasDependentValueFieldInLayout(this Class @class)
         {
             if (@class.Fields.Any(f => IsValueDependent(f.Type)))

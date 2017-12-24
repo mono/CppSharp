@@ -137,6 +137,7 @@ public:
         T field;
     };
     DependentValueFields();
+    DependentValueFields(IndependentFields<T> i);
     ~DependentValueFields();
     DependentValueFields& returnInjectedClass();
     DependentValueFields returnValue();
@@ -160,6 +161,11 @@ DependentValueFields<T>::DependentValueFields()
 
 template <typename T>
 DependentValueFields<T>::~DependentValueFields()
+{
+}
+
+template <typename T>
+DependentValueFields<T>::DependentValueFields(IndependentFields<T> i)
 {
 }
 
@@ -404,6 +410,7 @@ class VirtualTemplate
 {
 public:
     VirtualTemplate();
+    VirtualTemplate(IndependentFields<int> i);
     VirtualTemplate(OptionalTemplateArgs<T> optionalTemplateArgs);
     virtual ~VirtualTemplate();
     virtual int function();
@@ -412,6 +419,11 @@ public:
 
 template <typename T>
 VirtualTemplate<T>::VirtualTemplate()
+{
+}
+
+template <typename T>
+VirtualTemplate<T>::VirtualTemplate(IndependentFields<int> i)
 {
 }
 

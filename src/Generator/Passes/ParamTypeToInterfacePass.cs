@@ -59,22 +59,7 @@ namespace CppSharp.Passes
             if (!finalType.TryGetClass(out @class))
                 return;
 
-            var specialization = @class as ClassTemplateSpecialization;
-            Class @interface = null;
-            if (specialization == null)
-            {
-                @interface = @class.Namespace.Classes.Find(
-                    c => c.OriginalClass == @class && c.IsInterface);
-            }
-            else
-            {
-                Class template = specialization.TemplatedDecl.TemplatedClass;
-                Class templatedInterface = @class.Namespace.Classes.Find(
-                   c => c.OriginalClass == template && c.IsInterface);
-                if (templatedInterface != null)
-                    @interface = templatedInterface.Specializations.FirstOrDefault(
-                        s => s.OriginalClass == specialization);
-            }
+            Class @interface = @class.GetInterface();
             if (@interface == null)
                 return;
 
