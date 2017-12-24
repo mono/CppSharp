@@ -258,7 +258,6 @@ namespace CppSharp
                     TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
                 }
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
-                TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
             TranslationUnitPasses.AddPass(new DelegatesPass());
 
@@ -266,7 +265,10 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());
 
             if (Options.IsCSharpGenerator)
+            {
                 TranslationUnitPasses.AddPass(new SpecializationMethodsWithDependentPointersPass());
+                TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
+            }
 
             TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 

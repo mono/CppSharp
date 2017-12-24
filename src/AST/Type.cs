@@ -668,7 +668,9 @@ namespace CppSharp.AST
                     Type = new QualifiedType((Type) t.Type.Type.Clone(), t.Type.Qualifiers)
                 }).ToList();
             Template = type.Template;
-            Desugared = new QualifiedType((Type) type.Desugared.Type.Clone(), type.Desugared.Qualifiers);
+            if (type.Desugared.Type != null)
+                Desugared = new QualifiedType((Type) type.Desugared.Type.Clone(),
+                    type.Desugared.Qualifiers);
         }
 
         public List<TemplateArgument> Arguments;
@@ -797,11 +799,12 @@ namespace CppSharp.AST
         public TemplateParameterType(TemplateParameterType type)
             : base(type)
         {
-            Parameter = new TypeTemplateParameter
-            {
-                Constraint = type.Parameter.Constraint,
-                Name = type.Parameter.Name
-            };
+            if (type.Parameter != null)
+                Parameter = new TypeTemplateParameter
+                {
+                    Constraint = type.Parameter.Constraint,
+                    Name = type.Parameter.Name
+                };
             Depth = type.Depth;
             Index = type.Index;
             IsParameterPack = type.IsParameterPack;
@@ -852,6 +855,7 @@ namespace CppSharp.AST
             : base(type)
         {
             Replacement = new QualifiedType((Type) type.Replacement.Type.Clone(), type.Replacement.Qualifiers);
+            ReplacedParameter = (TemplateParameterType) type.ReplacedParameter.Clone();
         }
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
@@ -895,7 +899,11 @@ namespace CppSharp.AST
         public InjectedClassNameType(InjectedClassNameType type)
             : base(type)
         {
-            TemplateSpecialization = (TemplateSpecializationType) type.TemplateSpecialization.Clone();
+            if (type.TemplateSpecialization != null)
+                TemplateSpecialization = (TemplateSpecializationType) type.TemplateSpecialization.Clone();
+            InjectedSpecializationType = new QualifiedType(
+                (Type) type.InjectedSpecializationType.Type.Clone(),
+                type.InjectedSpecializationType.Qualifiers);
             Class = type.Class;
         }
 

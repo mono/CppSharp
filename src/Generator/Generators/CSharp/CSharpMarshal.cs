@@ -811,14 +811,13 @@ namespace CppSharp.Generators.CSharp
             var finalType = type.GetFinalPointee() ?? type;
             var templateType = finalType as TemplateParameterSubstitutionType;
             type = Context.Parameter.Type.Desugar();
+            if (templateType != null)
+                param = $"(({@class.Visit(typePrinter)}) (object) {param})";
             if (finalType.TryGetClass(out @interface) &&
                 @interface.IsInterface)
                 paramInstance = $"{param}.__PointerTo{@interface.OriginalClass.Name}";
             else
-                paramInstance = $@"{
-                    (templateType != null ? $"(({@class.Visit(typePrinter)}) (object) " : string.Empty)}{
-                    param}{(templateType != null ? ")" : string.Empty)
-                    }.{Helpers.InstanceIdentifier}";
+                paramInstance = $@"{param}.{Helpers.InstanceIdentifier}";
             if (type.IsAddress())
             {
                 Class decl;

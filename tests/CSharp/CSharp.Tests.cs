@@ -896,6 +896,15 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestExtensionsOfSpecializationsAsSecondaryBases()
+    {
+        using (var hasSpecializationForSecondaryBase = new HasSpecializationForSecondaryBase())
+        {
+            Assert.IsTrue(hasSpecializationForSecondaryBase.PropertyReturnDependentPointer() == null);
+        }
+    }
+
+    [Test]
     public void TestAbstractImplementatonsInPrimaryAndSecondaryBases()
     {
         using (var implementsAbstractsFromPrimaryAndSecondary = new ImplementsAbstractsFromPrimaryAndSecondary())

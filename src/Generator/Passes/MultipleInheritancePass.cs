@@ -88,6 +88,7 @@ namespace CppSharp.Passes
                 @interface = specializedInterface;
             }
             @interface.Name = name;
+            @interface.USR = @base.USR;
             @interface.Namespace = @base.Namespace;
             @interface.Access = @base.Access;
             @interface.Type = ClassType.Interface;
@@ -116,18 +117,28 @@ namespace CppSharp.Passes
             if (@interface.Bases.Count == 0)
             {
                 var instance = new Property
-                {
-                    Namespace = @interface,
-                    Name = Helpers.InstanceIdentifier,
-                    QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr)),
-                    GetMethod = new Method
                     {
-                        SynthKind = FunctionSynthKind.InterfaceInstance,
-                        Namespace = @interface
-                    }
-                };
+                        Namespace = @interface,
+                        Name = Helpers.InstanceIdentifier,
+                        QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr)),
+                        GetMethod = new Method
+                        {
+                            SynthKind = FunctionSynthKind.InterfaceInstance,
+                            Namespace = @interface
+                        }
+                    };
 
                 @interface.Properties.Add(instance);
+
+                var dispose = new Method
+                    {
+                        Namespace = @interface,
+                        Name = "Dispose",
+                        ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Void)),
+                        SynthKind = FunctionSynthKind.InterfaceDispose
+                    };
+
+                @interface.Methods.Add(dispose);
             }
 
             @interface.Events.AddRange(@base.Events);
@@ -157,7 +168,8 @@ namespace CppSharp.Passes
                 @interface.TemplateParameters.AddRange(@base.TemplateParameters);
                 templatedInterfaces[@base] = @interface;
                 foreach (var spec in @base.Specializations)
-                    GetNewInterface(name, spec);
+                    @interface.Specializations.Add(
+                        (ClassTemplateSpecialization) GetNewInterface(name, spec));
             }
             return @interface;
         }
@@ -184,7 +196,8 @@ namespace CppSharp.Passes
 
         private void ImplementInterfaceMethods(Class @class, Class @interface)
         {
-            foreach (var method in @interface.Methods)
+            foreach (var method in @interface.Methods.Where(
+                m => m.SynthKind != FunctionSynthKind.InterfaceDispose))
             {
                 var existingImpl = @class.Methods.FirstOrDefault(
                     m => m.OriginalName == method.OriginalName &&

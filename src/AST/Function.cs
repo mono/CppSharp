@@ -129,6 +129,7 @@ namespace CppSharp.AST
         AbstractImplCall,
         DefaultValueOverload,
         InterfaceInstance,
+        InterfaceDispose,
         FieldAcessor
     }
 

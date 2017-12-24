@@ -459,11 +459,15 @@ namespace CppSharp.Generators.CSharp
 
             GenerateClassSpecifier(@class);
 
+            if (@class.Bases.Count == 0)
+                Write(" : IDisposable");
+
             NewLine();
             WriteStartBraceIndent();
 
             foreach (var method in @class.Methods.Where(m =>
-                !ASTUtils.CheckIgnoreFunction(m.OriginalFunction) &&
+                (m.OriginalFunction == null ||
+                 !ASTUtils.CheckIgnoreFunction(m.OriginalFunction)) &&
                 m.Access == AccessSpecifier.Public))
             {
                 PushBlock(BlockKind.Method);
