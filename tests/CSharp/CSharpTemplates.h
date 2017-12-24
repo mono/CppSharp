@@ -211,9 +211,21 @@ public:
 template <typename T>
 class DLL_API DependentPointerFields
 {
-private:
+public:
+    DependentPointerFields();
+    ~DependentPointerFields();
     T* field;
 };
+
+template <typename T>
+DependentPointerFields<T>::DependentPointerFields()
+{
+}
+
+template <typename T>
+DependentPointerFields<T>::~DependentPointerFields()
+{
+}
 
 template <typename K, typename V>
 class TwoTemplateArgs
@@ -576,7 +588,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
                              TemplateWithIndexer<T2*> _12, TemplateWithIndexer<UsedInTemplatedIndexer> _13,
                              TemplateDerivedFromRegularDynamic<RegularDynamic> _14,
-                             IndependentFields<OnlySpecialisedInTypeArg<double>> _15, std::string s);
+                             IndependentFields<OnlySpecialisedInTypeArg<double>> _15,
+                             DependentPointerFields<float> _16, std::string s);
 
 void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii);
 
@@ -592,6 +605,7 @@ template class DLL_API IndependentFields<std::string>;
 template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
 template class DLL_API DependentValueFields<float>;
+template class DLL_API DependentPointerFields<float>;
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;

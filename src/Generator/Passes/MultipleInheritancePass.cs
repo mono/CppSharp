@@ -135,7 +135,8 @@ namespace CppSharp.Passes
                         Namespace = @interface,
                         Name = "Dispose",
                         ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Void)),
-                        SynthKind = FunctionSynthKind.InterfaceDispose
+                        SynthKind = FunctionSynthKind.InterfaceDispose,
+                        Mangled = string.Empty
                     };
 
                 @interface.Methods.Add(dispose);

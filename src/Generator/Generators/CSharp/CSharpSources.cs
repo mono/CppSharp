@@ -896,7 +896,8 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             ctx.Declaration = field;
 
-            var arrayType = field.Type.Desugar() as ArrayType;
+            Type type = field.Type.Desugar();
+            var arrayType = type as ArrayType;
 
             if (arrayType != null && @class.IsValueType)
             {
@@ -923,13 +924,20 @@ namespace CppSharp.Generators.CSharp
 
             if (marshal.Context.Return.StringBuilder.Length > 0)
             {
-                WriteLine("{0} = {1}{2};", ctx.ReturnVarName,
-                    field.Type.IsPointer() && field.Type.GetFinalPointee().IsPrimitiveType() &&
-                    !CSharpTypePrinter.IsConstCharString(field.Type) ?
-                        string.Format("({0}) ", CSharpTypePrinter.IntPtrType) :
-                        string.Empty,
-                    marshal.Context.Return);
-
+                Write($"{ctx.ReturnVarName} = ");
+                if (type.IsPointer())
+                {
+                    Type pointee = type.GetFinalPointee();
+                    if (pointee.IsPrimitiveType() &&
+                        !CSharpTypePrinter.IsConstCharString(type))
+                    {
+                        Write($"({CSharpTypePrinter.IntPtrType}) ");
+                        var templateSubstitution = pointee.Desugar(false) as TemplateParameterSubstitutionType;
+                        if (templateSubstitution != null)
+                            Write($"(object) ");
+                    }
+                }
+                WriteLine($"{marshal.Context.Return};");
             }
 
             if ((arrayType != null && @class.IsValueType) || ctx.HasCodeBlock)
@@ -1191,21 +1199,26 @@ namespace CppSharp.Generators.CSharp
             if (ctx.HasCodeBlock)
                 PushIndent();
 
+            Write("return ");
+
             var @return = marshal.Context.Return.ToString();
             if (field.Type.IsPointer())
             {
-                var final = field.Type.GetFinalPointee().Desugar();
-                if (final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
+                var final = field.Type.GetFinalPointee().Desugar(resolveTemplateSubstitution: false);
+                var templateSubstitution = final as TemplateParameterSubstitutionType;
+                if (templateSubstitution != null)
+                    Write($"({templateSubstitution.ReplacedParameter.Parameter.Name}) (object) ");
+                if ((final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
                     (!final.IsPrimitiveType(PrimitiveType.Char) &&
                      !final.IsPrimitiveType(PrimitiveType.WideChar) ||
                      (!Context.Options.MarshalCharAsManagedChar &&
-                      !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)))
-                    @return = string.Format("({0}*) {1}", field.Type.GetPointee().Desugar(), @return);
-                if (!((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst &&
-                    final.IsPrimitiveType(PrimitiveType.WideChar))
-                    @return = string.Format("({0}*) {1}", field.Type.GetPointee().Desugar(), @return);
+                      !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)) &&
+                    templateSubstitution == null) ||
+                    (!((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst &&
+                     final.IsPrimitiveType(PrimitiveType.WideChar)))
+                    Write($"({field.Type.GetPointee().Desugar()}*) ");
             }
-            WriteLine("return {0};", @return);
+            WriteLine($"{@return};");
 
             if ((arrayType != null && @class.IsValueType) || ctx.HasCodeBlock)
                 WriteCloseBraceIndent();
