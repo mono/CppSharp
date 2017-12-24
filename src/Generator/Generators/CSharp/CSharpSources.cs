@@ -2338,9 +2338,7 @@ namespace CppSharp.Generators.CSharp
             if (method.SynthKind == FunctionSynthKind.DefaultValueOverload)
             {
                 if (!method.IsConstructor)
-                {
                     GenerateOverloadCall(method);
-                }
                 goto SkipImpl;
             }
 
@@ -2436,11 +2434,9 @@ namespace CppSharp.Generators.CSharp
 
         private string OverloadParamNameWithDefValue(Parameter p, ref int index)
         {
-            Class @class;
             return p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue
                 ? "ref param" + index++
-                : (( p.Type.TryGetClass(out @class) && @class.IsInterface) ? "param" + index++
-                     : ExpressionPrinter.VisitParameter(p));
+                : ExpressionPrinter.VisitParameter(p);
         }
 
         private void GenerateOverloadCall(Function function)
@@ -2454,16 +2450,8 @@ namespace CppSharp.Generators.CSharp
                     parameter.Usage == ParameterUsage.InOut && parameter.HasDefaultValue)
                 {
                     var pointeeType = ((PointerType) parameter.Type).Pointee.ToString();
-                    WriteLine("{0} param{1} = {2};", pointeeType, j++,
-                        primitiveType == PrimitiveType.Bool ? "false" : "0");
-                }
-                Class @class;
-                if (parameter.Kind == ParameterKind.Regular && parameter.Ignore &&
-                    parameter.Type.Desugar().TryGetClass(out @class) && @class.IsInterface &&
-                    parameter.HasDefaultValue)
-                {
-                    WriteLine("var param{0} = ({1}) {2};",  j++, @class.OriginalClass.OriginalName,
-                        ExpressionPrinter.VisitParameter(parameter));
+                    WriteLine($@"{pointeeType} param{j++} = {
+                        (primitiveType == PrimitiveType.Bool ? "false" : "0")};");
                 }
             }
 
