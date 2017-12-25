@@ -73,7 +73,7 @@ namespace CppSharp.Passes
                     RemainingCompilationTasks--;
                 else
                     InvokeCompiler(e.CustomCompiler, e.CompilerArguments,
-                        e.OutputDir, module.SymbolsLibraryName);
+                        e.OutputDir, module);
             }
         }
 
@@ -156,47 +156,21 @@ namespace CppSharp.Passes
             return symbolsCodeGenerator;
         }
 
-        private void InvokeCompiler(string compiler, string arguments, string outputDir, string symbols)
+        private void InvokeCompiler(string compiler, string arguments, string outputDir, Module module)
         {
             new Thread(() =>
                 {
                     int error;
                     string errorMessage;
                     ProcessHelper.Run(compiler, arguments, out error, out errorMessage);
-                    CollectSymbols(outputDir, symbols, errorMessage);
+                    var output = GetOutputFile(module.SymbolsLibraryName);
+                    if (!File.Exists(Path.Combine(outputDir, output)))
+                        Diagnostics.Error(errorMessage);
+                    else
+                        compiledLibraries[module] = new CompiledLibrary
+                            { OutputDir = outputDir, Library = module.SymbolsLibraryName };
                     RemainingCompilationTasks--;
                 }).Start();
-        }
-
-        private void CollectSymbols(string outputDir, string symbols, string errorMessage)
-        {
-            using (var parserOptions = new ParserOptions())
-            {
-                parserOptions.AddLibraryDirs(outputDir);
-                var output = Path.GetFileName($@"{(Platform.IsWindows ?
-                    string.Empty : "lib")}{symbols}.{
-                    (Platform.IsMacOS ? "dylib" : Platform.IsWindows ? "dll" : "so")}");
-                if (!File.Exists(Path.Combine(outputDir, output)))
-                {
-                    Diagnostics.Error(errorMessage);
-                    return;
-                }
-                parserOptions.LibraryFile = output;
-                using (var parserResult = Parser.ClangParser.ParseLibrary(parserOptions))
-                {
-                    if (parserResult.Kind == ParserResultKind.Success)
-                    {
-                        var nativeLibrary = ClangParser.ConvertLibrary(parserResult.Library);
-                        lock (@lock)
-                        {
-                            Context.Symbols.Libraries.Add(nativeLibrary);
-                            Context.Symbols.IndexSymbols();
-                        }
-                    }
-                    else
-                        Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");
-                }
-            }
         }
 
         private void CheckBasesForSpecialization(Class @class)
@@ -232,11 +206,47 @@ namespace CppSharp.Passes
                     remainingCompilationTasks = value;
                     if (remainingCompilationTasks == 0)
                     {
+                        foreach (var module in Context.Options.Modules.Where(compiledLibraries.ContainsKey))
+                        {
+                            CompiledLibrary compiledLibrary = compiledLibraries[module];
+                            CollectSymbols(compiledLibrary.OutputDir, compiledLibrary.Library);
+                        }
                         var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
                         findSymbolsPass.Wait = false;
                     }
                 }
             }
+        }
+
+        private void CollectSymbols(string outputDir, string library)
+        {
+            using (var parserOptions = new ParserOptions())
+            {
+                parserOptions.AddLibraryDirs(outputDir);
+                var output = GetOutputFile(library);
+                parserOptions.LibraryFile = output;
+                using (var parserResult = Parser.ClangParser.ParseLibrary(parserOptions))
+                {
+                    if (parserResult.Kind == ParserResultKind.Success)
+                    {
+                        var nativeLibrary = ClangParser.ConvertLibrary(parserResult.Library);
+                        lock (@lock)
+                        {
+                            Context.Symbols.Libraries.Add(nativeLibrary);
+                            Context.Symbols.IndexSymbols();
+                        }
+                    }
+                    else
+                        Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");
+                }
+            }
+        }
+
+        private static string GetOutputFile(string library)
+        {
+            return Path.GetFileName($@"{(Platform.IsWindows ?
+                string.Empty : "lib")}{library}.{
+                (Platform.IsMacOS ? "dylib" : Platform.IsWindows ? "dll" : "so")}");
         }
 
         private int remainingCompilationTasks;
@@ -246,5 +256,12 @@ namespace CppSharp.Passes
             new Dictionary<Module, SymbolsCodeGenerator>();
         private Dictionary<Module, HashSet<ClassTemplateSpecialization>> specializations =
             new Dictionary<Module, HashSet<ClassTemplateSpecialization>>();
+        private Dictionary<Module, CompiledLibrary> compiledLibraries = new Dictionary<Module, CompiledLibrary>();
+
+        private class CompiledLibrary
+        {
+            public string OutputDir { get; set; }
+            public string Library { get; set; }
+        }
     }
 }
