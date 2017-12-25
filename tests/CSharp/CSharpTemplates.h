@@ -220,6 +220,8 @@ class DLL_API DependentPointerFields
 public:
     DependentPointerFields();
     ~DependentPointerFields();
+    T property();
+    T takeField(T t);
     T* field;
 };
 
@@ -231,6 +233,18 @@ DependentPointerFields<T>::DependentPointerFields()
 template <typename T>
 DependentPointerFields<T>::~DependentPointerFields()
 {
+}
+
+template <typename T>
+T DependentPointerFields<T>::property()
+{
+    return *field;
+}
+
+template <typename T>
+T DependentPointerFields<T>::takeField(T t)
+{
+    return *field;
 }
 
 template <typename K, typename V>
@@ -463,7 +477,8 @@ public:
     ~SpecializedInterfaceForMap();
 };
 
-class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>, IndependentFields<int>, InternalWithExtension<float>
+class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>, IndependentFields<int>,
+                                                  InternalWithExtension<float>, DependentPointerFields<DependentValueFields<int>>
 {
 public:
     HasSpecializationForSecondaryBase();

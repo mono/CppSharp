@@ -1206,7 +1206,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var final = field.Type.GetFinalPointee().Desugar(resolveTemplateSubstitution: false);
                 var templateSubstitution = final as TemplateParameterSubstitutionType;
-                if (templateSubstitution != null)
+                if (templateSubstitution != null && returnType.Type.IsDependent)
                     Write($"({templateSubstitution.ReplacedParameter.Parameter.Name}) (object) ");
                 if ((final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
                     (!final.IsPrimitiveType(PrimitiveType.Char) &&
