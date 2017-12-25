@@ -102,7 +102,8 @@ namespace CppSharp.Passes
 
             @interface.Methods.AddRange(
                 from m in @base.Methods
-                where !m.IsConstructor && !m.IsDestructor && !m.IsStatic && m.IsDeclared && !m.IsOperator
+                where !m.IsConstructor && !m.IsDestructor && !m.IsStatic &&
+                    (m.IsGenerated || (m.IsInvalid && specialization != null)) && !m.IsOperator
                 select new Method(m) { Namespace = @interface, OriginalFunction = m });
 
             @interface.Properties.AddRange(
@@ -200,11 +201,11 @@ namespace CppSharp.Passes
             foreach (var method in @interface.Methods.Where(
                 m => m.SynthKind != FunctionSynthKind.InterfaceDispose))
             {
-                var existingImpl = @class.Methods.FirstOrDefault(
+                var existingImpl = @class.Methods.Find(
                     m => m.OriginalName == method.OriginalName &&
-                    m.Parameters.Where(p => !p.Ignore).SequenceEqual(
-                        method.Parameters.Where(p => !p.Ignore),
-                        ParameterTypeComparer.Instance));
+                        m.Parameters.Where(p => !p.Ignore).SequenceEqual(
+                            method.Parameters.Where(p => !p.Ignore),
+                            ParameterTypeComparer.Instance));
                 if (existingImpl != null)
                 {
                     if (existingImpl.OriginalFunction == null)

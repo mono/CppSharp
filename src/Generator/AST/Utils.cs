@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
@@ -20,7 +19,10 @@ namespace CppSharp.AST
 
         public static bool CheckIgnoreMethod(Method method)
         {
-            if (!method.IsGenerated) return true;
+            var originalClass = method.OriginalNamespace as Class;
+            if (!method.IsGenerated &&
+                (originalClass == null || method.IsInternal || !originalClass.IsInterface))
+                return true;
 
             if (method.IsDependent && UsesAdditionalTypeParam(method))
                 return true;
