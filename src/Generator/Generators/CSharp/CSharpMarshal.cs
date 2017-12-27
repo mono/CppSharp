@@ -244,8 +244,6 @@ namespace CppSharp.Generators.CSharp
                         return true;
                     }
                     goto default;
-                case PrimitiveType.Char16:
-                    return false;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {
@@ -728,8 +726,6 @@ namespace CppSharp.Generators.CSharp
                         return true;
                     }
                     goto default;
-                case PrimitiveType.Char16:
-                    return false;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {

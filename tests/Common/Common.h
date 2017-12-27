@@ -108,6 +108,7 @@ public:
     bool operator ==(const Foo& other) const;
 
     int fooPtr();
+    char16_t returnChar16();
 };
 
 // HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp

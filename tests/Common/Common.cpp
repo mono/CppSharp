@@ -74,6 +74,11 @@ int Foo::fooPtr()
     return 1;
 }
 
+char16_t Foo::returnChar16()
+{
+    return 'a';
+}
+
 Foo2::Foo2() {}
 
 Foo2 Foo2::operator<<(signed int i)

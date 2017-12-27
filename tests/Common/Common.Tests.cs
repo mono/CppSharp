@@ -826,4 +826,13 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(testProperties.RefToPrimitiveInSetter, Is.EqualTo(value));
         }
     }
+
+    [Test]
+    public void TestReturnChar16()
+    {
+        using (var foo = new Foo())
+        {
+            Assert.That(foo.ReturnChar16(), Is.EqualTo('a'));
+        }
+    }
 }
