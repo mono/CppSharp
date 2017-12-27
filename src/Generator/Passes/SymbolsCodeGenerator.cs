@@ -106,16 +106,23 @@ namespace CppSharp.Passes
             {
                 Write(GetDerivedType(@namespace, wrapper));
                 Write($"{wrapper}{@namespace}");
-                Write($@"({(string.Join(", ", method.Parameters.Select(
-                    p => cppTypePrinter.VisitParameter(p))))})");
+                Write($@"({string.Join(", ", method.Parameters.Select(
+                    p => cppTypePrinter.VisitParameter(p)))})");
                 WriteLine($": {@namespace}({@params}) {{}} }};");
                 Write($"extern \"C\" {{ void {wrapper}({signature}) ");
                 WriteLine($"{{ new (instance) {wrapper}{@namespace}({@params}); }} }}");
             }
             else
             {
-                Write($"extern \"C\" {{ void {wrapper}({signature}) ");
-                WriteLine($"{{ new (instance) {@namespace}({@params}); }} }}");
+                Write($"extern \"C\" ");
+                if (method.Namespace.Access == AccessSpecifier.Protected)
+                    Write($@"{{ class {wrapper}{method.Namespace.Namespace.Name} : public {
+                        method.Namespace.Namespace.Visit(cppTypePrinter)} ");
+                Write($"{{ void {wrapper}({signature}) ");
+                Write($"{{ new (instance) {@namespace}({@params}); }} }}");
+                if (method.Namespace.Access == AccessSpecifier.Protected)
+                    Write("; }");
+                NewLine();
             }
 
             foreach (var param in method.Parameters.Where(p =>
@@ -149,14 +156,23 @@ namespace CppSharp.Passes
                 Write(GetDerivedType(@namespace, wrapper));
             else
                 Write("extern \"C\" { ");
+            if (method.Namespace.Access == AccessSpecifier.Protected)
+                Write($@"class {wrapper}{method.Namespace.Namespace.Name} : public {
+                    method.Namespace.Namespace.Visit(cppTypePrinter)} {{ ");
             Write($"void {wrapper}");
             if (isProtected)
                 Write("protected");
-            WriteLine($@"({@namespace}* instance) {{ instance->~{
+            Write($@"({@namespace}* instance) {{ instance->~{
                 method.Namespace.OriginalName}(); }} }}");
             if (isProtected)
-                WriteLine($@"void {wrapper}({@namespace} instance) {{ {
-                    wrapper}{@namespace}::{wrapper}protected(instance); }}");
+            {
+                NewLine();
+                Write($@"void {wrapper}({@namespace} instance) {{ {
+                   wrapper}{@namespace}::{wrapper}protected(instance); }}");
+            }
+            if (method.Namespace.Access == AccessSpecifier.Protected)
+                Write("; }");
+            NewLine();
         }
 
         private void TakeFunctionAddress(Function function)
@@ -177,6 +193,9 @@ namespace CppSharp.Passes
                 WriteRedeclaration(function, returnType, signature, functionName);
 
             var method = function as Method;
+            if (function.Namespace.Access == AccessSpecifier.Protected)
+                Write($@"class {wrapper}{function.Namespace.Namespace.Name} : public {
+                    function.Namespace.Namespace.Visit(cppTypePrinter)} {{ ");
             Write($@"{returnType} ({(method != null && !method.IsStatic ?
                 (@namespace + "::") : string.Empty)}*{wrapper}){signature}");
             if (function.Access == AccessSpecifier.Protected)
@@ -189,6 +208,8 @@ namespace CppSharp.Passes
             {
                 Write($" = &{functionName};");
             }
+            if (function.Namespace.Access == AccessSpecifier.Protected)
+                Write(" };");
             NewLine();
         }
 
