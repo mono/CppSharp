@@ -170,21 +170,15 @@ namespace CppSharp.Passes
             }
 
             string returnType = function.OriginalReturnType.Visit(cppTypePrinter);
-            bool ambiguity = function.Namespace is TranslationUnit ||
-                function.Namespace.GetOverloads(function).Count() > 1 ||
-                function.FriendKind != FriendKind.None;
-            string signature = ambiguity ? GetSignature(function) : string.Empty;
+            string signature = GetSignature(function);
 
             string functionName = GetFunctionName(function, @namespace);
             if (function.FriendKind != FriendKind.None)
                 WriteRedeclaration(function, returnType, signature, functionName);
 
             var method = function as Method;
-            if (ambiguity)
-                Write($@"{returnType} ({(method != null && !method.IsStatic ?
-                    (@namespace + "::") : string.Empty)}*{wrapper}){signature}");
-            else
-                Write($"auto {wrapper}");
+            Write($@"{returnType} ({(method != null && !method.IsStatic ?
+                (@namespace + "::") : string.Empty)}*{wrapper}){signature}");
             if (function.Access == AccessSpecifier.Protected)
             {
                 Write($" = &{wrapper}{@namespace}::{functionName};");
