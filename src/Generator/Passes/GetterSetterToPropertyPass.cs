@@ -19,11 +19,14 @@ namespace CppSharp.Passes
             private readonly List<Method> setters = new List<Method>();
             private readonly List<Method> setMethods = new List<Method>();
             private readonly List<Method> nonSetters = new List<Method>();
+            private bool useHeuristics = true;
 
-            public PropertyGenerator(Class @class)
+            public PropertyGenerator(Class @class, bool useHeuristics)
             {
+                this.useHeuristics = useHeuristics;
                 foreach (var method in @class.Methods.Where(
-                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated))
+                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
+                         !m.ExcludeFromPasses.Contains(typeof(GetterSetterToPropertyPass))))
                     DistributeMethod(method);
             }
 
@@ -259,23 +262,28 @@ namespace CppSharp.Passes
                 }
                 else
                 {
-                    if (IsGetter(method))
+                    if (method.ConvertToProperty || IsGetter(method))
                         getters.Add(method);
                     if (method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType))
                         nonSetters.Add(method);
                 }
             }
 
-            private static bool IsGetter(Method method)
+            private bool IsGetter(Method method)
             {
                 if (method.IsDestructor ||
                     (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void)) ||
                     method.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType))
                     return false;
                 var firstWord = GetFirstWord(method.Name);
-                return (firstWord.Length < method.Name.Length &&
-                    Match(firstWord, new[] { "get", "is", "has" })) ||
-                    (!Match(firstWord, new[] { "to", "new" }) && !verbs.Contains(firstWord));
+
+                if (firstWord.Length < method.Name.Length && Match(firstWord, new[] {"get", "is", "has"}))
+                    return true;
+
+                if (useHeuristics && !Match(firstWord, new[] {"to", "new"}) && !verbs.Contains(firstWord))
+                    return true;
+
+                return false;
             }
 
             private static bool Match(string prefix, IEnumerable<string> prefixes)
@@ -354,7 +362,7 @@ namespace CppSharp.Passes
         public override bool VisitClassDecl(Class @class)
         {
             if (base.VisitClassDecl(@class))
-                new PropertyGenerator(@class).GenerateProperties();
+                new PropertyGenerator(@class, Options.UsePropertyDetectionHeuristics).GenerateProperties();
             return false;
         }
     }

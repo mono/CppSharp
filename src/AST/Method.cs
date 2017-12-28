@@ -105,6 +105,7 @@ namespace CppSharp.AST
             SynthKind = method.SynthKind;
             AdjustedOffset = method.AdjustedOffset;
             OverriddenMethods.AddRange(method.OverriddenMethods);
+            ConvertToProperty = method.ConvertToProperty;
         }
 
         public Method(Function function)
@@ -171,6 +172,8 @@ namespace CppSharp.AST
         public int AdjustedOffset { get; set; }
 
         public List<Method> OverriddenMethods { get; } = new List<Method>();
+
+        public bool ConvertToProperty { get; set; }
 
         public Method GetRootBaseMethod()
         {
