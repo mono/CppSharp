@@ -173,7 +173,7 @@ local archive_ext = use_7zip and ".7z" or ".tar.xz"
 
 function download_llvm()
   local toolset = get_toolset_configuration_name()
-  if toolset == "vs2012" or toolset == "vs2013" then
+  if toolset == "vs2012" or toolset == "vs2013" or toolset == "vs2015" then
     error("Pre-compiled LLVM packages for your VS version are not available.\n" ..
           "Please upgrade to a newer VS version or compile LLVM manually.")
   end
