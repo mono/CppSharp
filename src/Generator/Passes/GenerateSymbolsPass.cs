@@ -112,7 +112,13 @@ namespace CppSharp.Passes
                 return false;
 
             var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
-            return function.Visit(symbolsCodeGenerator);
+            if (function.Visit(symbolsCodeGenerator))
+            {
+                Context.Symbols.AddSymbol(Context.Symbols.FindOrCreateLibrary(module.SymbolsLibraryName),
+                    function.Mangled);
+                return true;
+            }
+            return false;
         }
 
         public class SymbolsCodeEventArgs : EventArgs
