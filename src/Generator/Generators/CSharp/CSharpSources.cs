@@ -906,13 +906,11 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                var printed = TypePrinter.PrintNative(@class);
-                ctx.ReturnVarName = string.Format("{0}{1}{2}",
-                    @class.IsValueType
-                        ? Helpers.InstanceField
-                        : $"(({printed}*) {Helpers.InstanceIdentifier})",
-                    @class.IsValueType ? "." : "->",
-                    SafeIdentifier(name));
+                var identifier = SafeIdentifier(name);
+                if (@class.IsValueType)
+                    ctx.ReturnVarName = $"{Helpers.InstanceField}.{identifier}";
+                else
+                    ctx.ReturnVarName = $"(({TypePrinter.PrintNative(@class)}*){Helpers.InstanceIdentifier})->{identifier}";
             }
             param.Visit(marshal);
 
