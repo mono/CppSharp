@@ -526,6 +526,15 @@ public class CommonTests : GeneratorTestFixture
     }
 
     [Test]
+    public unsafe void TestFieldRef()
+    {
+        var classD = new ClassD(10);
+        var fieldRef = classD.Field;
+        fieldRef.Value = 20;
+        Assert.AreEqual(20, classD.Field.Value);
+    }
+
+    [Test]
     public unsafe void TestDecltype()
     {
         var ret = Common.TestDecltype;

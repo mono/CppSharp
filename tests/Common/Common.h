@@ -771,6 +771,14 @@ public:
     int Value;
 };
 
+class DLL_API ClassD
+{
+public:
+    ClassD(int value);
+    // Accessing this field should return reference, not a copy.
+    ClassA Field;
+};
+
 // Test decltype
 int Expr = 0;
 DLL_API decltype(Expr) TestDecltype()

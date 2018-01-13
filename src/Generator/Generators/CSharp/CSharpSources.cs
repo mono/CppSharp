@@ -906,13 +906,11 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                var printed = TypePrinter.PrintNative(@class);
-                ctx.ReturnVarName = string.Format("{0}{1}{2}",
-                    @class.IsValueType
-                        ? Helpers.InstanceField
-                        : $"(({printed}*) {Helpers.InstanceIdentifier})",
-                    @class.IsValueType ? "." : "->",
-                    SafeIdentifier(name));
+                var identifier = SafeIdentifier(name);
+                if (@class.IsValueType)
+                    ctx.ReturnVarName = $"{Helpers.InstanceField}.{identifier}";
+                else
+                    ctx.ReturnVarName = $"(({TypePrinter.PrintNative(@class)}*){Helpers.InstanceIdentifier})->{identifier}";
             }
             param.Visit(marshal);
 
@@ -1174,13 +1172,24 @@ namespace CppSharp.Generators.CSharp
         private void GenerateFieldGetter(Field field, Class @class, QualifiedType returnType)
         {
             var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
+            String returnVar;
+            if (@class.IsValueType)
+                returnVar = $@"{Helpers.InstanceField}.{SafeIdentifier(name)}";
+            else
+            {
+                returnVar = $@"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})->{SafeIdentifier(name)}";
+                // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
+                // IntPtr ensures that non-copying object constructor is invoked.
+                Class typeClass;
+                if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType)
+                    returnVar = $"new {CSharpTypePrinter.IntPtrType}(&{returnVar})";
+            }
+
             var ctx = new CSharpMarshalContext(Context)
             {
                 ArgName = field.Name,
                 Declaration = field,
-                ReturnVarName = $@"{(@class.IsValueType ? Helpers.InstanceField :
-                    $"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})")}{
-                    (@class.IsValueType ? "." : "->")}{SafeIdentifier(name)}",
+                ReturnVarName = returnVar,
                 ReturnType = returnType
             };
             ctx.PushMarshalKind(MarshalKind.NativeField);

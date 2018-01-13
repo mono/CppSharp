@@ -469,6 +469,11 @@ ClassC::ClassC(const ClassB &x)
     Value = x.Value;
 }
 
+ClassD::ClassD(int value)
+    : Field(value)
+{
+}
+
 void DelegateNamespace::Nested::f1(void (*)())
 {
 }
