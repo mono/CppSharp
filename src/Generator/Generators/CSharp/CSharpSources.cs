@@ -1182,7 +1182,7 @@ namespace CppSharp.Generators.CSharp
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
                 if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType)
-                    returnVar = $"new global::System.IntPtr(&{returnVar})";
+                    returnVar = $"new {CSharpTypePrinter.IntPtrType}(&{returnVar})";
             }
 
             var ctx = new CSharpMarshalContext(Context)
