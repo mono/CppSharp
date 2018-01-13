@@ -1180,8 +1180,8 @@ namespace CppSharp.Generators.CSharp
                 returnVar = $@"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})->{SafeIdentifier(name)}";
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
                 // IntPtr ensures that non-copying object constructor is invoked.
-                var finalType = field.Type.Desugar(false);
-                if (!finalType.IsPrimitiveType() && !finalType.IsEnumType() && !finalType.IsAddress() && !(field.Type is ArrayType))
+                Class typeClass;
+                if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType)
                     returnVar = $"new global::System.IntPtr(&{returnVar})";
             }
 
