@@ -160,6 +160,10 @@ namespace CppSharp
                     if (@enum.Items.Exists(it => it.Name == macro.Name))
                         continue;
 
+                    // Set the namespace to the namespace we found the 1st item in
+                    if (@enum.Namespace == null)
+                        @enum.Namespace = unit;
+
                     var item = @enum.GenerateEnumItemFromMacro(macro);
                     @enum.AddItem(item);
 
