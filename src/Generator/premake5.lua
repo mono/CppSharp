@@ -15,6 +15,7 @@ project "CppSharp.Generator"
   {
   	"System",
   	"System.Core",
+  	"Microsoft.CSharp",
   	"CppSharp",
   	"CppSharp.AST",
   	"CppSharp.Parser"
