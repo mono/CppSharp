@@ -1,0 +1,17 @@
+Notes and TODOs
+
+- Microsoft.VisualStudio.Setup.Configuration.Interop has been added to nuspec,
+  but for some reason it never copies itself to output, it has to be done manually.
+  Additionally, the 64-bit nuget package does not need that (TODO Confirm this).
+
+- Baseclass.Contrib.Nuget.Output is problematic, whenever you update it,
+  Visual Studio complains and says it must restart, over and over.
+
+- Nuget package warnings should be fixed/suppressed.
+
+- Should there be two packages : x86 and x64 ?
+
+- Only Visual Studio 2017 32-bit solution is supported, once a 64-bit solution
+  is available, build.cake should be enhanced.
+
+- Whatever else I've missed ...
