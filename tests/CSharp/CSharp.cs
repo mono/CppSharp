@@ -55,6 +55,9 @@ namespace CppSharp.Tests
                         where macroRegex.IsMatch(macro.Name)
                         select macro.Name).ToList();
             var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", list.ToArray());
+
+            var enumTest2 = ctx.GenerateEnumFromMacros("MyMacroTest2Enum", "MY_MACRO_TEST2_*");
+
             enumTest.Namespace = new Namespace()
                 {
                     Name = "MacroTest",

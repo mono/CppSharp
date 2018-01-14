@@ -1198,6 +1198,16 @@ struct StructTestArrayTypeFromTypedef
 #define MY_MACRO_TEST_1 '1'
 #define MY_MACRO_TEST_2 '2'
 
+#define MY_MACRO_TEST2_0     0_invalid
+#define MY_MACRO_TEST2_1     1
+#define MY_MACRO_TEST2_2     0x2
+#define MY_MACRO_TEST2_3     (1 << 2)
+#define MY_MACRO_TEST2_1_2   (MY_MACRO_TEST2_1 | MY_MACRO_TEST2_2)
+#define MY_MACRO_TEST2_1_2_3 (MY_MACRO_TEST2_1 | MY_MACRO_TEST2_2 | \
+                                MY_MACRO_TEST2_3)
+#define MY_MACRO_TEST2_4     (1 << 3)
+#define MY_MACRO_TEST2_ALL   (1 << 4) - 1
+
 struct ComplexArrayElement
 {
     bool BoolField;

@@ -989,6 +989,23 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestMyMacro2TestEnum()
+    {
+        var a = (MyMacroTest2Enum)0;
+        var b = (MyMacroTest2Enum)1;
+        var c = (MyMacroTest2Enum)0x2;
+        var d = (MyMacroTest2Enum)(1 << 2);
+        var e = (MyMacroTest2Enum)(b | c);
+        var f = (MyMacroTest2Enum)(b | c | d);
+        var g = (MyMacroTest2Enum)(1 << 3);
+        var h = (MyMacroTest2Enum)((1 << 4) - 1);
+        Assert.IsTrue(a == MyMacroTest2Enum.MY_MACRO_TEST2_0 && b == MyMacroTest2Enum.MY_MACRO_TEST2_1 &&
+                    c == MyMacroTest2Enum.MY_MACRO_TEST2_2 && d == MyMacroTest2Enum.MY_MACRO_TEST2_3 &&
+                    e == MyMacroTest2Enum.MY_MACRO_TEST2_1_2 && f == MyMacroTest2Enum.MY_MACRO_TEST2_1_2_3 &&
+                    g == MyMacroTest2Enum.MY_MACRO_TEST2_4 && h == MyMacroTest2Enum.MY_MACRO_TEST2ALL);
+    }
+
+    [Test]
     public void TestGenerationOfArraySetter()
     {
         var complexArrayElements = new ComplexArrayElement[10];
