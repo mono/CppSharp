@@ -91,13 +91,14 @@ namespace CppSharp
                 {
                     Name = macro.Name,
                     Expression = macro.Expression,
-                    Value = ParseMacroExpression(macro.Expression),
+                    Value = ParseMacroExpression(macro.Expression, @enum),
                     Namespace = @enum
                 };
         }
 
-        static bool ParseToNumber(string num, out long val)
+        static bool ParseToNumber(string num, Enumeration @enum, out long val)
         {
+            //ExpressionEvaluator does not work with hex
             if (num.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase))
             {
                 num = num.Substring(2);
@@ -106,17 +107,35 @@ namespace CppSharp
                     CultureInfo.CurrentCulture, out val);
             }
 
-            return long.TryParse(num, out val);
+            ExpressionEvaluator evaluator = new ExpressionEvaluator();
+            //Include values of past items
+            evaluator.Variables = new Dictionary<string, object>();
+            foreach (Enumeration.Item item in @enum.Items)
+            {
+                //ExpressionEvaluator is requires lowercase variables
+                evaluator.Variables.Add(item.Name.ToLower(), item.Value);
+            }
+            try
+            {               
+                var ret = evaluator.Evaluate("(long)" + num.ReplaceLineBreaks(" ").Replace('\\',' '));
+                val = (long)ret;
+                return true;
+            }
+            catch (ExpressionEvaluatorSyntaxErrorException)
+            {
+                val = 0;
+                return false;
+            }
         }
 
-        static ulong ParseMacroExpression(string expression)
+        static ulong ParseMacroExpression(string expression, Enumeration @enum)
         {
             // TODO: Handle string expressions
             if (expression.Length == 3 && expression[0] == '\'' && expression[2] == '\'') // '0' || 'A'
                 return expression[1]; // return the ASCI code of this character
 
             long val;
-            return ParseToNumber(expression, out val) ? (ulong)val : 0;
+            return ParseToNumber(expression, @enum, out val) ? (ulong)val : 0;
         }
 
         public static Enumeration GenerateEnumFromMacros(this ASTContext context, string name,
