@@ -418,7 +418,8 @@ internal class ExpressionEvaluator
                 string type = numberMatch.Groups["type"].Value.ToLower();
                 string numberNoType = numberMatch.Value.Replace(type, string.Empty);
 
-                if (numberSuffixToParse.TryGetValue(type, out Func<string, object> parseFunc))
+                Func<string, object> parseFunc = null;
+                if (numberSuffixToParse.TryGetValue(type, out parseFunc))
                 {
                     stack.Push(parseFunc(numberNoType));
                 }
@@ -454,6 +455,7 @@ internal class ExpressionEvaluator
             if (varFuncMatch.Groups["isfunction"].Success)
             {
                 List<string> funcArgs = GetExpressionsBetweenParenthis(expr, ref i, true);
+                object funcResult = null;
                 if (varFuncMatch.Groups["inObject"].Success)
                 {
                     if (stack.Count == 0 || stack.Peek() is ExpressionOperator)
@@ -515,7 +517,7 @@ internal class ExpressionEvaluator
 
                     }
                 }
-                else if (DefaultFunctions(varFuncMatch.Groups["name"].Value.ToLower(), funcArgs, out object funcResult))
+                else if (DefaultFunctions(varFuncMatch.Groups["name"].Value.ToLower(), funcArgs, out funcResult))
                 {
                     stack.Push(funcResult);
                 }
@@ -540,11 +542,13 @@ internal class ExpressionEvaluator
                 string completeVar = varFuncMatch.Groups["name"].Value;
                 string var = completeVar.ToLower();
 
-                if (defaultVariables.TryGetValue(var, out object varValueToPush))
+                object varValueToPush = null;
+                object cusVarValueToPush = null;
+                if (defaultVariables.TryGetValue(var, out varValueToPush))
                 {
                     stack.Push(varValueToPush);
                 }
-                else if (Variables.TryGetValue(var, out object cusVarValueToPush))
+                else if (Variables.TryGetValue(var, out cusVarValueToPush))
                 {
                     stack.Push(cusVarValueToPush);
                 }
@@ -816,7 +820,8 @@ internal class ExpressionEvaluator
                 {
                     i++;
 
-                    if (stringEscapedCharDict.TryGetValue(expr.Substring(i, expr.Length - i)[0], out string escapedString))
+                    string escapedString = null;
+                    if (stringEscapedCharDict.TryGetValue(expr.Substring(i, expr.Length - i)[0], out escapedString))
                     {
                         resultString += escapedString;
                         i++;
@@ -1115,15 +1120,18 @@ internal class ExpressionEvaluator
     {
         bool functionExists = true;
 
-        if (simpleDoubleMathFuncsDictionary.TryGetValue(name, out Func<double, double> func))
+        Func<double, double> func = null;
+        Func<double, double, double> func2 = null;
+        Func<ExpressionEvaluator, List<string>, object> complexFunc = null;
+        if (simpleDoubleMathFuncsDictionary.TryGetValue(name, out func))
         {
             result = func(Convert.ToDouble(Evaluate(args[0])));
         }
-        else if (doubleDoubleMathFuncsDictionary.TryGetValue(name, out Func<double, double, double> func2))
+        else if (doubleDoubleMathFuncsDictionary.TryGetValue(name, out func2))
         {
             result = func2(Convert.ToDouble(Evaluate(args[0])), Convert.ToDouble(Evaluate(args[1])));
         }
-        else if (complexStandardFuncsDictionary.TryGetValue(name, out Func<ExpressionEvaluator, List<string>, object> complexFunc))
+        else if (complexStandardFuncsDictionary.TryGetValue(name, out complexFunc))
         {
             result = complexFunc(this, args);
         }
