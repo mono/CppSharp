@@ -568,7 +568,6 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
-    [Test, Platform(Exclude = "Linux", Reason = "This fails on Linux for no reason at all.")]
     public void TestStdStringConstant()
     {
         Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
