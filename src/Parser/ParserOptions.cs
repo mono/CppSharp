@@ -295,6 +295,7 @@ namespace CppSharp.Parser
                 AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}");
             }
             AddSystemIncludeDirs($"{headersPath}/usr/include");
+            AddSystemIncludeDirs($"{headersPath}/usr/include/linux");
         }
 
         public void Setup()
