@@ -55,7 +55,8 @@ namespace CppSharp.Passes
                             !m.IsImplicit && !m.IsDeleted && !m.IsDefaulted;
                         if (specialization.Methods.Any(m => m.IsInvalid && exportable(m)))
                             foreach (var method in specialization.Methods.Where(
-                                m => m.IsGenerated && exportable(m)))
+                                m => m.IsGenerated && (m.InstantiatedFrom == null || m.InstantiatedFrom.IsGenerated) &&
+                                     exportable(m)))
                                 symbolsCodeGenerator.VisitMethodDecl(method);
                         else
                             symbolsCodeGenerator.VisitClassTemplateSpecializationDecl(specialization);
