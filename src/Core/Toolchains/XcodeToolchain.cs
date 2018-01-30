@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CppSharp
@@ -8,15 +9,7 @@ namespace CppSharp
     {
         public static string GetXcodePath()
         {
-            var toolchains = Directory.EnumerateDirectories("/Applications", "Xcode*")
-                .ToList();
-            toolchains.Sort();
-
-            var toolchainPath = toolchains.LastOrDefault();
-            if (toolchainPath == null)
-                throw new Exception("Could not find a valid Xcode SDK");
-
-            return toolchainPath;
+            return GetXcodePathFromXcodeSelect() ?? GetXcodePathFromFileSystem();
         }
 
         public static string GetXcodeToolchainPath()
@@ -72,6 +65,42 @@ namespace CppSharp
                 throw new Exception("Could not find a valid Mac SDK");
 
             return Path.Combine(sdkPath, "usr/include");
+        }
+
+        private static string GetXcodePathFromXcodeSelect() 
+        {
+            try 
+            {
+                var xcodeSelect = Process.Start(new ProcessStartInfo("xcode-select", "--print-path") {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                });
+
+                var result = xcodeSelect.StandardOutput.ReadToEnd();
+
+                if(!string.IsNullOrEmpty(result)) 
+                {
+                    var extraStuffIndex = result.LastIndexOf("/Contents/Developer");
+                    if(extraStuffIndex >= 0)
+                        return result.Remove(extraStuffIndex);
+                }
+            } catch {
+                // TODO: Log exception?
+            }
+            return null;
+        }
+
+        private static string GetXcodePathFromFileSystem() 
+        {
+            var toolchains = Directory.EnumerateDirectories("/Applications", "Xcode*")
+                .ToList();
+            toolchains.Sort();
+
+            var toolchainPath = toolchains.LastOrDefault();
+            if (toolchainPath == null)
+                throw new Exception("Could not find a valid Xcode SDK");
+
+            return toolchainPath;
         }
     }
 }
