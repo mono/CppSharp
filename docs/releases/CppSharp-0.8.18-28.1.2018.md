@@ -1,6 +1,4 @@
-# CppSharp 0.8.17 25.12.2017
-
-
+# CppSharp 0.8.18 28.1.2018
 
 Do not generate wrappers for template specializations if original method in template class is ignored.
 
