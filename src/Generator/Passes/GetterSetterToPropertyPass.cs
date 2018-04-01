@@ -347,6 +347,7 @@ namespace CppSharp.Passes
 
         public GetterSetterToPropertyPass()
         {
+            VisitOptions.VisitClassBases = false;
             VisitOptions.VisitClassFields = false;
             VisitOptions.VisitClassProperties = false;
             VisitOptions.VisitClassMethods = false;

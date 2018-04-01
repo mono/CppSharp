@@ -13,7 +13,7 @@ namespace CppSharp.Passes
         /// We also need it to check if a class already has a complementary interface
         /// because different classes may have the same secondary bases.
         /// </summary>
-        private readonly Dictionary<Class, Class> interfaces = new Dictionary<Class, Class>();
+        private readonly HashSet<Class> interfaces = new HashSet<Class>();
 
         public MultipleInheritancePass()
         {
@@ -30,8 +30,11 @@ namespace CppSharp.Passes
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             bool result = base.VisitTranslationUnit(unit);
-            foreach (var @interface in interfaces.Where(i => !(i.Key is ClassTemplateSpecialization)))
-                @interface.Key.Namespace.Classes.Add(@interface.Value);
+            foreach (var @interface in interfaces.Where(i => !(i is ClassTemplateSpecialization)))
+            {
+                int index = @interface.Namespace.Declarations.IndexOf(@interface.OriginalClass);
+                @interface.Namespace.Declarations.Insert(index, @interface);
+            }
             interfaces.Clear();
             return result;
         }
@@ -60,12 +63,9 @@ namespace CppSharp.Passes
         {
             if (@base.CompleteDeclaration != null)
                 @base = (Class) @base.CompleteDeclaration;
-            var name = "I" + @base.Name;
-            if (interfaces.ContainsKey(@base))
-                return interfaces[@base];
 
-            return @base.Namespace.Classes.FirstOrDefault(c => c.Name == name) ??
-                GetNewInterface(name, @base);
+            return interfaces.FirstOrDefault(i => i.OriginalClass == @base) ??
+                GetNewInterface("I" + @base.Name, @base);
         }
 
         private Class GetNewInterface(string name, Class @base)
@@ -80,8 +80,9 @@ namespace CppSharp.Passes
             {
                 Class template = specialization.TemplatedDecl.TemplatedClass;
                 Class templatedInterface = GetInterface(template);
-                if (interfaces.ContainsKey(specialization))
-                    return interfaces[specialization];
+                @interface = interfaces.FirstOrDefault(i => i.OriginalClass == @base);
+                if (@interface != null)
+                    return @interface;
                 var specializedInterface = new ClassTemplateSpecialization();
                 specializedInterface.Arguments.AddRange(specialization.Arguments);
                 specializedInterface.TemplatedDecl = new ClassTemplate { TemplatedDecl = templatedInterface };
@@ -163,7 +164,7 @@ namespace CppSharp.Passes
 
             @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
 
-            interfaces.Add(@base, @interface);
+            interfaces.Add(@interface);
             if (@base.IsTemplate)
             {
                 @interface.IsDependent = true;
