@@ -120,7 +120,14 @@ namespace CppSharp
             var currentIndent = Indents.Sum();
             var message = new string(' ', currentIndent) + info.Message;
 
-            Console.WriteLine(message);
+            if(info.Kind == DiagnosticKind.Error)
+            {
+                Console.Error.WriteLine(message);
+            }
+            else 
+            {
+                Console.WriteLine(message);
+            }
             Debug.WriteLine(message);
         }
 

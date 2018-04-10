@@ -10,25 +10,25 @@ namespace CppSharp
         private static OptionSet optionSet = new OptionSet();
         private static Options options = new Options();
         
-        static bool ParseCommandLineArgs(string[] args, List<string> messages, ref bool helpShown)
+        static bool ParseCommandLineArgs(string[] args, List<string> errorMessages, ref bool helpShown)
         {
             var showHelp = false;
 
-            optionSet.Add("I=", "the {PATH} of a folder to search for include files", (i) => { AddIncludeDirs(i, messages); });
+            optionSet.Add("I=", "the {PATH} of a folder to search for include files", (i) => { AddIncludeDirs(i, errorMessages); });
             optionSet.Add("l=", "{LIBRARY} that that contains the symbols of the generated code", l => options.Libraries.Add(l) );
             optionSet.Add("L=", "the {PATH} of a folder to search for additional libraries", l => options.LibraryDirs.Add(l) );
-            optionSet.Add("D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v, messages) );
-            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", (v) => AddArgument(v, messages) );
+            optionSet.Add("D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v, errorMessages) );
+            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", (v) => AddArgument(v, errorMessages) );
 
-            optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, messages) );
+            optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, errorMessages) );
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
 
             optionSet.Add("iln=|inputlibraryname=|inputlib=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
             optionSet.Add("d|debug", "enables debug mode which generates more verbose code to aid debugging", v => options.Debug = true);
             optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);
-            optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, messages); } );
-            optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, messages); } );
-            optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, messages); } );
+            optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'chsarp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, errorMessages); } );
+            optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, errorMessages); } );
+            optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, errorMessages); } );
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.Arguments.Add("-fcxx-exceptions"); });
 
@@ -59,7 +59,7 @@ namespace CppSharp
             }
 
             foreach(string s in additionalArguments)
-                HandleAdditionalArgument(s, messages);
+                HandleAdditionalArgument(s, errorMessages);
 
             return true;
         }
@@ -94,15 +94,15 @@ namespace CppSharp
             Console.WriteLine("   contain only the bindings for that header file.");
         }
 
-        static void AddIncludeDirs(string dir, List<string> messages)
+        static void AddIncludeDirs(string dir, List<string> errorMessages)
         {
             if (Directory.Exists(dir))
                 options.IncludeDirs.Add(dir);
             else
-                messages.Add(string.Format("Directory '{0}' doesn't exist. Ignoring as include directory.", dir));
+                errorMessages.Add(string.Format("Directory '{0}' doesn't exist. Ignoring as include directory.", dir));
         }
 
-        static void HandleOutputArg(string arg, List<string> messages)
+        static void HandleOutputArg(string arg, List<string> errorMessages)
         {
             try
             {
@@ -114,30 +114,30 @@ namespace CppSharp
             }
             catch(Exception e)
             {
-                messages.Add(e.Message);
+                errorMessages.Add(e.Message);
 
                 options.OutputDir = "";
                 options.OutputFileName = "";
             }
         }
 
-        static void AddArgument(string value, List<string> messages)
+        static void AddArgument(string value, List<string> errorMessages)
         {
             if (value == null)
-                messages.Add("Invalid compiler argument name for option -A.");
+                errorMessages.Add("Invalid compiler argument name for option -A.");
             else
                 options.Arguments.Add(value);
         }
 
-        static void AddDefine(string name, string value, List<string> messages)
+        static void AddDefine(string name, string value, List<string> errorMessages)
         {
             if (name == null)
-                messages.Add("Invalid definition name for option -D.");
+                errorMessages.Add("Invalid definition name for option -D.");
             else
                 options.Defines.Add(name, value);
         }
 
-        static void HandleAdditionalArgument(string args, List<string> messages)
+        static void HandleAdditionalArgument(string args, List<string> errorMessages)
         {
             if (!Path.IsPathRooted(args))
                 args = Path.Combine(Directory.GetCurrentDirectory(), args);
@@ -146,21 +146,21 @@ namespace CppSharp
             {
                 bool searchQuery = args.IndexOf('*') >= 0 || args.IndexOf('?') >= 0;
                 if (searchQuery || Directory.Exists(args))
-                    GetFilesFromPath(args, messages);
+                    GetFilesFromPath(args, errorMessages);
                 else if (File.Exists(args))
                     options.HeaderFiles.Add(args);
                 else
                 {
-                    messages.Add(string.Format("File '{0}' could not be found.", args));
+                    errorMessages.Add(string.Format("File '{0}' could not be found.", args));
                 }
             }
             catch(Exception)
             {
-                messages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", args));
+                errorMessages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", args));
             }
         }
 
-        static void GetFilesFromPath(string path, List<string> messages)
+        static void GetFilesFromPath(string path, List<string> errorMessages)
         {
             path = path.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
@@ -195,11 +195,11 @@ namespace CppSharp
             }
             catch (Exception)
             {
-                messages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", path));
+                errorMessages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", path));
             }
         }
 
-        static void GetGeneratorKind(string generator, List<string> messages)
+        static void GetGeneratorKind(string generator, List<string> errorMessages)
         {
             switch (generator.ToLower())
             {
@@ -211,10 +211,10 @@ namespace CppSharp
                     return;
             }
 
-            messages.Add(string.Format("Unknown generator kind: {0}. Defaulting to {1}", generator, options.Kind.ToString()));
+            errorMessages.Add(string.Format("Unknown generator kind: {0}. Defaulting to {1}", generator, options.Kind.ToString()));
         }
 
-        static void GetDestinationPlatform(string platform, List<string> messages)
+        static void GetDestinationPlatform(string platform, List<string> errorMessages)
         {
             switch (platform.ToLower())
             {
@@ -229,10 +229,10 @@ namespace CppSharp
                     return;
             }
 
-            messages.Add(string.Format("Unknown target platform: {0}. Defaulting to {1}", platform, options.Platform.ToString()));
+            errorMessages.Add(string.Format("Unknown target platform: {0}. Defaulting to {1}", platform, options.Platform.ToString()));
         }
 
-        static void GetDestinationArchitecture(string architecture, List<string> messages)
+        static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
         {
             switch (architecture.ToLower())
             {
@@ -244,25 +244,25 @@ namespace CppSharp
                     return;
             }
 
-            messages.Add(string.Format("Unknown target architecture: {0}. Defaulting to {1}", architecture, options.Architecture.ToString()));
+            errorMessages.Add(string.Format("Unknown target architecture: {0}. Defaulting to {1}", architecture, options.Architecture.ToString()));
         }
 
-        static void PrintMessages(List<string> messages)
+        static void PrintErrorMessages(List<string> errorMessages)
         {
-            foreach (string m in messages)
-                Console.WriteLine(m);
+            foreach (string m in errorMessages)
+                Console.Error.WriteLine(m);
         }
 
         static void Main(string[] args)
         {
-            List<string> messages = new List<string>();
+            List<string> errorMessages = new List<string>();
             bool helpShown = false;
 
             try
             {
-                if (!ParseCommandLineArgs(args, messages, ref helpShown))
+                if (!ParseCommandLineArgs(args, errorMessages, ref helpShown))
                 {
-                    PrintMessages(messages);
+                    PrintErrorMessages(errorMessages);
 
                     // Don't need to show the help since if ParseCommandLineArgs returns false the help has already been shown
                     return;
@@ -270,17 +270,17 @@ namespace CppSharp
 
                 Generator gen = new Generator(options);
 
-                bool validOptions = gen.ValidateOptions(messages);
+                bool validOptions = gen.ValidateOptions(errorMessages);
 
-                PrintMessages(messages);
+                PrintErrorMessages(errorMessages);
 
                 if (validOptions)
                     gen.Run();
             }
             catch (Exception ex)
             {
-                PrintMessages(messages);
-                Console.WriteLine(ex.Message);
+                PrintErrorMessages(errorMessages);
+                Console.Error.WriteLine(ex.Message);
             }
         }
     }
