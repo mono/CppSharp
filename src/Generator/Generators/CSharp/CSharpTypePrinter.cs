@@ -185,13 +185,8 @@ namespace CppSharp.Generators.CSharp
             if (MarshalKind == MarshalKind.NativeField)
                 return IntPtrType;
 
-            var pointee = pointer.Pointee;
-
-            if (pointee is FunctionType)
-            {
-                var function = pointee as FunctionType;
-                return string.Format("{0}", function.Visit(this, quals));
-            }
+            if (pointer.Pointee is FunctionType)
+                return pointer.Pointee.Visit(this, quals);
 
             var isManagedContext = ContextKind == TypePrinterContextKind.Managed;
 
@@ -206,11 +201,10 @@ namespace CppSharp.Generators.CSharp
                 if (Options.Encoding == Encoding.Unicode ||
                     Options.Encoding == Encoding.BigEndianUnicode)
                     return string.Format("[MarshalAs(UnmanagedType.LPWStr)] string");
-                throw new NotSupportedException(string.Format("{0} is not supported yet.",
-                    Options.Encoding.EncodingName));
+                throw new NotSupportedException($"{Options.Encoding.EncodingName} is not supported yet.");
             }
 
-            var desugared = pointee.Desugar();
+            var pointee = pointer.Pointee.Desugar();
 
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
             // Any of the following types may be a pointer type:
@@ -243,7 +237,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Enumeration @enum;
-            if (desugared.TryGetEnum(out @enum))
+            if (pointee.TryGetEnum(out @enum))
             {
                 // Skip one indirection if passed by reference
                 if (isManagedContext && Parameter != null && (Parameter.IsOut || Parameter.IsInOut)
@@ -254,7 +248,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if ((desugared.IsDependent || desugared.TryGetClass(out @class))
+            if ((pointee.IsDependent || pointee.TryGetClass(out @class))
                 && ContextKind == TypePrinterContextKind.Native)
             {
                 return IntPtrType;
