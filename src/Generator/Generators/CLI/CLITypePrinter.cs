@@ -116,7 +116,7 @@ namespace CppSharp.Generators.CLI
                 return string.Format("{0}^", function.Visit(this, quals));
             }
 
-            if (CSharpTypePrinter.IsConstCharString(pointer))
+            if (pointer.IsConstCharString())
                 return "System::String^";
 
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx

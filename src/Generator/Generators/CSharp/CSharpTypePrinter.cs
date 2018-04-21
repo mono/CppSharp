@@ -177,35 +177,6 @@ namespace CppSharp.Generators.CSharp
             return string.Format("Func<{0}{1}>", returnTypePrinterResult, args);
         }
 
-        public static bool IsConstCharString(PointerType pointer)
-        {
-            if (pointer.IsReference)
-                return false;
-
-            var pointee = pointer.Pointee.Desugar();
-
-            return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
-                    pointee.IsPrimitiveType(PrimitiveType.Char16) ||
-                    pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
-                    pointer.QualifiedPointee.Qualifiers.IsConst;
-        }
-
-        public static bool IsConstCharString(Type type)
-        {
-            var desugared = type.Desugar();
-
-            if (!(desugared is PointerType))
-                return false;
-
-            var pointer = desugared as PointerType;
-            return IsConstCharString(pointer);
-        }
-
-        public static bool IsConstCharString(QualifiedType qualType)
-        {
-            return IsConstCharString(qualType.Type);
-        }
-
         private bool allowStrings = true;
 
         public override TypePrinterResult VisitPointerType(PointerType pointer,
@@ -224,7 +195,7 @@ namespace CppSharp.Generators.CSharp
 
             var isManagedContext = ContextKind == TypePrinterContextKind.Managed;
 
-            if (allowStrings && IsConstCharString(pointer))
+            if (allowStrings && pointer.IsConstCharString())
             {
                 if (isManagedContext)
                     return "string";
@@ -259,7 +230,7 @@ namespace CppSharp.Generators.CSharp
                 if (pointee.IsPrimitiveType(PrimitiveType.Void))
                     return IntPtrType;
 
-                if (IsConstCharString(pointee) && isRefParam)
+                if (pointee.IsConstCharString() && isRefParam)
                     return IntPtrType + "*";
 
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types

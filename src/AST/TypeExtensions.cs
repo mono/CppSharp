@@ -346,6 +346,36 @@
             return left.Equals(right);
         }
 
+        public static bool IsConst(this QualifiedType type)
+        {
+            return type.Type != null && (type.Qualifiers.IsConst ||
+                type.Type.GetQualifiedPointee().IsConst());
+        }
+
+        public static bool IsConstCharString(this Type type)
+        {
+            var desugared = type.Desugar();
+
+            if (!(desugared is PointerType))
+                return false;
+
+            var pointer = desugared as PointerType;
+            return IsConstCharString(pointer);
+        }
+
+        public static bool IsConstCharString(this PointerType pointer)
+        {
+            if (pointer.IsReference)
+                return false;
+
+            var pointee = pointer.Pointee.Desugar();
+
+            return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                    pointee.IsPrimitiveType(PrimitiveType.Char16) ||
+                    pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
+                    pointer.QualifiedPointee.Qualifiers.IsConst;
+        }
+
         public static bool IsDependentPointer(this Type type)
         {
             var desugared = type.Desugar();

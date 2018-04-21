@@ -157,9 +157,9 @@ namespace CppSharp.Generators.CSharp
             var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
             var pointee = pointer.Pointee.Desugar();
-            bool marshalPointeeAsString = CSharpTypePrinter.IsConstCharString(pointee) && isRefParam;
+            bool marshalPointeeAsString = pointee.IsConstCharString() && isRefParam;
 
-            if ((CSharpTypePrinter.IsConstCharString(pointer) && !MarshalsParameter) ||
+            if ((pointer.IsConstCharString() && !MarshalsParameter) ||
                 marshalPointeeAsString)
             {
                 Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
@@ -604,7 +604,7 @@ namespace CppSharp.Generators.CSharp
             var param = Context.Parameter;
             var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
-            if (CSharpTypePrinter.IsConstCharString(pointee) && isRefParam)
+            if (pointee.IsConstCharString() && isRefParam)
             {
                 if (param.IsOut)
                 {
@@ -650,7 +650,7 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            var marshalAsString = CSharpTypePrinter.IsConstCharString(pointer);
+            var marshalAsString = pointer.IsConstCharString();
             var finalPointee = pointer.GetFinalPointee();
             PrimitiveType primitive;
             if (finalPointee.IsPrimitiveType(out primitive) || finalPointee.IsEnumType() ||

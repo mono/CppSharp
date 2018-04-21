@@ -102,7 +102,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (CSharpTypePrinter.IsConstCharString(pointer))
+            if (pointer.IsConstCharString())
             {
                 Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
                     pointer.Pointee.Desugar() as BuiltinType));

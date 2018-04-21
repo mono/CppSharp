@@ -926,8 +926,7 @@ namespace CppSharp.Generators.CSharp
                 if (type.IsPointer())
                 {
                     Type pointee = type.GetFinalPointee();
-                    if (pointee.IsPrimitiveType() &&
-                        !CSharpTypePrinter.IsConstCharString(type))
+                    if (pointee.IsPrimitiveType() && !type.IsConstCharString())
                     {
                         Write($"({CSharpTypePrinter.IntPtrType}) ");
                         var templateSubstitution = pointee.Desugar(false) as TemplateParameterSubstitutionType;

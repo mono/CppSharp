@@ -93,7 +93,7 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
-            var type = ctx.ReturnType.Type.Desugar();
+            var type = Type.Desugar(resolveTemplateSubstitution: false);
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var c_str = basicString.Methods.First(m => m.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
