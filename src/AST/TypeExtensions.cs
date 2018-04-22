@@ -346,7 +346,14 @@
             return left.Equals(right);
         }
 
-        public static bool IsConst(this QualifiedType type)
+        public static bool IsConstRefToPrimitive(this QualifiedType type)
+        {
+            Type desugared = type.Type.Desugar();
+            return desugared.IsReference() &&
+                desugared.GetFinalPointee().Desugar().IsPrimitiveType() && type.IsConst();
+        }
+
+        private static bool IsConst(this QualifiedType type)
         {
             return type.Type != null && (type.Qualifiers.IsConst ||
                 type.Type.GetQualifiedPointee().IsConst());

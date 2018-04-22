@@ -681,8 +681,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestTemplateWithPointerToTypeParameter()
     {
-        int staticT = 5;
-        Assert.That(IndependentFieldsExtensions.StaticDependent(ref staticT), Is.EqualTo(5));
+        Assert.That(IndependentFieldsExtensions.StaticDependent(5), Is.EqualTo(5));
     }
 
     [Test]
@@ -702,14 +701,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (var independentFields = new IndependentFields<int>())
         {
-            var t = 5;
-            Assert.That(independentFields.GetDependent(ref t), Is.EqualTo(5));
+            Assert.That(independentFields.GetDependent(5), Is.EqualTo(5));
             Assert.That(independentFields.Independent, Is.EqualTo(1));
         }
         using (var independentFields = new IndependentFields<bool>())
         {
-            var t = true;
-            Assert.That(independentFields.GetDependent(ref t), Is.EqualTo(true));
+            Assert.That(independentFields.GetDependent(true), Is.EqualTo(true));
             Assert.That(independentFields.Independent, Is.EqualTo(1));
         }
     }
@@ -1113,8 +1110,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (var indexproperty = new TestIndexedProperties())
         {
-            int a = 2;
-            Assert.That(indexproperty[&a], Is.EqualTo(2));
+            Assert.That(indexproperty[2], Is.EqualTo(2));
         }
     }
 

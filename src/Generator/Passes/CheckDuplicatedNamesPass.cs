@@ -19,7 +19,7 @@ namespace CppSharp.Passes
         public bool UpdateName(Declaration decl)
         {
             var function = decl as Function;
-            if (function != null)
+            if (function != null && !(function.Namespace is ClassTemplateSpecialization))
             {
                 return UpdateName(function);
             }

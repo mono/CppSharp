@@ -206,6 +206,10 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee.Desugar();
 
+            if (isManagedContext &&
+                new QualifiedType(pointer, quals).IsConstRefToPrimitive())
+                return pointee.Visit(this);
+
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
             // Any of the following types may be a pointer type:
             // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double,

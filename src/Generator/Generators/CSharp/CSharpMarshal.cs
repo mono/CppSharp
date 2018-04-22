@@ -186,7 +186,8 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Function != null &&
                     Context.Function.OperatorKind == CXXOperatorKind.Subscript)
                 {
-                    if (type.IsPrimitiveType(primitive))
+                    if (type.IsPrimitiveType(primitive) ||
+                        new QualifiedType(pointer, quals).IsConstRefToPrimitive())
                     {
                         Context.Return.Write("*");
                     }
@@ -194,7 +195,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         var templateParameter = type as TemplateParameterType;
                         if (templateParameter != null)
-                            Context.Return.Write($@"({templateParameter.Parameter.Name}) (object) *");
+                            Context.Return.Write($"({templateParameter.Parameter.Name}) (object) *");
                     }
                 }
 
@@ -557,6 +558,8 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
+            var qualifiedPointer = new QualifiedType(pointer, quals);
+
             var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
             PointerType realPointer = null;
             if (templateSubstitution != null)
@@ -585,7 +588,8 @@ namespace CppSharp.Generators.CSharp
                 }
                 if (Context.Function.OperatorKind != CXXOperatorKind.Subscript)
                 {
-                    if (Context.Parameter.Kind == ParameterKind.PropertyValue)
+                    if (Context.Parameter.Kind == ParameterKind.PropertyValue ||
+                        qualifiedPointer.IsConstRefToPrimitive())
                     {
                         Context.Return.Write($"&{Context.Parameter.Name}");
                     }
@@ -685,9 +689,15 @@ namespace CppSharp.Generators.CSharp
                     if (marshalAsString && (Context.MarshalKind == MarshalKind.NativeField ||
                         Context.MarshalKind == MarshalKind.VTableReturnValue ||
                         Context.MarshalKind == MarshalKind.Variable))
+                    {
                         Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
+                    }
                     else
+                    {
+                        if (qualifiedPointer.IsConstRefToPrimitive())
+                            Context.Return.Write("&");
                         Context.Return.Write(Context.Parameter.Name);
+                    }
                 }
 
                 return true;
