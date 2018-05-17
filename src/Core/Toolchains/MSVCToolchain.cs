@@ -165,8 +165,8 @@ namespace CppSharp
             // so start from the latest specified version and loop until a match is found 
             for (var i = VisualStudioVersion.Latest - 1; i >= VisualStudioVersion.VS2012; i--)
             {
-                vsVersion = FindVSVersion(i);
-                if (vsVersion != VisualStudioVersion.Latest)
+                var vsSdk = GetVSToolchain(i);
+                if (vsSdk.IsValid)
                     return vsVersion;
             }
 
