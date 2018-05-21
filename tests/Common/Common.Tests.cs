@@ -804,7 +804,7 @@ This is a very long string. This is a very long string. This is a very long stri
     {
         using (var VirtFuncWithStringParam = new ImplementsVirtualFunctionsWithStringParams())
         {
-            VirtFuncWithStringParam.PureVirtualFunctionWithStringParams("anyRandomString");
+            VirtFuncWithStringParam.PureVirtualFunctionWithStringParams("anyRandomString1", "anyRandomString2");
             Assert.That(VirtFuncWithStringParam.VirtualFunctionWithStringParam("anyRandomString").Equals(5));
         }
     }
