@@ -1336,7 +1336,7 @@ class DLL_API HasVirtualFunctionsWithStringParams
 public:
     HasVirtualFunctionsWithStringParams();
     ~HasVirtualFunctionsWithStringParams();
-    virtual void PureVirtualFunctionWithStringParams(std::string testString) = 0;
+    virtual void PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2) = 0;
     virtual int VirtualFunctionWithStringParam(std::string testString);
 };
 
@@ -1345,7 +1345,7 @@ class DLL_API ImplementsVirtualFunctionsWithStringParams : public HasVirtualFunc
 public:
     ImplementsVirtualFunctionsWithStringParams();
     ~ImplementsVirtualFunctionsWithStringParams();
-    virtual void PureVirtualFunctionWithStringParams(std::string testString);
+    virtual void PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2);
 };
 
 class DLL_API HasVirtualFunctionWithBoolParams

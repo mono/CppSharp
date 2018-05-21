@@ -98,7 +98,7 @@ namespace CppSharp.Types.Std
             var c_str = basicString.Methods.First(m => m.OriginalName == "c_str");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
-            const string varBasicString = "__basicStringRet";
+            string varBasicString = $"__basicStringRet{ctx.ParameterIndex}";
             ctx.Before.WriteLine($@"var {varBasicString} = {
                 basicString.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({
                 ctx.ReturnVarName});");
@@ -109,7 +109,7 @@ namespace CppSharp.Types.Std
             }
             else
             {
-                const string varString = "__stringRet";
+                string varString = $"__stringRet{ctx.ParameterIndex}";
                 ctx.Before.WriteLine($@"var {varString} = {
                     qualifiedBasicString}Extensions.{c_str.Name}({varBasicString});");
                 ctx.Before.WriteLine($"{varBasicString}.Dispose(false);");

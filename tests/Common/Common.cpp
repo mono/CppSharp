@@ -901,7 +901,7 @@ ImplementsVirtualFunctionsWithStringParams::~ImplementsVirtualFunctionsWithStrin
 {
 }
 
-void ImplementsVirtualFunctionsWithStringParams::PureVirtualFunctionWithStringParams(std::string testString)
+void ImplementsVirtualFunctionsWithStringParams::PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2)
 {
 }
 
