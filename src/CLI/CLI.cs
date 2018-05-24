@@ -281,7 +281,9 @@ namespace CppSharp
             catch (Exception ex)
             {
                 PrintErrorMessages(errorMessages);
-                Console.Error.WriteLine(ex.Message);
+                Console.Error.WriteLine();
+
+                throw ex;
             }
         }
     }
