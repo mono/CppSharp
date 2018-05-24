@@ -185,11 +185,16 @@ namespace CppSharp
                     parserOptions.AddDefines(d.Key + "=" + d.Value);
             }
 
+            parserOptions.UnityBuild = options.UnityBuild;
+            parserOptions.EnableRTTI = options.EnableRTTI;
+
+            if (options.EnableExceptions)
+                parserOptions.AddArguments("-fcxx-exceptions");
+
             driverOptions.GenerateDebugOutput = options.Debug;
             driverOptions.CompileCode = options.Compile;
             driverOptions.OutputDir = options.OutputDir;
             driverOptions.CheckSymbols = options.CheckSymbols;
-            parserOptions.UnityBuild = options.UnityBuild;
             driverOptions.Verbose = options.Verbose;
         }
 

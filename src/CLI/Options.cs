@@ -36,12 +36,16 @@ namespace CppSharp
         public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x86;
 
         public GeneratorKind Kind { get; set; } = GeneratorKind.CSharp;
-        
+
         public bool CheckSymbols { get; set; }
 
         public bool UnityBuild { get; set; }
 
         public bool Cpp11ABI { get; set; }
+
+        public bool EnableExceptions { get; set; }
+
+        public bool EnableRTTI { get; set; }
 
         public bool Compile { get; set; }
 
