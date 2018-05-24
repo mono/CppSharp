@@ -18,6 +18,9 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
+            if (AlreadyVisited(function))
+                return false;
+
             if (!function.IsGenerated)
                 return false;
 
@@ -79,7 +82,7 @@ namespace CppSharp.Passes
             if (classParam.Type.IsPointerTo(out tag))
             {
                 @class = tag.Declaration as Class;
-                return true;
+                return @class != null;
             }
 
             return classParam.Type.TryGetClass(out @class);

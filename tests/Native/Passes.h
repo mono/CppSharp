@@ -77,3 +77,10 @@ class ClassWithAbstractOperator
 {
   virtual operator int() = 0;
 };
+
+enum ConnectionRole
+{
+    Role1, Role2
+};
+
+bool ConnectionRoleToString(const ConnectionRole& role, const char* role_str);
