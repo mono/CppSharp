@@ -298,6 +298,14 @@ enum class Flags
     Flag3 = 4
 };
 
+class DLL_API UsesPointerToEnum
+{
+public:
+    UsesPointerToEnum();
+    Flags* _flags;
+    void hasPointerToEnumInParam(Flags* flag);
+};
+
 class DLL_API UsesPointerToEnumInParamOfVirtual
 {
 public:

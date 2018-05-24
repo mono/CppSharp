@@ -182,7 +182,7 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
         {
-            if (MarshalKind == MarshalKind.NativeField)
+            if (MarshalKind == MarshalKind.NativeField && !pointer.Pointee.IsEnumType())
                 return IntPtrType;
 
             if (pointer.Pointee is FunctionType)

@@ -430,6 +430,14 @@ int TestRenaming::property()
     return 1;
 }
 
+UsesPointerToEnum::UsesPointerToEnum()
+{
+}
+
+void UsesPointerToEnum::hasPointerToEnumInParam(Flags* flag)
+{
+}
+
 UsesPointerToEnumInParamOfVirtual::UsesPointerToEnumInParamOfVirtual()
 {
 }
