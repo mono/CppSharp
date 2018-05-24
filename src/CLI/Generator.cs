@@ -125,7 +125,7 @@ namespace CppSharp
 
             if (string.IsNullOrEmpty(options.InputLibraryName) && !options.CheckSymbols)
             {
-                messages.Add("Input library name not specified and check symbols option not enabled.\nEither set the input library name (see  or the check symbols flag.");
+                messages.Add("Input library name not specified and check symbols option not enabled.\nEither set the input library name or the check symbols flag.");
                 return false;
             }
 
