@@ -162,8 +162,7 @@ namespace CppSharp
             if (abi == CppAbi.Microsoft)
                 parserOptions.MicrosoftMode = true;
 
-            if (triple.Contains("apple"))
-                SetupMacOptions(parserOptions);
+            parserOptions.Setup();
 
             if (triple.Contains("linux"))
                 SetupLinuxOptions(parserOptions);
@@ -202,24 +201,6 @@ namespace CppSharp
         {
             parserOptions.SetupLinux();
             parserOptions.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (options.Cpp11ABI ? "1" : "0"));
-        }
-
-        private static void SetupMacOptions(ParserOptions options)
-        {
-            options.MicrosoftMode = false;
-            options.NoBuiltinIncludes = true;
-
-            if (Platform.IsMacOS)
-            {
-                var headersPaths = new List<string> {
-                    "/usr/include"
-                };
-
-                foreach (var header in headersPaths)
-                    options.AddSystemIncludeDirs(header);
-            }
-
-            options.AddArguments("-stdlib=libc++");
         }
 
         public void SetupPasses(Driver driver)
