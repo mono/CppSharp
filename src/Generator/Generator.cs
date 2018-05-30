@@ -77,9 +77,17 @@ namespace CppSharp.Generators
 
             if (Context.Options.IsCSharpGenerator &&
                 Context.Options.GenerateSingleCSharpFile)
-                GenerateSingleTemplate(outputs);
+            {
+                foreach (var module in Context.Options.Modules)
+                    GenerateModuleTemplate(module);
+            }
             else
+            {
                 GenerateTemplates(outputs, units.Where(u => !u.IsSystemHeader));
+
+                if (Context.Options.SystemModule != null)
+                    outputs.Add(GenerateModuleTemplate(Context.Options.SystemModule));
+            }
 
             return outputs;
         }
@@ -109,24 +117,22 @@ namespace CppSharp.Generators
             }
         }
 
-        private void GenerateSingleTemplate(ICollection<GeneratorOutput> outputs)
+        private GeneratorOutput GenerateModuleTemplate(Module module)
         {
-            foreach (var module in Context.Options.Modules)
+            var output = new GeneratorOutput
             {
-                var output = new GeneratorOutput
+                TranslationUnit = new TranslationUnit
                 {
-                    TranslationUnit = new TranslationUnit
-                    {
-                        FilePath = $"{module.LibraryName}.cs",
-                        Module = module
-                    },
-                    Outputs = Generate(module.Units.GetGenerated())
-                };
-                output.Outputs[0].Process();
-                outputs.Add(output);
+                    FilePath = $"{module.LibraryName}.cs",
+                    Module = module
+                },
+                Outputs = Generate(module.Units.GetGenerated())
+            };
+            output.Outputs[0].Process();
 
-                OnUnitGenerated(output);
-            }
+            OnUnitGenerated(output);
+
+            return output;
         }
 
         /// <summary>
