@@ -74,8 +74,28 @@ namespace CppSharp
 
         public bool ValidateOptions(List<string> messages)
         {
+            if (options.HeaderFiles.Count == 0)
+            {
+                messages.Add("No source header file has been given to generate bindings from.");
+                return false;
+            }
+
             if (!options.Platform.HasValue)
                 options.Platform = GetCurrentPlatform();
+
+            if (string.IsNullOrEmpty(options.OutputDir))
+            {
+                options.OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "gen");
+            }
+
+            var dir = Path.GetDirectoryName(options.HeaderFiles.First());
+            var moduleName = new DirectoryInfo(dir).Name;
+
+            if (string.IsNullOrEmpty(options.OutputFileName))
+                options.OutputFileName = moduleName;
+
+            if (string.IsNullOrEmpty(options.OutputNamespace))
+                options.OutputNamespace = moduleName;
 
             if (Platform.IsWindows && options.Platform != TargetPlatform.Windows)
             {
@@ -102,36 +122,6 @@ namespace CppSharp
             if (options.Platform == TargetPlatform.Linux && options.Architecture != TargetArchitecture.x64)
             {
                 messages.Add("Cannot create bindings for architectures other than x64 for Linux targets.");
-                return false;
-            }
-
-            if (options.HeaderFiles.Count == 0)
-            {
-                messages.Add("No source header file has been given to generate bindings from.");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(options.OutputNamespace))
-            {
-                messages.Add("Output namespace not specified (see --outputnamespace option).");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(options.OutputFileName))
-            {
-                messages.Add("Output directory not specified (see --output option).");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(options.InputLibraryName) && !options.CheckSymbols)
-            {
-                messages.Add("Input library name not specified and check symbols option not enabled.\nEither set the input library name or the check symbols flag.");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(options.InputLibraryName) && options.CheckSymbols && options.Libraries.Count == 0)
-            {
-                messages.Add("Input library name not specified and check symbols is enabled but no libraries were given.\nEither set the input library name or add at least one library.");
                 return false;
             }
 
