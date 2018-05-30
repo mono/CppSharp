@@ -152,12 +152,12 @@ namespace CppSharp
                     options.HeaderFiles.Add(args);
                 else
                 {
-                    errorMessages.Add(string.Format("File '{0}' could not be found.", args));
+                    errorMessages.Add($"File '{args}' could not be found.");
                 }
             }
             catch(Exception)
             {
-                errorMessages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", args));
+                errorMessages.Add($"Error while looking for files inside path '{args}'. Ignoring.");
             }
         }
 

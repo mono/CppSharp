@@ -96,17 +96,14 @@ namespace CppSharp.AST
         // True if the class is final / sealed.
         public bool IsFinal { get; set; }
 
-        private bool? isOpaque = null;
+        private bool? isOpaque;
 
         public bool IsInjected { get; set; }
 
         // True if the type is to be treated as opaque.
         public bool IsOpaque
         {
-            get
-            {
-                return isOpaque == null ? IsIncomplete && CompleteDeclaration == null : isOpaque.Value;
-            }
+            get => isOpaque ?? (IsIncomplete && CompleteDeclaration == null);
             set
             {
                 isOpaque = value;
