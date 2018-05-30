@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Mono.Options;
 
 namespace CppSharp
@@ -188,10 +189,9 @@ namespace CppSharp
                 }
                 else
                 {
-                    string[] files = Directory.GetFiles(path);
-
-                    foreach (string s in files)
-                        options.HeaderFiles.Add(s);
+                    var files = Directory.GetFiles(path).Where(f =>
+                        Path.GetExtension(f) == ".h" || Path.GetExtension(f) == ".hpp");
+                    options.HeaderFiles.AddRange(files);
                 }
             }
             catch (Exception)
