@@ -79,7 +79,7 @@ namespace CppSharp.Generators
                 Context.Options.GenerateSingleCSharpFile)
             {
                 foreach (var module in Context.Options.Modules)
-                    GenerateModuleTemplate(module);
+                    outputs.Add(GenerateModuleTemplate(module));
             }
             else
             {
