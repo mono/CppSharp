@@ -85,7 +85,7 @@ namespace CppSharp.Generators
             {
                 GenerateTemplates(outputs, units.Where(u => !u.IsSystemHeader));
 
-                if (Context.Options.SystemModule != null)
+                if (Context.Options.IsCSharpGenerator && Context.Options.SystemModule != null)
                     outputs.Add(GenerateModuleTemplate(Context.Options.SystemModule));
             }
 
