@@ -52,7 +52,7 @@ namespace CppSharp
         Fields,
     }
 
-    [DebuggerDisplay("{BlockKind} | {Object}")]
+    [DebuggerDisplay("{Kind} | {Object}")]
     public class Block : ITextGenerator
     {
         public TextGenerator Text { get; set; }
