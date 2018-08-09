@@ -23,6 +23,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
 #pragma warning disable 0219 // warning CS0219: The variable `foo' is assigned but its value is never used
 
         ALLCAPS_UNDERSCORES a;
+        new MultipleInheritance().Dispose();
         using (var testRenaming = new TestRenaming())
         {
             testRenaming.name();

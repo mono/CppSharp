@@ -839,36 +839,6 @@ HasVirtualDtor1* CallDtorVirtually::getHasVirtualDtor1(HasVirtualDtor1* returned
     return returned;
 }
 
-void SecondaryBase::VirtualMember()
-{
-}
-
-int SecondaryBase::property()
-{
-    return 0;
-}
-
-void SecondaryBase::setProperty(int value)
-{
-}
-
-void SecondaryBase::function(bool* ok)
-{
-}
-
-void SecondaryBase::protectedFunction()
-{
-}
-
-int SecondaryBase::protectedProperty()
-{
-    return 0;
-}
-
-void SecondaryBase::setProtectedProperty(int value)
-{
-}
-
 TestOverrideFromSecondaryBase::TestOverrideFromSecondaryBase()
 {
 }
