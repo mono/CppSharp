@@ -727,22 +727,22 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal global::Std.BasicString.Rep._.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C _;
+                internal global::Std.BasicString.Rep._.__Internal _;
             }
 
             namespace _
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
+                public unsafe partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::Std.BasicString.Long.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __l;
+                    internal global::Std.BasicString.Long.__Internal __l;
 
                     [FieldOffset(0)]
                     internal global::Std.BasicString.Short.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __s;
 
                     [FieldOffset(0)]
-                    internal global::Std.BasicString.Raw.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __r;
+                    internal global::Std.BasicString.Raw.__Internal __r;
                 }
 
             }
@@ -752,7 +752,7 @@ namespace Std
         namespace Long
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 internal ulong __cap_;
@@ -772,7 +772,7 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal global::Std.BasicString.Short._.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C _;
+                internal global::Std.BasicString.Short._.__Internal _;
 
                 [FieldOffset(1)]
                 internal fixed sbyte __data_[23];
@@ -781,7 +781,7 @@ namespace Std
             namespace _
             {
                 [StructLayout(LayoutKind.Explicit, Size = 1)]
-                public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
+                public unsafe partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal byte __size_;
@@ -797,7 +797,7 @@ namespace Std
         namespace Raw
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
-            public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 internal fixed ulong __words[3];

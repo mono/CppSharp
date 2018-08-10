@@ -598,7 +598,7 @@ namespace Std
         public unsafe partial struct __Internalc__N_std_S__String_val____N_std_S__Simple_types__C
         {
             [FieldOffset(0)]
-            internal global::Std.StringVal.Bxty.__Internalc__N_std_S__String_val____N_std_S__Simple_types__C _Bx;
+            internal global::Std.StringVal.Bxty.__Internal _Bx;
 
             [FieldOffset(16)]
             internal ulong _Mysize;
@@ -610,7 +610,7 @@ namespace Std
         namespace Bxty
         {
             [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public unsafe partial struct __Internalc__N_std_S__String_val____N_std_S__Simple_types__C
+            public unsafe partial struct __Internal
             {
                 [FieldOffset(0)]
                 internal fixed sbyte _Buf[16];

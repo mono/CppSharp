@@ -277,17 +277,18 @@ namespace CppSharp
                 ExclaimEqual = 31,
                 LessEqual = 32,
                 GreaterEqual = 33,
-                AmpAmp = 34,
-                PipePipe = 35,
-                PlusPlus = 36,
-                MinusMinus = 37,
-                Comma = 38,
-                ArrowStar = 39,
-                Arrow = 40,
-                Call = 41,
-                Subscript = 42,
-                Conditional = 43,
-                Coawait = 44
+                Spaceship = 34,
+                AmpAmp = 35,
+                PipePipe = 36,
+                PlusPlus = 37,
+                MinusMinus = 38,
+                Comma = 39,
+                ArrowStar = 40,
+                Arrow = 41,
+                Call = 42,
+                Subscript = 43,
+                Conditional = 44,
+                Coawait = 45
             };
 
             public enum struct CallingConvention
@@ -395,10 +396,12 @@ namespace CppSharp
                 Dynamic = 2,
                 MSAny = 3,
                 BasicNoexcept = 4,
-                ComputedNoexcept = 5,
-                Unevaluated = 6,
-                Uninstantiated = 7,
-                Unparsed = 8
+                DependentNoexcept = 5,
+                NoexceptFalse = 6,
+                NoexceptTrue = 7,
+                Unevaluated = 8,
+                Uninstantiated = 9,
+                Unparsed = 10
             };
 
             public enum struct ArchType

@@ -2090,8 +2090,12 @@ static ExceptionSpecType ConvertExceptionType(clang::ExceptionSpecificationType 
     {
     case ExceptionSpecificationType::EST_BasicNoexcept:
         return ExceptionSpecType::BasicNoexcept;
-    case ExceptionSpecificationType::EST_ComputedNoexcept:
-        return ExceptionSpecType::ComputedNoexcept;
+    case ExceptionSpecificationType::EST_DependentNoexcept:
+        return ExceptionSpecType::DependentNoexcept;
+    case ExceptionSpecificationType::EST_NoexceptFalse:
+        return ExceptionSpecType::NoexceptFalse;
+    case ExceptionSpecificationType::EST_NoexceptTrue:
+        return ExceptionSpecType::NoexceptTrue;
     case ExceptionSpecificationType::EST_Dynamic:
         return ExceptionSpecType::Dynamic;
     case ExceptionSpecificationType::EST_DynamicNone:

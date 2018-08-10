@@ -231,7 +231,9 @@ namespace CppSharp.AST
         Dynamic,
         MSAny,
         BasicNoexcept,
-        ComputedNoexcept,
+        DependentNoexcept,
+        NoexceptFalse,
+        NoexceptTrue,
         Unevaluated,
         Uninstantiated,
         Unparsed

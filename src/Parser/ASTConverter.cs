@@ -552,8 +552,12 @@ namespace CppSharp
                     return AST.ExceptionSpecType.MSAny;
                 case ExceptionSpecType.BasicNoexcept:
                     return AST.ExceptionSpecType.BasicNoexcept;
-                case ExceptionSpecType.ComputedNoexcept:
-                    return AST.ExceptionSpecType.ComputedNoexcept;
+                case ExceptionSpecType.DependentNoexcept:
+                    return AST.ExceptionSpecType.DependentNoexcept;
+                case ExceptionSpecType.NoexceptFalse:
+                    return AST.ExceptionSpecType.NoexceptFalse;
+                case ExceptionSpecType.NoexceptTrue:
+                    return AST.ExceptionSpecType.NoexceptTrue;
                 case ExceptionSpecType.Unevaluated:
                     return AST.ExceptionSpecType.Unevaluated;
                 case ExceptionSpecType.Uninstantiated:

@@ -164,17 +164,18 @@ namespace CppSharp
                 ExclaimEqual = 31,
                 LessEqual = 32,
                 GreaterEqual = 33,
-                AmpAmp = 34,
-                PipePipe = 35,
-                PlusPlus = 36,
-                MinusMinus = 37,
-                Comma = 38,
-                ArrowStar = 39,
-                Arrow = 40,
-                Call = 41,
-                Subscript = 42,
-                Conditional = 43,
-                Coawait = 44
+                Spaceship = 34,
+                AmpAmp = 35,
+                PipePipe = 36,
+                PlusPlus = 37,
+                MinusMinus = 38,
+                Comma = 39,
+                ArrowStar = 40,
+                Arrow = 41,
+                Call = 42,
+                Subscript = 43,
+                Conditional = 44,
+                Coawait = 45
             }
 
             public enum CallingConvention
@@ -282,10 +283,12 @@ namespace CppSharp
                 Dynamic = 2,
                 MSAny = 3,
                 BasicNoexcept = 4,
-                ComputedNoexcept = 5,
-                Unevaluated = 6,
-                Uninstantiated = 7,
-                Unparsed = 8
+                DependentNoexcept = 5,
+                NoexceptFalse = 6,
+                NoexceptTrue = 7,
+                Unevaluated = 8,
+                Uninstantiated = 9,
+                Unparsed = 10
             }
 
             public enum ArchType
@@ -405,7 +408,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Type.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.Type.__Internal*)__Instance)->kind = value;
                     }
                 }
 
@@ -418,7 +421,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Type.__Internal*) __Instance)->isDependent = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Type.__Internal*)__Instance)->isDependent = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -522,7 +525,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) __Instance)->isConst = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*)__Instance)->isConst = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -535,7 +538,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) __Instance)->isVolatile = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*)__Instance)->isVolatile = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -548,7 +551,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) __Instance)->isRestrict = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*)__Instance)->isRestrict = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -660,7 +663,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.QualifiedType.__Internal*) __Instance)->type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.QualifiedType.__Internal*)__Instance)->type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -668,12 +671,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.TypeQualifiers.__CreateInstance(((global::CppSharp.Parser.AST.QualifiedType.__Internal*) __Instance)->qualifiers);
+                        return global::CppSharp.Parser.AST.TypeQualifiers.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.QualifiedType.__Internal*) __Instance)->qualifiers));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.QualifiedType.__Internal*) __Instance)->qualifiers = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.TypeQualifiers.__Internal() : *(global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.QualifiedType.__Internal*)__Instance)->qualifiers = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.TypeQualifiers.__Internal() : *(global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -771,7 +774,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TagType.__Internal*) __Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TagType.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -876,12 +879,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.ArrayType.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.ArrayType.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -894,7 +897,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*) __Instance)->sizeType = value;
+                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*)__Instance)->sizeType = value;
                     }
                 }
 
@@ -907,7 +910,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*) __Instance)->size = value;
+                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*)__Instance)->size = value;
                     }
                 }
 
@@ -920,7 +923,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*) __Instance)->elementSize = value;
+                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*)__Instance)->elementSize = value;
                     }
                 }
             }
@@ -1079,12 +1082,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.FunctionType.__Internal*) __Instance)->returnType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.FunctionType.__Internal*) __Instance)->returnType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*) __Instance)->returnType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*)__Instance)->returnType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -1097,7 +1100,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*) __Instance)->callingConvention = value;
+                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*)__Instance)->callingConvention = value;
                     }
                 }
 
@@ -1110,7 +1113,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*) __Instance)->exceptionSpecType = value;
+                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*)__Instance)->exceptionSpecType = value;
                     }
                 }
 
@@ -1218,12 +1221,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.PointerType.__Internal*) __Instance)->qualifiedPointee);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.PointerType.__Internal*) __Instance)->qualifiedPointee));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.PointerType.__Internal*) __Instance)->qualifiedPointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.PointerType.__Internal*)__Instance)->qualifiedPointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -1236,7 +1239,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.PointerType.__Internal*) __Instance)->modifier = value;
+                        ((global::CppSharp.Parser.AST.PointerType.__Internal*)__Instance)->modifier = value;
                     }
                 }
             }
@@ -1324,12 +1327,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.MemberPointerType.__Internal*) __Instance)->pointee);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MemberPointerType.__Internal*) __Instance)->pointee));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.MemberPointerType.__Internal*) __Instance)->pointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.MemberPointerType.__Internal*)__Instance)->pointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -1427,7 +1430,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypedefType.__Internal*) __Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TypedefType.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -1518,12 +1521,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.AttributedType.__Internal*) __Instance)->modified);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.AttributedType.__Internal*) __Instance)->modified));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*) __Instance)->modified = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*)__Instance)->modified = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -1531,12 +1534,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.AttributedType.__Internal*) __Instance)->equivalent);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.AttributedType.__Internal*) __Instance)->equivalent));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*) __Instance)->equivalent = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*)__Instance)->equivalent = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -1630,12 +1633,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->decayed);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->decayed));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->decayed = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->decayed = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -1643,12 +1646,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->original);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->original));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->original = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->original = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -1656,12 +1659,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->pointee);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->pointee));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*) __Instance)->pointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->pointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -1786,7 +1789,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*)__Instance)->kind = value;
                     }
                 }
 
@@ -1794,12 +1797,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance)->type);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance)->type));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance)->type = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*)__Instance)->type = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -1817,7 +1820,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -1830,7 +1833,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance)->integral = value;
+                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*)__Instance)->integral = value;
                     }
                 }
             }
@@ -1992,7 +1995,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*) __Instance)->_template = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*)__Instance)->_template = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -2000,12 +2003,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*) __Instance)->desugared);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*) __Instance)->desugared));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*) __Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*)__Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2163,12 +2166,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal*) __Instance)->desugared);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal*) __Instance)->desugared));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal*) __Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal*)__Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2302,7 +2305,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*) __Instance)->parameter = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*)__Instance)->parameter = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -2315,7 +2318,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*) __Instance)->depth = value;
+                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*)__Instance)->depth = value;
                     }
                 }
 
@@ -2328,7 +2331,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*) __Instance)->index = value;
+                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*)__Instance)->index = value;
                     }
                 }
 
@@ -2341,7 +2344,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*) __Instance)->isParameterPack = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TemplateParameterType.__Internal*)__Instance)->isParameterPack = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -2432,12 +2435,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*) __Instance)->replacement);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*) __Instance)->replacement));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*) __Instance)->replacement = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*)__Instance)->replacement = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2455,7 +2458,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*) __Instance)->replacedParameter = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*)__Instance)->replacedParameter = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -2546,12 +2549,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*) __Instance)->injectedSpecializationType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*) __Instance)->injectedSpecializationType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*) __Instance)->injectedSpecializationType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*)__Instance)->injectedSpecializationType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2569,7 +2572,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*) __Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*)__Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -2678,12 +2681,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->qualifier);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->qualifier));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->qualifier = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*)__Instance)->qualifier = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2691,17 +2694,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->identifier);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->identifier));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->identifier = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*)__Instance)->identifier = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -2869,12 +2872,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*) __Instance)->desugared);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*) __Instance)->desugared));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*) __Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*)__Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2882,12 +2885,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*) __Instance)->baseType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*) __Instance)->baseType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*) __Instance)->baseType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*)__Instance)->baseType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -2978,12 +2981,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.VectorType.__Internal*) __Instance)->elementType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VectorType.__Internal*) __Instance)->elementType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VectorType.__Internal*) __Instance)->elementType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.VectorType.__Internal*)__Instance)->elementType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -2996,7 +2999,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VectorType.__Internal*) __Instance)->numElements = value;
+                        ((global::CppSharp.Parser.AST.VectorType.__Internal*)__Instance)->numElements = value;
                     }
                 }
             }
@@ -3089,7 +3092,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BuiltinType.__Internal*) __Instance)->type = value;
+                        ((global::CppSharp.Parser.AST.BuiltinType.__Internal*)__Instance)->type = value;
                     }
                 }
             }
@@ -3199,7 +3202,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->kind = value;
                     }
                 }
 
@@ -3212,7 +3215,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->offset = value;
+                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->offset = value;
                     }
                 }
 
@@ -3230,7 +3233,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -3502,7 +3505,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VBTableIndex = value;
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VBTableIndex = value;
                     }
                 }
 
@@ -3515,7 +3518,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VFPtrOffset = value;
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VFPtrOffset = value;
                     }
                 }
 
@@ -3528,7 +3531,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VFPtrFullOffset = value;
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VFPtrFullOffset = value;
                     }
                 }
 
@@ -3536,12 +3539,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->layout);
+                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->layout));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -3664,7 +3667,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->offset = value;
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->offset = value;
                     }
                 }
 
@@ -3672,17 +3675,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -3690,12 +3693,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -3708,7 +3711,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->fieldPtr = (global::System.IntPtr) value;
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->fieldPtr = (global::System.IntPtr) value;
                     }
                 }
             }
@@ -3825,7 +3828,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->offset = value;
+                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*)__Instance)->offset = value;
                     }
                 }
 
@@ -3843,7 +3846,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*)__Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -4104,7 +4107,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->ABI = value;
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->ABI = value;
                     }
                 }
 
@@ -4112,12 +4115,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->layout);
+                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->layout));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4130,7 +4133,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->hasOwnVFPtr = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->hasOwnVFPtr = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -4143,7 +4146,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->VBPtrOffset = value;
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->VBPtrOffset = value;
                     }
                 }
 
@@ -4156,7 +4159,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->alignment = value;
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->alignment = value;
                     }
                 }
 
@@ -4169,7 +4172,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->size = value;
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->size = value;
                     }
                 }
 
@@ -4182,7 +4185,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->dataSize = value;
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->dataSize = value;
                     }
                 }
 
@@ -4473,7 +4476,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->kind = value;
                     }
                 }
 
@@ -4486,7 +4489,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->maxFieldAlignment = value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->maxFieldAlignment = value;
                     }
                 }
 
@@ -4499,7 +4502,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->access = value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->access = value;
                     }
                 }
 
@@ -4517,7 +4520,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->_namespace = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->_namespace = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -4530,7 +4533,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->location = value.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->location = value.__Instance;
                     }
                 }
 
@@ -4543,7 +4546,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->lineNumberStart = value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->lineNumberStart = value;
                     }
                 }
 
@@ -4556,7 +4559,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->lineNumberEnd = value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->lineNumberEnd = value;
                     }
                 }
 
@@ -4564,17 +4567,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->name);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->name));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -4582,17 +4585,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->USR);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->USR));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->USR = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->USR = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -4600,17 +4603,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->debugText);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->debugText));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->debugText = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->debugText = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -4623,7 +4626,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isIncomplete = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->isIncomplete = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -4636,7 +4639,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isDependent = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->isDependent = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -4649,7 +4652,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isImplicit = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->isImplicit = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -4662,7 +4665,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isInvalid = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->isInvalid = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -4680,7 +4683,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->completeDeclaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->completeDeclaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -4693,7 +4696,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->definitionOrder = value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->definitionOrder = value;
                     }
                 }
 
@@ -4706,7 +4709,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->originalPtr = (global::System.IntPtr) value;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->originalPtr = (global::System.IntPtr) value;
                     }
                 }
 
@@ -4724,7 +4727,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->comment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->comment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -5338,7 +5341,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DeclarationContext.__Internal*) __Instance)->isAnonymous = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.DeclarationContext.__Internal*)__Instance)->isAnonymous = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -5584,12 +5587,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.TypedefNameDecl.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TypedefNameDecl.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypedefNameDecl.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.TypedefNameDecl.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -5914,7 +5917,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypeAlias.__Internal*) __Instance)->describedAliasTemplate = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.TypeAlias.__Internal*)__Instance)->describedAliasTemplate = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -6084,7 +6087,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Friend.__Internal*) __Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Friend.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -6210,7 +6213,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->_class = value;
+                        ((global::CppSharp.Parser.AST.Statement.__Internal*)__Instance)->_class = value;
                     }
                 }
 
@@ -6228,7 +6231,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->decl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Statement.__Internal*)__Instance)->decl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -6236,17 +6239,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->@string);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->@string));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->@string = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Statement.__Internal*)__Instance)->@string = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -6487,7 +6490,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->LHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->LHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -6505,7 +6508,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -6513,17 +6516,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->opcodeStr = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -7015,12 +7018,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -7033,7 +7036,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->isIndirect = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->isIndirect = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7046,7 +7049,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->hasDefaultValue = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->hasDefaultValue = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7059,7 +7062,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->index = value;
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->index = value;
                     }
                 }
 
@@ -7077,7 +7080,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->defaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -7368,12 +7371,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->returnType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->returnType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->returnType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->returnType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -7386,7 +7389,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isReturnIndirect = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isReturnIndirect = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7399,7 +7402,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->hasThisReturn = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->hasThisReturn = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7412,7 +7415,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isConstExpr = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isConstExpr = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7425,7 +7428,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isVariadic = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isVariadic = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7438,7 +7441,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isInline = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isInline = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7451,7 +7454,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isPure = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isPure = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7464,7 +7467,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isDeleted = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isDeleted = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7477,7 +7480,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->isDefaulted = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->isDefaulted = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7490,7 +7493,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->friendKind = value;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->friendKind = value;
                     }
                 }
 
@@ -7503,7 +7506,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->operatorKind = value;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->operatorKind = value;
                     }
                 }
 
@@ -7511,17 +7514,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->mangled);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->mangled));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->mangled = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->mangled = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -7529,17 +7532,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->signature);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->signature));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->signature = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->signature = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -7547,17 +7550,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->body);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->body));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->body = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->body = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -7570,7 +7573,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->callingConvention = value;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->callingConvention = value;
                     }
                 }
 
@@ -7588,7 +7591,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->specializationInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->specializationInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -7606,7 +7609,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->instantiatedFrom = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->instantiatedFrom = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -7614,12 +7617,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -7957,7 +7960,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isVirtual = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isVirtual = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7970,7 +7973,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isStatic = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isStatic = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7983,7 +7986,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isConst = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isConst = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -7996,7 +7999,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isExplicit = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isExplicit = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -8009,7 +8012,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->methodKind = value;
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->methodKind = value;
                     }
                 }
 
@@ -8022,7 +8025,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isDefaultConstructor = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isDefaultConstructor = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -8035,7 +8038,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isCopyConstructor = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isCopyConstructor = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -8048,7 +8051,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->isMoveConstructor = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->isMoveConstructor = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -8056,12 +8059,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->conversionType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->conversionType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->conversionType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->conversionType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -8074,7 +8077,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*) __Instance)->refQualifier = value;
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->refQualifier = value;
                     }
                 }
 
@@ -8405,17 +8408,17 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->expression);
-                            var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                            __basicStringRet.Dispose(false);
-                            return __stringRet;
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->expression));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
                         }
 
                         set
                         {
                             var __allocator0 = new global::Std.Allocator<sbyte>();
                             var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                            ((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->expression = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                            ((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*)__Instance)->expression = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                         }
                     }
 
@@ -8428,7 +8431,7 @@ namespace CppSharp
 
                         set
                         {
-                            ((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->value = value;
+                            ((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*)__Instance)->value = value;
                         }
                     }
                 }
@@ -8549,7 +8552,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Enumeration.__Internal*) __Instance)->modifiers = value;
+                        ((global::CppSharp.Parser.AST.Enumeration.__Internal*)__Instance)->modifiers = value;
                     }
                 }
 
@@ -8567,7 +8570,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Enumeration.__Internal*) __Instance)->type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Enumeration.__Internal*)__Instance)->type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -8585,7 +8588,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Enumeration.__Internal*) __Instance)->builtinType = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Enumeration.__Internal*)__Instance)->builtinType = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -8757,17 +8760,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->mangled);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->mangled));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->mangled = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.Variable.__Internal*)__Instance)->mangled = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -8775,12 +8778,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.Variable.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -8893,7 +8896,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) __Instance)->access = value;
+                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*)__Instance)->access = value;
                     }
                 }
 
@@ -8906,7 +8909,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) __Instance)->isVirtual = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*)__Instance)->isVirtual = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -8924,7 +8927,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) __Instance)->type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*)__Instance)->type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -8937,7 +8940,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) __Instance)->offset = value;
+                        ((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*)__Instance)->offset = value;
                     }
                 }
             }
@@ -9106,12 +9109,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.Field.__Internal*) __Instance)->qualifiedType);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Field.__Internal*) __Instance)->qualifiedType));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Field.__Internal*) __Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.Field.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -9129,7 +9132,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Field.__Internal*) __Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Field.__Internal*)__Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -9142,7 +9145,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Field.__Internal*) __Instance)->isBitField = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Field.__Internal*)__Instance)->isBitField = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9155,7 +9158,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Field.__Internal*) __Instance)->bitWidth = value;
+                        ((global::CppSharp.Parser.AST.Field.__Internal*)__Instance)->bitWidth = value;
                     }
                 }
             }
@@ -9720,7 +9723,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isPOD = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isPOD = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9733,7 +9736,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isAbstract = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isAbstract = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9746,7 +9749,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isUnion = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isUnion = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9759,7 +9762,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isDynamic = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isDynamic = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9772,7 +9775,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isPolymorphic = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isPolymorphic = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9785,7 +9788,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->hasNonTrivialDefaultConstructor = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->hasNonTrivialDefaultConstructor = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9798,7 +9801,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->hasNonTrivialCopyConstructor = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->hasNonTrivialCopyConstructor = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9811,7 +9814,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->hasNonTrivialDestructor = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->hasNonTrivialDestructor = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9824,7 +9827,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isExternCContext = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isExternCContext = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9837,7 +9840,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->isInjected = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->isInjected = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -9855,7 +9858,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Class.__Internal*) __Instance)->layout = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Class.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -10127,7 +10130,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Template.__Internal*) __Instance)->TemplatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Template.__Internal*)__Instance)->TemplatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -10467,7 +10470,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameter.__Internal*) __Instance)->depth = value;
+                        ((global::CppSharp.Parser.AST.TemplateParameter.__Internal*)__Instance)->depth = value;
                     }
                 }
 
@@ -10480,7 +10483,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameter.__Internal*) __Instance)->index = value;
+                        ((global::CppSharp.Parser.AST.TemplateParameter.__Internal*)__Instance)->index = value;
                     }
                 }
 
@@ -10493,7 +10496,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameter.__Internal*) __Instance)->isParameterPack = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TemplateParameter.__Internal*)__Instance)->isParameterPack = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -10670,7 +10673,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal*) __Instance)->isParameterPack = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal*)__Instance)->isParameterPack = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -10683,7 +10686,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal*) __Instance)->isPackExpansion = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal*)__Instance)->isPackExpansion = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -10696,7 +10699,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal*) __Instance)->isExpandedParameterPack = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal*)__Instance)->isExpandedParameterPack = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -10865,12 +10868,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(((global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal*) __Instance)->defaultArgument);
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal*) __Instance)->defaultArgument));
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal*) __Instance)->defaultArgument = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        ((global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal*)__Instance)->defaultArgument = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -11058,7 +11061,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*)__Instance)->defaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -11071,7 +11074,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->position = value;
+                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*)__Instance)->position = value;
                     }
                 }
 
@@ -11084,7 +11087,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->isPackExpansion = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*)__Instance)->isPackExpansion = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -11097,7 +11100,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->isExpandedParameterPack = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*)__Instance)->isExpandedParameterPack = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -11644,7 +11647,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal*) __Instance)->templatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal*)__Instance)->templatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -11657,7 +11660,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal*) __Instance)->specializationKind = value;
+                        ((global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal*)__Instance)->specializationKind = value;
                     }
                 }
 
@@ -12302,7 +12305,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal*) __Instance)->_template = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal*)__Instance)->_template = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -12320,7 +12323,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal*) __Instance)->specializedFunction = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal*)__Instance)->specializedFunction = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -12333,7 +12336,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal*) __Instance)->specializationKind = value;
+                        ((global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal*)__Instance)->specializationKind = value;
                     }
                 }
 
@@ -12817,7 +12820,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal*) __Instance)->templatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal*)__Instance)->templatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -12830,7 +12833,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal*) __Instance)->specializationKind = value;
+                        ((global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal*)__Instance)->specializationKind = value;
                     }
                 }
 
@@ -13201,7 +13204,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Namespace.__Internal*) __Instance)->isInline = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.Namespace.__Internal*)__Instance)->isInline = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -13311,7 +13314,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) __Instance)->macroLocation = value;
+                        ((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*)__Instance)->macroLocation = value;
                     }
                 }
 
@@ -13324,7 +13327,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) __Instance)->originalPtr = (global::System.IntPtr) value;
+                        ((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*)__Instance)->originalPtr = (global::System.IntPtr) value;
                     }
                 }
 
@@ -13337,7 +13340,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*)__Instance)->kind = value;
                     }
                 }
             }
@@ -13455,17 +13458,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->name);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->name));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*)__Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -13473,17 +13476,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->expression);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->expression));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->expression = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*)__Instance)->expression = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -13496,7 +13499,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->lineNumberStart = value;
+                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*)__Instance)->lineNumberStart = value;
                     }
                 }
 
@@ -13509,7 +13512,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->lineNumberEnd = value;
+                        ((global::CppSharp.Parser.AST.MacroDefinition.__Internal*)__Instance)->lineNumberEnd = value;
                     }
                 }
             }
@@ -13624,17 +13627,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->name);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->name));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.MacroExpansion.__Internal*)__Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -13642,17 +13645,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->text);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.MacroExpansion.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -13670,7 +13673,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->definition = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.MacroExpansion.__Internal*)__Instance)->definition = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -13916,17 +13919,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->fileName);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->fileName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->fileName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.TranslationUnit.__Internal*)__Instance)->fileName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -13939,7 +13942,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->isSystemHeader = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.TranslationUnit.__Internal*)__Instance)->isSystemHeader = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -14138,17 +14141,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*)__Instance)->fileName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -14161,7 +14164,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->archType = value;
+                        ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*)__Instance)->archType = value;
                     }
                 }
 
@@ -14463,7 +14466,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.Comment.__Internal*)__Instance)->kind = value;
                     }
                 }
             }
@@ -14807,7 +14810,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance)->hasTrailingNewline = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.InlineContentComment.__Internal*)__Instance)->hasTrailingNewline = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -14962,7 +14965,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ParagraphComment.__Internal*) __Instance)->isWhitespace = (byte) (value ? 1 : 0);
+                        ((global::CppSharp.Parser.AST.ParagraphComment.__Internal*)__Instance)->isWhitespace = (byte) (value ? 1 : 0);
                     }
                 }
 
@@ -15138,17 +15141,17 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text);
-                            var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                            __basicStringRet.Dispose(false);
-                            return __stringRet;
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
                         }
 
                         set
                         {
                             var __allocator0 = new global::Std.Allocator<sbyte>();
                             var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                            ((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                            ((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                         }
                     }
                 }
@@ -15263,7 +15266,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->commandId = value;
+                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*)__Instance)->commandId = value;
                     }
                 }
 
@@ -15281,7 +15284,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*)__Instance)->paragraphComment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -15417,7 +15420,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*) __Instance)->direction = value;
+                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*)__Instance)->direction = value;
                     }
                 }
 
@@ -15430,7 +15433,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*) __Instance)->paramIndex = value;
+                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*)__Instance)->paramIndex = value;
                     }
                 }
             }
@@ -15686,17 +15689,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -15965,17 +15968,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -16148,17 +16151,17 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text);
-                            var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                            __basicStringRet.Dispose(false);
-                            return __stringRet;
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
                         }
 
                         set
                         {
                             var __allocator0 = new global::Std.Allocator<sbyte>();
                             var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                            ((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                            ((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                         }
                     }
                 }
@@ -16259,7 +16262,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*) __Instance)->commandId = value;
+                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*)__Instance)->commandId = value;
                     }
                 }
 
@@ -16272,7 +16275,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*) __Instance)->commentRenderKind = value;
+                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*)__Instance)->commentRenderKind = value;
                     }
                 }
 
@@ -16539,17 +16542,17 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name);
-                            var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                            __basicStringRet.Dispose(false);
-                            return __stringRet;
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
                         }
 
                         set
                         {
                             var __allocator0 = new global::Std.Allocator<sbyte>();
                             var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                            ((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                            ((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*)__Instance)->name = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                         }
                     }
 
@@ -16557,17 +16560,17 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value);
-                            var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                            __basicStringRet.Dispose(false);
-                            return __stringRet;
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
                         }
 
                         set
                         {
                             var __allocator0 = new global::Std.Allocator<sbyte>();
                             var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                            ((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                            ((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*)__Instance)->value = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                         }
                     }
                 }
@@ -16663,17 +16666,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*)__Instance)->tagName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -16788,17 +16791,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*)__Instance)->tagName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -16904,17 +16907,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.TextComment.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
             }
@@ -17037,7 +17040,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->kind = value;
+                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->kind = value;
                     }
                 }
 
@@ -17045,17 +17048,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->text = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -17063,17 +17066,17 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText);
-                        var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                        __basicStringRet.Dispose(false);
-                        return __stringRet;
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
                     }
 
                     set
                     {
                         var __allocator0 = new global::Std.Allocator<sbyte>();
                         var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                        ((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->briefText = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     }
                 }
 
@@ -17091,7 +17094,7 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->fullCommentBlock = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -17435,17 +17438,17 @@ namespace CppSharp
             {
                 get
                 {
-                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->ABI);
-                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                    __basicStringRet.Dispose(false);
-                    return __stringRet;
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->ABI));
+                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                    __basicStringRet0.Dispose(false);
+                    return __stringRet0;
                 }
 
                 set
                 {
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->ABI = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->ABI = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                 }
             }
 
@@ -17458,7 +17461,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->char16Type = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->char16Type = value;
                 }
             }
 
@@ -17471,7 +17474,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->char32Type = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->char32Type = value;
                 }
             }
 
@@ -17484,7 +17487,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->int64Type = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->int64Type = value;
                 }
             }
 
@@ -17497,7 +17500,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->intMaxType = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->intMaxType = value;
                 }
             }
 
@@ -17510,7 +17513,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->intPtrType = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->intPtrType = value;
                 }
             }
 
@@ -17523,7 +17526,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->sizeType = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->sizeType = value;
                 }
             }
 
@@ -17536,7 +17539,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->uIntMaxType = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->uIntMaxType = value;
                 }
             }
 
@@ -17549,7 +17552,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->wCharType = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->wCharType = value;
                 }
             }
 
@@ -17562,7 +17565,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->wIntType = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->wIntType = value;
                 }
             }
 
@@ -17575,7 +17578,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->boolAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->boolAlign = value;
                 }
             }
 
@@ -17588,7 +17591,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->boolWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->boolWidth = value;
                 }
             }
 
@@ -17601,7 +17604,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->charAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->charAlign = value;
                 }
             }
 
@@ -17614,7 +17617,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->charWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->charWidth = value;
                 }
             }
 
@@ -17627,7 +17630,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->char16Align = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->char16Align = value;
                 }
             }
 
@@ -17640,7 +17643,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->char16Width = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->char16Width = value;
                 }
             }
 
@@ -17653,7 +17656,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->char32Align = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->char32Align = value;
                 }
             }
 
@@ -17666,7 +17669,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->char32Width = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->char32Width = value;
                 }
             }
 
@@ -17679,7 +17682,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->halfAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->halfAlign = value;
                 }
             }
 
@@ -17692,7 +17695,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->halfWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->halfWidth = value;
                 }
             }
 
@@ -17705,7 +17708,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->floatAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->floatAlign = value;
                 }
             }
 
@@ -17718,7 +17721,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->floatWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->floatWidth = value;
                 }
             }
 
@@ -17731,7 +17734,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->doubleAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->doubleAlign = value;
                 }
             }
 
@@ -17744,7 +17747,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->doubleWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->doubleWidth = value;
                 }
             }
 
@@ -17757,7 +17760,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->shortAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->shortAlign = value;
                 }
             }
 
@@ -17770,7 +17773,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->shortWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->shortWidth = value;
                 }
             }
 
@@ -17783,7 +17786,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->intAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->intAlign = value;
                 }
             }
 
@@ -17796,7 +17799,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->intWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->intWidth = value;
                 }
             }
 
@@ -17809,7 +17812,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->intMaxTWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->intMaxTWidth = value;
                 }
             }
 
@@ -17822,7 +17825,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->longAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->longAlign = value;
                 }
             }
 
@@ -17835,7 +17838,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->longWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->longWidth = value;
                 }
             }
 
@@ -17848,7 +17851,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->longDoubleAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->longDoubleAlign = value;
                 }
             }
 
@@ -17861,7 +17864,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->longDoubleWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->longDoubleWidth = value;
                 }
             }
 
@@ -17874,7 +17877,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->longLongAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->longLongAlign = value;
                 }
             }
 
@@ -17887,7 +17890,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->longLongWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->longLongWidth = value;
                 }
             }
 
@@ -17900,7 +17903,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->pointerAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->pointerAlign = value;
                 }
             }
 
@@ -17913,7 +17916,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->pointerWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->pointerWidth = value;
                 }
             }
 
@@ -17926,7 +17929,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->wCharAlign = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->wCharAlign = value;
                 }
             }
 
@@ -17939,7 +17942,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->wCharWidth = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->wCharWidth = value;
                 }
             }
 
@@ -17952,7 +17955,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->float128Align = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->float128Align = value;
                 }
             }
 
@@ -17965,7 +17968,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->float128Width = value;
+                    ((global::CppSharp.Parser.ParserTargetInfo.__Internal*)__Instance)->float128Width = value;
                 }
             }
         }
@@ -18494,17 +18497,17 @@ namespace CppSharp
             {
                 get
                 {
-                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->libraryFile);
-                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                    __basicStringRet.Dispose(false);
-                    return __stringRet;
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->libraryFile));
+                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                    __basicStringRet0.Dispose(false);
+                    return __stringRet0;
                 }
 
                 set
                 {
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->libraryFile = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->libraryFile = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                 }
             }
 
@@ -18522,7 +18525,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -18535,7 +18538,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->toolSetToUse = value;
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->toolSetToUse = value;
                 }
             }
 
@@ -18543,17 +18546,17 @@ namespace CppSharp
             {
                 get
                 {
-                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple);
-                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                    __basicStringRet.Dispose(false);
-                    return __stringRet;
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple));
+                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                    __basicStringRet0.Dispose(false);
+                    return __stringRet0;
                 }
 
                 set
                 {
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->targetTriple = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                 }
             }
 
@@ -18561,17 +18564,17 @@ namespace CppSharp
             {
                 get
                 {
-                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir);
-                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                    __basicStringRet.Dispose(false);
-                    return __stringRet;
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir));
+                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                    __basicStringRet0.Dispose(false);
+                    return __stringRet0;
                 }
 
                 set
                 {
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->currentDir = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                 }
             }
 
@@ -18584,7 +18587,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->abi = value;
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->abi = value;
                 }
             }
 
@@ -18597,7 +18600,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->noStandardIncludes = (byte) (value ? 1 : 0);
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->noStandardIncludes = (byte) (value ? 1 : 0);
                 }
             }
 
@@ -18610,7 +18613,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->noBuiltinIncludes = (byte) (value ? 1 : 0);
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->noBuiltinIncludes = (byte) (value ? 1 : 0);
                 }
             }
 
@@ -18623,7 +18626,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->microsoftMode = (byte) (value ? 1 : 0);
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->microsoftMode = (byte) (value ? 1 : 0);
                 }
             }
 
@@ -18636,7 +18639,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->verbose = (byte) (value ? 1 : 0);
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->verbose = (byte) (value ? 1 : 0);
                 }
             }
 
@@ -18649,7 +18652,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->unityBuild = (byte) (value ? 1 : 0);
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->unityBuild = (byte) (value ? 1 : 0);
                 }
             }
 
@@ -18842,17 +18845,17 @@ namespace CppSharp
             {
                 get
                 {
-                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->fileName);
-                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                    __basicStringRet.Dispose(false);
-                    return __stringRet;
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->fileName));
+                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                    __basicStringRet0.Dispose(false);
+                    return __stringRet0;
                 }
 
                 set
                 {
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->fileName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*)__Instance)->fileName = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                 }
             }
 
@@ -18860,17 +18863,17 @@ namespace CppSharp
             {
                 get
                 {
-                    var __basicStringRet = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->message);
-                    var __stringRet = global::Std.BasicStringExtensions.CStr(__basicStringRet);
-                    __basicStringRet.Dispose(false);
-                    return __stringRet;
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->message));
+                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                    __basicStringRet0.Dispose(false);
+                    return __stringRet0;
                 }
 
                 set
                 {
                     var __allocator0 = new global::Std.Allocator<sbyte>();
                     var __basicString0 = global::Std.BasicStringExtensions.BasicString(value, __allocator0);
-                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->message = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*)__Instance)->message = *(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                 }
             }
 
@@ -18883,7 +18886,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->level = value;
+                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*)__Instance)->level = value;
                 }
             }
 
@@ -18896,7 +18899,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->lineNumber = value;
+                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*)__Instance)->lineNumber = value;
                 }
             }
 
@@ -18909,7 +18912,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->columnNumber = value;
+                    ((global::CppSharp.Parser.ParserDiagnostic.__Internal*)__Instance)->columnNumber = value;
                 }
             }
         }
@@ -19075,7 +19078,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->kind = value;
+                    ((global::CppSharp.Parser.ParserResult.__Internal*)__Instance)->kind = value;
                 }
             }
 
@@ -19093,7 +19096,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->library = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((global::CppSharp.Parser.ParserResult.__Internal*)__Instance)->library = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -19111,7 +19114,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->targetInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((global::CppSharp.Parser.ParserResult.__Internal*)__Instance)->targetInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -19129,7 +19132,7 @@ namespace CppSharp
 
                 set
                 {
-                    ((global::CppSharp.Parser.ParserResult.__Internal*) __Instance)->codeParser = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((global::CppSharp.Parser.ParserResult.__Internal*)__Instance)->codeParser = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 

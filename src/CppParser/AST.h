@@ -110,7 +110,9 @@ enum class ExceptionSpecType
     Dynamic,
     MSAny,
     BasicNoexcept,
-    ComputedNoexcept,
+    DependentNoexcept,
+    NoexceptFalse,
+    NoexceptTrue,
     Unevaluated,
     Uninstantiated,
     Unparsed
@@ -695,6 +697,7 @@ enum class CXXOperatorKind
     ExclaimEqual,
     LessEqual,
     GreaterEqual,
+    Spaceship,
     AmpAmp,
     PipePipe,
     PlusPlus,
