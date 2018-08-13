@@ -501,7 +501,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
                                                   const clang::Decl* D)
 {
     auto& SM = C->getSourceManager();
-    auto startLoc = SM.getExpansionLoc(D->getLocStart());
+    auto startLoc = SM.getExpansionLoc(D->getBeginLoc());
     auto startOffset = SM.getFileOffset(startLoc);
 
     if (clang::dyn_cast_or_null<clang::TranslationUnitDecl>(D) || !startLoc.isValid())
@@ -519,7 +519,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     if(!prevDecl || !IsExplicit(prevDecl))
         return lineBeginLoc;
 
-    auto prevDeclEndLoc = SM.getExpansionLoc(prevDecl->getLocEnd());
+    auto prevDeclEndLoc = SM.getExpansionLoc(prevDecl->getEndLoc());
     auto prevDeclEndOffset = SM.getFileOffset(prevDeclEndLoc);
 
     if(SM.getFileID(prevDeclEndLoc) != SM.getFileID(startLoc))
@@ -532,7 +532,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
         return lineBeginLoc;
 
     // Declarations don't share same macro expansion
-    if(SM.getExpansionLoc(prevDecl->getLocStart()) != startLoc)
+    if(SM.getExpansionLoc(prevDecl->getBeginLoc()) != startLoc)
         return prevDeclEndLoc;
 
     return GetDeclStartLocation(C, prevDecl);
@@ -891,7 +891,7 @@ static bool HasLayout(const clang::RecordDecl* Record)
 
 bool Parser::IsSupported(const clang::NamedDecl* ND)
 {
-    return !c->getSourceManager().isInSystemHeader(ND->getLocStart()) ||
+    return !c->getSourceManager().isInSystemHeader(ND->getBeginLoc()) ||
         (llvm::isa<clang::RecordDecl>(ND) &&
          supportedStdTypes.find(ND->getName()) != supportedStdTypes.end());
 }
@@ -900,7 +900,7 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
-    return !c->getSourceManager().isInSystemHeader(MD->getLocStart()) ||
+    return !c->getSourceManager().isInSystemHeader(MD->getBeginLoc()) ||
         isa<CXXConstructorDecl>(MD) || isa<CXXDestructorDecl>(MD) ||
         (MD->getDeclName().isIdentifier() && MD->getName() == "c_str" &&
          supportedStdTypes.find(MD->getParent()->getName()) !=
@@ -918,7 +918,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     {
         auto headStartLoc = GetDeclStartLocation(c.get(), Record);
         auto headEndLoc = Record->getLocation(); // identifier location
-        auto bodyEndLoc = Record->getLocEnd();
+        auto bodyEndLoc = Record->getEndLoc();
 
         auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
         auto bodyRange = clang::SourceRange(headEndLoc, bodyEndLoc);
@@ -949,7 +949,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     for (auto FD : Record->fields())
         WalkFieldCXX(FD, RC);
 
-    if (c->getSourceManager().isInSystemHeader(Record->getLocStart()))
+    if (c->getSourceManager().isInSystemHeader(Record->getBeginLoc()))
     {
         if (supportedStdTypes.find(Record->getName()) != supportedStdTypes.end())
         {
@@ -2924,7 +2924,7 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
 
     auto Diagnostics = c->getSema().getDiagnostics().getClient();
     auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
-    c->getSema().InstantiateClassTemplateSpecialization(CTS->getLocStart(),
+    c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
         CTS, TSK_ImplicitInstantiation, false);
 }
 
@@ -3051,7 +3051,7 @@ void Parser::MarkValidity(Function* F)
     if (!FD->getTemplateInstantiationPattern() ||
         FD->getTemplateInstantiationPattern()->isLateTemplateParsed() ||
         !FD->isExternallyVisible() ||
-        c->getSourceManager().isInSystemHeader(FD->getLocStart()))
+        c->getSourceManager().isInSystemHeader(FD->getBeginLoc()))
         return;
 
     auto Diagnostics = c->getSema().getDiagnostics().getClient();
@@ -3060,7 +3060,7 @@ void Parser::MarkValidity(Function* F)
     auto TUScope = c->getSema().TUScope;
     std::stack<Scope> Scopes = GetScopesFor(FD);
     c->getSema().TUScope = &Scopes.top();
-    c->getSema().InstantiateFunctionDefinition(FD->getLocStart(), FD,
+    c->getSema().InstantiateFunctionDefinition(FD->getBeginLoc(), FD,
         /*Recursive*/true);
     c->getSema().TUScope = TUScope;
     F->isInvalid = FD->isInvalidDecl();
@@ -3133,7 +3133,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     const auto& Body = GetFunctionBody(FD);
     F->body = Body;
 
-    clang::SourceLocation ParamStartLoc = FD->getLocStart();
+    clang::SourceLocation ParamStartLoc = FD->getBeginLoc();
     clang::SourceLocation ResultLoc;
 
     auto FTSI = FD->getTypeSourceInfo();
@@ -3149,15 +3149,15 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             assert (!FTInfo.isNull());
 
             ParamStartLoc = FTInfo.getLParenLoc();
-            ResultLoc = FTInfo.getReturnLoc().getLocStart();
+            ResultLoc = FTInfo.getReturnLoc().getBeginLoc();
         }
     }
 
-    clang::SourceLocation BeginLoc = FD->getLocStart();
+    clang::SourceLocation BeginLoc = FD->getBeginLoc();
     if (ResultLoc.isValid())
         BeginLoc = ResultLoc;
 
-    clang::SourceRange Range(BeginLoc, FD->getLocEnd());
+    clang::SourceRange Range(BeginLoc, FD->getEndLoc());
 
     std::string Sig;
     if (GetDeclText(Range, Sig))
@@ -3168,7 +3168,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
         auto P = WalkParameter(VD, ParamStartLoc);
         F->Parameters.push_back(P);
 
-        ParamStartLoc = VD->getLocEnd();
+        ParamStartLoc = VD->getEndLoc();
     }
 
     auto& CXXABI = codeGenTypes->getCXXABI();
@@ -3283,8 +3283,8 @@ void Parser::WalkAST()
     auto TU = c->getASTContext().getTranslationUnitDecl();
     for (auto D : TU->decls())
     {
-        if (D->getLocStart().isValid() &&
-            !c->getSourceManager().isInSystemHeader(D->getLocStart()))
+        if (D->getBeginLoc().isValid() &&
+            !c->getSourceManager().isInSystemHeader(D->getBeginLoc()))
             WalkDeclarationDef(D);
     }
 }
@@ -3654,8 +3654,8 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
     auto IsDeclExplicit = IsExplicit(D);
     if (IsDeclExplicit)
     {
-        Decl->lineNumberStart = c->getSourceManager().getExpansionLineNumber(D->getLocStart());
-        Decl->lineNumberEnd = c->getSourceManager().getExpansionLineNumber(D->getLocEnd());
+        Decl->lineNumberStart = c->getSourceManager().getExpansionLineNumber(D->getBeginLoc());
+        Decl->lineNumberEnd = c->getSourceManager().getExpansionLineNumber(D->getEndLoc());
     }
     else
     {
@@ -3676,7 +3676,7 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
         else if (IsDeclExplicit)
         {
             auto startLoc = GetDeclStartLocation(c.get(), D);
-            auto endLoc = D->getLocEnd();
+            auto endLoc = D->getEndLoc();
             auto range = clang::SourceRange(startLoc, endLoc);
 
             HandlePreprocessedEntities(Decl, range);
@@ -4445,7 +4445,7 @@ Declaration* Parser::GetDeclarationFromFriend(clang::NamedDecl* FriendDecl)
         {
             auto DecomposedLocStart = SM.getDecomposedLoc(it->getLocation());
             int NewLineNumberStart = SM.getLineNumber(DecomposedLocStart.first, DecomposedLocStart.second);
-            auto DecomposedLocEnd = SM.getDecomposedLoc(it->getLocEnd());
+            auto DecomposedLocEnd = SM.getDecomposedLoc(it->getEndLoc());
             int NewLineNumberEnd = SM.getLineNumber(DecomposedLocEnd.first, DecomposedLocEnd.second);
             if (NewLineNumberStart < MinLineNumberStart)
             {
