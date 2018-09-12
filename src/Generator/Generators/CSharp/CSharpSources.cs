@@ -2032,7 +2032,7 @@ namespace CppSharp.Generators.CSharp
 
             var dtor = @class.Destructors.FirstOrDefault();
             if (dtor != null && dtor.Access != AccessSpecifier.Private &&
-                @class.HasNonTrivialDestructor && !dtor.IsPure)
+                @class.HasNonTrivialDestructor && !@class.IsAbstract)
             {
                 NativeLibrary library;
                 if (!Options.CheckSymbols ||
