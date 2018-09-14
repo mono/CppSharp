@@ -44,6 +44,9 @@ public class CommonTests : GeneratorTestFixture
         e = EnumWithUnderscores.CAPITALS_More;
         e = EnumWithUnderscores.UsesDigits1_0;
         e.GetHashCode();
+        ItemsDifferByCase itemsDifferByCase = ItemsDifferByCase.Case_a;
+        itemsDifferByCase = ItemsDifferByCase.CaseA;
+        itemsDifferByCase.GetHashCode();
         Common.SMallFollowedByCapital();
         using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
 

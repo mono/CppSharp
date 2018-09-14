@@ -1427,3 +1427,9 @@ namespace hasUnnamedDecl
     {
     }
 }
+
+enum ItemsDifferByCase
+{
+    Case_a,
+    Case_A
+};

@@ -364,9 +364,12 @@ namespace CppSharp.Passes
 
             for (int i = sb.Length - 1; i >= 0; i--)
             {
-                // ensure separation by not ending up with more capitals or digits in a row than before
-                if (sb[i] != '_' || (i > 0 && (char.IsUpper(sb[i - 1]) ||
-                    (i < sb.Length - 1 && char.IsDigit(sb[i + 1]) && char.IsDigit(sb[i - 1])))))
+                if (sb[i] != '_' ||
+                    // lower case intentional if the first character is already upper case
+                    (i + 1 < sb.Length && char.IsLower(sb[i + 1]) && char.IsUpper(sb[0])) ||
+                    // don't end up with more capitals or digits in a row than before
+                    (i > 0 && (char.IsUpper(sb[i - 1]) ||
+                     (i < sb.Length - 1 && char.IsDigit(sb[i + 1]) && char.IsDigit(sb[i - 1])))))
                     continue;
 
                 if (i < sb.Length - 1)
