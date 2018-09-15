@@ -362,20 +362,7 @@ namespace CppSharp.Passes
             if (sb[0] == '@')
                 sb.Remove(0, 1);
 
-            for (int i = sb.Length - 1; i >= 0; i--)
-            {
-                if (sb[i] != '_' ||
-                    // lower case intentional if the first character is already upper case
-                    (i + 1 < sb.Length && char.IsLower(sb[i + 1]) && char.IsUpper(sb[0])) ||
-                    // don't end up with more capitals or digits in a row than before
-                    (i > 0 && (char.IsUpper(sb[i - 1]) ||
-                     (i < sb.Length - 1 && char.IsDigit(sb[i + 1]) && char.IsDigit(sb[i - 1])))))
-                    continue;
-
-                if (i < sb.Length - 1)
-                    sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
-                sb.Remove(i, 1);
-            }
+            RemoveUnderscores(sb);
 
             var @class = decl as Class;
             switch (pattern)
@@ -395,6 +382,24 @@ namespace CppSharp.Passes
             }
 
             return sb.ToString();
+        }
+
+        private static void RemoveUnderscores(StringBuilder sb)
+        {
+            for (int i = sb.Length - 1; i >= 0; i--)
+            {
+                if (sb[i] != '_' ||
+                    // lower case intentional if the first character is already upper case
+                    (i + 1 < sb.Length && char.IsLower(sb[i + 1]) && char.IsUpper(sb[0])) ||
+                    // don't end up with more capitals or digits in a row than before
+                    (i > 0 && (char.IsUpper(sb[i - 1]) ||
+                     (i < sb.Length - 1 && char.IsDigit(sb[i + 1]) && char.IsDigit(sb[i - 1])))))
+                    continue;
+
+                if (i < sb.Length - 1)
+                    sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
+                sb.Remove(i, 1);
+            }
         }
     }
 
