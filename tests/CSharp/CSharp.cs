@@ -142,10 +142,7 @@ namespace CppSharp.Tests
             ClassTemplateSpecialization classTemplateSpecialization;
             var templateSpecializationType = type as TemplateSpecializationType;
             if (templateSpecializationType != null)
-            {
-                classTemplateSpecialization = templateSpecializationType.GetClassTemplateSpecialization();
-                return classTemplateSpecialization.Arguments[0].Type.Type;
-            }
+                return templateSpecializationType.Arguments[0].Type.Type;
             var declaration = ((TagType) type).Declaration;
             if (declaration.IsDependent)
                 return new TagType(((Class) declaration).TemplateParameters[0]);
