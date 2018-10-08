@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Tests.h"
 #include "AnotherUnit.h"
 
@@ -606,6 +608,59 @@ enum class UsedInTemplatedIndexer
     Item2
 };
 
+template <typename T>
+class DLL_API QFlags
+{
+    typedef int Int;
+    typedef int (*Zero);
+public:
+    QFlags(T t);
+    QFlags(Zero = 0);
+    operator Int();
+private:
+    int flag;
+};
+
+template <typename T>
+QFlags<T>::QFlags(T t) : flag(Int(t))
+{
+}
+
+template <typename T>
+QFlags<T>::QFlags(Zero) : flag(Int(0))
+{
+}
+
+template <typename T>
+QFlags<T>::operator Int()
+{
+    return flag;
+}
+
+template <typename T>
+class HasCtorWithMappedToEnum
+{
+public:
+    HasCtorWithMappedToEnum(QFlags<T> t);
+    HasCtorWithMappedToEnum(T t);
+};
+
+template <typename T>
+HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(QFlags<T> t)
+{
+}
+
+template <typename T>
+HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(T t)
+{
+}
+
+enum class TestFlag
+{
+    Flag1,
+    Flag2
+};
+
 // we optimise specialisations so that only actually used ones are wrapped
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
@@ -643,6 +698,7 @@ template class DLL_API TemplateWithIndexer<T1>;
 template class DLL_API TemplateWithIndexer<T2*>;
 template class DLL_API TemplateWithIndexer<float>;
 template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
+template class DLL_API HasCtorWithMappedToEnum<TestFlag>;
 
 class TestForwardedClassInAnotherUnit;
 

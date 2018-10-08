@@ -1,9 +1,12 @@
+#pragma once
+
 #include "../Tests.h"
 #include <cstdint>
 #include <vector>
 #include <limits>
 #include <string>
 #include "AnotherUnit.h"
+#include "CSharpTemplates.h"
 
 class DLL_API Foo
 {
@@ -184,46 +187,12 @@ private:
 
 Proprietor::Proprietor() : _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1) {}
 
-template <typename T>
-class DLL_API QFlags
-{
-    typedef int Int;
-    typedef int (*Zero);
-public:
-    QFlags(T t);
-    QFlags(Zero = 0);
-    operator Int();
-private:
-    int flag;
-};
-
-template <typename T>
-QFlags<T>::QFlags(T t) : flag(Int(t))
-{
-}
-
-template <typename T>
-QFlags<T>::QFlags(Zero) : flag(Int(0))
-{
-}
-
-template <typename T>
-QFlags<T>::operator Int()
-{
-    return flag;
-}
-
-enum class TestFlag
-{
-    Flag1,
-    Flag2
-};
-
 class DLL_API ComplexType
 {
 public:
     ComplexType();
     ComplexType(const QFlags<TestFlag> f);
+    ComplexType(const HasCtorWithMappedToEnum<TestFlag> f);
     int check();
     QFlags<TestFlag> returnsQFlags();
     void takesQFlags(const QFlags<int> f);

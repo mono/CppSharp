@@ -35,6 +35,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         new InheritanceBuffer().Dispose();
         new HasProtectedVirtual().Dispose();
         new Proprietor(5).Dispose();
+        new HasCtorWithMappedToEnum<TestFlag>(TestFlag.Flag1).Dispose();
         using (var testOverrideFromSecondaryBase = new TestOverrideFromSecondaryBase())
         {
             testOverrideFromSecondaryBase.function();

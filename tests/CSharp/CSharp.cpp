@@ -1,4 +1,6 @@
-﻿#include "CSharp.h"
+﻿#pragma once
+
+#include "CSharp.h"
 
 Foo::Foo(const char* name)
 {
@@ -322,9 +324,12 @@ ComplexType::ComplexType() : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
 {
 }
 
-ComplexType::ComplexType(const QFlags<TestFlag> f) : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
+ComplexType::ComplexType(const QFlags<TestFlag> f) : qFlags(f)
 {
-    qFlags = f;
+}
+
+ComplexType::ComplexType(const HasCtorWithMappedToEnum<TestFlag> f)
+{
 }
 
 int ComplexType::check()

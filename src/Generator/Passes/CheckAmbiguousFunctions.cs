@@ -2,6 +2,7 @@
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
@@ -65,17 +66,17 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private static bool CheckDefaultParametersForAmbiguity(Function function, Function overload)
+        private bool CheckDefaultParametersForAmbiguity(Function function, Function overload)
         {
             var commonParameters = Math.Min(function.Parameters.Count, overload.Parameters.Count);
 
             var i = 0;
             for (; i < commonParameters; ++i)
             {
-                var funcParam = function.Parameters[i];
-                var overloadParam = overload.Parameters[i];
+                AST.Type funcType = GetFinalType(function.Parameters[i]);
+                AST.Type overloadType = GetFinalType(overload.Parameters[i]);
 
-                if (!funcParam.QualifiedType.Equals(overloadParam.QualifiedType))
+                if (!funcType.Equals(overloadType))
                     return false;
             }
 
@@ -99,6 +100,30 @@ namespace CppSharp.Passes
                 function.ExplicitlyIgnore();
 
             return true;
+        }
+
+        private AST.Type GetFinalType(Parameter parameter)
+        {
+            TypeMap typeMap;
+            if (Context.TypeMaps.FindTypeMap(parameter.Type, out typeMap))
+            {
+                var typePrinterContext = new TypePrinterContext
+                {
+                    Kind = TypePrinterContextKind.Managed,
+                    Parameter = parameter,
+                    Type = typeMap.Type
+                };
+
+                switch (Options.GeneratorKind)
+                {
+                    case Generators.GeneratorKind.CLI:
+                        return typeMap.CLISignatureType(typePrinterContext).Desugar();
+                    case Generators.GeneratorKind.CSharp:
+                        return typeMap.CSharpSignatureType(typePrinterContext).Desugar();
+                }
+            }
+
+            return parameter.Type.Desugar();
         }
 
         private static bool CheckConstnessForAmbiguity(Function function, Function overload)
