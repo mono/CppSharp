@@ -26,6 +26,7 @@ public:
     void takesStdVector(const std::vector<int>& vector);
     int width();
     void set_width(int value);
+    const int& returnConstRef();
 
     static const int rename = 5;
     static int makeFunctionCall();

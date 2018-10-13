@@ -186,8 +186,7 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Function != null &&
                     Context.Function.OperatorKind == CXXOperatorKind.Subscript)
                 {
-                    if (type.IsPrimitiveType(primitive) ||
-                        new QualifiedType(pointer, quals).IsConstRefToPrimitive())
+                    if (type.IsPrimitiveType(primitive))
                     {
                         Context.Return.Write("*");
                     }
@@ -198,6 +197,9 @@ namespace CppSharp.Generators.CSharp
                             Context.Return.Write($"({templateParameter.Parameter.Name}) (object) *");
                     }
                 }
+
+                if (new QualifiedType(pointer, quals).IsConstRefToPrimitive())
+                    Context.Return.Write("*");
 
                 Context.Return.Write(Context.ReturnVarName);
                 return true;

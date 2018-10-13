@@ -54,6 +54,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
                 hasSecondaryBaseWithAbstractWithDefaultArg.Abstract();
                 hasSecondaryBaseWithAbstractWithDefaultArg.AbstractWithNoDefaultArg(foo);
             }
+            Assert.That(foo.ReturnConstRef(), Is.EqualTo(5));
         }
         using (var hasOverride = new HasOverrideOfHasPropertyWithDerivedType())
             hasOverride.CauseRenamingError();

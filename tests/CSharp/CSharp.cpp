@@ -60,6 +60,11 @@ void Foo::set_width(int value)
 {
 }
 
+const int& Foo::returnConstRef()
+{
+    return rename;
+}
+
 const int Foo::rename;
 
 int Foo::makeFunctionCall()
