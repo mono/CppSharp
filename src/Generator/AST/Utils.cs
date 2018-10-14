@@ -204,11 +204,11 @@ namespace CppSharp.AST
             return false;
         }
 
-        private static bool IsMappedToPrimitive(ITypeMapDatabase typeMaps,
-            Type type, ClassTemplateSpecialization specialization)
+        public static bool IsMappedToPrimitive(ITypeMapDatabase typeMaps,
+            Type type, Declaration declaration)
         {
             TypeMap typeMap;
-            if (!typeMaps.FindTypeMap(specialization, out typeMap))
+            if (!typeMaps.FindTypeMap(declaration, out typeMap))
                 return false;
 
             var typePrinterContext = new TypePrinterContext { Type = type };

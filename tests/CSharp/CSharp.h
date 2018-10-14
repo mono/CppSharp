@@ -37,6 +37,7 @@ public:
     int operator --();
 
     bool btest[5];
+    QFlags<TestFlag> publicFieldMappedToEnum;
 
 protected:
     int P;

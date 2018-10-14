@@ -1180,7 +1180,8 @@ namespace CppSharp.Generators.CSharp
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
-                if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType)
+                if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType &&
+                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, field.Type, typeClass))
                     returnVar = $"new {CSharpTypePrinter.IntPtrType}(&{returnVar})";
             }
 

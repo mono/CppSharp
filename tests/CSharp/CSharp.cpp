@@ -2,13 +2,13 @@
 
 #include "CSharp.h"
 
-Foo::Foo(const char* name)
+Foo::Foo(const char* name) : publicFieldMappedToEnum(TestFlag::Flag2)
 {
     A = 10;
     P = 50;
 }
 
-Foo::Foo(int a, int p)
+Foo::Foo(int a, int p) : publicFieldMappedToEnum(TestFlag::Flag2)
 {
     A = a;
     P = p;
