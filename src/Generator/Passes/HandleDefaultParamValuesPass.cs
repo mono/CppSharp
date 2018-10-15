@@ -140,8 +140,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            result = "null";
-            return true;
+            return false;
         }
 
         private bool? CheckForDefaultConstruct(Type desugared, Expression expression,

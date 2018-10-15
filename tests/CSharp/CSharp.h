@@ -51,8 +51,14 @@ public:
     Quux(int i);
     Quux(char c);
     Quux(Foo f);
+    ~Quux();
+
+    Foo* setterWithDefaultOverload();
+    void setSetterWithDefaultOverload(Foo* value = new Foo());
+
 private:
     int priv;
+    Foo* _setterWithDefaultOverload;
 };
 
 class Bar;
@@ -384,6 +390,7 @@ public:
     MethodsWithDefaultValues(float a, Zero b = 0);
     MethodsWithDefaultValues(double d, QList<QColor> list = QList<QColor>());
     MethodsWithDefaultValues(QRect* pointer, float f = 1, int i = std::numeric_limits<double>::infinity());
+    ~MethodsWithDefaultValues();
     void defaultPointer(Foo* ptr = 0);
     void defaultVoidStar(void* ptr = 0);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());

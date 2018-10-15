@@ -63,6 +63,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             new Bar(qux).Dispose();
         }
+        using (var quux = new Quux())
+        {
+            quux.SetterWithDefaultOverload = null;
+            quux.SetSetterWithDefaultOverload();
+        }
         using (ComplexType complexType = TestFlag.Flag1)
         {
         }

@@ -98,27 +98,44 @@ const Foo& Bar::operator[](int i) const
 }
 
 
-Quux::Quux()
+Quux::Quux() : _setterWithDefaultOverload(0)
 {
 
 }
 
-Quux::Quux(int i)
+Quux::Quux(int i) : Quux()
 {
 
 }
 
-Quux::Quux(char c)
+Quux::Quux(char c) : Quux()
 {
 
 }
 
-Quux::Quux(Foo f)
+Quux::Quux(Foo f) : Quux()
 {
 
 }
 
+Quux::~Quux()
+{
+    if (_setterWithDefaultOverload)
+    {
+        delete _setterWithDefaultOverload;
+        _setterWithDefaultOverload = 0;
+    }
+}
 
+Foo* Quux::setterWithDefaultOverload()
+{
+    return _setterWithDefaultOverload;
+}
+
+void Quux::setSetterWithDefaultOverload(Foo* value)
+{
+    _setterWithDefaultOverload = value;
+}
 
 QColor::QColor()
 {
@@ -524,6 +541,10 @@ MethodsWithDefaultValues::MethodsWithDefaultValues(double d, QList<QColor> list)
 }
 
 MethodsWithDefaultValues::MethodsWithDefaultValues(QRect* pointer, float f, int i)
+{
+}
+
+MethodsWithDefaultValues::~MethodsWithDefaultValues()
 {
 }
 

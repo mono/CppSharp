@@ -2450,6 +2450,15 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateOverloadCall(Function function)
         {
+            if (function.OriginalFunction.GenerationKind == GenerationKind.Internal)
+            {
+                var property = ((Class) function.Namespace).Properties.First(
+                    p => p.SetMethod == function.OriginalFunction);
+                WriteLine($@"{property.Name} = {ExpressionPrinter.VisitParameter(
+                    function.Parameters.First(p => p.Kind == ParameterKind.Regular))};");
+                return;
+            }
+
             for (int i = 0, j = 0; i < function.Parameters.Count; i++)
             {
                 var parameter = function.Parameters[i];
