@@ -67,7 +67,7 @@ namespace CppSharp.Passes
             var desugared = type.Desugar();
 
             if (!desugared.IsPrimitiveTypeConvertibleToRef() &&
-                expression.String == "0")
+                (expression.String == "0" || expression.String == "nullptr"))
             {
                 result = $"default({desugared})";
                 return true;

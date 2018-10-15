@@ -391,7 +391,7 @@ public:
     MethodsWithDefaultValues(double d, QList<QColor> list = QList<QColor>());
     MethodsWithDefaultValues(QRect* pointer, float f = 1, int i = std::numeric_limits<double>::infinity());
     ~MethodsWithDefaultValues();
-    void defaultPointer(Foo* ptr = 0);
+    void defaultPointer(Foo* ptr1 = 0, Foo* ptr2 = nullptr);
     void defaultVoidStar(void* ptr = 0);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());
     void defaultChar(char c = 'a');

@@ -548,7 +548,7 @@ MethodsWithDefaultValues::~MethodsWithDefaultValues()
 {
 }
 
-void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
+void MethodsWithDefaultValues::defaultPointer(Foo *ptr1, Foo *ptr2)
 {
 }
 
