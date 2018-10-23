@@ -251,12 +251,12 @@ namespace CppSharp
 
             if (Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
                 if (Options.GenerateDefaultValuesForArguments)
                 {
                     TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
                     TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
                 }
+                TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
             }
             TranslationUnitPasses.AddPass(new DelegatesPass());

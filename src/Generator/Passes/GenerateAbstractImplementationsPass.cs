@@ -64,7 +64,8 @@ namespace CppSharp.Passes
                         Namespace = internalImpl,
                         OriginalFunction = abstractMethod,
                         IsPure = false,
-                        SynthKind = FunctionSynthKind.AbstractImplCall
+                        SynthKind = abstractMethod.SynthKind == FunctionSynthKind.DefaultValueOverload ?
+                            FunctionSynthKind.DefaultValueOverload : FunctionSynthKind.AbstractImplCall
                     };
                 impl.OverriddenMethods.Clear();
                 impl.OverriddenMethods.Add(abstractMethod);
@@ -120,7 +121,7 @@ namespace CppSharp.Passes
                     }
                     else
                     {
-                        abstractMethods.RemoveAt(i);                        
+                        abstractMethods.RemoveAt(i);
                     }
                 }
             }

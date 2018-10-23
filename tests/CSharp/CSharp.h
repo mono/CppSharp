@@ -444,6 +444,12 @@ private:
     Foo m_foo;
 };
 
+class DLL_API HasPureVirtualWithDefaultArg
+{
+public:
+    virtual void pureVirtualWithDefaultArg(Foo* foo = nullptr) = 0;
+};
+
 class DLL_API HasOverridesWithChangedAccessBase
 {
 public:
