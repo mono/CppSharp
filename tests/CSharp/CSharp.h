@@ -307,7 +307,7 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
 struct DLL_API QGenericArgument
 {
 public:
-    QGenericArgument(const char* name = 0);
+    QGenericArgument(const char* name = 0, const void *data = 0);
     void* fixedArrayInValueType[1];
 private:
     const char* _name;

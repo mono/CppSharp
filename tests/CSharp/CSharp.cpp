@@ -494,7 +494,7 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs)
     return static_cast<UntypedFlags>(static_cast<int>(lhs) | static_cast<int>(rhs));
 }
 
-QGenericArgument::QGenericArgument(const char *name)
+QGenericArgument::QGenericArgument(const char *name, const void* data)
 {
     _name = name;
 }
