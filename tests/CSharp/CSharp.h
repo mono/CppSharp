@@ -393,6 +393,7 @@ public:
     ~MethodsWithDefaultValues();
     void defaultPointer(Foo* ptr1 = 0, Foo* ptr2 = nullptr);
     void defaultVoidStar(void* ptr = 0);
+    void defaultFunctionPointer(void(*functionPtr)(int p) = nullptr);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());
     void defaultChar(char c = 'a');
     void defaultEmptyChar(char c = 0);

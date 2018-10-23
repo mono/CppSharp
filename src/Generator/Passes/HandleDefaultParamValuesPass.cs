@@ -69,7 +69,8 @@ namespace CppSharp.Passes
             if (!desugared.IsPrimitiveTypeConvertibleToRef() &&
                 (expression.String == "0" || expression.String == "nullptr"))
             {
-                result = $"default({desugared})";
+                result = desugared.GetPointee()?.Desugar() is FunctionType ?
+                    "null" : $"default({desugared})";
                 return true;
             }
 
@@ -121,13 +122,6 @@ namespace CppSharp.Passes
         {
             if (!desugared.IsPointer())
                 return false;
-
-            // IntPtr.Zero is not a constant
-            if (desugared.IsPointerToPrimitiveType(PrimitiveType.Void))
-            {
-                result = "new global::System.IntPtr()";
-                return true;
-            }
 
             if (desugared.IsPrimitiveTypeConvertibleToRef())
                 return false;

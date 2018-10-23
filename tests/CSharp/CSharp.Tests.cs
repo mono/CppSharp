@@ -215,6 +215,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             methodsWithDefaultValues.DefaultPointer();
             methodsWithDefaultValues.DefaultVoidStar();
+            methodsWithDefaultValues.DefaultFunctionPointer();
             methodsWithDefaultValues.DefaultValueType();
             methodsWithDefaultValues.DefaultChar();
             methodsWithDefaultValues.DefaultEmptyChar();

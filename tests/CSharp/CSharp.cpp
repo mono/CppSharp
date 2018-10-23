@@ -556,6 +556,10 @@ void MethodsWithDefaultValues::defaultVoidStar(void* ptr)
 {
 }
 
+void MethodsWithDefaultValues::defaultFunctionPointer(void(*functionPtr)(int p))
+{
+}
+
 void MethodsWithDefaultValues::defaultValueType(QGenericArgument valueType)
 {
 }
