@@ -183,13 +183,17 @@ function GccVersion()
     compiler = "gcc"
   end
   local out = os.outputof(compiler.." -v")
+  print(out)
   local version = string.match(out, "gcc version [0-9\\.]+")
+  print(string.format("Version %s\n", version))
   return string.sub(version, 13)
 end
 
 function UseCxx11ABI()
   if os.istarget("linux") and GccVersion() >= '4.9.0' and _OPTIONS["no-cxx11-abi"] == nil then
+    print("CXX11 ABI: true")
     return true
   end
+  print("CXX11 ABI: false")
   return false
 end
