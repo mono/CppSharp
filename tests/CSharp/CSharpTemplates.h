@@ -32,6 +32,8 @@ public:
     IndependentFields();
     IndependentFields(const IndependentFields<T>& other);
     IndependentFields(const T& t);
+    IndependentFields(T1* t1);
+    IndependentFields(T2* t2);
     IndependentFields(int i);
     ~IndependentFields();
     explicit IndependentFields(const std::map<T, T> &other);
@@ -63,6 +65,16 @@ IndependentFields<T>::IndependentFields(const IndependentFields<T>& other)
 
 template <typename T>
 IndependentFields<T>::IndependentFields(const T& t) : independent(1)
+{
+}
+
+template <typename T>
+IndependentFields<T>::IndependentFields(T1* t1) : independent(1)
+{
+}
+
+template <typename T>
+IndependentFields<T>::IndependentFields(T2* t2) : independent(1)
 {
 }
 

@@ -84,6 +84,16 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
         }
 
+        using (var t1 = new T1())
+        using (new IndependentFields<int>(t1))
+        {
+        }
+
+        using (var t2 = new T2())
+        using (new IndependentFields<int>(t2))
+        {
+        }
+
 #pragma warning restore 0168
 #pragma warning restore 0219
     }

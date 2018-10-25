@@ -2598,6 +2598,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     // To avoid ambiguity when having the multiple inheritance pass enabled
                     var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    paramType = (paramType.GetPointee() ?? paramType).Desugar();
                     Class paramClass;
                     Class @interface = null;
                     if (paramType.TryGetClass(out paramClass))
@@ -3175,8 +3176,10 @@ namespace CppSharp.Generators.CSharp
             var internalParams = function.GatherInternalParams(
                 Context.ParserOptions.IsItaniumLikeAbi);
             var overloads = function.Namespace.GetOverloads(function)
-                .Where(f => !f.Ignore && (isForDelegate || internalParams.SequenceEqual(
-                    f.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi),
+                .Where(f => (!f.Ignore ||
+                    (f.OriginalFunction != null && !f.OriginalFunction.Ignore)) &&
+                    (isForDelegate || internalParams.SequenceEqual(
+                        f.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi),
                     new MarshallingParamComparer()))).ToList();
             var index = -1;
             if (overloads.Count > 1)

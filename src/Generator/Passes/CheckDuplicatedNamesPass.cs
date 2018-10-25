@@ -2,24 +2,24 @@
 using System.Globalization;
 using System.Linq;
 using CppSharp.AST;
-using CppSharp.Generators;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
 {
     class DeclarationName
     {
-        private readonly Dictionary<string, int> methodSignatures;
+        private readonly Dictionary<Function, int> functions;
         private int Count;
 
         public DeclarationName()
         {
-            methodSignatures = new Dictionary<string, int>();
+            functions = new Dictionary<Function, int>();
         }
 
         public bool UpdateName(Declaration decl)
         {
             var function = decl as Function;
-            if (function != null && !(function.Namespace is ClassTemplateSpecialization))
+            if (function != null)
             {
                 return UpdateName(function);
             }
@@ -50,19 +50,22 @@ namespace CppSharp.Passes
                 (method.OperatorKind == CXXOperatorKind.Conversion ||
                  method.OperatorKind == CXXOperatorKind.ExplicitConversion))
                 @params = @params.Concat(new[] { method.ConversionType.ToString() });
-            var signature = string.Format("{0}({1})", function.Name, string.Join( ", ", @params));
+            var signature = $"{function.Name}({string.Join(", ", @params)})";
             signature = FixSignatureForConversions(function, signature);
 
             if (Count == 0)
                 Count++;
 
-            if (!methodSignatures.ContainsKey(signature))
+            var duplicate = functions.Keys.FirstOrDefault(f =>
+                f.Parameters.SequenceEqual(function.Parameters, ParameterTypeComparer.Instance));
+
+            if (duplicate == null)
             {
-                methodSignatures.Add(signature, 0);
+                functions.Add(function, 0);
                 return false;
             }
 
-            var methodCount = ++methodSignatures[signature];
+            var methodCount = ++functions[duplicate];
 
             if (Count < methodCount + 1)
                 Count = methodCount + 1;
@@ -95,6 +98,34 @@ namespace CppSharp.Passes
                     break;
             }
             return signature;
+        }
+
+        private class ParameterTypeComparer : IEqualityComparer<Parameter>
+        {
+            public static readonly ParameterTypeComparer Instance = new ParameterTypeComparer();
+
+            private ParameterTypeComparer()
+            {
+            }
+
+            public bool Equals(Parameter x, Parameter y)
+            {
+                Type left = x.Type.Desugar(resolveTemplateSubstitution: false);
+                Type right = y.Type.Desugar(resolveTemplateSubstitution: false);
+                if (left.Equals(right))
+                    return true;
+
+                // TODO: some target languages might maek a difference between values and pointers
+                Type leftPointee = left.GetPointee();
+                Type rightPointee = right.GetPointee();
+                return (leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
+                    (rightPointee != null && rightPointee.Desugar(false).Equals(left));
+            }
+
+            public int GetHashCode(Parameter obj)
+            {
+                return obj.Type.GetHashCode();
+            }
         }
     }
 
@@ -178,15 +209,6 @@ namespace CppSharp.Passes
                 VisitProperty(property);
 
             return false;
-        }
-
-        private static IEnumerable<Field> GetAllFields(Class @class, List<Field> fields = null)
-        {
-            fields = fields ?? new List<Field>();
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class != @class))
-                GetAllFields(@base.Class, fields);
-            fields.AddRange(@class.Fields);
-            return fields;
         }
 
         private void CheckDuplicate(Declaration decl)
