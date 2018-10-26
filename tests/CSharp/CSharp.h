@@ -13,6 +13,8 @@ class DLL_API Foo
 public:
     Foo(const char* name = 0);
     Foo(int a, int p = 0);
+    Foo(char16_t ch);
+    Foo(wchar_t ch);
     int method();
     int operator[](int i) const;
     int operator[](unsigned int i);

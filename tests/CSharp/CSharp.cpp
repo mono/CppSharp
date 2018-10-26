@@ -14,6 +14,14 @@ Foo::Foo(int a, int p) : publicFieldMappedToEnum(TestFlag::Flag2)
     P = p;
 }
 
+Foo::Foo(char16_t ch)
+{
+}
+
+Foo::Foo(wchar_t ch)
+{
+}
+
 int Foo::method()
 {
     return 1;

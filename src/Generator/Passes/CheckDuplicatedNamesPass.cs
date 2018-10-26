@@ -3,6 +3,9 @@ using System.Globalization;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
+using CppSharp.Generators.CLI;
+using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Passes
 {
@@ -100,13 +103,9 @@ namespace CppSharp.Passes
             return signature;
         }
 
-        private class ParameterTypeComparer : IEqualityComparer<Parameter>
+        public class ParameterTypeComparer : IEqualityComparer<Parameter>
         {
             public static readonly ParameterTypeComparer Instance = new ParameterTypeComparer();
-
-            private ParameterTypeComparer()
-            {
-            }
 
             public bool Equals(Parameter x, Parameter y)
             {
@@ -115,17 +114,24 @@ namespace CppSharp.Passes
                 if (left.Equals(right))
                     return true;
 
-                // TODO: some target languages might maek a difference between values and pointers
+                // TODO: some target languages might make a difference between values and pointers
                 Type leftPointee = left.GetPointee();
                 Type rightPointee = right.GetPointee();
-                return (leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
-                    (rightPointee != null && rightPointee.Desugar(false).Equals(left));
+                if ((leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
+                    (rightPointee != null && rightPointee.Desugar(false).Equals(left)))
+                    return true;
+
+                return TypePrinter != null &&
+                    left.IsPrimitiveType() && right.IsPrimitiveType() &&
+                    left.Visit(TypePrinter).Type == right.Visit(TypePrinter).Type;
             }
 
             public int GetHashCode(Parameter obj)
             {
                 return obj.Type.GetHashCode();
             }
+
+            public static TypePrinter TypePrinter { get; set; }
         }
     }
 
@@ -137,6 +143,22 @@ namespace CppSharp.Passes
         {
             ClearVisitedDeclarations = false;
             names = new Dictionary<string, DeclarationName>();
+        }
+
+        public override bool VisitASTContext(ASTContext context)
+        {
+            TypePrinter typePrinter = null;
+            switch (Options.GeneratorKind)
+            {
+                case GeneratorKind.CLI:
+                    typePrinter = new CLITypePrinter(Context);
+                    break;
+                case GeneratorKind.CSharp:
+                    typePrinter = new CSharpTypePrinter(Context);
+                    break;
+            }
+            DeclarationName.ParameterTypeComparer.TypePrinter = typePrinter;
+            return base.VisitASTContext(context);
         }
 
         public override bool VisitProperty(Property decl)
