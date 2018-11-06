@@ -1433,3 +1433,27 @@ enum ItemsDifferByCase
     Case_a,
     Case_A
 };
+
+template <typename T> struct MyListBase
+{
+protected:
+    ~MyListBase() {}
+};
+
+template <typename T>
+class MyList : public MyListBase<T>
+{
+public:
+    inline MyList() { }
+};
+
+template <> struct MyListBase<int>
+{
+};
+
+class MyIntList : public MyList<int>
+{
+    inline MyIntList(MyList<int> &&l) { }
+};
+
+void MyFunc(MyList<void *> *list);
