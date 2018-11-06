@@ -100,6 +100,10 @@ function SetupNativeProject()
   filter { "system:windows" }
     defines { "WIN32", "_WINDOWS" }
   
+  -- For context: https://github.com/premake/premake-core/issues/935
+  filter {"system:windows", "action:vs*"}
+    systemversion("latest")
+
   filter {}
 
   if os.istarget("linux") then
