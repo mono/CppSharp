@@ -2921,10 +2921,15 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
         CTS->isCompleteDefinition())
         return;
 
-    auto Diagnostics = c->getSema().getDiagnostics().getClient();
-    auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
+    auto existingClient = c->getSema().getDiagnostics().getClient();
+    std::unique_ptr<::DiagnosticConsumer> SemaDiagnostics(new ::DiagnosticConsumer());
+    SemaDiagnostics-> Decl = CTS;
+    c->getSema().getDiagnostics().setClient(SemaDiagnostics.get(), false);
+
     c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
         CTS, TSK_ImplicitInstantiation, false);
+
+    c->getSema().getDiagnostics().setClient(existingClient, false);
 }
 
 Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
@@ -3053,9 +3058,11 @@ void Parser::MarkValidity(Function* F)
         c->getSourceManager().isInSystemHeader(FD->getBeginLoc()))
         return;
 
-    auto Diagnostics = c->getSema().getDiagnostics().getClient();
-    auto SemaDiagnostics = static_cast<::DiagnosticConsumer*>(Diagnostics);
+    auto existingClient = c->getSema().getDiagnostics().getClient();
+    std::unique_ptr<::DiagnosticConsumer> SemaDiagnostics(new ::DiagnosticConsumer());
     SemaDiagnostics->Decl = FD;
+    c->getSema().getDiagnostics().setClient(SemaDiagnostics.get(), false);
+
     auto TUScope = c->getSema().TUScope;
     std::stack<Scope> Scopes = GetScopesFor(FD);
     c->getSema().TUScope = &Scopes.top();
@@ -3068,6 +3075,8 @@ void Parser::MarkValidity(Function* F)
         std::unordered_set<Stmt*> Bodies{ 0 };
         F->isInvalid = IsInvalid(FD->getBody(), Bodies);
     }
+
+    c->getSema().getDiagnostics().setClient(existingClient, false);
 }
 
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
@@ -4154,19 +4163,18 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
 
     c->createSema(clang::TU_Complete, 0);
 
-    auto DiagClient = new DiagnosticConsumer();
-    c->getDiagnostics().setClient(DiagClient);
+    std::unique_ptr<::DiagnosticConsumer> DiagClient(new ::DiagnosticConsumer());
+    c->getDiagnostics().setClient(DiagClient.get(), false);
 
-    clang::DiagnosticConsumer* client = c->getDiagnostics().getClient();
-    client->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
+    DiagClient->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
 
     ParseAST(c->getSema());
 
-    client->EndSourceFile();
+    DiagClient->EndSourceFile();
 
     HandleDiagnostics(res);
 
-    if(client->getNumErrors() != 0)
+    if(DiagClient->getNumErrors() != 0)
     {
         res->kind = ParserResultKind::Error;
         return res;
