@@ -44,8 +44,7 @@
 #include <clang/Driver/ToolChain.h>
 #include <clang/Driver/Util.h>
 #include <clang/Index/USRGeneration.h>
-#include <CodeGen/CodeGenModule.h>
-#include <CodeGen/CodeGenTypes.h>
+
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
 #include <CodeGen/CGCXXABI.h>
@@ -3278,9 +3277,8 @@ bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 
 //-----------------------------------//
 
-void Parser::WalkAST()
+void Parser::WalkAST(clang::TranslationUnitDecl* TU)
 {
-    auto TU = c->getASTContext().getTranslationUnitDecl();
     for (auto D : TU->decls())
     {
         if (D->getBeginLoc().isValid() &&
@@ -4049,6 +4047,86 @@ void Parser::HandleDiagnostics(ParserResult* res)
     }
 }
 
+void Parser::SetupLLVMCodegen()
+{
+    // Initialize enough Clang codegen machinery so we can get at ABI details.
+    LLVMModule.reset(new llvm::Module("", LLVMCtx));
+
+    LLVMModule->setTargetTriple(c->getTarget().getTriple().getTriple());
+    LLVMModule->setDataLayout(c->getTarget().getDataLayout());
+
+    CGM.reset(new clang::CodeGen::CodeGenModule(c->getASTContext(),
+        c->getHeaderSearchOpts(), c->getPreprocessorOpts(),
+        c->getCodeGenOpts(), *LLVMModule, c->getDiagnostics()));
+
+    CGT.reset(new clang::CodeGen::CodeGenTypes(*CGM.get()));
+
+    codeGenTypes = CGT.get();
+}
+
+bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
+    std::vector<const clang::FileEntry*>& FileEntries)
+{
+    // Check that the file is reachable.
+    const clang::DirectoryLookup *Dir;
+    llvm::SmallVector<
+        std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
+        0> Includers;
+
+    for (const auto& SourceFile : SourceFiles)
+    {
+        auto FileEntry = c->getPreprocessor().getHeaderSearchInfo().LookupFile(SourceFile,
+            clang::SourceLocation(), /*isAngled*/true,
+            nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr, nullptr);
+
+        if (!FileEntry)
+            return false;
+
+        FileEntries.push_back(FileEntry);
+    }
+
+    // Create a virtual file that includes the header. This gets rid of some
+    // Clang warnings about parsing an header file as the main file.
+
+    std::string source;
+    for (const auto& SourceFile : SourceFiles)
+    {
+        source += "#include \"" + SourceFile + "\"" + "\n";
+    }
+    source += "\0";
+
+    auto buffer = llvm::MemoryBuffer::getMemBufferCopy(source);
+    auto& SM = c->getSourceManager();
+    SM.setMainFileID(SM.createFileID(std::move(buffer)));
+
+    return true;
+}
+
+class SemaConsumer : public clang::SemaConsumer {
+    CppSharp::CppParser::Parser& Parser;
+    std::vector<const clang::FileEntry*>& FileEntries;
+public:
+    SemaConsumer(CppSharp::CppParser::Parser& parser,
+        std::vector<const clang::FileEntry*>& entries)
+        : Parser(parser), FileEntries(entries) {}
+    virtual void HandleTranslationUnit(clang::ASTContext& Ctx) override;
+};
+
+void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
+{
+    auto FileEntry = FileEntries[0];
+    auto FileName = FileEntry->getName();
+    auto Unit = Parser.opts->ASTContext->FindOrCreateModule(FileName);
+
+    auto TU = Ctx.getTranslationUnitDecl();
+    Parser.HandleDeclaration(TU, Unit);
+
+    if (Unit->originalPtr == nullptr)
+        Unit->originalPtr = (void*)FileEntry;
+
+    Parser.WalkAST(TU);
+}
+
 ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
 {
     assert(opts->ASTContext && "Expected a valid ASTContext");
@@ -4062,49 +4140,22 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
     }
 
     Setup();
+    SetupLLVMCodegen();
 
-    std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
+    std::vector<const clang::FileEntry*> FileEntries;
+    if (!SetupSourceFiles(SourceFiles, FileEntries))
+    {
+        res->kind = ParserResultKind::FileNotFound;
+        return res;
+    }
+
+    std::unique_ptr<SemaConsumer> SC(new SemaConsumer(*this, FileEntries));
     c->setASTConsumer(std::move(SC));
 
     c->createSema(clang::TU_Complete, 0);
 
     auto DiagClient = new DiagnosticConsumer();
     c->getDiagnostics().setClient(DiagClient);
-
-    // Check that the file is reachable.
-    const clang::DirectoryLookup *Dir;
-    llvm::SmallVector<
-        std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
-        0> Includers;
-
-    std::vector<const clang::FileEntry*> FileEntries;
-    for (const auto& SourceFile : SourceFiles)
-    {
-        auto FileEntry = c->getPreprocessor().getHeaderSearchInfo().LookupFile(SourceFile,
-            clang::SourceLocation(), /*isAngled*/true,
-            nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr, nullptr);
-
-        if (!FileEntry)
-        {
-            res->kind = ParserResultKind::FileNotFound;
-            return res;
-        }
-        FileEntries.push_back(FileEntry);
-    }
-
-    // Create a virtual file that includes the header. This gets rid of some
-    // Clang warnings about parsing an header file as the main file.
-
-    std::string str;
-    for (const auto& SourceFile : SourceFiles)
-    {
-        str += "#include \"" + SourceFile + "\"" + "\n";
-    }
-    str += "\0";
-
-    auto buffer = llvm::MemoryBuffer::getMemBuffer(str);
-    auto& SM = c->getSourceManager();
-    SM.setMainFileID(SM.createFileID(std::move(buffer)));
 
     clang::DiagnosticConsumer* client = c->getDiagnostics().getClient();
     client->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
@@ -4120,36 +4171,6 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
         res->kind = ParserResultKind::Error;
         return res;
     }
-
-    auto& AST = c->getASTContext();
-
-    auto FileEntry = FileEntries[0];
-    auto FileName = FileEntry->getName();
-    auto Unit = opts->ASTContext->FindOrCreateModule(FileName);
-
-    auto TU = AST.getTranslationUnitDecl();
-    HandleDeclaration(TU, Unit);
-
-    if (Unit->originalPtr == nullptr)
-        Unit->originalPtr = (void*)FileEntry;
-
-    // Initialize enough Clang codegen machinery so we can get at ABI details.
-    llvm::LLVMContext Ctx;
-    std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
-
-    M->setTargetTriple(c->getTarget().getTriple().getTriple());
-    M->setDataLayout(c->getTarget().getDataLayout());
-
-    std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
-        new clang::CodeGen::CodeGenModule(c->getASTContext(), c->getHeaderSearchOpts(),
-        c->getPreprocessorOpts(), c->getCodeGenOpts(), *M, c->getDiagnostics()));
-
-    std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
-        new clang::CodeGen::CodeGenTypes(*CGM.get()));
-
-    codeGenTypes = CGT.get();
-
-    WalkAST();
 
     res->targetInfo = GetTargetInfo();
 

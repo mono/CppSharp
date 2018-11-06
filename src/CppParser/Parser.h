@@ -18,6 +18,9 @@
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Sema/Scope.h>
 
+#include <CodeGen/CodeGenModule.h>
+#include <CodeGen/CodeGenTypes.h>
+
 #include "CXXABI.h"
 #include "CppParser.h"
 
@@ -53,11 +56,19 @@ public:
     ParserResult* ParseHeader(const std::vector<std::string>& SourceFiles);
     ParserResult* ParseLibrary(const std::string& File);
 
+    void WalkAST(clang::TranslationUnitDecl* TU);
+    void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
+    CppParserOptions* opts;
+
 private:
+
+    void SetupLLVMCodegen();
+    bool SetupSourceFiles(const std::vector<std::string>& SourceFiles,
+        std::vector<const clang::FileEntry*>& FileEntries);
+
     bool IsSupported(const clang::NamedDecl* ND);
     bool IsSupported(const clang::CXXMethodDecl* MD);
     // AST traversers
-    void WalkAST();
     Declaration* WalkDeclaration(const clang::Decl* D);
     Declaration* WalkDeclarationDef(clang::Decl* D);
     Enumeration* WalkEnum(const clang::EnumDecl* ED);
@@ -137,7 +148,6 @@ private:
     DeclarationContext* GetNamespace(const clang::Decl* D, const clang::DeclContext* Ctx);
     DeclarationContext* GetNamespace(const clang::Decl* D);
 
-    void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
     void HandleOriginalText(const clang::Decl* D, Declaration* Decl);
     void HandleComments(const clang::Decl* D, Declaration* Decl);
     void HandleDiagnostics(ParserResult* res);
@@ -154,9 +164,12 @@ private:
     ParserTargetInfo* GetTargetInfo();
 
     int index;
-    CppParserOptions* opts;
     std::unique_ptr<clang::CompilerInstance> c;
     clang::TargetCXXABI::Kind targetABI;
+    llvm::LLVMContext LLVMCtx;
+    std::unique_ptr<llvm::Module> LLVMModule;
+    std::unique_ptr<clang::CodeGen::CodeGenModule> CGM;
+    std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT;
     clang::CodeGen::CodeGenTypes* codeGenTypes;
     std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> walkedTypeTemplateParameters;
     std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> walkedTemplateTemplateParameters;
