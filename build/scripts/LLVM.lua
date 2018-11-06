@@ -34,7 +34,7 @@ function clone_llvm()
   print("Clang release: " .. clang_release)
 
   if os.ishost("windows") then
-    extract = extract_7z
+    extract = extract_7z_tar_gz
   else
     extract = extract_tar_gz
   end
@@ -153,9 +153,15 @@ function get_7z_path()
 	return "7z.exe"
 end
 
+function extract_7z_tar_gz(archive, dest_dir)
+	extract_7z(archive, dest_dir)
+	local tar = string.sub(archive, 1, -4)
+	extract_7z(tar, dest_dir)
+end
+
 function extract_7z(archive, dest_dir)
-	return execute_or_die(string.format("%s x %s -o%s -y", get_7z_path(),
-		archive, dest_dir), true)
+	return execute(string.format("%s x %s -o%s -y", get_7z_path(),
+		archive, dest_dir), false)
 end
 
 function extract_tar_xz(archive, dest_dir)
