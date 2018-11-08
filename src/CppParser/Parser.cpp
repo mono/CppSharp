@@ -3053,7 +3053,6 @@ void Parser::MarkValidity(Function* F)
     auto FD = static_cast<FunctionDecl*>(F->originalPtr);
 
     if (!FD->getTemplateInstantiationPattern() ||
-        FD->getTemplateInstantiationPattern()->isLateTemplateParsed() ||
         !FD->isExternallyVisible() ||
         c->getSourceManager().isInSystemHeader(FD->getBeginLoc()))
         return;
