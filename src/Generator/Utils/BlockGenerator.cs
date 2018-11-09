@@ -110,16 +110,15 @@ namespace CppSharp
             }
         }
 
-        public virtual string Generate()
+        public virtual StringBuilder Generate()
         {
             if (CheckGenerate != null && !CheckGenerate())
-                return "";
+                return new StringBuilder();
 
             if (Blocks.Count == 0)
-                return Text.ToString();
+                return Text.StringBuilder;
 
             var builder = new StringBuilder();
-            uint totalIndent = 0;
             Block previousBlock = null;
 
             var blockIndex = 0;
@@ -135,7 +134,7 @@ namespace CppSharp
                 if (nextBlock != null)
                 {
                     var nextText = nextBlock.Generate();
-                    if (string.IsNullOrEmpty(nextText) &&
+                    if (nextText.Length == 0 &&
                         childBlock.NewLineKind == NewLineKind.IfNotEmpty)
                         skipBlock = true;
                 }
@@ -143,36 +142,17 @@ namespace CppSharp
                 if (skipBlock)
                     continue;
 
-                if (string.IsNullOrEmpty(childText))
+                if (childText.Length == 0)
                     continue;
-
-                var lines = childText.SplitAndKeep(Environment.NewLine).ToList();
 
                 if (previousBlock != null &&
                     previousBlock.NewLineKind == NewLineKind.BeforeNextBlock)
                     builder.AppendLine();
 
-                if (childBlock.isSubBlock)
-                    totalIndent = 0;
-
-                foreach (var line in lines)
-                {
-                    if (string.IsNullOrEmpty(line))
-                        continue;
-
-                    if (!string.IsNullOrWhiteSpace(line))
-                        builder.Append(new string(' ', (int)totalIndent));
-
-                    builder.Append(line);
-
-                    if (!line.EndsWith(Environment.NewLine, StringComparison.Ordinal))
-                        builder.AppendLine();
-                }
+                builder.Append(childText);
 
                 if (childBlock.NewLineKind == NewLineKind.Always)
                     builder.AppendLine();
-
-                totalIndent += childBlock.Text.Indent;
 
                 previousBlock = childBlock;
             }
@@ -180,7 +160,7 @@ namespace CppSharp
             if (Text.StringBuilder.Length != 0)
                 builder.Append(Text.StringBuilder);
 
-            return builder.ToString();
+            return builder;
         }
 
         public bool IsEmpty
@@ -271,7 +251,7 @@ namespace CppSharp
 
         public virtual string Generate()
         {
-            return RootBlock.Generate();
+            return RootBlock.Generate().ToString();
         }
 
         #region Block helpers
@@ -284,6 +264,14 @@ namespace CppSharp
         public void PushBlock(BlockKind kind = BlockKind.Unknown, object obj = null)
         {
             var block = new Block { Kind = kind, Object = obj };
+            var array = new uint[ActiveBlock.Text.CurrentIndent.Count];
+            ActiveBlock.Text.CurrentIndent.CopyTo(array, 0);
+            foreach (var indent in array.Reverse())
+            {
+                block.Text.CurrentIndent.Push(indent);
+            }
+            block.Text.IsStartOfLine = ActiveBlock.Text.IsStartOfLine;
+            block.Text.NeedsNewLine = ActiveBlock.Text.NeedsNewLine;
             PushBlock(block);
         }
 

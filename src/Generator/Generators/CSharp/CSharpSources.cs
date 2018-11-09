@@ -727,7 +727,7 @@ namespace CppSharp.Generators.CSharp
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
                 Write($" = {fieldValuePrinted}");
             }
-            Write(";");
+            WriteLine(";");
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -757,7 +757,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (isAbstract)
                 {
-                    Write(";");
+                    WriteLine(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
@@ -1044,7 +1044,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (isAbstract)
                 {
-                    Write(";");
+                    WriteLine(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
@@ -1707,7 +1707,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                Write($"{property.Name}");
+                Write(property.Name);
                 if (isSetter)
                     Write($" = {marshalsCode}");
             }
@@ -2329,7 +2329,7 @@ namespace CppSharp.Generators.CSharp
 
             if (method.IsPure)
             {
-                Write(";");
+                WriteLine(";");
                 PopBlock(NewLineKind.BeforeNextBlock);
                 return;
             }
