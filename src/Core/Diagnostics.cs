@@ -117,8 +117,8 @@ namespace CppSharp
             if (info.Kind < Level)
                 return;
 
-            var currentIndent = Indents.Sum();
-            var message = new string(' ', currentIndent) + info.Message;
+            var currentIndentation = Indents.Sum();
+            var message = new string(' ', currentIndentation) + info.Message;
 
             if(info.Kind == DiagnosticKind.Error)
             {

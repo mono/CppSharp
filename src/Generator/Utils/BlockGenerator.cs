@@ -211,26 +211,26 @@ namespace CppSharp
             Text.ResetNewLine();
         }
 
-        public void PushIndent(uint indent = 4u)
+        public void Indent(uint indentation = 4u)
         {
             hasIndentChanged = true;
-            Text.PushIndent(indent);
+            Text.Indent(indentation);
         }
 
-        public void PopIndent()
+        public void Unindent()
         {
             hasIndentChanged = true;
-            Text.PopIndent();
+            Text.Unindent();
         }
 
-        public void WriteStartBraceIndent()
+        public void WriteOpenBraceAndIndent()
         {
-            Text.WriteStartBraceIndent();
+            Text.WriteOpenBraceAndIndent();
         }
 
-        public void WriteCloseBraceIndent()
+        public void UnindentAndWriteCloseBrace()
         {
-            Text.WriteCloseBraceIndent();
+            Text.UnindentAndWriteCloseBrace();
         }
 
         #endregion
@@ -240,7 +240,7 @@ namespace CppSharp
     {
         public Block RootBlock { get; }
         public Block ActiveBlock { get; private set; }
-        public Stack<uint> CurrentIndent => ActiveBlock.Text.CurrentIndent;
+        public Stack<uint> CurrentIndentation => ActiveBlock.Text.CurrentIndentation;
 
         protected BlockGenerator()
         {
@@ -263,7 +263,7 @@ namespace CppSharp
         public void PushBlock(BlockKind kind = BlockKind.Unknown, object obj = null)
         {
             var block = new Block { Kind = kind, Object = obj };
-            CurrentIndent.PushTo(block.Text.CurrentIndent);
+            CurrentIndentation.PushTo(block.Text.CurrentIndentation);
             block.Text.IsStartOfLine = ActiveBlock.Text.IsStartOfLine;
             block.Text.NeedsNewLine = ActiveBlock.Text.NeedsNewLine;
             PushBlock(block);
@@ -335,24 +335,24 @@ namespace CppSharp
             ActiveBlock.ResetNewLine();
         }
 
-        public void PushIndent(uint indent = 4u)
+        public void Indent(uint indentation = 4u)
         {
-            ActiveBlock.PushIndent(indent);
+            ActiveBlock.Indent(indentation);
         }
 
-        public void PopIndent()
+        public void Unindent()
         {
-            ActiveBlock.PopIndent();
+            ActiveBlock.Unindent();
         }
 
-        public void WriteStartBraceIndent()
+        public void WriteOpenBraceAndIndent()
         {
-            ActiveBlock.WriteStartBraceIndent();
+            ActiveBlock.WriteOpenBraceAndIndent();
         }
 
-        public void WriteCloseBraceIndent()
+        public void UnindentAndWriteCloseBrace()
         {
-            ActiveBlock.WriteCloseBraceIndent();
+            ActiveBlock.UnindentAndWriteCloseBrace();
         }
 
         #endregion

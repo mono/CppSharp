@@ -47,7 +47,7 @@ namespace CppSharp.Generators.CLI
                     string value = Generator.GeneratedIdentifier("array") + Context.ParameterIndex;
                     Context.Before.WriteLine("cli::array<{0}>^ {1} = nullptr;", array.Type, value, array.Size);
                     Context.Before.WriteLine("if ({0} != 0)", Context.ReturnVarName);
-                    Context.Before.WriteStartBraceIndent();
+                    Context.Before.WriteOpenBraceAndIndent();
                     Context.Before.WriteLine("{0} = gcnew cli::array<{1}>({2});", value, array.Type, array.Size);
                     Context.Before.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
                     if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
@@ -55,7 +55,7 @@ namespace CppSharp.Generators.CLI
                             value, Context.ReturnVarName);
                     else
                         Context.Before.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
-                    Context.Before.WriteCloseBraceIndent();
+                    Context.Before.UnindentAndWriteCloseBrace();
                     Context.Return.Write(value);
                     break;
                 case ArrayType.ArraySize.Incomplete:
@@ -468,12 +468,12 @@ namespace CppSharp.Generators.CLI
                     {
                         var supportBefore = Context.Before;
                         supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
-                        supportBefore.WriteStartBraceIndent();
+                        supportBefore.WriteOpenBraceAndIndent();
                         supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
                         supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
                             Context.ReturnVarName, Context.ArgName,
                             array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
-                        supportBefore.WriteCloseBraceIndent();   
+                        supportBefore.UnindentAndWriteCloseBrace();   
                     }
                     break;
                 default:
@@ -775,7 +775,7 @@ namespace CppSharp.Generators.CLI
             var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
                                          property.Name);
 
-            var marshalCtx = new MarshalContext(Context.Context, Context.Indent)
+            var marshalCtx = new MarshalContext(Context.Context, Context.Indentation)
                                  {
                                      ArgName = fieldRef,
                                      ParameterIndex = Context.ParameterIndex++,
@@ -799,14 +799,14 @@ namespace CppSharp.Generators.CLI
             if (isRef)
             {
                 Context.Before.WriteLine("if ({0} != nullptr)", fieldRef);
-                Context.Before.PushIndent();
+                Context.Before.Indent();
             }
 
             Context.Before.WriteLine("{0}.{1} = {2};", marshalVar,
                 property.Field.OriginalName, marshal.Context.Return);
 
             if (isRef)
-                Context.Before.PopIndent();
+                Context.Before.Unindent();
         }
 
         public override bool VisitFieldDecl(Field field)
