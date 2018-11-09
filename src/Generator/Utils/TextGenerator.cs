@@ -25,10 +25,10 @@ namespace CppSharp
     {
         public const uint DefaultIndent = 4;
 
-        public StringBuilder StringBuilder;
-        protected bool IsStartOfLine;
-        protected bool NeedsNewLine;
-        protected readonly Stack<uint> CurrentIndent;
+        public StringBuilder StringBuilder = new StringBuilder();
+        public bool IsStartOfLine { get; set; }
+        public bool NeedsNewLine { get; set; }
+        public Stack<uint> CurrentIndent { get; } = new Stack<uint>();
 
         public uint Indent
         {
@@ -37,9 +37,6 @@ namespace CppSharp
 
         public TextGenerator()
         {
-            StringBuilder = new StringBuilder();
-            IsStartOfLine = false;
-            CurrentIndent = new Stack<uint>();
         }
 
         public TextGenerator(TextGenerator generator)
