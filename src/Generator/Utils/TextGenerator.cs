@@ -7,7 +7,6 @@ namespace CppSharp
 {
     public interface ITextGenerator
     {
-        uint Indent { get; }
         void Write(string msg, params object[] args);
         void WriteLine(string msg, params object[] args);
         void WriteLineIndent(string msg, params object[] args);
@@ -29,11 +28,6 @@ namespace CppSharp
         public bool IsStartOfLine { get; set; }
         public bool NeedsNewLine { get; set; }
         public Stack<uint> CurrentIndent { get; } = new Stack<uint>();
-
-        public uint Indent
-        {
-            get { return (uint)CurrentIndent.Sum(u => (int)u); }
-        }
 
         public TextGenerator()
         {
@@ -60,16 +54,13 @@ namespace CppSharp
             if (args.Length > 0)
                 msg = string.Format(msg, args);
 
-            foreach(var line in msg.SplitAndKeep(Environment.NewLine))
-            {
-                if (IsStartOfLine && !string.IsNullOrWhiteSpace(line))
-                    StringBuilder.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
+            if (IsStartOfLine && !string.IsNullOrWhiteSpace(msg))
+                StringBuilder.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
 
-                if (line.Length > 0)
-                    IsStartOfLine = line.EndsWith(Environment.NewLine);
+            if (msg.Length > 0)
+                IsStartOfLine = msg.EndsWith(Environment.NewLine);
 
-                StringBuilder.Append(line);
-            }
+            StringBuilder.Append(msg);
         }
 
         public void WriteLine(string msg, params object[] args)

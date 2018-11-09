@@ -176,8 +176,6 @@ namespace CppSharp
 
         #region ITextGenerator implementation
 
-        public uint Indent { get { return Text.Indent; } }
-
         public void Write(string msg, params object[] args)
         {
             Text.Write(msg, args);
@@ -240,8 +238,9 @@ namespace CppSharp
 
     public abstract class BlockGenerator : ITextGenerator
     {
-        public Block RootBlock { get; private set; }
+        public Block RootBlock { get; }
         public Block ActiveBlock { get; private set; }
+        public Stack<uint> CurrentIndent => ActiveBlock.Text.CurrentIndent;
 
         protected BlockGenerator()
         {
@@ -264,12 +263,7 @@ namespace CppSharp
         public void PushBlock(BlockKind kind = BlockKind.Unknown, object obj = null)
         {
             var block = new Block { Kind = kind, Object = obj };
-            var array = new uint[ActiveBlock.Text.CurrentIndent.Count];
-            ActiveBlock.Text.CurrentIndent.CopyTo(array, 0);
-            foreach (var indent in array.Reverse())
-            {
-                block.Text.CurrentIndent.Push(indent);
-            }
+            CurrentIndent.PushTo(block.Text.CurrentIndent);
             block.Text.IsStartOfLine = ActiveBlock.Text.IsStartOfLine;
             block.Text.NeedsNewLine = ActiveBlock.Text.NeedsNewLine;
             PushBlock(block);
@@ -305,8 +299,6 @@ namespace CppSharp
         #endregion
 
         #region ITextGenerator implementation
-
-        public uint Indent { get { return ActiveBlock.Indent; } }
 
         public void Write(string msg, params object[] args)
         {

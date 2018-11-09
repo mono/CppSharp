@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -10,11 +11,13 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpMarshalContext : MarshalContext
     {
-        public CSharpMarshalContext(BindingContext context)
-            : base(context)
+        public CSharpMarshalContext(BindingContext context, Stack<uint> indent)
+            : base(context, indent)
         {
             ArgumentPrefix = new TextGenerator();
+            indent.PushTo(ArgumentPrefix.CurrentIndent);
             Cleanup = new TextGenerator();
+            indent.PushTo(Cleanup.CurrentIndent);
         }
 
         public TextGenerator ArgumentPrefix { get; private set; }
@@ -335,7 +338,7 @@ namespace CppSharp.Generators.CSharp
             if (parameter.Usage == ParameterUsage.Unknown || parameter.IsIn)
                 return base.VisitParameterDecl(parameter);
 
-            var ctx = new CSharpMarshalContext(Context.Context)
+            var ctx = new CSharpMarshalContext(Context.Context, Context.Indent)
             {
                 ReturnType = Context.ReturnType,
                 ReturnVarName = Context.ReturnVarName
