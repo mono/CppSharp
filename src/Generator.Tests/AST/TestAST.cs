@@ -66,11 +66,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestASTHelperMethods()
         {
-            var @class = AstContext.FindClass("Math::Complex").FirstOrDefault();
+            var @namespace = AstContext.FindDecl<Namespace>("Math").FirstOrDefault();
+            Assert.IsNotNull(@namespace, "Couldn't find Math namespace.");
+            var @class = @namespace.FindClass("Complex");
             Assert.IsNotNull(@class, "Couldn't find Math::Complex class.");
             var plusOperator = @class.FindOperator(CXXOperatorKind.Plus).FirstOrDefault();
             Assert.IsNotNull(plusOperator, "Couldn't find operator+ in Math::Complex class.");
-            var typedef = AstContext.FindTypedef("Math::Single").FirstOrDefault();
+            var typedef = @namespace.FindTypedef("Single");
             Assert.IsNotNull(typedef);
         }
 
