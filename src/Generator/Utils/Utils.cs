@@ -135,9 +135,9 @@ namespace CppSharp
         {
             var array = new T[source.Count];
             source.CopyTo(array, 0);
-            foreach (var indent in array.Reverse())
+            foreach (var element in array.Reverse())
             {
-                destination.Push(indent);
+                destination.Push(element);
             }
         }
     }

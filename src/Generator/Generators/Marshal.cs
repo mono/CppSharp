@@ -5,15 +5,15 @@ namespace CppSharp.Generators
 {
     public class MarshalContext : TypePrinter
     {
-        public MarshalContext(BindingContext context, Stack<uint> indent)
+        public MarshalContext(BindingContext context, Stack<uint> indentation)
         {
             Context = context;
             Before = new TextGenerator();
-            indent.PushTo(Before.CurrentIndent);
+            indentation.PushTo(Before.CurrentIndentation);
             Return = new TextGenerator();
-            indent.PushTo(Return.CurrentIndent);
+            indentation.PushTo(Return.CurrentIndentation);
             MarshalVarPrefix = string.Empty;
-            this.Indent = indent;
+            this.Indentation = indentation;
         }
 
         public BindingContext Context { get; }
@@ -31,7 +31,7 @@ namespace CppSharp.Generators
         public Function Function { get; set; }
 
         public string MarshalVarPrefix { get; set; }
-        public Stack<uint> Indent { get; }
+        public Stack<uint> Indentation { get; }
     }
 
     public abstract class MarshalPrinter<T> : AstVisitor where T : MarshalContext

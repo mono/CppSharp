@@ -140,18 +140,18 @@ namespace CppSharp.Generators.CLI
                 PushBlock(BlockKind.Method);
                 WriteLine("System::IntPtr {0}::{1}::get()",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
-                WriteStartBraceIndent();
+                WriteOpenBraceAndIndent();
                 WriteLine("return System::IntPtr(NativePtr);");
-                WriteCloseBraceIndent();
+                UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 PushBlock(BlockKind.Method);
                 WriteLine("void {0}::{1}::set(System::IntPtr object)",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
-                WriteStartBraceIndent();
+                WriteOpenBraceAndIndent();
                 var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
                 WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
-                WriteCloseBraceIndent();
+                UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
@@ -247,7 +247,7 @@ namespace CppSharp.Generators.CLI
             PushBlock(BlockKind.Destructor);
 
             WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
@@ -256,14 +256,14 @@ namespace CppSharp.Generators.CLI
             else if (@class.HasNonTrivialDestructor)
             {
                 WriteLine("if (NativePtr)");
-                WriteStartBraceIndent();
+                WriteOpenBraceAndIndent();
                 WriteLine("auto __nativePtr = NativePtr;");
                 WriteLine("NativePtr = 0;");
                 WriteLine("delete (::{0}*) __nativePtr;", @class.QualifiedOriginalName);
-                WriteCloseBraceIndent();
+                UnindentAndWriteCloseBrace();
             }
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -273,12 +273,12 @@ namespace CppSharp.Generators.CLI
             PushBlock(BlockKind.Finalizer);
 
             WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 WriteLine("delete NativePtr;");
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -307,12 +307,12 @@ namespace CppSharp.Generators.CLI
                 QualifiedIdentifier(function.Namespace), function.Name,
                 GenerateParametersList(function.Parameters));
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             var @class = function.Namespace as Class;
             GenerateFunctionCall(function, @class);
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
             NewLine();
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -367,7 +367,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("void {0}::{1}::set({2})", QualifiedIdentifier(@class),
                 name, string.Join(", ", args));
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             if (decl is Function && !isIndexer)
             {
@@ -380,7 +380,7 @@ namespace CppSharp.Generators.CLI
                 if (@class.IsValueType && decl is Field)
                 {
                     WriteLine("{0} = value;", decl.Name);
-                    WriteCloseBraceIndent();
+                    UnindentAndWriteCloseBrace();
                     NewLine();
                     return;
                 }
@@ -396,7 +396,7 @@ namespace CppSharp.Generators.CLI
                 else
                     variable = $"((::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
                     Parameter = param,
                     ArgName = param.Name,
@@ -408,7 +408,7 @@ namespace CppSharp.Generators.CLI
 
                 if (isIndexer)
                 {
-                    var ctx2 = new MarshalContext(Context, CurrentIndent)
+                    var ctx2 = new MarshalContext(Context, CurrentIndentation)
                     {
                         Parameter = indexParameter,
                         ArgName = indexParameter.Name
@@ -432,7 +432,7 @@ namespace CppSharp.Generators.CLI
                 }
             }
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
             NewLine();
         }
 
@@ -456,7 +456,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0} {1}::{2}::get({3})", type, QualifiedIdentifier(@class),
                       name, string.Join(", ", args));
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             if (decl is Function)
             {
@@ -471,7 +471,7 @@ namespace CppSharp.Generators.CLI
                 if (@class.IsValueType && decl is Field)
                 {
                     WriteLine("return {0};", decl.Name);
-                    WriteCloseBraceIndent();
+                    UnindentAndWriteCloseBrace();
                     NewLine();
                     return;
                 }
@@ -483,7 +483,7 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
                         Declaration = decl,
                         ArgName = decl.Name,
@@ -501,7 +501,7 @@ namespace CppSharp.Generators.CLI
             }
             
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
             NewLine();
         }
 
@@ -524,12 +524,12 @@ namespace CppSharp.Generators.CLI
         {
             WriteLine("void {0}::{1}::add({2} evt)", QualifiedIdentifier(@class),
                       @event.Name, @event.Type);
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             var delegateName = string.Format("_{0}Delegate", @event.Name);
 
             WriteLine("if (!{0}Instance)", delegateName);
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             var typePrinter = new CppTypePrinter();
             var args = typePrinter.VisitParameters(@event.Parameters, hasNames: false);
@@ -543,24 +543,24 @@ namespace CppSharp.Generators.CLI
             WriteLine("((::{0}*)NativePtr)->{1}.Connect(_fptr);", @class.QualifiedOriginalName,
                 @event.OriginalName);
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
 
             WriteLine("_{0} = static_cast<{1}>(System::Delegate::Combine(_{0}, evt));",
                 @event.Name, @event.Type);
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
         }
 
         private void GenerateEventRemove(Event @event, Class @class)
         {
             WriteLine("void {0}::{1}::remove({2} evt)", QualifiedIdentifier(@class),
                       @event.Name, @event.Type);
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             WriteLine("_{0} = static_cast<{1}>(System::Delegate::Remove(_{0}, evt));",
                 @event.Name, @event.Type);
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
         }
 
         private void GenerateEventRaise(Event @event, Class @class)
@@ -571,12 +571,12 @@ namespace CppSharp.Generators.CLI
             WriteLine("void {0}::{1}::raise({2})", QualifiedIdentifier(@class),
                       @event.Name, args);
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             var paramNames = @event.Parameters.Select(param => param.Name).ToList();
             WriteLine("_{0}({1});", @event.Name, string.Join(", ", paramNames));
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
         }
 
         private void GenerateEventRaiseWrapper(Event @event, Class @class)
@@ -587,12 +587,12 @@ namespace CppSharp.Generators.CLI
             WriteLine("void {0}::_{1}Raise({2})", QualifiedIdentifier(@class),
                 @event.Name, args);
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             var returns = new List<string>();
             foreach (var param in @event.Parameters)
             {
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
                         ReturnVarName = param.Name,
                         ReturnType = param.QualifiedType
@@ -608,7 +608,7 @@ namespace CppSharp.Generators.CLI
             Write("{0}", string.Join(", ", returns));
             WriteLine(");");
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
         }
 
         private void GenerateVariable(Variable variable, Class @class)
@@ -634,14 +634,14 @@ namespace CppSharp.Generators.CLI
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
-                PushIndent();
+                Indent();
                 Write(hasBase ? "," : ":");
-                PopIndent();
+                Unindent();
 
                 WriteLine(" {0}(false)", Helpers.OwnsNativeInstanceIdentifier);
             }
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             const string nativePtr = "native";
 
@@ -657,15 +657,15 @@ namespace CppSharp.Generators.CLI
                 GenerateStructMarshaling(@class, nativePtr + "->");
             }
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
             NewLine();
             WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
             NewLine();
         }
 
@@ -686,7 +686,7 @@ namespace CppSharp.Generators.CLI
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, property.Field.OriginalName);
 
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
                     ArgName = property.Name,
                     ReturnVarName = nativeField,
@@ -713,7 +713,7 @@ namespace CppSharp.Generators.CLI
 
             if (!@class.IsValueType)
             {
-                PushIndent();
+                Indent();
 
                 var baseClass = @class.Bases[0].Class;
                 Write(": {0}(", QualifiedIdentifier(baseClass));
@@ -726,7 +726,7 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("{0})", method != null ? "nullptr" : "native");
 
-                PopIndent();
+                Unindent();
             }
 
             return true;
@@ -753,7 +753,7 @@ namespace CppSharp.Generators.CLI
             if (method.IsConstructor)
                 GenerateClassConstructorBase(@class, method: method);
 
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             PushBlock(BlockKind.MethodBody, method);
 
@@ -792,7 +792,7 @@ namespace CppSharp.Generators.CLI
 
             PopBlock();
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
 
             if (method.OperatorKind == CXXOperatorKind.EqualEqual)
             {
@@ -814,7 +814,7 @@ namespace CppSharp.Generators.CLI
                 NewLine();
                 var qualifiedIdentifier = QualifiedIdentifier(@class);
                 WriteLine("bool {0}::Equals(::System::Object^ obj)", qualifiedIdentifier);
-                WriteStartBraceIndent();
+                WriteOpenBraceAndIndent();
                 if (@class.IsRefType)
                 {
                     WriteLine("return this == safe_cast<{0}^>(obj);", qualifiedIdentifier);
@@ -823,7 +823,7 @@ namespace CppSharp.Generators.CLI
                 {
                     WriteLine("return *this == safe_cast<{0}>(obj);", qualifiedIdentifier);
                 }
-                WriteCloseBraceIndent();
+                UnindentAndWriteCloseBrace();
             }
         }
 
@@ -834,7 +834,7 @@ namespace CppSharp.Generators.CLI
             var paramIndex = 0;
             foreach (var param in method.Parameters)
             {
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                               {
                                   Function = method,
                                   Parameter = param,
@@ -870,7 +870,7 @@ namespace CppSharp.Generators.CLI
 
                 var varName = string.Format("_native.{0}", property.Field.OriginalName);
 
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
                         ReturnVarName = varName,
                         ReturnType = property.QualifiedType
@@ -908,11 +908,11 @@ namespace CppSharp.Generators.CLI
             }
 
             WriteLine(")");
-            WriteStartBraceIndent();
+            WriteOpenBraceAndIndent();
 
             GenerateFunctionCall(function);
 
-            WriteCloseBraceIndent();
+            UnindentAndWriteCloseBrace();
         }
 
         public void GenerateFunctionCall(Function function, Class @class = null, Type publicRetType = null)
@@ -946,7 +946,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
                 var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
                         MarshalVarPrefix = valueMarshalName,
                         Parameter = param
@@ -1021,7 +1021,7 @@ namespace CppSharp.Generators.CLI
 
                 var nativeVarName = paramInfo.Name;
 
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
                         ArgName = nativeVarName,
                         ReturnVarName = nativeVarName,
@@ -1054,7 +1054,7 @@ namespace CppSharp.Generators.CLI
                         isIntPtr ? "System::IntPtr()" : "nullptr");
                 }
 
-                var ctx = new MarshalContext(Context, CurrentIndent)
+                var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
                     ArgName = returnIdentifier,
                     ReturnVarName = returnIdentifier,
@@ -1167,7 +1167,7 @@ namespace CppSharp.Generators.CLI
                 QualifiedType = new QualifiedType(paramType)
             };
 
-            var ctx = new MarshalContext(Context, CurrentIndent)
+            var ctx = new MarshalContext(Context, CurrentIndentation)
             {
                 Parameter = effectiveParam,
                 ParameterIndex = paramIndex,

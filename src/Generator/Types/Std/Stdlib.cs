@@ -227,7 +227,7 @@ namespace CppSharp.Types.Std
                 tmpVarName, nativeType);
             ctx.Before.WriteLine("for each({0} _element in {1})",
                 managedType, entryString);
-            ctx.Before.WriteStartBraceIndent();
+            ctx.Before.WriteOpenBraceAndIndent();
             {
                 var param = new Parameter
                 {
@@ -235,7 +235,7 @@ namespace CppSharp.Types.Std
                     QualifiedType = type
                 };
 
-                var elementCtx = new MarshalContext(ctx.Context, ctx.Indent)
+                var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)
                                      {
                                          Parameter = param,
                                          ArgName = param.Name,
@@ -258,7 +258,7 @@ namespace CppSharp.Types.Std
                     tmpVarName);
             }
             
-            ctx.Before.WriteCloseBraceIndent();
+            ctx.Before.UnindentAndWriteCloseBrace();
 
             ctx.Return.Write(tmpVarName);
         }
@@ -278,9 +278,9 @@ namespace CppSharp.Types.Std
                 tmpVarName, managedType);
             ctx.Before.WriteLine("for(auto _element : {0})",
                 ctx.ReturnVarName);
-            ctx.Before.WriteStartBraceIndent();
+            ctx.Before.WriteOpenBraceAndIndent();
             {
-                var elementCtx = new MarshalContext(ctx.Context, ctx.Indent)
+                var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)
                                      {
                                          ReturnVarName = "_element",
                                          ReturnType = type
@@ -302,7 +302,7 @@ namespace CppSharp.Types.Std
                     ctx.Before.WriteLine("{0}->Add(_marshalElement);",
                         tmpVarName);
             }
-            ctx.Before.WriteCloseBraceIndent();
+            ctx.Before.UnindentAndWriteCloseBrace();
 
             ctx.Return.Write(tmpVarName);
         }

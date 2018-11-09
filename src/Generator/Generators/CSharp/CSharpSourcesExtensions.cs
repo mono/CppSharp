@@ -43,13 +43,13 @@ namespace CppSharp.Generators.CSharp
                     foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                     {
                         WriteTemplateSpecializationCheck(gen, @class, specialization);
-                        gen.WriteStartBraceIndent();
+                        gen.WriteOpenBraceAndIndent();
                         var specializedField = specialization.Fields.First(
                             f => f.OriginalName == field.OriginalName);
                         generate(specializedField, specialization, field.QualifiedType);
                         if (isVoid)
                             gen.WriteLine("return;");
-                        gen.WriteCloseBraceIndent();
+                        gen.UnindentAndWriteCloseBrace();
                     }
                     ThrowException(gen, @class);
                 }
@@ -79,11 +79,11 @@ namespace CppSharp.Generators.CSharp
                 foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                 {
                     WriteTemplateSpecializationCheck(gen, @class, specialization);
-                    gen.WriteStartBraceIndent();
+                    gen.WriteOpenBraceAndIndent();
                     generate(specialization);
                     if (isVoid)
                         gen.WriteLine("return;");
-                    gen.WriteCloseBraceIndent();
+                    gen.UnindentAndWriteCloseBrace();
                 }
                 ThrowException(gen, @class);
             }
