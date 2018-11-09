@@ -107,25 +107,6 @@ namespace CppSharp.AST
             return Anonymous.ContainsKey(key) ? Anonymous[key] : null;
         }
 
-        public DeclarationContext FindDeclaration(IEnumerable<string> declarations)
-        {
-            DeclarationContext currentDeclaration = this;
-
-            foreach (var declaration in declarations)
-            {
-                var subDeclaration = currentDeclaration.Namespaces
-                    .Concat<DeclarationContext>(currentDeclaration.Classes)
-                    .FirstOrDefault(e => e.Name.Equals(declaration));
-
-                if (subDeclaration == null)
-                    return null;
-
-                currentDeclaration = subDeclaration;
-            }
-
-            return currentDeclaration as DeclarationContext;
-        }
-
         public Namespace FindNamespace(string name)
         {
             var namespaces = name.Split(new string[] { "::" },
@@ -259,31 +240,12 @@ namespace CppSharp.AST
         {
             if (string.IsNullOrEmpty(name)) return null;
 
-            var entries = name.Split(new[] { "::" },
-                StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            if (entries.Count <= 1)
-            {
-                var @class = Classes.Find(c => c.Name.Equals(name, stringComparison)) ??
-                             Namespaces.Select(n => n.FindClass(name, stringComparison)).FirstOrDefault(c => c != null);
-                if (@class != null)
-                    return @class.CompleteDeclaration == null ?
-                        @class : (Class) @class.CompleteDeclaration;
-                return null;
-            }
-
-            var className = entries[entries.Count - 1];
-            var namespaces = entries.Take(entries.Count - 1);
-
-            DeclarationContext declContext = FindDeclaration(namespaces);
-            if (declContext == null)
-            {
-                declContext = FindClass(entries[0]);
-                if (declContext == null)
-                    return null;
-            }
-
-            return declContext.FindClass(className);
+            var @class = Classes.Find(c => c.Name.Equals(name, stringComparison)) ??
+                Namespaces.Select(n => n.FindClass(name, stringComparison)).FirstOrDefault(c => c != null);
+            if (@class != null)
+                return @class.CompleteDeclaration == null ?
+                    @class : (Class) @class.CompleteDeclaration;
+            return null;
         }
 
         public Class FindClass(string name, bool isComplete,
