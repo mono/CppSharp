@@ -2180,24 +2180,9 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(BlockKind.Method);
                 WriteLine($"private static void* __CopyValue({@internal} native)");
                 WriteStartBraceIndent();
-                var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
-                    method.IsCopyConstructor);
-                if (@class.HasNonTrivialCopyConstructor && copyCtorMethod != null &&
-                    copyCtorMethod.IsGenerated)
-                {
-                    // Allocate memory for a new native object and call the ctor.
-                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
-                    var printed = TypePrinter.PrintNative(@class);
-                    WriteLine($"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new global::System.IntPtr(&native));",
-                        printed, GetFunctionNativeIdentifier(copyCtorMethod));
-                    WriteLine("return ret.ToPointer();");
-                }
-                else
-                {
-                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
-                    WriteLine($"*({@internal}*) ret = native;");
-                    WriteLine("return ret.ToPointer();");
-                }
+                WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
+                WriteLine($"*({@internal}*) ret = native;");
+                WriteLine("return ret.ToPointer();");
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
