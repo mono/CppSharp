@@ -775,7 +775,7 @@ namespace CppSharp.Generators.CLI
             var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
                                          property.Name);
 
-            var marshalCtx = new MarshalContext(Context.Context)
+            var marshalCtx = new MarshalContext(Context.Context, Context.Indent)
                                  {
                                      ArgName = fieldRef,
                                      ParameterIndex = Context.ParameterIndex++,

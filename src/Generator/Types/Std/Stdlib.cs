@@ -235,7 +235,7 @@ namespace CppSharp.Types.Std
                     QualifiedType = type
                 };
 
-                var elementCtx = new MarshalContext(ctx.Context)
+                var elementCtx = new MarshalContext(ctx.Context, ctx.Indent)
                                      {
                                          Parameter = param,
                                          ArgName = param.Name,
@@ -280,7 +280,7 @@ namespace CppSharp.Types.Std
                 ctx.ReturnVarName);
             ctx.Before.WriteStartBraceIndent();
             {
-                var elementCtx = new MarshalContext(ctx.Context)
+                var elementCtx = new MarshalContext(ctx.Context, ctx.Indent)
                                      {
                                          ReturnVarName = "_element",
                                          ReturnType = type

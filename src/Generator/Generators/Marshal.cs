@@ -1,23 +1,27 @@
 ﻿using CppSharp.AST;
+using System.Collections.Generic;
 
 namespace CppSharp.Generators
 {
     public class MarshalContext : TypePrinter
     {
-        public MarshalContext(BindingContext context)
+        public MarshalContext(BindingContext context, Stack<uint> indent)
         {
             Context = context;
             Before = new TextGenerator();
+            indent.PushTo(Before.CurrentIndent);
             Return = new TextGenerator();
+            indent.PushTo(Return.CurrentIndent);
             MarshalVarPrefix = string.Empty;
+            this.Indent = indent;
         }
 
-        public BindingContext Context { get; private set; }
+        public BindingContext Context { get; }
 
         public MarshalPrinter<MarshalContext> MarshalToNative;
 
-        public TextGenerator Before { get; private set; }
-        public TextGenerator Return { get; private set; }
+        public TextGenerator Before { get; }
+        public TextGenerator Return { get; }
 
         public string ReturnVarName { get; set; }
         public QualifiedType ReturnType { get; set; }
@@ -27,11 +31,12 @@ namespace CppSharp.Generators
         public Function Function { get; set; }
 
         public string MarshalVarPrefix { get; set; }
+        public Stack<uint> Indent { get; }
     }
 
     public abstract class MarshalPrinter<T> : AstVisitor where T : MarshalContext
     {
-        public T Context { get; private set; }
+        public T Context { get; }
 
         protected MarshalPrinter(T ctx)
         {

@@ -49,13 +49,6 @@ namespace CppSharp
             return str.Trim().Split();
         }
 
-        public static IEnumerable<string> SplitAndKeep(this string s, string seperator)
-        {
-            string[] obj = s.Split(new[] { seperator }, StringSplitOptions.None);
-
-            return obj.Select((t, i) => i == obj.Length - 1 ? t : t + seperator);
-        }
-
         public static string Capitalize(string s)
         {
             // Check for empty string.
@@ -134,6 +127,18 @@ namespace CppSharp
 
             return uri1.MakeRelativeUri(uri2).ToString();
         }
-        
+    }
+
+    public static class CollectionExtensions
+    {
+        public static void PushTo<T>(this Stack<T> source, Stack<T> destination)
+        {
+            var array = new T[source.Count];
+            source.CopyTo(array, 0);
+            foreach (var indent in array.Reverse())
+            {
+                destination.Push(indent);
+            }
+        }
     }
 }

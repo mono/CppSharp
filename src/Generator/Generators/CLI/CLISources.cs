@@ -396,7 +396,7 @@ namespace CppSharp.Generators.CLI
                 else
                     variable = $"((::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                 {
                     Parameter = param,
                     ArgName = param.Name,
@@ -408,7 +408,7 @@ namespace CppSharp.Generators.CLI
 
                 if (isIndexer)
                 {
-                    var ctx2 = new MarshalContext(Context)
+                    var ctx2 = new MarshalContext(Context, CurrentIndent)
                     {
                         Parameter = indexParameter,
                         ArgName = indexParameter.Name
@@ -483,7 +483,7 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                     {
                         Declaration = decl,
                         ArgName = decl.Name,
@@ -592,7 +592,7 @@ namespace CppSharp.Generators.CLI
             var returns = new List<string>();
             foreach (var param in @event.Parameters)
             {
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                     {
                         ReturnVarName = param.Name,
                         ReturnType = param.QualifiedType
@@ -686,7 +686,7 @@ namespace CppSharp.Generators.CLI
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, property.Field.OriginalName);
 
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                 {
                     ArgName = property.Name,
                     ReturnVarName = nativeField,
@@ -834,7 +834,7 @@ namespace CppSharp.Generators.CLI
             var paramIndex = 0;
             foreach (var param in method.Parameters)
             {
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                               {
                                   Function = method,
                                   Parameter = param,
@@ -870,7 +870,7 @@ namespace CppSharp.Generators.CLI
 
                 var varName = string.Format("_native.{0}", property.Field.OriginalName);
 
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                     {
                         ReturnVarName = varName,
                         ReturnType = property.QualifiedType
@@ -946,7 +946,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
                 var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                     {
                         MarshalVarPrefix = valueMarshalName,
                         Parameter = param
@@ -1021,7 +1021,7 @@ namespace CppSharp.Generators.CLI
 
                 var nativeVarName = paramInfo.Name;
 
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                     {
                         ArgName = nativeVarName,
                         ReturnVarName = nativeVarName,
@@ -1054,7 +1054,7 @@ namespace CppSharp.Generators.CLI
                         isIntPtr ? "System::IntPtr()" : "nullptr");
                 }
 
-                var ctx = new MarshalContext(Context)
+                var ctx = new MarshalContext(Context, CurrentIndent)
                 {
                     ArgName = returnIdentifier,
                     ReturnVarName = returnIdentifier,
@@ -1167,7 +1167,7 @@ namespace CppSharp.Generators.CLI
                 QualifiedType = new QualifiedType(paramType)
             };
 
-            var ctx = new MarshalContext(Context)
+            var ctx = new MarshalContext(Context, CurrentIndent)
             {
                 Parameter = effectiveParam,
                 ParameterIndex = paramIndex,

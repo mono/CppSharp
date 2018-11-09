@@ -820,7 +820,7 @@ namespace CppSharp.Generators.CSharp
                 QualifiedType = var.QualifiedType
             };
 
-            var ctx = new CSharpMarshalContext(Context)
+            var ctx = new CSharpMarshalContext(Context, CurrentIndent)
             {
                 Parameter = param,
                 ArgName = param.Name,
@@ -880,38 +880,40 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateFieldSetter(Field field, Class @class, QualifiedType fieldType)
         {
-            var param = new Parameter
-            {
-                Name = "value",
-                QualifiedType = field.QualifiedType
-            };
-
-            var ctx = new CSharpMarshalContext(Context)
-            {
-                Parameter = param,
-                ArgName = param.Name,
-            };
-            ctx.PushMarshalKind(MarshalKind.NativeField);
-
-            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            ctx.Declaration = field;
-
+            string returnVar;
             Type type = field.Type.Desugar();
             var arrayType = type as ArrayType;
-
             if (arrayType != null && @class.IsValueType)
             {
-                ctx.ReturnVarName = HandleValueArray(arrayType, field);
+                returnVar = HandleValueArray(arrayType, field);
             }
             else
             {
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
                 var identifier = SafeIdentifier(name);
                 if (@class.IsValueType)
-                    ctx.ReturnVarName = $"{Helpers.InstanceField}.{identifier}";
+                    returnVar = $"{Helpers.InstanceField}.{identifier}";
                 else
-                    ctx.ReturnVarName = $"(({TypePrinter.PrintNative(@class)}*){Helpers.InstanceIdentifier})->{identifier}";
+                    returnVar = $"(({TypePrinter.PrintNative(@class)}*){Helpers.InstanceIdentifier})->{identifier}";
             }
+
+            var param = new Parameter
+            {
+                Name = "value",
+                QualifiedType = field.QualifiedType
+            };
+
+            var ctx = new CSharpMarshalContext(Context, CurrentIndent)
+            {
+                Parameter = param,
+                ArgName = param.Name,
+                ReturnVarName = returnVar
+            };
+            ctx.PushMarshalKind(MarshalKind.NativeField);
+
+            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+            ctx.Declaration = field;
+
             param.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
@@ -987,7 +989,7 @@ namespace CppSharp.Generators.CSharp
             function.OriginalReturnType.Type.IsPointerTo(out type);
 
             var @internal = TypePrinter.PrintNative(function.Namespace);
-            var ctx = new CSharpMarshalContext(Context)
+            var ctx = new CSharpMarshalContext(Context, CurrentIndent)
             {
                 Parameter = new Parameter
                 {
@@ -1108,7 +1110,7 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PopContext();
 
-            var ctx = new CSharpMarshalContext(Context)
+            var ctx = new CSharpMarshalContext(Context, CurrentIndent)
             {
                 ArgName = var.Name,
                 ReturnType = new QualifiedType(var.Type)
@@ -1171,12 +1173,18 @@ namespace CppSharp.Generators.CSharp
         private void GenerateFieldGetter(Field field, Class @class, QualifiedType returnType)
         {
             var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-            String returnVar;
+            string returnVar;
+            var arrayType = field.Type.Desugar() as ArrayType;
             if (@class.IsValueType)
-                returnVar = $@"{Helpers.InstanceField}.{SafeIdentifier(name)}";
+            {
+                if (arrayType != null)
+                    returnVar = HandleValueArray(arrayType, field);
+                else
+                    returnVar = $"{Helpers.InstanceField}.{SafeIdentifier(name)}";
+            }
             else
             {
-                returnVar = $@"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})->{SafeIdentifier(name)}";
+                returnVar = $"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})->{SafeIdentifier(name)}";
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
@@ -1185,7 +1193,7 @@ namespace CppSharp.Generators.CSharp
                     returnVar = $"new {CSharpTypePrinter.IntPtrType}(&{returnVar})";
             }
 
-            var ctx = new CSharpMarshalContext(Context)
+            var ctx = new CSharpMarshalContext(Context, CurrentIndent)
             {
                 ArgName = field.Name,
                 Declaration = field,
@@ -1193,11 +1201,6 @@ namespace CppSharp.Generators.CSharp
                 ReturnType = returnType
             };
             ctx.PushMarshalKind(MarshalKind.NativeField);
-
-            var arrayType = field.Type.Desugar() as ArrayType;
-
-            if (arrayType != null && @class.IsValueType)
-                ctx.ReturnVarName = HandleValueArray(arrayType, field);
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             field.QualifiedType.Visit(marshal);
@@ -1666,7 +1669,7 @@ namespace CppSharp.Generators.CSharp
                 if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
-                var ctx = new CSharpMarshalContext(Context)
+                var ctx = new CSharpMarshalContext(Context, CurrentIndent)
                 {
                     ReturnType = param.QualifiedType,
                     ReturnVarName = param.Name,
@@ -1723,7 +1726,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 // Marshal the managed result to native
-                var ctx = new CSharpMarshalContext(Context)
+                var ctx = new CSharpMarshalContext(Context, CurrentIndent)
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     Parameter = param,
@@ -1901,7 +1904,7 @@ namespace CppSharp.Generators.CSharp
             var returns = new List<string>();
             foreach (var param in @event.Parameters)
             {
-                var ctx = new CSharpMarshalContext(Context)
+                var ctx = new CSharpMarshalContext(Context, CurrentIndent)
                 {
                     ReturnVarName = param.Name,
                     ReturnType = param.QualifiedType
@@ -2853,7 +2856,7 @@ namespace CppSharp.Generators.CSharp
 
             if (needsReturn)
             {
-                var ctx = new CSharpMarshalContext(Context)
+                var ctx = new CSharpMarshalContext(Context, CurrentIndent)
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     ReturnVarName = Helpers.ReturnIdentifier,
@@ -2944,7 +2947,7 @@ namespace CppSharp.Generators.CSharp
 
                 var nativeVarName = paramInfo.Name;
 
-                var ctx = new CSharpMarshalContext(Context)
+                var ctx = new CSharpMarshalContext(Context, CurrentIndent)
                 {
                     Parameter = param,
                     ArgName = nativeVarName,
@@ -3012,7 +3015,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            var ctx = new CSharpMarshalContext(Context)
+            var ctx = new CSharpMarshalContext(Context, CurrentIndent)
             {
                 Parameter = param,
                 ParameterIndex = paramIndex,
