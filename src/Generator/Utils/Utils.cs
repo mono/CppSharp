@@ -128,17 +128,4 @@ namespace CppSharp
             return uri1.MakeRelativeUri(uri2).ToString();
         }
     }
-
-    public static class CollectionExtensions
-    {
-        public static void PushTo<T>(this Stack<T> source, Stack<T> destination)
-        {
-            var array = new T[source.Count];
-            source.CopyTo(array, 0);
-            foreach (var element in array.Reverse())
-            {
-                destination.Push(element);
-            }
-        }
-    }
 }

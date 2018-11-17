@@ -240,7 +240,7 @@ namespace CppSharp
     {
         public Block RootBlock { get; }
         public Block ActiveBlock { get; private set; }
-        public Stack<uint> CurrentIndentation => ActiveBlock.Text.CurrentIndentation;
+        public uint CurrentIndentation => ActiveBlock.Text.CurrentIndentation;
 
         protected BlockGenerator()
         {
@@ -263,7 +263,7 @@ namespace CppSharp
         public void PushBlock(BlockKind kind = BlockKind.Unknown, object obj = null)
         {
             var block = new Block { Kind = kind, Object = obj };
-            CurrentIndentation.PushTo(block.Text.CurrentIndentation);
+            block.Text.CurrentIndentation = CurrentIndentation;
             block.Text.IsStartOfLine = ActiveBlock.Text.IsStartOfLine;
             block.Text.NeedsNewLine = ActiveBlock.Text.NeedsNewLine;
             PushBlock(block);
