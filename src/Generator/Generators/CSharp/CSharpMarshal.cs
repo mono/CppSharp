@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -11,17 +10,15 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpMarshalContext : MarshalContext
     {
-        public CSharpMarshalContext(BindingContext context, Stack<uint> indentation)
+        public CSharpMarshalContext(BindingContext context, uint indentation)
             : base(context, indentation)
         {
-            ArgumentPrefix = new TextGenerator();
-            indentation.PushTo(ArgumentPrefix.CurrentIndentation);
-            Cleanup = new TextGenerator();
-            indentation.PushTo(Cleanup.CurrentIndentation);
+            ArgumentPrefix = new TextGenerator { CurrentIndentation = indentation };
+            Cleanup = new TextGenerator { CurrentIndentation = indentation };
         }
 
-        public TextGenerator ArgumentPrefix { get; private set; }
-        public TextGenerator Cleanup { get; private set; }
+        public TextGenerator ArgumentPrefix { get; }
+        public TextGenerator Cleanup { get; }
         public bool HasCodeBlock { get; set; }
     }
 

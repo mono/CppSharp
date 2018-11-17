@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace CppSharp
@@ -27,7 +25,7 @@ namespace CppSharp
         public StringBuilder StringBuilder = new StringBuilder();
         public bool IsStartOfLine { get; set; }
         public bool NeedsNewLine { get; set; }
-        public Stack<uint> CurrentIndentation { get; } = new Stack<uint>();
+        public uint CurrentIndentation { get; set; }
 
         public TextGenerator()
         {
@@ -38,7 +36,7 @@ namespace CppSharp
             StringBuilder = new StringBuilder(generator);
             IsStartOfLine = generator.IsStartOfLine;
             NeedsNewLine = generator.NeedsNewLine;
-            CurrentIndentation = new Stack<uint>(generator.CurrentIndentation);
+            CurrentIndentation = generator.CurrentIndentation;
         }
 
         public TextGenerator Clone()
@@ -55,7 +53,8 @@ namespace CppSharp
                 msg = string.Format(msg, args);
 
             if (IsStartOfLine && !string.IsNullOrWhiteSpace(msg))
-                StringBuilder.Append(new string(' ', (int) CurrentIndentation.Sum(u => u)));
+                StringBuilder.Append(new string(' ',
+                    (int) (CurrentIndentation * DefaultIndentation)));
 
             if (msg.Length > 0)
                 IsStartOfLine = msg.EndsWith(Environment.NewLine);
@@ -100,14 +99,14 @@ namespace CppSharp
             NeedsNewLine = false;
         }
 
-        public void Indent(uint indentation = DefaultIndentation)
+        public void Indent(uint indentation = 1)
         {
-            CurrentIndentation.Push(indentation);
+            CurrentIndentation++;
         }
 
         public void Unindent()
         {
-            CurrentIndentation.Pop();
+            CurrentIndentation--;
         }
 
         public void WriteOpenBraceAndIndent()

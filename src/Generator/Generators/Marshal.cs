@@ -1,17 +1,14 @@
 ﻿using CppSharp.AST;
-using System.Collections.Generic;
 
 namespace CppSharp.Generators
 {
     public class MarshalContext : TypePrinter
     {
-        public MarshalContext(BindingContext context, Stack<uint> indentation)
+        public MarshalContext(BindingContext context, uint indentation)
         {
             Context = context;
-            Before = new TextGenerator();
-            indentation.PushTo(Before.CurrentIndentation);
-            Return = new TextGenerator();
-            indentation.PushTo(Return.CurrentIndentation);
+            Before = new TextGenerator { CurrentIndentation = indentation };
+            Return = new TextGenerator { CurrentIndentation = indentation };
             MarshalVarPrefix = string.Empty;
             this.Indentation = indentation;
         }
@@ -31,7 +28,7 @@ namespace CppSharp.Generators
         public Function Function { get; set; }
 
         public string MarshalVarPrefix { get; set; }
-        public Stack<uint> Indentation { get; }
+        public uint Indentation { get; }
     }
 
     public abstract class MarshalPrinter<T> : AstVisitor where T : MarshalContext
