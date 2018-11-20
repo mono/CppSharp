@@ -983,28 +983,28 @@ namespace CppSharp
             {
                 var decl = ctx.GetNamespaces(i);
                 var _decl = Visit(decl) as AST.Namespace;
-                _ctx.Namespaces.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.EnumsCount; ++i)
             {
                 var decl = ctx.GetEnums(i);
                 var _decl = Visit(decl) as AST.Enumeration;
-                _ctx.Enums.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.FunctionsCount; ++i)
             {
                 var decl = ctx.GetFunctions(i);
                 var _decl = Visit(decl) as AST.Function;
-                _ctx.Functions.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.TemplatesCount; ++i)
             {
                 var decl = ctx.GetTemplates(i);
                 var _decl = Visit(decl) as AST.Template;
-                _ctx.Templates.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.ClassesCount; ++i)
@@ -1012,28 +1012,28 @@ namespace CppSharp
                 var decl = ctx.GetClasses(i);
                 var _decl = Visit(decl) as AST.Class;
                 if (!_decl.IsIncomplete || _decl.IsOpaque)
-                    _ctx.Classes.Add(_decl);
+                    _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.TypedefsCount; ++i)
             {
                 var decl = ctx.GetTypedefs(i);
                 var _decl = Visit(decl) as AST.TypedefDecl;
-                _ctx.Typedefs.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.TypeAliasesCount; ++i)
             {
                 var decl = ctx.GetTypeAliases(i);
                 var _decl = Visit(decl) as AST.TypeAlias;
-                _ctx.Typedefs.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.VariablesCount; ++i)
             {
                 var decl = ctx.GetVariables(i);
                 var _decl = Visit(decl) as AST.Variable;
-                _ctx.Variables.Add(_decl);
+                _ctx.Declarations.Add(_decl);
             }
 
             for (uint i = 0; i < ctx.FriendsCount; ++i)

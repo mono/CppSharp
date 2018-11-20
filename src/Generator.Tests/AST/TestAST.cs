@@ -246,7 +246,7 @@ namespace CppSharp.Generator.Tests.AST
         {
             var @class = AstContext.FindClass("TestTemplateFunctions").FirstOrDefault();
             Assert.IsNotNull(@class, "Couldn't find TestTemplateFunctions class.");
-            Assert.AreEqual(6, @class.Templates.Count);
+            Assert.AreEqual(6, @class.Templates.Count());
             var twoParamMethodTemplate = @class.Templates.OfType<FunctionTemplate>()
                 .FirstOrDefault(t => t.Name == "MethodTemplateWithTwoTypeParameter");
             Assert.IsNotNull(twoParamMethodTemplate);
@@ -533,7 +533,7 @@ namespace CppSharp.Generator.Tests.AST
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestTemplateClass").First();
             var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
-            Assert.That(template.Specializations[3].Classes[0].Visit(cppTypePrinter),
+            Assert.That(template.Specializations[3].Classes.First().Visit(cppTypePrinter),
                 Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
         }
 

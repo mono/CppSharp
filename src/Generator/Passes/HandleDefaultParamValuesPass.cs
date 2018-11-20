@@ -30,7 +30,7 @@ namespace CppSharp.Passes
                 return false;
             var result = base.VisitTranslationUnit(unit);
             foreach (var overload in overloads)
-                overload.Key.Functions.AddRange(overload.Value);
+                overload.Key.Declarations.AddRange(overload.Value);
             overloads.Clear();
             return result;
         }

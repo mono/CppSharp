@@ -39,7 +39,7 @@ namespace CppSharp.Passes
             Class templatedClass = template.TemplatedClass;
             var parentSpecialization = templatedClass.Namespace as ClassTemplateSpecialization;
             if (parentSpecialization != null)
-                templatedClass = parentSpecialization.TemplatedDecl.TemplatedClass.Classes.Find(
+                templatedClass = parentSpecialization.TemplatedDecl.TemplatedClass.Classes.FirstOrDefault(
                     c => c.OriginalName == template.OriginalName) ?? template.TemplatedClass;
             // store all specializations in the real template class because ClassTemplateDecl only forwards
             foreach (var specialization in template.Specializations.Where(

@@ -172,7 +172,7 @@ namespace CppSharp
 
                 if (@enum.Items.Count > 0)
                 {
-                    unit.Enums.Add(@enum);
+                    unit.Declarations.Add(@enum);
                     break;
                 }
             }

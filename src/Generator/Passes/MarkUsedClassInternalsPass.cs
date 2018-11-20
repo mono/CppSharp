@@ -60,7 +60,8 @@ namespace CppSharp.Passes
                     if (template?.Ignore == true)
                         template.GenerationKind = GenerationKind.Internal;
 
-                    Class nested = template?.Classes.Find(c => c.OriginalName == decl.OriginalName);
+                    Class nested = template?.Classes.FirstOrDefault(
+                        c => c.OriginalName == decl.OriginalName);
                     if (nested?.Ignore == true)
                         nested.GenerationKind = GenerationKind.Internal;
 

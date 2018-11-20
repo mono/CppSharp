@@ -184,13 +184,13 @@ namespace CppSharp.AST
             Class @interface = null;
             if (specialization == null)
             {
-                @interface = @class.Namespace.Classes.Find(
+                @interface = @class.Namespace.Classes.FirstOrDefault(
                     c => c.OriginalClass == @class && c.IsInterface);
             }
             else
             {
                 Class template = specialization.TemplatedDecl.TemplatedClass;
-                Class templatedInterface = @class.Namespace.Classes.Find(
+                Class templatedInterface = @class.Namespace.Classes.FirstOrDefault(
                    c => c.OriginalClass == template && c.IsInterface);
                 if (templatedInterface != null)
                     @interface = templatedInterface.Specializations.FirstOrDefault(
