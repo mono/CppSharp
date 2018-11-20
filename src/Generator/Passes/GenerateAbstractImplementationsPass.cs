@@ -24,9 +24,9 @@ namespace CppSharp.Passes
             var result = base.VisitTranslationUnit(unit);
             foreach (var internalImpl in internalImpls)
                 if (internalImpl.Namespace != null)
-                    internalImpl.Namespace.Classes.Add(internalImpl);
+                    internalImpl.Namespace.Declarations.Add(internalImpl);
                 else
-                    unit.Classes.AddRange(internalImpls);
+                    unit.Declarations.AddRange(internalImpls);
 
             internalImpls.Clear();
             return result;

@@ -144,7 +144,7 @@ namespace CppSharp.Passes
                 @interface.Methods.Add(dispose);
             }
 
-            @interface.Events.AddRange(@base.Events);
+            @interface.Declarations.AddRange(@base.Events);
 
             var type = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
             var adjustmentTo = new Property
