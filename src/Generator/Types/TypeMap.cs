@@ -40,6 +40,8 @@ namespace CppSharp.Types
         public Declaration Declaration { get; set; }
         public ITypeMapDatabase TypeMapDatabase { get; set; }
 
+        public bool IsEnabled { get; set; } = true;
+
         public virtual bool IsIgnored
         {
             get { return false; }
@@ -122,7 +124,6 @@ namespace CppSharp.Types
         bool FindTypeMapRecursive(Type type, out TypeMap typeMap);
         bool FindTypeMap(Type decl, out TypeMap typeMap);
         bool FindTypeMap(Declaration decl, out TypeMap typeMap);
-        bool FindTypeMap(string name, out TypeMap typeMap);
     }
 
 

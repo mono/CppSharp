@@ -381,7 +381,7 @@ namespace CppSharp.Generators.CSharp
             var typeMaps = new List<System.Type>();
             var keys = new List<string>();
             // disable the type maps, if any, for this class because of copy ctors, operators and others
-            this.DisableTypeMap(@class, typeMaps, keys);
+            this.DisableTypeMap(@class);
 
             PushBlock(BlockKind.Class);
             GenerateDeclarationCommon(@class);
@@ -443,8 +443,8 @@ namespace CppSharp.Generators.CSharp
             UnindentAndWriteCloseBrace();
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            for (int i = 0; i < typeMaps.Count; i++)
-                Context.TypeMaps.TypeMaps.Add(keys[i], typeMaps[i]);
+            foreach (var typeMap in Context.TypeMaps.TypeMaps.Values)
+                typeMap.IsEnabled = true;
 
             return true;
         }
@@ -694,11 +694,11 @@ namespace CppSharp.Generators.CSharp
                 {
                     var typeMaps = new List<System.Type>();
                     var keys = new List<string>();
-                    this.DisableTypeMap(@base.Class, typeMaps, keys);
+                    this.DisableTypeMap(@base.Class);
                     var printedBase = @base.Type.Desugar().Visit(TypePrinter);
                     bases.Add(printedBase.Type);
-                    for (int i = 0; i < typeMaps.Count; i++)
-                        Context.TypeMaps.TypeMaps.Add(keys[i], typeMaps[i]);
+                    foreach (var typeMap in Context.TypeMaps.TypeMaps.Values)
+                        typeMap.IsEnabled = true;
                 }
             }
 

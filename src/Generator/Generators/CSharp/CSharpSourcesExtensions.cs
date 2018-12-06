@@ -8,14 +8,13 @@ namespace CppSharp.Generators.CSharp
 {
     public static class CSharpSourcesExtensions
     {
-        public static void DisableTypeMap(this CSharpSources gen, Class @class,
-            List<System.Type> typeMaps, List<string> keys)
+        public static void DisableTypeMap(this CSharpSources gen, Class @class)
         {
             var mapped = @class.OriginalClass ?? @class;
-            DisableSingleTypeMap(mapped, typeMaps, keys, gen.Context);
+            DisableSingleTypeMap(mapped, gen.Context);
             if (mapped.IsDependent)
                 foreach (var specialization in mapped.Specializations)
-                    DisableSingleTypeMap(specialization, typeMaps, keys, gen.Context);
+                    DisableSingleTypeMap(specialization, gen.Context);
         }
 
         public static void GenerateNativeConstructorsByValue(
@@ -93,8 +92,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private static void DisableSingleTypeMap(Class mapped,
-            List<System.Type> typeMaps, List<string> keys, BindingContext context)
+        private static void DisableSingleTypeMap(Class mapped, BindingContext context)
         {
             var names = new List<string> { mapped.OriginalName };
             foreach (TypePrintScopeKind kind in Enum.GetValues(typeof(TypePrintScopeKind)))
@@ -102,16 +100,8 @@ namespace CppSharp.Generators.CSharp
                 var cppTypePrinter = new CppTypePrinter { PrintScopeKind = kind };
                 names.Add(mapped.Visit(cppTypePrinter));
             }
-            foreach (var name in names)
-            {
-                if (context.TypeMaps.TypeMaps.ContainsKey(name))
-                {
-                    keys.Add(name);
-                    typeMaps.Add(context.TypeMaps.TypeMaps[name]);
-                    context.TypeMaps.TypeMaps.Remove(name);
-                    break;
-                }
-            }
+            foreach (var name in names.Where(context.TypeMaps.TypeMaps.ContainsKey))
+                context.TypeMaps.TypeMaps[name].IsEnabled = false;
         }
 
         private static void WriteTemplateSpecializationCheck(CSharpSources gen,

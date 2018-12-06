@@ -13,11 +13,11 @@ namespace CppSharp.Types
 {
     public class TypeMapDatabase : ITypeMapDatabase
     {
-        public IDictionary<string, System.Type> TypeMaps { get; set; }
+        public IDictionary<string, TypeMap> TypeMaps { get; set; }
 
         public TypeMapDatabase()
         {
-            TypeMaps = new Dictionary<string, System.Type>();
+            TypeMaps = new Dictionary<string, TypeMap>();
         }
 
         public void SetupTypeMaps(GeneratorKind generatorKind)
@@ -41,14 +41,16 @@ namespace CppSharp.Types
 
         private void SetupTypeMaps(IEnumerable<System.Type> types, GeneratorKind generatorKind)
         {
-            foreach (var typeMap in types)
+            foreach (var type in types)
             {
-                var attrs = typeMap.GetCustomAttributes(typeof(TypeMapAttribute), true);
+                var attrs = type.GetCustomAttributes(typeof(TypeMapAttribute), true);
                 foreach (TypeMapAttribute attr in attrs)
                 {
                     if (attr.GeneratorKind == 0 || attr.GeneratorKind == generatorKind)
                     {
-                        TypeMaps[attr.Type] = typeMap;
+                        var typeMap = (TypeMap) Activator.CreateInstance(type);
+                        typeMap.TypeMapDatabase = this;
+                        this.TypeMaps[attr.Type] = typeMap;
                     }
                 }
             }
@@ -164,27 +166,9 @@ namespace CppSharp.Types
             }
         }
 
-        public bool FindTypeMap(string name, out TypeMap typeMap)
+        private bool FindTypeMap(string name, out TypeMap typeMap)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                typeMap = null;
-                return false;
-            }
-
-            System.Type type;
-            TypeMaps.TryGetValue(name, out type);
-
-            if (type == null)
-            {
-                typeMap = null;
-                return false;
-            }
-
-            typeMap = (TypeMap)Activator.CreateInstance(type);
-            typeMap.TypeMapDatabase = this;
-
-            return true;
+            return TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
         }
     }
 }
