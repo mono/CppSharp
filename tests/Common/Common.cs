@@ -2,7 +2,6 @@
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
-using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Utils;
 
@@ -11,9 +10,9 @@ namespace CppSharp.Tests
     [TypeMap("TypeMappedIndex")]
     public class TypeMappedIndex : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
-            return "unsigned short";
+            return new BuiltinType(PrimitiveType.UShort);
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
@@ -26,9 +25,9 @@ namespace CppSharp.Tests
             ctx.Return.Write("::TypeMappedIndex()");
         }
 
-        public override string CSharpSignature(TypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
-            return "ushort";
+            return new BuiltinType(PrimitiveType.UShort);
         }
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)

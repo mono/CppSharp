@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
-using CppSharp.Generators.AST;
-using CppSharp.Generators.CLI;
-using CppSharp.Generators.CSharp;
-using Attribute = System.Attribute;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
@@ -15,21 +11,15 @@ namespace CppSharp.Types
     {
         public IDictionary<string, TypeMap> TypeMaps { get; set; }
 
-        public TypeMapDatabase()
+        public TypeMapDatabase(ASTContext astContext, GeneratorKind generatorKind)
         {
             TypeMaps = new Dictionary<string, TypeMap>();
-        }
-
-        public void SetupTypeMaps(GeneratorKind generatorKind)
-        {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            foreach (var assembly in loadedAssemblies)
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
                     var types = assembly.FindDerivedTypes(typeof(TypeMap));
-                    SetupTypeMaps(types, generatorKind);
+                    SetupTypeMaps(types, generatorKind, astContext);
                 }
                 catch (System.Reflection.ReflectionTypeLoadException ex)
                 {
@@ -39,7 +29,8 @@ namespace CppSharp.Types
             }
         }
 
-        private void SetupTypeMaps(IEnumerable<System.Type> types, GeneratorKind generatorKind)
+        private void SetupTypeMaps(IEnumerable<System.Type> types,
+            GeneratorKind generatorKind, ASTContext astContext)
         {
             foreach (var type in types)
             {
@@ -49,6 +40,7 @@ namespace CppSharp.Types
                     if (attr.GeneratorKind == 0 || attr.GeneratorKind == generatorKind)
                     {
                         var typeMap = (TypeMap) Activator.CreateInstance(type);
+                        typeMap.ASTContext = astContext;
                         typeMap.TypeMapDatabase = this;
                         this.TypeMaps[attr.Type] = typeMap;
                     }

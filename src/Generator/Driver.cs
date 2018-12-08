@@ -13,6 +13,7 @@ using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Utils;
 using Microsoft.CSharp;
+using CppSharp.Types;
 
 namespace CppSharp
 {
@@ -68,9 +69,11 @@ namespace CppSharp
             ValidateOptions();
             ParserOptions.Setup();
             Context = new BindingContext(Options, ParserOptions);
-            Context.TypeMaps.SetupTypeMaps(Options.GeneratorKind);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
+
+        public void SetupTypeMaps() =>
+            Context.TypeMaps = new TypeMapDatabase(Context.ASTContext, Options.GeneratorKind);
 
         void OnSourceFileParsed(IEnumerable<string> files, ParserResult result)
         {
@@ -434,6 +437,7 @@ namespace CppSharp
                 Diagnostics.Message("Processing code...");
 
             driver.SetupPasses(library);
+            driver.SetupTypeMaps();
 
             library.Preprocess(driver, driver.Context.ASTContext);
 

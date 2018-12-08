@@ -1119,6 +1119,13 @@ namespace CppSharp.AST
         }
     }
 
+    public class CustomType : UnsupportedType
+    {
+        public CustomType(string description) : base(description)
+        {
+        }
+    }
+
     #region Primitives
 
     /// <summary>

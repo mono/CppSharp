@@ -34,6 +34,7 @@ namespace CppSharp.Generator.Tests
             if (!Driver.ParseCode())
                 throw new Exception("Error parsing the code");
 
+            Driver.SetupTypeMaps();
             AstContext = Driver.Context.ASTContext;
             new CleanUnitPass { Context = Driver.Context }.VisitASTContext(AstContext);
             new ResolveIncompleteDeclsPass { Context = Driver.Context }.VisitASTContext(AstContext);
