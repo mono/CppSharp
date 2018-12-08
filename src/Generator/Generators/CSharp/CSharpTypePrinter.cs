@@ -42,15 +42,7 @@ namespace CppSharp.Generators.CSharp
                     Type = tag
                 };
 
-                string type = typeMap.CSharpSignature(typePrinterContext);
-                if (!string.IsNullOrEmpty(type))
-                {
-                    return new TypePrinterResult
-                    {
-                        Type = type,
-                        TypeMap = typeMap
-                    };
-                }
+                return typeMap.CSharpSignatureType(typePrinterContext).ToString();
             }
 
             return base.VisitTagType(tag, quals);
@@ -290,15 +282,7 @@ namespace CppSharp.Generators.CSharp
                     Type = typedef
                 };
 
-                string type = typeMap.CSharpSignature(typePrinterContext);
-                if (!string.IsNullOrEmpty(type))
-                {
-                    return new TypePrinterResult
-                    {
-                        Type = type,
-                        TypeMap = typeMap
-                    };
-                }
+                return typeMap.CSharpSignatureType(typePrinterContext).ToString();
             }
 
             FunctionType func = decl.Type as FunctionType;
@@ -350,17 +334,7 @@ namespace CppSharp.Generators.CSharp
                 MarshalKind = MarshalKind
             };
 
-            var type = typeMap.CSharpSignature(typePrinterContext);
-            if (!string.IsNullOrEmpty(type))
-            {
-                return new TypePrinterResult
-                {
-                    Type = type,
-                    TypeMap = typeMap
-                };
-            }
-
-            return decl.Visit(this);
+            return typeMap.CSharpSignatureType(typePrinterContext).ToString();
         }
 
         public override TypePrinterResult VisitDependentTemplateSpecializationType(
@@ -408,7 +382,38 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitCILType(CILType type, TypeQualifiers quals)
         {
-            return type.Type.FullName;
+            switch (System.Type.GetTypeCode(type.Type))
+            {
+                case TypeCode.Boolean:
+                    return "bool";
+                case TypeCode.Char:
+                    return "char";
+                case TypeCode.SByte:
+                    return "sbyte";
+                case TypeCode.Byte:
+                    return "byte";
+                case TypeCode.Int16:
+                    return "short";
+                case TypeCode.UInt16:
+                    return "ushort";
+                case TypeCode.Int32:
+                    return "int";
+                case TypeCode.UInt32:
+                    return "uint";
+                case TypeCode.Int64:
+                    return "long";
+                case TypeCode.UInt64:
+                    return "ulong";
+                case TypeCode.Single:
+                    return "float";
+                case TypeCode.Double:
+                    return "double";
+                case TypeCode.Decimal:
+                    return "decimal";
+                case TypeCode.String:
+                    return "string";
+            }
+            return $"global::{type.Type.FullName}";
         }
 
         public static void GetPrimitiveTypeWidth(PrimitiveType primitive,
@@ -705,6 +710,11 @@ namespace CppSharp.Generators.CSharp
             TypeQualifiers quals)
         {
             return vectorType.ElementType.Visit(this);
+        }
+
+        public override TypePrinterResult VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
+            return type.Description;
         }
 
         private static string GetParameterUsage(ParameterUsage usage)

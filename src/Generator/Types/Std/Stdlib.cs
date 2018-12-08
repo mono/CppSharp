@@ -12,28 +12,15 @@ namespace CppSharp.Types.Std
     [TypeMap("va_list")]
     public class VaList : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
-        {
-            return "va_list";
-        }
-
-        public override string CSharpSignature(TypePrinterContext ctx)
-        {
-            return "va_list";
-        }
-
-        public override bool IsIgnored
-        {
-            get { return true; }
-        }
+        public override bool IsIgnored => true;
     }
 
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>")]
     public class String : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
-            return "System::String^";
+            return new CILType(typeof(string));
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -48,14 +35,14 @@ namespace CppSharp.Types.Std
                 ctx.ReturnVarName);
         }
 
-        public override string CSharpSignature(TypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Managed)
-                return "string";
+                return new CILType(typeof(string));
             ClassTemplateSpecialization basicString = GetBasicString(ctx.Type);
             var typePrinter = new CSharpTypePrinter(null);
             typePrinter.PushContext(TypePrinterContextKind.Native);
-            return basicString.Visit(typePrinter).Type;
+            return new CustomType(basicString.Visit(typePrinter).Type);
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
@@ -146,9 +133,9 @@ namespace CppSharp.Types.Std
     [TypeMap("std::wstring", GeneratorKind = GeneratorKind.CLI)]
     public class WString : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
-            return "System::String^";
+            return new CILType(typeof(string));
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -163,9 +150,9 @@ namespace CppSharp.Types.Std
                 ctx.ReturnVarName);
         }
 
-        public override string CSharpSignature(TypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
-            return "string";
+            return new CILType(typeof(string));
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
@@ -200,10 +187,10 @@ namespace CppSharp.Types.Std
             }
         }
 
-        public override string CLISignature(TypePrinterContext ctx)
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
-            return string.Format("System::Collections::Generic::List<{0}>^",
-                ctx.GetTemplateParameterList());
+            return new CustomType(
+                $"System::Collections::Generic::List<{ctx.GetTemplateParameterList()}>^");
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -307,12 +294,12 @@ namespace CppSharp.Types.Std
             ctx.Return.Write(tmpVarName);
         }
 
-        public override string CSharpSignature(TypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Native)
-                return "Std.Vector";
+                return new CustomType("Std.Vector");
 
-            return string.Format("Std.Vector<{0}>", ctx.GetTemplateParameterList());
+            return new CustomType($"Std.Vector<{ctx.GetTemplateParameterList()}>");
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
@@ -335,12 +322,12 @@ namespace CppSharp.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string CLISignature(TypePrinterContext ctx)
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
             var type = Type as TemplateSpecializationType;
-            return string.Format(
-                "System::Collections::Generic::Dictionary<{0}, {1}>^",
-                type.Arguments[0].Type, type.Arguments[1].Type);
+            return new CustomType(
+                $@"System::Collections::Generic::Dictionary<{
+                    type.Arguments[0].Type}, {type.Arguments[1].Type}>^");
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -353,15 +340,15 @@ namespace CppSharp.Types.Std
             throw new System.NotImplementedException();
         }
 
-        public override string CSharpSignature(TypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Native)
-                return "Std.Map";
+                return new CustomType("Std.Map");
 
             var type = Type as TemplateSpecializationType;
-            return string.Format(
-                "System.Collections.Generic.Dictionary<{0}, {1}>",
-                type.Arguments[0].Type, type.Arguments[1].Type);
+            return new CustomType(
+                $@"System.Collections.Generic.Dictionary<{
+                    type.Arguments[0].Type}, {type.Arguments[1].Type}>");
         }
     }
 
@@ -375,29 +362,14 @@ namespace CppSharp.Types.Std
     public class SharedPtr : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
-
-        public override string CLISignature(TypePrinterContext ctx)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void CLIMarshalToNative(MarshalContext ctx)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void CLIMarshalToManaged(MarshalContext ctx)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 
     [TypeMap("basic_ostream<char, char_traits<char>>", GeneratorKind.CLI)]
     public class OStream : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
-            return "System::IO::TextWriter^";
+            return new CILType(typeof(System.IO.TextWriter));
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -435,9 +407,9 @@ namespace CppSharp.Types.Std
     [TypeMap("FILE", GeneratorKind = GeneratorKind.CSharp)]
     public class FILE : TypeMap
     {
-        public override string CSharpSignature(TypePrinterContext ctx)
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
-            return CSharpTypePrinter.IntPtrType;
+            return new CILType(typeof(System.IntPtr));
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)

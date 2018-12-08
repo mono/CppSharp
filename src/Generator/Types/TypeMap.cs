@@ -38,6 +38,7 @@ namespace CppSharp.Types
     {
         public Type Type { get; set; }
         public Declaration Declaration { get; set; }
+        public ASTContext ASTContext { get; set; }
         public ITypeMapDatabase TypeMapDatabase { get; set; }
 
         public bool IsEnabled { get; set; } = true;
@@ -62,11 +63,6 @@ namespace CppSharp.Types
         public virtual Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(object));
-        }
-
-        public virtual string CSharpSignature(TypePrinterContext ctx)
-        {
-            throw new NotImplementedException();
         }
 
         public virtual void CSharpMarshalToNative(CSharpMarshalContext ctx)
@@ -95,11 +91,6 @@ namespace CppSharp.Types
         public virtual Type CLISignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(object));
-        }
-
-        public virtual string CLISignature(TypePrinterContext ctx)
-        {
-            throw new NotImplementedException();
         }
 
         public virtual void CLITypeReference(CLITypeReferenceCollector collector, ASTRecord<Declaration> loc)

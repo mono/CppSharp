@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
-using CppSharp.Generators.AST;
-using CppSharp.Generators.CLI;
-using CppSharp.Generators.CSharp;
-using Attribute = System.Attribute;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
@@ -15,16 +11,15 @@ namespace CppSharp.Types
     {
         public IDictionary<string, TypeMap> TypeMaps { get; set; }
 
-        public TypeMapDatabase()
+        public TypeMapDatabase(ASTContext astContext)
         {
             TypeMaps = new Dictionary<string, TypeMap>();
+            this.astContext = astContext;
         }
 
         public void SetupTypeMaps(GeneratorKind generatorKind)
         {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            foreach (var assembly in loadedAssemblies)
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
@@ -49,6 +44,7 @@ namespace CppSharp.Types
                     if (attr.GeneratorKind == 0 || attr.GeneratorKind == generatorKind)
                     {
                         var typeMap = (TypeMap) Activator.CreateInstance(type);
+                        typeMap.ASTContext = astContext;
                         typeMap.TypeMapDatabase = this;
                         this.TypeMaps[attr.Type] = typeMap;
                     }
@@ -170,5 +166,7 @@ namespace CppSharp.Types
         {
             return TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
         }
+
+        private readonly ASTContext astContext;
     }
 }

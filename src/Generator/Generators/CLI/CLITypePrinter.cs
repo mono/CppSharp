@@ -27,7 +27,7 @@ namespace CppSharp.Generators.CLI
             {
                 typeMap.Type = tag;
                 var typePrinterContext = new TypePrinterContext { Type = tag };
-                return typeMap.CLISignature(typePrinterContext);
+                return typeMap.CLISignatureType(typePrinterContext).ToString();
             }
 
             Declaration decl = tag.Declaration;
@@ -202,11 +202,11 @@ namespace CppSharp.Generators.CLI
             {
                 typeMap.Type = typedef;
                 var typePrinterContext = new TypePrinterContext { Type = typedef };
-                return typeMap.CLISignature(typePrinterContext);
+                return typeMap.CLISignatureType(typePrinterContext).ToString();
             }
 
             FunctionType func;
-            if (decl.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo(out func))
             {
                 // TODO: Use SafeIdentifier()
                 return string.Format("{0}^", VisitDeclaration(decl));
@@ -228,7 +228,7 @@ namespace CppSharp.Generators.CLI
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
                 var typePrinterContext = new TypePrinterContext { Type = template };
-                return typeMap.CLISignature(typePrinterContext);
+                return typeMap.CLISignatureType(typePrinterContext).ToString();
             }
 
             return decl.Name;
@@ -287,6 +287,11 @@ namespace CppSharp.Generators.CLI
             if (!type.Type.IsValueType)
                 result += "^";
             return result;
+        }
+
+        public override TypePrinterResult VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        {
+            return type.Description;
         }
 
         public override TypePrinterResult VisitDeclaration(Declaration decl)

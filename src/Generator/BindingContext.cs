@@ -7,17 +7,29 @@ namespace CppSharp.Generators
 {
     public class BindingContext
     {
-        public DriverOptions Options { get; private set; }
+        public DriverOptions Options { get; }
         public ParserOptions ParserOptions { get; set; }
 
-        public ASTContext ASTContext { get; set; }
+        public ASTContext ASTContext
+        {
+            get { return astContext; }
+            set
+            {
+                if (astContext != value)
+                {
+                    astContext = value;
+                    TypeMaps = new TypeMapDatabase(astContext);
+                }
+            }
+        }
+
         public ParserTargetInfo TargetInfo { get; set; }
 
-        public SymbolContext Symbols { get; private set; }
+        public SymbolContext Symbols { get; }
         public TypeMapDatabase TypeMaps { get; private set; }
 
-        public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
-        public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
+        public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; }
+        public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; }
 
         public BindingContext(DriverOptions options, ParserOptions parserOptions = null)
         {
@@ -25,7 +37,6 @@ namespace CppSharp.Generators
             ParserOptions = parserOptions;
 
             Symbols = new SymbolContext();
-            TypeMaps = new TypeMapDatabase();
 
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
@@ -43,5 +54,7 @@ namespace CppSharp.Generators
                     Diagnostics.PopIndent();
                 });
         }
+
+        private ASTContext astContext;
     }
 }

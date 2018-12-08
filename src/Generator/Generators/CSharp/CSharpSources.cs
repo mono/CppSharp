@@ -2757,7 +2757,7 @@ namespace CppSharp.Generators.CSharp
 		                    Type = indirectRetType.Type.Desugar()
 		                };
 
-                        WriteLine("{0} {1};", typeMap.CSharpSignature(typePrinterContext),
+                        WriteLine("{0} {1};", typeMap.CSharpSignatureType(typePrinterContext),
                             Helpers.ReturnIdentifier);
                     }
                     else

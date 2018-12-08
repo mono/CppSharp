@@ -1,16 +1,12 @@
 ﻿using CppSharp.AST;
-using CppSharp.AST.Extensions;
-using CppSharp.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CppSharp.Generators
 {
     public class TypePrinterResult
     {
         public string Type;
-        public TypeMap TypeMap;
         public string NameSuffix;
 
         public static implicit operator TypePrinterResult(string type)
