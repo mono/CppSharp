@@ -3573,13 +3573,13 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
     default:
         break;
     }
-    llvm::APSInt integer;
+    clang::Expr::EvalResult integer;
     if (Expr->getStmtClass() != Stmt::CharacterLiteralClass &&
         Expr->getStmtClass() != Stmt::CXXBoolLiteralExprClass &&
         Expr->getStmtClass() != Stmt::UnaryExprOrTypeTraitExprClass &&
         !Expr->isValueDependent() &&
         Expr->EvaluateAsInt(integer, c->getASTContext()))
-        return new AST::Expression(integer.toString(10));
+        return new AST::Expression(integer.Val.getInt().toString(10));
     return new AST::Expression(GetStringFromStatement(Expr));
 }
 

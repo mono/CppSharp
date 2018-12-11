@@ -103,7 +103,7 @@ ELFDumper<ELFT>::ELFDumper(const llvm::object::ELFFile<ELFT> *Obj) {
         }
     }
     if (StringTableBegin)
-        DynamicStringTable = StringRef(StringTableBegin, StringTableSize);
+        DynamicStringTable = llvm::StringRef(StringTableBegin, StringTableSize);
 }
 
 template <typename ELFT>
