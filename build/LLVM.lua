@@ -89,7 +89,7 @@ function CopyClangIncludes()
   end
 
   if os.isdir(clangBuiltinIncludeDir) then
-    postbuildcommands { string.format("{COPY} %s %%{cfg.buildtarget.directory}", clangBuiltinIncludeDir) }
+    postbuildcommands { string.format('{COPY} "%s" "%%{cfg.buildtarget.directory}"', clangBuiltinIncludeDir) }
   end
 end
 
