@@ -1,3 +1,3 @@
-wget https://nuget.org/nuget.exe
+wget https://github.com/nunit/nunit-console/releases/download/v3.9/NUnit.Console-3.9.0.zip
 BUILD_DIR=$(dirname -- $0)
-mono nuget.exe install NUnit.ConsoleRunner -Version 3.6.1 -OutputDirectory $BUILD_DIR/../deps
+unzip NUnit.Console-3.9.0.zip -d $BUILD_DIR/../deps/NUnit.Console-3.9.0
