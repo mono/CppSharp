@@ -2475,7 +2475,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         TST->_template = static_cast<Template*>(WalkDeclaration(
             Name.getAsTemplateDecl()));
         if (TS->isSugared())
-            TST->desugared = GetQualifiedType(TS->desugar(), TL);
+            TST->desugared = GetQualifiedType(TS->getCanonicalTypeInternal(), TL);
 
         TypeLoc UTL, ETL, ITL;
 
@@ -2518,7 +2518,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         auto TST = new DependentTemplateSpecializationType();
 
         if (TS->isSugared())
-            TST->desugared = GetQualifiedType(TS->desugar(), TL);
+            TST->desugared = GetQualifiedType(TS->getCanonicalTypeInternal(), TL);
 
         TypeLoc UTL, ETL, ITL;
 
@@ -2706,7 +2706,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
 
         auto UTT = new UnaryTransformType();
         auto Loc = TL->getAs<UnaryTransformTypeLoc>().getUnderlyingTInfo()->getTypeLoc();
-        UTT->desugared = GetQualifiedType(UT->isSugared() ? UT->desugar() : UT->getBaseType(), &Loc);
+        UTT->desugared = GetQualifiedType(UT->isSugared() ? UT->getCanonicalTypeInternal() : UT->getBaseType(), &Loc);
         UTT->baseType = GetQualifiedType(UT->getBaseType(), &Loc);
 
         Ty = UTT;
@@ -2733,7 +2733,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     {
         auto AT = Type->getAs<clang::AutoType>();
         if (AT->isSugared())
-            Ty = WalkType(AT->desugar());
+            Ty = WalkType(AT->getCanonicalTypeInternal());
         else
             return nullptr;
         break;

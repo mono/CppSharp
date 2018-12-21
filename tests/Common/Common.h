@@ -1457,3 +1457,12 @@ class MyIntList : public MyList<int>
 };
 
 void MyFunc(MyList<void *> *list);
+
+template<class T> using InvokeGenSeq = typename T::Type;
+
+template<int N> struct DerivedTypeAlias;
+template<int N> using TypeAlias = InvokeGenSeq<DerivedTypeAlias<N>>;
+
+template<int N>
+struct DerivedTypeAlias : TypeAlias<N / 2> {};
+
