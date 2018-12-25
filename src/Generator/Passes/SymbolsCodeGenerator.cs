@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -241,7 +242,20 @@ namespace CppSharp.Passes
                 string.Empty : (@namespace + "::"))}{function.OriginalName}{
                 (function.SpecializationInfo == null ? string.Empty : $@"<{
                     string.Join(", ", function.SpecializationInfo.Arguments.Select(
-                        a => a.Type.Visit(cppTypePrinter)))}>")}";
+                        a =>
+                        {
+                            switch (a.Kind)
+                            {
+                                case TemplateArgument.ArgumentKind.Type:
+                                    return a.Type.Visit(cppTypePrinter);
+                                case TemplateArgument.ArgumentKind.Declaration:
+                                    return a.Declaration.Visit(cppTypePrinter);
+                                case TemplateArgument.ArgumentKind.Integral:
+                                    return a.Integral.ToString(CultureInfo.InvariantCulture);
+                            }
+                            throw new System.ArgumentOutOfRangeException(
+                                nameof(a.Kind), a.Kind, "Unsupported kind of template argument.");
+                        }))}>")}";
         }
 
         private void WriteRedeclaration(Function function, string returnType,

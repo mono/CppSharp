@@ -691,6 +691,12 @@ std::map<int, int> usesValidSpecialisationOfIgnoredTemplate();
 
 DLL_API DependentValueFields<double> specialiseReturnOnly();
 
+template <int Size> void* qbswap(const void *source, size_t count, void *dest) noexcept;
+template<> inline void* qbswap<1>(const void *source, size_t count, void *dest) noexcept
+{
+    return 0;
+}
+
 // force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
 template class DLL_API IndependentFields<int>;
 template class DLL_API IndependentFields<bool>;
