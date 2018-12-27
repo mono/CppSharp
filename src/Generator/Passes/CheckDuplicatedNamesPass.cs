@@ -44,18 +44,6 @@ namespace CppSharp.Passes
 
         private bool UpdateName(Function function)
         {
-            var @params = function.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
-                                .Select(p => p.QualifiedType.ToString());
-            // Include the conversion type in case of conversion operators
-            var method = function as Method;
-            if (method != null &&
-                method.IsOperator &&
-                (method.OperatorKind == CXXOperatorKind.Conversion ||
-                 method.OperatorKind == CXXOperatorKind.ExplicitConversion))
-                @params = @params.Concat(new[] { method.ConversionType.ToString() });
-            var signature = $"{function.Name}({string.Join(", ", @params)})";
-            signature = FixSignatureForConversions(function, signature);
-
             if (Count == 0)
                 Count++;
 
@@ -73,6 +61,7 @@ namespace CppSharp.Passes
             if (Count < methodCount + 1)
                 Count = methodCount + 1;
 
+            var method = function as Method;
             if (function.IsOperator)
             {
                 // TODO: turn into a method; append the original type (say, "signed long")
