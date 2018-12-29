@@ -57,7 +57,6 @@ namespace CppSharp.Types
 
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
-                typeMap.Declaration = decl;
                 typeMap.Type = type;
                 return true;
             }
@@ -65,7 +64,6 @@ namespace CppSharp.Types
             typePrinter.PrintScopeKind = TypePrintScopeKind.Qualified;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
-                typeMap.Declaration = decl;
                 typeMap.Type = type;
                 return true;
             }
@@ -73,7 +71,6 @@ namespace CppSharp.Types
             typePrinter.ResolveTypedefs = true;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
-                typeMap.Declaration = decl;
                 typeMap.Type = type;
                 return true;
             }
@@ -82,7 +79,6 @@ namespace CppSharp.Types
             typePrinter.PrintScopeKind = TypePrintScopeKind.Local;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
-                typeMap.Declaration = decl;
                 typeMap.Type = type;
                 return true;
             }
@@ -91,7 +87,6 @@ namespace CppSharp.Types
             if (specialization != null &&
                 FindTypeMap(specialization.TemplatedDecl.Visit(typePrinter), out typeMap))
             {
-                typeMap.Declaration = decl;
                 typeMap.Type = type;
                 return true;
             }

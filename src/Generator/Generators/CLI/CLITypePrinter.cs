@@ -225,7 +225,6 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(template, out typeMap) && !typeMap.IsIgnored)
             {
-                typeMap.Declaration = decl;
                 typeMap.Type = template;
                 var typePrinterContext = new TypePrinterContext { Type = template };
                 return typeMap.CLISignatureType(typePrinterContext).ToString();

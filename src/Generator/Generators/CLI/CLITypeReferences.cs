@@ -107,7 +107,6 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap;
             if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
             {
-                typeMap.Declaration = record.Value;
                 typeMap.CLITypeReference(this, record);
                 return;
             }

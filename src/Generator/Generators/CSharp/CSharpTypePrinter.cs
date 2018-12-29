@@ -324,7 +324,6 @@ namespace CppSharp.Generators.CSharp
                 return decl.Visit(this);
             }
 
-            typeMap.Declaration = decl;
             typeMap.Type = template;
 
             var typePrinterContext = new TypePrinterContext

@@ -66,7 +66,6 @@ namespace CppSharp.Generators.CSharp
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.Declaration = decl;
                 typeMap.CSharpMarshalToManaged(Context);
                 return false;
             }
@@ -483,7 +482,6 @@ namespace CppSharp.Generators.CSharp
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.Declaration = decl;
                 typeMap.CSharpMarshalToNative(Context);
                 return false;
             }

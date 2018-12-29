@@ -37,7 +37,6 @@ namespace CppSharp.Types
     public class TypeMap
     {
         public Type Type { get; set; }
-        public Declaration Declaration { get; set; }
         public ASTContext ASTContext { get; set; }
         public ITypeMapDatabase TypeMapDatabase { get; set; }
 
