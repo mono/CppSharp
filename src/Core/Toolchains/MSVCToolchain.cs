@@ -38,13 +38,13 @@ namespace CppSharp
     }
 
     /// <summary>
-    /// Describes the major and minor version of something. 
+    /// Describes the major and minor version of something.
     /// Each version must be at least non negative and smaller than 100
     /// </summary>
     public struct Version
     {
         public int Major;
-        
+
         public int Minor;
     }
 
@@ -162,7 +162,7 @@ namespace CppSharp
             }
 
             // we don't know what "latest" is on a given machine
-            // so start from the latest specified version and loop until a match is found 
+            // so start from the latest specified version and loop until a match is found
             for (var i = VisualStudioVersion.Latest - 1; i >= VisualStudioVersion.VS2012; i--)
             {
                 vsVersion = FindVSVersion(i);
@@ -348,7 +348,7 @@ namespace CppSharp
         /// <summary>
         /// Gets MSBuild installation directories.
         /// </summary>
-        /// 
+        ///
         /// <returns>Success of the operation</returns>
         public static List<ToolchainVersion> GetMSBuildSdks()
         {
@@ -444,7 +444,7 @@ namespace CppSharp
         /// <param name="keyPath">The path to the key in the registry.</param>
         /// <param name="matchValue">The value to match in the located key, if any.</param>
         /// <param name="view">The type of registry, 32 or 64, to target.</param>
-        /// 
+        ///
         public static List<ToolchainVersion> GetToolchainsFromSystemRegistryValues(
             string keyPath, string matchValue, RegistryView view)
         {
@@ -637,11 +637,15 @@ namespace CppSharp
                             includes.Add(path + @"\VC\Tools\MSVC\" + version + @"\atlmfc\include");
                         }
                         var sdks = from package in packages
-                                   where package.GetId().Contains("Windows10SDK") || package.GetId().Contains("Windows81SDK") || package.GetId().Contains("Win10SDK_10")
+                                   where package.GetId().Contains("Windows10SDK") ||
+                                         package.GetId().Contains("Windows81SDK") ||
+                                         package.GetId().Contains("Win10SDK_10")
                                    select package;
                         var win10sdks = from sdk in sdks
-                                        where sdk.GetId().Contains("Windows10SDK")
+                                        where regexWinSDK10Version.Match(sdk.GetId()).Success
+                                        orderby sdk.GetId()
                                         select sdk;
+
                         var win8sdks = from sdk in sdks
                                        where sdk.GetId().Contains("Windows81SDK")
                                        select sdk;
@@ -660,7 +664,7 @@ namespace CppSharp
                             }
                             else
                             {
-                                path = "<invalid>";
+                              throw new Exception("Windows10SDK should not have been detected, something is terribly wrong");
                             }
                             var shared = Path.Combine(path, "shared");
                             var um = Path.Combine(path, "um");
@@ -703,7 +707,7 @@ namespace CppSharp
         }
 
         /// <summary>
-        /// Tries to get all vs 2017 instances. 
+        /// Tries to get all vs 2017 instances.
         /// </summary>
         /// <param name="versions">Collection holding available visual studio instances</param>
         /// <returns>Success of the operation</returns>
