@@ -50,53 +50,64 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Declaration decl, Type type, out TypeMap typeMap)
         {
+            if (type != null && typeMaps.ContainsKey(type))
+            {
+                typeMap = typeMaps[type];
+                return typeMap.IsEnabled;
+            }
+
             // We try to find type maps from the most qualified to less qualified
             // types. Example: '::std::vector', 'std::vector' and 'vector'
 
             var typePrinter = new CppTypePrinter { PrintLogicalNames = true };
 
-            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
+            if (FindTypeMap(decl, type, out typeMap, typePrinter))
                 return true;
-            }
 
             typePrinter.PrintScopeKind = TypePrintScopeKind.Qualified;
-            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
+            if (FindTypeMap(decl, type, out typeMap, typePrinter))
                 return true;
-            }
 
             typePrinter.ResolveTypedefs = true;
-            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
+            if (FindTypeMap(decl, type, out typeMap, typePrinter))
                 return true;
-            }
             typePrinter.ResolveTypedefs = false;
 
             typePrinter.PrintScopeKind = TypePrintScopeKind.Local;
-            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
+            if (FindTypeMap(decl, type, out typeMap, typePrinter))
                 return true;
-            }
 
             var specialization = decl as ClassTemplateSpecialization;
             if (specialization != null &&
-                FindTypeMap(specialization.TemplatedDecl.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
+                FindTypeMap(specialization.TemplatedDecl, type, out typeMap, typePrinter))
                 return true;
-            }
 
             var typedef = decl as TypedefDecl;
             return typedef != null && FindTypeMap(typedef.Type, out typeMap);
         }
 
+        private bool FindTypeMap(Declaration decl, Type type, out TypeMap typeMap, CppTypePrinter typePrinter)
+        {
+            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
+            {
+                if (type != null && typeMap.Type == null)
+                {
+                    typeMap.Type = type;
+                    typeMaps[type] = typeMap;
+                }
+                return true;
+            }
+            return false;
+        }
+
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
+            if (typeMaps.ContainsKey(type))
+            {
+                typeMap = typeMaps[type];
+                return typeMap.IsEnabled;
+            }
+
             var typePrinter = new CppTypePrinter
             {
                 PrintTypeQualifiers = false,
@@ -119,6 +130,7 @@ namespace CppSharp.Types
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
+                typeMaps[type] = typeMap;
                 return true;
             }
 
@@ -126,6 +138,7 @@ namespace CppSharp.Types
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
+                typeMaps[type] = typeMap;
                 return true;
             }
 
@@ -157,5 +170,7 @@ namespace CppSharp.Types
         {
             return TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
         }
+
+        private Dictionary<Type, TypeMap> typeMaps = new Dictionary<Type, TypeMap>();
     }
 }
