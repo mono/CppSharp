@@ -65,7 +65,7 @@ namespace CppSharp.AST
         {
             switch (modifier)
             {
-                case PointerType.TypeModifier.Value: return string.Empty;
+                case PointerType.TypeModifier.Value: return "[]";
                 case PointerType.TypeModifier.Pointer: return "*";
                 case PointerType.TypeModifier.LVReference: return "&";
                 case PointerType.TypeModifier.RVReference: return "&&";

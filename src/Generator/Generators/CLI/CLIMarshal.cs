@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
 using Type = CppSharp.AST.Type;
@@ -22,7 +21,6 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.Type = type;
                 typeMap.CLIMarshalToManaged(Context);
                 return false;
             }
@@ -430,7 +428,6 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.Type = type;
                 typeMap.CLIMarshalToNative(Context);
                 return false;
             }

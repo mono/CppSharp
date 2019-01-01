@@ -73,7 +73,7 @@ namespace CppSharp
         }
 
         public void SetupTypeMaps() =>
-            Context.TypeMaps = new TypeMapDatabase(Context.ASTContext, Options.GeneratorKind);
+            Context.TypeMaps = new TypeMapDatabase(Context.ASTContext, Options);
 
         void OnSourceFileParsed(IEnumerable<string> files, ParserResult result)
         {

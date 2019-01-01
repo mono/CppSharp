@@ -106,13 +106,8 @@ namespace CppSharp.Passes
                 // TODO: some target languages might make a difference between values and pointers
                 Type leftPointee = left.GetPointee();
                 Type rightPointee = right.GetPointee();
-                if ((leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
-                    (rightPointee != null && rightPointee.Desugar(false).Equals(left)))
-                    return true;
-
-                return TypePrinter != null &&
-                    left.IsPrimitiveType() && right.IsPrimitiveType() &&
-                    left.Visit(TypePrinter).Type == right.Visit(TypePrinter).Type;
+                return (leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
+                    (rightPointee != null && rightPointee.Desugar(false).Equals(left));
             }
 
             public int GetHashCode(Parameter obj)

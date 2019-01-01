@@ -53,7 +53,6 @@ namespace CppSharp.Generators.CSharp
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.Type = type;
                 typeMap.CSharpMarshalToManaged(Context);
                 return false;
             }
@@ -237,15 +236,6 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Void:
                     return true;
-                case PrimitiveType.Char:
-                    // returned structs must be blittable and char isn't
-                    if (Context.Context.Options.MarshalCharAsManagedChar)
-                    {
-                        Context.Return.Write("global::System.Convert.ToChar({0})",
-                            Context.ReturnVarName);
-                        return true;
-                    }
-                    goto default;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {
@@ -469,7 +459,6 @@ namespace CppSharp.Generators.CSharp
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.Type = type;
                 typeMap.CSharpMarshalToNative(Context);
                 return false;
             }
@@ -727,15 +716,6 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Void:
                     return true;
-                case PrimitiveType.Char:
-                    // returned structs must be blittable and char isn't
-                    if (Context.Context.Options.MarshalCharAsManagedChar)
-                    {
-                        Context.Return.Write("global::System.Convert.ToSByte({0})",
-                            Context.Parameter.Name);
-                        return true;
-                    }
-                    goto default;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {

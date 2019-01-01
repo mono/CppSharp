@@ -25,7 +25,6 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
             {
-                typeMap.Type = tag;
                 var typePrinterContext = new TypePrinterContext { Type = tag };
                 return typeMap.CLISignatureType(typePrinterContext).ToString();
             }
@@ -225,7 +224,6 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(template, out typeMap) && !typeMap.IsIgnored)
             {
-                typeMap.Type = template;
                 var typePrinterContext = new TypePrinterContext { Type = template };
                 return typeMap.CLISignatureType(typePrinterContext).ToString();
             }

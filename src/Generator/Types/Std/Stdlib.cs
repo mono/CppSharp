@@ -15,6 +15,72 @@ namespace CppSharp.Types.Std
         public override bool IsIgnored => true;
     }
 
+    [TypeMap("char", GeneratorKind = GeneratorKind.CSharp)]
+    public class Char : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            return new CILType(ctx.Kind == TypePrinterContextKind.Native ||
+                !Options.MarshalCharAsManagedChar ? typeof(sbyte) : typeof(char));
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            if (Options.MarshalCharAsManagedChar)
+                ctx.Return.Write("global::System.Convert.ToSByte({0})",
+               ctx.Parameter.Name);
+            else
+                ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            if (Options.MarshalCharAsManagedChar)
+                ctx.Return.Write("global::System.Convert.ToChar({0})",
+                                   ctx.ReturnVarName);
+            else
+                ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
+
+    [TypeMap("char16_t", GeneratorKind = GeneratorKind.CSharp)]
+    public class Char16T : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            return new CILType(typeof(char));
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
+
+    [TypeMap("wchar_t", GeneratorKind = GeneratorKind.CSharp)]
+    public class WCharT : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            return new CILType(typeof(char));
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
+
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>")]
     public class String : TypeMap
     {
