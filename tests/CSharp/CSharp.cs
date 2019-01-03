@@ -243,6 +243,25 @@ namespace CppSharp.Tests
         }
     }
 
+    [TypeMap("QString")]
+    public class QString : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            return new CILType(typeof(string));
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write("\"test\"");
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write("\"test\"");
+        }
+    }
+
     #endregion
 }
 

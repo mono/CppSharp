@@ -2,6 +2,10 @@
 
 #include "CSharp.h"
 
+Foo::Foo(const QString& name)
+{
+}
+
 Foo::Foo(const char* name) : publicFieldMappedToEnum(TestFlag::Flag2)
 {
     A = 10;

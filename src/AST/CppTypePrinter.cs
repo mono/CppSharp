@@ -181,7 +181,7 @@ namespace CppSharp.AST
         {
             FunctionType func;
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
-                return typedef.Declaration.Type.Visit(this);
+                return typedef.Declaration.Type.Visit(this, quals);
             var qual = GetStringQuals(quals);
             return $"{qual}{typedef.Declaration.Visit(this)}";
         }

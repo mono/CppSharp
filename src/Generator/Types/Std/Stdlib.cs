@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
@@ -79,6 +80,109 @@ namespace CppSharp.Types.Std
         {
             ctx.Return.Write(ctx.ReturnVarName);
         }
+    }
+
+    [TypeMap("const char*", GeneratorKind = GeneratorKind.CSharp)]
+    public class ConstCharPointer : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            if (ctx.Kind == TypePrinterContextKind.Managed)
+                return new CILType(typeof(string));
+
+            if (ctx.Parameter == null || ctx.Parameter.Name == Helpers.ReturnIdentifier)
+                return new CustomType(CSharpTypePrinter.IntPtrType);
+            if (Options.Encoding == Encoding.ASCII)
+                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
+            if (Options.Encoding == Encoding.Unicode ||
+                Options.Encoding == Encoding.BigEndianUnicode)
+                return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
+            throw new System.NotSupportedException(
+                $"{Options.Encoding.EncodingName} is not supported yet.");
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            if (ctx.Parameter.Usage == ParameterUsage.Unknown &&
+                ctx.MarshalKind != MarshalKind.NativeField &&
+                ctx.MarshalKind != MarshalKind.VTableReturnValue &&
+                ctx.MarshalKind != MarshalKind.Variable)
+            {
+                ctx.Return.Write(ctx.Parameter.Name);
+                return;
+            }
+            if (Equals(Options.Encoding, Encoding.ASCII))
+            {
+                ctx.Return.Write($"Marshal.StringToHGlobalAnsi({ctx.Parameter.Name})");
+                return;
+            }
+            if (Equals(Options.Encoding, Encoding.Unicode) ||
+                Equals(Options.Encoding, Encoding.BigEndianUnicode))
+            {
+                ctx.Return.Write($"Marshal.StringToHGlobalUni({ctx.Parameter.Name})");
+                return;
+            }
+            throw new System.NotSupportedException(
+                $"{Options.Encoding.EncodingName} is not supported yet.");
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            if (ctx.Parameter != null && !ctx.Parameter.IsOut &&
+                !ctx.Parameter.IsInOut)
+            {
+                ctx.Return.Write(ctx.Parameter.Name);
+                return;
+            }
+
+            Type type = ctx.ReturnType.Type.Desugar();
+            Type pointee = type.GetPointee().Desugar();
+            var isChar = type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                (pointee.IsPointerToPrimitiveType(PrimitiveType.Char) &&
+                 ctx.Parameter != null &&
+                 (ctx.Parameter.IsInOut || ctx.Parameter.IsOut));
+            var encoding = isChar ? Encoding.ASCII : Encoding.Unicode;
+
+            if (Equals(encoding, Encoding.ASCII))
+                encoding = Options.Encoding;
+
+            if (Equals(encoding, Encoding.ASCII))
+            {
+                ctx.Return.Write($"Marshal.PtrToStringAnsi({ctx.ReturnVarName})");
+                return;
+            }
+            if (Equals(encoding, Encoding.UTF8))
+            {
+                ctx.Return.Write($"Marshal.PtrToStringUTF8({ctx.ReturnVarName})");
+                return;
+            }
+
+            // If we reach this, we know the string is Unicode.
+            if (isChar || ctx.Context.TargetInfo.WCharWidth == 16)
+            {
+                ctx.Return.Write($"Marshal.PtrToStringUni({ctx.ReturnVarName})");
+                return;
+            }
+            // If we reach this, we should have an UTF-32 wide string.
+            const string encodingName = "System.Text.Encoding.UTF32";
+            ctx.Return.Write($@"CppSharp.Runtime.Helpers.MarshalEncodedString({
+                ctx.ReturnVarName}, {encodingName})");
+        }
+    }
+
+    [TypeMap("const char[]", GeneratorKind = GeneratorKind.CSharp)]
+    public class ConstCharArray : ConstCharPointer
+    {
+    }
+
+    [TypeMap("const wchar_t*", GeneratorKind = GeneratorKind.CSharp)]
+    public class ConstWCharTPointer : ConstCharPointer
+    {
+    }
+
+    [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CSharp)]
+    public class ConstChar16TPointer : ConstCharPointer
+    {
     }
 
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>")]

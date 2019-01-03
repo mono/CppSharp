@@ -8,9 +8,14 @@
 #include "AnotherUnit.h"
 #include "CSharpTemplates.h"
 
+class DLL_API QString
+{
+};
+
 class DLL_API Foo
 {
 public:
+    Foo(const QString& name);
     Foo(const char* name = 0);
     Foo(int a, int p = 0);
     Foo(char16_t ch);
