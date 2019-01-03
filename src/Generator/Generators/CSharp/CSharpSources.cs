@@ -927,12 +927,12 @@ namespace CppSharp.Generators.CSharp
                 if (type.IsPointer())
                 {
                     Type pointee = type.GetFinalPointee();
-                    if (pointee.IsPrimitiveType() && !type.IsConstCharString())
+                    if (pointee.IsPrimitiveType())
                     {
                         Write($"({CSharpTypePrinter.IntPtrType}) ");
                         var templateSubstitution = pointee.Desugar(false) as TemplateParameterSubstitutionType;
                         if (templateSubstitution != null)
-                            Write($"(object) ");
+                            Write("(object) ");
                     }
                 }
                 WriteLine($"{marshal.Context.Return};");
@@ -1672,11 +1672,12 @@ namespace CppSharp.Generators.CSharp
                 {
                     ReturnType = param.QualifiedType,
                     ReturnVarName = param.Name,
-                    ParameterIndex = i
+                    ParameterIndex = i,
+                    Parameter = param
                 };
 
                 ctx.PushMarshalKind(MarshalKind.GenericDelegate);
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { MarshalsParameter = true };
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
                 ctx.PopMarshalKind();
 

@@ -184,16 +184,16 @@ namespace CppSharp.Generators.CSharp
 
             if (allowStrings && pointer.IsConstCharString())
             {
-                if (isManagedContext)
-                    return "string";
-                if (Parameter == null || Parameter.Name == Helpers.ReturnIdentifier)
-                    return IntPtrType;
-                if (Options.Encoding == Encoding.ASCII)
-                    return string.Format("[MarshalAs(UnmanagedType.LPStr)] string");
-                if (Options.Encoding == Encoding.Unicode ||
-                    Options.Encoding == Encoding.BigEndianUnicode)
-                    return string.Format("[MarshalAs(UnmanagedType.LPWStr)] string");
-                throw new NotSupportedException($"{Options.Encoding.EncodingName} is not supported yet.");
+                TypeMap typeMap;
+                TypeMapDatabase.FindTypeMap(pointer, out typeMap);
+                var typePrinterContext = new TypePrinterContext()
+                {
+                    Kind = Kind,
+                    MarshalKind = MarshalKind,
+                    Type = pointer.Pointee,
+                    Parameter = Parameter
+                };
+                return typeMap.CSharpSignatureType(typePrinterContext).Visit(this);
             }
 
             var pointee = pointer.Pointee.Desugar();

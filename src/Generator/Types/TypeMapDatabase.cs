@@ -110,16 +110,6 @@ namespace CppSharp.Types
                 return typeMap.IsEnabled;
             }
 
-            Type desugared = type.Desugar();
-            bool printExtra = desugared.GetPointee() != null &&
-                desugared.GetFinalPointee().Desugar().IsPrimitiveType();
-            var typePrinter = new CppTypePrinter
-            {
-                PrintTypeQualifiers = printExtra,
-                PrintTypeModifiers = printExtra,
-                PrintLogicalNames = true
-            };
-
             var template = type as TemplateSpecializationType;
             if (template != null)
             {
@@ -131,22 +121,31 @@ namespace CppSharp.Types
                         out typeMap);
             }
 
-            typePrinter.PrintScopeKind = TypePrintScopeKind.Local;
-            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
+            Type desugared = type.Desugar();
+            bool printExtra = desugared.GetPointee() != null &&
+                desugared.GetFinalPointee().Desugar().IsPrimitiveType();
+            var typePrinter = new CppTypePrinter
             {
-                typeMap.Type = type;
-                typeMaps[type] = typeMap;
-                return true;
-            }
+                PrintTypeQualifiers = printExtra,
+                PrintTypeModifiers = printExtra,
+                PrintLogicalNames = true
+            };
 
-            typePrinter.PrintScopeKind = TypePrintScopeKind.Qualified;
-            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
-            {
-                typeMap.Type = type;
-                typeMaps[type] = typeMap;
-                return true;
-            }
+            foreach (var resolveTypeDefs in new[] { true, false })
+                foreach (var typePrintScopeKind in
+                    new[] { TypePrintScopeKind.Local, TypePrintScopeKind.Qualified })
+                {
+                    typePrinter.ResolveTypedefs = resolveTypeDefs;
+                    typePrinter.PrintScopeKind = typePrintScopeKind;
+                    if (FindTypeMap(type.Visit(typePrinter), out typeMap))
+                    {
+                        typeMap.Type = type;
+                        typeMaps[type] = typeMap;
+                        return true;
+                    }
+                }
 
+            typeMap = null;
             var typedef = type as TypedefType;
             return typedef != null && FindTypeMap(typedef.Declaration, type, out typeMap);
         }
