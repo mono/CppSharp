@@ -113,34 +113,32 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
-            var type = ctx.Parameter.Type.Desugar();
+            Type type = ctx.Parameter.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var typePrinter = new CSharpTypePrinter(ctx.Context);
-            if (!ctx.Parameter.Type.Desugar().IsAddress())
+            if (!ctx.Parameter.Type.Desugar().IsAddress() &&
+                !(ctx.Declaration is Field))
                 ctx.Return.Write($"*({typePrinter.PrintNative(basicString)}*) ");
-            var allocator = ctx.Context.ASTContext.FindClass("allocator", false, true).First(
-                a => a.IsDependent && a.TranslationUnit.IsSystemHeader);
-            var allocatorChar = allocator.Specializations.First(s => !s.Ignore);
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
-            if (type.IsPointer() || (type.IsReference() && ctx.Declaration is Field))
+            var assign = basicString.Methods.First(m => m.OriginalName == "assign");
+            if (ctx.Declaration is Field)
             {
-                ctx.Return.Write($@"{qualifiedBasicString}Extensions.{basicString.Name}({
-                    ctx.Parameter.Name}, new {allocatorChar.Visit(typePrinter)}()).{
-                    Helpers.InstanceIdentifier}");
+                ctx.Return.Write($@"{qualifiedBasicString}Extensions.{
+                    Helpers.InternalStruct}.{assign.Name}(new {
+                    CSharpTypePrinter.IntPtrType}(&{
+                    ctx.ReturnVarName}), {ctx.Parameter.Name})");
+                ctx.ReturnVarName = string.Empty;
             }
             else
             {
-                var varAllocator = $"__allocator{ctx.ParameterIndex}";
                 var varBasicString = $"__basicString{ctx.ParameterIndex}";
-                ctx.Before.WriteLine($@"var {varAllocator} = new {
-                    allocatorChar.Visit(typePrinter)}();");
-                ctx.Before.WriteLine($@"var {varBasicString} = {
-                    qualifiedBasicString}Extensions.{basicString.Name}({ctx.Parameter.Name}, {
-                    varAllocator});");
+                ctx.Before.WriteLine($@"var {varBasicString} = new {
+                    basicString.Visit(typePrinter)}();");
+                ctx.Before.WriteLine($@"{qualifiedBasicString}Extensions.{
+                    assign.Name}({varBasicString}, {ctx.Parameter.Name});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
-                ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
-                    (type.IsPointer() ? "true" : "false")});");
-                ctx.Cleanup.WriteLine($"{varAllocator}.Dispose();");
+                if (!type.IsAddress())
+                    ctx.Cleanup.WriteLine($"{varBasicString}.Dispose(false);");
             }
         }
 

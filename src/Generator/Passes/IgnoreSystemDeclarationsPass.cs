@@ -55,7 +55,8 @@ namespace CppSharp.Passes
             switch (@class.Name)
             {
                 case "basic_string":
-                    foreach (var method in @class.Methods.Where(m => !m.IsDestructor && m.OriginalName != "c_str"))
+                    foreach (var method in @class.Methods.Where(m => !m.IsDestructor &&
+                        m.OriginalName != "c_str" && m.OriginalName != "assign"))
                         method.ExplicitlyIgnore();
                     foreach (var basicString in GetCharSpecializations(@class))
                     {
@@ -63,9 +64,11 @@ namespace CppSharp.Passes
                         foreach (var method in basicString.Methods)
                         {
                             if (method.IsDestructor || method.OriginalName == "c_str" ||
-                                (method.IsConstructor && method.Parameters.Count == 2 &&
-                                 method.Parameters[0].Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.Char) &&
-                                 !method.Parameters[1].Type.Desugar().IsPrimitiveType()))
+                                (method.OriginalName == "assign" &&
+                                 method.Parameters.Count == 1 &&
+                                 method.Parameters[0].Type.IsPointerToPrimitiveType()) ||
+                                (method.IsConstructor &&
+                                 !method.Parameters.Where(p => p.Kind == ParameterKind.Regular).Any()))
                             {
                                 method.GenerationKind = GenerationKind.Generate;
                                 method.Namespace.GenerationKind = GenerationKind.Generate;
@@ -80,26 +83,15 @@ namespace CppSharp.Passes
                     }
                     break;
                 case "allocator":
-                    foreach (var method in @class.Methods.Where(Unused))
+                    foreach (var method in @class.Methods)
                         method.ExplicitlyIgnore();
                     foreach (var allocator in GetCharSpecializations(@class))
                     {
-                        allocator.GenerationKind = GenerationKind.Generate;
                         foreach (var method in allocator.Methods)
-                        {
-                            if (Unused(method))
-                                method.ExplicitlyIgnore();
-                            else
-                            {
-                                method.GenerationKind = GenerationKind.Generate;
-                                if (method.InstantiatedFrom != null)
-                                    method.InstantiatedFrom.GenerationKind =
-                                        method.InstantiatedFrom.Namespace.GenerationKind =
-                                        GenerationKind.Generate;
-                                foreach (var parameter in method.Parameters)
-                                    parameter.DefaultArgument = null;
-                            }
-                        }
+                            method.ExplicitlyIgnore();
+                        allocator.GenerationKind = GenerationKind.Generate;
+                        allocator.TemplatedDecl.TemplatedDecl.GenerationKind = GenerationKind.Generate;
+                        allocator.GenerationKind = GenerationKind.Generate;
                     }
                     break;
                 case "char_traits":
@@ -115,11 +107,6 @@ namespace CppSharp.Passes
                     break;
             }
             return true;
-        }
-
-        private static bool Unused(Method m)
-        {
-            return !m.IsDestructor && (!m.IsConstructor || m.Parameters.Count > 0);
         }
 
         private static IEnumerable<ClassTemplateSpecialization> GetCharSpecializations(Class @class)
