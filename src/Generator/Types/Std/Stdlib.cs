@@ -137,7 +137,7 @@ namespace CppSharp.Types.Std
                 ctx.Before.WriteLine($@"{qualifiedBasicString}Extensions.{
                     assign.Name}({varBasicString}, {ctx.Parameter.Name});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
-                if (!type.IsAddress())
+                if (!type.IsPointer())
                     ctx.Cleanup.WriteLine($"{varBasicString}.Dispose(false);");
             }
         }

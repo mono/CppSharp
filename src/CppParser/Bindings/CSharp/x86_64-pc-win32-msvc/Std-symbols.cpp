@@ -1,3 +1,5 @@
+#define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS
+
 #include <string>
 
 

@@ -5,7 +5,6 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
-using CppSharp.Parser;
 
 namespace CppSharp.Passes
 {
@@ -20,6 +19,9 @@ namespace CppSharp.Passes
 
         public override void Process()
         {
+            WriteLine("#define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS");
+            NewLine();
+
             if (TranslationUnit.Module == Options.SystemModule)
                 WriteLine("#include <string>");
             else
@@ -62,12 +64,8 @@ namespace CppSharp.Passes
 
         private string GetExporting()
         {
-            var exporting = string.Empty;
-            if (Context.ParserOptions.IsMicrosoftAbi)
-                exporting = "__declspec(dllexport) ";
-            else if (TargetTriple.IsMacOS(Context.ParserOptions.TargetTriple))
-                exporting = "__attribute__((visibility(\"default\"))) ";
-            return exporting;
+            return Context.ParserOptions.IsMicrosoftAbi ?
+                "__declspec(dllexport) " : string.Empty;
         }
 
         private string GetWrapper(Module module)
