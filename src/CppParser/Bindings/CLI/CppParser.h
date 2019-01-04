@@ -281,7 +281,7 @@ namespace CppSharp
 
             void ClearSupportedStdTypes();
 
-            protected:
+        protected:
             bool __ownsNativeInstance;
         };
 
@@ -334,7 +334,7 @@ namespace CppSharp
                 void set(int);
             }
 
-            protected:
+        protected:
             bool __ownsNativeInstance;
         };
 
@@ -392,7 +392,7 @@ namespace CppSharp
 
             void ClearDiagnostics();
 
-            protected:
+        protected:
             bool __ownsNativeInstance;
         };
 
@@ -419,7 +419,7 @@ namespace CppSharp
 
             static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::CppParserOptions^ Opts);
 
-            protected:
+        protected:
             bool __ownsNativeInstance;
         };
     }

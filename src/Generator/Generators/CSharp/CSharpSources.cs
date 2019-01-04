@@ -377,9 +377,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsDependent && !@class.IsGenerated)
                 return true;
-
-            var typeMaps = new List<System.Type>();
-            var keys = new List<string>();
+            
             // disable the type maps, if any, for this class because of copy ctors, operators and others
             this.DisableTypeMap(@class);
 
@@ -924,7 +922,8 @@ namespace CppSharp.Generators.CSharp
 
             if (marshal.Context.Return.StringBuilder.Length > 0)
             {
-                Write($"{ctx.ReturnVarName} = ");
+                if (ctx.ReturnVarName.Length > 0)
+                    Write($"{ctx.ReturnVarName} = ");
                 if (type.IsPointer())
                 {
                     Type pointee = type.GetFinalPointee();
@@ -2816,15 +2815,6 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("var __instancePtr = &{0}.{1};", operatorParam.Name, Helpers.InstanceField);
                 }
-            }
-
-            // special validation when constructing std::string as it cannot take null as a value
-            if (method != null && method.OriginalName == "basic_string" &&
-                method.TranslationUnit.IsSystemHeader)
-            {
-                WriteLine($"if (ReferenceEquals({method.Parameters[0].Name}, null))");
-                WriteLineIndent($@"throw new global::System.ArgumentNullException({
-                    method.Parameters[0].Name}, ""The underlying std::string cannot take null."");");
             }
 
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)

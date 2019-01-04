@@ -302,7 +302,7 @@ namespace CppSharp
                 void set(unsigned int);
             }
 
-            protected:
+        protected:
             bool __ownsNativeInstance;
         };
     }

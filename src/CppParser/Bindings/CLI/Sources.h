@@ -37,7 +37,7 @@ namespace CppSharp
 
             static operator CppSharp::Parser::SourceLocation(unsigned int ID);
 
-            private:
+        private:
             unsigned int __ID;
         };
     }

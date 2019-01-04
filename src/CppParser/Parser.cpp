@@ -900,8 +900,11 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
     using namespace clang;
 
     return !c->getSourceManager().isInSystemHeader(MD->getBeginLoc()) ||
-        isa<CXXConstructorDecl>(MD) || isa<CXXDestructorDecl>(MD) ||
-        (MD->getDeclName().isIdentifier() && MD->getName() == "c_str" &&
+        (isa<CXXConstructorDecl>(MD) && MD->getNumParams() == 0) ||
+        isa<CXXDestructorDecl>(MD) ||
+        (MD->getDeclName().isIdentifier() &&
+         ((MD->getName() == "c_str" && MD->getNumParams() == 0) ||
+          (MD->getName() == "assign" && MD->getNumParams() == 1)) &&
          supportedStdTypes.find(MD->getParent()->getName()) !=
             supportedStdTypes.end());
 }
