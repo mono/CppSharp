@@ -97,7 +97,9 @@ namespace CppSharp
                     hasParsingErrors = true;
                     break;
                 case ParserResultKind.FileNotFound:
-                    Diagnostics.Error("A file from '{0}' was not found", string.Join(",", files));
+                    Diagnostics.Error("File{0} not found: '{1}'",
+                        (files.Count() > 1) ? "s" : "",  string.Join(",", files));
+                    hasParsingErrors = true;
                     break;
             }
 
