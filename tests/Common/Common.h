@@ -856,6 +856,7 @@ public:
     HasStdString();
     ~HasStdString();
     std::string testStdString(const std::string& s);
+    std::string testStdStringPassedByValue(std::string s);
     std::string s;
     std::string& getStdString();
 };

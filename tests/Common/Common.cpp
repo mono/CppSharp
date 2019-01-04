@@ -504,6 +504,11 @@ std::string HasStdString::testStdString(const std::string& s)
     return s + "_test";
 }
 
+std::string HasStdString::testStdStringPassedByValue(std::string s)
+{
+    return s + "_test";
+}
+
 std::string& HasStdString::getStdString()
 {
     return s;

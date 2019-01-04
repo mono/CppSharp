@@ -777,6 +777,28 @@ This is a very long string. This is a very long string. This is a very long stri
         }
     }
 
+    [Ignore("https://github.com/mono/CppSharp/issues/867")] 
+    public void TestStdStringPassedByValue()
+    {
+        // when C++ memory is deleted, it's only marked as free but not immediadely freed
+        // this can hide memory bugs while marshalling
+        // so let's use a long string to increase the chance of a crash right away
+        const string t = @"This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. 
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.";
+        using (var hasStdString = new HasStdString())
+        {
+            Assert.That(hasStdString.TestStdStringPassedByValue(t), Is.EqualTo(t + "_test"));
+            hasStdString.S = t;
+            Assert.That(hasStdString.S, Is.EqualTo(t));
+            Assert.That(hasStdString.StdString, Is.EqualTo(t));
+            Assert.That(hasStdString.StdString, Is.EqualTo(t));
+        }
+    }
+
     public void TestNullStdString()
     {
         using (var hasStdString = new HasStdString())
