@@ -17,7 +17,7 @@ else
 fi
 
 $PREMAKE --file=$CUR_DIR/premake5.lua gmake "$@"
-config=$BUILD_CONF make -C $CUR_DIR/gmake/
+config=$BUILD_CONF verbose=1 make -C $CUR_DIR/gmake/
 
 BUILD_CONF_DIR="$(tr '[:lower:]' '[:upper:]' <<< ${BUILD_CONF:0:1})${BUILD_CONF:1}"
 BUILD_DIR=$CUR_DIR/gmake/lib/$BUILD_CONF_DIR
