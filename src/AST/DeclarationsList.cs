@@ -33,13 +33,15 @@ namespace CppSharp.AST
         {
             Kind kind = GetKind(item);
             int offset = GetOffset(kind);
-            if (GetStart(kind) < index && index < offset)
+            // USR null means an artificial declaration, add at the end
+            if (item.USR == null)
             {
-                base.InsertItem(index, item);
+                base.InsertItem(offset, item);
             }
             else
             {
-                base.InsertItem(offset, item);
+                int i = BinarySearch(GetStart(kind), offset, item);
+                base.InsertItem(i, item);
             }
             for (Kind i = kind; i <= Kind.Event; i++)
             {
@@ -125,6 +127,27 @@ namespace CppSharp.AST
                 }
             }
             return 0;
+        }
+
+        private int BinarySearch(int start, int end, Declaration item)
+        {
+            int middle = end;
+
+            while (start < end)
+            {
+                middle = (start + end) / 2;
+
+                if (item.DefinitionOrder < this[middle].DefinitionOrder &&
+                    item.DefinitionOrder >= this[middle - 1].DefinitionOrder)
+                    break;
+
+                if (item.DefinitionOrder < this[middle].DefinitionOrder)
+                    end = middle;
+                else
+                    start = ++middle;
+            }
+
+            return middle;
         }
 
         private Dictionary<Kind, int> offsets = new Dictionary<Kind, int>();

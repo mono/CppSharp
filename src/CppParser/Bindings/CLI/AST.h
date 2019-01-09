@@ -444,7 +444,7 @@ namespace CppSharp
 
                 static operator CppSharp::Parser::AST::Type^(CppSharp::Parser::AST::TypeKind kind);
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -485,7 +485,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -520,7 +520,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::TypeQualifiers^);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -818,7 +818,7 @@ namespace CppSharp
                     void set(long);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1131,7 +1131,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1171,7 +1171,7 @@ namespace CppSharp
 
                 void ClearComponents();
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1218,7 +1218,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::VTableLayout^);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1265,7 +1265,7 @@ namespace CppSharp
                     void set(::System::IntPtr);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1300,7 +1300,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Class^);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1416,7 +1416,7 @@ namespace CppSharp
 
                 void ClearBases();
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1583,7 +1583,7 @@ namespace CppSharp
 
                 static operator CppSharp::Parser::AST::Declaration^(CppSharp::Parser::AST::DeclarationKind kind);
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1870,7 +1870,7 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -2400,7 +2400,7 @@ namespace CppSharp
                     void set(int);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -2949,7 +2949,7 @@ namespace CppSharp
 
                 void ClearArguments();
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -3098,7 +3098,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::DeclarationKind);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -3277,7 +3277,7 @@ namespace CppSharp
 
                 void ClearDependencies();
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -3319,7 +3319,7 @@ namespace CppSharp
 
                 void ClearTranslationUnits();
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -3350,7 +3350,7 @@ namespace CppSharp
 
                 static operator CppSharp::Parser::AST::Comment^(CppSharp::Parser::AST::CommentKind kind);
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
 
@@ -3489,7 +3489,7 @@ namespace CppSharp
                         void set(System::String^);
                     }
 
-                    protected:
+                protected:
                     bool __ownsNativeInstance;
                 };
 
@@ -3702,7 +3702,7 @@ namespace CppSharp
                         void set(System::String^);
                     }
 
-                    protected:
+                protected:
                     bool __ownsNativeInstance;
                 };
 
@@ -3796,7 +3796,7 @@ namespace CppSharp
                         void set(System::String^);
                     }
 
-                    protected:
+                protected:
                     bool __ownsNativeInstance;
                 };
 
@@ -3913,7 +3913,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::FullComment^);
                 }
 
-                protected:
+            protected:
                 bool __ownsNativeInstance;
             };
         }
