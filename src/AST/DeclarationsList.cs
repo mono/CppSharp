@@ -138,7 +138,8 @@ namespace CppSharp.AST
                 middle = (start + end) / 2;
 
                 if (item.DefinitionOrder < this[middle].DefinitionOrder &&
-                    item.DefinitionOrder >= this[middle - 1].DefinitionOrder)
+                    (middle == 0 ||
+                     item.DefinitionOrder >= this[middle - 1].DefinitionOrder))
                     break;
 
                 if (item.DefinitionOrder < this[middle].DefinitionOrder)
