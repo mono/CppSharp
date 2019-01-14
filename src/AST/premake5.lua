@@ -8,4 +8,5 @@ project "CppSharp.AST"
   files { "*.cs" }
   vpaths { ["*"] = "*" }
 
-  links { "System", "System.Core" }
+  filter { "action:not netcore"}
+    links { "System", "System.Core" }

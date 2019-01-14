@@ -55,8 +55,6 @@ function SetupTestGeneratorProject(name, depends)
     dependson { name .. ".Native" }
 
     linktable = {
-	  "System",
-      "System.Core",
       "CppSharp",
       "CppSharp.AST",
       "CppSharp.Generator",
@@ -71,6 +69,16 @@ function SetupTestGeneratorProject(name, depends)
     links(linktable)
 
     SetupParser()
+
+    filter { "action:netcore" }
+      dotnetframework "netcoreapp2.0"
+
+    filter { "action:not netcore" }
+      links
+      {
+        "System",
+        "System.Core"
+      }
 end
 
 local function get_mono_exe()
@@ -82,6 +90,9 @@ local function get_mono_exe()
 end
 
 function SetupTestGeneratorBuildEvent(name)
+  if _ACTION == "netcore" then
+    return
+  end
   local monoExe = get_mono_exe()
   local runtimeExe = os.ishost("windows") and "" or monoExe .. " --debug "
   if string.starts(action, "vs") then
@@ -94,7 +105,7 @@ function SetupTestGeneratorBuildEvent(name)
 end
 
 function SetupTestNativeProject(name, depends)
-  if string.starts(action, "vs") and not os.ishost("windows") then
+  if not EnableNativeProjects() then
     return
   end
 
@@ -114,17 +125,29 @@ function SetupTestNativeProject(name, depends)
 end
 
 function LinkNUnit()
-  libdirs
-  {
-    depsdir .. "/NUnit",
-    depsdir .. "/NSubstitute"
-  }
+  local c = filter()
+  
+  filter { "action:not netcore"}
+    libdirs
+    {
+      depsdir .. "/NUnit",
+      depsdir .. "/NSubstitute"
+    }
 
-  links
-  {
-    "nunit.framework",
-    "NSubstitute"
-  }
+    links
+    {
+      "nunit.framework",
+      "NSubstitute"
+    }
+
+  filter { "action:netcore"}
+    nuget
+    {
+      "NUnit:3.11.0",
+      "NSubstitute:4.0.0-rc1"
+    }
+
+  filter(c)
 end
 
 function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
@@ -170,7 +193,7 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 end
 
 function SetupTestProjectsCLI(name, extraFiles, suffix)
-  if not os.ishost("windows") then
+  if (not os.ishost("windows")) or (_ACTION == "netcore") then
     return
   end
 

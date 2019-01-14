@@ -14,7 +14,9 @@ project "CppSharp.Parser.Gen"
     "CppSharp.AST",
     "CppSharp.Generator",
     "CppSharp.Parser",
-    "System.Core"
   }
 
   SetupParser()
+
+  filter { "action:not netcore"}
+    links { "System.Core" }
