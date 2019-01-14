@@ -1217,6 +1217,27 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestVirtualIndirectCallInNative()
+    {
+        using (Inter i = new Inter())
+        {
+            using (InterfaceTester tester = new InterfaceTester())
+            {
+                tester.SetInterface(i);
+                Assert.That(tester.Get(10), Is.EqualTo(IntPtr.Zero));
+            }
+        }
+    }
+
+    public class Inter : SimpleInterface
+    {
+        public override int Size => s;
+        public override int Capacity => s;
+        public override IntPtr Get(int n) { return new IntPtr(0); }
+        private int s = 0;
+    }
+
     private class OverrideVirtualTemplate : VirtualTemplate<int>
     {
         public override int Function

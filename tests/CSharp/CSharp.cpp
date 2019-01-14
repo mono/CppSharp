@@ -1495,3 +1495,39 @@ HasFixedArrayOfPointers::HasFixedArrayOfPointers()
 HasFixedArrayOfPointers::~HasFixedArrayOfPointers()
 {
 }
+
+SimpleInterface::SimpleInterface()
+{
+}
+
+SimpleInterface::~SimpleInterface()
+{
+}
+
+InterfaceTester::InterfaceTester() : interface(0)
+{
+}
+
+InterfaceTester::~InterfaceTester()
+{
+}
+
+int InterfaceTester::capacity()
+{
+    return interface->capacity();
+}
+
+int InterfaceTester::size()
+{
+    return interface->size();
+}
+
+void* InterfaceTester::get(int n)
+{
+    return interface->get(n);
+}
+
+void InterfaceTester::setInterface(SimpleInterface* i)
+{
+    interface = i;
+}

@@ -1262,3 +1262,28 @@ struct DLL_API CSharp
 };
 
 static int FOOBAR_CONSTANT = 42;
+
+
+
+class DLL_API SimpleInterface
+{
+public:
+    SimpleInterface();
+    ~SimpleInterface();
+    virtual int size() const = 0;
+    virtual int capacity() const = 0;
+    virtual void* get(int n) = 0;
+};
+
+class DLL_API InterfaceTester
+{
+public:
+    InterfaceTester();
+    ~InterfaceTester();
+    int capacity();
+    int size();
+    void* get(int n);
+    void setInterface(SimpleInterface* i);
+private:
+    SimpleInterface* interface;
+};
