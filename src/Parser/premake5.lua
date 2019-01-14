@@ -36,11 +36,12 @@ project "CppSharp.Parser"
 
   links
   {
-    "System",
-    "System.Core",
     "CppSharp",
     "CppSharp.AST",
     "CppSharp.Runtime"
   }
 
   SetupParser()
+
+  filter { "action:not netcore"}
+    links { "System", "System.Core" }

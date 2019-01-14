@@ -21,12 +21,25 @@ project "CppSharp.Generator.Tests"
 
   links
   {
-    "System",
-    "System.Core",
     "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
     "CppSharp.Parser",
-    "nunit.framework",
-    "NSubstitute"
   }
+
+  filter { "action:netcore"}
+    nuget
+    {
+      "NUnit:3.11.0",
+      "NSubstitute:4.0.0-rc1"
+    }
+
+  filter { "action:not netcore"}
+    links
+    {
+      "System",
+      "System.Core",
+      "Microsoft.CSharp",
+      "nunit.framework",
+      "NSubstitute"
+    }

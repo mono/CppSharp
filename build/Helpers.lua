@@ -6,6 +6,7 @@ newoption {
    allowed = {
       { "x86",  "x86 32-bits" },
       { "x64",  "x64 64-bits" },
+      { "AnyCPU",  "Any CPU (.NET)" },
    }
 }
 
@@ -23,6 +24,10 @@ function is_64_bits_mono_runtime()
 end
 
 function target_architecture()
+  if _ACTION == "netcore" then
+    return "AnyCPU"
+  end
+
   -- Default to 32-bit on Windows and Mono architecture otherwise.
   if explicit_target_architecture ~= nil then
     return explicit_target_architecture
@@ -50,8 +55,14 @@ if _ARGS[1] then
     builddir = path.getabsolute("./" .. _ARGS[1]);
 end
 
-objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}_%{cfg.platform}");
-libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
+if _ACTION ~= "netcore" then
+  objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}_%{cfg.platform}");
+  libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
+else
+  objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}");
+  libdir = path.join(builddir, "lib", "%{cfg.buildcfg}");
+end
+
 gendir = path.join(builddir, "gen");
 
 msvc_buildflags = { "/wd4267" }
@@ -121,10 +132,13 @@ function SetupManagedProject()
   dotnetframework "4.6"
 
   if not os.istarget("macosx") then
-    filter { "action:vs*" }
+    filter { "action:vs* or netcore" }
       location "."
     filter {}
   end
+
+  filter { "action:netcore" }
+    dotnetframework "netstandard2.0"
 
   filter { "action:vs2013" }
     dotnetframework "4.5"
@@ -196,4 +210,16 @@ function UseCxx11ABI()
     return true
   end
   return false
+end
+
+function EnableNativeProjects()
+  if _ACTION == "netcore" then
+    return false
+  end
+
+  if string.starts(_ACTION, "vs") and not os.ishost("windows") then
+    return false
+  end
+
+  return true
 end

@@ -10,8 +10,6 @@ project "CppSharp.CLI"
 
   links
   {
-    "System",
-    "System.Core",
     "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
@@ -19,3 +17,13 @@ project "CppSharp.CLI"
   }
 
   SetupParser()
+
+  filter { "action:not netcore"}
+    links
+    {
+      "System",
+      "System.Core"
+    }
+
+  filter { "action:netcore" }
+    dotnetframework "netcoreapp2.0"

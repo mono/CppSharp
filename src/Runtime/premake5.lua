@@ -8,7 +8,8 @@ project "CppSharp.Runtime"
   files   { "**.cs" }
   vpaths { ["*"] = "*" }
  
-  links { "System" }
+  filter { "action:not netcore"}
+    links { "System" }
 
   filter { "action:vs*" }
   	defines { "MSVC" }
