@@ -490,6 +490,16 @@ void CppSharp::Parser::CppParserOptions::UnityBuild::set(bool value)
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->unityBuild = value;
 }
 
+bool CppSharp::Parser::CppParserOptions::SkipPrivateDeclarations::get()
+{
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipPrivateDeclarations;
+}
+
+void CppSharp::Parser::CppParserOptions::SkipPrivateDeclarations::set(bool value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipPrivateDeclarations = value;
+}
+
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();

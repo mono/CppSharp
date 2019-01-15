@@ -148,17 +148,11 @@ namespace CppSharp.Generator.Tests.Passes
         }
 
         [Test]
-        public void TestStructInheritance()
-        {
-
-        }
-
-        [Test]
-        public void TestIgnoringMethod()
+        public void TestSkippedPrivateMethod()
         {
             AstContext.IgnoreClassMethodWithName("Foo", "toIgnore");
-            Assert.IsFalse(AstContext.FindClass("Foo").First().Methods.Find(
-                m => m.Name == "toIgnore").IsGenerated);
+            Assert.That(AstContext.FindClass("Foo").First().Methods.Find(
+                m => m.Name == "toIgnore"), Is.Null);
         }
 
         [Test]

@@ -193,6 +193,12 @@ namespace CppSharp
                 void set(bool);
             }
 
+            property bool SkipPrivateDeclarations
+            {
+                bool get();
+                void set(bool);
+            }
+
             property unsigned int ArgumentsCount
             {
                 unsigned int get();

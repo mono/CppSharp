@@ -21,6 +21,7 @@ namespace CppSharp.Generator.Tests
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
             ParserOptions.AddIncludeDirs(testsPath);
+            ParserOptions.SkipPrivateDeclarations = true;
 
             var module = Options.AddModule("Test");
             module.Headers.AddRange(files);
