@@ -18041,6 +18041,9 @@ namespace CppSharp
                 [FieldOffset(184)]
                 internal byte unityBuild;
 
+                [FieldOffset(185)]
+                internal byte includePrivates;
+
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0CppParserOptions@CppParser@CppSharp@@QAE@XZ")]
@@ -18575,6 +18578,19 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->unityBuild = (byte) (value ? 1 : 0);
+                }
+            }
+
+            public bool IncludePrivates
+            {
+                get
+                {
+                    return ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->includePrivates != 0;
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->includePrivates = (byte) (value ? 1 : 0);
                 }
             }
 

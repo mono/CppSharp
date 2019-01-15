@@ -148,20 +148,6 @@ namespace CppSharp.Generator.Tests.Passes
         }
 
         [Test]
-        public void TestStructInheritance()
-        {
-
-        }
-
-        [Test]
-        public void TestIgnoringMethod()
-        {
-            AstContext.IgnoreClassMethodWithName("Foo", "toIgnore");
-            Assert.IsFalse(AstContext.FindClass("Foo").First().Methods.Find(
-                m => m.Name == "toIgnore").IsGenerated);
-        }
-
-        [Test]
         public void TestSetPropertyAsReadOnly()
         {
             const string className = "TestReadOnlyProperties";

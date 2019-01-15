@@ -153,10 +153,8 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
 
     // Dump fields.
     uint64_t FieldNo = 0;
-    for (RecordDecl::field_iterator I = RD->field_begin(),
-        E = RD->field_end(); I != E; ++I, ++FieldNo) {
-        auto Field = *I;
-        uint64_t LocalFieldOffsetInBits = Layout.getFieldOffset(FieldNo);
+    for (const clang::FieldDecl* Field : RD->fields()) {
+        uint64_t LocalFieldOffsetInBits = Layout.getFieldOffset(FieldNo++);
         CharUnits FieldOffset =
             Offset + c->getASTContext().toCharUnitsFromBits(LocalFieldOffsetInBits);
 
@@ -966,7 +964,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
                 {
                     auto MD = cast<CXXMethodDecl>(D);
                     if (IsSupported(MD))
-                        WalkMethodCXX(MD);
+                        WalkDeclaration(MD);
                     break;
                 }
                 }
@@ -975,19 +973,14 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         return;
     }
 
+    if (!opts->includePrivates &&
+        Record->getAccess() == clang::AccessSpecifier::AS_private)
+        return;
+
     for (auto D : Record->decls())
     {
         switch (D->getKind())
         {
-        case Decl::CXXConstructor:
-        case Decl::CXXDestructor:
-        case Decl::CXXConversion:
-        case Decl::CXXMethod:
-        {
-            auto MD = cast<CXXMethodDecl>(D);
-            WalkMethodCXX(MD);
-            break;
-        }
         case Decl::AccessSpec:
         {
             AccessSpecDecl* AS = cast<AccessSpecDecl>(D);
@@ -1514,6 +1507,10 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
 
 FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl* TD)
 {
+    if (!opts->includePrivates &&
+        TD->getAccess() == clang::AccessSpecifier::AS_private)
+        return nullptr;
+
     using namespace clang;
 
     auto NS = GetNamespace(TD);
@@ -1729,6 +1726,11 @@ static CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name)
 
 Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
 {
+    if (!opts->includePrivates &&
+        MD->getAccess() == clang::AccessSpecifier::AS_private &&
+        !MD->isVirtual())
+        return nullptr;
+
     using namespace clang;
 
     // We could be in a redeclaration, so process the primary context.
@@ -3930,6 +3932,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     {
         auto MD = cast<CXXMethodDecl>(D);
         Decl = WalkMethodCXX(MD);
+        if (Decl == nullptr)
+            return Decl;
 
         auto NS = GetNamespace(MD);
         Decl->_namespace = NS;
