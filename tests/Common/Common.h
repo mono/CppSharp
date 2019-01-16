@@ -1308,6 +1308,8 @@ public:
     void overload(int& i);
     void overload(int&& i);
     void overload(const int& i);
+    void overload(const Foo& rx, int from = -1);
+    void overload(Foo& rx, int from = -1);
     void dispose();
 };
 

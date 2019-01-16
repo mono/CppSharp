@@ -356,7 +356,7 @@ namespace CppSharp.AST
             var type = obj as PointerType;
             if (type == null) return false;
 
-            return QualifiedPointee.Equals(type.QualifiedPointee)
+            return Pointee.Equals(type.Pointee)
                 && Modifier == type.Modifier;
         }
 

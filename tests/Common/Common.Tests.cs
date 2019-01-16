@@ -24,6 +24,10 @@ public class CommonTests : GeneratorTestFixture
         {
             Bar bar = foo;
             Assert.IsTrue(Bar.Item.Item1 == bar);
+
+            using (var hasOverloadsWithDifferentPointerKindsToSameType =
+                new HasOverloadsWithDifferentPointerKindsToSameType())
+                hasOverloadsWithDifferentPointerKindsToSameType.Overload(foo, 0);
         }
         using (var overridesNonDirectVirtual = new OverridesNonDirectVirtual())
         {

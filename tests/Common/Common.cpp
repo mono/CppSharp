@@ -845,6 +845,14 @@ void HasOverloadsWithDifferentPointerKindsToSameType::overload(const int& i)
 {
 }
 
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(const Foo& rx, int from)
+{
+}
+
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(Foo& rx, int from)
+{
+}
+
 void HasOverloadsWithDifferentPointerKindsToSameType::dispose()
 {
 }
