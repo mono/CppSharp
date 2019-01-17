@@ -27,7 +27,11 @@ public class CommonTests : GeneratorTestFixture
 
             using (var hasOverloadsWithDifferentPointerKindsToSameType =
                 new HasOverloadsWithDifferentPointerKindsToSameType())
+            {
                 hasOverloadsWithDifferentPointerKindsToSameType.Overload(foo, 0);
+                using (var foo2 = new Foo2())
+                    hasOverloadsWithDifferentPointerKindsToSameType.Overload(foo2, 0);
+            }
         }
         using (var overridesNonDirectVirtual = new OverridesNonDirectVirtual())
         {

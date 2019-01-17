@@ -108,11 +108,11 @@ Bar::Bar()
 {
 }
 
-Bar::Bar(Foo foo)
+Bar::Bar(const Foo* foo)
 {
 }
 
-Bar::Bar(const Foo* foo)
+Bar::Bar(Foo foo)
 {
 }
 
@@ -850,6 +850,14 @@ void HasOverloadsWithDifferentPointerKindsToSameType::overload(const Foo& rx, in
 }
 
 void HasOverloadsWithDifferentPointerKindsToSameType::overload(Foo& rx, int from)
+{
+}
+
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(const Foo2& rx, int from)
+{
+}
+
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(Foo2&& rx, int from)
 {
 }
 

@@ -76,7 +76,12 @@ namespace CppSharp.Passes
                 AST.Type funcType = GetFinalType(function.Parameters[i]);
                 AST.Type overloadType = GetFinalType(overload.Parameters[i]);
 
-                if (!funcType.Equals(overloadType))
+                AST.Type funcPointee = funcType.GetFinalPointee() ?? funcType;
+                AST.Type overloadPointee = overloadType.GetFinalPointee() ?? overloadType;
+
+                if (((funcPointee.IsPrimitiveType() || overloadPointee.IsPrimitiveType()) &&
+                      !funcType.Equals(overloadType)) ||
+                    !funcPointee.Equals(overloadPointee))
                     return false;
             }
 

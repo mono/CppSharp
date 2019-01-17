@@ -125,8 +125,8 @@ struct DLL_API Bar
     };
 
     Bar();
-    Bar(Foo foo);
     explicit Bar(const Foo* foo);
+    Bar(Foo foo);
     Item RetItem1() const;
     int A;
     float B;
@@ -1310,6 +1310,8 @@ public:
     void overload(const int& i);
     void overload(const Foo& rx, int from = -1);
     void overload(Foo& rx, int from = -1);
+    void overload(const Foo2& rx, int from = -1);
+    void overload(Foo2&& rx, int from = -1);
     void dispose();
 };
 
