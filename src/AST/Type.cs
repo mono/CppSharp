@@ -50,6 +50,10 @@ namespace CppSharp.AST
         public bool IsConst;
         public bool IsVolatile;
         public bool IsRestrict;
+
+        public override int GetHashCode() =>
+            IsConst.GetHashCode() ^ IsVolatile.GetHashCode() ^
+                IsRestrict.GetHashCode();
     }
 
     /// <summary>
@@ -101,10 +105,8 @@ namespace CppSharp.AST
             return !(left == right);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => Type == null ?
+            Qualifiers.GetHashCode() : Type.GetHashCode() ^ Qualifiers.GetHashCode();
     }
 
     /// <summary>
@@ -147,10 +149,7 @@ namespace CppSharp.AST
             return Declaration.Equals(type.Declaration);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => Declaration.GetHashCode();
     }
 
     /// <summary>
@@ -220,7 +219,8 @@ namespace CppSharp.AST
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return QualifiedType.GetHashCode() ^ SizeType.GetHashCode() ^
+                Size.GetHashCode() ^ ElementSize.GetHashCode();
         }
     }
 
@@ -285,10 +285,11 @@ namespace CppSharp.AST
             return ReturnType.Equals(type.ReturnType) && Parameters.SequenceEqual(type.Parameters);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            Parameters.Aggregate(ReturnType.GetHashCode(),
+                (p1, p2) => p1.GetHashCode() ^ p2.GetHashCode()) ^
+                CallingConvention.GetHashCode() ^
+            ExceptionSpecType.GetHashCode();
     }
 
     /// <summary>
@@ -360,10 +361,8 @@ namespace CppSharp.AST
                 && Modifier == type.Modifier;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            QualifiedPointee.GetHashCode() ^ Modifier.GetHashCode();
     }
 
     /// <summary>
@@ -407,10 +406,7 @@ namespace CppSharp.AST
             return QualifiedPointee.Equals(pointer.QualifiedPointee);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => QualifiedPointee.GetHashCode();
     }
 
     /// <summary>
@@ -451,10 +447,7 @@ namespace CppSharp.AST
             return Declaration.Type.Equals(typedef == null ? obj : typedef.Declaration.Type);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => Declaration.Type.GetHashCode();
     }
 
     /// <summary>
@@ -508,10 +501,8 @@ namespace CppSharp.AST
                 && Equivalent.Equals(attributed.Equivalent);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            Modified.GetHashCode() ^ Equivalent.GetHashCode();
     }
 
     /// <summary>
@@ -530,12 +521,16 @@ namespace CppSharp.AST
         public DecayedType(DecayedType type)
             : base(type)
         {
-            Decayed = new QualifiedType((Type) type.Decayed.Type.Clone(), type.Decayed.Qualifiers);
-            Original = new QualifiedType((Type) type.Original.Type.Clone(), type.Original.Qualifiers);
-            Pointee = new QualifiedType((Type) type.Pointee.Type.Clone(), type.Pointee.Qualifiers);
+            Decayed = new QualifiedType((Type) type.Decayed.Type.Clone(),
+                type.Decayed.Qualifiers);
+            Original = new QualifiedType((Type) type.Original.Type.Clone(),
+                type.Original.Qualifiers);
+            Pointee = new QualifiedType((Type) type.Pointee.Type.Clone(),
+                type.Pointee.Qualifiers);
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        public override T Visit<T>(ITypeVisitor<T> visitor,
+            TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitDecayedType(this, quals);
         }
@@ -553,10 +548,9 @@ namespace CppSharp.AST
             return Original.Equals(decay.Original);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            Decayed.GetHashCode() ^ Original.GetHashCode() ^
+            Pointee.GetHashCode();
     }
 
     /// <summary>
@@ -724,10 +718,10 @@ namespace CppSharp.AST
                 (Desugared.Type != null && Desugared == type.Desugared));
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            Arguments.Aggregate(Template.GetHashCode(),
+                (a1, a2) => a1.GetHashCode() ^ a2.GetHashCode()) ^
+                Desugared.GetHashCode();
     }
 
     /// <summary>
@@ -778,10 +772,9 @@ namespace CppSharp.AST
                 Desugared == type.Desugared;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            Arguments.Aggregate(Desugared.GetHashCode(),
+                (a1, a2) => a1.GetHashCode() ^ a2.GetHashCode());
     }
 
     /// <summary>
@@ -834,10 +827,12 @@ namespace CppSharp.AST
                 && IsParameterPack == type.IsParameterPack;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            Parameter == null ?
+            Depth.GetHashCode() ^ Index.GetHashCode() ^
+            IsParameterPack.GetHashCode() :
+            Parameter.GetHashCode() ^ Depth.GetHashCode() ^
+            Index.GetHashCode() ^ IsParameterPack.GetHashCode();
     }
 
     /// <summary>
@@ -879,10 +874,7 @@ namespace CppSharp.AST
             return Replacement.Equals(type.Replacement);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => Replacement.GetHashCode();
     }
 
     /// <summary>
@@ -933,10 +925,11 @@ namespace CppSharp.AST
                 && Class.Equals(type.Class);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() =>
+            TemplateSpecialization != null && Class != null
+                ? TemplateSpecialization.GetHashCode() ^ Class.GetHashCode()
+                : TemplateSpecialization != null ? TemplateSpecialization.GetHashCode()
+                : Class.GetHashCode();
     }
 
     /// <summary>
@@ -967,6 +960,9 @@ namespace CppSharp.AST
         {
             return new DependentNameType(this);
         }
+
+        public override int GetHashCode() =>
+            Qualifier.GetHashCode() ^ Identifier.GetHashCode();
     }
 
     /// <summary>
@@ -1010,10 +1006,7 @@ namespace CppSharp.AST
             return Type == type.Type;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => Type.GetHashCode();
     }
 
     public class PackExpansionType : Type
@@ -1063,6 +1056,9 @@ namespace CppSharp.AST
         {
             return new UnaryTransformType(this);
         }
+
+        public override int GetHashCode() =>
+            Desugared.GetHashCode() ^ BaseType.GetHashCode();
     }
 
     public class VectorType : Type
@@ -1088,6 +1084,9 @@ namespace CppSharp.AST
         {
             return new VectorType(this);
         }
+
+        public override int GetHashCode() =>
+            ElementType.GetHashCode() ^ NumElements.GetHashCode();
     }
 
     public class UnsupportedType : Type
@@ -1117,6 +1116,8 @@ namespace CppSharp.AST
         {
             return new UnsupportedType(this);
         }
+
+        public override int GetHashCode() => Description.GetHashCode();
     }
 
     public class CustomType : UnsupportedType
@@ -1223,10 +1224,7 @@ namespace CppSharp.AST
             return Type == type.Type;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => Type.GetHashCode();
     }
 
     #endregion
