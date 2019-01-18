@@ -50,58 +50,6 @@ namespace CppSharp.Types
             }
         }
 
-        public bool FindTypeMap(Declaration decl, Type type, out TypeMap typeMap)
-        {
-            if (type != null && typeMaps.ContainsKey(type))
-            {
-                typeMap = typeMaps[type];
-                return typeMap.IsEnabled;
-            }
-
-            // We try to find type maps from the most qualified to less qualified
-            // types. Example: '::std::vector', 'std::vector' and 'vector'
-
-            var typePrinter = new CppTypePrinter { PrintLogicalNames = true };
-
-            if (FindTypeMap(decl, type, out typeMap, typePrinter))
-                return true;
-
-            typePrinter.PrintScopeKind = TypePrintScopeKind.Qualified;
-            if (FindTypeMap(decl, type, out typeMap, typePrinter))
-                return true;
-
-            typePrinter.ResolveTypedefs = true;
-            if (FindTypeMap(decl, type, out typeMap, typePrinter))
-                return true;
-            typePrinter.ResolveTypedefs = false;
-
-            typePrinter.PrintScopeKind = TypePrintScopeKind.Local;
-            if (FindTypeMap(decl, type, out typeMap, typePrinter))
-                return true;
-
-            var specialization = decl as ClassTemplateSpecialization;
-            if (specialization != null &&
-                FindTypeMap(specialization.TemplatedDecl, type, out typeMap, typePrinter))
-                return true;
-
-            var typedef = decl as TypedefDecl;
-            return typedef != null && FindTypeMap(typedef.Type, out typeMap);
-        }
-
-        private bool FindTypeMap(Declaration decl, Type type, out TypeMap typeMap, CppTypePrinter typePrinter)
-        {
-            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
-            {
-                if (type != null && typeMap.Type == null)
-                {
-                    typeMap.Type = type;
-                    typeMaps[type] = typeMap;
-                }
-                return true;
-            }
-            return false;
-        }
-
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
             if (typeMaps.ContainsKey(type))
@@ -114,11 +62,19 @@ namespace CppSharp.Types
             if (template != null)
             {
                 var specialization = template.GetClassTemplateSpecialization();
-                if (specialization != null && FindTypeMap(specialization, type, out typeMap))
+                if (specialization != null &&
+                    FindTypeMap(specialization, out typeMap))
                     return true;
                 if (template.Template.TemplatedDecl != null)
-                    return FindTypeMap(template.Template.TemplatedDecl, type,
-                        out typeMap);
+                {
+                    if (FindTypeMap(template.Template.TemplatedDecl,
+                        out typeMap))
+                    {
+                        typeMap.Type = type;
+                        return true;
+                    }
+                    return false;
+                }
             }
 
             Type desugared = type.Desugar();
@@ -147,33 +103,14 @@ namespace CppSharp.Types
 
             typeMap = null;
             var typedef = type as TypedefType;
-            return typedef != null && FindTypeMap(typedef.Declaration, type, out typeMap);
+            return typedef != null && FindTypeMap(typedef.Declaration.Type, out typeMap);
         }
 
-        public bool FindTypeMap(Declaration decl, out TypeMap typeMap)
-        {
-            return FindTypeMap(decl, null, out typeMap);
-        }
+        public bool FindTypeMap(Declaration declaration, out TypeMap typeMap) =>
+            FindTypeMap(new TagType(declaration), out typeMap);
 
-        public bool FindTypeMapRecursive(Type type, out TypeMap typeMap)
-        {
-            while (true)
-            {
-                if (FindTypeMap(type, out typeMap))
-                    return true;
-
-                var desugaredType = type.Desugar();
-                if (desugaredType == type)
-                    return false;
-
-                type = desugaredType;
-            }
-        }
-
-        private bool FindTypeMap(string name, out TypeMap typeMap)
-        {
-            return TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
-        }
+        private bool FindTypeMap(string name, out TypeMap typeMap) =>
+            TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
 
         private Dictionary<Type, TypeMap> typeMaps = new Dictionary<Type, TypeMap>();
     }

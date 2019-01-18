@@ -88,7 +88,7 @@ namespace CppSharp
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(typedef.Type, out typeMap))
             {
                 if (typeMap.IsIgnored)
                     Ignore();

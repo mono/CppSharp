@@ -910,7 +910,8 @@ namespace CppSharp.Generators.CSharp
             ctx.PushMarshalKind(MarshalKind.NativeField);
 
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            ctx.Declaration = field;
+            ctx.PushMarshalKind(MarshalKind.NativeField);
+            ctx.ReturnType = field.QualifiedType;
 
             param.Visit(marshal);
 
@@ -1188,14 +1189,13 @@ namespace CppSharp.Generators.CSharp
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
                 if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType &&
-                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, field.Type, typeClass))
+                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, field.Type))
                     returnVar = $"new {CSharpTypePrinter.IntPtrType}(&{returnVar})";
             }
 
             var ctx = new CSharpMarshalContext(Context, CurrentIndentation)
             {
                 ArgName = field.Name,
-                Declaration = field,
                 ReturnVarName = returnVar,
                 ReturnType = returnType
             };
@@ -2734,16 +2734,17 @@ namespace CppSharp.Generators.CSharp
                 var indirectRetType = originalFunction.Parameters.First(
                     parameter => parameter.Kind == ParameterKind.IndirectReturnType);
 
-                Class retClass;
-                indirectRetType.Type.Desugar().TryGetClass(out retClass);
+                Type type = indirectRetType.Type.Desugar();
 
                 TypeMap typeMap;
                 string construct = null;
-                if (Context.TypeMaps.FindTypeMap(retClass, out typeMap))
+                if (Context.TypeMaps.FindTypeMap(type, out typeMap))
                     construct = typeMap.CSharpConstruct();
 
                 if (construct == null)
                 {
+                    Class retClass;
+                    type.TryGetClass(out retClass);
                     var @class = retClass.OriginalClass ?? retClass;
                     WriteLine($@"var {Helpers.ReturnIdentifier} = new {
                         TypePrinter.PrintNative(@class)}();");
@@ -2752,10 +2753,10 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (string.IsNullOrWhiteSpace(construct))
                     {
-		                var typePrinterContext = new TypePrinterContext
-		                {
-		                    Type = indirectRetType.Type.Desugar()
-		                };
+                        var typePrinterContext = new TypePrinterContext
+                        {
+                            Type = indirectRetType.Type.Desugar()
+                        };
 
                         WriteLine("{0} {1};", typeMap.CSharpSignatureType(typePrinterContext),
                             Helpers.ReturnIdentifier);

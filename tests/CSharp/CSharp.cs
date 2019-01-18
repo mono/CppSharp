@@ -179,7 +179,7 @@ namespace CppSharp.Tests
         {
             get
             {
-                var type = (TemplateSpecializationType)Type;
+                var type = (TemplateSpecializationType) Type;
                 var pointeeType = type.Arguments[0].Type;
                 var checker = new TypeIgnoreChecker(TypeMapDatabase);
                 pointeeType.Visit(checker);

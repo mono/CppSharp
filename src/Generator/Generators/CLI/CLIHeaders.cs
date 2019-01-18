@@ -333,10 +333,7 @@ namespace CppSharp.Generators.CLI
 
                 var function = functionTemplate.TemplatedFunction;
 
-                var typePrinter = new CLITypePrinter(Context)
-                {
-                    Declaration = template
-                };
+                var typePrinter = new CLITypePrinter(Context);
                 typePrinter.PushContext(TypePrinterContextKind.Template);
 
                 var retType = function.ReturnType.Visit(typePrinter);

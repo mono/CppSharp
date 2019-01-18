@@ -237,7 +237,8 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out typeMap) &&
+                typeMap.DoesMarshalling)
             {
                 typeMap.Type = typedef;
                 typeMap.CLIMarshalToManaged(Context);
@@ -298,7 +299,7 @@ namespace CppSharp.Generators.CLI
                 instance += "&";
 
             instance += Context.ReturnVarName;
-            var needsCopy = !(Context.Declaration is Field);
+            var needsCopy = Context.MarshalKind != MarshalKind.NativeField;
 
             if (@class.IsRefType && needsCopy)
             {
@@ -608,7 +609,8 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out typeMap) &&
+                typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return typeMap.IsValueType;
@@ -689,14 +691,15 @@ namespace CppSharp.Generators.CLI
 
         private void MarshalRefClass(Class @class)
         {
+            var type = Context.Parameter.Type.Desugar();
             TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) &&
+                typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return;
             }
 
-            var type = Context.Parameter.Type.Desugar();
             var method = Context.Function as Method;
             if (type.IsReference() && (method == null ||
                 // redundant for comparison operators, they are handled in a special way

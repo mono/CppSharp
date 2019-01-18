@@ -96,7 +96,8 @@ namespace CppSharp.AST
             if (specialization == null)
                 return true;
 
-            if (IsSpecializationNeeded(container, typeMaps, internalOnly, specialization))
+            if (IsSpecializationNeeded(container, typeMaps, internalOnly,
+                type, specialization))
                 return false;
 
             if (!internalOnly)
@@ -104,7 +105,7 @@ namespace CppSharp.AST
                 if (IsSpecializationSelfContained(specialization, container))
                     return true;
 
-                if (IsMappedToPrimitive(typeMaps, type, specialization))
+                if (IsMappedToPrimitive(typeMaps, type))
                     return true;
             }
 
@@ -161,11 +162,11 @@ namespace CppSharp.AST
         }
 
         private static bool IsSpecializationNeeded(Declaration container,
-            ITypeMapDatabase typeMaps, bool internalOnly,
+            ITypeMapDatabase typeMaps, bool internalOnly, Type type,
             ClassTemplateSpecialization specialization)
         {
             TypeMap typeMap;
-            typeMaps.FindTypeMap(specialization, out typeMap);
+            typeMaps.FindTypeMap(type, out typeMap);
 
             return (!internalOnly && (((specialization.Ignore ||
                 specialization.TemplatedDecl.TemplatedClass.Ignore) && typeMap == null) ||
@@ -204,11 +205,10 @@ namespace CppSharp.AST
             return false;
         }
 
-        public static bool IsMappedToPrimitive(ITypeMapDatabase typeMaps,
-            Type type, Declaration declaration)
+        public static bool IsMappedToPrimitive(ITypeMapDatabase typeMaps, Type type)
         {
             TypeMap typeMap;
-            if (!typeMaps.FindTypeMap(declaration, out typeMap))
+            if (!typeMaps.FindTypeMap(type, out typeMap))
                 return false;
 
             var typePrinterContext = new TypePrinterContext { Type = type };

@@ -58,17 +58,7 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
-            {
-                typeMap.CSharpMarshalToManaged(Context);
-                return false;
-            }
-
-            return true;
-        }
+        public override bool VisitDeclaration(Declaration decl) => true;
 
         public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
@@ -431,17 +421,7 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
-            {
-                typeMap.CSharpMarshalToNative(Context);
-                return false;
-            }
-
-            return true;
-        }
+        public override bool VisitDeclaration(Declaration decl) => true;
 
         public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
