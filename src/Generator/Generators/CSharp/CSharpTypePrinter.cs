@@ -31,7 +31,7 @@ namespace CppSharp.Generators.CSharp
                 return string.Empty;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(tag.Declaration, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
             {
                 typeMap.Type = tag;
 
@@ -271,7 +271,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl.Type, out typeMap))
             {
                 typeMap.Type = typedef;
 

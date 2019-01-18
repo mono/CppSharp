@@ -221,11 +221,11 @@ namespace CppSharp.Types.Std
             ClassTemplateSpecialization basicString = GetBasicString(type);
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             if (!ctx.Parameter.Type.Desugar().IsAddress() &&
-                !(ctx.Declaration is Field))
+                ctx.MarshalKind != MarshalKind.NativeField)
                 ctx.Return.Write($"*({typePrinter.PrintNative(basicString)}*) ");
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
             var assign = basicString.Methods.First(m => m.OriginalName == "assign");
-            if (ctx.Declaration is Field)
+            if (ctx.MarshalKind == MarshalKind.NativeField)
             {
                 ctx.Return.Write($@"{qualifiedBasicString}Extensions.{
                     Helpers.InternalStruct}.{assign.Name}(new {

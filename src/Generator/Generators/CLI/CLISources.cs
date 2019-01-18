@@ -289,10 +289,7 @@ namespace CppSharp.Generators.CLI
 
             var function = template.TemplatedFunction;
 
-            var typePrinter = new CLITypePrinter(Context)
-            {
-                Declaration = template
-            };
+            var typePrinter = new CLITypePrinter(Context);
             typePrinter.PushContext(TypePrinterContextKind.Template);
 
             var retType = function.ReturnType.Visit(typePrinter);
@@ -485,12 +482,11 @@ namespace CppSharp.Generators.CLI
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
-                        Declaration = decl,
                         ArgName = decl.Name,
                         ReturnVarName = variable,
                         ReturnType = decl.QualifiedType
                     };
-
+                ctx.PushMarshalKind(MarshalKind.NativeField);
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 decl.Visit(marshal);
 
@@ -691,10 +687,9 @@ namespace CppSharp.Generators.CLI
                     ArgName = property.Name,
                     ReturnVarName = nativeField,
                     ReturnType = property.QualifiedType,
-                    Declaration = property.Field,
                     ParameterIndex = paramIndex++
                 };
-
+                ctx.PushMarshalKind(MarshalKind.NativeField);
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 property.Visit(marshal);
 

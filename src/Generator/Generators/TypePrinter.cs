@@ -50,8 +50,6 @@ namespace CppSharp.Generators
         }
 
         public MarshalKind PopMarshalKind() => marshalKinds.Pop();
-
-        public Declaration Declaration;
         public Parameter Parameter;
 
         #region Dummy implementations

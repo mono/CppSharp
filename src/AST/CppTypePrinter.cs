@@ -444,8 +444,9 @@ namespace CppSharp.AST
                 return typedef.OriginalName;
 
             var originalNamespace = typedef.OriginalNamespace.Visit(this);
-            return originalNamespace == "::" ? typedef.OriginalName :
-                $"{originalNamespace}::{typedef.OriginalName}";
+            return string.IsNullOrEmpty(originalNamespace) ||
+                originalNamespace == "::" ?
+                typedef.OriginalName : $"{originalNamespace}::{typedef.OriginalName}";
         }
 
         public virtual string VisitTypeAliasDecl(TypeAlias typeAlias)

@@ -197,7 +197,7 @@ namespace CppSharp.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl.Type, out typeMap))
             {
                 typeMap.Type = typedef;
                 var typePrinterContext = new TypePrinterContext { Type = typedef };

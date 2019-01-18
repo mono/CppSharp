@@ -104,10 +104,7 @@ namespace CppSharp.Types
 
     public interface ITypeMapDatabase
     {
-        bool FindTypeMapRecursive(Type type, out TypeMap typeMap);
         bool FindTypeMap(Type decl, out TypeMap typeMap);
-        bool FindTypeMap(Declaration decl, out TypeMap typeMap);
+        bool FindTypeMap(Declaration declaration, out TypeMap typeMap);
     }
-
-
 }

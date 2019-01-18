@@ -154,7 +154,7 @@ namespace CppSharp.Passes
             var typePrinterResult = type.Visit(typePrinter).Type;
 
             TypeMap typeMap;
-            if (TypeMaps.FindTypeMap(decl, type, out typeMap))
+            if (TypeMaps.FindTypeMap(type, out typeMap))
             {
                 var typePrinterContext = new TypePrinterContext()
                 {

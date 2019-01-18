@@ -111,7 +111,7 @@ namespace CppSharp.Passes
             TypeMap typeMap;
             if (!(type is FunctionType) && (decl == null ||
                 ((decl.GenerationKind != GenerationKind.Internal ||
-                  Context.TypeMaps.FindTypeMap(decl, out typeMap)) &&
+                  Context.TypeMaps.FindTypeMap(type, out typeMap)) &&
                  !HasInvalidType(field, out msg))))
                 return false;
 
@@ -513,11 +513,17 @@ namespace CppSharp.Passes
         private bool IsDeclIgnored(Declaration decl)
         {
             var parameter = decl as Parameter;
-            if (parameter != null && parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.Null))
-                return true;
+            if (parameter != null)
+            {
+                if (parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.Null))
+                    return true;
 
-            TypeMap typeMap;
-            return TypeMaps.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
+                TypeMap typeMap;
+                if (TypeMaps.FindTypeMap(parameter.Type, out typeMap))
+                    return typeMap.IsIgnored;
+            }
+
+            return decl.Ignore;
         }
 
         private void IgnoreUnsupportedTemplates(Class @class)
