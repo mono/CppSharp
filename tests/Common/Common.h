@@ -1471,3 +1471,7 @@ template<int N> using TypeAlias = InvokeGenSeq<DerivedTypeAlias<N>>;
 template<int N>
 struct DerivedTypeAlias : TypeAlias<N / 2> {};
 
+DLL_API void integerOverload(int i);
+DLL_API void integerOverload(unsigned int i);
+DLL_API void integerOverload(long i);
+DLL_API void integerOverload(unsigned long i);

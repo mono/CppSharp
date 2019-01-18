@@ -35,8 +35,7 @@ namespace CppSharp.Types
     public class TypeMap
     {
         public Type Type { get; set; }
-        public ASTContext ASTContext { get; set; }
-        public DriverOptions Options { get; set; }
+        public BindingContext Context { get; set; }
         public ITypeMapDatabase TypeMapDatabase { get; set; }
 
         public bool IsEnabled { get; set; } = true;
@@ -59,12 +58,12 @@ namespace CppSharp.Types
 
         public virtual void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
-            throw new NotImplementedException();
+            ctx.Return.Write(ctx.Parameter.Name);
         }
 
         public virtual void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
-            throw new NotImplementedException();
+            ctx.Return.Write(ctx.ReturnVarName);
         }
 
         /// <summary>
@@ -91,12 +90,12 @@ namespace CppSharp.Types
 
         public virtual void CLIMarshalToNative(MarshalContext ctx)
         {
-            throw new NotImplementedException();
+            ctx.Return.Write(ctx.Parameter.Name);
         }
 
         public virtual void CLIMarshalToManaged(MarshalContext ctx)
         {
-            throw new NotImplementedException();
+            ctx.Return.Write(ctx.ReturnVarName);
         }
 
         #endregion

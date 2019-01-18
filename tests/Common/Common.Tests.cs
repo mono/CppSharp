@@ -56,6 +56,8 @@ public class CommonTests : GeneratorTestFixture
         itemsDifferByCase = ItemsDifferByCase.CaseA;
         itemsDifferByCase.GetHashCode();
         Common.SMallFollowedByCapital();
+        Common.IntegerOverload(0);
+        Common.IntegerOverload((uint) 0);
         using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
 
 #pragma warning restore 0168

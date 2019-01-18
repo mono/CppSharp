@@ -1,7 +1,6 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -73,7 +72,7 @@ namespace CppSharp
         }
 
         public void SetupTypeMaps() =>
-            Context.TypeMaps = new TypeMapDatabase(Context.ASTContext, Options);
+            Context.TypeMaps = new TypeMapDatabase(Context);
 
         void OnSourceFileParsed(IEnumerable<string> files, ParserResult result)
         {

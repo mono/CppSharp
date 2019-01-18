@@ -185,7 +185,7 @@ namespace CppSharp.Passes
             return CXXOperatorKind.None;
         }
 
-        static bool IsValidOperatorOverload(Method @operator)
+        private bool IsValidOperatorOverload(Method @operator)
         {
             // These follow the order described in MSDN (Overloadable Operators).
 
@@ -235,9 +235,31 @@ namespace CppSharp.Passes
                 // Bitwise shift operators can only be overloaded if the second parameter is int
                 case CXXOperatorKind.LessLess:
                 case CXXOperatorKind.GreaterGreater:
-                    PrimitiveType primitiveType;
-                    return @operator.Parameters.Last().Type.IsPrimitiveType(out primitiveType) &&
-                           primitiveType == PrimitiveType.Int;
+                    {
+                        Parameter parameter = @operator.Parameters.Last();
+                        Type type = parameter.Type.Desugar();
+                        switch (Options.GeneratorKind)
+                        {
+                            case GeneratorKind.CLI:
+                                return type.IsPrimitiveType(PrimitiveType.Int);
+                            case GeneratorKind.CSharp:
+                                Types.TypeMap typeMap;
+                                if (Context.TypeMaps.FindTypeMap(type, out typeMap))
+                                {
+                                    var mappedTo = typeMap.CSharpSignatureType(
+                                        new TypePrinterContext
+                                        {
+                                            Parameter = parameter,
+                                            Type = type
+                                        });
+                                    var cilType = mappedTo as CILType;
+                                    if (cilType?.Type == typeof(int))
+                                        return true;
+                                }
+                                break;
+                        }
+                        return false;
+                    }
 
                 // No parameters means the dereference operator - cannot be overloaded
                 case CXXOperatorKind.Star:

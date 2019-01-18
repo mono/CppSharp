@@ -975,3 +975,19 @@ void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::generated()
 void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType& ignoredParam)
 {
 }
+
+void integerOverload(int i)
+{
+}
+
+void integerOverload(unsigned int i)
+{
+}
+
+void integerOverload(long i)
+{
+}
+
+void integerOverload(unsigned long i)
+{
+}

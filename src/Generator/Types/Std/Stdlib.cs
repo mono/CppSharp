@@ -16,18 +16,46 @@ namespace CppSharp.Types.Std
         public override bool IsIgnored => true;
     }
 
+    [TypeMap("int", GeneratorKind = GeneratorKind.CSharp)]
+    public class Int : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx) =>
+            CSharpTypePrinter.GetSignedType(Context.TargetInfo.IntWidth);
+    }
+
+    [TypeMap("unsigned int", GeneratorKind = GeneratorKind.CSharp)]
+    public class UnsignedInt : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx) =>
+            CSharpTypePrinter.GetUnsignedType(Context.TargetInfo.IntWidth);
+    }
+
+    [TypeMap("long", GeneratorKind = GeneratorKind.CSharp)]
+    public class Long : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx) =>
+            CSharpTypePrinter.GetSignedType(Context.TargetInfo.LongWidth);
+    }
+
+    [TypeMap("unsigned long", GeneratorKind = GeneratorKind.CSharp)]
+    public class UnsignedLong : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx) =>
+            CSharpTypePrinter.GetUnsignedType(Context.TargetInfo.LongWidth);
+    }
+
     [TypeMap("char", GeneratorKind = GeneratorKind.CSharp)]
     public class Char : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new CILType(ctx.Kind == TypePrinterContextKind.Native ||
-                !Options.MarshalCharAsManagedChar ? typeof(sbyte) : typeof(char));
+                !Context.Options.MarshalCharAsManagedChar ? typeof(sbyte) : typeof(char));
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
-            if (Options.MarshalCharAsManagedChar)
+            if (Context.Options.MarshalCharAsManagedChar)
                 ctx.Return.Write("global::System.Convert.ToSByte({0})",
                ctx.Parameter.Name);
             else
@@ -36,7 +64,7 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
-            if (Options.MarshalCharAsManagedChar)
+            if (Context.Options.MarshalCharAsManagedChar)
                 ctx.Return.Write("global::System.Convert.ToChar({0})",
                                    ctx.ReturnVarName);
             else
@@ -51,16 +79,6 @@ namespace CppSharp.Types.Std
         {
             return new CILType(typeof(char));
         }
-
-        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.Parameter.Name);
-        }
-
-        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
-        }
     }
 
     [TypeMap("wchar_t", GeneratorKind = GeneratorKind.CSharp)]
@@ -69,16 +87,6 @@ namespace CppSharp.Types.Std
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(char));
-        }
-
-        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.Parameter.Name);
-        }
-
-        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
         }
     }
 
@@ -92,13 +100,13 @@ namespace CppSharp.Types.Std
 
             if (ctx.Parameter == null || ctx.Parameter.Name == Helpers.ReturnIdentifier)
                 return new CustomType(CSharpTypePrinter.IntPtrType);
-            if (Options.Encoding == Encoding.ASCII)
+            if (Context.Options.Encoding == Encoding.ASCII)
                 return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
-            if (Options.Encoding == Encoding.Unicode ||
-                Options.Encoding == Encoding.BigEndianUnicode)
+            if (Context.Options.Encoding == Encoding.Unicode ||
+                Context.Options.Encoding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
             throw new System.NotSupportedException(
-                $"{Options.Encoding.EncodingName} is not supported yet.");
+                $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
@@ -111,19 +119,19 @@ namespace CppSharp.Types.Std
                 ctx.Return.Write(ctx.Parameter.Name);
                 return;
             }
-            if (Equals(Options.Encoding, Encoding.ASCII))
+            if (Equals(Context.Options.Encoding, Encoding.ASCII))
             {
                 ctx.Return.Write($"Marshal.StringToHGlobalAnsi({ctx.Parameter.Name})");
                 return;
             }
-            if (Equals(Options.Encoding, Encoding.Unicode) ||
-                Equals(Options.Encoding, Encoding.BigEndianUnicode))
+            if (Equals(Context.Options.Encoding, Encoding.Unicode) ||
+                Equals(Context.Options.Encoding, Encoding.BigEndianUnicode))
             {
                 ctx.Return.Write($"Marshal.StringToHGlobalUni({ctx.Parameter.Name})");
                 return;
             }
             throw new System.NotSupportedException(
-                $"{Options.Encoding.EncodingName} is not supported yet.");
+                $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
@@ -144,7 +152,7 @@ namespace CppSharp.Types.Std
             var encoding = isChar ? Encoding.ASCII : Encoding.Unicode;
 
             if (Equals(encoding, Encoding.ASCII))
-                encoding = Options.Encoding;
+                encoding = Context.Options.Encoding;
 
             if (Equals(encoding, Encoding.ASCII))
             {
@@ -578,16 +586,6 @@ namespace CppSharp.Types.Std
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(System.IntPtr));
-        }
-
-        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.Parameter.Name);
-        }
-
-        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
         }
     }
 }

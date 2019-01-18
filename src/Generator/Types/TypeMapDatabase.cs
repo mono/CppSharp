@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
@@ -10,18 +11,15 @@ namespace CppSharp.Types
     {
         public IDictionary<string, TypeMap> TypeMaps { get; set; }
 
-        public DriverOptions Options { get; }
-
-        public TypeMapDatabase(ASTContext astContext, DriverOptions options)
+        public TypeMapDatabase(BindingContext bindingContext)
         {
             TypeMaps = new Dictionary<string, TypeMap>();
-            this.Options = options;
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
                     var types = assembly.FindDerivedTypes(typeof(TypeMap));
-                    SetupTypeMaps(types, astContext);
+                    SetupTypeMaps(types, bindingContext);
                 }
                 catch (System.Reflection.ReflectionTypeLoadException ex)
                 {
@@ -31,18 +29,19 @@ namespace CppSharp.Types
             }
         }
 
-        private void SetupTypeMaps(IEnumerable<System.Type> types, ASTContext astContext)
+        private void SetupTypeMaps(IEnumerable<System.Type> types,
+            BindingContext bindingContext)
         {
             foreach (var type in types)
             {
                 var attrs = type.GetCustomAttributes(typeof(TypeMapAttribute), true);
                 foreach (TypeMapAttribute attr in attrs)
                 {
-                    if (attr.GeneratorKind == 0 || attr.GeneratorKind == Options.GeneratorKind)
+                    if (attr.GeneratorKind == 0 ||
+                        attr.GeneratorKind == bindingContext.Options.GeneratorKind)
                     {
                         var typeMap = (TypeMap) Activator.CreateInstance(type);
-                        typeMap.ASTContext = astContext;
-                        typeMap.Options = Options;
+                        typeMap.Context = bindingContext;
                         typeMap.TypeMapDatabase = this;
                         this.TypeMaps[attr.Type] = typeMap;
                     }
@@ -52,6 +51,13 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
+            if (type.Desugar(resolveTemplateSubstitution: false) is
+                TemplateParameterSubstitutionType)
+            {
+                typeMap = null;
+                return false;
+            }
+
             if (typeMaps.ContainsKey(type))
             {
                 typeMap = typeMaps[type];
@@ -78,8 +84,9 @@ namespace CppSharp.Types
             }
 
             Type desugared = type.Desugar();
-            bool printExtra = desugared.GetPointee() != null &&
-                desugared.GetFinalPointee().Desugar().IsPrimitiveType();
+            desugared = (desugared.GetFinalPointee() ?? desugared).Desugar();
+            bool printExtra = desugared.IsPrimitiveType() ||
+                (desugared.GetFinalPointee() ?? desugared).Desugar().IsPrimitiveType();
             var typePrinter = new CppTypePrinter
             {
                 PrintTypeQualifiers = printExtra,

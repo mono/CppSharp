@@ -156,7 +156,7 @@ namespace CppSharp.Tests
 
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
-            return new TagType(flags ?? (flags = ASTContext.FindEnum("Flags").First()));
+            return new TagType(flags ?? (flags = Context.ASTContext.FindEnum("Flags").First()));
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
