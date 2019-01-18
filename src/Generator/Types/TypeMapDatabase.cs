@@ -51,13 +51,6 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
-            if (type.Desugar(resolveTemplateSubstitution: false) is
-                TemplateParameterSubstitutionType)
-            {
-                typeMap = null;
-                return false;
-            }
-
             if (typeMaps.ContainsKey(type))
             {
                 typeMap = typeMaps[type];
