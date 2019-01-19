@@ -632,10 +632,13 @@ public class CommonTests : GeneratorTestFixture
         var bar = new Bar { A = 5, B = 5.5f };
         Assert.IsTrue(bar == bar);
         Assert.IsFalse(new Bar { A = 5, B = 5.6f } == bar);
+#if !__MonoCS__
         using (var differentConstOverloads = new DifferentConstOverloads())
         {
-            Assert.IsTrue(differentConstOverloads != null);
+            DifferentConstOverloads other = null;
+            Assert.IsTrue(differentConstOverloads != other);
         }
+#endif
 
 #pragma warning restore 1718
     }
@@ -654,7 +657,10 @@ public class CommonTests : GeneratorTestFixture
     {
         var differentConstOverloads = new DifferentConstOverloads();
         Assert.IsTrue(differentConstOverloads == new DifferentConstOverloads());
-        Assert.IsFalse(differentConstOverloads == 5);
+        Assert.IsTrue(differentConstOverloads == 5);
+        Assert.IsFalse(differentConstOverloads == 4);
+        Assert.IsTrue(differentConstOverloads == "abcde");
+        Assert.IsFalse(differentConstOverloads == "abcd");
     }
 
     [Test]

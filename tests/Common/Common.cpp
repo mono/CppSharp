@@ -652,6 +652,11 @@ DifferentConstOverloads::DifferentConstOverloads() : i(5)
 {
 }
 
+int DifferentConstOverloads::getI() const
+{
+    return i;
+}
+
 bool DifferentConstOverloads::operator ==(const DifferentConstOverloads& other)
 {
     return i == other.i;
@@ -664,7 +669,17 @@ bool DifferentConstOverloads::operator !=(const DifferentConstOverloads& other)
 
 bool DifferentConstOverloads::operator ==(int number) const
 {
-    return false;
+    return i == number;
+}
+
+bool DifferentConstOverloads::operator ==(std::string s) const
+{
+    return i == s.length();
+}
+
+bool operator ==(const DifferentConstOverloads& d, const char* s)
+{
+    return d.getI() == strlen(s);
 }
 
 int HasVirtualProperty::getProperty()

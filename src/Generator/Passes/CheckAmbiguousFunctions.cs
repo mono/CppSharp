@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -68,13 +70,16 @@ namespace CppSharp.Passes
 
         private bool CheckDefaultParametersForAmbiguity(Function function, Function overload)
         {
-            var commonParameters = Math.Min(function.Parameters.Count, overload.Parameters.Count);
+            List<Parameter> functionParams = RemoveOperatorParams(function);
+            List<Parameter> overloadParams = RemoveOperatorParams(overload);
+
+            var commonParameters = Math.Min(functionParams.Count, overloadParams.Count);
 
             var i = 0;
             for (; i < commonParameters; ++i)
             {
-                AST.Type funcType = GetFinalType(function.Parameters[i]);
-                AST.Type overloadType = GetFinalType(overload.Parameters[i]);
+                AST.Type funcType = GetFinalType(functionParams[i]);
+                AST.Type overloadType = GetFinalType(overloadParams[i]);
 
                 AST.Type funcPointee = funcType.GetFinalPointee() ?? funcType;
                 AST.Type overloadPointee = overloadType.GetFinalPointee() ?? overloadType;
@@ -85,26 +90,51 @@ namespace CppSharp.Passes
                     return false;
             }
 
-            for (; i < function.Parameters.Count; ++i)
+            for (; i < functionParams.Count; ++i)
             {
-                var funcParam = function.Parameters[i];
+                var funcParam = functionParams[i];
                 if (!funcParam.HasDefaultValue)
                     return false;
             }
 
-            for (; i < overload.Parameters.Count; ++i)
+            for (; i < overloadParams.Count; ++i)
             {
-                var overloadParam = overload.Parameters[i];
+                var overloadParam = overloadParams[i];
                 if (!overloadParam.HasDefaultValue)
                     return false;
             }
 
-            if (function.Parameters.Count > overload.Parameters.Count)
+            if (functionParams.Count > overloadParams.Count)
                 overload.ExplicitlyIgnore();
             else
                 function.ExplicitlyIgnore();
 
             return true;
+        }
+
+        private List<Parameter> RemoveOperatorParams(Function function)
+        {
+            var functionParams = new List<Parameter>(function.Parameters);
+
+            if (!function.IsOperator ||
+                (Context.Options.GeneratorKind != GeneratorKind.CLI &&
+                 Context.Options.GeneratorKind != GeneratorKind.CSharp))
+                return functionParams;
+
+            // C++ operators in a class have no class param unlike C#
+            // but we need to be able to compare them to free operators.
+            Parameter param = functionParams.Find(p => p.Kind == ParameterKind.Regular);
+            if (param != null)
+            {
+                AST.Type type = param.Type.Desugar();
+                type = (type.GetFinalPointee() ?? type).Desugar();
+                Class @class;
+                if (type.TryGetClass(out @class) &&
+                    function.Namespace == @class)
+                    functionParams.Remove(param);
+            }
+
+            return functionParams;
         }
 
         private AST.Type GetFinalType(Parameter parameter)
