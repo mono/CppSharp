@@ -900,12 +900,16 @@ class DLL_API DifferentConstOverloads
 {
 public:
     DifferentConstOverloads();
+    int getI() const;
     bool operator ==(const DifferentConstOverloads& other);
     bool operator !=(const DifferentConstOverloads& other);
     bool operator ==(int number) const;
+    bool operator ==(std::string s) const;
 private:
     int i;
 };
+
+DLL_API bool operator ==(const DifferentConstOverloads& d, const char* s);
 
 class TestNamingAnonymousTypesInUnion
 {
