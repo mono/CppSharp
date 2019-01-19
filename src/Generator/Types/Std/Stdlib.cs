@@ -90,9 +90,58 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char*")]
     public class ConstCharPointer : TypeMap
     {
+        public override Type CLISignatureType(TypePrinterContext ctx)
+        {
+            return new CILType(typeof(string));
+        }
+
+        public override void CLIMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Before.WriteLine(
+                "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
+                ctx.ArgName, ctx.Parameter.Name);
+
+            ctx.Return.Write("_{0}.c_str()", ctx.ArgName);
+        }
+
+        public override void CLIMarshalToManaged(MarshalContext ctx)
+        {
+            if (ctx.Parameter != null && !ctx.Parameter.IsOut &&
+                !ctx.Parameter.IsInOut)
+            {
+                ctx.Return.Write(ctx.Parameter.Name);
+                return;
+            }
+
+            Type type = ctx.ReturnType.Type.Desugar();
+            Type pointee = type.GetPointee().Desugar();
+            var isChar = type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                (pointee.IsPointerToPrimitiveType(PrimitiveType.Char) &&
+                 ctx.Parameter != null &&
+                 (ctx.Parameter.IsInOut || ctx.Parameter.IsOut));
+            var encoding = isChar ? Encoding.ASCII : Encoding.Unicode;
+
+            if (Equals(encoding, Encoding.ASCII))
+                encoding = Context.Options.Encoding;
+
+            string param;
+            if (Equals(encoding, Encoding.ASCII))
+                param = "E_UTF8";
+            else if (Equals(encoding, Encoding.Unicode) ||
+                     Equals(encoding, Encoding.BigEndianUnicode))
+                param = "E_UTF16";
+            else
+                throw new System.NotSupportedException(
+                    $"{Context.Options.Encoding.EncodingName} is not supported yet.");
+
+            ctx.Return.Write(
+                $@"({ctx.ReturnVarName} == 0 ? nullptr : clix::marshalString<clix::{
+                    param}>({ctx.ReturnVarName}))");
+        }
+
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Managed)
@@ -178,17 +227,17 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char[]", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char[]")]
     public class ConstCharArray : ConstCharPointer
     {
     }
 
-    [TypeMap("const wchar_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const wchar_t*")]
     public class ConstWCharTPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char16_t*")]
     public class ConstChar16TPointer : ConstCharPointer
     {
     }

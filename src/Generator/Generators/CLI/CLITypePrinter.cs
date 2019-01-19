@@ -107,6 +107,19 @@ namespace CppSharp.Generators.CLI
         public override TypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
         {
+            TypeMap typeMap;
+            if (Context.TypeMaps.FindTypeMap(pointer.Desugar(), out typeMap))
+            {
+                var typePrinterContext = new TypePrinterContext
+                {
+                    Kind = ContextKind,
+                    MarshalKind = MarshalKind,
+                    Type = pointer
+                };
+                
+                return typeMap.CLISignatureType(typePrinterContext).Visit(this);
+            }
+
             var pointee = pointer.Pointee.Desugar();
 
             if (pointee is FunctionType)
@@ -114,9 +127,6 @@ namespace CppSharp.Generators.CLI
                 var function = pointee as FunctionType;
                 return string.Format("{0}^", function.Visit(this, quals));
             }
-
-            if (pointer.IsConstCharString())
-                return "System::String^";
 
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
             // Any of the following types may be a pointer type:
