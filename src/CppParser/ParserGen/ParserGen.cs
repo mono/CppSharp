@@ -57,6 +57,7 @@ namespace CppSharp
             options.GeneratorKind = Kind;
             options.CommentKind = CommentKind.BCPLSlash;
             var parserModule = options.AddModule("CppSharp.CppParser");
+            options.SystemModule.SymbolsLibraryName = parserModule.LibraryName;
             parserModule.Headers.AddRange(new[]
             {
                 "AST.h",
