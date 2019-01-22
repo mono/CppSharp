@@ -442,6 +442,7 @@ public:
     VirtualTemplate(OptionalTemplateArgs<T> optionalTemplateArgs);
     virtual ~VirtualTemplate();
     virtual int function();
+    virtual T* function(T* t);
     DependentValueFields<float> fieldWithSpecializationType;
 };
 
@@ -469,6 +470,12 @@ template <typename T>
 int VirtualTemplate<T>::function()
 {
     return 5;
+}
+
+template <typename T>
+T* VirtualTemplate<T>::function(T* t)
+{
+    return t;
 }
 
 class DLL_API HasVirtualTemplate

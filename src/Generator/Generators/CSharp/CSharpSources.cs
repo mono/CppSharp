@@ -424,7 +424,7 @@ namespace CppSharp.Generators.CSharp
                     var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {
                         printedClass}>";
                     WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
-                    WriteLine("protected void*[] __OriginalVTables;");
+                    WriteLine("protected internal void*[] __OriginalVTables;");
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -2272,7 +2272,10 @@ namespace CppSharp.Generators.CSharp
 
         public override void GenerateMethodSpecifier(Method method, Class @class)
         {
-            if (method.IsVirtual && !method.IsGeneratedOverride() && !method.IsOperator && !method.IsPure)
+            bool isTemplateMethod = method.Parameters.Any(
+                p => p.Kind == ParameterKind.Extension);
+            if (method.IsVirtual && !method.IsGeneratedOverride() &&
+                !method.IsOperator && !method.IsPure && !isTemplateMethod)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -2573,11 +2576,19 @@ namespace CppSharp.Generators.CSharp
             var i = VTables.GetVTableIndex(@virtual);
             int vtableIndex = 0;
             var @class = (Class) method.Namespace;
+            var thisParam = method.Parameters.Find(
+                p => p.Kind == ParameterKind.Extension);
+            if (thisParam != null)
+                @class = (Class) method.OriginalFunction.Namespace;
+
             if (Context.ParserOptions.IsMicrosoftAbi)
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
                     v => v.Layout.Components.Any(c => c.Method == @virtual)).First());
-            WriteLine("var {0} = *(void**) ((IntPtr) __OriginalVTables[{1}] + {2} * {3});",
-                Helpers.SlotIdentifier, vtableIndex, i, Context.TargetInfo.PointerWidth / 8);
+
+            WriteLine($@"var {Helpers.SlotIdentifier} = *(void**) ((IntPtr) {
+                (thisParam != null ? $"{thisParam.Name}."
+                : string.Empty)}__OriginalVTables[{vtableIndex}] + {i} * {
+                Context.TargetInfo.PointerWidth / 8});");
             if (method.IsDestructor && @class.IsAbstract)
             {
                 WriteLine("if ({0} != null)", Helpers.SlotIdentifier);
