@@ -2071,7 +2071,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateDestructorCall(Method dtor)
         {
             var @class = (Class) dtor.Namespace;
-            GenerateVirtualFunctionCall(dtor, @class, true);
+            GenerateVirtualFunctionCall(dtor, true);
             if (@class.IsAbstract)
             {
                 UnindentAndWriteCloseBrace();
@@ -2416,11 +2416,11 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
-                    GenerateVirtualFunctionCall(method, @class.BaseClass);
+                    GenerateVirtualFunctionCall(method);
                 }
                 else if (method.IsVirtual)
                 {
-                    GenerateVirtualFunctionCall(method, @class);
+                    GenerateVirtualFunctionCall(method);
                 }
                 else
                 {
@@ -2548,30 +2548,31 @@ namespace CppSharp.Generators.CSharp
                 WriteLine(parameters == null ?
                     "return base.{0};" : "base.{0} = value;", property.Name);
             else
-                GenerateFunctionCall(GetVirtualCallDelegate(method, @class),
+                GenerateFunctionCall(GetVirtualCallDelegate(method),
                     parameters ?? method.Parameters, method, returnType);
         }
 
-        private void GenerateVirtualFunctionCall(Method method, Class @class,
+        private void GenerateVirtualFunctionCall(Method method,
             bool forceVirtualCall = false)
         {
             if (!forceVirtualCall && method.IsGeneratedOverride() &&
                 !method.BaseMethod.IsPure)
                 GenerateManagedCall(method, true);
             else
-                GenerateFunctionCall(GetVirtualCallDelegate(method, @class),
+                GenerateFunctionCall(GetVirtualCallDelegate(method),
                     method.Parameters, method);
         }
 
-        private string GetVirtualCallDelegate(Method method, Class @class)
+        private string GetVirtualCallDelegate(Method method)
         {
             Function @virtual = method;
             if (method.OriginalFunction != null &&
                 !((Class) method.OriginalFunction.Namespace).IsInterface)
                 @virtual = method.OriginalFunction;
 
-            var i = VTables.GetVTableIndex(@virtual, @class);
+            var i = VTables.GetVTableIndex(@virtual);
             int vtableIndex = 0;
+            var @class = (Class) method.Namespace;
             if (Context.ParserOptions.IsMicrosoftAbi)
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
                     v => v.Layout.Components.Any(c => c.Method == @virtual)).First());
