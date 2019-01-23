@@ -65,7 +65,6 @@ namespace CppSharp
         public List<Block> Blocks { get; set; }
 
         private bool hasIndentChanged;
-        private bool isSubBlock;
 
         public Func<bool> CheckGenerate;
 
@@ -80,7 +79,6 @@ namespace CppSharp
             Blocks = new List<Block>();
             Text = new TextGenerator();
             hasIndentChanged = false;
-            isSubBlock = false;
         }
 
         public void AddBlock(Block block)
@@ -88,7 +86,7 @@ namespace CppSharp
             if (Text.StringBuilder.Length != 0 || hasIndentChanged)
             {
                 hasIndentChanged = false;
-                var newBlock = new Block { Text = Text.Clone(), isSubBlock = true };
+                var newBlock = new Block { Text = Text.Clone() };
                 Text.StringBuilder.Clear();
 
                 AddBlock(newBlock);
