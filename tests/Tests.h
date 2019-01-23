@@ -14,7 +14,12 @@
 #define DLL_API __attribute__ ((visibility ("default")))
 
 #ifndef STDCALL
+#if defined(WINDOWS)
 #define STDCALL __attribute__((stdcall))
+#else
+// warning: calling convention 'stdcall' ignored for this target [-Wignored-attributes]
+#define STDCALL
+#endif
 #endif
 
 #ifndef CDECL
