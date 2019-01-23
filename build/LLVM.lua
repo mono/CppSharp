@@ -10,6 +10,7 @@ local LLVMRootDirRelease = ""
 require "scripts/LLVM"
 
 function SearchLLVM()
+  local basedir = path.getdirectory(_PREMAKE_COMMAND)
   LLVMRootDirDebug = basedir .. "/scripts/" .. get_llvm_package_name(nil, "Debug")
   LLVMRootDirRelease = basedir .. "/scripts/" .. get_llvm_package_name()
 

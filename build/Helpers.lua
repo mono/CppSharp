@@ -12,7 +12,7 @@ newoption {
 
 newoption {
    trigger     = "no-cxx11-abi",
-   description = "disable cxx11 abi on gcc 4.9+"
+   description = "disable C++-11 ABI on GCC 4.9+"
 }
 
 explicit_target_architecture = _OPTIONS["arch"]
@@ -40,7 +40,15 @@ if not _OPTIONS["arch"] then
   _OPTIONS["arch"] = target_architecture()
 end
 
-action = _ACTION or ""
+-- Uncomment to enable Roslyn compiler.
+--[[
+premake.override(premake.tools.dotnet, "gettoolname", function(base, cfg, tool)
+  if tool == "csc" then
+    return "csc"
+  end
+  return base(cfg, tool)
+end)
+]]
 
 basedir = path.getdirectory(_PREMAKE_COMMAND)
 depsdir = path.getabsolute("../deps");
@@ -50,7 +58,7 @@ bindir = path.getabsolute("../bin");
 examplesdir = path.getabsolute("../examples");
 testsdir = path.getabsolute("../tests");
 
-builddir = path.getabsolute("./" .. action);
+builddir = path.getabsolute("./" .. _ACTION);
 if _ARGS[1] then
     builddir = path.getabsolute("./" .. _ARGS[1]);
 end
@@ -72,6 +80,7 @@ msvc_cpp_defines = { }
 generate_build_config = true
 
 function string.starts(str, start)
+   if str == nil then return end
    return string.sub(str, 1, string.len(start)) == start
 end
 
@@ -99,6 +108,9 @@ function SetupNativeProject()
     buildoptions { gcc_buildflags }
     links { "stdc++" }
 
+  filter { "toolset:clang", "system:not macosx" }
+    linkoptions { "-fuse-ld=/usr/bin/ld.lld" }
+
   filter { "system:macosx", "language:C++" }
     buildoptions { gcc_buildflags, "-stdlib=libc++" }
     links { "c++" }
@@ -116,12 +128,6 @@ function SetupNativeProject()
     systemversion("latest")
 
   filter {}
-
-  if os.istarget("linux") then
-    if not UseCxx11ABI() then
-      defines { "_GLIBCXX_USE_CXX11_ABI=0" }
-    end
-  end
 end
 
 function SetupManagedProject()
@@ -195,6 +201,11 @@ function StaticLinksOpt(libnames)
   links(existing_libnames)
 end
 
+function UseClang()
+  local compiler = os.getenv("CXX")
+  return string.match(compiler, "clang")
+end
+
 function GccVersion()
   local compiler = os.getenv("CXX")
   if compiler == nil then
@@ -202,6 +213,9 @@ function GccVersion()
   end
   local out = os.outputof(compiler.." -v")
   local version = string.match(out, "gcc version [0-9\\.]+")
+  if version == nil then
+    version = string.match(out, "clang version [0-9\\.]+")
+  end
   return string.sub(version, 13)
 end
 
