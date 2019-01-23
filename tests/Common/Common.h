@@ -47,6 +47,7 @@ public:
     TestPacking8();
     ~TestPacking8();
 };
+#pragma pack()
 
 class DLL_API IgnoredType
 {
@@ -611,7 +612,7 @@ class DLL_API HasOverridenSetter : public TestProperties
 {
 public:
     HasOverridenSetter();
-    void setVirtual(bool value);
+    void setVirtual(bool value) override;
 
     int virtualSetterReturnsBoolean() override;
     bool setVirtualSetterReturnsBoolean(int value) override;
