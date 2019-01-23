@@ -190,6 +190,9 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 
     LinkNUnit()
     links { "CppSharp.Runtime" }
+
+    filter { "action:netcore" }
+      dotnetframework "netcoreapp2.0"
 end
 
 function SetupTestProjectsCLI(name, extraFiles, suffix)

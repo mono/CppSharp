@@ -11,7 +11,7 @@ local function GenerateBuildConfig()
   file:close()
 end
 
-if generate_build_config == true then
+if generate_build_config == true and _ACTION then
   GenerateBuildConfig()
 end
 

@@ -30,6 +30,7 @@ solution "CppSharp"
     include (srcdir .. "/AST")
     include (srcdir .. "/CppParser")
     include (srcdir .. "/CppParser/Bindings")
+    include (srcdir .. "/CppParser/Bootstrap")
     include (srcdir .. "/CppParser/ParserGen")
     include (srcdir .. "/Parser")
     include (srcdir .. "/CLI")

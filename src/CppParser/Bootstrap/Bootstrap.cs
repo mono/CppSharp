@@ -19,8 +19,7 @@ namespace CppSharp
             {
                 var path = Path.Combine(directory.FullName, dir);
 
-                if (Directory.Exists(path) &&
-                    Directory.Exists(Path.Combine(directory.FullName, "patches")))
+                if (Directory.Exists(path))
                     return path;
 
                 directory = directory.Parent;
@@ -33,9 +32,7 @@ namespace CppSharp
         {
             driver.Options.GeneratorKind = GeneratorKind.CSharp;
             driver.Options.DryRun = true;
-            driver.ParserOptions.SetupXcode();
-            driver.ParserOptions.MicrosoftMode = false;
-            driver.ParserOptions.TargetTriple = "i686-apple-darwin12.4.0";
+            driver.ParserOptions.Setup();
 
             var module = driver.Options.AddModule("CppSharp");
 

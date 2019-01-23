@@ -2,6 +2,7 @@ require "Build"
 require "Utils"
 require "../Helpers"
 
+local basedir = path.getdirectory(_PREMAKE_COMMAND)
 local llvm = path.getabsolute(basedir .. "/../deps/llvm")
 
 -- Prevent premake from inserting /usr/lib64 search path on linux. GCC does not need this path specified
@@ -112,15 +113,19 @@ function get_llvm_package_name(rev, conf, arch)
   local toolset = get_toolset_configuration_name(arch)
   table.insert(components, toolset)
 
-  if os.istarget("linux") then
-    local version = GccVersion()
-    if version < "5.0.0" then
-      -- Minor version matters only with gcc 4.8/4.9
-      version = string.match(version, "%d+.%d+")
-    else
-      version = string.match(version, "%d+")
-    end
-    table.insert(components, "gcc-"..version)
+	if os.istarget("linux") then
+		if UseClang() then
+			table.insert(components, "clang")
+		else
+			local version = GccVersion()
+			if version < "5.0.0" then
+				-- Minor version matters only with gcc 4.8/4.9
+				version = string.match(version, "%d+.%d+")
+			else
+				version = string.match(version, "%d+")
+			end
+			table.insert(components, "gcc-"..version)
+		end
   end
 
   if not conf then
@@ -128,12 +133,6 @@ function get_llvm_package_name(rev, conf, arch)
   end
 
   table.insert(components, conf)
-
-  if os.istarget("linux") then
-    if GccVersion() >= "4.9.0" and not UseCxx11ABI() then
-      table.insert(components, "no-cxx11")
-    end
-  end
 
   return table.concat(components, "-")
 end
@@ -216,14 +215,14 @@ function cmake(gen, conf, builddir, options)
 	if options == nil then
 		options = ""
 	end
-	if not UseCxx11ABI() then
-		options = options.." -DCMAKE_CXX_FLAGS='-D_GLIBCXX_USE_CXX11_ABI=0'"
+
+	if UseClang() then
+		local cmake = path.join(basedir, "scripts", "ClangToolset.cmake")
+		options = options .. " -DLLVM_USE_LINKER=/usr/bin/ld.lld"
 	end
 
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
  		.. ' -DCLANG_BUILD_TOOLS=false'
- 		.. ' -DCLANG_INSTALL_SCANBUILD=false'
- 		.. ' -DCLANG_INSTALL_SCANVIEW=false'
  		.. ' -DCLANG_TOOL_CLANG_DIFF_BUILD=false'
  		.. ' -DCLANG_TOOL_CLANG_FUNC_MAPPING_BUILD=false'
  		.. ' -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=false'
@@ -231,9 +230,9 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DCLANG_TOOL_CLANG_REFACTOR_BUILD=false'
  		.. ' -DCLANG_TOOL_CLANG_RENAME_BUILD=false'
  		.. ' -DCLANG_TOOL_DRIVER_BUILD=false'
- 		.. ' -DCLANG_TOOL_HANDLE_CXX_BUILD=false'
- 		.. ' -DCLANG_TOOL_HANDLE_LLVM_BUILD=false'
- 		.. ' -DLLVM_BUILD_TOOLS=false'
+		.. ' -DLLVM_BUILD_TOOLS=false'
+		.. ' -DLLVM_ENABLE_DUMP=true'
+		.. ' -DLLVM_ENABLE_DUMP=true'
  		.. ' -DLLVM_ENABLE_LIBEDIT=false'
  		.. ' -DLLVM_ENABLE_ZLIB=false'
  		.. ' -DLLVM_ENABLE_TERMINFO=false'
@@ -278,12 +277,10 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DLLVM_TOOL_LLVM_LINK_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_LTO_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_LTO2_BUILD=false'
- 		.. ' -DLLVM_TOOL_LLVM_MCMARKUP_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_MC_ASSEMBLE_FUZZER_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_MC_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_MC_DISASSEMBLE_FUZZER_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_MCA_BUILD=false'
- 		.. ' -DLLVM_TOOL_LLVM_MC_FUZZER_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_MODEXTRACT_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_MT_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_NM_BUILD=false'
@@ -291,7 +288,6 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DLLVM_TOOL_LLVM_OBJDUMP_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_OPT_FUZZER_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_OPT_REPORT_BUILD=false'
- 		.. ' -DLLVM_TOOL_LLVM_PDBDUMP_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_PDBUTIL_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_PROFDATA_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_PDBUTIL_BUILD=false'
@@ -308,7 +304,6 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DLLVM_TOOL_LLVM_UNDNAME_BUILD=false'
  		.. ' -DLLVM_TOOL_LLVM_XRAY_BUILD=false'
  		.. ' -DLLVM_TOOL_LTO_BUILD=false'
- 		.. ' -DLLVM_TOOL_MSBUILD_BUILD=false'
  		.. ' -DLLVM_TOOL_OBJ2YAML_BUILD=false'
  		.. ' -DLLVM_TOOL_OPT_BUILD=false'
  		.. ' -DLLVM_TOOL_OPT_VIEWER_BUILD=false'
