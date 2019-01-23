@@ -4368,7 +4368,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File)
             break;
     }
 
-    if (FileEntry.empty())
+    if (FileEntry.empty() || !llvm::sys::fs::exists(FileEntry))
     {
         res->kind = ParserResultKind::FileNotFound;
         return res;
