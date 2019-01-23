@@ -2021,7 +2021,34 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
 
 //-----------------------------------//
 
-clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Class)
+#if DEBUG
+static void DumpTypeLoc(clang::TypeLoc TL, bool Recurse = false)
+{
+    if (Recurse)
+        puts("");
+
+    switch(TL.getTypeLocClass())
+    {
+    case clang::TypeLoc::Qualified:
+        printf("Type: Qualified\n");
+        break;
+#define ABSTRACT_TYPE(Type, Parent)
+#define TYPE(Type, Parent) \
+    case clang::TypeLoc::Type: \
+        printf("Type: %s\n", #Type); \
+        break;
+#include "clang/AST/TypeNodes.def"
+    }
+
+    if (!Recurse) return;
+
+    clang::TypeLoc Next = TL;
+    while((Next = Next.getNextTypeLoc()))
+        DumpTypeLoc(Next);
+}
+#endif
+
+static clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Class)
 {
     using namespace clang;
 
@@ -2047,8 +2074,12 @@ clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Cl
         auto PTL = TL.getAs<ParenTypeLoc>();
         TL = PTL.getNextTypeLoc();
     }
+    else
+    {
+        auto Next = TL.getNextTypeLoc();
+        TL = Next;
+    }
 
-    assert(TL.getTypeLocClass() == Class);
     return TL;
 }
 
@@ -2325,7 +2356,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         A->qualifiedType = GetQualifiedType(ElemTy, &Next);
         A->sizeType = ArrayType::ArraySize::Constant;
         A->size = AST.getConstantArrayElementCount(AT);
-        if (!ElemTy->isDependentType())
+        if (CanCheckCodeGenInfo(c->getSema(), ElemTy.getTypePtr()))
             A->elementSize = (long)AST.getTypeSize(ElemTy);
 
         Ty = A;
@@ -2486,17 +2517,10 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
 
         if (LocValid)
         {
-            auto TypeLocClass = TL->getTypeLocClass();
-            if (TypeLocClass == TypeLoc::Qualified)
+            while(TL->getTypeLocClass() != TypeLoc::TemplateSpecialization)
             {
-                UTL = TL->getUnqualifiedLoc();
-                TL = &UTL;
-            }
-            else if (TypeLocClass == TypeLoc::Elaborated)
-            {
-                ETL = TL->getAs<ElaboratedTypeLoc>();
-                ITL = ETL.getNextTypeLoc();
-                TL = &ITL;
+                auto RTL = ResolveTypeLoc(*TL, TypeLoc::TemplateSpecialization);
+                TL = &RTL;
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
@@ -2529,17 +2553,10 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
 
         if (LocValid)
         {
-            auto TypeLocClass = TL->getTypeLocClass();
-            if (TypeLocClass == TypeLoc::Qualified)
+            while(TL->getTypeLocClass() != TypeLoc::DependentTemplateSpecialization)
             {
-                UTL = TL->getUnqualifiedLoc();
-                TL = &UTL;
-            }
-            else if (TypeLocClass == TypeLoc::Elaborated)
-            {
-                ETL = TL->getAs<ElaboratedTypeLoc>();
-                ITL = ETL.getNextTypeLoc();
-                TL = &ITL;
+                auto RTL = ResolveTypeLoc(*TL, TypeLoc::DependentTemplateSpecialization);
+                TL = &RTL;
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization);
@@ -2573,28 +2590,15 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
 
         if (LocValid)
         {
-            auto TypeLocClass = TL->getTypeLocClass();
-            if (TypeLocClass == TypeLoc::Qualified)
+            while(TL->getTypeLocClass() != TypeLoc::TemplateTypeParm)
             {
-                UTL = TL->getUnqualifiedLoc();
-                TL = &UTL;
-            }
-            else if (TypeLocClass == TypeLoc::Elaborated)
-            {
-                ETL = TL->getAs<ElaboratedTypeLoc>();
-                ITL = ETL.getNextTypeLoc();
-                TL = &ITL;
-            }
-
-            while (TL->getTypeLocClass() != TypeLoc::TemplateTypeParm)
-            {
-                Next = TL->getNextTypeLoc();
-                TL = &Next;
+                auto RTL = ResolveTypeLoc(*TL, TypeLoc::TemplateTypeParm);
+                TL = &RTL;
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm);
-            auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
 
+            auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
             TPT->parameter = WalkTypeTemplateParameter(TTTL.getDecl());
         }
         else if (TP->getDecl())
@@ -4368,7 +4372,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File)
             break;
     }
 
-    if (FileEntry.empty())
+    if (FileEntry.empty() || !llvm::sys::fs::exists(FileEntry))
     {
         res->kind = ParserResultKind::FileNotFound;
         return res;
