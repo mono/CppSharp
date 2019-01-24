@@ -3291,10 +3291,4 @@ namespace CppSharp.Generators.CSharp
             }
         }
     }
-
-    internal class SymbolNotFoundException : Exception
-    {
-        public SymbolNotFoundException(string msg) : base(msg)
-        {}
-    }
 }

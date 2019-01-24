@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -1345,6 +1347,7 @@ internal class ExpressionEvaluator
     }
 }
 
+[Serializable]
 public class ExpressionEvaluatorSyntaxErrorException : Exception
 {
     public ExpressionEvaluatorSyntaxErrorException() : base()
@@ -1354,6 +1357,17 @@ public class ExpressionEvaluatorSyntaxErrorException : Exception
     { }
     public ExpressionEvaluatorSyntaxErrorException(string message, Exception innerException) : base(message, innerException)
     { }
+
+    protected ExpressionEvaluatorSyntaxErrorException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+    {
+    }
+
+    [SecurityPermission(SecurityAction.LinkDemand, SerializationFormatter = true)]
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        base.GetObjectData(info, context);
+    }
 }
 
 internal class VariableEvaluationEventArg : EventArgs
