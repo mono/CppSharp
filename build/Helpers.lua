@@ -51,6 +51,8 @@ end)
 ]]
 
 basedir = path.getdirectory(_PREMAKE_COMMAND)
+premake.path = premake.path .. ";" .. path.join(basedir, "modules")
+
 depsdir = path.getabsolute("../deps");
 srcdir = path.getabsolute("../src");
 incdir = path.getabsolute("../include");

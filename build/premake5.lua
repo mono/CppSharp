@@ -4,17 +4,17 @@
 
 config = {}
 
-dofile "Helpers.lua"
-dofile "LLVM.lua"
+include "Helpers.lua"
+include "LLVM.lua"
 
-solution "CppSharp"
+workspace "CppSharp"
 
   configurations { "Debug", "Release" }
   platforms { target_architecture() }
 
   characterset "Unicode"
   symbols "On"
-  
+
   location (builddir)
   objdir (objsdir)
   targetdir (libdir)
@@ -22,7 +22,7 @@ solution "CppSharp"
 
   filter "system:windows"
     defines { "WINDOWS" }
-	
+
   filter {}
 
   group "Libraries"
