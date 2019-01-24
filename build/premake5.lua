@@ -28,6 +28,7 @@ workspace "CppSharp"
   group "Libraries"
     include (srcdir .. "/Core")
     include (srcdir .. "/AST")
+    --include (srcdir .. "/ASTViewer")
     include (srcdir .. "/CppParser")
     include (srcdir .. "/CppParser/Bindings")
     include (srcdir .. "/CppParser/Bootstrap")
