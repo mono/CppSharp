@@ -11,7 +11,7 @@ namespace OverlappingNamespace
         green,
     };
 
-    class InBaseLib
+    class DLL_API InBaseLib
     {
     public:
         InBaseLib()
@@ -60,7 +60,7 @@ class TemplateClass
 };
 
 template <typename T>
-class TemplateWithIndependentFields
+class DLL_API TemplateWithIndependentFields
 {
 public:
     void useDependentPointer(const T* t);

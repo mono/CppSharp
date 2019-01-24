@@ -5,7 +5,6 @@
 // Test whether qualified names turn out right.
 namespace OverlappingNamespace
 {
-
     class InDerivedLib
     {
     public:

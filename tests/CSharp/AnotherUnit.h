@@ -36,7 +36,7 @@ struct DLL_API ForwardDeclaredStruct;
 struct DLL_API DuplicateDeclaredStruct;
 
 template <typename T>
-class TemplateInAnotherUnit
+class DLL_API TemplateInAnotherUnit
 {
     T field;
 };

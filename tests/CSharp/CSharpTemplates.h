@@ -270,7 +270,7 @@ private:
 };
 
 template <typename T, typename D = IndependentFields<T>>
-class HasDefaultTemplateArgument
+class DLL_API HasDefaultTemplateArgument
 {
 public:
     HasDefaultTemplateArgument();
@@ -288,7 +288,7 @@ private:
 };
 
 template <>
-class HasDefaultTemplateArgument<bool, bool>
+class DLL_API HasDefaultTemplateArgument<bool, bool>
 {
 public:
     HasDefaultTemplateArgument();
@@ -422,6 +422,12 @@ T& TemplateWithIndexer<T>::operator[](int i)
 }
 
 template <typename T>
+T& TemplateWithIndexer<T>::operator[](const T& key)
+{
+    return t[0];
+}
+
+template <typename T>
 T& TemplateWithIndexer<T>::operator[](const char* string)
 {
     return t[0];
@@ -491,15 +497,16 @@ private:
     HasDefaultTemplateArgument<bool, bool> explicitSpecialization;
 };
 
-class DLL_API SpecializedInterfaceForMap : InternalWithExtension<char>
+class DLL_API SpecializedInterfaceForMap : public InternalWithExtension<char>
 {
 public:
     SpecializedInterfaceForMap();
     ~SpecializedInterfaceForMap();
 };
 
-class DLL_API HasSpecializationForSecondaryBase : T1, DependentValueFields<int>, IndependentFields<int>,
-                                                  InternalWithExtension<float>, DependentPointerFields<DependentValueFields<int>>
+class DLL_API HasSpecializationForSecondaryBase : public DependentValueFields<int>,
+                                                  public IndependentFields<int>,
+                                                  public InternalWithExtension<float>
 {
 public:
     HasSpecializationForSecondaryBase();
@@ -583,7 +590,7 @@ struct MapResultType<InputSequence<T>, MapFunctor>
     typedef InputSequence<typename LazyResultType<MapFunctor>::Type> ResultType;
 };
 
-class RegularDynamic
+class DLL_API RegularDynamic
 {
 public:
     RegularDynamic();
@@ -592,7 +599,7 @@ public:
 };
 
 template<typename T>
-class TemplateDerivedFromRegularDynamic : public RegularDynamic
+class DLL_API TemplateDerivedFromRegularDynamic : public RegularDynamic
 {
 public:
     TemplateDerivedFromRegularDynamic();
