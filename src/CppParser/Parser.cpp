@@ -4356,7 +4356,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File)
         return res;
     }
 
-    llvm::StringRef FileEntry;
+    llvm::StringRef FileEntry("");
 
     for (unsigned I = 0, E = opts->LibraryDirs.size(); I != E; ++I)
     {
@@ -4368,7 +4368,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File)
             break;
     }
 
-    if (FileEntry.empty() || !llvm::sys::fs::exists(FileEntry))
+    if (FileEntry.empty())
     {
         res->kind = ParserResultKind::FileNotFound;
         return res;
