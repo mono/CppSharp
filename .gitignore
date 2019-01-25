@@ -44,6 +44,7 @@ src/generator/generator
 /build/vs2017
 /build/gmake
 /build/headers
+/build/netcore
 /deps/llvm
 /deps/NUnit*
 /extra
