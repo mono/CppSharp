@@ -118,7 +118,8 @@ function SetupNativeProject()
     links { "c++" }
 
   filter { "system:not windows", "language:C++" }
-    buildoptions { "-fpermissive -std=c++11" }
+    cppdialect "C++11"
+    buildoptions { "-fpermissive" }
   
   -- OS-specific options
   

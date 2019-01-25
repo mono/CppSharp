@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "highlighter.h"
+#include "Highlighter.h"
 
 //! [0]
 Highlighter::Highlighter(QTextDocument *parent)

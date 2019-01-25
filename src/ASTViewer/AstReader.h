@@ -6,7 +6,7 @@
 #include "clang/Tooling/CommonOptionsParser.h"
 #include "clang/Tooling/Tooling.h"
 #include "llvm/Support/CommandLine.h"
-#include "clang/basic/SourceLocation.h"
+#include "clang/Basic/SourceLocation.h"
 #pragma warning(pop)
 #include <string>
 #include <variant>
