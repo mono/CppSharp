@@ -418,14 +418,12 @@ function package_llvm(conf, llvm, llvm_build)
 		os.rmfiles(out_lib_dir, "clang*Matchers*.lib")
 		os.rmfiles(out_lib_dir, "clang*Rewrite*.lib")
 		os.rmfiles(out_lib_dir, "clang*StaticAnalyzer*.lib")
-		os.rmfiles(out_lib_dir, "clang*Tooling*.lib")
 	else
 		os.rmfiles(out_lib_dir, "libllvm*ObjCARCOpts*.a")
 		os.rmfiles(out_lib_dir, "libclang*ARC*.a")
 		os.rmfiles(out_lib_dir, "libclang*Matchers*.a")
 		os.rmfiles(out_lib_dir, "libclang*Rewrite*.a")
 		os.rmfiles(out_lib_dir, "libclang*StaticAnalyzer*.a")
-		os.rmfiles(out_lib_dir, "libclang*Tooling*.a")
 	end
 
 	return out
