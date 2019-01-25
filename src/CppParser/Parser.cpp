@@ -26,6 +26,7 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
 #include <clang/Basic/Version.h>
+#include <clang/Basic/MemoryBufferCache.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/Comment.h>
@@ -44,6 +45,7 @@
 #include <clang/Driver/ToolChain.h>
 #include <clang/Driver/Util.h>
 #include <clang/Index/USRGeneration.h>
+#include <clang/Serialization/ASTWriter.h>
 
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
@@ -4180,7 +4182,8 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
 
     HandleDiagnostics(res);
 
-    if(DiagClient->getNumErrors() != 0)
+    bool hasErrors = c->getDiagnostics().hasUncompilableErrorOccurred();
+    if(hasErrors)
     {
         res->kind = ParserResultKind::Error;
         return res;
@@ -4190,7 +4193,39 @@ ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
 
     res->kind = ParserResultKind::Success;
     return res;
- }
+}
+
+bool Parser::SaveAST(const char* File)
+{
+    llvm::SmallString<128> Buffer;
+    llvm::BitstreamWriter Stream(Buffer);
+    clang::MemoryBufferCache PCMCache;
+    clang::ASTWriter Writer(Stream, Buffer, PCMCache, {});
+
+    bool hasErrors = c->getDiagnostics().hasUncompilableErrorOccurred();
+    Writer.WriteAST(c->getSema(), std::string(), /*WritingModule=*/nullptr,
+        /*isysroot=*/"", hasErrors);
+
+    if (Buffer.empty())
+        return false;
+
+    std::error_code EC;
+    llvm::raw_fd_ostream Out(File, EC, llvm::sys::fs::FA_Read | llvm::sys::fs::FA_Write);
+
+    if (EC)
+    {
+        llvm::errs() << "Could not open file: " << EC.message();
+        return false;
+    }
+
+    Out.write(Buffer.data(), Buffer.size());
+    Out.close();
+
+    if (Out.has_error())
+        Out.clear_error();
+
+    return true;
+}
 
 ParserResultKind Parser::ParseArchive(llvm::StringRef File,
                                       llvm::object::Archive* Archive,

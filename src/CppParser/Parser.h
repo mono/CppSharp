@@ -163,6 +163,8 @@ private:
         llvm::object::ObjectFile* ObjectFile, CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserTargetInfo* GetTargetInfo();
 
+    bool SaveAST(const char* File);
+
     int index;
     std::unique_ptr<clang::CompilerInstance> c;
     clang::TargetCXXABI::Kind targetABI;
