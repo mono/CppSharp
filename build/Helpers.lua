@@ -204,7 +204,7 @@ function StaticLinksOpt(libnames)
 end
 
 function UseClang()
-  local compiler = os.getenv("CXX")
+  local compiler = os.getenv("CXX") or ""
   return string.match(compiler, "clang")
 end
 
