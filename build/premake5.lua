@@ -5,7 +5,7 @@
 config = {}
 
 include "Helpers.lua"
-include "LLVM.lua"
+dofile "LLVM.lua"
 
 workspace "CppSharp"
 
