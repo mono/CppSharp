@@ -379,6 +379,10 @@ public:
     DefaultZeroMappedToEnum(int* = 0);
 };
 
+enum class Empty : unsigned long long int
+{
+};
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -404,6 +408,7 @@ public:
     void defaultValueType(QGenericArgument valueType = QGenericArgument());
     void defaultChar(char c = 'a');
     void defaultEmptyChar(char c = 0);
+    void defaultEmptyEnum(Empty e = Empty(-1));
     void defaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
     void defaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
     void defaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());

@@ -584,6 +584,10 @@ void MethodsWithDefaultValues::defaultEmptyChar(char c)
 {
 }
 
+void MethodsWithDefaultValues::defaultEmptyEnum(Empty e)
+{
+}
+
 void MethodsWithDefaultValues::defaultRefTypeBeforeOthers(Foo foo, int i, Bar::Items item)
 {
 }
