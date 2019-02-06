@@ -693,6 +693,10 @@ void MethodsWithDefaultValues::defaultCtorWithMoreThanOneArg(QMargins m)
 {
 }
 
+void MethodsWithDefaultValues::defaultEmptyBraces(Foo foo)
+{
+}
+
 void MethodsWithDefaultValues::defaultWithComplexArgs(const QRect& rectangle)
 {
 }

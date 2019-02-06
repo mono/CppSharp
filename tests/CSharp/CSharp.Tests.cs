@@ -255,6 +255,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultDoubleWithoutF();
             methodsWithDefaultValues.DefaultIntExpressionWithEnum();
             methodsWithDefaultValues.DefaultCtorWithMoreThanOneArg();
+            methodsWithDefaultValues.DefaultEmptyBraces();
             methodsWithDefaultValues.DefaultWithRefManagedLong();
             methodsWithDefaultValues.DefaultWithFunctionCall();
             methodsWithDefaultValues.DefaultWithPropertyCall();

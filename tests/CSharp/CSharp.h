@@ -439,6 +439,7 @@ public:
     void defaultDoubleWithoutF(double d1 = 1.0, double d2 = 1.);
     void defaultIntExpressionWithEnum(int i = Qt::GlobalColor::black + 1);
     void defaultCtorWithMoreThanOneArg(QMargins m = QMargins(0, 0, 0, 0));
+    void defaultEmptyBraces(Foo foo = {});
     void defaultWithComplexArgs(const QRect& rectangle = QRect(QPoint(0, 0), QSize(-1, -1)));
     void defaultWithRefManagedLong(long long* i = 0);
     void defaultWithFunctionCall(int f = Foo::makeFunctionCall());

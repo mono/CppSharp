@@ -194,7 +194,7 @@ namespace CppSharp.Passes
             var method = (Method) expression.Declaration;
             var expressionSupported = decl.IsValueType && method.Parameters.Count == 0;
 
-            if (expression.String.Contains('('))
+            if (expression.String.Contains('(') || expression.String.StartsWith("{"))
             {
                 var argsBuilder = new StringBuilder("new ");
                 argsBuilder.Append(typePrinterResult);
