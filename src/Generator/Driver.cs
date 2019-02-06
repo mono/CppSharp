@@ -250,7 +250,6 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
-            TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
 
             if (Options.IsCSharpGenerator)
             {
@@ -272,6 +271,7 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new SpecializationMethodsWithDependentPointersPass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
+            TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
 
             TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 

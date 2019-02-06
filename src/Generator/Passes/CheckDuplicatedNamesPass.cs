@@ -48,6 +48,7 @@ namespace CppSharp.Passes
                 Count++;
 
             var duplicate = functions.Keys.FirstOrDefault(f =>
+                function.SynthKind != FunctionSynthKind.DefaultValueOverload &&
                 f.Parameters.SequenceEqual(function.Parameters, ParameterTypeComparer.Instance));
 
             if (duplicate == null)

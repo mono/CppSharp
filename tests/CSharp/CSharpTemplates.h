@@ -697,7 +697,8 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              TemplateWithIndexer<T2*> _12, TemplateWithIndexer<UsedInTemplatedIndexer> _13,
                              TemplateDerivedFromRegularDynamic<RegularDynamic> _14,
                              IndependentFields<OnlySpecialisedInTypeArg<double>> _15,
-                             DependentPointerFields<float> _16, std::string s);
+                             DependentPointerFields<float> _16, IndependentFields<const T1&> _17,
+                             std::string s);
 
 void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii);
 
@@ -715,6 +716,7 @@ template<> inline void* qbswap<1>(const void *source, size_t count, void *dest) 
 template class DLL_API IndependentFields<int>;
 template class DLL_API IndependentFields<bool>;
 template class DLL_API IndependentFields<T1>;
+template class DLL_API IndependentFields<const T1>;
 template class DLL_API IndependentFields<std::string>;
 template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
