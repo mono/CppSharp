@@ -1480,3 +1480,4 @@ DLL_API void integerOverload(int i);
 DLL_API void integerOverload(unsigned int i);
 DLL_API void integerOverload(long i);
 DLL_API void integerOverload(unsigned long i);
+DLL_API void takeReferenceToVoidStar(const void*& p);

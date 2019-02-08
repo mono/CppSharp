@@ -1006,3 +1006,7 @@ void integerOverload(long i)
 void integerOverload(unsigned long i)
 {
 }
+
+void takeReferenceToVoidStar(const void*& p)
+{
+}

@@ -523,6 +523,7 @@ namespace CppSharp.Generators
         public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
         public static readonly string TargetIdentifier = Generator.GeneratedIdentifier("target");
         public static readonly string SlotIdentifier = Generator.GeneratedIdentifier("slot");
+        public static readonly string PtrIdentifier = Generator.GeneratedIdentifier("ptr");
 
         public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
 

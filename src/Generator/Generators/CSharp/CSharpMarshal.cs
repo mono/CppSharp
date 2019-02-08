@@ -614,7 +614,18 @@ namespace CppSharp.Generators.CSharp
                         Context.Return.Write($"({typePrinter.PrintNative(pointer)}) ");
 
                     if (qualifiedPointer.IsConstRefToPrimitive())
+                    {
+                        if (primitive == PrimitiveType.Void && pointee.IsAddress())
+                        {
+                            string ptr = $@"{Helpers.PtrIdentifier}{
+                                Context.ParameterIndex}";
+                            Context.Before.WriteLine($@"var {ptr} = {
+                                Context.Parameter.Name}.ToPointer();");
+                            Context.Return.Write($"&{ptr}");
+                            return true;
+                        }
                         Context.Return.Write("&");
+                    }
                     Context.Return.Write(Context.Parameter.Name);
                 }
 
