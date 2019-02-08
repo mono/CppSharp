@@ -1542,3 +1542,12 @@ void InterfaceTester::setInterface(SimpleInterface* i)
 {
     interface = i;
 }
+
+void va_listFunction(va_list v)
+{
+}
+
+char* returnCharPointer()
+{
+    return 0;
+}

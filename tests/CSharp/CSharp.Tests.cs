@@ -94,6 +94,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
         }
 
+        CSharp.CSharp.ReturnCharPointer();
+
 #pragma warning restore 0168
 #pragma warning restore 0219
     }

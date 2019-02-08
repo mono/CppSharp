@@ -1298,3 +1298,6 @@ public:
 private:
     SimpleInterface* interface;
 };
+
+DLL_API void va_listFunction(va_list v);
+DLL_API char* returnCharPointer();

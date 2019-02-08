@@ -447,7 +447,8 @@ namespace CppSharp.AST
             return Declaration.Type.Equals(typedef == null ? obj : typedef.Declaration.Type);
         }
 
-        public override int GetHashCode() => Declaration.Type.GetHashCode();
+        public override int GetHashCode() =>
+            Declaration.OriginalName.GetHashCode() ^ Declaration.Type.GetHashCode();
     }
 
     /// <summary>
