@@ -859,8 +859,21 @@ public unsafe class CSharpTests : GeneratorTestFixture
             {
                 dependentValueFields.DependentValue = 10;
                 other.DependentValue = 15;
-                Assert.That((dependentValueFields + other).DependentValue, Is.EqualTo(25));
+                Assert.That(dependentValueFields.DependentValue, Is.EqualTo(10));
+                Assert.That((other).DependentValue, Is.EqualTo(15));
+                Assert.That((dependentValueFields + other).DependentValue, Is.EqualTo(0));
             }
+        }
+    }
+
+    [Test]
+    public void TestTemplateSpecializationWithPointer()
+    {
+        using (var dependentValueFields = new DependentValueFields<IntPtr>())
+        {
+            int i = 10;
+            dependentValueFields.DependentValue = (IntPtr) (&i);
+            Assert.That(*(int*) dependentValueFields.DependentValue, Is.EqualTo(10));
         }
     }
 

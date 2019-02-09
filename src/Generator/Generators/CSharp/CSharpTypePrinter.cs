@@ -226,7 +226,7 @@ namespace CppSharp.Generators.CSharp
             // * Any enum type.
             // * Any pointer type.
             // * Any user-defined struct type that contains fields of unmanaged types only.
-            var finalPointee = pointer.GetFinalPointee();
+            var finalPointee = (pointee.GetFinalPointee() ?? pointee).Desugar();
             if (finalPointee.IsPrimitiveType())
             {
                 // Skip one indirection if passed by reference

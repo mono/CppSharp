@@ -216,9 +216,7 @@ DependentValueFields<T> DependentValueFields<T>::returnValue()
 template <typename T>
 DependentValueFields<T> DependentValueFields<T>::operator+(const DependentValueFields& other)
 {
-    DependentValueFields<T> sum;
-    sum.field = field + other.field;
-    return sum;
+    return DependentValueFields<T>();
 }
 
 class DLL_API DerivedFromSpecializationOfUnsupportedTemplate : public DependentValueFields<int>
@@ -720,6 +718,7 @@ template class DLL_API IndependentFields<const T1>;
 template class DLL_API IndependentFields<std::string>;
 template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
+template class DLL_API DependentValueFields<int*>;
 template class DLL_API DependentValueFields<float>;
 template class DLL_API DependentPointerFields<float>;
 template class DLL_API VirtualTemplate<int>;

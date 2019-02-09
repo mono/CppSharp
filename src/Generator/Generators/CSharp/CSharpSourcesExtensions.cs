@@ -109,9 +109,13 @@ namespace CppSharp.Generators.CSharp
         {
             gen.WriteLine("if ({0})", string.Join(" && ",
                 Enumerable.Range(0, @class.TemplateParameters.Count).Select(
-                i => string.Format("__{0}.IsAssignableFrom(typeof({1}))",
-                    @class.TemplateParameters[i].Name,
-                    specialization.Arguments[i].Type.Type.Desugar()))));
+                i =>
+                {
+                    CppSharp.AST.Type type = specialization.Arguments[i].Type.Type.Desugar();
+                    return type.IsPointerToPrimitiveType() ?
+                        $"__{@class.TemplateParameters[i].Name}.FullName == \"System.IntPtr\"" :
+                        $"__{@class.TemplateParameters[i].Name}.IsAssignableFrom(typeof({type}))";
+                })));
         }
 
         private static void ThrowException(CSharpSources gen, Class @class)

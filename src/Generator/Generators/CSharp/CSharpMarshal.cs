@@ -512,10 +512,7 @@ namespace CppSharp.Generators.CSharp
                     if (realPointer != pointer)
                         Context.Before.Write($"({CSharpTypePrinter.IntPtrType}) ");
                     Context.Before.WriteLine($"(object) {Context.Parameter.Name};");
-                    Context.Before.Write($"var {refParamPtr} = ");
-                    if (realPointer == pointer)
-                        Context.Before.Write("&");
-                    Context.Before.WriteLine($"{castParam};");
+                    Context.Before.WriteLine($"var {refParamPtr} = &{castParam};");
                     Context.Return.Write(refParamPtr);
                     return true;
                 }
