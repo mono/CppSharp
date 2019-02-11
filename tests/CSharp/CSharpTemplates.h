@@ -692,11 +692,11 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
                              HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
                              TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
-                             TemplateWithIndexer<T2*> _12, TemplateWithIndexer<UsedInTemplatedIndexer> _13,
+                             TemplateWithIndexer<void*> _12, TemplateWithIndexer<UsedInTemplatedIndexer> _13,
                              TemplateDerivedFromRegularDynamic<RegularDynamic> _14,
                              IndependentFields<OnlySpecialisedInTypeArg<double>> _15,
                              DependentPointerFields<float> _16, IndependentFields<const T1&> _17,
-                             std::string s);
+                             TemplateWithIndexer<T2*> _18, std::string s);
 
 void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii);
 
@@ -726,6 +726,7 @@ template class DLL_API VirtualTemplate<bool>;
 template class DLL_API HasDefaultTemplateArgument<int, int>;
 template class DLL_API DerivedChangesTypeName<T1>;
 template class DLL_API TemplateWithIndexer<int>;
+template class DLL_API TemplateWithIndexer<void*>;
 template class DLL_API TemplateWithIndexer<UsedInTemplatedIndexer>;
 template class DLL_API TemplateWithIndexer<T1>;
 template class DLL_API TemplateWithIndexer<T2*>;
