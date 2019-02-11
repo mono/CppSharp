@@ -153,7 +153,7 @@ namespace CppSharp.Generators.CSharp
 
             if (isRefParam)
             {
-                Context.Return.Write("_{0}", param.Name);
+                Context.Return.Write(Generator.GeneratedIdentifier(param.Name));
                 return true;
             }
 
@@ -172,9 +172,11 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    var templateParameter = type as TemplateParameterType;
-                    if (templateParameter != null)
-                        Context.Return.Write($"({templateParameter.Parameter.Name}) (object) *");
+                    var substitution = pointer.Pointee.Desugar(
+                        resolveTemplateSubstitution: false) as TemplateParameterSubstitutionType;
+                    if (substitution != null)
+                        Context.Return.Write($@"({
+                            substitution.ReplacedParameter.Parameter.Name}) (object) *");
                 }
             }
 
@@ -492,49 +494,6 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
-            var qualifiedPointer = new QualifiedType(pointer, quals);
-
-            var templateSubstitution = pointer.Pointee as TemplateParameterSubstitutionType;
-            PointerType realPointer = null;
-            if (templateSubstitution != null)
-                realPointer = templateSubstitution.Replacement.Type.Desugar() as PointerType;
-            realPointer = realPointer ?? pointer;
-            if (Context.Function != null &&
-                (realPointer.IsPrimitiveTypeConvertibleToRef() ||
-                 (templateSubstitution != null && realPointer.Pointee.IsEnumType())) &&
-                Context.MarshalKind != MarshalKind.VTableReturnValue)
-            {
-                var refParamPtr = $"__refParamPtr{Context.ParameterIndex}";
-                if (templateSubstitution != null)
-                {
-                    var castParam = $"__{Context.Parameter.Name}{Context.ParameterIndex}";
-                    Context.Before.Write($"var {castParam} = ({templateSubstitution}) ");
-                    if (realPointer != pointer)
-                        Context.Before.Write($"({CSharpTypePrinter.IntPtrType}) ");
-                    Context.Before.WriteLine($"(object) {Context.Parameter.Name};");
-                    Context.Before.WriteLine($"var {refParamPtr} = &{castParam};");
-                    Context.Return.Write(refParamPtr);
-                    return true;
-                }
-                if (Context.Function.OperatorKind != CXXOperatorKind.Subscript)
-                {
-                    if (Context.Parameter.Kind == ParameterKind.PropertyValue ||
-                        qualifiedPointer.IsConstRefToPrimitive())
-                    {
-                        Context.Return.Write($"&{Context.Parameter.Name}");
-                    }
-                    else
-                    {
-                        Context.Before.WriteLine(
-                            $"fixed ({realPointer} {refParamPtr} = &{Context.Parameter.Name})");
-                        Context.HasCodeBlock = true;
-                        Context.Before.WriteOpenBraceAndIndent();
-                        Context.Return.Write(refParamPtr);
-                    }
-                    return true;
-                }
-            }
-
             var param = Context.Parameter;
             var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
@@ -543,23 +502,69 @@ namespace CppSharp.Generators.CSharp
             {
                 if (param.IsOut)
                 {
+                    MarshalString(pointee);
                     Context.Return.Write("IntPtr.Zero");
                     Context.ArgumentPrefix.Write("&");
                     return true;
                 }
-                pointer.QualifiedPointee.Visit(this);
                 if (param.IsInOut)
+                {
+                    MarshalString(pointee);
+                    pointer.QualifiedPointee.Visit(this);
                     Context.ArgumentPrefix.Write("&");
+                }
                 else
-                    Context.Cleanup.WriteLine("Marshal.FreeHGlobal({0});", Context.ArgName);
+                {
+                    pointer.QualifiedPointee.Visit(this);
+                    Context.Cleanup.WriteLine($"Marshal.FreeHGlobal({Context.ArgName});");
+                }
                 return true;
             }
 
-            if (pointee is FunctionType)
-                return VisitDelegateType();
+            var finalPointee = (pointee.GetFinalPointee() ?? pointee).Desugar();
+            if (finalPointee.IsPrimitiveType(out PrimitiveType primitive) ||
+                finalPointee.IsEnumType())
+            {
+                if (isRefParam)
+                {
+                    var local = Generator.GeneratedIdentifier($@"{
+                        param.Name}{Context.ParameterIndex}");
+                    Context.Before.WriteLine($@"fixed ({
+                        pointer.Visit(typePrinter)} {local} = &{param.Name})");
+                    Context.HasCodeBlock = true;
+                    Context.Before.WriteOpenBraceAndIndent();
+                    Context.Return.Write(local);
+                    return true;
+                }
 
-            Class @class;
-            if (pointee.TryGetClass(out @class) && @class.IsValueType)
+                if (Context.Context.Options.MarshalCharAsManagedChar &&
+                    primitive == PrimitiveType.Char)
+                {
+                    Context.Return.Write($"({typePrinter.PrintNative(pointer)}) ");
+                    Context.Return.Write(param.Name);
+                    return true;
+                }
+
+                pointer.QualifiedPointee.Visit(this);
+                bool isVoid = primitive == PrimitiveType.Void && pointee.IsAddress();
+                if (pointer.Pointee.Desugar(false) is TemplateParameterSubstitutionType ||
+                    isVoid)
+                {
+                    var local = Generator.GeneratedIdentifier($@"{
+                        param.Name}{Context.ParameterIndex}");
+                    string cast = isVoid ? $@"({pointee.Visit(
+                        new CppTypePrinter { PrintTypeQualifiers = false })}) " : string.Empty;
+                    Context.Before.WriteLine($"var {local} = {cast}{Context.Return};");
+                    Context.Return.StringBuilder.Clear();
+                    Context.Return.Write(local);
+                }
+                if (new QualifiedType(pointer, quals).IsConstRefToPrimitive())
+                    Context.Return.StringBuilder.Insert(0, '&');
+
+                return true;
+            }
+
+            if (pointee.TryGetClass(out Class @class) && @class.IsValueType)
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
@@ -581,54 +586,6 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            var finalPointee = pointer.GetFinalPointee();
-            PrimitiveType primitive;
-            if (finalPointee.IsPrimitiveType(out primitive) || finalPointee.IsEnumType())
-            {
-                // From MSDN: "note that a ref or out parameter is classified as a moveable
-                // variable". This means we must create a local variable to hold the result
-                // and then assign this value to the parameter.
-
-                if (isRefParam)
-                {
-                    var typeName = Type.TypePrinterDelegate(finalPointee);
-                    if (Context.Function.OperatorKind == CXXOperatorKind.Subscript)
-                        Context.Return.Write(param.Name);
-                    else
-                    {
-                        if (param.IsInOut)
-                            Context.Before.WriteLine($"{typeName} _{param.Name} = {param.Name};");
-                        else
-                            Context.Before.WriteLine($"{typeName} _{param.Name};");
-
-                        Context.Return.Write($"&_{param.Name}");
-                    }
-                }
-                else
-                {
-                    if (Context.Context.Options.MarshalCharAsManagedChar &&
-                        primitive == PrimitiveType.Char)
-                        Context.Return.Write($"({typePrinter.PrintNative(pointer)}) ");
-
-                    if (qualifiedPointer.IsConstRefToPrimitive())
-                    {
-                        if (primitive == PrimitiveType.Void && pointee.IsAddress())
-                        {
-                            string ptr = $@"{Helpers.PtrIdentifier}{
-                                Context.ParameterIndex}";
-                            Context.Before.WriteLine($@"var {ptr} = {
-                                Context.Parameter.Name}.ToPointer();");
-                            Context.Return.Write($"&{ptr}");
-                            return true;
-                        }
-                        Context.Return.Write("&");
-                    }
-                    Context.Return.Write(Context.Parameter.Name);
-                }
-
-                return true;
-            }
-
             return pointer.QualifiedPointee.Visit(this);
         }
 
@@ -636,8 +593,6 @@ namespace CppSharp.Generators.CSharp
         {
             switch (primitive)
             {
-                case PrimitiveType.Void:
-                    return true;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {
@@ -657,24 +612,21 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(typedef, quals))
                 return false;
 
-            var decl = typedef.Declaration;
-
-            FunctionType func;
-            if (decl.Type.IsPointerTo(out func))
-            {
-                VisitDelegateType();
-                return true;
-            }
-
-            return decl.Type.Visit(this);
+            return typedef.Declaration.Type.Visit(this);
         }
 
         public override bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
             var replacement = param.Replacement.Type.Desugar();
-            Class @class;
-            if (!replacement.IsAddress() && !replacement.TryGetClass(out @class))
-                Context.Return.Write($"({replacement}) (object) ");
+            if (replacement.IsPrimitiveType() ||
+                replacement.IsPointerToPrimitiveType() ||
+                replacement.IsEnum())
+            {
+                Context.Return.Write($"({replacement}) ");
+                if (replacement.IsPointerToPrimitiveType())
+                    Context.Return.Write($"({CSharpTypePrinter.IntPtrType}) ");
+                Context.Return.Write("(object) ");
+            }
             return base.VisitTemplateParameterSubstitutionType(param, quals);
         }
 
@@ -811,16 +763,16 @@ namespace CppSharp.Generators.CSharp
             return VisitClassDecl(template.TemplatedClass);
         }
 
-        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
-        {
-            return template.TemplatedFunction.Visit(this);
-        }
-
-        private bool VisitDelegateType()
+        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             Context.Return.Write("{0} == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate({0})",
                   Context.Parameter.Name);
             return true;
+        }
+
+        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
+        {
+            return template.TemplatedFunction.Visit(this);
         }
 
         private void ThrowArgumentOutOfRangeException()
@@ -881,6 +833,17 @@ namespace CppSharp.Generators.CSharp
             Context.Before.UnindentAndWriteCloseBrace();
 
             Context.Return.Write(intermediateArray);
+        }
+
+        private void MarshalString(Type pointee)
+        {
+            var marshal = new CSharpMarshalNativeToManagedPrinter(Context);
+            Context.ReturnVarName = Context.ArgName;
+            Context.ReturnType = Context.Parameter.QualifiedType;
+            pointee.Visit(marshal);
+            Context.Cleanup.WriteLine($@"{Context.Parameter.Name} = {
+                marshal.Context.Return};");
+            Context.Return.StringBuilder.Clear();
         }
 
         private readonly CSharpTypePrinter typePrinter;

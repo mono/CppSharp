@@ -859,9 +859,6 @@ namespace CppSharp.Generators.CSharp
                 Kind = ParameterKind.PropertyValue
             };
 
-            if (!property.Type.Equals(param.Type) && property.Type.IsEnumType())
-                param.Name = "&" + param.Name;
-
             var parameters = new List<Parameter> { param };
             var @void = new QualifiedType(new BuiltinType(PrimitiveType.Void));
             if (property.SetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
@@ -2843,20 +2840,9 @@ namespace CppSharp.Generators.CSharp
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
-            var cleanups = new List<TextGenerator>();
-            GenerateFunctionCallOutParams(@params, cleanups);
-
-            cleanups.AddRange(
-                from param in @params
-                select param.Context
-                into context
-                where context != null && !string.IsNullOrWhiteSpace(context.Cleanup)
-                select context.Cleanup);
-
-            foreach (var cleanup in cleanups)
-            {
+            foreach (TextGenerator cleanup in from p in @params
+                                              select p.Context.Cleanup)
                 Write(cleanup);
-            }
 
             if (needsReturn)
             {
@@ -2937,39 +2923,6 @@ namespace CppSharp.Generators.CSharp
             var indirectReturnTypeIndex = method.Parameters.IndexOf(indirectReturnType);
 
             return indirectReturnTypeIndex >= 0 ? ++indirectReturnTypeIndex : 0;
-        }
-
-        private void GenerateFunctionCallOutParams(IEnumerable<ParamMarshal> @params,
-            ICollection<TextGenerator> cleanups)
-        {
-            foreach (var paramInfo in @params)
-            {
-                var param = paramInfo.Param;
-                if (!(param.IsOut || param.IsInOut)) continue;
-                if (param.Type.Desugar().IsPrimitiveTypeConvertibleToRef())
-                    continue;
-
-                var nativeVarName = paramInfo.Name;
-
-                var ctx = new CSharpMarshalContext(Context, CurrentIndentation)
-                {
-                    Parameter = param,
-                    ArgName = nativeVarName,
-                    ReturnVarName = nativeVarName,
-                    ReturnType = param.QualifiedType
-                };
-
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                param.QualifiedType.Visit(marshal);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                    Write(marshal.Context.Before);
-
-                WriteLine("{0} = {1};", param.Name, marshal.Context.Return);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.Cleanup))
-                    cleanups.Add(marshal.Context.Cleanup);
-            }
         }
 
         public struct ParamMarshal

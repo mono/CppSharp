@@ -349,8 +349,10 @@
         public static bool IsConstRefToPrimitive(this QualifiedType type)
         {
             Type desugared = type.Type.Desugar();
+            Type pointee = desugared.GetFinalPointee().Desugar();
+            pointee = (pointee.GetFinalPointee() ?? pointee).Desugar();
             return desugared.IsReference() &&
-                desugared.GetFinalPointee().Desugar().IsPrimitiveType() && type.IsConst();
+                (pointee.IsPrimitiveType() || pointee.IsEnum()) && type.IsConst();
         }
 
         private static bool IsConst(this QualifiedType type)
