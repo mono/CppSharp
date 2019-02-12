@@ -546,7 +546,8 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 pointer.QualifiedPointee.Visit(this);
-                bool isVoid = primitive == PrimitiveType.Void && pointee.IsAddress();
+                bool isVoid = primitive == PrimitiveType.Void &&
+                    pointee.IsAddress() && pointer.IsReference();
                 if (pointer.Pointee.Desugar(false) is TemplateParameterSubstitutionType ||
                     isVoid)
                 {

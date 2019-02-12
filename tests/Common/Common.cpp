@@ -1010,3 +1010,7 @@ void integerOverload(unsigned long i)
 void takeReferenceToVoidStar(const void*& p)
 {
 }
+
+void takeVoidStarStar(void** p)
+{
+}

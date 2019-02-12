@@ -9,7 +9,7 @@ using Enum = CommonTest.Enum;
 public class CommonTests : GeneratorTestFixture
 {
     [Test]
-    public void TestCodeGeneration()
+    public unsafe void TestCodeGeneration()
     {
 #pragma warning disable 0168 // warning CS0168: The variable `foo' is declared but never used
 #pragma warning disable 0219 // warning CS0219: The variable `foo' is assigned but its value is never used
@@ -58,6 +58,7 @@ public class CommonTests : GeneratorTestFixture
         Common.SMallFollowedByCapital();
         Common.IntegerOverload(0);
         Common.IntegerOverload((uint) 0);
+        Common.TakeVoidStarStar(null);
         using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
 
 #pragma warning restore 0168
