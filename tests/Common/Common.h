@@ -1310,7 +1310,7 @@ class DLL_API HasOverloadsWithDifferentPointerKindsToSameType
 public:
     HasOverloadsWithDifferentPointerKindsToSameType();
     ~HasOverloadsWithDifferentPointerKindsToSameType();
-    void overload(int& i);
+    void overload(int& in);
     void overload(int&& i);
     void overload(const int& i);
     void overload(const Foo& rx, int from = -1);

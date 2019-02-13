@@ -848,7 +848,7 @@ HasOverloadsWithDifferentPointerKindsToSameType::~HasOverloadsWithDifferentPoint
 {
 }
 
-void HasOverloadsWithDifferentPointerKindsToSameType::overload(int& i)
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(int& in)
 {
 }
 

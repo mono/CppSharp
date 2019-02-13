@@ -143,10 +143,8 @@ namespace CppSharp.Generators
 
         protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);
 
-        public static string GeneratedIdentifier(string id)
-        {
-            return "__" + id;
-        }
+        public static string GeneratedIdentifier(string id) =>
+            $"__{(id.StartsWith("@") ? id.Substring(1) : id)}";
 
         public void Dispose()
         {
