@@ -54,7 +54,7 @@ namespace CppSharp.Passes
 
                 if (CheckConstnessForAmbiguity(function, overload) ||
                     CheckDefaultParametersForAmbiguity(function, overload) ||
-                    CheckSingleParameterPointerConstnessForAmbiguity(function, overload))
+                    CheckParametersPointerConstnessForAmbiguity(function, overload))
                 {
                     function.IsAmbiguous = true;
                     overload.IsAmbiguous = true;
@@ -186,67 +186,57 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private static bool CheckSingleParameterPointerConstnessForAmbiguity(
+        private static bool CheckParametersPointerConstnessForAmbiguity(
             Function function, Function overload)
         {
             var functionParams = function.Parameters.Where(
                 p => p.Kind == ParameterKind.Regular).ToList();
 
-            // It's difficult to handle this case for more than one parameter.
-            // For example, if we have:
-            //
-            //     void f(float&, const int&);
-            //     void f(const float&, int&);
-            //
-            // What should we do? Generate both? Generate the first one encountered?
-            // Generate the one with the least amount of "complex" parameters?
-            // So let's just start with the simplest case for the time being.
-            
-            if (functionParams.Count != 1)
-                return false;
-
             var overloadParams = overload.Parameters.Where(
                 p => p.Kind == ParameterKind.Regular).ToList();
 
-            if (overloadParams.Count != 1)
+            if (functionParams.Count != overloadParams.Count)
                 return false;
 
-            var parameterFunction = functionParams[0];
-            var parameterOverload = overloadParams[0];
-
-            var pointerParamFunction = parameterFunction.Type.Desugar() as PointerType;
-            var pointerParamOverload = parameterOverload.Type.Desugar() as PointerType;
-
-            if (pointerParamFunction == null || pointerParamOverload == null)
-                return false;
-
-            if (!pointerParamFunction.GetPointee().Equals(pointerParamOverload.GetPointee()))
-                return false;
-
-            if (parameterFunction.IsConst && !parameterOverload.IsConst)
+            for (int i = 0; i < functionParams.Count; i++)
             {
-                function.ExplicitlyIgnore();
-                return true;
-            }
+                var parameterFunction = functionParams[i];
+                var parameterOverload = overloadParams[i];
 
-            if (parameterOverload.IsConst && !parameterFunction.IsConst)
-            {
-                overload.ExplicitlyIgnore();
-                return true;
-            }
+                var pointerParamFunction = parameterFunction.Type.Desugar() as PointerType;
+                var pointerParamOverload = parameterOverload.Type.Desugar() as PointerType;
 
-            if (pointerParamFunction.Modifier == PointerType.TypeModifier.RVReference &&
-                pointerParamOverload.Modifier != PointerType.TypeModifier.RVReference)
-            {
-                function.ExplicitlyIgnore();
-                return true;
-            }
+                if (pointerParamFunction == null || pointerParamOverload == null)
+                    continue;
 
-            if (pointerParamFunction.Modifier != PointerType.TypeModifier.RVReference &&
-                pointerParamOverload.Modifier == PointerType.TypeModifier.RVReference)
-            {
-                overload.ExplicitlyIgnore();
-                return true;
+                if (!pointerParamFunction.GetPointee().Equals(pointerParamOverload.GetPointee()))
+                    continue;
+
+                if (parameterFunction.IsConst && !parameterOverload.IsConst)
+                {
+                    function.ExplicitlyIgnore();
+                    return true;
+                }
+
+                if (parameterOverload.IsConst && !parameterFunction.IsConst)
+                {
+                    overload.ExplicitlyIgnore();
+                    return true;
+                }
+
+                if (pointerParamFunction.Modifier == PointerType.TypeModifier.RVReference &&
+                    pointerParamOverload.Modifier != PointerType.TypeModifier.RVReference)
+                {
+                    function.ExplicitlyIgnore();
+                    return true;
+                }
+
+                if (pointerParamFunction.Modifier != PointerType.TypeModifier.RVReference &&
+                    pointerParamOverload.Modifier == PointerType.TypeModifier.RVReference)
+                {
+                    overload.ExplicitlyIgnore();
+                    return true;
+                }
             }
 
             return false;

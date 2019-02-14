@@ -59,6 +59,7 @@ public class CommonTests : GeneratorTestFixture
         Common.IntegerOverload(0);
         Common.IntegerOverload((uint) 0);
         Common.TakeVoidStarStar(null);
+        Common.OverloadPointer(IntPtr.Zero, 1);
         using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
 
 #pragma warning restore 0168

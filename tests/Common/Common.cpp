@@ -1014,3 +1014,11 @@ void takeReferenceToVoidStar(const void*& p)
 void takeVoidStarStar(void** p)
 {
 }
+
+void overloadPointer(void* p, int i)
+{
+}
+
+void overloadPointer(const void* p, int i)
+{
+}
