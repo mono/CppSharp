@@ -21,7 +21,7 @@ namespace CppSharp.AST
                 @params.Add(new Parameter
                     {
                         QualifiedType = pointer,
-                        Name = "instance",
+                        Name = "__instance",
                         Namespace = function
                     });
             }
@@ -32,7 +32,7 @@ namespace CppSharp.AST
                 @params.Add(new Parameter
                     {
                         QualifiedType = pointer,
-                        Name = "instance",
+                        Name = "__instance",
                         Namespace = function
                     });
             }
@@ -57,7 +57,7 @@ namespace CppSharp.AST
                     @params.Add(new Parameter
                         {
                             QualifiedType = pointer,
-                            Name = "instance",
+                            Name = "__instance",
                             Namespace = function
                         });
                 }

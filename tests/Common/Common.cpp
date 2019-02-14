@@ -848,7 +848,7 @@ HasOverloadsWithDifferentPointerKindsToSameType::~HasOverloadsWithDifferentPoint
 {
 }
 
-void HasOverloadsWithDifferentPointerKindsToSameType::overload(int& in)
+void HasOverloadsWithDifferentPointerKindsToSameType::overload(int& i)
 {
 }
 
@@ -988,6 +988,14 @@ void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::generated()
 }
 
 void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType& ignoredParam)
+{
+}
+
+AmbiguousParamNames::AmbiguousParamNames(int instance, int in)
+{
+}
+
+AmbiguousParamNames::~AmbiguousParamNames()
 {
 }
 

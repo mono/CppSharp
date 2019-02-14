@@ -1310,7 +1310,7 @@ class DLL_API HasOverloadsWithDifferentPointerKindsToSameType
 public:
     HasOverloadsWithDifferentPointerKindsToSameType();
     ~HasOverloadsWithDifferentPointerKindsToSameType();
-    void overload(int& in);
+    void overload(int& i);
     void overload(int&& i);
     void overload(const int& i);
     void overload(const Foo& rx, int from = -1);
@@ -1394,6 +1394,13 @@ public:
     void ignored(const IgnoredType& ignoredParam);
 };
 
+class DLL_API AmbiguousParamNames
+{
+public:
+    AmbiguousParamNames(int instance, int in);
+    ~AmbiguousParamNames();
+};
+
 template<typename T> void TemplatedFunction(T type)
 {
 
@@ -1403,7 +1410,7 @@ inline namespace InlineNamespace
 {
     void FunctionInsideInlineNamespace()
     {
-        
+
     }
 }
 

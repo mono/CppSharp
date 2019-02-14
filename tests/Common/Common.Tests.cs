@@ -55,6 +55,7 @@ public class CommonTests : GeneratorTestFixture
         ItemsDifferByCase itemsDifferByCase = ItemsDifferByCase.Case_a;
         itemsDifferByCase = ItemsDifferByCase.CaseA;
         itemsDifferByCase.GetHashCode();
+        new AmbiguousParamNames(0, 0).Dispose();
         Common.SMallFollowedByCapital();
         Common.IntegerOverload(0);
         Common.IntegerOverload((uint) 0);
