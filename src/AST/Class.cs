@@ -24,7 +24,7 @@ namespace CppSharp.AST
     }
 
     // Represents a base class of a C++ class.
-    public class BaseClassSpecifier
+    public class BaseClassSpecifier : DeclarationBase
     {
         public BaseClassSpecifier()
         {
