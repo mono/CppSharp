@@ -39,7 +39,7 @@ namespace CppSharp.AST
         /// Contains the name of the file.
         public string FileName
         {
-            get { return fileName ?? (fileName = Path.GetFileName(FilePath)); }
+            get { return !IsValid ? FilePath : fileName ?? (fileName = Path.GetFileName(FilePath)); }
         }
 
         /// Contains the name of the module.
