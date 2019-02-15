@@ -72,10 +72,14 @@ namespace CppSharp.AST
             return this;
         }
 
-        public bool IsFlags
+        public Enumeration SetScoped()
         {
-            get { return Modifiers.HasFlag(EnumModifiers.Flags); }
+            Modifiers |= EnumModifiers.Scoped;
+            return this;
         }
+
+        public bool IsFlags => Modifiers.HasFlag(EnumModifiers.Flags);
+        public bool IsScoped => Modifiers.HasFlag(EnumModifiers.Scoped);
 
         public Type Type { get; set; }
         public BuiltinType BuiltinType { get; set; }
