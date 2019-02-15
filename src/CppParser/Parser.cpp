@@ -3019,10 +3019,10 @@ static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodie
     Decl* D = 0;
     switch (Body->getStmtClass())
     {
-    case Stmt::StmtClass::DeclRefExprClass:
+    case clang::Stmt::StmtClass::DeclRefExprClass:
         D = cast<DeclRefExpr>(Body)->getDecl();
         break;
-    case Stmt::StmtClass::MemberExprClass:
+    case clang::Stmt::StmtClass::MemberExprClass:
         D = cast<MemberExpr>(Body)->getMemberDecl();
         break;
     }
@@ -3088,7 +3088,7 @@ void Parser::MarkValidity(Function* F)
     F->isInvalid = FD->isInvalidDecl();
     if (!F->isInvalid)
     {
-        std::unordered_set<Stmt*> Bodies{ 0 };
+        std::unordered_set<clang::Stmt*> Bodies{ 0 };
         F->isInvalid = IsInvalid(FD->getBody(), Bodies);
     }
 
@@ -3518,14 +3518,14 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
 
     switch (Expr->getStmtClass())
     {
-    case Stmt::BinaryOperatorClass:
+    case clang::Stmt::BinaryOperatorClass:
     {
         auto BinaryOperator = cast<clang::BinaryOperator>(Expr);
         return new AST::BinaryOperator(GetStringFromStatement(Expr),
             WalkExpression(BinaryOperator->getLHS()), WalkExpression(BinaryOperator->getRHS()),
             BinaryOperator->getOpcodeStr().str());
     }
-    case Stmt::CallExprClass:
+    case clang::Stmt::CallExprClass:
     {
         auto CallExpr = cast<clang::CallExpr>(Expr);
         auto CallExpression = new AST::CallExpr(GetStringFromStatement(Expr),
@@ -3536,25 +3536,25 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
         }
         return CallExpression;
     }
-    case Stmt::DeclRefExprClass:
+    case clang::Stmt::DeclRefExprClass:
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::DeclRefExprClass,
             WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));
-    case Stmt::CStyleCastExprClass:
-    case Stmt::CXXConstCastExprClass:
-    case Stmt::CXXDynamicCastExprClass:
-    case Stmt::CXXFunctionalCastExprClass:
-    case Stmt::CXXReinterpretCastExprClass:
-    case Stmt::CXXStaticCastExprClass:
-    case Stmt::ImplicitCastExprClass:
+    case clang::Stmt::CStyleCastExprClass:
+    case clang::Stmt::CXXConstCastExprClass:
+    case clang::Stmt::CXXDynamicCastExprClass:
+    case clang::Stmt::CXXFunctionalCastExprClass:
+    case clang::Stmt::CXXReinterpretCastExprClass:
+    case clang::Stmt::CXXStaticCastExprClass:
+    case clang::Stmt::ImplicitCastExprClass:
         return WalkExpression(cast<CastExpr>(Expr)->getSubExprAsWritten());
-    case Stmt::CXXOperatorCallExprClass:
+    case clang::Stmt::CXXOperatorCallExprClass:
     {
         auto OperatorCallExpr = cast<CXXOperatorCallExpr>(Expr);
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
             OperatorCallExpr->getCalleeDecl() ? WalkDeclaration(OperatorCallExpr->getCalleeDecl()) : 0);
     }
-    case Stmt::CXXConstructExprClass:
-    case Stmt::CXXTemporaryObjectExprClass:
+    case clang::Stmt::CXXConstructExprClass:
+    case clang::Stmt::CXXTemporaryObjectExprClass:
     {
         auto ConstructorExpr = cast<clang::CXXConstructExpr>(Expr);
         if (ConstructorExpr->getNumArgs() == 1)
@@ -3566,8 +3566,8 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
                 auto SubTemporaryExpr = TemporaryExpr->GetTemporaryExpr();
                 auto Cast = dyn_cast<CastExpr>(SubTemporaryExpr);
                 if (!Cast ||
-                    (Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass &&
-                     Cast->getSubExprAsWritten()->getStmtClass() != Stmt::CXXNullPtrLiteralExprClass))
+                    (Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::IntegerLiteralClass &&
+                     Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::CXXNullPtrLiteralExprClass))
                     return WalkExpression(SubTemporaryExpr);
                 return new AST::CXXConstructExpr(GetStringFromStatement(Expr),
                     WalkDeclaration(ConstructorExpr->getConstructor()));
@@ -3581,19 +3581,19 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
         }
         return ConstructorExpression;
     }
-    case Stmt::CXXBindTemporaryExprClass:
+    case clang::Stmt::CXXBindTemporaryExprClass:
         return WalkExpression(cast<CXXBindTemporaryExpr>(Expr)->getSubExpr());
-    case Stmt::CXXDefaultArgExprClass:
+    case clang::Stmt::CXXDefaultArgExprClass:
         return WalkExpression(cast<CXXDefaultArgExpr>(Expr)->getExpr());
-    case Stmt::MaterializeTemporaryExprClass:
+    case clang::Stmt::MaterializeTemporaryExprClass:
         return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
     default:
         break;
     }
     clang::Expr::EvalResult integer;
-    if (Expr->getStmtClass() != Stmt::CharacterLiteralClass &&
-        Expr->getStmtClass() != Stmt::CXXBoolLiteralExprClass &&
-        Expr->getStmtClass() != Stmt::UnaryExprOrTypeTraitExprClass &&
+    if (Expr->getStmtClass() != clang::Stmt::CharacterLiteralClass &&
+        Expr->getStmtClass() != clang::Stmt::CXXBoolLiteralExprClass &&
+        Expr->getStmtClass() != clang::Stmt::UnaryExprOrTypeTraitExprClass &&
         !Expr->isValueDependent() &&
         Expr->EvaluateAsInt(integer, c->getASTContext()))
         return new AST::Expression(integer.Val.getInt().toString(10));
