@@ -48,6 +48,11 @@ namespace CppSharp.Generators
 
         public AstVisitorOptions VisitOptions { get; } = new AstVisitorOptions();
 
+        protected CodeGenerator(BindingContext context)
+        {
+            Context = context;
+        }
+
         protected CodeGenerator(BindingContext context, TranslationUnit unit)
             : this(context, new List<TranslationUnit> { unit })
         {
@@ -345,7 +350,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitFriend(Friend friend)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public virtual bool VisitClassTemplateDecl(ClassTemplate template)
