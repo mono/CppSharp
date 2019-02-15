@@ -448,18 +448,18 @@ namespace CppSharp
             if (!options.Quiet)
                 Diagnostics.Message("Generating code...");
 
-            var outputs = driver.GenerateCode();
-
-            foreach (var output in outputs)
+            if (!options.DryRun)
             {
-                foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
+                var outputs = driver.GenerateCode();
+
+                foreach (var output in outputs)
                 {
-                    pass.VisitGeneratorOutput(output);
+                    foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
+                    {
+                        pass.VisitGeneratorOutput(output);
+                    }
                 }
-            }
 
-            if (!driver.Options.DryRun)
-            {
                 driver.SaveCode(outputs);
                 if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
                     foreach (var module in driver.Options.Modules)
