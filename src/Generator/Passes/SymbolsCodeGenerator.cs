@@ -109,7 +109,7 @@ namespace CppSharp.Passes
                     p => cppTypePrinter.VisitParameter(p)))})");
                 WriteLine($": {@namespace}({@params}) {{}} }};");
                 Write($"extern \"C\" {{ void {wrapper}({signature}) ");
-                WriteLine($"{{ new (instance) {wrapper}{@namespace}({@params}); }} }}");
+                WriteLine($"{{ new ({Helpers.InstanceField}) {wrapper}{@namespace}({@params}); }} }}");
             }
             else
             {
@@ -118,7 +118,7 @@ namespace CppSharp.Passes
                     Write($@"{{ class {wrapper}{method.Namespace.Namespace.Name} : public {
                         method.Namespace.Namespace.Visit(cppTypePrinter)} ");
                 Write($"{{ void {wrapper}({signature}) ");
-                Write($"{{ new (instance) {@namespace}({@params}); }} }}");
+                Write($"{{ new ({Helpers.InstanceField}) {@namespace}({@params}); }} }}");
                 if (method.Namespace.Access == AccessSpecifier.Protected)
                     Write("; }");
                 NewLine();
@@ -161,13 +161,13 @@ namespace CppSharp.Passes
             Write($"void {wrapper}");
             if (isProtected)
                 Write("protected");
-            Write($@"({@namespace}* instance) {{ instance->~{
-                method.Namespace.OriginalName}(); }} }}");
+            Write($@"({@namespace}* {Helpers.InstanceField}) {{ {
+                Helpers.InstanceField}->~{method.Namespace.OriginalName}(); }} }}");
             if (isProtected)
             {
                 NewLine();
-                Write($@"void {wrapper}({@namespace} instance) {{ {
-                   wrapper}{@namespace}::{wrapper}protected(instance); }}");
+                Write($@"void {wrapper}({@namespace} {Helpers.InstanceField}) {{ {
+                   wrapper}{@namespace}::{wrapper}protected({Helpers.InstanceField}); }}");
             }
             if (method.Namespace.Access == AccessSpecifier.Protected)
                 Write("; }");
