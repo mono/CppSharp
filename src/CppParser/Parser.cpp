@@ -869,8 +869,11 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::QualType&
     return nullptr;
 }
 
-static bool HasLayout(const clang::RecordDecl* Record)
+bool Parser::HasLayout(const clang::RecordDecl* Record)
 {
+    if (opts->skipLayoutInfo)
+        return false;
+
     if (Record->isDependentType() || !Record->getDefinition() ||
         !IsRecordValid(Record))
         return false;
@@ -2325,7 +2328,8 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         A->qualifiedType = GetQualifiedType(ElemTy, &Next);
         A->sizeType = ArrayType::ArraySize::Constant;
         A->size = AST.getConstantArrayElementCount(AT);
-        if (!ElemTy->isDependentType())
+
+        if (!ElemTy->isDependentType() && !opts->skipLayoutInfo)
             A->elementSize = (long)AST.getTypeSize(ElemTy);
 
         Ty = A;

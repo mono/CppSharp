@@ -20,6 +20,7 @@ CppParserOptions::CppParserOptions()
     , verbose(false)
     , unityBuild(false)
     , skipPrivateDeclarations(true)
+    , skipLayoutInfo(false)
 {
 }
 

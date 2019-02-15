@@ -500,6 +500,16 @@ void CppSharp::Parser::CppParserOptions::SkipPrivateDeclarations::set(bool value
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipPrivateDeclarations = value;
 }
 
+bool CppSharp::Parser::CppParserOptions::SkipLayoutInfo::get()
+{
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipLayoutInfo;
+}
+
+void CppSharp::Parser::CppParserOptions::SkipLayoutInfo::set(bool value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipLayoutInfo = value;
+}
+
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();

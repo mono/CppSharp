@@ -29,7 +29,7 @@ namespace Std
 
         protected int __PointerAdjustment;
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_Elem>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_Elem>>();
-        protected void*[] __OriginalVTables;
+        protected internal void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
@@ -388,7 +388,7 @@ namespace Std
 
         protected int __PointerAdjustment;
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Ty>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Ty>>();
-        protected void*[] __OriginalVTables;
+        protected internal void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
@@ -474,7 +474,7 @@ namespace Std
 
         protected int __PointerAdjustment;
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_Elem, _Traits, _Alloc>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_Elem, _Traits, _Alloc>>();
-        protected void*[] __OriginalVTables;
+        protected internal void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
