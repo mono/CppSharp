@@ -75,6 +75,7 @@ namespace CppSharp.Parser
             Verbose = options.Verbose;
             LanguageVersion = options.LanguageVersion;
             UnityBuild = options.UnityBuild;
+            ForceClangToolchainLookup = options.ForceClangToolchainLookup;
         }
 
         public bool IsItaniumLikeAbi => Abi != CppAbi.Microsoft;
@@ -82,6 +83,14 @@ namespace CppSharp.Parser
 
         public bool EnableRTTI { get; set; }
         public LanguageVersion? LanguageVersion { get; set; }
+
+        /// <summary>
+        /// This option forces the driver code to use Clang's toolchain code
+        /// to lookup the location of system headers and library locations.
+        /// At the moment, it only makes a difference for MSVC targets.
+        /// If its true, then we opt to use Clang's MSVC lookup logic.
+        /// </summary>
+        public bool ForceClangToolchainLookup = false;
 
         public ParserOptions BuildForSourceFile(
             IEnumerable<CppSharp.AST.Module> modules, string file = null)
