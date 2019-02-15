@@ -64,6 +64,19 @@ namespace CppSharp.Parser
             CurrentDir = Assembly.GetExecutingAssembly().Location;
         }
 
+        public ParserOptions(ParserOptions options)
+        {
+            Abi = options.Abi;
+            ToolSetToUse = options.ToolSetToUse;
+            TargetTriple = options.TargetTriple;
+            NoStandardIncludes = options.NoStandardIncludes;
+            NoBuiltinIncludes = options.NoBuiltinIncludes;
+            MicrosoftMode = options.MicrosoftMode;
+            Verbose = options.Verbose;
+            LanguageVersion = options.LanguageVersion;
+            UnityBuild = options.UnityBuild;
+        }
+
         public bool IsItaniumLikeAbi => Abi != CppAbi.Microsoft;
         public bool IsMicrosoftAbi => Abi == CppAbi.Microsoft;
 
@@ -73,18 +86,7 @@ namespace CppSharp.Parser
         public ParserOptions BuildForSourceFile(
             IEnumerable<CppSharp.AST.Module> modules, string file = null)
         {
-            var options = new ParserOptions
-            {
-                Abi = this.Abi,
-                ToolSetToUse = this.ToolSetToUse,
-                TargetTriple = this.TargetTriple,
-                NoStandardIncludes = this.NoStandardIncludes,
-                NoBuiltinIncludes = this.NoBuiltinIncludes,
-                MicrosoftMode = this.MicrosoftMode,
-                Verbose = this.Verbose,
-                LanguageVersion = this.LanguageVersion,
-                UnityBuild = this.UnityBuild
-            };
+            var options = new ParserOptions(this);
 
             // This eventually gets passed to Clang's MSCompatibilityVersion, which
             // is in turn used to derive the value of the built-in define _MSC_VER.
