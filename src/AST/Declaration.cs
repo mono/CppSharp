@@ -45,11 +45,72 @@ namespace CppSharp.AST
         Internal
     }
 
+    public class DeclarationBase
+    {
+        public bool IsInvalid { get; set; }
+
+        protected GenerationKind? generationKind;
+
+        public virtual GenerationKind GenerationKind
+        {
+            get
+            {
+                if (generationKind.HasValue)
+                    return generationKind.Value;
+
+                return GenerationKind.Generate;
+            }
+            set { generationKind = value; }
+        }
+
+        /// <summary>
+        /// Whether the declaration should be generated.
+        /// </summary>
+        public virtual bool IsGenerated => GenerationKind == GenerationKind.Generate;
+
+        /// <summary>
+        /// Whether the declaration was explicitly set to be generated via
+        /// the GenerationKind propery as opposed to the default generated state.
+        /// </summary>
+        public virtual bool IsExplicitlyGenerated =>
+            generationKind.HasValue && generationKind.Value == GenerationKind.Generate;
+
+        /// <summary>
+        /// Whether the declaration internal bindings should be generated.
+        /// </summary>
+        public bool IsInternal => GenerationKind == GenerationKind.Internal;
+
+        /// <summary>
+        /// Whether a binded version of this declaration is available.
+        /// </summary>
+        public bool IsDeclared => 
+                GenerationKind == GenerationKind.Generate
+                    || GenerationKind == GenerationKind.Internal;
+
+        public void ExplicitlyIgnore()
+        {
+            GenerationKind = GenerationKind.None;
+        }
+
+        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
+        public bool ExplicityIgnored
+        {
+            get { return GenerationKind == GenerationKind.None; }
+            set { if (value) ExplicitlyIgnore(); }
+        }
+
+        public virtual bool Ignore
+        {
+            get { return GenerationKind == GenerationKind.None; }
+            set { if (value) ExplicitlyIgnore(); }
+        }
+    }
+
     /// <summary>
     /// Represents a C++ declaration.
     /// </summary>
     [DebuggerDisplay("{ToString()} [{GetType().Name}]")]
-    public abstract class Declaration : INamedDecl
+    public abstract class Declaration : DeclarationBase, INamedDecl
     {
         public SourceLocation Location;
 
@@ -80,6 +141,22 @@ namespace CppSharp.AST
                 if (this is TranslationUnit)
                     return this as TranslationUnit;
                 return Namespace.TranslationUnit;
+            }
+        }
+
+        public override GenerationKind GenerationKind
+        {
+            get
+            {
+                if (generationKind.HasValue)
+                    return generationKind.Value;
+
+                if (Namespace != null)
+                    // fields in nested classes have to always be generated
+                    return !Namespace.IsGenerated && this is Field ?
+                        GenerationKind.Internal : Namespace.GenerationKind;
+
+                return GenerationKind.Generate;
             }
         }
 
@@ -205,91 +282,6 @@ namespace CppSharp.AST
 
         // Comment associated with declaration.
         public RawComment Comment;
-
-        public bool IsInvalid { get; set; }
-
-        private GenerationKind? generationKind;
-
-        public GenerationKind GenerationKind
-        {
-            get
-            {
-                if (generationKind.HasValue)
-                    return generationKind.Value;
-
-                if (Namespace != null)
-                    // fields in nested classes have to always be generated
-                    return !Namespace.IsGenerated && this is Field ? GenerationKind.Internal : Namespace.GenerationKind;
-
-                return GenerationKind.Generate;
-            }
-            set { generationKind = value; }
-        }
-
-        /// <summary>
-        /// Whether the declaration should be generated.
-        /// </summary>
-        public virtual bool IsGenerated
-        {
-            get
-            {
-                return GenerationKind == GenerationKind.Generate;
-            }
-        }
-
-        /// <summary>
-        /// Whether the declaration was explicitly set to be generated via
-        /// the GenerationKind propery as opposed to the default generated state.
-        /// </summary>
-        public virtual bool IsExplicitlyGenerated
-        {
-            get
-            {
-                return generationKind.HasValue && generationKind.Value == GenerationKind.Generate;
-            }
-        }
-
-        /// <summary>
-        /// Whether the declaration internal bindings should be generated.
-        /// </summary>
-        public bool IsInternal
-        {
-            get
-            {
-                return GenerationKind == GenerationKind.Internal;
-            }
-        }
-
-        /// <summary>
-        /// Whether a binded version of this declaration is available.
-        /// </summary>
-        public bool IsDeclared
-        {
-            get
-            {
-                var k = GenerationKind;
-                return k == GenerationKind.Generate
-                    || k == GenerationKind.Internal;
-            }
-        }
-
-        public void ExplicitlyIgnore()
-        {
-            GenerationKind = GenerationKind.None;
-        }
-
-        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
-        public bool ExplicityIgnored 
-        { 
-            get { return GenerationKind == GenerationKind.None; }
-            set { if (value) ExplicitlyIgnore(); }
-        }
-
-        public virtual bool Ignore
-        {
-            get { return GenerationKind == GenerationKind.None; }
-            set { if (value) ExplicitlyIgnore(); }
-        }
 
         public AccessSpecifier Access { get; set; }
 
