@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Generators.C;
 
 namespace CppSharp
 {
@@ -32,14 +33,16 @@ namespace CppSharp
         {
             driver.Options.GeneratorKind = GeneratorKind.CSharp;
             driver.Options.DryRun = true;
-            driver.ParserOptions.Setup();
+            driver.ParserOptions.EnableRTTI = true;
+            driver.ParserOptions.SkipLayoutInfo = true;
 
             var module = driver.Options.AddModule("CppSharp");
 
             module.Defines.Add("__STDC_LIMIT_MACROS");
             module.Defines.Add("__STDC_CONSTANT_MACROS");
 
-            var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
+            var basePath = Path.Combine(GetSourceDirectory("build"), "scripts");
+            var llvmPath = Path.Combine(basePath, "llvm-981341-windows-vs2017-x86-RelWithDebInfo");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
             module.IncludeDirs.AddRange(new[]
@@ -52,12 +55,13 @@ namespace CppSharp
 
             module.Headers.AddRange(new[]
             {
+                "clang/AST/Stmt.h",
+                "clang/AST/StmtCXX.h",
                 "clang/AST/Expr.h",
-                "CppSharp.h"
+                "clang/AST/ExprCXX.h",
             });
 
             module.LibraryDirs.Add(Path.Combine(llvmPath, "lib"));
-            module.Libraries.Add("CppSharp.lib");
         }
 
         public void SetupPasses(Driver driver)
@@ -68,13 +72,115 @@ namespace CppSharp
         {
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
 
-            var exprClass = ctx.FindCompleteClass ("clang::Expr");
+            var preprocessDecls = new PreprocessDeclarations();
+            foreach (var unit in ctx.TranslationUnits)
+                unit.Visit(preprocessDecls);
 
-            var exprUnit = ctx.TranslationUnits [0];
-            var subclassVisitor = new SubclassVisitor (exprClass);
-            exprUnit.Visit (subclassVisitor);
+            GenerateStmt(driver.Context);
+            GenerateExpr(driver.Context);
+        }
 
-            var subclasses = subclassVisitor.Classes;
+        private void GenerateExpr(BindingContext ctx)
+        {
+            var exprUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("Expr.h"));
+            var exprClass = exprUnit.FindNamespace("clang").FindClass("Expr");
+
+            var exprSubclassVisitor = new SubclassVisitor(exprClass);
+            exprUnit.Visit(exprSubclassVisitor);
+
+            ctx.Options.GeneratorKind = GeneratorKind.CPlusPlus;
+            var nativeCodeGen = new NativeParserCodeGenerator(ctx);
+            nativeCodeGen.CTypePrinter.PrintScopeKind = TypePrintScopeKind.Local;
+            nativeCodeGen.GenerateFilePreamble(CommentKind.BCPL);
+            nativeCodeGen.NewLine();
+
+            nativeCodeGen.WriteLine("#pragma once");
+            nativeCodeGen.NewLine();
+
+            nativeCodeGen.WriteInclude(new CInclude { File = "Stmt.h", Kind = CInclude.IncludeKind.Quoted });
+            nativeCodeGen.NewLine();
+
+            nativeCodeGen.WriteLine("namespace CppSharp { namespace CppParser { namespace AST {");
+            nativeCodeGen.NewLine();
+
+            foreach (var @class in exprSubclassVisitor.Classes)
+            {
+                RemoveNamespace(@class);
+                @class.Visit(nativeCodeGen);
+            }
+
+            nativeCodeGen.NewLine();
+            nativeCodeGen.WriteLine("} } }");
+
+            WriteFile(nativeCodeGen, "Expr.h");
+        }
+
+        private void GenerateStmt(BindingContext ctx)
+        {
+            var stmtUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("Stmt.h"));
+            var stmtClass = stmtUnit.FindNamespace("clang").FindClass("Stmt");
+
+            var stmtClassEnum = stmtClass.FindEnum("StmtClass");
+            stmtClassEnum.Name = "StmtKind";
+            stmtClass.Declarations.Remove(stmtClassEnum);
+
+            CleanupEnumItems(stmtClassEnum);
+
+            var stmtSubclassVisitor = new SubclassVisitor(stmtClass);
+            stmtUnit.Visit(stmtSubclassVisitor);
+
+            ctx.Options.GeneratorKind = GeneratorKind.CPlusPlus;
+
+            var nativeCodeGen = new NativeParserCodeGenerator(ctx);
+            nativeCodeGen.CTypePrinter.PrintScopeKind = TypePrintScopeKind.Local;
+            nativeCodeGen.GenerateFilePreamble(CommentKind.BCPL);
+            nativeCodeGen.NewLine();
+
+            nativeCodeGen.WriteLine("#pragma once");
+            nativeCodeGen.NewLine();
+
+            nativeCodeGen.WriteLine("namespace CppSharp { namespace CppParser { namespace AST {");
+            nativeCodeGen.NewLine();
+
+            stmtClassEnum.Visit(nativeCodeGen);
+            foreach (var @class in stmtSubclassVisitor.Classes)
+            {
+                RemoveNamespace(@class);
+                @class.Visit(nativeCodeGen);
+            }
+
+            nativeCodeGen.NewLine();
+            nativeCodeGen.WriteLine("} } }");
+
+            WriteFile(nativeCodeGen, "Stmt.h");
+        }
+
+        static void CleanupEnumItems(Enumeration exprClassEnum)
+        {
+            foreach (var item in exprClassEnum.Items)
+            {
+                var suffix = "Class";
+                if (item.Name.EndsWith(suffix))
+                    item.Name = item.Name.Remove(item.Name.LastIndexOf(suffix), suffix.Length);
+            }
+        }
+
+        static void RemoveNamespace(Declaration decl)
+        {
+            if (decl.Namespace != null && !string.IsNullOrWhiteSpace(decl.Namespace.Name))
+            {
+                decl.Namespace.Declarations.Remove(decl);
+                decl.Namespace = decl.TranslationUnit;
+            }
+        }
+
+        static void WriteFile(CodeGenerator codeGenerator, string fileName)
+        {
+            var srcDir = GetSourceDirectory("src");
+            var path = Path.Combine(srcDir, "CppParser", fileName);
+            File.WriteAllText(path, codeGenerator.Generate());
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
@@ -89,14 +195,73 @@ namespace CppSharp
         }
     }
 
+    class NativeParserCodeGenerator : CCodeGenerator
+    {
+        public NativeParserCodeGenerator(BindingContext context)
+            : base(context)
+        {
+        }
+
+        public override string FileExtension => throw new NotImplementedException();
+
+        public override void Process()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class PreprocessDeclarations : AstVisitor
+    {
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (string.IsNullOrWhiteSpace(@class.Name))
+                @class.ExplicitlyIgnore();
+
+            if (@class.Name.EndsWith("Bitfields"))
+                @class.ExplicitlyIgnore();
+
+            if (@class.Name.EndsWith("Iterator"))
+                @class.ExplicitlyIgnore();
+
+            if (@class.Name == "EmptyShell")
+                @class.ExplicitlyIgnore();
+
+            if (@class.Name == "APIntStorage" || @class.Name == "APFloatStorage")
+                @class.ExplicitlyIgnore();
+
+            foreach (var @base in @class.Bases)
+            {
+                if (@base.Class == null)
+                    continue;
+
+                if (@base.Class.Name.Contains("TrailingObjects"))
+                    @base.ExplicitlyIgnore();
+            }
+
+            return base.VisitClassDecl(@class);
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            if (@enum.Name == "APFloatSemantics")
+                @enum.ExplicitlyIgnore();
+
+            if (@enum.IsAnonymous || string.IsNullOrWhiteSpace(@enum.Name))
+                @enum.ExplicitlyIgnore();
+
+            @enum.SetScoped();
+            return base.VisitEnumDecl(@enum);
+        }
+    }
+
     class SubclassVisitor : AstVisitor
     {
         public HashSet<Class> Classes;
-        Class expressionClass;
+        readonly Class @class;
 
-        public SubclassVisitor (Class expression)
+        public SubclassVisitor (Class @class)
         {
-            expressionClass = expression;
+            this.@class = @class;
             Classes = new HashSet<Class> ();
         }
 
@@ -113,7 +278,10 @@ namespace CppSharp
 
         public override bool VisitClassDecl (Class @class)
         {
-            if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
+            if (!VisitDeclaration(@class))
+                return false;
+
+            if (!@class.IsIncomplete && IsDerivedFrom(@class, this.@class))
                 Classes.Add (@class);
 
             return base.VisitClassDecl (@class);
