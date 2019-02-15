@@ -177,6 +177,12 @@ namespace CppSharp.AST
             throw new NotSupportedException();
         }
 
+        public virtual string VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
+        {
+            var qual = GetStringQuals(quals);
+            return $"{qual}{VisitPrimitiveType(primitive)}";
+        }
+
         public virtual string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
             FunctionType func;
@@ -295,11 +301,6 @@ namespace CppSharp.AST
         public virtual string VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
         {
             return string.Empty;
-        }
-
-        public virtual string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
-        {
-            throw new NotImplementedException();
         }
 
         public virtual string VisitDeclaration(Declaration decl, TypeQualifiers quals)
