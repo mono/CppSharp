@@ -4389,9 +4389,11 @@ ParserResult* Parser::ParseLibrary(const std::string& File)
     auto BinaryOrErr = llvm::object::createBinary(FileEntry);
     if (!BinaryOrErr)
     {
+        auto Error = BinaryOrErr.takeError();
         res->kind = ParserResultKind::Error;
         return res;
     }
+
     auto OwningBinary = std::move(BinaryOrErr.get());
     auto Bin = OwningBinary.getBinary();
     if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin)) {
@@ -4399,12 +4401,14 @@ ParserResult* Parser::ParseLibrary(const std::string& File)
         if (res->kind == ParserResultKind::Success)
             return res;
     }
+
     if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin))
     {
         res->kind = ParseSharedLib(File, ObjectFile, res->library);
         if (res->kind == ParserResultKind::Success)
             return res;
     }
+
     res->kind = ParserResultKind::Error;
     return res;
 }
