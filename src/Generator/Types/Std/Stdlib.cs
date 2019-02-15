@@ -5,6 +5,7 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.AST;
+using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 
@@ -619,10 +620,10 @@ namespace CppSharp.Types.Std
         {
             var typeRef = collector.GetTypeReference(loc.Value);
 
-            var include = new Include
+            var include = new CInclude
             {
                 File = "cstddef",
-                Kind = Include.IncludeKind.Angled,
+                Kind = CInclude.IncludeKind.Angled,
             };
 
             typeRef.Include = include;

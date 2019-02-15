@@ -1,30 +1,10 @@
 using System;
 using System.Collections.Generic;
 using CppSharp.AST;
+using CppSharp.Generators.C;
 
 namespace CppSharp.Generators.CLI
 {
-    public struct Include
-    {
-        public enum IncludeKind
-        {
-            Angled,
-            Quoted
-        }
-
-        public string File;
-        public TranslationUnit TranslationUnit;
-
-        public IncludeKind Kind;
-        public bool InHeader;
-
-        public override string ToString()
-        {
-            return string.Format(Kind == IncludeKind.Angled ?
-                "#include <{0}>" : "#include \"{0}\"", File);
-        }
-    }
-
     /// <summary>
     /// There are two implementation
     /// for source (CLISources) and header (CLIHeaders)
@@ -34,13 +14,13 @@ namespace CppSharp.Generators.CLI
     {
         public CLITypePrinter TypePrinter { get; set; }
 
-        public ISet<Include> Includes;
+        public ISet<CInclude> Includes;
 
         protected CLITemplate(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
             TypePrinter = new CLITypePrinter(context);
-            Includes = new HashSet<Include>();
+            Includes = new HashSet<CInclude>();
         }
 
         public abstract override string FileExtension { get; }
