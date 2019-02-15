@@ -309,9 +309,6 @@ namespace CppSharp.AST
 
         public virtual bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (!VisitDeclaration(unit))
-                return false;
-
             return VisitNamespace(unit);
         }
 
