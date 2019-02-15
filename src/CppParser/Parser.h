@@ -140,6 +140,7 @@ private:
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
                                     MacroLocation macroLocation = MacroLocation::Unknown);
     bool GetDeclText(clang::SourceRange SR, std::string& Text);
+    bool HasLayout(const clang::RecordDecl* Record);
 
     TranslationUnit* GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);

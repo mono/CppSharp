@@ -46,6 +46,7 @@ struct CS_API CppParserOptions
     bool verbose;
     bool unityBuild;
     bool skipPrivateDeclarations;
+    bool skipLayoutInfo;
 };
 
 enum class ParserDiagnosticLevel
