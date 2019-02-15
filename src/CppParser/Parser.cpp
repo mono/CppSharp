@@ -247,6 +247,9 @@ void Parser::Setup()
     {
         const auto& Arg = opts->Arguments[I];
         args.push_back(Arg.c_str());
+
+        if (opts->verbose)
+            printf("Compiler argument: %s\n", Arg.c_str());
     }
 
     c.reset(new CompilerInstance());
