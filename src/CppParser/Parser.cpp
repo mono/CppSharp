@@ -49,7 +49,7 @@
 #include <CodeGen/CGCall.h>
 #include <CodeGen/CGCXXABI.h>
 #include <Driver/ToolChains/Linux.h>
-
+#include <Driver/ToolChains/MSVC.h>
 
 #if defined(__APPLE__) || defined(__linux__)
 #ifndef _GNU_SOURCE
@@ -347,13 +347,18 @@ void Parser::Setup()
     clang::driver::Driver D("", TO->Triple, c->getDiagnostics());
     clang::driver::ToolChain *TC = nullptr;
     llvm::Triple Target(TO->Triple);
+
     switch (Target.getOS()) {
-    // Extend this for other triples if needed, see clang's Driver::getToolChain.
     case llvm::Triple::Linux:
       TC = new clang::driver::toolchains::Linux(D, Target, Args);
       break;
-    default:
-      break;
+    case llvm::Triple::Win32:
+        switch (Target.getEnvironment()) {
+        case llvm::Triple::MSVC:
+            TC = new clang::driver::toolchains::MSVCToolChain(D, Target, Args);
+            break;
+        }
+        break;
     }
 
     if (TC && !opts->noStandardIncludes) {

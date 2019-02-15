@@ -197,20 +197,24 @@ namespace CppSharp.Parser
         public void SetupMSVC(VisualStudioVersion vsVersion)
         {
             MicrosoftMode = true;
-            NoBuiltinIncludes = true;
-            NoStandardIncludes = true;
             Abi = CppAbi.Microsoft;
 
-            vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
-            foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
-                AddSystemIncludeDirs(include);
+            var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
+            ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
+
+            if (!ForceClangToolchainLookup)
+            {
+                NoStandardIncludes = true;
+                NoBuiltinIncludes = true;
+
+                vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
+                foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
+                    AddSystemIncludeDirs(include);
+            }
 
             // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
                 LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
-
-            var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
-            ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
 
             AddArguments("-fms-extensions");
             AddArguments("-fms-compatibility");
