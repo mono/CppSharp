@@ -22,10 +22,21 @@ namespace CppSharp.Generators.CSharp
 
         public override string FileExtension => "cs";
 
+        public CSharpSources(BindingContext context)
+            : base(context)
+        {
+            Init();
+        }
+
         public CSharpSources(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
-            TypePrinter = new CSharpTypePrinter(context);
+            Init();
+        }
+
+        private void Init()
+        {
+            TypePrinter = new CSharpTypePrinter(Context);
             ExpressionPrinter = new CSharpExpressionPrinter(TypePrinter);
         }
 
