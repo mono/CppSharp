@@ -16,7 +16,6 @@ namespace CppSharp.Generators.C
     public class CppTypePrinter : TypePrinter
     {
         public CppTypePrintFlavorKind PrintFlavorKind { get; set; }
-        public TypePrintScopeKind PrintScopeKind { get; set; }
         public bool PrintLogicalNames { get; set; }
         public bool PrintTypeQualifiers { get; set; }
         public bool PrintTypeModifiers { get; set; }
@@ -25,7 +24,7 @@ namespace CppSharp.Generators.C
         public CppTypePrinter()
         {
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
-            PrintScopeKind = TypePrintScopeKind.GlobalQualified;
+            ScopeKind = TypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = true;
             PrintTypeModifiers = true;
         }
@@ -370,7 +369,7 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitDeclaration(Declaration decl)
         {
-            return GetDeclName(decl, PrintScopeKind);
+            return GetDeclName(decl, ScopeKind);
         }
 
         public override TypePrinterResult VisitTranslationUnit(TranslationUnit unit)

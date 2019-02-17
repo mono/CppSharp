@@ -91,7 +91,7 @@ namespace CppSharp
 
             ctx.Options.GeneratorKind = GeneratorKind.CPlusPlus;
             var nativeCodeGen = new NativeParserCodeGenerator(ctx);
-            nativeCodeGen.CTypePrinter.PrintScopeKind = TypePrintScopeKind.Local;
+            nativeCodeGen.CTypePrinter.ScopeKind = TypePrintScopeKind.Local;
             nativeCodeGen.GenerateFilePreamble(CommentKind.BCPL);
             nativeCodeGen.NewLine();
 
@@ -134,7 +134,7 @@ namespace CppSharp
             ctx.Options.GeneratorKind = GeneratorKind.CPlusPlus;
 
             var nativeCodeGen = new NativeParserCodeGenerator(ctx);
-            nativeCodeGen.CTypePrinter.PrintScopeKind = TypePrintScopeKind.Local;
+            nativeCodeGen.CTypePrinter.ScopeKind = TypePrintScopeKind.Local;
             nativeCodeGen.GenerateFilePreamble(CommentKind.BCPL);
             nativeCodeGen.NewLine();
 
