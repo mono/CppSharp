@@ -271,7 +271,7 @@ namespace CppSharp.Generators.CLI
             DependentNameType dependent, TypeQualifiers quals)
         {
             return dependent.Qualifier.Type != null ?
-                dependent.Qualifier.Visit(this) : string.Empty;
+                dependent.Qualifier.Visit(this).Type : string.Empty;
         }
 
         public override TypePrinterResult VisitPackExpansionType(

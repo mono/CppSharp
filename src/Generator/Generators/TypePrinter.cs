@@ -14,6 +14,11 @@ namespace CppSharp.Generators
             return new TypePrinterResult { Type = type };
         }
 
+        public static implicit operator string(TypePrinterResult result)
+        {
+            return result.Type;
+        }
+
         public override string ToString() => Type;
     }
 
@@ -325,7 +330,7 @@ namespace CppSharp.Generators
             return VisitDeclaration(typedef);
         }
 
-        public TypePrinterResult VisitTypedefNameDecl(TypedefNameDecl typedef)
+        public virtual TypePrinterResult VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
             throw new NotImplementedException();
         }
