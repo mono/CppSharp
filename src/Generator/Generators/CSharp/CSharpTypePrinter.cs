@@ -13,7 +13,7 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpTypePrinter : TypePrinter
     {
-        public const string IntPtrType = "global::System.IntPtr";
+        public string IntPtrType => "global::System.IntPtr";
 
         public BindingContext Context { get; set; }
 

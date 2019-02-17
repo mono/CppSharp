@@ -98,7 +98,7 @@ namespace CppSharp.Generators.CSharp
                             else
                                 supportBefore.WriteLineIndent(
                                     $@"{value}[i] = {finalArrayType}.{Helpers.CreateInstanceIdentifier}(({
-                                        CSharpTypePrinter.IntPtrType}) {Context.ReturnVarName}[i]);");
+                                        typePrinter.IntPtrType}) {Context.ReturnVarName}[i]);");
                         }
                         else
                         {
@@ -313,7 +313,7 @@ namespace CppSharp.Generators.CSharp
             if (finalType.IsDependent)
                 Context.Return.Write($"({param.ReplacedParameter.Parameter.Name}) (object) ");
             if (param.Replacement.Type.Desugar().IsPointerToPrimitiveType())
-                Context.Return.Write($"({CSharpTypePrinter.IntPtrType}) ");
+                Context.Return.Write($"({typePrinter.IntPtrType}) ");
             return base.VisitTemplateParameterSubstitutionType(param, quals);
         }
 
@@ -385,7 +385,7 @@ namespace CppSharp.Generators.CSharp
                 Context.Before.WriteOpenBraceAndIndent();
                 string element = Generator.GeneratedIdentifier("element");
                 Context.Before.WriteLine($"var {element} = {Context.ReturnVarName}[i];");
-                var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
+                var intPtrZero = $"{typePrinter.IntPtrType}.Zero";
                 Context.Before.WriteLine($@"{intermediateArray}[i] = {element} == {
                     intPtrZero} ? null : {intermediateArrayType}.{
                     Helpers.CreateInstanceIdentifier}({element});");
@@ -626,7 +626,7 @@ namespace CppSharp.Generators.CSharp
             {
                 Context.Return.Write($"({replacement}) ");
                 if (replacement.IsPointerToPrimitiveType())
-                    Context.Return.Write($"({CSharpTypePrinter.IntPtrType}) ");
+                    Context.Return.Write($"({typePrinter.IntPtrType}) ");
                 Context.Return.Write("(object) ");
             }
             return base.VisitTemplateParameterSubstitutionType(param, quals);
@@ -822,7 +822,7 @@ namespace CppSharp.Generators.CSharp
             Context.Before.WriteLine($"var {element} = {Context.Parameter.Name}[i];");
             if (elementType.IsAddress())
             {
-                var intPtrZero = $"{CSharpTypePrinter.IntPtrType}.Zero";
+                var intPtrZero = $"{typePrinter.IntPtrType}.Zero";
                 Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
                     element}, null) ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
             }

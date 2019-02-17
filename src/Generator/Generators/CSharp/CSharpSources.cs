@@ -420,7 +420,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     WriteLine("public {0} {1} {{ get; protected set; }}",
-                        CSharpTypePrinter.IntPtrType, Helpers.InstanceIdentifier);
+                        TypePrinter.IntPtrType, Helpers.InstanceIdentifier);
 
                     PopBlock(NewLineKind.BeforeNextBlock);
 
@@ -942,7 +942,7 @@ namespace CppSharp.Generators.CSharp
                     Type pointee = type.GetFinalPointee();
                     if (pointee.IsPrimitiveType())
                     {
-                        Write($"({CSharpTypePrinter.IntPtrType}) ");
+                        Write($"({TypePrinter.IntPtrType}) ");
                         var templateSubstitution = pointee.Desugar(false) as TemplateParameterSubstitutionType;
                         if (templateSubstitution != null)
                             Write("(object) ");
@@ -1137,7 +1137,7 @@ namespace CppSharp.Generators.CSharp
             else
                 ctx.ReturnVarName = $@"{elementType}.{
                     Helpers.CreateInstanceIdentifier}(new {
-                        CSharpTypePrinter.IntPtrType}({ptr}))";
+                        TypePrinter.IntPtrType}({ptr}))";
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             var.QualifiedType.Visit(marshal);
@@ -1202,7 +1202,7 @@ namespace CppSharp.Generators.CSharp
                 Class typeClass;
                 if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType &&
                     !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, field.Type))
-                    returnVar = $"new {CSharpTypePrinter.IntPtrType}(&{returnVar})";
+                    returnVar = $"new {TypePrinter.IntPtrType}(&{returnVar})";
             }
 
             var ctx = new CSharpMarshalContext(Context, CurrentIndentation)

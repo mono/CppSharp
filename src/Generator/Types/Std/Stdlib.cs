@@ -149,12 +149,18 @@ namespace CppSharp.Types.Std
                 return new CILType(typeof(string));
 
             if (ctx.Parameter == null || ctx.Parameter.Name == Helpers.ReturnIdentifier)
-                return new CustomType(CSharpTypePrinter.IntPtrType);
+            {
+                var typePrinter = new CSharpTypePrinter(Context);
+                return new CustomType(typePrinter.IntPtrType);
+            }
+
             if (Context.Options.Encoding == Encoding.ASCII)
                 return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
+
             if (Context.Options.Encoding == Encoding.Unicode ||
                 Context.Options.Encoding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
+
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
@@ -287,7 +293,7 @@ namespace CppSharp.Types.Std
             {
                 ctx.Return.Write($@"{qualifiedBasicString}Extensions.{
                     Helpers.InternalStruct}.{assign.Name}(new {
-                    CSharpTypePrinter.IntPtrType}(&{
+                    typePrinter.IntPtrType}(&{
                     ctx.ReturnVarName}), {ctx.Parameter.Name})");
                 ctx.ReturnVarName = string.Empty;
             }
