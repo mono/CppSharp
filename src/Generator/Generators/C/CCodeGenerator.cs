@@ -234,7 +234,7 @@ namespace CppSharp.Generators.C
             NewLine();
             WriteOpenBraceAndIndent();
 
-            VisitDeclContext(@class);
+            GenerateClassBody(@class);
 
             Unindent();
             WriteLine("};");
@@ -242,6 +242,11 @@ namespace CppSharp.Generators.C
             PopBlock(NewLineKind.BeforeNextBlock);
 
             return true;
+        }
+
+        public virtual bool GenerateClassBody(Class @class)
+        {
+            return VisitDeclContext(@class);
         }
 
         public override bool VisitTypedefNameDecl(TypedefNameDecl typedef)
