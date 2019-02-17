@@ -128,6 +128,9 @@ namespace CppSharp.Generators.C
 
             foreach (var item in @enum.Items)
             {
+                if (!item.IsGenerated)
+                    continue;
+
                 var enumItemName = Options.GeneratorKind != GeneratorKind.CPlusPlus ?
                     $"{@enum.QualifiedName}_{item.Name}" : item.Name;
 
