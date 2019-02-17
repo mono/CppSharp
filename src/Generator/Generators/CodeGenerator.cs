@@ -198,7 +198,11 @@ namespace CppSharp.Generators
         {
             for (int i = 0; i < @enum.Items.Count; i++)
             {
-                @enum.Items[i].Visit(this);
+                var item = @enum.Items[i];
+                if (!item.IsGenerated)
+                    continue;
+
+                item.Visit(this);
                 WriteLine(i == @enum.Items.Count - 1 ? string.Empty : ",");
             }
         }
