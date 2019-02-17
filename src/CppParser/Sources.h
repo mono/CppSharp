@@ -18,4 +18,10 @@ struct CS_API CS_VALUE_TYPE SourceLocation
     unsigned ID;
 };
 
+struct CS_API SourceRange
+{
+    SourceLocation beginLoc;
+    SourceLocation endLoc;
+};
+
 } }
