@@ -56,6 +56,12 @@ namespace CppSharp.Generators.C
             WriteLine(include.ToString());
         }
 
+        public void WriteInclude(string file, CInclude.IncludeKind kind)
+        {
+            var include = new CInclude { File = file, Kind = kind };
+            WriteInclude(include);
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
             return decl.IsGenerated && !AlreadyVisited(decl);
