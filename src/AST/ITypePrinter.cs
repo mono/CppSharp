@@ -12,6 +12,13 @@ namespace CppSharp.AST
         Managed
     }
 
+    public enum TypePrintScopeKind
+    {
+        Local,
+        Qualified,
+        GlobalQualified
+    }
+
     public enum MarshalKind
     {
         Unknown,

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators.C;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 

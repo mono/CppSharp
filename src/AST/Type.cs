@@ -28,12 +28,6 @@ namespace CppSharp.AST
         public abstract T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals
             = new TypeQualifiers());
 
-        public string ToNativeString()
-        {
-            var cppTypePrinter = new CppTypePrinter { PrintScopeKind = TypePrintScopeKind.Qualified };
-            return Visit(cppTypePrinter);
-        }
-
         public override string ToString()
         {
             return TypePrinterDelegate(this);

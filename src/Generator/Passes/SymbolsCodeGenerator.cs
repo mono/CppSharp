@@ -5,6 +5,7 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
+using CppSharp.Generators.C;
 
 namespace CppSharp.Passes
 {
@@ -245,9 +246,9 @@ namespace CppSharp.Passes
                             switch (a.Kind)
                             {
                                 case TemplateArgument.ArgumentKind.Type:
-                                    return a.Type.Visit(cppTypePrinter);
+                                    return a.Type.Visit(cppTypePrinter).Type;
                                 case TemplateArgument.ArgumentKind.Declaration:
-                                    return a.Declaration.Visit(cppTypePrinter);
+                                    return a.Declaration.Visit(cppTypePrinter).Type;
                                 case TemplateArgument.ArgumentKind.Integral:
                                     return a.Integral.ToString(CultureInfo.InvariantCulture);
                             }
