@@ -177,6 +177,9 @@ namespace CppSharp.Generators.C
             }
         }
 
+        public virtual List<string> GenerateExtraClassSpecifiers(Class @class)
+            => new List<string>();
+
         public override void GenerateClassSpecifier(Class @class)
         {
             var keywords = new List<string>();
@@ -199,6 +202,8 @@ namespace CppSharp.Generators.C
                 keywords.Add(@class.IsInterface ? "interface" : "class");
             else
                 keywords.Add("class");
+
+            keywords.AddRange(GenerateExtraClassSpecifiers(@class));
 
             keywords.Add(@class.Name);
 
