@@ -699,7 +699,8 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.NeedsBase)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
+                foreach (var @base in @class.Bases.Where(b => b.IsGenerated &&
+                    b.IsClass && b.Class.IsGenerated))
                 {
                     var typeMaps = new List<System.Type>();
                     var keys = new List<string>();
