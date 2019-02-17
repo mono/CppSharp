@@ -677,7 +677,10 @@ namespace CppSharp.Generators.CSharp
             var keywords = new List<string>();
 
             keywords.Add(@class.Access == AccessSpecifier.Protected ? "protected internal" : "public");
-            keywords.Add("unsafe");
+
+            var isBindingGen = this.GetType() == typeof(CSharpSources);
+            if (isBindingGen)
+                keywords.Add("unsafe");
 
             if (@class.IsAbstract)
                 keywords.Add("abstract");
@@ -712,7 +715,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            if (@class.IsGenerated)
+            if (@class.IsGenerated && isBindingGen)
             {
                 if (@class.IsRefType && !@class.IsOpaque)
                     bases.Add("IDisposable");
