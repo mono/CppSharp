@@ -13,7 +13,7 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpTypePrinter : TypePrinter
     {
-        public string IntPtrType => "global::System.IntPtr";
+        public string IntPtrType => QualifiedType("System.IntPtr");
 
         public BindingContext Context { get; set; }
 
@@ -23,6 +23,11 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinter(BindingContext context)
         {
             Context = context;
+        }
+
+        public string QualifiedType(string name)
+        {
+            return IsGlobalQualifiedScope ? $"global::{name}" : name;
         }
 
         public override TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
@@ -429,7 +434,8 @@ namespace CppSharp.Generators.CSharp
                 case TypeCode.String:
                     return "string";
             }
-            return $"global::{type.Type.FullName}";
+
+            return QualifiedType(type.Type.FullName);
         }
 
         public static void GetPrimitiveTypeWidth(PrimitiveType primitive,
@@ -545,7 +551,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.LongDouble: return new TypePrinterResult { Type = "fixed byte",
                     NameSuffix = $"[{Context.TargetInfo.LongDoubleWidth}]"};
                 case PrimitiveType.IntPtr: return IntPtrType;
-                case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
+                case PrimitiveType.UIntPtr: return QualifiedType("System.UIntPtr");
                 case PrimitiveType.Null: return "void*";
                 case PrimitiveType.String: return "string";
                 case PrimitiveType.Float128: return "__float128";
@@ -645,7 +651,7 @@ namespace CppSharp.Generators.CSharp
                 !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
                 names.Push(unit.Module.OutputNamespace);
 
-            return $"global::{string.Join(".", names)}";
+            return QualifiedType(string.Join(".", names));
         }
 
         public override TypePrinterResult VisitParameters(IEnumerable<Parameter> @params,

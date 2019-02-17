@@ -34,6 +34,9 @@ namespace CppSharp.Generators
 
         public MarshalKind MarshalKind => marshalKinds.Peek();
 
+        public TypePrintScopeKind ScopeKind = TypePrintScopeKind.GlobalQualified;
+        public bool IsGlobalQualifiedScope => ScopeKind == TypePrintScopeKind.GlobalQualified;
+
         public TypePrinter()
         {
             contexts = new Stack<TypePrinterContextKind>();
