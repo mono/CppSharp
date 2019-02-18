@@ -160,7 +160,12 @@ namespace CppSharp.Generators
                 lines.Add("<summary>");
                 foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
                                             Environment.NewLine.ToCharArray()))
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
                     lines.Add($"<para>{line}</para>");
+                }
                 lines.Add("</summary>");
             }
             else
