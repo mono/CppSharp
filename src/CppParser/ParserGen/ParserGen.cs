@@ -98,7 +98,7 @@ namespace CppSharp
 
             var headersPath = Platform.IsLinux ? string.Empty :
                 Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
-            options.SetupLinux(headersPath);
+            options.SetupLinux();
             options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
 

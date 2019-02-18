@@ -75,7 +75,6 @@ namespace CppSharp.Parser
             Verbose = options.Verbose;
             LanguageVersion = options.LanguageVersion;
             UnityBuild = options.UnityBuild;
-            ForceClangToolchainLookup = options.ForceClangToolchainLookup;
         }
 
         public bool IsItaniumLikeAbi => Abi != CppAbi.Microsoft;
@@ -83,14 +82,6 @@ namespace CppSharp.Parser
 
         public bool EnableRTTI { get; set; }
         public LanguageVersion? LanguageVersion { get; set; }
-
-        /// <summary>
-        /// This option forces the driver code to use Clang's toolchain code
-        /// to lookup the location of system headers and library locations.
-        /// At the moment, it only makes a difference for MSVC targets.
-        /// If its true, then we opt to use Clang's MSVC lookup logic.
-        /// </summary>
-        public bool ForceClangToolchainLookup = false;
 
         public ParserOptions BuildForSourceFile(
             IEnumerable<CppSharp.AST.Module> modules, string file = null)
@@ -202,16 +193,6 @@ namespace CppSharp.Parser
             var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
 
-            if (!ForceClangToolchainLookup)
-            {
-                NoStandardIncludes = true;
-                NoBuiltinIncludes = true;
-
-                vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
-                foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
-                    AddSystemIncludeDirs(include);
-            }
-
             // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
                 LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
@@ -223,94 +204,18 @@ namespace CppSharp.Parser
 
         public void SetupXcode()
         {
-            var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
-            AddSystemIncludeDirs(builtinsPath);
-
-            var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
-            AddSystemIncludeDirs(cppIncPath);
-
-            var includePath = XcodeToolchain.GetXcodeIncludesFolder();
-            AddSystemIncludeDirs(includePath);
-
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
 
             AddArguments("-stdlib=libc++");
         }
 
-        private void GetUnixCompilerInfo(string headersPath, out string compiler,
-            out string longVersion, out string shortVersion)
-        {
-            if (!Platform.IsLinux)
-            {
-                compiler = "gcc";
-                // Search for the available GCC versions on the provided headers.
-                var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
-                    "usr", "include", "c++"));
-
-                if (versions.Count() == 0)
-                    throw new Exception("No valid GCC version found on system include paths");
-
-                string gccVersionPath = versions.First();
-                longVersion = shortVersion = gccVersionPath.Substring(
-                    gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-                return;
-            }
-            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
-            info.RedirectStandardError = true;
-            info.CreateNoWindow = true;
-            info.UseShellExecute = false;
-            var process = Process.Start(info);
-            if (process == null)
-                throw new SystemException("GCC compiler was not found.");
-            process.WaitForExit();
-
-            var output = process.StandardError.ReadToEnd();
-            var match = Regex.Match(output, "(gcc|clang) version (([0-9]+\\.[0-9]+)\\.[0-9]+)");
-            if (!match.Success)
-                throw new SystemException("GCC compiler was not found.");
-
-            compiler = match.Groups[1].ToString();
-            longVersion = match.Groups[2].ToString();
-            shortVersion = match.Groups[3].ToString();
-        }
-
-        public void SetupLinux(string headersPath = "")
+        public void SetupLinux()
         {
             MicrosoftMode = false;
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
             Abi = CppAbi.Itanium;
-
-            string compiler, longVersion, shortVersion;
-            GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
-            string[] versions = {longVersion, shortVersion};
-            string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
-            if (compiler == "gcc")
-            {
-                foreach (var version in versions)
-                {
-                    AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}");
-                    AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/backward");
-                    foreach (var tripple in tripples)
-                    {
-                        AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}/c++/{version}");
-                        AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/{tripple}");
-                    }
-                }
-            }
-            foreach (var tripple in tripples)
-            {
-                foreach (var version in versions)
-                {
-                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include");
-                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++");
-                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++/{tripple}");
-                }
-                AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}");
-            }
-            AddSystemIncludeDirs($"{headersPath}/usr/include");
-            AddSystemIncludeDirs($"{headersPath}/usr/include/linux");
         }
 
         public void Setup()

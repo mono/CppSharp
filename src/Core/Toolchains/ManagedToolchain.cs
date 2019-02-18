@@ -59,11 +59,5 @@ namespace CppSharp
 
             return FindMonoPath();
         }
-
-        public static string FindCSharpCompilerPath()
-        {
-            return Path.Combine(FindCSharpCompilerDir(), "bin",
-                Platform.IsWindows ? "csc.exe" : "mcs");
-        }
     }
 }
