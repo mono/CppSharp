@@ -20,6 +20,8 @@ namespace CppSharp.Generators.CSharp
         public DriverOptions Options => Context.Options;
         public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;
 
+        public bool PrintModuleOutputNamespace = true;
+
         public CSharpTypePrinter(BindingContext context)
         {
             Context = context;
@@ -646,10 +648,13 @@ namespace CppSharp.Generators.CSharp
                 ctx = ctx.Namespace;
             }
 
-            var unit = ctx.TranslationUnit;
-            if (!unit.IsSystemHeader && unit.IsValid &&
-                !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
-                names.Push(unit.Module.OutputNamespace);
+            if (PrintModuleOutputNamespace)
+            {
+                var unit = ctx.TranslationUnit;
+                if (!unit.IsSystemHeader && unit.IsValid &&
+                    !string.IsNullOrWhiteSpace(unit.Module.OutputNamespace))
+                    names.Push(unit.Module.OutputNamespace);
+            }
 
             return QualifiedType(string.Join(".", names));
         }
