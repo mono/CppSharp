@@ -121,7 +121,8 @@ namespace CppSharp.Passes
             private static string GetReadWritePropertyName(INamedDecl getter, string afterSet)
             {
                 string name = GetPropertyName(getter.Name);
-                if (name != afterSet && name.StartsWith("is", StringComparison.Ordinal))
+                if (name != afterSet && name.StartsWith("is", StringComparison.Ordinal) &&
+                    name != "is")
                 {
                     name = char.ToLowerInvariant(name[2]) + name.Substring(3);
                 }
