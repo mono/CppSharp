@@ -361,6 +361,25 @@
                 type.Type.GetQualifiedPointee().IsConst());
         }
 
+        public static QualifiedType StripConst(this QualifiedType type)
+        {
+            var qualifiers = type.Qualifiers;
+            qualifiers.IsConst = false;
+            type.Qualifiers = qualifiers;
+
+            var ptr = type.Type as PointerType;
+            if (ptr != null)
+            {
+                var pointee = ptr.QualifiedPointee;
+                var pointeeQualifiers = pointee.Qualifiers;
+                pointeeQualifiers.IsConst = false;
+                pointee.Qualifiers = pointeeQualifiers;
+                ptr.QualifiedPointee = pointee;
+            }
+
+            return type;
+        }
+
         public static bool IsConstCharString(this Type type)
         {
             var desugared = type.Desugar();
