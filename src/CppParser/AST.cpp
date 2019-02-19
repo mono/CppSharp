@@ -566,42 +566,42 @@ Friend::Friend() : CppSharp::CppParser::AST::Declaration(DeclarationKind::Friend
 Friend::~Friend() {}
 
 
-Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : string(str), _class(stmtClass), decl(decl) {}
+StatementObsolete::StatementObsolete(const std::string& str, StatementClassObsolete stmtClass, Declaration* decl) : string(str), _class(stmtClass), decl(decl) {}
 
-Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl)
-    : Statement(str, stmtClass, decl) {}
+ExpressionObsolete::ExpressionObsolete(const std::string& str, StatementClassObsolete stmtClass, Declaration* decl)
+    : StatementObsolete(str, stmtClass, decl) {}
 
-BinaryOperator::BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr)
-    : Expression(str, StatementClass::BinaryOperator), LHS(lhs), RHS(rhs), opcodeStr(opcodeStr) {}
+BinaryOperatorObsolete::BinaryOperatorObsolete(const std::string& str, ExpressionObsolete* lhs, ExpressionObsolete* rhs, const std::string& opcodeStr)
+    : ExpressionObsolete(str, StatementClassObsolete::BinaryOperator), LHS(lhs), RHS(rhs), opcodeStr(opcodeStr) {}
 
-BinaryOperator::~BinaryOperator()
+BinaryOperatorObsolete::~BinaryOperatorObsolete()
 {
     delete LHS;
     delete RHS;
 }
 
 
-CallExpr::CallExpr(const std::string& str, Declaration* decl)
-    : Expression(str, StatementClass::CallExprClass, decl) {}
+CallExprObsolete::CallExprObsolete(const std::string& str, Declaration* decl)
+    : ExpressionObsolete(str, StatementClassObsolete::CallExprClass, decl) {}
 
-CallExpr::~CallExpr()
+CallExprObsolete::~CallExprObsolete()
 {
     for (auto& arg : Arguments)
         delete arg;
 }
 
-DEF_VECTOR(CallExpr, Expression*, Arguments)
+DEF_VECTOR(CallExprObsolete, ExpressionObsolete*, Arguments)
 
-CXXConstructExpr::CXXConstructExpr(const std::string& str, Declaration* decl)
-    : Expression(str, StatementClass::CXXConstructExprClass, decl) {}
+CXXConstructExprObsolete::CXXConstructExprObsolete(const std::string& str, Declaration* decl)
+    : ExpressionObsolete(str, StatementClassObsolete::CXXConstructExprClass, decl) {}
 
-CXXConstructExpr::~CXXConstructExpr()
+CXXConstructExprObsolete::~CXXConstructExprObsolete()
 {
     for (auto& arg : Arguments)
         delete arg;
 }
 
-DEF_VECTOR(CXXConstructExpr, Expression*, Arguments)
+DEF_VECTOR(CXXConstructExprObsolete, ExpressionObsolete*, Arguments)
 
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
     isIndirect(false), hasDefaultValue(false), defaultArgument(0) {}
@@ -613,14 +613,14 @@ Parameter::~Parameter()
         // HACK: see https://github.com/mono/CppSharp/issues/598
         switch (defaultArgument->_class)
         {
-        case StatementClass::BinaryOperator:
-            delete static_cast<BinaryOperator*>(defaultArgument);
+        case StatementClassObsolete::BinaryOperator:
+            delete static_cast<BinaryOperatorObsolete*>(defaultArgument);
             break;
-        case StatementClass::CallExprClass:
-            delete static_cast<CallExpr*>(defaultArgument);
+        case StatementClassObsolete::CallExprClass:
+            delete static_cast<CallExprObsolete*>(defaultArgument);
             break;
-        case StatementClass::CXXConstructExprClass:
-            delete static_cast<CXXConstructExpr*>(defaultArgument);
+        case StatementClassObsolete::CXXConstructExprClass:
+            delete static_cast<CXXConstructExprObsolete*>(defaultArgument);
             break;
         default:
             delete defaultArgument;

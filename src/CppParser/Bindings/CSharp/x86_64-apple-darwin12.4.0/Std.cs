@@ -585,7 +585,7 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expression___N_std_N___1_S_allocator__S0_
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
             internal global::System.IntPtr __begin_;

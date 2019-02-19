@@ -17,79 +17,6 @@ namespace CppSharp
     {
         namespace AST
         {
-            public enum TypeKind
-            {
-                Tag = 0,
-                Array = 1,
-                Function = 2,
-                Pointer = 3,
-                MemberPointer = 4,
-                Typedef = 5,
-                Attributed = 6,
-                Decayed = 7,
-                TemplateSpecialization = 8,
-                DependentTemplateSpecialization = 9,
-                TemplateParameter = 10,
-                TemplateParameterSubstitution = 11,
-                InjectedClassName = 12,
-                DependentName = 13,
-                PackExpansion = 14,
-                Builtin = 15,
-                UnaryTransform = 16,
-                Vector = 17
-            }
-
-            public enum DeclarationKind
-            {
-                DeclarationContext = 0,
-                Typedef = 1,
-                TypeAlias = 2,
-                Parameter = 3,
-                Function = 4,
-                Method = 5,
-                Enumeration = 6,
-                EnumerationItem = 7,
-                Variable = 8,
-                Field = 9,
-                AccessSpecifier = 10,
-                Class = 11,
-                Template = 12,
-                TypeAliasTemplate = 13,
-                ClassTemplate = 14,
-                ClassTemplateSpecialization = 15,
-                ClassTemplatePartialSpecialization = 16,
-                FunctionTemplate = 17,
-                Namespace = 18,
-                PreprocessedEntity = 19,
-                MacroDefinition = 20,
-                MacroExpansion = 21,
-                TranslationUnit = 22,
-                Friend = 23,
-                TemplateTemplateParm = 24,
-                TemplateTypeParm = 25,
-                NonTypeTemplateParm = 26,
-                VarTemplate = 27,
-                VarTemplateSpecialization = 28,
-                VarTemplatePartialSpecialization = 29
-            }
-
-            public enum AccessSpecifier
-            {
-                Private = 0,
-                Protected = 1,
-                Public = 2
-            }
-
-            public enum MacroLocation
-            {
-                Unknown = 0,
-                ClassHead = 1,
-                ClassBody = 2,
-                FunctionHead = 3,
-                FunctionParameters = 4,
-                FunctionBody = 5
-            }
-
             public enum RawCommentKind
             {
                 Invalid = 0,
@@ -121,61 +48,3199 @@ namespace CppSharp
                 VerbatimBlockLineComment = 14
             }
 
-            public enum FriendKind
+            public enum ArchType
             {
-                None = 0,
-                Declared = 1,
-                Undeclared = 2
+                UnknownArch = 0,
+                X86 = 1,
+                X86_64 = 2
             }
 
-            public enum CXXOperatorKind
+            public unsafe partial class NativeLibrary : IDisposable
             {
-                None = 0,
-                New = 1,
-                Delete = 2,
-                ArrayNew = 3,
-                ArrayDelete = 4,
-                Plus = 5,
-                Minus = 6,
-                Star = 7,
-                Slash = 8,
-                Percent = 9,
-                Caret = 10,
-                Amp = 11,
-                Pipe = 12,
-                Tilde = 13,
-                Exclaim = 14,
-                Equal = 15,
-                Less = 16,
-                Greater = 17,
-                PlusEqual = 18,
-                MinusEqual = 19,
-                StarEqual = 20,
-                SlashEqual = 21,
-                PercentEqual = 22,
-                CaretEqual = 23,
-                AmpEqual = 24,
-                PipeEqual = 25,
-                LessLess = 26,
-                GreaterGreater = 27,
-                LessLessEqual = 28,
-                GreaterGreaterEqual = 29,
-                EqualEqual = 30,
-                ExclaimEqual = 31,
-                LessEqual = 32,
-                GreaterEqual = 33,
-                Spaceship = 34,
-                AmpAmp = 35,
-                PipePipe = 36,
-                PlusPlus = 37,
-                MinusMinus = 38,
-                Comma = 39,
-                ArrowStar = 40,
-                Arrow = 41,
-                Call = 42,
-                Subscript = 43,
-                Conditional = 44,
-                Coawait = 45
+                [StructLayout(LayoutKind.Explicit, Size = 80)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C fileName;
+
+                    [FieldOffset(24)]
+                    internal global::CppSharp.Parser.AST.ArchType archType;
+
+                    [FieldOffset(32)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Symbols;
+
+                    [FieldOffset(56)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Dependencies;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary10getSymbolsEj")]
+                    internal static extern global::System.IntPtr GetSymbols(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary10addSymbolsEPKc")]
+                    internal static extern void AddSymbols(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary12clearSymbolsEv")]
+                    internal static extern void ClearSymbols(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getDependenciesEj")]
+                    internal static extern global::System.IntPtr GetDependencies(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15addDependenciesEPKc")]
+                    internal static extern void AddDependencies(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary17clearDependenciesEv")]
+                    internal static extern void ClearDependencies(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getSymbolsCountEv")]
+                    internal static extern uint GetSymbolsCount(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary20getDependenciesCountEv")]
+                    internal static extern uint GetDependenciesCount(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.NativeLibrary> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.NativeLibrary>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.NativeLibrary __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.NativeLibrary(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.NativeLibrary __CreateInstance(global::CppSharp.Parser.AST.NativeLibrary.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.NativeLibrary(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.NativeLibrary.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
+                    global::CppSharp.Parser.AST.NativeLibrary.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private NativeLibrary(global::CppSharp.Parser.AST.NativeLibrary.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected NativeLibrary(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public NativeLibrary()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public NativeLibrary(global::CppSharp.Parser.AST.NativeLibrary _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.NativeLibrary __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public string GetSymbols(uint i)
+                {
+                    var __ret = __Internal.GetSymbols((__Instance + __PointerAdjustment), i);
+                    return Marshal.PtrToStringAnsi(__ret);
+                }
+
+                public void AddSymbols(string s)
+                {
+                    __Internal.AddSymbols((__Instance + __PointerAdjustment), s);
+                }
+
+                public void ClearSymbols()
+                {
+                    __Internal.ClearSymbols((__Instance + __PointerAdjustment));
+                }
+
+                public string GetDependencies(uint i)
+                {
+                    var __ret = __Internal.GetDependencies((__Instance + __PointerAdjustment), i);
+                    return Marshal.PtrToStringAnsi(__ret);
+                }
+
+                public void AddDependencies(string s)
+                {
+                    __Internal.AddDependencies((__Instance + __PointerAdjustment), s);
+                }
+
+                public void ClearDependencies()
+                {
+                    __Internal.ClearDependencies((__Instance + __PointerAdjustment));
+                }
+
+                public string FileName
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.NativeLibrary.__Internal*)__Instance)->fileName), value);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.ArchType ArchType
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->archType;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*)__Instance)->archType = value;
+                    }
+                }
+
+                public uint SymbolsCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetSymbolsCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+
+                public uint DependenciesCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetDependenciesCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class Comment : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind kind);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Comment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Comment>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.Comment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.Comment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.Comment __CreateInstance(global::CppSharp.Parser.AST.Comment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.Comment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.Comment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
+                    *(global::CppSharp.Parser.AST.Comment.__Internal*) ret = native;
+                    return ret.ToPointer();
+                }
+
+                private Comment(global::CppSharp.Parser.AST.Comment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected Comment(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public Comment(global::CppSharp.Parser.AST.CommentKind kind)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment), kind);
+                }
+
+                public Comment(global::CppSharp.Parser.AST.Comment _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    *((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Comment.__Internal*) _0.__Instance);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public static implicit operator global::CppSharp.Parser.AST.Comment(global::CppSharp.Parser.AST.CommentKind kind)
+                {
+                    return new global::CppSharp.Parser.AST.Comment(kind);
+                }
+
+                public global::CppSharp.Parser.AST.CommentKind Kind
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance)->kind;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Comment.__Internal*)__Instance)->kind = value;
+                    }
+                }
+            }
+
+            public unsafe partial class BlockContentComment : global::CppSharp.Parser.AST.Comment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockContentCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockContentCommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockContentCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+                }
+
+                internal static new global::CppSharp.Parser.AST.BlockContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.BlockContentComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.BlockContentComment __CreateInstance(global::CppSharp.Parser.AST.BlockContentComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.BlockContentComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.BlockContentComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    *(global::CppSharp.Parser.AST.BlockContentComment.__Internal*) ret = native;
+                    return ret.ToPointer();
+                }
+
+                private BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected BlockContentComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public BlockContentComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
+                }
+
+                public BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) _0.__Instance);
+                }
+
+                public static implicit operator global::CppSharp.Parser.AST.BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                {
+                    return new global::CppSharp.Parser.AST.BlockContentComment(Kind);
+                }
+            }
+
+            public unsafe partial class FullComment : global::CppSharp.Parser.AST.Comment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(8)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_ Blocks;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment9getBlocksEj")]
+                    internal static extern global::System.IntPtr GetBlocks(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment9addBlocksERPNS1_19BlockContentCommentE")]
+                    internal static extern void AddBlocks(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment11clearBlocksEv")]
+                    internal static extern void ClearBlocks(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment14getBlocksCountEv")]
+                    internal static extern uint GetBlocksCount(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.FullComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.FullComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.FullComment __CreateInstance(global::CppSharp.Parser.AST.FullComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.FullComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.FullComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
+                    global::CppSharp.Parser.AST.FullComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private FullComment(global::CppSharp.Parser.AST.FullComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected FullComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public FullComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public FullComment(global::CppSharp.Parser.AST.FullComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.BlockContentComment GetBlocks(uint i)
+                {
+                    var __ret = __Internal.GetBlocks((__Instance + __PointerAdjustment), i);
+                    global::CppSharp.Parser.AST.BlockContentComment __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (global::CppSharp.Parser.AST.BlockContentComment.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (global::CppSharp.Parser.AST.BlockContentComment) global::CppSharp.Parser.AST.BlockContentComment.NativeToManagedMap[__ret];
+                    else __result0 = global::CppSharp.Parser.AST.BlockContentComment.__CreateInstance(__ret);
+                    return __result0;
+                }
+
+                public void AddBlocks(global::CppSharp.Parser.AST.BlockContentComment s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddBlocks((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearBlocks()
+                {
+                    __Internal.ClearBlocks((__Instance + __PointerAdjustment));
+                }
+
+                public uint BlocksCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetBlocksCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class InlineContentComment : global::CppSharp.Parser.AST.Comment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte hasTrailingNewline;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineContentCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineContentCommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineContentCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+                }
+
+                internal static new global::CppSharp.Parser.AST.InlineContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.InlineContentComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.InlineContentComment __CreateInstance(global::CppSharp.Parser.AST.InlineContentComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.InlineContentComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.InlineContentComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    *(global::CppSharp.Parser.AST.InlineContentComment.__Internal*) ret = native;
+                    return ret.ToPointer();
+                }
+
+                private InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected InlineContentComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public InlineContentComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
+                }
+
+                public InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) _0.__Instance);
+                }
+
+                public static implicit operator global::CppSharp.Parser.AST.InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                {
+                    return new global::CppSharp.Parser.AST.InlineContentComment(Kind);
+                }
+
+                public bool HasTrailingNewline
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance)->hasTrailingNewline != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.InlineContentComment.__Internal*)__Instance)->hasTrailingNewline = (byte) (value ? 1 : 0);
+                    }
+                }
+            }
+
+            public unsafe partial class ParagraphComment : global::CppSharp.Parser.AST.BlockContentComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte isWhitespace;
+
+                    [FieldOffset(8)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_ Content;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment10getContentEj")]
+                    internal static extern global::System.IntPtr GetContent(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment10addContentERPNS1_20InlineContentCommentE")]
+                    internal static extern void AddContent(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment12clearContentEv")]
+                    internal static extern void ClearContent(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment15getContentCountEv")]
+                    internal static extern uint GetContentCount(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.ParagraphComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.ParagraphComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.ParagraphComment __CreateInstance(global::CppSharp.Parser.AST.ParagraphComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.ParagraphComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.ParagraphComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
+                    global::CppSharp.Parser.AST.ParagraphComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private ParagraphComment(global::CppSharp.Parser.AST.ParagraphComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected ParagraphComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public ParagraphComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public ParagraphComment(global::CppSharp.Parser.AST.ParagraphComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.InlineContentComment GetContent(uint i)
+                {
+                    var __ret = __Internal.GetContent((__Instance + __PointerAdjustment), i);
+                    global::CppSharp.Parser.AST.InlineContentComment __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (global::CppSharp.Parser.AST.InlineContentComment.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (global::CppSharp.Parser.AST.InlineContentComment) global::CppSharp.Parser.AST.InlineContentComment.NativeToManagedMap[__ret];
+                    else __result0 = global::CppSharp.Parser.AST.InlineContentComment.__CreateInstance(__ret);
+                    return __result0;
+                }
+
+                public void AddContent(global::CppSharp.Parser.AST.InlineContentComment s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddContent((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearContent()
+                {
+                    __Internal.ClearContent((__Instance + __PointerAdjustment));
+                }
+
+                public bool IsWhitespace
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ParagraphComment.__Internal*) __Instance)->isWhitespace != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ParagraphComment.__Internal*)__Instance)->isWhitespace = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public uint ContentCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetContentCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class BlockCommandComment : global::CppSharp.Parser.AST.BlockContentComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal uint commandId;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr paragraphComment;
+
+                    [FieldOffset(16)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment12getArgumentsEj")]
+                    internal static extern void GetArguments(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment12addArgumentsERNS2_8ArgumentE")]
+                    internal static extern void AddArguments(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment14clearArgumentsEv")]
+                    internal static extern void ClearArguments(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment17getArgumentsCountEv")]
+                    internal static extern uint GetArgumentsCount(global::System.IntPtr __instance);
+                }
+
+                public unsafe partial class Argument : IDisposable
+                {
+                    [StructLayout(LayoutKind.Explicit, Size = 24)]
+                    public partial struct __Internal
+                    {
+                        [FieldOffset(0)]
+                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentC2Ev")]
+                        internal static extern void ctor(global::System.IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentC2ERKS3_")]
+                        internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentD2Ev")]
+                        internal static extern void dtor(global::System.IntPtr __instance);
+                    }
+
+                    public global::System.IntPtr __Instance { get; protected set; }
+
+                    protected int __PointerAdjustment;
+                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BlockCommandComment.Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BlockCommandComment.Argument>();
+                    protected internal void*[] __OriginalVTables;
+
+                    protected bool __ownsNativeInstance;
+
+                    internal static global::CppSharp.Parser.AST.BlockCommandComment.Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    {
+                        return new global::CppSharp.Parser.AST.BlockCommandComment.Argument(native.ToPointer(), skipVTables);
+                    }
+
+                    internal static global::CppSharp.Parser.AST.BlockCommandComment.Argument __CreateInstance(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native, bool skipVTables = false)
+                    {
+                        return new global::CppSharp.Parser.AST.BlockCommandComment.Argument(native, skipVTables);
+                    }
+
+                    private static void* __CopyValue(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native)
+                    {
+                        var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
+                        global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                        return ret.ToPointer();
+                    }
+
+                    private Argument(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native, bool skipVTables = false)
+                        : this(__CopyValue(native), skipVTables)
+                    {
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                    }
+
+                    protected Argument(void* native, bool skipVTables = false)
+                    {
+                        if (native == null)
+                            return;
+                        __Instance = new global::System.IntPtr(native);
+                    }
+
+                    public Argument()
+                    {
+                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                        __Internal.ctor((__Instance + __PointerAdjustment));
+                    }
+
+                    public Argument(global::CppSharp.Parser.AST.BlockCommandComment.Argument _0)
+                    {
+                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                        if (ReferenceEquals(_0, null))
+                            throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                        var __arg0 = _0.__Instance;
+                        __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                    }
+
+                    public void Dispose()
+                    {
+                        Dispose(disposing: true);
+                    }
+
+                    public virtual void Dispose(bool disposing)
+                    {
+                        if (__Instance == IntPtr.Zero)
+                            return;
+                        global::CppSharp.Parser.AST.BlockCommandComment.Argument __dummy;
+                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                        if (disposing)
+                            __Internal.dtor((__Instance + __PointerAdjustment));
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
+                        __Instance = IntPtr.Zero;
+                    }
+
+                    public string Text
+                    {
+                        get
+                        {
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
+                        }
+
+                        set
+                        {
+                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*)__Instance)->text), value);
+                        }
+                    }
+                }
+
+                internal static new global::CppSharp.Parser.AST.BlockCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.BlockCommandComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.BlockCommandComment __CreateInstance(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.BlockCommandComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    global::CppSharp.Parser.AST.BlockCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected BlockCommandComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public BlockCommandComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public BlockCommandComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
+                }
+
+                public BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.BlockCommandComment.Argument GetArguments(uint i)
+                {
+                    var __ret = new global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(__ret);
+                }
+
+                public void AddArguments(global::CppSharp.Parser.AST.BlockCommandComment.Argument s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddArguments((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearArguments()
+                {
+                    __Internal.ClearArguments((__Instance + __PointerAdjustment));
+                }
+
+                public static implicit operator global::CppSharp.Parser.AST.BlockCommandComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                {
+                    return new global::CppSharp.Parser.AST.BlockCommandComment(Kind);
+                }
+
+                public uint CommandId
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->commandId;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*)__Instance)->commandId = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.ParagraphComment ParagraphComment
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.ParagraphComment __result0;
+                        if (((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.ParagraphComment.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment))
+                            __result0 = (global::CppSharp.Parser.AST.ParagraphComment) global::CppSharp.Parser.AST.ParagraphComment.NativeToManagedMap[((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment];
+                        else __result0 = global::CppSharp.Parser.AST.ParagraphComment.__CreateInstance(((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*)__Instance)->paragraphComment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public uint ArgumentsCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetArgumentsCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class ParamCommandComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal uint commandId;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr paragraphComment;
+
+                    [FieldOffset(16)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+
+                    [FieldOffset(40)]
+                    internal global::CppSharp.Parser.AST.ParamCommandComment.PassDirection direction;
+
+                    [FieldOffset(44)]
+                    internal uint paramIndex;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19ParamCommandCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19ParamCommandCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19ParamCommandCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                public enum PassDirection : uint
+                {
+                    In = 0,
+                    Out = 1,
+                    InOut = 2
+                }
+
+                internal static new global::CppSharp.Parser.AST.ParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.ParamCommandComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.ParamCommandComment __CreateInstance(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.ParamCommandComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
+                    global::CppSharp.Parser.AST.ParamCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private ParamCommandComment(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected ParamCommandComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public ParamCommandComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public ParamCommandComment(global::CppSharp.Parser.AST.ParamCommandComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.ParamCommandComment.PassDirection Direction
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*) __Instance)->direction;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*)__Instance)->direction = value;
+                    }
+                }
+
+                public uint ParamIndex
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*) __Instance)->paramIndex;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*)__Instance)->paramIndex = value;
+                    }
+                }
+            }
+
+            public unsafe partial class TParamCommandComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal uint commandId;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr paragraphComment;
+
+                    [FieldOffset(16)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+
+                    [FieldOffset(40)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector__i___N_std_N___1_S_allocator__i Position;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment11getPositionEj")]
+                    internal static extern uint GetPosition(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment11addPositionERj")]
+                    internal static extern void AddPosition(global::System.IntPtr __instance, uint* s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment13clearPositionEv")]
+                    internal static extern void ClearPosition(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment16getPositionCountEv")]
+                    internal static extern uint GetPositionCount(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.TParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.TParamCommandComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.TParamCommandComment __CreateInstance(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.TParamCommandComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
+                    global::CppSharp.Parser.AST.TParamCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private TParamCommandComment(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected TParamCommandComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public TParamCommandComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public TParamCommandComment(global::CppSharp.Parser.AST.TParamCommandComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public uint GetPosition(uint i)
+                {
+                    var __ret = __Internal.GetPosition((__Instance + __PointerAdjustment), i);
+                    return __ret;
+                }
+
+                public void AddPosition(ref uint s)
+                {
+                    fixed (uint* __s0 = &s)
+                    {
+                        var __arg0 = __s0;
+                        __Internal.AddPosition((__Instance + __PointerAdjustment), __arg0);
+                    }
+                }
+
+                public void ClearPosition()
+                {
+                    __Internal.ClearPosition((__Instance + __PointerAdjustment));
+                }
+
+                public uint PositionCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetPositionCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class VerbatimBlockLineComment : global::CppSharp.Parser.AST.Comment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(8)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VerbatimBlockLineComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.VerbatimBlockLineComment __CreateInstance(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VerbatimBlockLineComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
+                    global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private VerbatimBlockLineComment(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VerbatimBlockLineComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VerbatimBlockLineComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public VerbatimBlockLineComment(global::CppSharp.Parser.AST.VerbatimBlockLineComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public string Text
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*)__Instance)->text), value);
+                    }
+                }
+            }
+
+            public unsafe partial class VerbatimBlockComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal uint commandId;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr paragraphComment;
+
+                    [FieldOffset(16)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+
+                    [FieldOffset(40)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_ Lines;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment8getLinesEj")]
+                    internal static extern global::System.IntPtr GetLines(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment8addLinesERPNS1_24VerbatimBlockLineCommentE")]
+                    internal static extern void AddLines(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment10clearLinesEv")]
+                    internal static extern void ClearLines(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment13getLinesCountEv")]
+                    internal static extern uint GetLinesCount(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VerbatimBlockComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.VerbatimBlockComment __CreateInstance(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VerbatimBlockComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
+                    global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private VerbatimBlockComment(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VerbatimBlockComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VerbatimBlockComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public VerbatimBlockComment(global::CppSharp.Parser.AST.VerbatimBlockComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.VerbatimBlockLineComment GetLines(uint i)
+                {
+                    var __ret = __Internal.GetLines((__Instance + __PointerAdjustment), i);
+                    global::CppSharp.Parser.AST.VerbatimBlockLineComment __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (global::CppSharp.Parser.AST.VerbatimBlockLineComment.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (global::CppSharp.Parser.AST.VerbatimBlockLineComment) global::CppSharp.Parser.AST.VerbatimBlockLineComment.NativeToManagedMap[__ret];
+                    else __result0 = global::CppSharp.Parser.AST.VerbatimBlockLineComment.__CreateInstance(__ret);
+                    return __result0;
+                }
+
+                public void AddLines(global::CppSharp.Parser.AST.VerbatimBlockLineComment s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddLines((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearLines()
+                {
+                    __Internal.ClearLines((__Instance + __PointerAdjustment));
+                }
+
+                public uint LinesCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetLinesCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class VerbatimLineComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal uint commandId;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr paragraphComment;
+
+                    [FieldOffset(16)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+
+                    [FieldOffset(40)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19VerbatimLineCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19VerbatimLineCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19VerbatimLineCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VerbatimLineComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.VerbatimLineComment __CreateInstance(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VerbatimLineComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
+                    global::CppSharp.Parser.AST.VerbatimLineComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private VerbatimLineComment(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VerbatimLineComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VerbatimLineComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public VerbatimLineComment(global::CppSharp.Parser.AST.VerbatimLineComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public string Text
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*)__Instance)->text), value);
+                    }
+                }
+            }
+
+            public unsafe partial class InlineCommandComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte hasTrailingNewline;
+
+                    [FieldOffset(8)]
+                    internal uint commandId;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.InlineCommandComment.RenderKind commentRenderKind;
+
+                    [FieldOffset(16)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment12getArgumentsEj")]
+                    internal static extern void GetArguments(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment12addArgumentsERNS2_8ArgumentE")]
+                    internal static extern void AddArguments(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment14clearArgumentsEv")]
+                    internal static extern void ClearArguments(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment17getArgumentsCountEv")]
+                    internal static extern uint GetArgumentsCount(global::System.IntPtr __instance);
+                }
+
+                public enum RenderKind : uint
+                {
+                    RenderNormal = 0,
+                    RenderBold = 1,
+                    RenderMonospaced = 2,
+                    RenderEmphasized = 3
+                }
+
+                public unsafe partial class Argument : IDisposable
+                {
+                    [StructLayout(LayoutKind.Explicit, Size = 24)]
+                    public partial struct __Internal
+                    {
+                        [FieldOffset(0)]
+                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentC2Ev")]
+                        internal static extern void ctor(global::System.IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentC2ERKS3_")]
+                        internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentD2Ev")]
+                        internal static extern void dtor(global::System.IntPtr __instance);
+                    }
+
+                    public global::System.IntPtr __Instance { get; protected set; }
+
+                    protected int __PointerAdjustment;
+                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.InlineCommandComment.Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.InlineCommandComment.Argument>();
+                    protected internal void*[] __OriginalVTables;
+
+                    protected bool __ownsNativeInstance;
+
+                    internal static global::CppSharp.Parser.AST.InlineCommandComment.Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    {
+                        return new global::CppSharp.Parser.AST.InlineCommandComment.Argument(native.ToPointer(), skipVTables);
+                    }
+
+                    internal static global::CppSharp.Parser.AST.InlineCommandComment.Argument __CreateInstance(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native, bool skipVTables = false)
+                    {
+                        return new global::CppSharp.Parser.AST.InlineCommandComment.Argument(native, skipVTables);
+                    }
+
+                    private static void* __CopyValue(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native)
+                    {
+                        var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
+                        global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                        return ret.ToPointer();
+                    }
+
+                    private Argument(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native, bool skipVTables = false)
+                        : this(__CopyValue(native), skipVTables)
+                    {
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                    }
+
+                    protected Argument(void* native, bool skipVTables = false)
+                    {
+                        if (native == null)
+                            return;
+                        __Instance = new global::System.IntPtr(native);
+                    }
+
+                    public Argument()
+                    {
+                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                        __Internal.ctor((__Instance + __PointerAdjustment));
+                    }
+
+                    public Argument(global::CppSharp.Parser.AST.InlineCommandComment.Argument _0)
+                    {
+                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                        if (ReferenceEquals(_0, null))
+                            throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                        var __arg0 = _0.__Instance;
+                        __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                    }
+
+                    public void Dispose()
+                    {
+                        Dispose(disposing: true);
+                    }
+
+                    public virtual void Dispose(bool disposing)
+                    {
+                        if (__Instance == IntPtr.Zero)
+                            return;
+                        global::CppSharp.Parser.AST.InlineCommandComment.Argument __dummy;
+                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                        if (disposing)
+                            __Internal.dtor((__Instance + __PointerAdjustment));
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
+                        __Instance = IntPtr.Zero;
+                    }
+
+                    public string Text
+                    {
+                        get
+                        {
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
+                        }
+
+                        set
+                        {
+                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*)__Instance)->text), value);
+                        }
+                    }
+                }
+
+                internal static new global::CppSharp.Parser.AST.InlineCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.InlineCommandComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.InlineCommandComment __CreateInstance(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.InlineCommandComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
+                    global::CppSharp.Parser.AST.InlineCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private InlineCommandComment(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected InlineCommandComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public InlineCommandComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public InlineCommandComment(global::CppSharp.Parser.AST.InlineCommandComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.InlineCommandComment.Argument GetArguments(uint i)
+                {
+                    var __ret = new global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(__ret);
+                }
+
+                public void AddArguments(global::CppSharp.Parser.AST.InlineCommandComment.Argument s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddArguments((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearArguments()
+                {
+                    __Internal.ClearArguments((__Instance + __PointerAdjustment));
+                }
+
+                public uint CommandId
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*) __Instance)->commandId;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*)__Instance)->commandId = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.InlineCommandComment.RenderKind CommentRenderKind
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*) __Instance)->commentRenderKind;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*)__Instance)->commentRenderKind = value;
+                    }
+                }
+
+                public uint ArgumentsCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetArgumentsCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class HTMLTagComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte hasTrailingNewline;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14HTMLTagCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14HTMLTagCommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14HTMLTagCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+                }
+
+                internal static new global::CppSharp.Parser.AST.HTMLTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLTagComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.HTMLTagComment __CreateInstance(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLTagComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    *(global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) ret = native;
+                    return ret.ToPointer();
+                }
+
+                private HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected HTMLTagComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public HTMLTagComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
+                }
+
+                public HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) _0.__Instance);
+                }
+
+                public static implicit operator global::CppSharp.Parser.AST.HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLTagComment(Kind);
+                }
+            }
+
+            public unsafe partial class HTMLStartTagComment : global::CppSharp.Parser.AST.HTMLTagComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte hasTrailingNewline;
+
+                    [FieldOffset(8)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C tagName;
+
+                    [FieldOffset(32)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_ Attributes;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment13getAttributesEj")]
+                    internal static extern void GetAttributes(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment13addAttributesERNS2_9AttributeE")]
+                    internal static extern void AddAttributes(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment15clearAttributesEv")]
+                    internal static extern void ClearAttributes(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment18getAttributesCountEv")]
+                    internal static extern uint GetAttributesCount(global::System.IntPtr __instance);
+                }
+
+                public unsafe partial class Attribute : IDisposable
+                {
+                    [StructLayout(LayoutKind.Explicit, Size = 48)]
+                    public partial struct __Internal
+                    {
+                        [FieldOffset(0)]
+                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
+
+                        [FieldOffset(24)]
+                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C value;
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeC2Ev")]
+                        internal static extern void ctor(global::System.IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeC2ERKS3_")]
+                        internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                        [SuppressUnmanagedCodeSecurity]
+                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeD2Ev")]
+                        internal static extern void dtor(global::System.IntPtr __instance);
+                    }
+
+                    public global::System.IntPtr __Instance { get; protected set; }
+
+                    protected int __PointerAdjustment;
+                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute>();
+                    protected internal void*[] __OriginalVTables;
+
+                    protected bool __ownsNativeInstance;
+
+                    internal static global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                    {
+                        return new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute(native.ToPointer(), skipVTables);
+                    }
+
+                    internal static global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute __CreateInstance(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native, bool skipVTables = false)
+                    {
+                        return new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute(native, skipVTables);
+                    }
+
+                    private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native)
+                    {
+                        var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
+                        global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                        return ret.ToPointer();
+                    }
+
+                    private Attribute(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native, bool skipVTables = false)
+                        : this(__CopyValue(native), skipVTables)
+                    {
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                    }
+
+                    protected Attribute(void* native, bool skipVTables = false)
+                    {
+                        if (native == null)
+                            return;
+                        __Instance = new global::System.IntPtr(native);
+                    }
+
+                    public Attribute()
+                    {
+                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                        __Internal.ctor((__Instance + __PointerAdjustment));
+                    }
+
+                    public Attribute(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute _0)
+                    {
+                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
+                        __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
+                        if (ReferenceEquals(_0, null))
+                            throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                        var __arg0 = _0.__Instance;
+                        __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                    }
+
+                    public void Dispose()
+                    {
+                        Dispose(disposing: true);
+                    }
+
+                    public virtual void Dispose(bool disposing)
+                    {
+                        if (__Instance == IntPtr.Zero)
+                            return;
+                        global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute __dummy;
+                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                        if (disposing)
+                            __Internal.dtor((__Instance + __PointerAdjustment));
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
+                        __Instance = IntPtr.Zero;
+                    }
+
+                    public string Name
+                    {
+                        get
+                        {
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
+                        }
+
+                        set
+                        {
+                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*)__Instance)->name), value);
+                        }
+                    }
+
+                    public string Value
+                    {
+                        get
+                        {
+                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value));
+                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                            __basicStringRet0.Dispose(false);
+                            return __stringRet0;
+                        }
+
+                        set
+                        {
+                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*)__Instance)->value), value);
+                        }
+                    }
+                }
+
+                internal static new global::CppSharp.Parser.AST.HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLStartTagComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.HTMLStartTagComment __CreateInstance(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLStartTagComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
+                    global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private HTMLStartTagComment(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected HTMLStartTagComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public HTMLStartTagComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public HTMLStartTagComment(global::CppSharp.Parser.AST.HTMLStartTagComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute GetAttributes(uint i)
+                {
+                    var __ret = new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal();
+                    __Internal.GetAttributes(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(__ret);
+                }
+
+                public void AddAttributes(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddAttributes((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearAttributes()
+                {
+                    __Internal.ClearAttributes((__Instance + __PointerAdjustment));
+                }
+
+                public string TagName
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*)__Instance)->tagName), value);
+                    }
+                }
+
+                public uint AttributesCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetAttributesCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class HTMLEndTagComment : global::CppSharp.Parser.AST.HTMLTagComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte hasTrailingNewline;
+
+                    [FieldOffset(8)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C tagName;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLEndTagComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.HTMLEndTagComment __CreateInstance(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.HTMLEndTagComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
+                    global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private HTMLEndTagComment(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected HTMLEndTagComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public HTMLEndTagComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public HTMLEndTagComment(global::CppSharp.Parser.AST.HTMLEndTagComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public string TagName
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*)__Instance)->tagName), value);
+                    }
+                }
+            }
+
+            public unsafe partial class TextComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CommentKind kind;
+
+                    [FieldOffset(4)]
+                    internal byte hasTrailingNewline;
+
+                    [FieldOffset(8)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TextCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TextCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TextCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                internal static new global::CppSharp.Parser.AST.TextComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.TextComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.TextComment __CreateInstance(global::CppSharp.Parser.AST.TextComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.TextComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.TextComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
+                    global::CppSharp.Parser.AST.TextComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private TextComment(global::CppSharp.Parser.AST.TextComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected TextComment(void* native, bool skipVTables = false)
+                    : base((void*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public TextComment()
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public TextComment(global::CppSharp.Parser.AST.TextComment _0)
+                    : this((void*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public string Text
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TextComment.__Internal*)__Instance)->text), value);
+                    }
+                }
+            }
+
+            public unsafe partial class RawComment : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.RawCommentKind kind;
+
+                    [FieldOffset(8)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+
+                    [FieldOffset(32)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C briefText;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr fullCommentBlock;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.RawComment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.RawComment>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.RawComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.RawComment(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.RawComment __CreateInstance(global::CppSharp.Parser.AST.RawComment.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.RawComment(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.RawComment.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
+                    global::CppSharp.Parser.AST.RawComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private RawComment(global::CppSharp.Parser.AST.RawComment.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected RawComment(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public RawComment()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public RawComment(global::CppSharp.Parser.AST.RawComment _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.RawComment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.RawCommentKind Kind
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->kind;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->kind = value;
+                    }
+                }
+
+                public string Text
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->text), value);
+                    }
+                }
+
+                public string BriefText
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->briefText), value);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.FullComment FullCommentBlock
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.FullComment __result0;
+                        if (((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.FullComment.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock))
+                            __result0 = (global::CppSharp.Parser.AST.FullComment) global::CppSharp.Parser.AST.FullComment.NativeToManagedMap[((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock];
+                        else __result0 = global::CppSharp.Parser.AST.FullComment.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->fullCommentBlock = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+            }
+        }
+    }
+}
+
+namespace CppSharp
+{
+    namespace Parser
+    {
+        public unsafe partial struct SourceLocation
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 4)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal uint ID;
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2Ev")]
+                internal static extern void ctor(global::System.IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2Ej")]
+                internal static extern void ctor(global::System.IntPtr __instance, uint ID);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2ERKS1_")]
+                internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+            }
+
+            private SourceLocation.__Internal __instance;
+            internal SourceLocation.__Internal __Instance { get { return __instance; } }
+
+            internal static global::CppSharp.Parser.SourceLocation __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            {
+                return new global::CppSharp.Parser.SourceLocation(native.ToPointer(), skipVTables);
+            }
+
+            internal static global::CppSharp.Parser.SourceLocation __CreateInstance(global::CppSharp.Parser.SourceLocation.__Internal native, bool skipVTables = false)
+            {
+                return new global::CppSharp.Parser.SourceLocation(native, skipVTables);
+            }
+
+            private SourceLocation(global::CppSharp.Parser.SourceLocation.__Internal native, bool skipVTables = false)
+                : this()
+            {
+                __instance = native;
+            }
+
+            private SourceLocation(void* native, bool skipVTables = false) : this()
+            {
+                __instance = *(global::CppSharp.Parser.SourceLocation.__Internal*) native;
+            }
+
+            public SourceLocation(uint ID)
+                : this()
+            {
+                fixed (__Internal* __instancePtr = &__instance)
+                {
+                    __Internal.ctor(new global::System.IntPtr(__instancePtr), ID);
+                }
+            }
+
+            public SourceLocation(global::CppSharp.Parser.SourceLocation _0)
+                : this()
+            {
+                var ____arg0 = _0.__Instance;
+                var __arg0 = new global::System.IntPtr(&____arg0);
+                fixed (__Internal* __instancePtr = &__instance)
+                {
+                    __Internal.cctor(new global::System.IntPtr(__instancePtr), __arg0);
+                }
+            }
+
+            public static implicit operator global::CppSharp.Parser.SourceLocation(uint ID)
+            {
+                return new global::CppSharp.Parser.SourceLocation(ID);
+            }
+
+            public uint ID
+            {
+                get
+                {
+                    return __instance.ID;
+                }
+
+                set
+                {
+                    __instance.ID = value;
+                }
+            }
+        }
+
+        public unsafe partial class SourceRange : IDisposable
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
+            public partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
+
+                [FieldOffset(4)]
+                internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser11SourceRangeC2Ev")]
+                internal static extern void ctor(global::System.IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser11SourceRangeC2ERKS1_")]
+                internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+            }
+
+            public global::System.IntPtr __Instance { get; protected set; }
+
+            protected int __PointerAdjustment;
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.SourceRange> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.SourceRange>();
+            protected internal void*[] __OriginalVTables;
+
+            protected bool __ownsNativeInstance;
+
+            internal static global::CppSharp.Parser.SourceRange __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+            {
+                return new global::CppSharp.Parser.SourceRange(native.ToPointer(), skipVTables);
+            }
+
+            internal static global::CppSharp.Parser.SourceRange __CreateInstance(global::CppSharp.Parser.SourceRange.__Internal native, bool skipVTables = false)
+            {
+                return new global::CppSharp.Parser.SourceRange(native, skipVTables);
+            }
+
+            private static void* __CopyValue(global::CppSharp.Parser.SourceRange.__Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.SourceRange.__Internal));
+                *(global::CppSharp.Parser.SourceRange.__Internal*) ret = native;
+                return ret.ToPointer();
+            }
+
+            private SourceRange(global::CppSharp.Parser.SourceRange.__Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
+            {
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+            }
+
+            protected SourceRange(void* native, bool skipVTables = false)
+            {
+                if (native == null)
+                    return;
+                __Instance = new global::System.IntPtr(native);
+            }
+
+            public SourceRange()
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.SourceRange.__Internal));
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                __Internal.ctor((__Instance + __PointerAdjustment));
+            }
+
+            public SourceRange(global::CppSharp.Parser.SourceRange _0)
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.SourceRange.__Internal));
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                *((global::CppSharp.Parser.SourceRange.__Internal*) __Instance) = *((global::CppSharp.Parser.SourceRange.__Internal*) _0.__Instance);
+            }
+
+            public void Dispose()
+            {
+                Dispose(disposing: true);
+            }
+
+            public virtual void Dispose(bool disposing)
+            {
+                if (__Instance == IntPtr.Zero)
+                    return;
+                global::CppSharp.Parser.SourceRange __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance)
+                    Marshal.FreeHGlobal(__Instance);
+                __Instance = IntPtr.Zero;
+            }
+
+            public global::CppSharp.Parser.SourceLocation BeginLoc
+            {
+                get
+                {
+                    return global::CppSharp.Parser.SourceLocation.__CreateInstance(((global::CppSharp.Parser.SourceRange.__Internal*) __Instance)->beginLoc);
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.SourceRange.__Internal*)__Instance)->beginLoc = value.__Instance;
+                }
+            }
+
+            public global::CppSharp.Parser.SourceLocation EndLoc
+            {
+                get
+                {
+                    return global::CppSharp.Parser.SourceLocation.__CreateInstance(((global::CppSharp.Parser.SourceRange.__Internal*) __Instance)->endLoc);
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.SourceRange.__Internal*)__Instance)->endLoc = value.__Instance;
+                }
+            }
+        }
+    }
+}
+
+namespace CppSharp
+{
+    namespace Parser
+    {
+        namespace AST
+        {
+            public enum TypeKind
+            {
+                Tag = 0,
+                Array = 1,
+                Function = 2,
+                Pointer = 3,
+                MemberPointer = 4,
+                Typedef = 5,
+                Attributed = 6,
+                Decayed = 7,
+                TemplateSpecialization = 8,
+                DependentTemplateSpecialization = 9,
+                TemplateParameter = 10,
+                TemplateParameterSubstitution = 11,
+                InjectedClassName = 12,
+                DependentName = 13,
+                PackExpansion = 14,
+                Builtin = 15,
+                UnaryTransform = 16,
+                Vector = 17
             }
 
             public enum CallingConvention
@@ -186,65 +3251,6 @@ namespace CppSharp
                 ThisCall = 3,
                 FastCall = 4,
                 Unknown = 5
-            }
-
-            public enum StatementClass
-            {
-                Any = 0,
-                BinaryOperator = 1,
-                CallExprClass = 2,
-                DeclRefExprClass = 3,
-                CXXConstructExprClass = 4,
-                CXXOperatorCallExpr = 5,
-                ImplicitCastExpr = 6,
-                ExplicitCastExpr = 7
-            }
-
-            public enum TemplateSpecializationKind
-            {
-                Undeclared = 0,
-                ImplicitInstantiation = 1,
-                ExplicitSpecialization = 2,
-                ExplicitInstantiationDeclaration = 3,
-                ExplicitInstantiationDefinition = 4
-            }
-
-            public enum CXXMethodKind
-            {
-                Normal = 0,
-                Constructor = 1,
-                Destructor = 2,
-                Conversion = 3,
-                Operator = 4,
-                UsingDirective = 5
-            }
-
-            public enum RefQualifierKind
-            {
-                None = 0,
-                LValue = 1,
-                RValue = 2
-            }
-
-            public enum CppAbi
-            {
-                Itanium = 0,
-                Microsoft = 1,
-                ARM = 2,
-                iOS = 3,
-                iOS64 = 4
-            }
-
-            public enum VTableComponentKind
-            {
-                VCallOffset = 0,
-                VBaseOffset = 1,
-                OffsetToTop = 2,
-                RTTI = 3,
-                FunctionPointer = 4,
-                CompleteDtorPointer = 5,
-                DeletingDtorPointer = 6,
-                UnusedFunctionPointer = 7
             }
 
             public enum PrimitiveType
@@ -289,13 +3295,6 @@ namespace CppSharp
                 Unevaluated = 8,
                 Uninstantiated = 9,
                 Unparsed = 10
-            }
-
-            public enum ArchType
-            {
-                UnknownArch = 0,
-                X86 = 1,
-                X86_64 = 2
             }
 
             public unsafe partial class Type : IDisposable
@@ -3094,1122 +6093,227 @@ namespace CppSharp
                     }
                 }
             }
+        }
+    }
+}
 
-            public unsafe partial class VTableComponent : IDisposable
+namespace CppSharp
+{
+    namespace Parser
+    {
+        namespace AST
+        {
+            public enum DeclarationKind
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.VTableComponentKind kind;
-
-                    [FieldOffset(4)]
-                    internal uint offset;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr declaration;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST15VTableComponentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST15VTableComponentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableComponent> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableComponent>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.VTableComponent __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VTableComponent(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.VTableComponent __CreateInstance(global::CppSharp.Parser.AST.VTableComponent.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VTableComponent(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.VTableComponent.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
-                    *(global::CppSharp.Parser.AST.VTableComponent.__Internal*) ret = native;
-                    return ret.ToPointer();
-                }
-
-                private VTableComponent(global::CppSharp.Parser.AST.VTableComponent.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected VTableComponent(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public VTableComponent()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public VTableComponent(global::CppSharp.Parser.AST.VTableComponent _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) _0.__Instance);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.VTableComponent __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.VTableComponentKind Kind
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->kind;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->kind = value;
-                    }
-                }
-
-                public uint Offset
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->offset;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->offset = value;
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.Declaration Declaration
-                {
-                    get
-                    {
-                        global::CppSharp.Parser.AST.Declaration __result0;
-                        if (((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration))
-                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration];
-                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
+                DeclarationContext = 0,
+                Typedef = 1,
+                TypeAlias = 2,
+                Parameter = 3,
+                Function = 4,
+                Method = 5,
+                Enumeration = 6,
+                EnumerationItem = 7,
+                Variable = 8,
+                Field = 9,
+                AccessSpecifier = 10,
+                Class = 11,
+                Template = 12,
+                TypeAliasTemplate = 13,
+                ClassTemplate = 14,
+                ClassTemplateSpecialization = 15,
+                ClassTemplatePartialSpecialization = 16,
+                FunctionTemplate = 17,
+                Namespace = 18,
+                PreprocessedEntity = 19,
+                MacroDefinition = 20,
+                MacroExpansion = 21,
+                TranslationUnit = 22,
+                Friend = 23,
+                TemplateTemplateParm = 24,
+                TemplateTypeParm = 25,
+                NonTypeTemplateParm = 26,
+                VarTemplate = 27,
+                VarTemplateSpecialization = 28,
+                VarTemplatePartialSpecialization = 29
             }
 
-            public unsafe partial class VTableLayout : IDisposable
+            public enum AccessSpecifier
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S0_ Components;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout13getComponentsEj")]
-                    internal static extern global::CppSharp.Parser.AST.VTableComponent.__Internal GetComponents(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout13addComponentsERNS1_15VTableComponentE")]
-                    internal static extern void AddComponents(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout15clearComponentsEv")]
-                    internal static extern void ClearComponents(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout18getComponentsCountEv")]
-                    internal static extern uint GetComponentsCount(global::System.IntPtr __instance);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableLayout>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.VTableLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VTableLayout(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.VTableLayout __CreateInstance(global::CppSharp.Parser.AST.VTableLayout.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VTableLayout(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.VTableLayout.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
-                    global::CppSharp.Parser.AST.VTableLayout.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private VTableLayout(global::CppSharp.Parser.AST.VTableLayout.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected VTableLayout(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public VTableLayout()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public VTableLayout(global::CppSharp.Parser.AST.VTableLayout _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.VTableLayout __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.VTableComponent GetComponents(uint i)
-                {
-                    var __ret = __Internal.GetComponents((__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
-                }
-
-                public void AddComponents(global::CppSharp.Parser.AST.VTableComponent s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddComponents((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearComponents()
-                {
-                    __Internal.ClearComponents((__Instance + __PointerAdjustment));
-                }
-
-                public uint ComponentsCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetComponentsCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
+                Private = 0,
+                Protected = 1,
+                Public = 2
             }
 
-            public unsafe partial class VFTableInfo : IDisposable
+            public enum MacroLocation
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal ulong VBTableIndex;
-
-                    [FieldOffset(8)]
-                    internal uint VFPtrOffset;
-
-                    [FieldOffset(12)]
-                    internal uint VFPtrFullOffset;
-
-                    [FieldOffset(16)]
-                    internal global::CppSharp.Parser.AST.VTableLayout.__Internal layout;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VFTableInfo> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VFTableInfo>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.VFTableInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VFTableInfo(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.VFTableInfo __CreateInstance(global::CppSharp.Parser.AST.VFTableInfo.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VFTableInfo(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.VFTableInfo.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
-                    global::CppSharp.Parser.AST.VFTableInfo.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private VFTableInfo(global::CppSharp.Parser.AST.VFTableInfo.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected VFTableInfo(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public VFTableInfo()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public VFTableInfo(global::CppSharp.Parser.AST.VFTableInfo _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.VFTableInfo __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public ulong VBTableIndex
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VBTableIndex;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VBTableIndex = value;
-                    }
-                }
-
-                public uint VFPtrOffset
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VFPtrOffset;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VFPtrOffset = value;
-                    }
-                }
-
-                public uint VFPtrFullOffset
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VFPtrFullOffset;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VFPtrFullOffset = value;
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.VTableLayout Layout
-                {
-                    get
-                    {
-                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->layout));
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
-                    }
-                }
+                Unknown = 0,
+                ClassHead = 1,
+                ClassBody = 2,
+                FunctionHead = 3,
+                FunctionParameters = 4,
+                FunctionBody = 5
             }
 
-            public unsafe partial class LayoutField : IDisposable
+            public enum FriendKind
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal uint offset;
-
-                    [FieldOffset(8)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-
-                    [FieldOffset(32)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
-
-                    [FieldOffset(48)]
-                    internal global::System.IntPtr fieldPtr;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11LayoutFieldC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11LayoutFieldC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr other);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11LayoutFieldD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutField> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutField>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.LayoutField __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.LayoutField(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.LayoutField __CreateInstance(global::CppSharp.Parser.AST.LayoutField.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.LayoutField(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.LayoutField.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
-                    global::CppSharp.Parser.AST.LayoutField.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private LayoutField(global::CppSharp.Parser.AST.LayoutField.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected LayoutField(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public LayoutField()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public LayoutField(global::CppSharp.Parser.AST.LayoutField other)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(other, null))
-                        throw new global::System.ArgumentNullException("other", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = other.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.LayoutField __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public uint Offset
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->offset;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->offset = value;
-                    }
-                }
-
-                public string Name
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->name), value);
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.QualifiedType QualifiedType
-                {
-                    get
-                    {
-                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->qualifiedType));
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
-                    }
-                }
-
-                public global::System.IntPtr FieldPtr
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->fieldPtr;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->fieldPtr = (global::System.IntPtr) value;
-                    }
-                }
+                None = 0,
+                Declared = 1,
+                Undeclared = 2
             }
 
-            public unsafe partial class LayoutBase : IDisposable
+            public enum CXXOperatorKind
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal uint offset;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr _class;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10LayoutBaseC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10LayoutBaseC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr other);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10LayoutBaseD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutBase> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutBase>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.LayoutBase __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.LayoutBase(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.LayoutBase __CreateInstance(global::CppSharp.Parser.AST.LayoutBase.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.LayoutBase(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.LayoutBase.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
-                    global::CppSharp.Parser.AST.LayoutBase.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private LayoutBase(global::CppSharp.Parser.AST.LayoutBase.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected LayoutBase(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public LayoutBase()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public LayoutBase(global::CppSharp.Parser.AST.LayoutBase other)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(other, null))
-                        throw new global::System.ArgumentNullException("other", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = other.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.LayoutBase __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public uint Offset
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->offset;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*)__Instance)->offset = value;
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.Class Class
-                {
-                    get
-                    {
-                        global::CppSharp.Parser.AST.Class __result0;
-                        if (((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class))
-                            __result0 = (global::CppSharp.Parser.AST.Class) global::CppSharp.Parser.AST.Class.NativeToManagedMap[((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class];
-                        else __result0 = global::CppSharp.Parser.AST.Class.__CreateInstance(((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*)__Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
+                None = 0,
+                New = 1,
+                Delete = 2,
+                ArrayNew = 3,
+                ArrayDelete = 4,
+                Plus = 5,
+                Minus = 6,
+                Star = 7,
+                Slash = 8,
+                Percent = 9,
+                Caret = 10,
+                Amp = 11,
+                Pipe = 12,
+                Tilde = 13,
+                Exclaim = 14,
+                Equal = 15,
+                Less = 16,
+                Greater = 17,
+                PlusEqual = 18,
+                MinusEqual = 19,
+                StarEqual = 20,
+                SlashEqual = 21,
+                PercentEqual = 22,
+                CaretEqual = 23,
+                AmpEqual = 24,
+                PipeEqual = 25,
+                LessLess = 26,
+                GreaterGreater = 27,
+                LessLessEqual = 28,
+                GreaterGreaterEqual = 29,
+                EqualEqual = 30,
+                ExclaimEqual = 31,
+                LessEqual = 32,
+                GreaterEqual = 33,
+                Spaceship = 34,
+                AmpAmp = 35,
+                PipePipe = 36,
+                PlusPlus = 37,
+                MinusMinus = 38,
+                Comma = 39,
+                ArrowStar = 40,
+                Arrow = 41,
+                Call = 42,
+                Subscript = 43,
+                Conditional = 44,
+                Coawait = 45
             }
 
-            public unsafe partial class ClassLayout : IDisposable
+            public enum StatementClassObsolete
             {
-                [StructLayout(LayoutKind.Explicit, Size = 136)]
+                Any = 0,
+                BinaryOperator = 1,
+                CallExprClass = 2,
+                DeclRefExprClass = 3,
+                CXXConstructExprClass = 4,
+                CXXOperatorCallExpr = 5,
+                ImplicitCastExpr = 6,
+                ExplicitCastExpr = 7
+            }
+
+            public enum TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
+            }
+
+            public enum CXXMethodKind
+            {
+                Normal = 0,
+                Constructor = 1,
+                Destructor = 2,
+                Conversion = 3,
+                Operator = 4,
+                UsingDirective = 5
+            }
+
+            public enum RefQualifierKind
+            {
+                None = 0,
+                LValue = 1,
+                RValue = 2
+            }
+
+            public enum CppAbi
+            {
+                Itanium = 0,
+                Microsoft = 1,
+                ARM = 2,
+                iOS = 3,
+                iOS64 = 4
+            }
+
+            public enum VTableComponentKind
+            {
+                VCallOffset = 0,
+                VBaseOffset = 1,
+                OffsetToTop = 2,
+                RTTI = 3,
+                FunctionPointer = 4,
+                CompleteDtorPointer = 5,
+                DeletingDtorPointer = 6,
+                UnusedFunctionPointer = 7
+            }
+
+            public unsafe partial class Expr
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 0)]
                 public partial struct __Internal
                 {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CppAbi ABI;
-
-                    [FieldOffset(8)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S0_ VFTables;
-
-                    [FieldOffset(32)]
-                    internal global::CppSharp.Parser.AST.VTableLayout.__Internal layout;
-
-                    [FieldOffset(56)]
-                    internal byte hasOwnVFPtr;
-
-                    [FieldOffset(64)]
-                    internal long VBPtrOffset;
-
-                    [FieldOffset(72)]
-                    internal int alignment;
-
-                    [FieldOffset(76)]
-                    internal int size;
-
-                    [FieldOffset(80)]
-                    internal int dataSize;
-
-                    [FieldOffset(88)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S0_ Fields;
-
-                    [FieldOffset(112)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S0_ Bases;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11getVFTablesEj")]
-                    internal static extern void GetVFTables(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11addVFTablesERNS1_11VFTableInfoE")]
-                    internal static extern void AddVFTables(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout13clearVFTablesEv")]
-                    internal static extern void ClearVFTables(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout9getFieldsEj")]
-                    internal static extern void GetFields(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout9addFieldsERNS1_11LayoutFieldE")]
-                    internal static extern void AddFields(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11clearFieldsEv")]
-                    internal static extern void ClearFields(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout8getBasesEj")]
-                    internal static extern void GetBases(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout8addBasesERNS1_10LayoutBaseE")]
-                    internal static extern void AddBases(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout10clearBasesEv")]
-                    internal static extern void ClearBases(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout16getVFTablesCountEv")]
-                    internal static extern uint GetVFTablesCount(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout14getFieldsCountEv")]
-                    internal static extern uint GetFieldsCount(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout13getBasesCountEv")]
-                    internal static extern uint GetBasesCount(global::System.IntPtr __instance);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ClassLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ClassLayout>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Expr> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Expr>();
                 protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                internal static global::CppSharp.Parser.AST.ClassLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.Expr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.ClassLayout(native.ToPointer(), skipVTables);
+                    return new global::CppSharp.Parser.AST.Expr(native.ToPointer(), skipVTables);
                 }
 
-                internal static global::CppSharp.Parser.AST.ClassLayout __CreateInstance(global::CppSharp.Parser.AST.ClassLayout.__Internal native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.Expr __CreateInstance(global::CppSharp.Parser.AST.Expr.__Internal native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.ClassLayout(native, skipVTables);
+                    return new global::CppSharp.Parser.AST.Expr(native, skipVTables);
                 }
 
-                private static void* __CopyValue(global::CppSharp.Parser.AST.ClassLayout.__Internal native)
+                private static void* __CopyValue(global::CppSharp.Parser.AST.Expr.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
-                    global::CppSharp.Parser.AST.ClassLayout.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expr.__Internal));
+                    *(global::CppSharp.Parser.AST.Expr.__Internal*) ret = native;
                     return ret.ToPointer();
                 }
 
-                private ClassLayout(global::CppSharp.Parser.AST.ClassLayout.__Internal native, bool skipVTables = false)
+                private Expr(global::CppSharp.Parser.AST.Expr.__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
 
-                protected ClassLayout(void* native, bool skipVTables = false)
+                protected Expr(void* native, bool skipVTables = false)
                 {
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
-                }
-
-                public ClassLayout()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public ClassLayout(global::CppSharp.Parser.AST.ClassLayout _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.ClassLayout __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.VFTableInfo GetVFTables(uint i)
-                {
-                    var __ret = new global::CppSharp.Parser.AST.VFTableInfo.__Internal();
-                    __Internal.GetVFTables(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
-                }
-
-                public void AddVFTables(global::CppSharp.Parser.AST.VFTableInfo s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddVFTables((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearVFTables()
-                {
-                    __Internal.ClearVFTables((__Instance + __PointerAdjustment));
-                }
-
-                public global::CppSharp.Parser.AST.LayoutField GetFields(uint i)
-                {
-                    var __ret = new global::CppSharp.Parser.AST.LayoutField.__Internal();
-                    __Internal.GetFields(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.LayoutField.__CreateInstance(__ret);
-                }
-
-                public void AddFields(global::CppSharp.Parser.AST.LayoutField s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddFields((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearFields()
-                {
-                    __Internal.ClearFields((__Instance + __PointerAdjustment));
-                }
-
-                public global::CppSharp.Parser.AST.LayoutBase GetBases(uint i)
-                {
-                    var __ret = new global::CppSharp.Parser.AST.LayoutBase.__Internal();
-                    __Internal.GetBases(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.LayoutBase.__CreateInstance(__ret);
-                }
-
-                public void AddBases(global::CppSharp.Parser.AST.LayoutBase s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddBases((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearBases()
-                {
-                    __Internal.ClearBases((__Instance + __PointerAdjustment));
-                }
-
-                public global::CppSharp.Parser.AST.CppAbi ABI
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->ABI;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->ABI = value;
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.VTableLayout Layout
-                {
-                    get
-                    {
-                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->layout));
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
-                    }
-                }
-
-                public bool HasOwnVFPtr
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->hasOwnVFPtr != 0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->hasOwnVFPtr = (byte) (value ? 1 : 0);
-                    }
-                }
-
-                public long VBPtrOffset
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->VBPtrOffset;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->VBPtrOffset = value;
-                    }
-                }
-
-                public int Alignment
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->alignment;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->alignment = value;
-                    }
-                }
-
-                public int Size
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->size;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->size = value;
-                    }
-                }
-
-                public int DataSize
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->dataSize;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->dataSize = value;
-                    }
-                }
-
-                public uint VFTablesCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetVFTablesCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-
-                public uint FieldsCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetFieldsCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-
-                public uint BasesCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetBasesCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
                 }
             }
 
@@ -6082,13 +8186,13 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Statement : IDisposable
+            public unsafe partial class StatementObsolete : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.StatementClass _class;
+                    internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
 
                     [FieldOffset(8)]
                     internal global::System.IntPtr decl;
@@ -6098,62 +8202,62 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST9StatementC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_14StatementClassEPNS1_11DeclarationE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::CppSharp.Parser.AST.StatementClass Class, global::System.IntPtr decl);
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_22StatementClassObsoleteEPNS1_11DeclarationE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::System.IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST9StatementC2ERKS2_")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKS2_")]
                     internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST9StatementD2Ev")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17StatementObsoleteD2Ev")]
                     internal static extern void dtor(global::System.IntPtr __instance);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Statement> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Statement>();
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.StatementObsolete> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.StatementObsolete>();
                 protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
-                internal static global::CppSharp.Parser.AST.Statement __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.StatementObsolete __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.Statement(native.ToPointer(), skipVTables);
+                    return new global::CppSharp.Parser.AST.StatementObsolete(native.ToPointer(), skipVTables);
                 }
 
-                internal static global::CppSharp.Parser.AST.Statement __CreateInstance(global::CppSharp.Parser.AST.Statement.__Internal native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.StatementObsolete __CreateInstance(global::CppSharp.Parser.AST.StatementObsolete.__Internal native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.Statement(native, skipVTables);
+                    return new global::CppSharp.Parser.AST.StatementObsolete(native, skipVTables);
                 }
 
-                private static void* __CopyValue(global::CppSharp.Parser.AST.Statement.__Internal native)
+                private static void* __CopyValue(global::CppSharp.Parser.AST.StatementObsolete.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Statement.__Internal));
-                    global::CppSharp.Parser.AST.Statement.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal));
+                    global::CppSharp.Parser.AST.StatementObsolete.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Statement(global::CppSharp.Parser.AST.Statement.__Internal native, bool skipVTables = false)
+                private StatementObsolete(global::CppSharp.Parser.AST.StatementObsolete.__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
 
-                protected Statement(void* native, bool skipVTables = false)
+                protected StatementObsolete(void* native, bool skipVTables = false)
                 {
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
                 }
 
-                public Statement(string str, global::CppSharp.Parser.AST.StatementClass Class, global::CppSharp.Parser.AST.Declaration decl)
+                public StatementObsolete(string str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::CppSharp.Parser.AST.Declaration decl)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Statement.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
@@ -6164,9 +8268,9 @@ namespace CppSharp
                     __basicString0.Dispose(false);
                 }
 
-                public Statement(global::CppSharp.Parser.AST.Statement _0)
+                public StatementObsolete(global::CppSharp.Parser.AST.StatementObsolete _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Statement.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6184,7 +8288,7 @@ namespace CppSharp
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
-                    global::CppSharp.Parser.AST.Statement __dummy;
+                    global::CppSharp.Parser.AST.StatementObsolete __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (disposing)
                         __Internal.dtor((__Instance + __PointerAdjustment));
@@ -6193,16 +8297,16 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public global::CppSharp.Parser.AST.StatementClass Class
+                public global::CppSharp.Parser.AST.StatementClassObsolete Class
                 {
                     get
                     {
-                        return ((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->_class;
+                        return ((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->_class;
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Statement.__Internal*)__Instance)->_class = value;
+                        ((global::CppSharp.Parser.AST.StatementObsolete.__Internal*)__Instance)->_class = value;
                     }
                 }
 
@@ -6211,16 +8315,16 @@ namespace CppSharp
                     get
                     {
                         global::CppSharp.Parser.AST.Declaration __result0;
-                        if (((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->decl == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->decl))
-                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->decl];
-                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->decl);
+                        if (((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->decl == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->decl))
+                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->decl];
+                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->decl);
                         return __result0;
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Statement.__Internal*)__Instance)->decl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.StatementObsolete.__Internal*)__Instance)->decl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -6228,7 +8332,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Statement.__Internal*) __Instance)->@string));
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->@string));
                         var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
                         __basicStringRet0.Dispose(false);
                         return __stringRet0;
@@ -6236,18 +8340,18 @@ namespace CppSharp
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Statement.__Internal*)__Instance)->@string), value);
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.StatementObsolete.__Internal*)__Instance)->@string), value);
                     }
                 }
             }
 
-            public unsafe partial class Expression : global::CppSharp.Parser.AST.Statement, IDisposable
+            public unsafe partial class ExpressionObsolete : global::CppSharp.Parser.AST.StatementObsolete, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.StatementClass _class;
+                    internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
 
                     [FieldOffset(8)]
                     internal global::System.IntPtr decl;
@@ -6257,45 +8361,45 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10ExpressionC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_14StatementClassEPNS1_11DeclarationE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::CppSharp.Parser.AST.StatementClass Class, global::System.IntPtr decl);
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_22StatementClassObsoleteEPNS1_11DeclarationE")]
+                    internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::System.IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10ExpressionC2ERKS2_")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKS2_")]
                     internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10ExpressionD2Ev")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18ExpressionObsoleteD2Ev")]
                     internal static extern void dtor(global::System.IntPtr __instance);
                 }
 
-                internal static new global::CppSharp.Parser.AST.Expression __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new global::CppSharp.Parser.AST.ExpressionObsolete __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.Expression(native.ToPointer(), skipVTables);
+                    return new global::CppSharp.Parser.AST.ExpressionObsolete(native.ToPointer(), skipVTables);
                 }
 
-                internal static global::CppSharp.Parser.AST.Expression __CreateInstance(global::CppSharp.Parser.AST.Expression.__Internal native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.ExpressionObsolete __CreateInstance(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.Expression(native, skipVTables);
+                    return new global::CppSharp.Parser.AST.ExpressionObsolete(native, skipVTables);
                 }
 
-                private static void* __CopyValue(global::CppSharp.Parser.AST.Expression.__Internal native)
+                private static void* __CopyValue(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expression.__Internal));
-                    global::CppSharp.Parser.AST.Expression.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal));
+                    global::CppSharp.Parser.AST.ExpressionObsolete.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private Expression(global::CppSharp.Parser.AST.Expression.__Internal native, bool skipVTables = false)
+                private ExpressionObsolete(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
 
-                protected Expression(void* native, bool skipVTables = false)
+                protected ExpressionObsolete(void* native, bool skipVTables = false)
                     : base((void*) null)
                 {
                     __PointerAdjustment = 0;
@@ -6304,10 +8408,10 @@ namespace CppSharp
                     __Instance = new global::System.IntPtr(native);
                 }
 
-                public Expression(string str, global::CppSharp.Parser.AST.StatementClass Class, global::CppSharp.Parser.AST.Declaration decl)
+                public ExpressionObsolete(string str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::CppSharp.Parser.AST.Declaration decl)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expression.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
@@ -6318,10 +8422,10 @@ namespace CppSharp
                     __basicString0.Dispose(false);
                 }
 
-                public Expression(global::CppSharp.Parser.AST.Expression _0)
+                public ExpressionObsolete(global::CppSharp.Parser.AST.ExpressionObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expression.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6334,7 +8438,7 @@ namespace CppSharp
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
-                    global::CppSharp.Parser.AST.Statement __dummy;
+                    global::CppSharp.Parser.AST.StatementObsolete __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (disposing)
                         __Internal.dtor((__Instance + __PointerAdjustment));
@@ -6344,13 +8448,13 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class BinaryOperator : global::CppSharp.Parser.AST.Expression, IDisposable
+            public unsafe partial class BinaryOperatorObsolete : global::CppSharp.Parser.AST.ExpressionObsolete, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 80)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.StatementClass _class;
+                    internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
 
                     [FieldOffset(8)]
                     internal global::System.IntPtr decl;
@@ -6369,45 +8473,45 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperatorC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_10ExpressionESD_SB_")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_18ExpressionObsoleteESD_SB_")]
                     internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::System.IntPtr lhs, global::System.IntPtr rhs, global::System.IntPtr opcodeStr);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperatorC2ERKS2_")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKS2_")]
                     internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperatorD2Ev")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteD2Ev")]
                     internal static extern void dtor(global::System.IntPtr __instance);
                 }
 
-                internal static new global::CppSharp.Parser.AST.BinaryOperator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new global::CppSharp.Parser.AST.BinaryOperatorObsolete __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.BinaryOperator(native.ToPointer(), skipVTables);
+                    return new global::CppSharp.Parser.AST.BinaryOperatorObsolete(native.ToPointer(), skipVTables);
                 }
 
-                internal static global::CppSharp.Parser.AST.BinaryOperator __CreateInstance(global::CppSharp.Parser.AST.BinaryOperator.__Internal native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.BinaryOperatorObsolete __CreateInstance(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.BinaryOperator(native, skipVTables);
+                    return new global::CppSharp.Parser.AST.BinaryOperatorObsolete(native, skipVTables);
                 }
 
-                private static void* __CopyValue(global::CppSharp.Parser.AST.BinaryOperator.__Internal native)
+                private static void* __CopyValue(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
-                    global::CppSharp.Parser.AST.BinaryOperator.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal));
+                    global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private BinaryOperator(global::CppSharp.Parser.AST.BinaryOperator.__Internal native, bool skipVTables = false)
+                private BinaryOperatorObsolete(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
 
-                protected BinaryOperator(void* native, bool skipVTables = false)
+                protected BinaryOperatorObsolete(void* native, bool skipVTables = false)
                     : base((void*) null)
                 {
                     __PointerAdjustment = 0;
@@ -6416,10 +8520,10 @@ namespace CppSharp
                     __Instance = new global::System.IntPtr(native);
                 }
 
-                public BinaryOperator(string str, global::CppSharp.Parser.AST.Expression lhs, global::CppSharp.Parser.AST.Expression rhs, string opcodeStr)
+                public BinaryOperatorObsolete(string str, global::CppSharp.Parser.AST.ExpressionObsolete lhs, global::CppSharp.Parser.AST.ExpressionObsolete rhs, string opcodeStr)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
@@ -6435,10 +8539,10 @@ namespace CppSharp
                     __basicString3.Dispose(false);
                 }
 
-                public BinaryOperator(global::CppSharp.Parser.AST.BinaryOperator _0)
+                public BinaryOperatorObsolete(global::CppSharp.Parser.AST.BinaryOperatorObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6451,7 +8555,7 @@ namespace CppSharp
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
-                    global::CppSharp.Parser.AST.Statement __dummy;
+                    global::CppSharp.Parser.AST.StatementObsolete __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (disposing)
                         __Internal.dtor((__Instance + __PointerAdjustment));
@@ -6460,39 +8564,39 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public global::CppSharp.Parser.AST.Expression LHS
+                public global::CppSharp.Parser.AST.ExpressionObsolete LHS
                 {
                     get
                     {
-                        global::CppSharp.Parser.AST.Expression __result0;
-                        if (((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->LHS == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->LHS))
-                            __result0 = (global::CppSharp.Parser.AST.Expression) global::CppSharp.Parser.AST.Expression.NativeToManagedMap[((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->LHS];
-                        else __result0 = global::CppSharp.Parser.AST.Expression.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->LHS);
+                        global::CppSharp.Parser.AST.ExpressionObsolete __result0;
+                        if (((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->LHS == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->LHS))
+                            __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->LHS];
+                        else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->LHS);
                         return __result0;
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->LHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*)__Instance)->LHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
-                public global::CppSharp.Parser.AST.Expression RHS
+                public global::CppSharp.Parser.AST.ExpressionObsolete RHS
                 {
                     get
                     {
-                        global::CppSharp.Parser.AST.Expression __result0;
-                        if (((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->RHS == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->RHS))
-                            __result0 = (global::CppSharp.Parser.AST.Expression) global::CppSharp.Parser.AST.Expression.NativeToManagedMap[((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->RHS];
-                        else __result0 = global::CppSharp.Parser.AST.Expression.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->RHS);
+                        global::CppSharp.Parser.AST.ExpressionObsolete __result0;
+                        if (((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->RHS == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->RHS))
+                            __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->RHS];
+                        else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->RHS);
                         return __result0;
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*)__Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -6500,7 +8604,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr));
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->opcodeStr));
                         var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
                         __basicStringRet0.Dispose(false);
                         return __stringRet0;
@@ -6508,18 +8612,18 @@ namespace CppSharp
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->opcodeStr), value);
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*)__Instance)->opcodeStr), value);
                     }
                 }
             }
 
-            public unsafe partial class CallExpr : global::CppSharp.Parser.AST.Expression, IDisposable
+            public unsafe partial class CallExprObsolete : global::CppSharp.Parser.AST.ExpressionObsolete, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.StatementClass _class;
+                    internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
 
                     [FieldOffset(8)]
                     internal global::System.IntPtr decl;
@@ -6528,69 +8632,69 @@ namespace CppSharp
                     internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
 
                     [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expression___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_ Arguments;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExprC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_11DeclarationE")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_11DeclarationE")]
                     internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::System.IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExprC2ERKS2_")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKS2_")]
                     internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExprD2Ev")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsoleteD2Ev")]
                     internal static extern void dtor(global::System.IntPtr __instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr12getArgumentsEj")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsolete12getArgumentsEj")]
                     internal static extern global::System.IntPtr GetArguments(global::System.IntPtr __instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr12addArgumentsERPNS1_10ExpressionE")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsolete12addArgumentsERPNS1_18ExpressionObsoleteE")]
                     internal static extern void AddArguments(global::System.IntPtr __instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr14clearArgumentsEv")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsolete14clearArgumentsEv")]
                     internal static extern void ClearArguments(global::System.IntPtr __instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr17getArgumentsCountEv")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CallExprObsolete17getArgumentsCountEv")]
                     internal static extern uint GetArgumentsCount(global::System.IntPtr __instance);
                 }
 
-                internal static new global::CppSharp.Parser.AST.CallExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new global::CppSharp.Parser.AST.CallExprObsolete __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.CallExpr(native.ToPointer(), skipVTables);
+                    return new global::CppSharp.Parser.AST.CallExprObsolete(native.ToPointer(), skipVTables);
                 }
 
-                internal static global::CppSharp.Parser.AST.CallExpr __CreateInstance(global::CppSharp.Parser.AST.CallExpr.__Internal native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.CallExprObsolete __CreateInstance(global::CppSharp.Parser.AST.CallExprObsolete.__Internal native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.CallExpr(native, skipVTables);
+                    return new global::CppSharp.Parser.AST.CallExprObsolete(native, skipVTables);
                 }
 
-                private static void* __CopyValue(global::CppSharp.Parser.AST.CallExpr.__Internal native)
+                private static void* __CopyValue(global::CppSharp.Parser.AST.CallExprObsolete.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal));
-                    global::CppSharp.Parser.AST.CallExpr.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExprObsolete.__Internal));
+                    global::CppSharp.Parser.AST.CallExprObsolete.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private CallExpr(global::CppSharp.Parser.AST.CallExpr.__Internal native, bool skipVTables = false)
+                private CallExprObsolete(global::CppSharp.Parser.AST.CallExprObsolete.__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
 
-                protected CallExpr(void* native, bool skipVTables = false)
+                protected CallExprObsolete(void* native, bool skipVTables = false)
                     : base((void*) null)
                 {
                     __PointerAdjustment = 0;
@@ -6599,10 +8703,10 @@ namespace CppSharp
                     __Instance = new global::System.IntPtr(native);
                 }
 
-                public CallExpr(string str, global::CppSharp.Parser.AST.Declaration decl)
+                public CallExprObsolete(string str, global::CppSharp.Parser.AST.Declaration decl)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExprObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
@@ -6613,10 +8717,10 @@ namespace CppSharp
                     __basicString0.Dispose(false);
                 }
 
-                public CallExpr(global::CppSharp.Parser.AST.CallExpr _0)
+                public CallExprObsolete(global::CppSharp.Parser.AST.CallExprObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExprObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6629,7 +8733,7 @@ namespace CppSharp
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
-                    global::CppSharp.Parser.AST.Statement __dummy;
+                    global::CppSharp.Parser.AST.StatementObsolete __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (disposing)
                         __Internal.dtor((__Instance + __PointerAdjustment));
@@ -6638,18 +8742,18 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public global::CppSharp.Parser.AST.Expression GetArguments(uint i)
+                public global::CppSharp.Parser.AST.ExpressionObsolete GetArguments(uint i)
                 {
                     var __ret = __Internal.GetArguments((__Instance + __PointerAdjustment), i);
-                    global::CppSharp.Parser.AST.Expression __result0;
+                    global::CppSharp.Parser.AST.ExpressionObsolete __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(__ret))
-                        __result0 = (global::CppSharp.Parser.AST.Expression) global::CppSharp.Parser.AST.Expression.NativeToManagedMap[__ret];
-                    else __result0 = global::CppSharp.Parser.AST.Expression.__CreateInstance(__ret);
+                    else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[__ret];
+                    else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(__ret);
                     return __result0;
                 }
 
-                public void AddArguments(global::CppSharp.Parser.AST.Expression s)
+                public void AddArguments(global::CppSharp.Parser.AST.ExpressionObsolete s)
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
@@ -6672,13 +8776,13 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class CXXConstructExpr : global::CppSharp.Parser.AST.Expression, IDisposable
+            public unsafe partial class CXXConstructExprObsolete : global::CppSharp.Parser.AST.ExpressionObsolete, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.StatementClass _class;
+                    internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
 
                     [FieldOffset(8)]
                     internal global::System.IntPtr decl;
@@ -6687,69 +8791,69 @@ namespace CppSharp
                     internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
 
                     [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expression___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_ Arguments;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExprC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_11DeclarationE")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_11DeclarationE")]
                     internal static extern void ctor(global::System.IntPtr __instance, global::System.IntPtr str, global::System.IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExprC2ERKS2_")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKS2_")]
                     internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExprD2Ev")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteD2Ev")]
                     internal static extern void dtor(global::System.IntPtr __instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr12getArgumentsEj")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsolete12getArgumentsEj")]
                     internal static extern global::System.IntPtr GetArguments(global::System.IntPtr __instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr12addArgumentsERPNS1_10ExpressionE")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsolete12addArgumentsERPNS1_18ExpressionObsoleteE")]
                     internal static extern void AddArguments(global::System.IntPtr __instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr14clearArgumentsEv")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsolete14clearArgumentsEv")]
                     internal static extern void ClearArguments(global::System.IntPtr __instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr17getArgumentsCountEv")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST24CXXConstructExprObsolete17getArgumentsCountEv")]
                     internal static extern uint GetArgumentsCount(global::System.IntPtr __instance);
                 }
 
-                internal static new global::CppSharp.Parser.AST.CXXConstructExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                internal static new global::CppSharp.Parser.AST.CXXConstructExprObsolete __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.CXXConstructExpr(native.ToPointer(), skipVTables);
+                    return new global::CppSharp.Parser.AST.CXXConstructExprObsolete(native.ToPointer(), skipVTables);
                 }
 
-                internal static global::CppSharp.Parser.AST.CXXConstructExpr __CreateInstance(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal native, bool skipVTables = false)
+                internal static global::CppSharp.Parser.AST.CXXConstructExprObsolete __CreateInstance(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal native, bool skipVTables = false)
                 {
-                    return new global::CppSharp.Parser.AST.CXXConstructExpr(native, skipVTables);
+                    return new global::CppSharp.Parser.AST.CXXConstructExprObsolete(native, skipVTables);
                 }
 
-                private static void* __CopyValue(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal native)
+                private static void* __CopyValue(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal));
-                    global::CppSharp.Parser.AST.CXXConstructExpr.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal));
+                    global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
-                private CXXConstructExpr(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal native, bool skipVTables = false)
+                private CXXConstructExprObsolete(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal native, bool skipVTables = false)
                     : this(__CopyValue(native), skipVTables)
                 {
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                 }
 
-                protected CXXConstructExpr(void* native, bool skipVTables = false)
+                protected CXXConstructExprObsolete(void* native, bool skipVTables = false)
                     : base((void*) null)
                 {
                     __PointerAdjustment = 0;
@@ -6758,10 +8862,10 @@ namespace CppSharp
                     __Instance = new global::System.IntPtr(native);
                 }
 
-                public CXXConstructExpr(string str, global::CppSharp.Parser.AST.Declaration decl)
+                public CXXConstructExprObsolete(string str, global::CppSharp.Parser.AST.Declaration decl)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
@@ -6772,10 +8876,10 @@ namespace CppSharp
                     __basicString0.Dispose(false);
                 }
 
-                public CXXConstructExpr(global::CppSharp.Parser.AST.CXXConstructExpr _0)
+                public CXXConstructExprObsolete(global::CppSharp.Parser.AST.CXXConstructExprObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal));
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6788,7 +8892,7 @@ namespace CppSharp
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
-                    global::CppSharp.Parser.AST.Statement __dummy;
+                    global::CppSharp.Parser.AST.StatementObsolete __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (disposing)
                         __Internal.dtor((__Instance + __PointerAdjustment));
@@ -6797,18 +8901,18 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public global::CppSharp.Parser.AST.Expression GetArguments(uint i)
+                public global::CppSharp.Parser.AST.ExpressionObsolete GetArguments(uint i)
                 {
                     var __ret = __Internal.GetArguments((__Instance + __PointerAdjustment), i);
-                    global::CppSharp.Parser.AST.Expression __result0;
+                    global::CppSharp.Parser.AST.ExpressionObsolete __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(__ret))
-                        __result0 = (global::CppSharp.Parser.AST.Expression) global::CppSharp.Parser.AST.Expression.NativeToManagedMap[__ret];
-                    else __result0 = global::CppSharp.Parser.AST.Expression.__CreateInstance(__ret);
+                    else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[__ret];
+                    else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(__ret);
                     return __result0;
                 }
 
-                public void AddArguments(global::CppSharp.Parser.AST.Expression s)
+                public void AddArguments(global::CppSharp.Parser.AST.ExpressionObsolete s)
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
@@ -6833,7 +8937,7 @@ namespace CppSharp
 
             public unsafe partial class Parameter : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 232)]
+                [StructLayout(LayoutKind.Explicit, Size = 240)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -6910,6 +9014,9 @@ namespace CppSharp
 
                     [FieldOffset(224)]
                     internal global::System.IntPtr defaultArgument;
+
+                    [FieldOffset(232)]
+                    internal global::System.IntPtr defaultArgumentNew;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -7046,21 +9153,39 @@ namespace CppSharp
                     }
                 }
 
-                public global::CppSharp.Parser.AST.Expression DefaultArgument
+                public global::CppSharp.Parser.AST.ExpressionObsolete DefaultArgument
                 {
                     get
                     {
-                        global::CppSharp.Parser.AST.Expression __result0;
+                        global::CppSharp.Parser.AST.ExpressionObsolete __result0;
                         if (((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument))
-                            __result0 = (global::CppSharp.Parser.AST.Expression) global::CppSharp.Parser.AST.Expression.NativeToManagedMap[((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument];
-                        else __result0 = global::CppSharp.Parser.AST.Expression.__CreateInstance(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument);
+                        else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument))
+                            __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument];
+                        else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgument);
                         return __result0;
                     }
 
                     set
                     {
                         ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->defaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr DefaultArgumentNew
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->defaultArgumentNew = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -9281,6 +11406,1124 @@ namespace CppSharp
                 }
             }
 
+            public unsafe partial class VTableComponent : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.VTableComponentKind kind;
+
+                    [FieldOffset(4)]
+                    internal uint offset;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr declaration;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15VTableComponentC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15VTableComponentC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableComponent> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableComponent>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.VTableComponent __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VTableComponent(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.VTableComponent __CreateInstance(global::CppSharp.Parser.AST.VTableComponent.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VTableComponent(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.VTableComponent.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
+                    *(global::CppSharp.Parser.AST.VTableComponent.__Internal*) ret = native;
+                    return ret.ToPointer();
+                }
+
+                private VTableComponent(global::CppSharp.Parser.AST.VTableComponent.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VTableComponent(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VTableComponent()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public VTableComponent(global::CppSharp.Parser.AST.VTableComponent _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) _0.__Instance);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.VTableComponent __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.VTableComponentKind Kind
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->kind;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->kind = value;
+                    }
+                }
+
+                public uint Offset
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->offset;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->offset = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Declaration Declaration
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Declaration __result0;
+                        if (((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration))
+                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration];
+                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance)->declaration);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VTableComponent.__Internal*)__Instance)->declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+            }
+
+            public unsafe partial class VTableLayout : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S0_ Components;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout13getComponentsEj")]
+                    internal static extern global::CppSharp.Parser.AST.VTableComponent.__Internal GetComponents(global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout13addComponentsERNS1_15VTableComponentE")]
+                    internal static extern void AddComponents(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout15clearComponentsEv")]
+                    internal static extern void ClearComponents(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout18getComponentsCountEv")]
+                    internal static extern uint GetComponentsCount(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableLayout>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.VTableLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VTableLayout(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.VTableLayout __CreateInstance(global::CppSharp.Parser.AST.VTableLayout.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VTableLayout(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.VTableLayout.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
+                    global::CppSharp.Parser.AST.VTableLayout.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private VTableLayout(global::CppSharp.Parser.AST.VTableLayout.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VTableLayout(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VTableLayout()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public VTableLayout(global::CppSharp.Parser.AST.VTableLayout _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.VTableLayout __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.VTableComponent GetComponents(uint i)
+                {
+                    var __ret = __Internal.GetComponents((__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
+                }
+
+                public void AddComponents(global::CppSharp.Parser.AST.VTableComponent s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddComponents((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearComponents()
+                {
+                    __Internal.ClearComponents((__Instance + __PointerAdjustment));
+                }
+
+                public uint ComponentsCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetComponentsCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
+            public unsafe partial class VFTableInfo : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal ulong VBTableIndex;
+
+                    [FieldOffset(8)]
+                    internal uint VFPtrOffset;
+
+                    [FieldOffset(12)]
+                    internal uint VFPtrFullOffset;
+
+                    [FieldOffset(16)]
+                    internal global::CppSharp.Parser.AST.VTableLayout.__Internal layout;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VFTableInfo> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VFTableInfo>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.VFTableInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VFTableInfo(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.VFTableInfo __CreateInstance(global::CppSharp.Parser.AST.VFTableInfo.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.VFTableInfo(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.VFTableInfo.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
+                    global::CppSharp.Parser.AST.VFTableInfo.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private VFTableInfo(global::CppSharp.Parser.AST.VFTableInfo.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected VFTableInfo(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public VFTableInfo()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public VFTableInfo(global::CppSharp.Parser.AST.VFTableInfo _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.VFTableInfo __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public ulong VBTableIndex
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VBTableIndex;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VBTableIndex = value;
+                    }
+                }
+
+                public uint VFPtrOffset
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VFPtrOffset;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VFPtrOffset = value;
+                    }
+                }
+
+                public uint VFPtrFullOffset
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->VFPtrFullOffset;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->VFPtrFullOffset = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.VTableLayout Layout
+                {
+                    get
+                    {
+                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VFTableInfo.__Internal*) __Instance)->layout));
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
+                    }
+                }
+            }
+
+            public unsafe partial class LayoutField : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal uint offset;
+
+                    [FieldOffset(8)]
+                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
+
+                    [FieldOffset(32)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr fieldPtr;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11LayoutFieldC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11LayoutFieldC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr other);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11LayoutFieldD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutField> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutField>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.LayoutField __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.LayoutField(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.LayoutField __CreateInstance(global::CppSharp.Parser.AST.LayoutField.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.LayoutField(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.LayoutField.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
+                    global::CppSharp.Parser.AST.LayoutField.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private LayoutField(global::CppSharp.Parser.AST.LayoutField.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected LayoutField(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public LayoutField()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public LayoutField(global::CppSharp.Parser.AST.LayoutField other)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(other, null))
+                        throw new global::System.ArgumentNullException("other", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = other.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.LayoutField __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public uint Offset
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->offset;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->offset = value;
+                    }
+                }
+
+                public string Name
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->name), value);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.QualifiedType QualifiedType
+                {
+                    get
+                    {
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->qualifiedType));
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                    }
+                }
+
+                public global::System.IntPtr FieldPtr
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->fieldPtr;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->fieldPtr = (global::System.IntPtr) value;
+                    }
+                }
+            }
+
+            public unsafe partial class LayoutBase : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal uint offset;
+
+                    [FieldOffset(8)]
+                    internal global::System.IntPtr _class;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10LayoutBaseC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10LayoutBaseC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr other);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10LayoutBaseD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutBase> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutBase>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.LayoutBase __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.LayoutBase(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.LayoutBase __CreateInstance(global::CppSharp.Parser.AST.LayoutBase.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.LayoutBase(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.LayoutBase.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
+                    global::CppSharp.Parser.AST.LayoutBase.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private LayoutBase(global::CppSharp.Parser.AST.LayoutBase.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected LayoutBase(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public LayoutBase()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public LayoutBase(global::CppSharp.Parser.AST.LayoutBase other)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(other, null))
+                        throw new global::System.ArgumentNullException("other", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = other.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.LayoutBase __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public uint Offset
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->offset;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*)__Instance)->offset = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Class Class
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Class __result0;
+                        if (((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class))
+                            __result0 = (global::CppSharp.Parser.AST.Class) global::CppSharp.Parser.AST.Class.NativeToManagedMap[((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class];
+                        else __result0 = global::CppSharp.Parser.AST.Class.__CreateInstance(((global::CppSharp.Parser.AST.LayoutBase.__Internal*) __Instance)->_class);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.LayoutBase.__Internal*)__Instance)->_class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+            }
+
+            public unsafe partial class ClassLayout : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 136)]
+                public partial struct __Internal
+                {
+                    [FieldOffset(0)]
+                    internal global::CppSharp.Parser.AST.CppAbi ABI;
+
+                    [FieldOffset(8)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S0_ VFTables;
+
+                    [FieldOffset(32)]
+                    internal global::CppSharp.Parser.AST.VTableLayout.__Internal layout;
+
+                    [FieldOffset(56)]
+                    internal byte hasOwnVFPtr;
+
+                    [FieldOffset(64)]
+                    internal long VBPtrOffset;
+
+                    [FieldOffset(72)]
+                    internal int alignment;
+
+                    [FieldOffset(76)]
+                    internal int size;
+
+                    [FieldOffset(80)]
+                    internal int dataSize;
+
+                    [FieldOffset(88)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S0_ Fields;
+
+                    [FieldOffset(112)]
+                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S0_ Bases;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutC2Ev")]
+                    internal static extern void ctor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutC2ERKS2_")]
+                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutD2Ev")]
+                    internal static extern void dtor(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11getVFTablesEj")]
+                    internal static extern void GetVFTables(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11addVFTablesERNS1_11VFTableInfoE")]
+                    internal static extern void AddVFTables(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout13clearVFTablesEv")]
+                    internal static extern void ClearVFTables(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout9getFieldsEj")]
+                    internal static extern void GetFields(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout9addFieldsERNS1_11LayoutFieldE")]
+                    internal static extern void AddFields(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11clearFieldsEv")]
+                    internal static extern void ClearFields(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout8getBasesEj")]
+                    internal static extern void GetBases(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout8addBasesERNS1_10LayoutBaseE")]
+                    internal static extern void AddBases(global::System.IntPtr __instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout10clearBasesEv")]
+                    internal static extern void ClearBases(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout16getVFTablesCountEv")]
+                    internal static extern uint GetVFTablesCount(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout14getFieldsCountEv")]
+                    internal static extern uint GetFieldsCount(global::System.IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout13getBasesCountEv")]
+                    internal static extern uint GetBasesCount(global::System.IntPtr __instance);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
+                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ClassLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ClassLayout>();
+                protected internal void*[] __OriginalVTables;
+
+                protected bool __ownsNativeInstance;
+
+                internal static global::CppSharp.Parser.AST.ClassLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.ClassLayout(native.ToPointer(), skipVTables);
+                }
+
+                internal static global::CppSharp.Parser.AST.ClassLayout __CreateInstance(global::CppSharp.Parser.AST.ClassLayout.__Internal native, bool skipVTables = false)
+                {
+                    return new global::CppSharp.Parser.AST.ClassLayout(native, skipVTables);
+                }
+
+                private static void* __CopyValue(global::CppSharp.Parser.AST.ClassLayout.__Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
+                    global::CppSharp.Parser.AST.ClassLayout.__Internal.cctor(ret, new global::System.IntPtr(&native));
+                    return ret.ToPointer();
+                }
+
+                private ClassLayout(global::CppSharp.Parser.AST.ClassLayout.__Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected ClassLayout(void* native, bool skipVTables = false)
+                {
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public ClassLayout()
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    __Internal.ctor((__Instance + __PointerAdjustment));
+                }
+
+                public ClassLayout(global::CppSharp.Parser.AST.ClassLayout _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                }
+
+                public virtual void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.ClassLayout __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.VFTableInfo GetVFTables(uint i)
+                {
+                    var __ret = new global::CppSharp.Parser.AST.VFTableInfo.__Internal();
+                    __Internal.GetVFTables(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
+                }
+
+                public void AddVFTables(global::CppSharp.Parser.AST.VFTableInfo s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddVFTables((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearVFTables()
+                {
+                    __Internal.ClearVFTables((__Instance + __PointerAdjustment));
+                }
+
+                public global::CppSharp.Parser.AST.LayoutField GetFields(uint i)
+                {
+                    var __ret = new global::CppSharp.Parser.AST.LayoutField.__Internal();
+                    __Internal.GetFields(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.LayoutField.__CreateInstance(__ret);
+                }
+
+                public void AddFields(global::CppSharp.Parser.AST.LayoutField s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddFields((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearFields()
+                {
+                    __Internal.ClearFields((__Instance + __PointerAdjustment));
+                }
+
+                public global::CppSharp.Parser.AST.LayoutBase GetBases(uint i)
+                {
+                    var __ret = new global::CppSharp.Parser.AST.LayoutBase.__Internal();
+                    __Internal.GetBases(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
+                    return global::CppSharp.Parser.AST.LayoutBase.__CreateInstance(__ret);
+                }
+
+                public void AddBases(global::CppSharp.Parser.AST.LayoutBase s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = s.__Instance;
+                    __Internal.AddBases((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public void ClearBases()
+                {
+                    __Internal.ClearBases((__Instance + __PointerAdjustment));
+                }
+
+                public global::CppSharp.Parser.AST.CppAbi ABI
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->ABI;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->ABI = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.VTableLayout Layout
+                {
+                    get
+                    {
+                        return global::CppSharp.Parser.AST.VTableLayout.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->layout));
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
+                    }
+                }
+
+                public bool HasOwnVFPtr
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->hasOwnVFPtr != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->hasOwnVFPtr = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public long VBPtrOffset
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->VBPtrOffset;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->VBPtrOffset = value;
+                    }
+                }
+
+                public int Alignment
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->alignment;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->alignment = value;
+                    }
+                }
+
+                public int Size
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->size;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->size = value;
+                    }
+                }
+
+                public int DataSize
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->dataSize;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->dataSize = value;
+                    }
+                }
+
+                public uint VFTablesCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetVFTablesCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+
+                public uint FieldsCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetFieldsCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+
+                public uint BasesCount
+                {
+                    get
+                    {
+                        var __ret = __Internal.GetBasesCount((__Instance + __PointerAdjustment));
+                        return __ret;
+                    }
+                }
+            }
+
             public unsafe partial class Class : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 568)]
@@ -10849,7 +14092,7 @@ namespace CppSharp
 
             public unsafe partial class NonTypeTemplateParameter : global::CppSharp.Parser.AST.TemplateParameter, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 232)]
+                [StructLayout(LayoutKind.Explicit, Size = 240)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -10925,12 +14168,15 @@ namespace CppSharp
                     internal global::System.IntPtr defaultArgument;
 
                     [FieldOffset(224)]
+                    internal global::System.IntPtr defaultArgumentNew;
+
+                    [FieldOffset(232)]
                     internal uint position;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(236)]
                     internal byte isPackExpansion;
 
-                    [FieldOffset(229)]
+                    [FieldOffset(237)]
                     internal byte isExpandedParameterPack;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -11016,21 +14262,39 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public global::CppSharp.Parser.AST.Expression DefaultArgument
+                public global::CppSharp.Parser.AST.ExpressionObsolete DefaultArgument
                 {
                     get
                     {
-                        global::CppSharp.Parser.AST.Expression __result0;
+                        global::CppSharp.Parser.AST.ExpressionObsolete __result0;
                         if (((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument))
-                            __result0 = (global::CppSharp.Parser.AST.Expression) global::CppSharp.Parser.AST.Expression.NativeToManagedMap[((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument];
-                        else __result0 = global::CppSharp.Parser.AST.Expression.__CreateInstance(((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument);
+                        else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument))
+                            __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument];
+                        else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgument);
                         return __result0;
                     }
 
                     set
                     {
                         ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*)__Instance)->defaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr DefaultArgumentNew
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgumentNew == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgumentNew))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgumentNew];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*) __Instance)->defaultArgumentNew);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal*)__Instance)->defaultArgumentNew = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -13910,235 +17174,6 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class NativeLibrary : IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 80)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C fileName;
-
-                    [FieldOffset(24)]
-                    internal global::CppSharp.Parser.AST.ArchType archType;
-
-                    [FieldOffset(32)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Symbols;
-
-                    [FieldOffset(56)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Dependencies;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary10getSymbolsEj")]
-                    internal static extern global::System.IntPtr GetSymbols(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary10addSymbolsEPKc")]
-                    internal static extern void AddSymbols(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary12clearSymbolsEv")]
-                    internal static extern void ClearSymbols(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getDependenciesEj")]
-                    internal static extern global::System.IntPtr GetDependencies(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15addDependenciesEPKc")]
-                    internal static extern void AddDependencies(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary17clearDependenciesEv")]
-                    internal static extern void ClearDependencies(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getSymbolsCountEv")]
-                    internal static extern uint GetSymbolsCount(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary20getDependenciesCountEv")]
-                    internal static extern uint GetDependenciesCount(global::System.IntPtr __instance);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.NativeLibrary> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.NativeLibrary>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.NativeLibrary __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.NativeLibrary(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.NativeLibrary __CreateInstance(global::CppSharp.Parser.AST.NativeLibrary.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.NativeLibrary(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.NativeLibrary.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
-                    global::CppSharp.Parser.AST.NativeLibrary.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private NativeLibrary(global::CppSharp.Parser.AST.NativeLibrary.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected NativeLibrary(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public NativeLibrary()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public NativeLibrary(global::CppSharp.Parser.AST.NativeLibrary _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.NativeLibrary __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public string GetSymbols(uint i)
-                {
-                    var __ret = __Internal.GetSymbols((__Instance + __PointerAdjustment), i);
-                    return Marshal.PtrToStringAnsi(__ret);
-                }
-
-                public void AddSymbols(string s)
-                {
-                    __Internal.AddSymbols((__Instance + __PointerAdjustment), s);
-                }
-
-                public void ClearSymbols()
-                {
-                    __Internal.ClearSymbols((__Instance + __PointerAdjustment));
-                }
-
-                public string GetDependencies(uint i)
-                {
-                    var __ret = __Internal.GetDependencies((__Instance + __PointerAdjustment), i);
-                    return Marshal.PtrToStringAnsi(__ret);
-                }
-
-                public void AddDependencies(string s)
-                {
-                    __Internal.AddDependencies((__Instance + __PointerAdjustment), s);
-                }
-
-                public void ClearDependencies()
-                {
-                    __Internal.ClearDependencies((__Instance + __PointerAdjustment));
-                }
-
-                public string FileName
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.NativeLibrary.__Internal*)__Instance)->fileName), value);
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.ArchType ArchType
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->archType;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.NativeLibrary.__Internal*)__Instance)->archType = value;
-                    }
-                }
-
-                public uint SymbolsCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetSymbolsCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-
-                public uint DependenciesCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetDependenciesCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
             public unsafe partial class ASTContext : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
@@ -14310,2814 +17345,6 @@ namespace CppSharp
                         var __ret = __Internal.GetTranslationUnitsCount((__Instance + __PointerAdjustment));
                         return __ret;
                     }
-                }
-            }
-
-            public unsafe partial class Comment : IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ENS1_11CommentKindE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind kind);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Comment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Comment>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.Comment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.Comment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.Comment __CreateInstance(global::CppSharp.Parser.AST.Comment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.Comment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.Comment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
-                    *(global::CppSharp.Parser.AST.Comment.__Internal*) ret = native;
-                    return ret.ToPointer();
-                }
-
-                private Comment(global::CppSharp.Parser.AST.Comment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected Comment(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public Comment(global::CppSharp.Parser.AST.CommentKind kind)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment), kind);
-                }
-
-                public Comment(global::CppSharp.Parser.AST.Comment _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Comment.__Internal*) _0.__Instance);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public static implicit operator global::CppSharp.Parser.AST.Comment(global::CppSharp.Parser.AST.CommentKind kind)
-                {
-                    return new global::CppSharp.Parser.AST.Comment(kind);
-                }
-
-                public global::CppSharp.Parser.AST.CommentKind Kind
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance)->kind;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.Comment.__Internal*)__Instance)->kind = value;
-                    }
-                }
-            }
-
-            public unsafe partial class BlockContentComment : global::CppSharp.Parser.AST.Comment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockContentCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockContentCommentC2ENS1_11CommentKindE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockContentCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-                }
-
-                internal static new global::CppSharp.Parser.AST.BlockContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.BlockContentComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.BlockContentComment __CreateInstance(global::CppSharp.Parser.AST.BlockContentComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.BlockContentComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.BlockContentComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
-                    *(global::CppSharp.Parser.AST.BlockContentComment.__Internal*) ret = native;
-                    return ret.ToPointer();
-                }
-
-                private BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected BlockContentComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public BlockContentComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
-                }
-
-                public BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) _0.__Instance);
-                }
-
-                public static implicit operator global::CppSharp.Parser.AST.BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                {
-                    return new global::CppSharp.Parser.AST.BlockContentComment(Kind);
-                }
-            }
-
-            public unsafe partial class FullComment : global::CppSharp.Parser.AST.Comment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(8)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_ Blocks;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment9getBlocksEj")]
-                    internal static extern global::System.IntPtr GetBlocks(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment9addBlocksERPNS1_19BlockContentCommentE")]
-                    internal static extern void AddBlocks(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment11clearBlocksEv")]
-                    internal static extern void ClearBlocks(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullComment14getBlocksCountEv")]
-                    internal static extern uint GetBlocksCount(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.FullComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.FullComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.FullComment __CreateInstance(global::CppSharp.Parser.AST.FullComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.FullComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.FullComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
-                    global::CppSharp.Parser.AST.FullComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private FullComment(global::CppSharp.Parser.AST.FullComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected FullComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public FullComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public FullComment(global::CppSharp.Parser.AST.FullComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.BlockContentComment GetBlocks(uint i)
-                {
-                    var __ret = __Internal.GetBlocks((__Instance + __PointerAdjustment), i);
-                    global::CppSharp.Parser.AST.BlockContentComment __result0;
-                    if (__ret == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.AST.BlockContentComment.NativeToManagedMap.ContainsKey(__ret))
-                        __result0 = (global::CppSharp.Parser.AST.BlockContentComment) global::CppSharp.Parser.AST.BlockContentComment.NativeToManagedMap[__ret];
-                    else __result0 = global::CppSharp.Parser.AST.BlockContentComment.__CreateInstance(__ret);
-                    return __result0;
-                }
-
-                public void AddBlocks(global::CppSharp.Parser.AST.BlockContentComment s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddBlocks((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearBlocks()
-                {
-                    __Internal.ClearBlocks((__Instance + __PointerAdjustment));
-                }
-
-                public uint BlocksCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetBlocksCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class InlineContentComment : global::CppSharp.Parser.AST.Comment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte hasTrailingNewline;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineContentCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineContentCommentC2ENS1_11CommentKindE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineContentCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-                }
-
-                internal static new global::CppSharp.Parser.AST.InlineContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.InlineContentComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.InlineContentComment __CreateInstance(global::CppSharp.Parser.AST.InlineContentComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.InlineContentComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.InlineContentComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
-                    *(global::CppSharp.Parser.AST.InlineContentComment.__Internal*) ret = native;
-                    return ret.ToPointer();
-                }
-
-                private InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected InlineContentComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public InlineContentComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
-                }
-
-                public InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) _0.__Instance);
-                }
-
-                public static implicit operator global::CppSharp.Parser.AST.InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                {
-                    return new global::CppSharp.Parser.AST.InlineContentComment(Kind);
-                }
-
-                public bool HasTrailingNewline
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance)->hasTrailingNewline != 0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.InlineContentComment.__Internal*)__Instance)->hasTrailingNewline = (byte) (value ? 1 : 0);
-                    }
-                }
-            }
-
-            public unsafe partial class ParagraphComment : global::CppSharp.Parser.AST.BlockContentComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte isWhitespace;
-
-                    [FieldOffset(8)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_ Content;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment10getContentEj")]
-                    internal static extern global::System.IntPtr GetContent(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment10addContentERPNS1_20InlineContentCommentE")]
-                    internal static extern void AddContent(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment12clearContentEv")]
-                    internal static extern void ClearContent(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST16ParagraphComment15getContentCountEv")]
-                    internal static extern uint GetContentCount(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.ParagraphComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.ParagraphComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.ParagraphComment __CreateInstance(global::CppSharp.Parser.AST.ParagraphComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.ParagraphComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.ParagraphComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
-                    global::CppSharp.Parser.AST.ParagraphComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private ParagraphComment(global::CppSharp.Parser.AST.ParagraphComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected ParagraphComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public ParagraphComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public ParagraphComment(global::CppSharp.Parser.AST.ParagraphComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.InlineContentComment GetContent(uint i)
-                {
-                    var __ret = __Internal.GetContent((__Instance + __PointerAdjustment), i);
-                    global::CppSharp.Parser.AST.InlineContentComment __result0;
-                    if (__ret == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.AST.InlineContentComment.NativeToManagedMap.ContainsKey(__ret))
-                        __result0 = (global::CppSharp.Parser.AST.InlineContentComment) global::CppSharp.Parser.AST.InlineContentComment.NativeToManagedMap[__ret];
-                    else __result0 = global::CppSharp.Parser.AST.InlineContentComment.__CreateInstance(__ret);
-                    return __result0;
-                }
-
-                public void AddContent(global::CppSharp.Parser.AST.InlineContentComment s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddContent((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearContent()
-                {
-                    __Internal.ClearContent((__Instance + __PointerAdjustment));
-                }
-
-                public bool IsWhitespace
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ParagraphComment.__Internal*) __Instance)->isWhitespace != 0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ParagraphComment.__Internal*)__Instance)->isWhitespace = (byte) (value ? 1 : 0);
-                    }
-                }
-
-                public uint ContentCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetContentCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class BlockCommandComment : global::CppSharp.Parser.AST.BlockContentComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal uint commandId;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr paragraphComment;
-
-                    [FieldOffset(16)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2ENS1_11CommentKindE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment12getArgumentsEj")]
-                    internal static extern void GetArguments(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment12addArgumentsERNS2_8ArgumentE")]
-                    internal static extern void AddArguments(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment14clearArgumentsEv")]
-                    internal static extern void ClearArguments(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment17getArgumentsCountEv")]
-                    internal static extern uint GetArgumentsCount(global::System.IntPtr __instance);
-                }
-
-                public unsafe partial class Argument : IDisposable
-                {
-                    [StructLayout(LayoutKind.Explicit, Size = 24)]
-                    public partial struct __Internal
-                    {
-                        [FieldOffset(0)]
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentC2Ev")]
-                        internal static extern void ctor(global::System.IntPtr __instance);
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentC2ERKS3_")]
-                        internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentD2Ev")]
-                        internal static extern void dtor(global::System.IntPtr __instance);
-                    }
-
-                    public global::System.IntPtr __Instance { get; protected set; }
-
-                    protected int __PointerAdjustment;
-                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BlockCommandComment.Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BlockCommandComment.Argument>();
-                    protected internal void*[] __OriginalVTables;
-
-                    protected bool __ownsNativeInstance;
-
-                    internal static global::CppSharp.Parser.AST.BlockCommandComment.Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                    {
-                        return new global::CppSharp.Parser.AST.BlockCommandComment.Argument(native.ToPointer(), skipVTables);
-                    }
-
-                    internal static global::CppSharp.Parser.AST.BlockCommandComment.Argument __CreateInstance(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native, bool skipVTables = false)
-                    {
-                        return new global::CppSharp.Parser.AST.BlockCommandComment.Argument(native, skipVTables);
-                    }
-
-                    private static void* __CopyValue(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native)
-                    {
-                        var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
-                        global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                        return ret.ToPointer();
-                    }
-
-                    private Argument(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal native, bool skipVTables = false)
-                        : this(__CopyValue(native), skipVTables)
-                    {
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                    }
-
-                    protected Argument(void* native, bool skipVTables = false)
-                    {
-                        if (native == null)
-                            return;
-                        __Instance = new global::System.IntPtr(native);
-                    }
-
-                    public Argument()
-                    {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                        __Internal.ctor((__Instance + __PointerAdjustment));
-                    }
-
-                    public Argument(global::CppSharp.Parser.AST.BlockCommandComment.Argument _0)
-                    {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                        if (ReferenceEquals(_0, null))
-                            throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var __arg0 = _0.__Instance;
-                        __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                    }
-
-                    public void Dispose()
-                    {
-                        Dispose(disposing: true);
-                    }
-
-                    public virtual void Dispose(bool disposing)
-                    {
-                        if (__Instance == IntPtr.Zero)
-                            return;
-                        global::CppSharp.Parser.AST.BlockCommandComment.Argument __dummy;
-                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                        if (disposing)
-                            __Internal.dtor((__Instance + __PointerAdjustment));
-                        if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
-                        __Instance = IntPtr.Zero;
-                    }
-
-                    public string Text
-                    {
-                        get
-                        {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
-                        }
-
-                        set
-                        {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*)__Instance)->text), value);
-                        }
-                    }
-                }
-
-                internal static new global::CppSharp.Parser.AST.BlockCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.BlockCommandComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.BlockCommandComment __CreateInstance(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.BlockCommandComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
-                    global::CppSharp.Parser.AST.BlockCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected BlockCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public BlockCommandComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public BlockCommandComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
-                }
-
-                public BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.BlockCommandComment.Argument GetArguments(uint i)
-                {
-                    var __ret = new global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(__ret);
-                }
-
-                public void AddArguments(global::CppSharp.Parser.AST.BlockCommandComment.Argument s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddArguments((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearArguments()
-                {
-                    __Internal.ClearArguments((__Instance + __PointerAdjustment));
-                }
-
-                public static implicit operator global::CppSharp.Parser.AST.BlockCommandComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                {
-                    return new global::CppSharp.Parser.AST.BlockCommandComment(Kind);
-                }
-
-                public uint CommandId
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->commandId;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*)__Instance)->commandId = value;
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.ParagraphComment ParagraphComment
-                {
-                    get
-                    {
-                        global::CppSharp.Parser.AST.ParagraphComment __result0;
-                        if (((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.ParagraphComment.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment))
-                            __result0 = (global::CppSharp.Parser.AST.ParagraphComment) global::CppSharp.Parser.AST.ParagraphComment.NativeToManagedMap[((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment];
-                        else __result0 = global::CppSharp.Parser.AST.ParagraphComment.__CreateInstance(((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*) __Instance)->paragraphComment);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.BlockCommandComment.__Internal*)__Instance)->paragraphComment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
-
-                public uint ArgumentsCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetArgumentsCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class ParamCommandComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal uint commandId;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr paragraphComment;
-
-                    [FieldOffset(16)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.ParamCommandComment.PassDirection direction;
-
-                    [FieldOffset(44)]
-                    internal uint paramIndex;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19ParamCommandCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19ParamCommandCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19ParamCommandCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                public enum PassDirection : uint
-                {
-                    In = 0,
-                    Out = 1,
-                    InOut = 2
-                }
-
-                internal static new global::CppSharp.Parser.AST.ParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.ParamCommandComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.ParamCommandComment __CreateInstance(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.ParamCommandComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
-                    global::CppSharp.Parser.AST.ParamCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private ParamCommandComment(global::CppSharp.Parser.AST.ParamCommandComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected ParamCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public ParamCommandComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public ParamCommandComment(global::CppSharp.Parser.AST.ParamCommandComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.ParamCommandComment.PassDirection Direction
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*) __Instance)->direction;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*)__Instance)->direction = value;
-                    }
-                }
-
-                public uint ParamIndex
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*) __Instance)->paramIndex;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.ParamCommandComment.__Internal*)__Instance)->paramIndex = value;
-                    }
-                }
-            }
-
-            public unsafe partial class TParamCommandComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal uint commandId;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr paragraphComment;
-
-                    [FieldOffset(16)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector__i___N_std_N___1_S_allocator__i Position;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment11getPositionEj")]
-                    internal static extern uint GetPosition(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment11addPositionERj")]
-                    internal static extern void AddPosition(global::System.IntPtr __instance, uint* s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment13clearPositionEv")]
-                    internal static extern void ClearPosition(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20TParamCommandComment16getPositionCountEv")]
-                    internal static extern uint GetPositionCount(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.TParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.TParamCommandComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.TParamCommandComment __CreateInstance(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.TParamCommandComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
-                    global::CppSharp.Parser.AST.TParamCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private TParamCommandComment(global::CppSharp.Parser.AST.TParamCommandComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected TParamCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public TParamCommandComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public TParamCommandComment(global::CppSharp.Parser.AST.TParamCommandComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public uint GetPosition(uint i)
-                {
-                    var __ret = __Internal.GetPosition((__Instance + __PointerAdjustment), i);
-                    return __ret;
-                }
-
-                public void AddPosition(ref uint s)
-                {
-                    fixed (uint* __s0 = &s)
-                    {
-                        var __arg0 = __s0;
-                        __Internal.AddPosition((__Instance + __PointerAdjustment), __arg0);
-                    }
-                }
-
-                public void ClearPosition()
-                {
-                    __Internal.ClearPosition((__Instance + __PointerAdjustment));
-                }
-
-                public uint PositionCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetPositionCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class VerbatimBlockLineComment : global::CppSharp.Parser.AST.Comment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(8)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VerbatimBlockLineComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.VerbatimBlockLineComment __CreateInstance(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VerbatimBlockLineComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
-                    global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private VerbatimBlockLineComment(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected VerbatimBlockLineComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public VerbatimBlockLineComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public VerbatimBlockLineComment(global::CppSharp.Parser.AST.VerbatimBlockLineComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public string Text
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*)__Instance)->text), value);
-                    }
-                }
-            }
-
-            public unsafe partial class VerbatimBlockComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal uint commandId;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr paragraphComment;
-
-                    [FieldOffset(16)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_ Lines;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment8getLinesEj")]
-                    internal static extern global::System.IntPtr GetLines(global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment8addLinesERPNS1_24VerbatimBlockLineCommentE")]
-                    internal static extern void AddLines(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment10clearLinesEv")]
-                    internal static extern void ClearLines(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20VerbatimBlockComment13getLinesCountEv")]
-                    internal static extern uint GetLinesCount(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VerbatimBlockComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.VerbatimBlockComment __CreateInstance(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VerbatimBlockComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
-                    global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private VerbatimBlockComment(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected VerbatimBlockComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public VerbatimBlockComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public VerbatimBlockComment(global::CppSharp.Parser.AST.VerbatimBlockComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.VerbatimBlockLineComment GetLines(uint i)
-                {
-                    var __ret = __Internal.GetLines((__Instance + __PointerAdjustment), i);
-                    global::CppSharp.Parser.AST.VerbatimBlockLineComment __result0;
-                    if (__ret == IntPtr.Zero) __result0 = null;
-                    else if (global::CppSharp.Parser.AST.VerbatimBlockLineComment.NativeToManagedMap.ContainsKey(__ret))
-                        __result0 = (global::CppSharp.Parser.AST.VerbatimBlockLineComment) global::CppSharp.Parser.AST.VerbatimBlockLineComment.NativeToManagedMap[__ret];
-                    else __result0 = global::CppSharp.Parser.AST.VerbatimBlockLineComment.__CreateInstance(__ret);
-                    return __result0;
-                }
-
-                public void AddLines(global::CppSharp.Parser.AST.VerbatimBlockLineComment s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddLines((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearLines()
-                {
-                    __Internal.ClearLines((__Instance + __PointerAdjustment));
-                }
-
-                public uint LinesCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetLinesCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class VerbatimLineComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal uint commandId;
-
-                    [FieldOffset(8)]
-                    internal global::System.IntPtr paragraphComment;
-
-                    [FieldOffset(16)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-
-                    [FieldOffset(40)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19VerbatimLineCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19VerbatimLineCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19VerbatimLineCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VerbatimLineComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.VerbatimLineComment __CreateInstance(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.VerbatimLineComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
-                    global::CppSharp.Parser.AST.VerbatimLineComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private VerbatimLineComment(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected VerbatimLineComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public VerbatimLineComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public VerbatimLineComment(global::CppSharp.Parser.AST.VerbatimLineComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public string Text
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*)__Instance)->text), value);
-                    }
-                }
-            }
-
-            public unsafe partial class InlineCommandComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte hasTrailingNewline;
-
-                    [FieldOffset(8)]
-                    internal uint commandId;
-
-                    [FieldOffset(12)]
-                    internal global::CppSharp.Parser.AST.InlineCommandComment.RenderKind commentRenderKind;
-
-                    [FieldOffset(16)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment12getArgumentsEj")]
-                    internal static extern void GetArguments(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment12addArgumentsERNS2_8ArgumentE")]
-                    internal static extern void AddArguments(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment14clearArgumentsEv")]
-                    internal static extern void ClearArguments(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment17getArgumentsCountEv")]
-                    internal static extern uint GetArgumentsCount(global::System.IntPtr __instance);
-                }
-
-                public enum RenderKind : uint
-                {
-                    RenderNormal = 0,
-                    RenderBold = 1,
-                    RenderMonospaced = 2,
-                    RenderEmphasized = 3
-                }
-
-                public unsafe partial class Argument : IDisposable
-                {
-                    [StructLayout(LayoutKind.Explicit, Size = 24)]
-                    public partial struct __Internal
-                    {
-                        [FieldOffset(0)]
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentC2Ev")]
-                        internal static extern void ctor(global::System.IntPtr __instance);
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentC2ERKS3_")]
-                        internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentD2Ev")]
-                        internal static extern void dtor(global::System.IntPtr __instance);
-                    }
-
-                    public global::System.IntPtr __Instance { get; protected set; }
-
-                    protected int __PointerAdjustment;
-                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.InlineCommandComment.Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.InlineCommandComment.Argument>();
-                    protected internal void*[] __OriginalVTables;
-
-                    protected bool __ownsNativeInstance;
-
-                    internal static global::CppSharp.Parser.AST.InlineCommandComment.Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                    {
-                        return new global::CppSharp.Parser.AST.InlineCommandComment.Argument(native.ToPointer(), skipVTables);
-                    }
-
-                    internal static global::CppSharp.Parser.AST.InlineCommandComment.Argument __CreateInstance(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native, bool skipVTables = false)
-                    {
-                        return new global::CppSharp.Parser.AST.InlineCommandComment.Argument(native, skipVTables);
-                    }
-
-                    private static void* __CopyValue(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native)
-                    {
-                        var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
-                        global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                        return ret.ToPointer();
-                    }
-
-                    private Argument(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal native, bool skipVTables = false)
-                        : this(__CopyValue(native), skipVTables)
-                    {
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                    }
-
-                    protected Argument(void* native, bool skipVTables = false)
-                    {
-                        if (native == null)
-                            return;
-                        __Instance = new global::System.IntPtr(native);
-                    }
-
-                    public Argument()
-                    {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                        __Internal.ctor((__Instance + __PointerAdjustment));
-                    }
-
-                    public Argument(global::CppSharp.Parser.AST.InlineCommandComment.Argument _0)
-                    {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                        if (ReferenceEquals(_0, null))
-                            throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var __arg0 = _0.__Instance;
-                        __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                    }
-
-                    public void Dispose()
-                    {
-                        Dispose(disposing: true);
-                    }
-
-                    public virtual void Dispose(bool disposing)
-                    {
-                        if (__Instance == IntPtr.Zero)
-                            return;
-                        global::CppSharp.Parser.AST.InlineCommandComment.Argument __dummy;
-                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                        if (disposing)
-                            __Internal.dtor((__Instance + __PointerAdjustment));
-                        if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
-                        __Instance = IntPtr.Zero;
-                    }
-
-                    public string Text
-                    {
-                        get
-                        {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
-                        }
-
-                        set
-                        {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*)__Instance)->text), value);
-                        }
-                    }
-                }
-
-                internal static new global::CppSharp.Parser.AST.InlineCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.InlineCommandComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.InlineCommandComment __CreateInstance(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.InlineCommandComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
-                    global::CppSharp.Parser.AST.InlineCommandComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private InlineCommandComment(global::CppSharp.Parser.AST.InlineCommandComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected InlineCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public InlineCommandComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public InlineCommandComment(global::CppSharp.Parser.AST.InlineCommandComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.InlineCommandComment.Argument GetArguments(uint i)
-                {
-                    var __ret = new global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(__ret);
-                }
-
-                public void AddArguments(global::CppSharp.Parser.AST.InlineCommandComment.Argument s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddArguments((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearArguments()
-                {
-                    __Internal.ClearArguments((__Instance + __PointerAdjustment));
-                }
-
-                public uint CommandId
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*) __Instance)->commandId;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*)__Instance)->commandId = value;
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.InlineCommandComment.RenderKind CommentRenderKind
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*) __Instance)->commentRenderKind;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.InlineCommandComment.__Internal*)__Instance)->commentRenderKind = value;
-                    }
-                }
-
-                public uint ArgumentsCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetArgumentsCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class HTMLTagComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte hasTrailingNewline;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST14HTMLTagCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST14HTMLTagCommentC2ENS1_11CommentKindE")]
-                    internal static extern void ctor(global::System.IntPtr __instance, global::CppSharp.Parser.AST.CommentKind Kind);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST14HTMLTagCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-                }
-
-                internal static new global::CppSharp.Parser.AST.HTMLTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLTagComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.HTMLTagComment __CreateInstance(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLTagComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
-                    *(global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) ret = native;
-                    return ret.ToPointer();
-                }
-
-                private HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected HTMLTagComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public HTMLTagComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment), Kind);
-                }
-
-                public HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) _0.__Instance);
-                }
-
-                public static implicit operator global::CppSharp.Parser.AST.HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLTagComment(Kind);
-                }
-            }
-
-            public unsafe partial class HTMLStartTagComment : global::CppSharp.Parser.AST.HTMLTagComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte hasTrailingNewline;
-
-                    [FieldOffset(8)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C tagName;
-
-                    [FieldOffset(32)]
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_ Attributes;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment13getAttributesEj")]
-                    internal static extern void GetAttributes(global::System.IntPtr @return, global::System.IntPtr __instance, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment13addAttributesERNS2_9AttributeE")]
-                    internal static extern void AddAttributes(global::System.IntPtr __instance, global::System.IntPtr s);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment15clearAttributesEv")]
-                    internal static extern void ClearAttributes(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment18getAttributesCountEv")]
-                    internal static extern uint GetAttributesCount(global::System.IntPtr __instance);
-                }
-
-                public unsafe partial class Attribute : IDisposable
-                {
-                    [StructLayout(LayoutKind.Explicit, Size = 48)]
-                    public partial struct __Internal
-                    {
-                        [FieldOffset(0)]
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-
-                        [FieldOffset(24)]
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C value;
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeC2Ev")]
-                        internal static extern void ctor(global::System.IntPtr __instance);
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeC2ERKS3_")]
-                        internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                        [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                            EntryPoint="_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeD2Ev")]
-                        internal static extern void dtor(global::System.IntPtr __instance);
-                    }
-
-                    public global::System.IntPtr __Instance { get; protected set; }
-
-                    protected int __PointerAdjustment;
-                    internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute>();
-                    protected internal void*[] __OriginalVTables;
-
-                    protected bool __ownsNativeInstance;
-
-                    internal static global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                    {
-                        return new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute(native.ToPointer(), skipVTables);
-                    }
-
-                    internal static global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute __CreateInstance(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native, bool skipVTables = false)
-                    {
-                        return new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute(native, skipVTables);
-                    }
-
-                    private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native)
-                    {
-                        var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
-                        global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                        return ret.ToPointer();
-                    }
-
-                    private Attribute(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal native, bool skipVTables = false)
-                        : this(__CopyValue(native), skipVTables)
-                    {
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                    }
-
-                    protected Attribute(void* native, bool skipVTables = false)
-                    {
-                        if (native == null)
-                            return;
-                        __Instance = new global::System.IntPtr(native);
-                    }
-
-                    public Attribute()
-                    {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                        __Internal.ctor((__Instance + __PointerAdjustment));
-                    }
-
-                    public Attribute(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute _0)
-                    {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
-                        __ownsNativeInstance = true;
-                        NativeToManagedMap[__Instance] = this;
-                        if (ReferenceEquals(_0, null))
-                            throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                        var __arg0 = _0.__Instance;
-                        __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                    }
-
-                    public void Dispose()
-                    {
-                        Dispose(disposing: true);
-                    }
-
-                    public virtual void Dispose(bool disposing)
-                    {
-                        if (__Instance == IntPtr.Zero)
-                            return;
-                        global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute __dummy;
-                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                        if (disposing)
-                            __Internal.dtor((__Instance + __PointerAdjustment));
-                        if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
-                        __Instance = IntPtr.Zero;
-                    }
-
-                    public string Name
-                    {
-                        get
-                        {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
-                        }
-
-                        set
-                        {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*)__Instance)->name), value);
-                        }
-                    }
-
-                    public string Value
-                    {
-                        get
-                        {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
-                        }
-
-                        set
-                        {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*)__Instance)->value), value);
-                        }
-                    }
-                }
-
-                internal static new global::CppSharp.Parser.AST.HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLStartTagComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.HTMLStartTagComment __CreateInstance(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLStartTagComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
-                    global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private HTMLStartTagComment(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected HTMLStartTagComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public HTMLStartTagComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public HTMLStartTagComment(global::CppSharp.Parser.AST.HTMLStartTagComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute GetAttributes(uint i)
-                {
-                    var __ret = new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal();
-                    __Internal.GetAttributes(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(__ret);
-                }
-
-                public void AddAttributes(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute s)
-                {
-                    if (ReferenceEquals(s, null))
-                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
-                    __Internal.AddAttributes((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void ClearAttributes()
-                {
-                    __Internal.ClearAttributes((__Instance + __PointerAdjustment));
-                }
-
-                public string TagName
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*)__Instance)->tagName), value);
-                    }
-                }
-
-                public uint AttributesCount
-                {
-                    get
-                    {
-                        var __ret = __Internal.GetAttributesCount((__Instance + __PointerAdjustment));
-                        return __ret;
-                    }
-                }
-            }
-
-            public unsafe partial class HTMLEndTagComment : global::CppSharp.Parser.AST.HTMLTagComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte hasTrailingNewline;
-
-                    [FieldOffset(8)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C tagName;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLEndTagComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.HTMLEndTagComment __CreateInstance(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.HTMLEndTagComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
-                    global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private HTMLEndTagComment(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected HTMLEndTagComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public HTMLEndTagComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public HTMLEndTagComment(global::CppSharp.Parser.AST.HTMLEndTagComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public string TagName
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*)__Instance)->tagName), value);
-                    }
-                }
-            }
-
-            public unsafe partial class TextComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.CommentKind kind;
-
-                    [FieldOffset(4)]
-                    internal byte hasTrailingNewline;
-
-                    [FieldOffset(8)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11TextCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11TextCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11TextCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                internal static new global::CppSharp.Parser.AST.TextComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.TextComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.TextComment __CreateInstance(global::CppSharp.Parser.AST.TextComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.TextComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.TextComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
-                    global::CppSharp.Parser.AST.TextComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private TextComment(global::CppSharp.Parser.AST.TextComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected TextComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
-                {
-                    __PointerAdjustment = 0;
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public TextComment()
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public TextComment(global::CppSharp.Parser.AST.TextComment _0)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public override void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.Comment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public string Text
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TextComment.__Internal*)__Instance)->text), value);
-                    }
-                }
-            }
-
-            public unsafe partial class RawComment : IDisposable
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
-                public partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal global::CppSharp.Parser.AST.RawCommentKind kind;
-
-                    [FieldOffset(8)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-
-                    [FieldOffset(32)]
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C briefText;
-
-                    [FieldOffset(56)]
-                    internal global::System.IntPtr fullCommentBlock;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentC2Ev")]
-                    internal static extern void ctor(global::System.IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentC2ERKS2_")]
-                    internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentD2Ev")]
-                    internal static extern void dtor(global::System.IntPtr __instance);
-                }
-
-                public global::System.IntPtr __Instance { get; protected set; }
-
-                protected int __PointerAdjustment;
-                internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.RawComment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.RawComment>();
-                protected internal void*[] __OriginalVTables;
-
-                protected bool __ownsNativeInstance;
-
-                internal static global::CppSharp.Parser.AST.RawComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.RawComment(native.ToPointer(), skipVTables);
-                }
-
-                internal static global::CppSharp.Parser.AST.RawComment __CreateInstance(global::CppSharp.Parser.AST.RawComment.__Internal native, bool skipVTables = false)
-                {
-                    return new global::CppSharp.Parser.AST.RawComment(native, skipVTables);
-                }
-
-                private static void* __CopyValue(global::CppSharp.Parser.AST.RawComment.__Internal native)
-                {
-                    var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
-                    global::CppSharp.Parser.AST.RawComment.__Internal.cctor(ret, new global::System.IntPtr(&native));
-                    return ret.ToPointer();
-                }
-
-                private RawComment(global::CppSharp.Parser.AST.RawComment.__Internal native, bool skipVTables = false)
-                    : this(__CopyValue(native), skipVTables)
-                {
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                }
-
-                protected RawComment(void* native, bool skipVTables = false)
-                {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
-                }
-
-                public RawComment()
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    __Internal.ctor((__Instance + __PointerAdjustment));
-                }
-
-                public RawComment(global::CppSharp.Parser.AST.RawComment _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
-                    __ownsNativeInstance = true;
-                    NativeToManagedMap[__Instance] = this;
-                    if (ReferenceEquals(_0, null))
-                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = _0.__Instance;
-                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
-                }
-
-                public void Dispose()
-                {
-                    Dispose(disposing: true);
-                }
-
-                public virtual void Dispose(bool disposing)
-                {
-                    if (__Instance == IntPtr.Zero)
-                        return;
-                    global::CppSharp.Parser.AST.RawComment __dummy;
-                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    if (disposing)
-                        __Internal.dtor((__Instance + __PointerAdjustment));
-                    if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
-                    __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.RawCommentKind Kind
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->kind;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->kind = value;
-                    }
-                }
-
-                public string Text
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->text), value);
-                    }
-                }
-
-                public string BriefText
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->briefText), value);
-                    }
-                }
-
-                public global::CppSharp.Parser.AST.FullComment FullCommentBlock
-                {
-                    get
-                    {
-                        global::CppSharp.Parser.AST.FullComment __result0;
-                        if (((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.FullComment.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock))
-                            __result0 = (global::CppSharp.Parser.AST.FullComment) global::CppSharp.Parser.AST.FullComment.NativeToManagedMap[((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock];
-                        else __result0 = global::CppSharp.Parser.AST.FullComment.__CreateInstance(((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->fullCommentBlock);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.RawComment.__Internal*)__Instance)->fullCommentBlock = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
-            }
-        }
-    }
-}
-
-namespace CppSharp
-{
-    namespace Parser
-    {
-        public unsafe partial struct SourceLocation
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 4)]
-            public partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal uint ID;
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2Ev")]
-                internal static extern void ctor(global::System.IntPtr __instance);
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2Ej")]
-                internal static extern void ctor(global::System.IntPtr __instance, uint ID);
-
-                [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2ERKS1_")]
-                internal static extern void cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
-            }
-
-            private SourceLocation.__Internal __instance;
-            internal SourceLocation.__Internal __Instance { get { return __instance; } }
-
-            internal static global::CppSharp.Parser.SourceLocation __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
-            {
-                return new global::CppSharp.Parser.SourceLocation(native.ToPointer(), skipVTables);
-            }
-
-            internal static global::CppSharp.Parser.SourceLocation __CreateInstance(global::CppSharp.Parser.SourceLocation.__Internal native, bool skipVTables = false)
-            {
-                return new global::CppSharp.Parser.SourceLocation(native, skipVTables);
-            }
-
-            private SourceLocation(global::CppSharp.Parser.SourceLocation.__Internal native, bool skipVTables = false)
-                : this()
-            {
-                __instance = native;
-            }
-
-            private SourceLocation(void* native, bool skipVTables = false) : this()
-            {
-                __instance = *(global::CppSharp.Parser.SourceLocation.__Internal*) native;
-            }
-
-            public SourceLocation(uint ID)
-                : this()
-            {
-                fixed (__Internal* __instancePtr = &__instance)
-                {
-                    __Internal.ctor(new global::System.IntPtr(__instancePtr), ID);
-                }
-            }
-
-            public SourceLocation(global::CppSharp.Parser.SourceLocation _0)
-                : this()
-            {
-                var ____arg0 = _0.__Instance;
-                var __arg0 = new global::System.IntPtr(&____arg0);
-                fixed (__Internal* __instancePtr = &__instance)
-                {
-                    __Internal.cctor(new global::System.IntPtr(__instancePtr), __arg0);
-                }
-            }
-
-            public static implicit operator global::CppSharp.Parser.SourceLocation(uint ID)
-            {
-                return new global::CppSharp.Parser.SourceLocation(ID);
-            }
-
-            public uint ID
-            {
-                get
-                {
-                    return __instance.ID;
-                }
-
-                set
-                {
-                    __instance.ID = value;
                 }
             }
         }

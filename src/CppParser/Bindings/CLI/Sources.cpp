@@ -41,3 +41,68 @@ void CppSharp::Parser::SourceLocation::ID::set(unsigned int value)
     __ID = value;
 }
 
+CppSharp::Parser::SourceRange::SourceRange(::CppSharp::CppParser::SourceRange* native)
+    : __ownsNativeInstance(false)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::SourceRange^ CppSharp::Parser::SourceRange::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::SourceRange((::CppSharp::CppParser::SourceRange*) native.ToPointer());
+}
+
+CppSharp::Parser::SourceRange::~SourceRange()
+{
+    delete NativePtr;
+}
+
+CppSharp::Parser::SourceRange::SourceRange()
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::SourceRange();
+}
+
+CppSharp::Parser::SourceRange::SourceRange(CppSharp::Parser::SourceRange^ _0)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::SourceRange*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::SourceRange(__arg0);
+}
+
+System::IntPtr CppSharp::Parser::SourceRange::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::SourceRange::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::SourceRange*)object.ToPointer();
+}
+
+CppSharp::Parser::SourceLocation CppSharp::Parser::SourceRange::BeginLoc::get()
+{
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::SourceRange*)NativePtr)->beginLoc);
+}
+
+void CppSharp::Parser::SourceRange::BeginLoc::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((::CppSharp::CppParser::SourceRange*)NativePtr)->beginLoc = _marshal0;
+}
+
+CppSharp::Parser::SourceLocation CppSharp::Parser::SourceRange::EndLoc::get()
+{
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::SourceRange*)NativePtr)->endLoc);
+}
+
+void CppSharp::Parser::SourceRange::EndLoc::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((::CppSharp::CppParser::SourceRange*)NativePtr)->endLoc = _marshal0;
+}
+

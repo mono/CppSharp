@@ -1121,7 +1121,7 @@ namespace CppSharp
             return _param;
         }
 
-        private AST.Expression VisitStatement(Statement statement)
+        private AST.Expression VisitStatement(StatementObsolete statement)
         {
             if (statement == null)
                 return null;
@@ -1129,14 +1129,14 @@ namespace CppSharp
             AST.Expression expression;
             switch (statement.Class)
             {
-                case StatementClass.BinaryOperator:
-                    var binaryOperator = BinaryOperator.__CreateInstance(statement.__Instance);
+                case StatementClassObsolete.BinaryOperator:
+                    var binaryOperator = BinaryOperatorObsolete.__CreateInstance(statement.__Instance);
                     expression = new AST.BinaryOperator(VisitStatement(binaryOperator.LHS),
                         VisitStatement(binaryOperator.RHS), binaryOperator.OpcodeStr);
                     break;
-                case StatementClass.CallExprClass:
+                case StatementClassObsolete.CallExprClass:
                     var callExpression = new AST.CallExpr();
-                    var callExpr = CallExpr.__CreateInstance(statement.__Instance);
+                    var callExpr = CallExprObsolete.__CreateInstance(statement.__Instance);
                     for (uint i = 0; i < callExpr.ArgumentsCount; i++)
                     {
                         var argument = VisitStatement(callExpr.GetArguments(i));
@@ -1144,17 +1144,17 @@ namespace CppSharp
                     }
                     expression = callExpression;
                     break;
-                case StatementClass.DeclRefExprClass:
+                case StatementClassObsolete.DeclRefExprClass:
                     expression = new AST.BuiltinTypeExpression();
                     expression.Class = AST.StatementClass.DeclarationReference;
                     break;
-                case StatementClass.CXXOperatorCallExpr:
+                case StatementClassObsolete.CXXOperatorCallExpr:
                     expression = new AST.BuiltinTypeExpression();
                     expression.Class = AST.StatementClass.CXXOperatorCall;
                     break;
-                case StatementClass.CXXConstructExprClass:
+                case StatementClassObsolete.CXXConstructExprClass:
                     var constructorExpression = new AST.CXXConstructExpr();
-                    var constructorExpr = CXXConstructExpr.__CreateInstance(statement.__Instance);
+                    var constructorExpr = CXXConstructExprObsolete.__CreateInstance(statement.__Instance);
                     for (uint i = 0; i < constructorExpr.ArgumentsCount; i++)
                     {
                         var argument = VisitStatement(constructorExpr.GetArguments(i));

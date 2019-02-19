@@ -13,6 +13,7 @@ namespace CppSharp
 {
     namespace Parser
     {
+        ref class SourceRange;
         value struct SourceLocation;
     }
 }
@@ -39,6 +40,41 @@ namespace CppSharp
 
         private:
             unsigned int __ID;
+        };
+
+        public ref class SourceRange : ICppInstance
+        {
+        public:
+
+            property ::CppSharp::CppParser::SourceRange* NativePtr;
+            property System::IntPtr __Instance
+            {
+                virtual System::IntPtr get();
+                virtual void set(System::IntPtr instance);
+            }
+
+            SourceRange(::CppSharp::CppParser::SourceRange* native);
+            static SourceRange^ __CreateInstance(::System::IntPtr native);
+            SourceRange();
+
+            SourceRange(CppSharp::Parser::SourceRange^ _0);
+
+            ~SourceRange();
+
+            property CppSharp::Parser::SourceLocation BeginLoc
+            {
+                CppSharp::Parser::SourceLocation get();
+                void set(CppSharp::Parser::SourceLocation);
+            }
+
+            property CppSharp::Parser::SourceLocation EndLoc
+            {
+                CppSharp::Parser::SourceLocation get();
+                void set(CppSharp::Parser::SourceLocation);
+            }
+
+        protected:
+            bool __ownsNativeInstance;
         };
     }
 }

@@ -6,6 +6,7 @@
 // ----------------------------------------------------------------------------
 #include "CppParser.h"
 #include "AST.h"
+#include "Decl.h"
 #include "Target.h"
 
 using namespace System;

@@ -182,7 +182,7 @@ public:
     Declaration* declaration;
 };
 
-enum class StatementClass
+enum class StatementClassObsolete
 {
     Any,
     BinaryOperator,
@@ -194,47 +194,47 @@ enum class StatementClass
     ExplicitCastExpr,
 };
 
-class CS_API Statement
+class CS_API StatementObsolete
 {
 public:
-    Statement(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
-    StatementClass _class;
+    StatementObsolete(const std::string& str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration* decl = 0);
+    StatementClassObsolete _class;
     Declaration* decl;
     std::string string;
 };
 
-class CS_API Expression : public Statement
+class CS_API ExpressionObsolete : public StatementObsolete
 {
 public:
-    Expression(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
+    ExpressionObsolete(const std::string& str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration* decl = 0);
 };
 
 class Expr;
 
-class CS_API BinaryOperator : public Expression
+class CS_API BinaryOperatorObsolete : public ExpressionObsolete
 {
 public:
-    BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr);
-    ~BinaryOperator();
-    Expression* LHS;
-    Expression* RHS;
+    BinaryOperatorObsolete(const std::string& str, ExpressionObsolete* lhs, ExpressionObsolete* rhs, const std::string& opcodeStr);
+    ~BinaryOperatorObsolete();
+    ExpressionObsolete* LHS;
+    ExpressionObsolete* RHS;
     std::string opcodeStr;
 };
 
-class CS_API CallExpr : public Expression
+class CS_API CallExprObsolete : public ExpressionObsolete
 {
 public:
-    CallExpr(const std::string& str, Declaration* decl);
-    ~CallExpr();
-    VECTOR(Expression*, Arguments)
+    CallExprObsolete(const std::string& str, Declaration* decl);
+    ~CallExprObsolete();
+    VECTOR(ExpressionObsolete*, Arguments)
 };
 
-class CS_API CXXConstructExpr : public Expression
+class CS_API CXXConstructExprObsolete : public ExpressionObsolete
 {
 public:
-    CXXConstructExpr(const std::string& str, Declaration* decl = 0);
-    ~CXXConstructExpr();
-    VECTOR(Expression*, Arguments)
+    CXXConstructExprObsolete(const std::string& str, Declaration* decl = 0);
+    ~CXXConstructExprObsolete();
+    VECTOR(ExpressionObsolete*, Arguments)
 };
 
 class CS_API Parameter : public Declaration
@@ -247,7 +247,7 @@ public:
     bool isIndirect;
     bool hasDefaultValue;
     unsigned int index;
-    Expression* defaultArgument;
+    ExpressionObsolete* defaultArgument;
     Expr* defaultArgumentNew;
 };
 
@@ -626,7 +626,7 @@ public:
     NonTypeTemplateParameter();
     NonTypeTemplateParameter(const NonTypeTemplateParameter&);
     ~NonTypeTemplateParameter();
-    Expression* defaultArgument;
+    ExpressionObsolete* defaultArgument;
     Expr* defaultArgumentNew;
     unsigned int position;
     bool isPackExpansion;

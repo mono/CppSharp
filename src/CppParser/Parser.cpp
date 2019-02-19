@@ -3512,7 +3512,7 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl)
     }
 }
 
-AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
+AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
 {
     using namespace clang;
 
@@ -3521,14 +3521,14 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
     case clang::Stmt::BinaryOperatorClass:
     {
         auto BinaryOperator = cast<clang::BinaryOperator>(Expr);
-        return new AST::BinaryOperator(GetStringFromStatement(Expr),
+        return new AST::BinaryOperatorObsolete(GetStringFromStatement(Expr),
             WalkExpression(BinaryOperator->getLHS()), WalkExpression(BinaryOperator->getRHS()),
             BinaryOperator->getOpcodeStr().str());
     }
     case clang::Stmt::CallExprClass:
     {
         auto CallExpr = cast<clang::CallExpr>(Expr);
-        auto CallExpression = new AST::CallExpr(GetStringFromStatement(Expr),
+        auto CallExpression = new AST::CallExprObsolete(GetStringFromStatement(Expr),
             CallExpr->getCalleeDecl() ? WalkDeclaration(CallExpr->getCalleeDecl()) : 0);
         for (auto arg : CallExpr->arguments())
         {
@@ -3537,7 +3537,7 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
         return CallExpression;
     }
     case clang::Stmt::DeclRefExprClass:
-        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::DeclRefExprClass,
+        return new AST::ExpressionObsolete(GetStringFromStatement(Expr), StatementClassObsolete::DeclRefExprClass,
             WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));
     case clang::Stmt::CStyleCastExprClass:
     case clang::Stmt::CXXConstCastExprClass:
@@ -3550,7 +3550,7 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
     case clang::Stmt::CXXOperatorCallExprClass:
     {
         auto OperatorCallExpr = cast<CXXOperatorCallExpr>(Expr);
-        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
+        return new AST::ExpressionObsolete(GetStringFromStatement(Expr), StatementClassObsolete::CXXOperatorCallExpr,
             OperatorCallExpr->getCalleeDecl() ? WalkDeclaration(OperatorCallExpr->getCalleeDecl()) : 0);
     }
     case clang::Stmt::CXXConstructExprClass:
@@ -3569,11 +3569,11 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
                     (Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::IntegerLiteralClass &&
                      Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::CXXNullPtrLiteralExprClass))
                     return WalkExpression(SubTemporaryExpr);
-                return new AST::CXXConstructExpr(GetStringFromStatement(Expr),
+                return new AST::CXXConstructExprObsolete(GetStringFromStatement(Expr),
                     WalkDeclaration(ConstructorExpr->getConstructor()));
             }
         }
-        auto ConstructorExpression = new AST::CXXConstructExpr(GetStringFromStatement(Expr),
+        auto ConstructorExpression = new AST::CXXConstructExprObsolete(GetStringFromStatement(Expr),
             WalkDeclaration(ConstructorExpr->getConstructor()));
         for (auto arg : ConstructorExpr->arguments())
         {
@@ -3596,8 +3596,8 @@ AST::Expression* Parser::WalkExpression(const clang::Expr* Expr)
         Expr->getStmtClass() != clang::Stmt::UnaryExprOrTypeTraitExprClass &&
         !Expr->isValueDependent() &&
         Expr->EvaluateAsInt(integer, c->getASTContext()))
-        return new AST::Expression(integer.Val.getInt().toString(10));
-    return new AST::Expression(GetStringFromStatement(Expr));
+        return new AST::ExpressionObsolete(integer.Val.getInt().toString(10));
+    return new AST::ExpressionObsolete(GetStringFromStatement(Expr));
 }
 
 std::string Parser::GetStringFromStatement(const clang::Stmt* Statement)
