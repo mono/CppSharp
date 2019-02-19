@@ -1365,7 +1365,7 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
     NTP->name = GetDeclName(NTTPD);
     HandleDeclaration(NTTPD, NTP);
     if (NTTPD->hasDefaultArgument())
-        NTP->defaultArgument = WalkExpression(NTTPD->getDefaultArgument());
+        NTP->defaultArgument = WalkExpressionObsolete(NTTPD->getDefaultArgument());
     NTP->depth = NTTPD->getDepth();
     NTP->index = NTTPD->getIndex();
     NTP->isParameterPack = NTTPD->isParameterPack();
@@ -2980,9 +2980,9 @@ Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,
     if (PVD->hasDefaultArg() && !PVD->hasUnparsedDefaultArg())
     {
         if (PVD->hasUninstantiatedDefaultArg())
-            P->defaultArgument = WalkExpression(PVD->getUninstantiatedDefaultArg());
+            P->defaultArgument = WalkExpressionObsolete(PVD->getUninstantiatedDefaultArg());
         else
-            P->defaultArgument = WalkExpression(PVD->getDefaultArg());
+            P->defaultArgument = WalkExpressionObsolete(PVD->getDefaultArg());
     }
     HandleDeclaration(PVD, P);
     walkedParameters[PVD] = P;
@@ -3020,10 +3020,10 @@ static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodie
     switch (Body->getStmtClass())
     {
     case clang::Stmt::StmtClass::DeclRefExprClass:
-        D = cast<DeclRefExpr>(Body)->getDecl();
+        D = cast<clang::DeclRefExpr>(Body)->getDecl();
         break;
     case clang::Stmt::StmtClass::MemberExprClass:
-        D = cast<MemberExpr>(Body)->getMemberDecl();
+        D = cast<clang::MemberExpr>(Body)->getMemberDecl();
         break;
     }
     if (D)
@@ -3512,7 +3512,7 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl)
     }
 }
 
-AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
+AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
 {
     using namespace clang;
 
@@ -3522,7 +3522,7 @@ AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto BinaryOperator = cast<clang::BinaryOperator>(Expr);
         return new AST::BinaryOperatorObsolete(GetStringFromStatement(Expr),
-            WalkExpression(BinaryOperator->getLHS()), WalkExpression(BinaryOperator->getRHS()),
+            WalkExpressionObsolete(BinaryOperator->getLHS()), WalkExpressionObsolete(BinaryOperator->getRHS()),
             BinaryOperator->getOpcodeStr().str());
     }
     case clang::Stmt::CallExprClass:
@@ -3532,13 +3532,13 @@ AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
             CallExpr->getCalleeDecl() ? WalkDeclaration(CallExpr->getCalleeDecl()) : 0);
         for (auto arg : CallExpr->arguments())
         {
-            CallExpression->Arguments.push_back(WalkExpression(arg));
+            CallExpression->Arguments.push_back(WalkExpressionObsolete(arg));
         }
         return CallExpression;
     }
     case clang::Stmt::DeclRefExprClass:
         return new AST::ExpressionObsolete(GetStringFromStatement(Expr), StatementClassObsolete::DeclRefExprClass,
-            WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));
+            WalkDeclaration(cast<clang::DeclRefExpr>(Expr)->getDecl()));
     case clang::Stmt::CStyleCastExprClass:
     case clang::Stmt::CXXConstCastExprClass:
     case clang::Stmt::CXXDynamicCastExprClass:
@@ -3546,10 +3546,10 @@ AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
     case clang::Stmt::CXXReinterpretCastExprClass:
     case clang::Stmt::CXXStaticCastExprClass:
     case clang::Stmt::ImplicitCastExprClass:
-        return WalkExpression(cast<CastExpr>(Expr)->getSubExprAsWritten());
+        return WalkExpressionObsolete(cast<clang::CastExpr>(Expr)->getSubExprAsWritten());
     case clang::Stmt::CXXOperatorCallExprClass:
     {
-        auto OperatorCallExpr = cast<CXXOperatorCallExpr>(Expr);
+        auto OperatorCallExpr = cast<clang::CXXOperatorCallExpr>(Expr);
         return new AST::ExpressionObsolete(GetStringFromStatement(Expr), StatementClassObsolete::CXXOperatorCallExpr,
             OperatorCallExpr->getCalleeDecl() ? WalkDeclaration(OperatorCallExpr->getCalleeDecl()) : 0);
     }
@@ -3564,11 +3564,11 @@ AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
             if (TemporaryExpr)
             {
                 auto SubTemporaryExpr = TemporaryExpr->GetTemporaryExpr();
-                auto Cast = dyn_cast<CastExpr>(SubTemporaryExpr);
+                auto Cast = dyn_cast<clang::CastExpr>(SubTemporaryExpr);
                 if (!Cast ||
                     (Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::IntegerLiteralClass &&
                      Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::CXXNullPtrLiteralExprClass))
-                    return WalkExpression(SubTemporaryExpr);
+                    return WalkExpressionObsolete(SubTemporaryExpr);
                 return new AST::CXXConstructExprObsolete(GetStringFromStatement(Expr),
                     WalkDeclaration(ConstructorExpr->getConstructor()));
             }
@@ -3577,16 +3577,16 @@ AST::ExpressionObsolete* Parser::WalkExpression(const clang::Expr* Expr)
             WalkDeclaration(ConstructorExpr->getConstructor()));
         for (auto arg : ConstructorExpr->arguments())
         {
-            ConstructorExpression->Arguments.push_back(WalkExpression(arg));
+            ConstructorExpression->Arguments.push_back(WalkExpressionObsolete(arg));
         }
         return ConstructorExpression;
     }
     case clang::Stmt::CXXBindTemporaryExprClass:
-        return WalkExpression(cast<CXXBindTemporaryExpr>(Expr)->getSubExpr());
+        return WalkExpressionObsolete(cast<clang::CXXBindTemporaryExpr>(Expr)->getSubExpr());
     case clang::Stmt::CXXDefaultArgExprClass:
-        return WalkExpression(cast<CXXDefaultArgExpr>(Expr)->getExpr());
+        return WalkExpressionObsolete(cast<clang::CXXDefaultArgExpr>(Expr)->getExpr());
     case clang::Stmt::MaterializeTemporaryExprClass:
-        return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
+        return WalkExpressionObsolete(cast<clang::MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
     default:
         break;
     }

@@ -62,7 +62,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool? PrintExpression(Function function, Type type, Expression expression, ref string result)
+        private bool? PrintExpression(Function function, Type type, ExpressionObsolete expression, ref string result)
         {
             var desugared = type.Desugar();
 
@@ -111,7 +111,7 @@ namespace CppSharp.Passes
             return CheckForSimpleExpressions(expression, ref result, desugared);
         }
 
-        private bool CheckForSimpleExpressions(Expression expression, ref string result, Type desugared)
+        private bool CheckForSimpleExpressions(ExpressionObsolete expression, ref string result, Type desugared)
         {
             return CheckFloatSyntax(desugared, expression, ref result) ||
                 CheckForEnumValue(desugared, expression, ref result) ||
@@ -136,7 +136,7 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private bool? CheckForDefaultConstruct(Type desugared, Expression expression,
+        private bool? CheckForDefaultConstruct(Type desugared, ExpressionObsolete expression,
             ref string result)
         {
             var type = desugared.GetFinalPointee() ?? desugared;
@@ -145,7 +145,7 @@ namespace CppSharp.Passes
             if (!type.TryGetClass(out decl))
                 return false;
 
-            var ctor = expression as CXXConstructExpr;
+            var ctor = expression as CXXConstructExprObsolete;
 
             var typePrinter = new CSharpTypePrinter(Context);
             typePrinter.PushMarshalKind(MarshalKind.DefaultExpression);
@@ -299,8 +299,8 @@ namespace CppSharp.Passes
                 return false;
 
             var defaultArgument = function.Parameters[0].OriginalDefaultArgument;
-            return defaultArgument is BuiltinTypeExpression &&
-                ((BuiltinTypeExpression) defaultArgument).Value == 0;
+            return defaultArgument is BuiltinTypeExpressionObsolete &&
+                ((BuiltinTypeExpressionObsolete) defaultArgument).Value == 0;
         }
 
         private bool CheckForDefaultChar(Type desugared, ref string result)

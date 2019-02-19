@@ -93,7 +93,7 @@ namespace CppSharp.AST
         /// </summary>
         public bool IsParameterPack { get; set; }
 
-        public Expression DefaultArgument { get; set; }
+        public ExpressionObsolete DefaultArgument { get; set; }
 
         /// <summary>
         /// Get the position of the template parameter within its parameter list.

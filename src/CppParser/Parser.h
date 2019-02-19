@@ -118,7 +118,7 @@ private:
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
-    AST::ExpressionObsolete* WalkExpression(const clang::Expr* Expression);
+    AST::ExpressionObsolete* WalkExpressionObsolete(const clang::Expr* Expression);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
     std::string GetFunctionBody(const clang::FunctionDecl* FD);
 

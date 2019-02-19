@@ -63,7 +63,7 @@ namespace CppSharp.AST
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
 
-        public Expression DefaultArgument
+        public ExpressionObsolete DefaultArgument
         {
             get
             {
@@ -77,7 +77,7 @@ namespace CppSharp.AST
             }
         }
 
-        public Expression OriginalDefaultArgument { get; set; }
+        public ExpressionObsolete OriginalDefaultArgument { get; set; }
 
         public bool IsIn => Usage == ParameterUsage.In;
         public bool IsOut => Usage == ParameterUsage.Out;
@@ -100,7 +100,7 @@ namespace CppSharp.AST
             get { return DebugText.StartsWith("const ", System.StringComparison.Ordinal); }
         }
 
-        Expression defaultArgument;
+        ExpressionObsolete defaultArgument;
     }
 
     public class ParameterTypeComparer : IEqualityComparer<Parameter>
