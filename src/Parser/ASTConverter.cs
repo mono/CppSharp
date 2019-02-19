@@ -1121,21 +1121,21 @@ namespace CppSharp
             return _param;
         }
 
-        private AST.Expression VisitStatement(StatementObsolete statement)
+        private AST.ExpressionObsolete VisitStatement(StatementObsolete statement)
         {
             if (statement == null)
                 return null;
 
-            AST.Expression expression;
+            AST.ExpressionObsolete expression;
             switch (statement.Class)
             {
                 case StatementClassObsolete.BinaryOperator:
                     var binaryOperator = BinaryOperatorObsolete.__CreateInstance(statement.__Instance);
-                    expression = new AST.BinaryOperator(VisitStatement(binaryOperator.LHS),
+                    expression = new AST.BinaryOperatorObsolete(VisitStatement(binaryOperator.LHS),
                         VisitStatement(binaryOperator.RHS), binaryOperator.OpcodeStr);
                     break;
                 case StatementClassObsolete.CallExprClass:
-                    var callExpression = new AST.CallExpr();
+                    var callExpression = new AST.CallExprObsolete();
                     var callExpr = CallExprObsolete.__CreateInstance(statement.__Instance);
                     for (uint i = 0; i < callExpr.ArgumentsCount; i++)
                     {
@@ -1145,15 +1145,15 @@ namespace CppSharp
                     expression = callExpression;
                     break;
                 case StatementClassObsolete.DeclRefExprClass:
-                    expression = new AST.BuiltinTypeExpression();
+                    expression = new AST.BuiltinTypeExpressionObsolete();
                     expression.Class = AST.StatementClass.DeclarationReference;
                     break;
                 case StatementClassObsolete.CXXOperatorCallExpr:
-                    expression = new AST.BuiltinTypeExpression();
+                    expression = new AST.BuiltinTypeExpressionObsolete();
                     expression.Class = AST.StatementClass.CXXOperatorCall;
                     break;
                 case StatementClassObsolete.CXXConstructExprClass:
-                    var constructorExpression = new AST.CXXConstructExpr();
+                    var constructorExpression = new AST.CXXConstructExprObsolete();
                     var constructorExpr = CXXConstructExprObsolete.__CreateInstance(statement.__Instance);
                     for (uint i = 0; i < constructorExpr.ArgumentsCount; i++)
                     {
@@ -1163,7 +1163,7 @@ namespace CppSharp
                     expression = constructorExpression;
                     break;
                 default:
-                    expression = new AST.BuiltinTypeExpression();
+                    expression = new AST.BuiltinTypeExpressionObsolete();
                     break;
             }
             expression.Declaration = Visit(statement.Decl);

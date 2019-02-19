@@ -9,7 +9,7 @@ namespace CppSharp.AST
         public string Name { get; set; }
         public IntPtr FieldPtr { get; set; }
         public bool IsVTablePtr { get { return FieldPtr == IntPtr.Zero; } }
-        public Expression Expression { get; set; }
+        public ExpressionObsolete Expression { get; set; }
 
         public override string ToString()
         {

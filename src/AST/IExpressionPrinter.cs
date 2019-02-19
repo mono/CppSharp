@@ -5,7 +5,7 @@
         string ToString(Type type);
     }
 
-    public interface IExpressionPrinter<out T> : IExpressionPrinter, IExpressionVisitor<T>
+    public interface IExpressionPrinter<out T> : IExpressionPrinter, IExpressionVisitorObsolete<T>
     {
     }
 }

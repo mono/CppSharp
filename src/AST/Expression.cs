@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace CppSharp.AST
 {
-    public abstract class Expression : Statement
+    public abstract class ExpressionObsolete : Statement
     {
         public string DebugText;
 
-        public abstract TV Visit<TV>(IExpressionVisitor<TV> visitor);
+        public abstract TV Visit<TV>(IExpressionVisitorObsolete<TV> visitor);
 
-        public abstract Expression Clone();
+        public abstract ExpressionObsolete Clone();
     }
 
-    public class BuiltinTypeExpression : Expression
+    public class BuiltinTypeExpressionObsolete : ExpressionObsolete
     {
         public long Value { get; set; }
 
@@ -39,14 +39,14 @@ namespace CppSharp.AST
             return printAsHex ? "0x" + value : value;
         }
 
-        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        public override T Visit<T>(IExpressionVisitorObsolete<T> visitor)
         {
             return visitor.VisitExpression(this);
         }
 
-        public override Expression Clone()
+        public override ExpressionObsolete Clone()
         {
-            return new BuiltinTypeExpression
+            return new BuiltinTypeExpressionObsolete
             {
                 Value = this.Value,
                 Type = this.Type,
@@ -58,9 +58,9 @@ namespace CppSharp.AST
         }
     }
 
-    public class BinaryOperator : Expression
+    public class BinaryOperatorObsolete : ExpressionObsolete
     {
-        public BinaryOperator(Expression lhs, Expression rhs, string opcodeStr)
+        public BinaryOperatorObsolete(ExpressionObsolete lhs, ExpressionObsolete rhs, string opcodeStr)
         {
             Class = StatementClass.BinaryOperator;
             LHS = lhs;
@@ -68,18 +68,18 @@ namespace CppSharp.AST
             OpcodeStr = opcodeStr;
         }
 
-        public Expression LHS { get; set; }
-        public Expression RHS { get; set; }
+        public ExpressionObsolete LHS { get; set; }
+        public ExpressionObsolete RHS { get; set; }
         public string OpcodeStr { get; set; }
 
-        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        public override T Visit<T>(IExpressionVisitorObsolete<T> visitor)
         {
             return visitor.VisitExpression(this);
         }
 
-        public override Expression Clone()
+        public override ExpressionObsolete Clone()
         {
-            return new BinaryOperator(LHS.Clone(), RHS.Clone(), OpcodeStr)
+            return new BinaryOperatorObsolete(LHS.Clone(), RHS.Clone(), OpcodeStr)
             {
                 DebugText = this.DebugText,
                 Declaration = this.Declaration,
@@ -88,24 +88,24 @@ namespace CppSharp.AST
         }
     }
 
-    public class CallExpr : Expression
+    public class CallExprObsolete : ExpressionObsolete
     {
-        public CallExpr()
+        public CallExprObsolete()
         {
             Class = StatementClass.Call;
-            Arguments = new List<Expression>();
+            Arguments = new List<ExpressionObsolete>();
         }
 
-        public List<Expression> Arguments { get; private set; }
+        public List<ExpressionObsolete> Arguments { get; private set; }
 
-        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        public override T Visit<T>(IExpressionVisitorObsolete<T> visitor)
         {
             return visitor.VisitExpression(this);
         }
 
-        public override Expression Clone()
+        public override ExpressionObsolete Clone()
         {
-            var clone = new CallExpr
+            var clone = new CallExprObsolete
             {
                 DebugText = this.DebugText,
                 Declaration = this.Declaration,
@@ -116,24 +116,24 @@ namespace CppSharp.AST
         }
     }
 
-    public class CXXConstructExpr : Expression
+    public class CXXConstructExprObsolete : ExpressionObsolete
     {
-        public CXXConstructExpr()
+        public CXXConstructExprObsolete()
         {
             Class = StatementClass.ConstructorReference;
-            Arguments = new List<Expression>();
+            Arguments = new List<ExpressionObsolete>();
         }
 
-        public List<Expression> Arguments { get; private set; }
+        public List<ExpressionObsolete> Arguments { get; private set; }
 
-        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        public override T Visit<T>(IExpressionVisitorObsolete<T> visitor)
         {
             return visitor.VisitExpression(this);
         }
 
-        public override Expression Clone()
+        public override ExpressionObsolete Clone()
         {
-            var clone = new CXXConstructExpr
+            var clone = new CXXConstructExprObsolete
             {
                 DebugText = this.DebugText,
                 Declaration = this.Declaration,
@@ -144,8 +144,8 @@ namespace CppSharp.AST
         }
     }
 
-    public interface IExpressionVisitor<out T>
+    public interface IExpressionVisitorObsolete<out T>
     {
-        T VisitExpression(Expression exp);
+        T VisitExpression(ExpressionObsolete exp);
     }
 }

@@ -8,7 +8,7 @@ namespace CppSharp.Generators.CSharp
 {
     public static class CSharpExpressionPrinterExtensions
     {
-        public static string CSharpValue(this Expression value, CSharpExpressionPrinter printer)
+        public static string CSharpValue(this ExpressionObsolete value, CSharpExpressionPrinter printer)
         {
             return value.Visit(printer);
         }
@@ -37,12 +37,12 @@ namespace CppSharp.Generators.CSharp
             return expression;
         }
 
-        public string VisitExpression(Expression expr)
+        public string VisitExpression(ExpressionObsolete expr)
         {
             switch (expr.Class)
             {
                 case StatementClass.Call:
-                    var callExpr = (CallExpr) expr;
+                    var callExpr = (CallExprObsolete) expr;
                     switch (callExpr.Declaration.GenerationKind)
                     {
                         case GenerationKind.Generate:
@@ -65,7 +65,7 @@ namespace CppSharp.Generators.CSharp
                         return expr.Declaration.Visit(typePrinter).Type;
                     goto default;
                 case StatementClass.BinaryOperator:
-                    var binaryOperator = (BinaryOperator) expr;
+                    var binaryOperator = (BinaryOperatorObsolete) expr;
 
                     var lhsResult = binaryOperator.LHS.String;
                     if (binaryOperator.LHS.Declaration is Enumeration.Item)
@@ -77,7 +77,7 @@ namespace CppSharp.Generators.CSharp
 
                     return $"{lhsResult} {binaryOperator.OpcodeStr} {rhsResult}";
                 case StatementClass.ConstructorReference:
-                    var constructorExpr = (CXXConstructExpr) expr;
+                    var constructorExpr = (CXXConstructExprObsolete) expr;
                     if (constructorExpr.Arguments.Count == 1 &&
                         constructorExpr.Arguments[0].Declaration is Enumeration.Item)
                         return constructorExpr.Arguments[0].Declaration.Visit(typePrinter).Type;
