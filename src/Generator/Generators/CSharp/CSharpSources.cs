@@ -144,7 +144,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public void GenerateUsings()
+        public virtual void GenerateUsings()
         {
             PushBlock(BlockKind.Usings);
             WriteLine("using System;");
@@ -237,7 +237,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        void GenerateNamespaceFunctionsAndVariables(DeclarationContext context)
+        public virtual void GenerateNamespaceFunctionsAndVariables(DeclarationContext context)
         {
             var hasGlobalVariables = !(context is Class) && context.Variables.Any(
                 v => v.IsGenerated && v.Access == AccessSpecifier.Public);
