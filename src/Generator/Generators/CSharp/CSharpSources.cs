@@ -59,6 +59,8 @@ namespace CppSharp.Generators.CSharp
             "void", "partial", "yield", "where"
         };
 
+        public static bool IsReservedKeyword(string id) => ReservedKeywords.Contains(id);
+
         public override string SafeIdentifier(string id)
         {
             if (id.All(char.IsLetterOrDigit))
