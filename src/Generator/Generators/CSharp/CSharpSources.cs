@@ -672,6 +672,18 @@ namespace CppSharp.Generators.CSharp
             return @class.IsValueType || !@class.HasBase || !@class.HasRefBase();
         }
 
+        public virtual string GetBaseClassTypeName(BaseClassSpecifier @base)
+        {
+            this.DisableTypeMap(@base.Class);
+
+            var typeName = @base.Type.Desugar().Visit(TypePrinter);
+
+            foreach (var typeMap in Context.TypeMaps.TypeMaps.Values)
+                typeMap.IsEnabled = true;
+
+            return typeName;
+        }
+
         public override void GenerateClassSpecifier(Class @class)
         {
             // private classes must be visible to because the internal structs can be used in dependencies
@@ -707,13 +719,8 @@ namespace CppSharp.Generators.CSharp
                 foreach (var @base in @class.Bases.Where(b => b.IsGenerated &&
                     b.IsClass && b.Class.IsGenerated))
                 {
-                    var typeMaps = new List<System.Type>();
-                    var keys = new List<string>();
-                    this.DisableTypeMap(@base.Class);
-                    var printedBase = @base.Type.Desugar().Visit(TypePrinter);
-                    bases.Add(printedBase.Type);
-                    foreach (var typeMap in Context.TypeMaps.TypeMaps.Values)
-                        typeMap.IsEnabled = true;
+                    var printedBase = GetBaseClassTypeName(@base);
+                    bases.Add(printedBase);
                 }
             }
 
