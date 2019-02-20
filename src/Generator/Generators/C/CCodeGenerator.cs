@@ -276,7 +276,7 @@ namespace CppSharp.Generators.C
              "_Thread_local", "__func__", "__objc_yes", "__objc_no",
         };
 
-        public bool IsReservedKeywordC(string id) => CReservedKeywords.Contains(id);
+        public static bool IsReservedKeywordC(string id) => CReservedKeywords.Contains(id);
 
         static readonly List<string> CppReservedKeywords = new List<string> {
              // C++ 2.11p1: Keywords.
@@ -293,8 +293,8 @@ namespace CppSharp.Generators.C
              "thread_local"
         };
 
-        public bool IsReservedKeywordCpp(string id) => CppReservedKeywords.Contains(id);
+        public static bool IsReservedKeywordCpp(string id) => CppReservedKeywords.Contains(id);
 
-        public bool IsReservedKeyword(string id) => IsReservedKeywordC(id) || IsReservedKeywordCpp(id);
+        public static bool IsReservedKeyword(string id) => IsReservedKeywordC(id) || IsReservedKeywordCpp(id);
     }
 }
