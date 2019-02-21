@@ -565,7 +565,6 @@ Friend::Friend() : CppSharp::CppParser::AST::Declaration(DeclarationKind::Friend
 
 Friend::~Friend() {}
 
-
 StatementObsolete::StatementObsolete(const std::string& str, StatementClassObsolete stmtClass, Declaration* decl) : string(str), _class(stmtClass), decl(decl) {}
 
 ExpressionObsolete::ExpressionObsolete(const std::string& str, StatementClassObsolete stmtClass, Declaration* decl)
@@ -643,6 +642,7 @@ Function::Function()
     , callingConvention(CallingConvention::Default)
     , specializationInfo(0)
     , instantiatedFrom(0)
+    , bodyStmt(0)
 {
 }
 

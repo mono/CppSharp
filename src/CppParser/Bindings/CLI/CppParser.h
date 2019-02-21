@@ -205,6 +205,12 @@ namespace CppSharp
                 void set(bool);
             }
 
+            property bool SkipFunctionBodies
+            {
+                bool get();
+                void set(bool);
+            }
+
             property unsigned int ArgumentsCount
             {
                 unsigned int get();

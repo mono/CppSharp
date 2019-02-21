@@ -3198,6 +3198,15 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
         ParamStartLoc = VD->getEndLoc();
     }
 
+    if (!opts->skipFunctionBodies)
+    {
+        if (FD->hasBody())
+        {
+            if (auto Body = FD->getBody())
+                F->bodyStmt = WalkStatement(Body);
+        }
+    }
+
     auto& CXXABI = codeGenTypes->getCXXABI();
     bool HasThisReturn = false;
     if (auto CD = dyn_cast<CXXConstructorDecl>(FD))

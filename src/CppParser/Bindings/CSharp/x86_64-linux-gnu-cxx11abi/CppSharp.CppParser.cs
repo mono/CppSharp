@@ -44367,6 +44367,9 @@ namespace CppSharp
                 [FieldOffset(314)]
                 internal byte skipLayoutInfo;
 
+                [FieldOffset(315)]
+                internal byte skipFunctionBodies;
+
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptionsC2Ev")]
@@ -44927,6 +44930,19 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->skipLayoutInfo = (byte) (value ? 1 : 0);
+                }
+            }
+
+            public bool SkipFunctionBodies
+            {
+                get
+                {
+                    return ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->skipFunctionBodies != 0;
+                }
+
+                set
+                {
+                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->skipFunctionBodies = (byte) (value ? 1 : 0);
                 }
             }
 
