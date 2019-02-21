@@ -311,6 +311,20 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S_allocator__S0_
         {
             [FieldOffset(0)]
@@ -573,6 +587,20 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S_allocator__S0_
         {
             [FieldOffset(0)]
@@ -655,6 +683,8 @@ namespace Std
 {
     public enum RbTreeColor : uint
     {
+        S_red = 0,
+        S_black = 1
     }
 
     namespace RbTree

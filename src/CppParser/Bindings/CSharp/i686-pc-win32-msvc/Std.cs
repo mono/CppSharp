@@ -322,6 +322,20 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorVal.__Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1
+        {
+            [FieldOffset(0)]
+            internal global::Std.VectorVal.__Internal _Myval2;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1
         {
             [FieldOffset(0)]
@@ -848,6 +862,20 @@ namespace Std
         {
             [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 12)]

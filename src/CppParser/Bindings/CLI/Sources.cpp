@@ -57,12 +57,6 @@ CppSharp::Parser::SourceRange::~SourceRange()
     delete NativePtr;
 }
 
-CppSharp::Parser::SourceRange::SourceRange()
-{
-    __ownsNativeInstance = true;
-    NativePtr = new ::CppSharp::CppParser::SourceRange();
-}
-
 CppSharp::Parser::SourceRange::SourceRange(CppSharp::Parser::SourceRange^ _0)
 {
     __ownsNativeInstance = true;
@@ -70,6 +64,12 @@ CppSharp::Parser::SourceRange::SourceRange(CppSharp::Parser::SourceRange^ _0)
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
     auto &__arg0 = *(::CppSharp::CppParser::SourceRange*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::SourceRange(__arg0);
+}
+
+CppSharp::Parser::SourceRange::SourceRange()
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::SourceRange();
 }
 
 System::IntPtr CppSharp::Parser::SourceRange::__Instance::get()

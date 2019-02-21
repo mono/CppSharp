@@ -6,6 +6,8 @@
 // ----------------------------------------------------------------------------
 #include "Decl.h"
 #include "AST.h"
+#include "Expr.h"
+#include "Stmt.h"
 #include "Types.h"
 
 using namespace System;
@@ -1460,6 +1462,16 @@ void CppSharp::Parser::AST::Parameter::DefaultArgument::set(CppSharp::Parser::AS
     ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgument = (::CppSharp::CppParser::AST::ExpressionObsolete*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::Parameter::DefaultArgumentNew::get()
+{
+    return (((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgumentNew == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgumentNew);
+}
+
+void CppSharp::Parser::AST::Parameter::DefaultArgumentNew::set(CppSharp::Parser::AST::Expr^ value)
+{
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgumentNew = (::CppSharp::CppParser::AST::Expr*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {
@@ -1655,6 +1667,16 @@ System::String^ CppSharp::Parser::AST::Function::Body::get()
 void CppSharp::Parser::AST::Function::Body::set(System::String^ value)
 {
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->body = clix::marshalString<clix::E_UTF8>(value);
+}
+
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::Function::BodyStmt::get()
+{
+    return (((::CppSharp::CppParser::AST::Function*)NativePtr)->bodyStmt == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)((::CppSharp::CppParser::AST::Function*)NativePtr)->bodyStmt);
+}
+
+void CppSharp::Parser::AST::Function::BodyStmt::set(CppSharp::Parser::AST::Stmt^ value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->bodyStmt = (::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::Function::CallingConvention::get()
@@ -3706,6 +3728,16 @@ CppSharp::Parser::AST::ExpressionObsolete^ CppSharp::Parser::AST::NonTypeTemplat
 void CppSharp::Parser::AST::NonTypeTemplateParameter::DefaultArgument::set(CppSharp::Parser::AST::ExpressionObsolete^ value)
 {
     ((::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->defaultArgument = (::CppSharp::CppParser::AST::ExpressionObsolete*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::NonTypeTemplateParameter::DefaultArgumentNew::get()
+{
+    return (((::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->defaultArgumentNew == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)((::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->defaultArgumentNew);
+}
+
+void CppSharp::Parser::AST::NonTypeTemplateParameter::DefaultArgumentNew::set(CppSharp::Parser::AST::Expr^ value)
+{
+    ((::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->defaultArgumentNew = (::CppSharp::CppParser::AST::Expr*)value->NativePtr;
 }
 
 unsigned int CppSharp::Parser::AST::NonTypeTemplateParameter::Position::get()
