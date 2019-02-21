@@ -381,14 +381,24 @@ namespace CppSharp
         readonly TypeConverter typeConverter;
         readonly DeclConverter declConverter;
         readonly CommentConverter commentConverter;
+        readonly StmtConverter stmtConverter;
+        readonly ExprConverter exprConverter;
 
         public ASTConverter(ASTContext context)
         {
             Context = context;
             typeConverter = new TypeConverter();
             commentConverter = new CommentConverter();
-            declConverter = new DeclConverter(typeConverter, commentConverter);
+            stmtConverter = new StmtConverter();
+            declConverter = new DeclConverter(typeConverter, commentConverter, stmtConverter);
             typeConverter.declConverter = declConverter;
+
+            exprConverter = new ExprConverter();
+
+            ConversionUtils.typeConverter = typeConverter;
+            ConversionUtils.declConverter = declConverter;
+            ConversionUtils.stmtConverter = stmtConverter;
+            ConversionUtils.exprConverter = exprConverter;
         }
 
         public AST.ASTContext Convert()
@@ -813,16 +823,18 @@ namespace CppSharp
     {
         readonly TypeConverter typeConverter;
         readonly CommentConverter commentConverter;
+        readonly StmtConverter stmtConverter;
 
         readonly Dictionary<IntPtr, AST.Declaration> Declarations;
         readonly Dictionary<IntPtr, AST.PreprocessedEntity> PreprocessedEntities;
         readonly Dictionary<IntPtr, AST.FunctionTemplateSpecialization> FunctionTemplateSpecializations;
 
-        public DeclConverter(TypeConverter type, CommentConverter comment)
+        public DeclConverter(TypeConverter type, CommentConverter comment, StmtConverter stmt)
         {
             NativeObjects = new HashSet<IDisposable>();
             typeConverter = type;
             commentConverter = comment;
+            stmtConverter = stmt;
             Declarations = new Dictionary<IntPtr, AST.Declaration>();
             PreprocessedEntities = new Dictionary<IntPtr, AST.PreprocessedEntity>();
             FunctionTemplateSpecializations = new Dictionary<IntPtr, AST.FunctionTemplateSpecialization>();
@@ -1200,6 +1212,12 @@ namespace CppSharp
                 var param = function.GetParameters(i);
                 var _param = Visit(param) as AST.Parameter;
                 _function.Parameters.Add(_param);
+            }
+
+            if (function.BodyStmt != null)
+            {
+                var _stmt = stmtConverter.Visit(function.BodyStmt);
+                _function.BodyStmt = _stmt;
             }
 
             _function.FunctionType = typeConverter.VisitQualified(function.QualifiedType);
@@ -2121,6 +2139,52 @@ namespace CppSharp
                 var argument = new AST.BlockCommandComment.Argument { Text = comment.GetArguments(i).Text };
                 blockCommandComment.Arguments.Add(argument);
             }
+        }
+    }
+
+    public static class ConversionUtils
+    {
+        public static TypeConverter typeConverter;
+        public static DeclConverter declConverter;
+        public static StmtConverter stmtConverter;
+        public static ExprConverter exprConverter;
+
+        public static AST.QualifiedType VisitQualifiedType(
+            QualifiedType qualifiedType)
+        {
+            return typeConverter.VisitQualified(qualifiedType);
+        }
+
+        public static AST.SourceRange VisitSourceRange(Parser.SourceRange loc)
+        {
+            return new AST.SourceRange();
+        }
+
+        public static AST.SourceLocation VisitSourceLocation(
+            Parser.SourceLocation loc)
+        {
+            return new AST.SourceLocation(loc.ID);
+        }
+
+        public static AST.Declaration VisitDeclaration(Parser.AST.Declaration decl)
+        {
+            return declConverter.Visit(decl);
+        }
+
+        public static AST.Stmt VisitStatement(Parser.AST.Stmt stmt)
+        {
+            return stmtConverter.Visit(stmt);
+        }
+
+        public static AST.Expr VisitExpression(Parser.AST.Expr expr)
+        {
+            return exprConverter.Visit(expr);
+        }
+
+        public static AST.TemplateArgument VisitTemplateArgument(
+            Parser.AST.TemplateArgument templateArg)
+        {
+            return new AST.TemplateArgument();
         }
     }
 

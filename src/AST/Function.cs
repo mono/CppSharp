@@ -250,6 +250,7 @@ namespace CppSharp.AST
         public string Mangled { get; set; }
         public string Signature { get; set; }
         public string Body { get; set; }
+        public Stmt BodyStmt { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
