@@ -87,4 +87,8 @@
             return IsMacroID ? "Macro ID: " + ID : "File ID: " + Offset;
         }
     }
+
+    public struct SourceRange
+    {
+    }
 }
