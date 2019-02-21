@@ -1439,7 +1439,7 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
 //-----------------------------------//
 
 CppSharp::CppParser::TemplateArgument
-Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc)
+Parser::WalkTemplateArgument(clang::TemplateArgument TA, clang::TemplateArgumentLoc* ArgLoc)
 {
     auto Arg = CppSharp::CppParser::TemplateArgument();
 
@@ -3563,7 +3563,7 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
         if (ConstructorExpr->getNumArgs() == 1)
         {
             auto Arg = ConstructorExpr->getArg(0);
-            auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
+            auto TemporaryExpr = dyn_cast<clang::MaterializeTemporaryExpr>(Arg);
             if (TemporaryExpr)
             {
                 auto SubTemporaryExpr = TemporaryExpr->GetTemporaryExpr();
@@ -3593,6 +3593,7 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
     default:
         break;
     }
+
     clang::Expr::EvalResult integer;
     if (Expr->getStmtClass() != clang::Stmt::CharacterLiteralClass &&
         Expr->getStmtClass() != clang::Stmt::CXXBoolLiteralExprClass &&

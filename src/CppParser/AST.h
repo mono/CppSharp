@@ -11,6 +11,8 @@
 #include "Sources.h"
 #include "Types.h"
 #include "Decl.h"
+#include "Stmt.h"
+#include "Expr.h"
 #include <algorithm>
 
 namespace CppSharp { namespace CppParser { namespace AST {
