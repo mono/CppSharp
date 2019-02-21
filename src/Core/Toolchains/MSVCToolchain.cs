@@ -670,7 +670,6 @@ namespace CppSharp
                             var um = Path.Combine(path, "um");
                             var winrt = Path.Combine(path, "winrt");
                             var ucrt = Path.Combine(path, "ucrt");
-                            Console.WriteLine(path);
                             if (Directory.Exists(shared) &&
                                 Directory.Exists(um) &&
                                 Directory.Exists(winrt) &&
