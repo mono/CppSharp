@@ -49,7 +49,7 @@ enum class DeclarationKind
 };
 
 #define DECLARE_DECL_KIND(klass, kind) \
-klass();
+    klass();
 
 enum class AccessSpecifier
 {
@@ -86,8 +86,8 @@ public:
     Declaration* completeDeclaration;
     unsigned definitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)
-        VECTOR(Declaration*, Redeclarations)
-        void* originalPtr;
+    VECTOR(Declaration*, Redeclarations)
+    void* originalPtr;
     RawComment* comment;
 };
 
@@ -137,16 +137,16 @@ public:
     CS_IGNORE Friend* FindFriend(const std::string& USR);
 
     VECTOR(Namespace*, Namespaces)
-        VECTOR(Enumeration*, Enums)
-        VECTOR(Function*, Functions)
-        VECTOR(Class*, Classes)
-        VECTOR(Template*, Templates)
-        VECTOR(TypedefDecl*, Typedefs)
-        VECTOR(TypeAlias*, TypeAliases)
-        VECTOR(Variable*, Variables)
-        VECTOR(Friend*, Friends)
+    VECTOR(Enumeration*, Enums)
+    VECTOR(Function*, Functions)
+    VECTOR(Class*, Classes)
+    VECTOR(Template*, Templates)
+    VECTOR(TypedefDecl*, Typedefs)
+    VECTOR(TypeAlias*, TypeAliases)
+    VECTOR(Variable*, Variables)
+    VECTOR(Friend*, Friends)
 
-        std::map<std::string, Declaration*> anonymous;
+    std::map<std::string, Declaration*> anonymous;
 
     bool isAnonymous;
 };
@@ -343,7 +343,7 @@ public:
     std::string body;
     CallingConvention callingConvention;
     VECTOR(Parameter*, Parameters)
-        FunctionTemplateSpecialization* specializationInfo;
+    FunctionTemplateSpecialization* specializationInfo;
     Function* instantiatedFrom;
     QualifiedType qualifiedType;
 };
@@ -407,7 +407,7 @@ public:
     BuiltinType* builtinType;
     VECTOR(Item*, Items)
 
-        Item* FindItemByName(const std::string& Name);
+    Item* FindItemByName(const std::string& Name);
 };
 
 class CS_API Variable : public Declaration
@@ -543,11 +543,11 @@ public:
     ~Class();
 
     VECTOR(BaseClassSpecifier*, Bases)
-        VECTOR(Field*, Fields)
-        VECTOR(Method*, Methods)
-        VECTOR(AccessSpecifierDecl*, Specifiers)
+    VECTOR(Field*, Fields)
+    VECTOR(Method*, Methods)
+    VECTOR(AccessSpecifierDecl*, Specifiers)
 
-        bool isPOD;
+    bool isPOD;
     bool isAbstract;
     bool isUnion;
     bool isDynamic;
@@ -662,7 +662,7 @@ public:
     ~ClassTemplateSpecialization();
     ClassTemplate* templatedDecl;
     VECTOR(TemplateArgument, Arguments)
-        TemplateSpecializationKind specializationKind;
+    TemplateSpecializationKind specializationKind;
 };
 
 class CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecialization
@@ -678,7 +678,7 @@ public:
     FunctionTemplate();
     ~FunctionTemplate();
     VECTOR(FunctionTemplateSpecialization*, Specializations)
-        FunctionTemplateSpecialization* FindSpecialization(const std::string& usr);
+    FunctionTemplateSpecialization* FindSpecialization(const std::string& usr);
 };
 
 class CS_API FunctionTemplateSpecialization
@@ -688,7 +688,7 @@ public:
     ~FunctionTemplateSpecialization();
     FunctionTemplate* _template;
     VECTOR(TemplateArgument, Arguments)
-        Function* specializedFunction;
+    Function* specializedFunction;
     TemplateSpecializationKind specializationKind;
 };
 
@@ -701,7 +701,7 @@ public:
     VarTemplate();
     ~VarTemplate();
     VECTOR(VarTemplateSpecialization*, Specializations)
-        VarTemplateSpecialization* FindSpecialization(const std::string& usr);
+    VarTemplateSpecialization* FindSpecialization(const std::string& usr);
     VarTemplatePartialSpecialization* FindPartialSpecialization(const std::string& usr);
 };
 
@@ -712,7 +712,7 @@ public:
     ~VarTemplateSpecialization();
     VarTemplate* templatedDecl;
     VECTOR(TemplateArgument, Arguments)
-        TemplateSpecializationKind specializationKind;
+    TemplateSpecializationKind specializationKind;
 };
 
 class CS_API VarTemplatePartialSpecialization : public VarTemplateSpecialization
