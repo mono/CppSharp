@@ -511,6 +511,16 @@ void CppSharp::Parser::CppParserOptions::SkipLayoutInfo::set(bool value)
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipLayoutInfo = value;
 }
 
+bool CppSharp::Parser::CppParserOptions::SkipFunctionBodies::get()
+{
+    return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipFunctionBodies;
+}
+
+void CppSharp::Parser::CppParserOptions::SkipFunctionBodies::set(bool value)
+{
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipFunctionBodies = value;
+}
+
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();

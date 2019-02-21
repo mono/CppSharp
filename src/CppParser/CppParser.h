@@ -47,6 +47,7 @@ struct CS_API CppParserOptions
     bool unityBuild;
     bool skipPrivateDeclarations;
     bool skipLayoutInfo;
+    bool skipFunctionBodies;
 };
 
 enum class ParserDiagnosticLevel

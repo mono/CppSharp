@@ -320,6 +320,8 @@ enum class FriendKind
     Undeclared
 };
 
+class Stmt;
+
 class CS_API Function : public DeclarationContext
 {
 public:
@@ -341,6 +343,7 @@ public:
     std::string mangled;
     std::string signature;
     std::string body;
+    Stmt* bodyStmt;
     CallingConvention callingConvention;
     VECTOR(Parameter*, Parameters)
     FunctionTemplateSpecialization* specializationInfo;

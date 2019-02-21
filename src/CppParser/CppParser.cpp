@@ -21,6 +21,7 @@ CppParserOptions::CppParserOptions()
     , unityBuild(false)
     , skipPrivateDeclarations(true)
     , skipLayoutInfo(false)
+    , skipFunctionBodies(true)
 {
 }
 
