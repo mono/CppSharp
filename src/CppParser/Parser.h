@@ -94,7 +94,7 @@ private:
     RawComment* WalkRawComment(const clang::RawComment* RC);
     Type* WalkType(clang::QualType QualType, const clang::TypeLoc* TL = 0,
       bool DesugarType = false);
-    TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
+    TemplateArgument WalkTemplateArgument(clang::TemplateArgument TA, clang::TemplateArgumentLoc* ArgLoc = 0);
     TemplateTemplateParameter* WalkTemplateTemplateParameter(const clang::TemplateTemplateParmDecl* TTP);
     TypeTemplateParameter* WalkTypeTemplateParameter(const clang::TemplateTypeParmDecl* TTPD);
     NonTypeTemplateParameter* WalkNonTypeTemplateParameter(const clang::NonTypeTemplateParmDecl* TTPD);
@@ -111,7 +111,7 @@ private:
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, TypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(const clang::CXXRecordDecl* RD, Class* C);
-    QualifiedType GetQualifiedType(const clang::QualType& qual, const clang::TypeLoc* TL = 0);
+    QualifiedType GetQualifiedType(clang::QualType qual, const clang::TypeLoc* TL = 0);
     void ReadClassLayout(Class* Class, const clang::RecordDecl* RD, clang::CharUnits Offset, bool IncludeVirtualBases);
     LayoutField WalkVTablePointer(Class* Class, const clang::CharUnits& Offset, const std::string& prefix);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
@@ -119,6 +119,8 @@ private:
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
     AST::ExpressionObsolete* WalkExpressionObsolete(const clang::Expr* Expression);
+    AST::Stmt* WalkStatement(const clang::Stmt* Stmt);
+    AST::Expr* WalkExpression(const clang::Expr* Stmt);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
     std::string GetFunctionBody(const clang::FunctionDecl* FD);
 

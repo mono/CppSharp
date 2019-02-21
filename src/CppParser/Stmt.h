@@ -7,15 +7,19 @@
 
 #pragma once
 
+#include "Sources.h"
+#include "Types.h"
+
 namespace CppSharp { namespace CppParser { namespace AST {
 
-enum class StmtKind
+class Expr;
+class Declaration;
+
+enum class StmtClass
 {
     NoStmt = 0,
     GCCAsmStmt = 1,
     MSAsmStmt = 2,
-    firstAsmStmtConstant = 1,
-    lastAsmStmtConstant = 2,
     AttributedStmt = 3,
     BreakStmt = 4,
     CXXCatchStmt = 5,
@@ -30,8 +34,6 @@ enum class StmtKind
     DoStmt = 14,
     BinaryConditionalOperator = 15,
     ConditionalOperator = 16,
-    firstAbstractConditionalOperatorConstant = 15,
-    lastAbstractConditionalOperatorConstant = 16,
     AddrLabelExpr = 17,
     ArrayInitIndexExpr = 18,
     ArrayInitLoopExpr = 19,
@@ -41,15 +43,11 @@ enum class StmtKind
     AtomicExpr = 23,
     BinaryOperator = 24,
     CompoundAssignOperator = 25,
-    firstBinaryOperatorConstant = 24,
-    lastBinaryOperatorConstant = 25,
     BlockExpr = 26,
     CXXBindTemporaryExpr = 27,
     CXXBoolLiteralExpr = 28,
     CXXConstructExpr = 29,
     CXXTemporaryObjectExpr = 30,
-    firstCXXConstructExprConstant = 29,
-    lastCXXConstructExprConstant = 30,
     CXXDefaultArgExpr = 31,
     CXXDefaultInitExpr = 32,
     CXXDeleteExpr = 33,
@@ -72,30 +70,19 @@ enum class StmtKind
     CXXMemberCallExpr = 50,
     CXXOperatorCallExpr = 51,
     UserDefinedLiteral = 52,
-    firstCallExprConstant = 48,
-    lastCallExprConstant = 52,
     CStyleCastExpr = 53,
     CXXFunctionalCastExpr = 54,
     CXXConstCastExpr = 55,
     CXXDynamicCastExpr = 56,
     CXXReinterpretCastExpr = 57,
     CXXStaticCastExpr = 58,
-    firstCXXNamedCastExprConstant = 55,
-    lastCXXNamedCastExprConstant = 58,
-    ObjCBridgedCastExpr = 59,
-    firstExplicitCastExprConstant = 53,
-    lastExplicitCastExprConstant = 59,
     ImplicitCastExpr = 60,
-    firstCastExprConstant = 53,
-    lastCastExprConstant = 60,
     CharacterLiteral = 61,
     ChooseExpr = 62,
     CompoundLiteralExpr = 63,
     ConvertVectorExpr = 64,
     CoawaitExpr = 65,
     CoyieldExpr = 66,
-    firstCoroutineSuspendExprConstant = 65,
-    lastCoroutineSuspendExprConstant = 66,
     DeclRefExpr = 67,
     DependentCoawaitExpr = 68,
     DependentScopeDeclRefExpr = 69,
@@ -107,8 +94,6 @@ enum class StmtKind
     FloatingLiteral = 75,
     ConstantExpr = 76,
     ExprWithCleanups = 77,
-    firstFullExprConstant = 76,
-    lastFullExprConstant = 77,
     FunctionParmPackExpr = 78,
     GNUNullExpr = 79,
     GenericSelectionExpr = 80,
@@ -122,28 +107,10 @@ enum class StmtKind
     MaterializeTemporaryExpr = 88,
     MemberExpr = 89,
     NoInitExpr = 90,
-    OMPArraySectionExpr = 91,
-    ObjCArrayLiteral = 92,
-    ObjCAvailabilityCheckExpr = 93,
-    ObjCBoolLiteralExpr = 94,
-    ObjCBoxedExpr = 95,
-    ObjCDictionaryLiteral = 96,
-    ObjCEncodeExpr = 97,
-    ObjCIndirectCopyRestoreExpr = 98,
-    ObjCIsaExpr = 99,
-    ObjCIvarRefExpr = 100,
-    ObjCMessageExpr = 101,
-    ObjCPropertyRefExpr = 102,
-    ObjCProtocolExpr = 103,
-    ObjCSelectorExpr = 104,
-    ObjCStringLiteral = 105,
-    ObjCSubscriptRefExpr = 106,
     OffsetOfExpr = 107,
     OpaqueValueExpr = 108,
     UnresolvedLookupExpr = 109,
     UnresolvedMemberExpr = 110,
-    firstOverloadExprConstant = 109,
-    lastOverloadExprConstant = 110,
     PackExpansionExpr = 111,
     ParenExpr = 112,
     ParenListExpr = 113,
@@ -160,8 +127,6 @@ enum class StmtKind
     UnaryExprOrTypeTraitExpr = 124,
     UnaryOperator = 125,
     VAArgExpr = 126,
-    firstExprConstant = 15,
-    lastExprConstant = 126,
     ForStmt = 127,
     GotoStmt = 128,
     IfStmt = 129,
@@ -169,64 +134,6 @@ enum class StmtKind
     LabelStmt = 131,
     MSDependentExistsStmt = 132,
     NullStmt = 133,
-    OMPAtomicDirective = 134,
-    OMPBarrierDirective = 135,
-    OMPCancelDirective = 136,
-    OMPCancellationPointDirective = 137,
-    OMPCriticalDirective = 138,
-    OMPFlushDirective = 139,
-    OMPDistributeDirective = 140,
-    OMPDistributeParallelForDirective = 141,
-    OMPDistributeParallelForSimdDirective = 142,
-    OMPDistributeSimdDirective = 143,
-    OMPForDirective = 144,
-    OMPForSimdDirective = 145,
-    OMPParallelForDirective = 146,
-    OMPParallelForSimdDirective = 147,
-    OMPSimdDirective = 148,
-    OMPTargetParallelForSimdDirective = 149,
-    OMPTargetSimdDirective = 150,
-    OMPTargetTeamsDistributeDirective = 151,
-    OMPTargetTeamsDistributeParallelForDirective = 152,
-    OMPTargetTeamsDistributeParallelForSimdDirective = 153,
-    OMPTargetTeamsDistributeSimdDirective = 154,
-    OMPTaskLoopDirective = 155,
-    OMPTaskLoopSimdDirective = 156,
-    OMPTeamsDistributeDirective = 157,
-    OMPTeamsDistributeParallelForDirective = 158,
-    OMPTeamsDistributeParallelForSimdDirective = 159,
-    OMPTeamsDistributeSimdDirective = 160,
-    firstOMPLoopDirectiveConstant = 140,
-    lastOMPLoopDirectiveConstant = 160,
-    OMPMasterDirective = 161,
-    OMPOrderedDirective = 162,
-    OMPParallelDirective = 163,
-    OMPParallelSectionsDirective = 164,
-    OMPSectionDirective = 165,
-    OMPSectionsDirective = 166,
-    OMPSingleDirective = 167,
-    OMPTargetDataDirective = 168,
-    OMPTargetDirective = 169,
-    OMPTargetEnterDataDirective = 170,
-    OMPTargetExitDataDirective = 171,
-    OMPTargetParallelDirective = 172,
-    OMPTargetParallelForDirective = 173,
-    OMPTargetTeamsDirective = 174,
-    OMPTargetUpdateDirective = 175,
-    OMPTaskDirective = 176,
-    OMPTaskgroupDirective = 177,
-    OMPTaskwaitDirective = 178,
-    OMPTaskyieldDirective = 179,
-    OMPTeamsDirective = 180,
-    firstOMPExecutableDirectiveConstant = 134,
-    lastOMPExecutableDirectiveConstant = 180,
-    ObjCAtCatchStmt = 181,
-    ObjCAtFinallyStmt = 182,
-    ObjCAtSynchronizedStmt = 183,
-    ObjCAtThrowStmt = 184,
-    ObjCAtTryStmt = 185,
-    ObjCAutoreleasePoolStmt = 186,
-    ObjCForCollectionStmt = 187,
     ReturnStmt = 188,
     SEHExceptStmt = 189,
     SEHFinallyStmt = 190,
@@ -234,139 +141,412 @@ enum class StmtKind
     SEHTryStmt = 192,
     CaseStmt = 193,
     DefaultStmt = 194,
-    firstSwitchCaseConstant = 193,
-    lastSwitchCaseConstant = 194,
     SwitchStmt = 195,
     WhileStmt = 196,
-    firstStmtConstant = 1,
-    lastStmtConstant = 196
+
 };
 
-class Stmt
+class CS_API Stmt
 {
+public:
+    Stmt();
+    Stmt(StmtClass klass);
+    StmtClass stmtClass;
+    SourceRange sourceRange;
+    SourceLocation endLoc;
 };
 
-class DeclStmt : public Stmt
+class CS_API DeclStmt : public Stmt
 {
+public:
+    DeclStmt();
+    VECTOR(Declaration*, decls)
+    bool isSingleDecl;
 };
 
-class NullStmt : public Stmt
+class CS_API NullStmt : public Stmt
 {
+public:
+    NullStmt();
+    SourceLocation semiLoc;
+    bool hasLeadingEmptyMacro;
 };
 
-class CompoundStmt : public Stmt
+class CS_API CompoundStmt : public Stmt
 {
+public:
+    CompoundStmt();
+    VECTOR(Stmt*, body)
+    bool body_empty;
+    unsigned int size;
+    SourceLocation lBracLoc;
+    SourceLocation rBracLoc;
 };
 
-class SwitchCase : public Stmt
+class CS_API SwitchCase : public Stmt
 {
+public:
+    SwitchCase();
+    SwitchCase(StmtClass klass);
+    SourceLocation keywordLoc;
+    SourceLocation colonLoc;
 };
 
-class CaseStmt : public SwitchCase
+class CS_API CaseStmt : public SwitchCase
 {
+public:
+    CaseStmt();
+    SourceLocation caseLoc;
+    SourceLocation ellipsisLoc;
+    Expr* lHS;
+    Expr* rHS;
+    Stmt* subStmt;
+    bool caseStmtIsGNURange;
 };
 
-class DefaultStmt : public SwitchCase
+class CS_API DefaultStmt : public SwitchCase
 {
+public:
+    DefaultStmt();
+    Stmt* subStmt;
+    SourceLocation defaultLoc;
 };
 
-class LabelStmt : public Stmt
+class CS_API LabelStmt : public Stmt
 {
+public:
+    LabelStmt();
+    SourceLocation identLoc;
+    Stmt* subStmt;
+    const char* name;
 };
 
-class AttributedStmt : public Stmt
+class CS_API AttributedStmt : public Stmt
 {
+public:
+    AttributedStmt();
+    SourceLocation attrLoc;
 };
 
-class IfStmt : public Stmt
+class CS_API IfStmt : public Stmt
 {
+public:
+    IfStmt();
+    Expr* cond;
+    Stmt* then;
+    Stmt* _else;
+    Stmt* init;
+    SourceLocation ifLoc;
+    SourceLocation elseLoc;
+    bool _constexpr;
+    bool hasInitStorage;
+    bool hasVarStorage;
+    bool hasElseStorage;
+    bool isObjCAvailabilityCheck;
 };
 
-class SwitchStmt : public Stmt
+class CS_API SwitchStmt : public Stmt
 {
+public:
+    SwitchStmt();
+    Expr* cond;
+    Stmt* body;
+    Stmt* init;
+    SourceLocation switchLoc;
+    bool hasInitStorage;
+    bool hasVarStorage;
+    bool isAllEnumCasesCovered;
 };
 
-class WhileStmt : public Stmt
+class CS_API WhileStmt : public Stmt
 {
+public:
+    WhileStmt();
+    Expr* cond;
+    Stmt* body;
+    SourceLocation whileLoc;
+    bool hasVarStorage;
 };
 
-class DoStmt : public Stmt
+class CS_API DoStmt : public Stmt
 {
+public:
+    DoStmt();
+    Expr* cond;
+    Stmt* body;
+    SourceLocation doLoc;
+    SourceLocation whileLoc;
+    SourceLocation rParenLoc;
 };
 
-class ForStmt : public Stmt
+class CS_API ForStmt : public Stmt
 {
+public:
+    ForStmt();
+    Stmt* init;
+    Expr* cond;
+    Expr* inc;
+    Stmt* body;
+    SourceLocation forLoc;
+    SourceLocation lParenLoc;
+    SourceLocation rParenLoc;
+    DeclStmt* conditionVariableDeclStmt;
 };
 
-class GotoStmt : public Stmt
+class CS_API GotoStmt : public Stmt
 {
+public:
+    GotoStmt();
+    SourceLocation gotoLoc;
+    SourceLocation labelLoc;
 };
 
-class IndirectGotoStmt : public Stmt
+class CS_API IndirectGotoStmt : public Stmt
 {
+public:
+    IndirectGotoStmt();
+    SourceLocation gotoLoc;
+    SourceLocation starLoc;
+    Expr* target;
 };
 
-class ContinueStmt : public Stmt
+class CS_API ContinueStmt : public Stmt
 {
+public:
+    ContinueStmt();
+    SourceLocation continueLoc;
 };
 
-class BreakStmt : public Stmt
+class CS_API BreakStmt : public Stmt
 {
+public:
+    BreakStmt();
+    SourceLocation breakLoc;
 };
 
-class ReturnStmt : public Stmt
+class CS_API ReturnStmt : public Stmt
 {
+public:
+    ReturnStmt();
+    Expr* retValue;
+    SourceLocation returnLoc;
 };
 
-class AsmStmt : public Stmt
+class CS_API AsmStmt : public Stmt
 {
+public:
+    AsmStmt();
+    AsmStmt(StmtClass klass);
+    VECTOR(Expr*, inputs)
+    VECTOR(Expr*, outputs)
+    SourceLocation asmLoc;
+    bool simple;
+    bool _volatile;
+    unsigned int numOutputs;
+    unsigned int numPlusOperands;
+    unsigned int numInputs;
+    unsigned int numClobbers;
 };
 
-class GCCAsmStmt : public AsmStmt
+class StringLiteral;
+
+class CS_API GCCAsmStmt : public AsmStmt
 {
-    class AsmStringPiece
+public:
+    class CS_API AsmStringPiece
     {
+    public:
         enum class Kind
         {
             String = 0,
             Operand = 1
         };
+
+        AsmStringPiece();
+        bool isString;
+        bool isOperand;
+        std::string string;
+        unsigned int operandNo;
+        char modifier;
     };
+
+    GCCAsmStmt();
+    SourceLocation rParenLoc;
 };
 
-class MSAsmStmt : public AsmStmt
+class CS_API MSAsmStmt : public AsmStmt
 {
+public:
+    MSAsmStmt();
+    SourceLocation lBraceLoc;
+    bool hasBraces;
+    unsigned int numAsmToks;
+    std::string asmString;
 };
 
-class SEHExceptStmt : public Stmt
+class CS_API SEHExceptStmt : public Stmt
 {
+public:
+    SEHExceptStmt();
+    SourceLocation exceptLoc;
+    Expr* filterExpr;
+    CompoundStmt* block;
 };
 
-class SEHFinallyStmt : public Stmt
+class CS_API SEHFinallyStmt : public Stmt
 {
+public:
+    SEHFinallyStmt();
+    SourceLocation finallyLoc;
+    CompoundStmt* block;
 };
 
-class SEHTryStmt : public Stmt
+class CS_API SEHTryStmt : public Stmt
 {
+public:
+    SEHTryStmt();
+    SourceLocation tryLoc;
+    bool isCXXTry;
+    CompoundStmt* tryBlock;
+    Stmt* handler;
+    SEHExceptStmt* exceptHandler;
+    SEHFinallyStmt* finallyHandler;
 };
 
-class SEHLeaveStmt : public Stmt
+class CS_API SEHLeaveStmt : public Stmt
 {
+public:
+    SEHLeaveStmt();
+    SourceLocation leaveLoc;
 };
 
-class CapturedStmt : public Stmt
+class CS_API CapturedStmt : public Stmt
 {
+public:
     enum class VariableCaptureKind
     {
-        VCK_This = 0,
-        VCK_ByRef = 1,
-        VCK_ByCopy = 2,
-        VCK_VLAType = 3
+        This = 0,
+        ByRef = 1,
+        ByCopy = 2,
+        VLAType = 3
     };
 
-    class Capture
+    class CS_API Capture
     {
+    public:
+        Capture();
+        VariableCaptureKind captureKind;
+        SourceLocation location;
+        bool capturesThis;
+        bool capturesVariable;
+        bool capturesVariableByCopy;
+        bool capturesVariableArrayType;
     };
+
+    CapturedStmt();
+    VECTOR(Expr*, capture_inits)
+    unsigned int capture_size;
+};
+
+class CS_API CXXCatchStmt : public Stmt
+{
+public:
+    CXXCatchStmt();
+    SourceLocation catchLoc;
+    QualifiedType caughtType;
+    Stmt* handlerBlock;
+};
+
+class CS_API CXXTryStmt : public Stmt
+{
+public:
+    CXXTryStmt();
+    SourceLocation tryLoc;
+    unsigned int numHandlers;
+};
+
+class CS_API CXXForRangeStmt : public Stmt
+{
+public:
+    CXXForRangeStmt();
+    Stmt* init;
+    Expr* rangeInit;
+    Expr* cond;
+    Expr* inc;
+    Stmt* body;
+    SourceLocation forLoc;
+    SourceLocation coawaitLoc;
+    SourceLocation colonLoc;
+    SourceLocation rParenLoc;
+};
+
+class CS_API MSDependentExistsStmt : public Stmt
+{
+public:
+    MSDependentExistsStmt();
+    SourceLocation keywordLoc;
+    bool isIfExists;
+    bool isIfNotExists;
+    CompoundStmt* subStmt;
+};
+
+class CS_API CoroutineBodyStmt : public Stmt
+{
+public:
+    enum class SubStmt
+    {
+        Body = 0,
+        Promise = 1,
+        InitSuspend = 2,
+        FinalSuspend = 3,
+        OnException = 4,
+        OnFallthrough = 5,
+        Allocate = 6,
+        Deallocate = 7,
+        ReturnValue = 8,
+        ResultDecl = 9,
+        ReturnStmt = 10,
+        ReturnStmtOnAllocFailure = 11,
+        FirstParamMove = 12
+    };
+
+    class CS_API CtorArgs
+    {
+    public:
+        CtorArgs();
+    };
+
+    CoroutineBodyStmt();
+    bool hasDependentPromiseType;
+    Stmt* body;
+    Stmt* promiseDeclStmt;
+    Stmt* initSuspendStmt;
+    Stmt* finalSuspendStmt;
+    Stmt* exceptionHandler;
+    Stmt* fallthroughHandler;
+    Expr* allocate;
+    Expr* deallocate;
+    Expr* returnValueInit;
+    Stmt* resultDecl;
+    Stmt* returnStmt;
+    Stmt* returnStmtOnAllocFailure;
+};
+
+class CS_API CoreturnStmt : public Stmt
+{
+public:
+    enum class SubStmt
+    {
+        Operand = 0,
+        PromiseCall = 1,
+        Count = 2
+    };
+
+    CoreturnStmt();
+    bool isImplicit;
+    SourceLocation keywordLoc;
+    Expr* operand;
+    Expr* promiseCall;
 };
 
 } } }
