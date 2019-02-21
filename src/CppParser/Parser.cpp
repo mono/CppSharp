@@ -574,8 +574,11 @@ static TypeQualifiers GetTypeQualifiers(const clang::QualType& Type)
     return quals;
 }
 
-QualifiedType Parser::GetQualifiedType(const clang::QualType& qual, const clang::TypeLoc* TL)
+QualifiedType Parser::GetQualifiedType(clang::QualType qual, const clang::TypeLoc* TL)
 {
+    if (qual.isNull())
+        return QualifiedType();
+
     QualifiedType qualType;
     qualType.type = WalkType(qual, TL);
     qualType.qualifiers = GetTypeQualifiers(qual);
@@ -3742,6 +3745,9 @@ Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
 Declaration* Parser::WalkDeclaration(const clang::Decl* D)
 {
     using namespace clang;
+
+    if (D == nullptr)
+        return nullptr;
 
     Declaration* Decl = nullptr;
 
