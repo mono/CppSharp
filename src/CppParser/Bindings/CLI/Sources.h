@@ -55,9 +55,9 @@ namespace CppSharp
 
             SourceRange(::CppSharp::CppParser::SourceRange* native);
             static SourceRange^ __CreateInstance(::System::IntPtr native);
-            SourceRange();
-
             SourceRange(CppSharp::Parser::SourceRange^ _0);
+
+            SourceRange();
 
             ~SourceRange();
 

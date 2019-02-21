@@ -195,6 +195,32 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]

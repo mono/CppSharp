@@ -62,6 +62,7 @@ namespace CppSharp
             ref class QualifiedType;
             ref class RawComment;
             ref class StatementObsolete;
+            ref class Stmt;
             ref class Template;
             ref class TemplateArgument;
             ref class TemplateParameter;
@@ -856,6 +857,12 @@ namespace CppSharp
                     CppSharp::Parser::AST::ExpressionObsolete^ get();
                     void set(CppSharp::Parser::AST::ExpressionObsolete^);
                 }
+
+                property CppSharp::Parser::AST::Expr^ DefaultArgumentNew
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
             };
 
             public ref class Function : CppSharp::Parser::AST::DeclarationContext
@@ -952,6 +959,12 @@ namespace CppSharp
                 {
                     System::String^ get();
                     void set(System::String^);
+                }
+
+                property CppSharp::Parser::AST::Stmt^ BodyStmt
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
                 }
 
                 property CppSharp::Parser::AST::CallingConvention CallingConvention
@@ -1916,6 +1929,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::ExpressionObsolete^ get();
                     void set(CppSharp::Parser::AST::ExpressionObsolete^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ DefaultArgumentNew
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
                 }
 
                 property unsigned int Position
