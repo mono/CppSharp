@@ -14,7 +14,7 @@ function get_msbuild_path()
 end
 
 function msbuild(sln, conf)
-	local msbuild_path = path.normalize(path.join(get_msbuild_path(), "msbuild.exe"))
+	local msbuild_path = "msbuild.exe"
 	local sln = path.normalize(sln)
 
 	local cmd = msbuild_path .. " " .. sln
