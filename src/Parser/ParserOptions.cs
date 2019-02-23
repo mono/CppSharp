@@ -73,8 +73,12 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = options.NoBuiltinIncludes;
             MicrosoftMode = options.MicrosoftMode;
             Verbose = options.Verbose;
+            EnableRTTI = options.EnableRTTI;
             LanguageVersion = options.LanguageVersion;
             UnityBuild = options.UnityBuild;
+            SkipPrivateDeclarations = options.SkipPrivateDeclarations;
+            SkipFunctionBodies = options.SkipFunctionBodies;
+            SkipLayoutInfo = options.SkipLayoutInfo;
             ForceClangToolchainLookup = options.ForceClangToolchainLookup;
         }
 
