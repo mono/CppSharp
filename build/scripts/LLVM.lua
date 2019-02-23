@@ -221,6 +221,10 @@ function cmake(gen, conf, builddir, options)
 		options = options .. " -DLLVM_USE_LINKER=/usr/bin/ld.lld"
 	end
 
+	if os.ishost("windows") then
+		options = options .. "-Thost=x64"
+	end
+
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
 		.. ' -DLLVM_BUILD_TOOLS=false'
 		.. ' -DLLVM_ENABLE_DUMP=true'
@@ -360,7 +364,7 @@ function build_llvm(llvm_build)
 	os.mkdir(llvm_build)
 
 	local conf = get_llvm_configuration_name()
-	local use_msbuild = false
+	local use_msbuild = true
 	if os.ishost("windows") and use_msbuild then
 		cmake(get_cmake_generator(), conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
@@ -372,6 +376,7 @@ function build_llvm(llvm_build)
 		if is32bits then
 			options = options .. (is32bits and " -DLLVM_BUILD_32_BITS=true" or "")
 		end
+
 		cmake("Ninja", conf, llvm_build, options)
 		ninja('"' .. llvm_build .. '"')
 		ninja('"' .. llvm_build .. '"', "clang-headers")
@@ -393,25 +398,26 @@ function package_llvm(conf, llvm, llvm_build)
 	os.copydir(llvm_build .. "/include", out .. "/build/include")
 
 	local llvm_msbuild_libdir = "/" .. conf .. "/lib"
-	local lib_dir =  os.ishost("windows") and os.isdir(llvm_msbuild_libdir)
+	local lib_dir =  (os.ishost("windows") and os.isdir(llvm_build .. llvm_msbuild_libdir))
 		and llvm_msbuild_libdir or "/lib"
 	local llvm_build_libdir = llvm_build .. lib_dir
 
 	if os.ishost("windows") and os.isdir(llvm_build_libdir) then
-		os.copydir(llvm_build_libdir, out .. "/build" .. lib_dir, "*.lib")
+		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.lib")
 	else
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
 	end
 
 	os.copydir(llvm .. "/tools/clang/include", out .. "/tools/clang/include")
 	os.copydir(llvm_build .. "/tools/clang/include", out .. "/build/tools/clang/include")
-	os.copydir(llvm_build .. "/lib/clang", out .. "/lib/clang")
+
+	os.copydir(llvm_build_libdir .. "/clang", out .. "/lib/clang")
 
 	os.copydir(llvm .. "/tools/clang/lib/CodeGen", out .. "/tools/clang/lib/CodeGen", "*.h")
 	os.copydir(llvm .. "/tools/clang/lib/Driver", out .. "/tools/clang/lib/Driver", "*.h")
 	os.copydir(llvm .. "/tools/clang/lib/Driver/ToolChains", out .. "/tools/clang/lib/Driver/ToolChains", "*.h")
 
-	local out_lib_dir = out .. "/build" .. lib_dir
+	local out_lib_dir = out .. "/build/lib"
 	if os.ishost("windows") then
 		os.rmfiles(out_lib_dir, "LLVM*ObjCARCOpts*.lib")
 		os.rmfiles(out_lib_dir, "clang*ARC*.lib")
