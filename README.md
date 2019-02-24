@@ -32,6 +32,7 @@ Mirrors the Clang's C/C++ AST and type system classes in C# APIs.
 Check out [_Clang's AST introduction docs_](http://clang.llvm.org/docs/IntroductionToTheClangAST.html) for more details about its architecture.
  
  * C++ declarations
+ * C++ statements / expressions
  * C++ types
  * Class object layout
  * Declaration visitors
