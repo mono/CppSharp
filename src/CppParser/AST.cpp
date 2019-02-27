@@ -602,8 +602,14 @@ CXXConstructExprObsolete::~CXXConstructExprObsolete()
 
 DEF_VECTOR(CXXConstructExprObsolete, ExpressionObsolete*, Arguments)
 
-Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
-    isIndirect(false), hasDefaultValue(false), defaultArgument(0) {}
+Parameter::Parameter()
+    : Declaration(DeclarationKind::Parameter)
+    , isIndirect(false)
+    , hasDefaultValue(false)
+    , defaultArgument(0)
+    , defaultValue(0)
+{
+}
 
 Parameter::~Parameter()
 {

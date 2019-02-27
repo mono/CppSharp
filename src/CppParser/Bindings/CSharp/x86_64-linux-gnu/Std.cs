@@ -683,8 +683,6 @@ namespace Std
 {
     public enum RbTreeColor : uint
     {
-        S_red = 0,
-        S_black = 1
     }
 
     namespace RbTree

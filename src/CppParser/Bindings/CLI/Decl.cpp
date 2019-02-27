@@ -1462,14 +1462,14 @@ void CppSharp::Parser::AST::Parameter::DefaultArgument::set(CppSharp::Parser::AS
     ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgument = (::CppSharp::CppParser::AST::ExpressionObsolete*)value->NativePtr;
 }
 
-CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::Parameter::DefaultArgumentNew::get()
+CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::Parameter::DefaultValue::get()
 {
-    return (((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgumentNew == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgumentNew);
+    return (((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultValue == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultValue);
 }
 
-void CppSharp::Parser::AST::Parameter::DefaultArgumentNew::set(CppSharp::Parser::AST::Expr^ value)
+void CppSharp::Parser::AST::Parameter::DefaultValue::set(CppSharp::Parser::AST::Expr^ value)
 {
-    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultArgumentNew = (::CppSharp::CppParser::AST::Expr*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->defaultValue = (::CppSharp::CppParser::AST::Expr*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)

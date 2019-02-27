@@ -858,7 +858,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::ExpressionObsolete^);
                 }
 
-                property CppSharp::Parser::AST::Expr^ DefaultArgumentNew
+                property CppSharp::Parser::AST::Expr^ DefaultValue
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);

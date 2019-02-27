@@ -1129,6 +1129,10 @@ namespace CppSharp
             _param.HasDefaultValue = decl.HasDefaultValue;
             _param.Index = decl.Index;
             _param.DefaultArgument = VisitStatement(decl.DefaultArgument);
+            if (decl.DefaultValue != null)
+            {
+                _param.DefaultValue = stmtConverter.Visit(decl.DefaultValue);
+            }
 
             return _param;
         }

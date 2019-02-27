@@ -248,7 +248,7 @@ public:
     bool hasDefaultValue;
     unsigned int index;
     ExpressionObsolete* defaultArgument;
-    Expr* defaultArgumentNew;
+    Expr* defaultValue;
 };
 
 enum class CXXMethodKind

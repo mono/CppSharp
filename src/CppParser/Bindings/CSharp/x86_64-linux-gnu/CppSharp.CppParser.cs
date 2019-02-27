@@ -8969,7 +8969,7 @@ namespace CppSharp
                     internal global::System.IntPtr defaultArgument;
 
                     [FieldOffset(184)]
-                    internal global::System.IntPtr defaultArgumentNew;
+                    internal global::System.IntPtr defaultValue;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -9124,21 +9124,21 @@ namespace CppSharp
                     }
                 }
 
-                public global::CppSharp.Parser.AST.Expr DefaultArgumentNew
+                public global::CppSharp.Parser.AST.Expr DefaultValue
                 {
                     get
                     {
                         global::CppSharp.Parser.AST.Expr __result0;
-                        if (((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew))
-                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew];
-                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultArgumentNew);
+                        if (((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultValue == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultValue))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultValue];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.Parameter.__Internal*) __Instance)->defaultValue);
                         return __result0;
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->defaultArgumentNew = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->defaultValue = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }

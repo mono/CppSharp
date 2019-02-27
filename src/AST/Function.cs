@@ -63,6 +63,22 @@ namespace CppSharp.AST
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
 
+        public Stmt DefaultValue
+        {
+            get { return defaultValue; }
+            set
+            {
+                if (defaultValue != value)
+                {
+                    defaultValue = value;
+                    if (OriginalDefaultValue == null)
+                        OriginalDefaultValue = value;
+                }
+            }
+        }
+
+        public Stmt OriginalDefaultValue { get; private set; }
+
         public ExpressionObsolete DefaultArgument
         {
             get
@@ -101,6 +117,7 @@ namespace CppSharp.AST
         }
 
         ExpressionObsolete defaultArgument;
+        private Stmt defaultValue;
     }
 
     public class ParameterTypeComparer : IEqualityComparer<Parameter>
