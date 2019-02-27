@@ -97,6 +97,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->value = S->getValue().getLimitedValue();
         _Expr = _S;
         break;
     }
@@ -114,6 +115,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->value = S->getValue().getLimitedValue();
         _Expr = _S;
         break;
     }

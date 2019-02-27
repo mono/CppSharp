@@ -376,6 +376,7 @@ class CS_API IntegerLiteral : public Expr
 public:
     IntegerLiteral();
     SourceLocation location;
+    unsigned long long value;
 };
 
 class CS_API FixedPointLiteral : public Expr
@@ -383,6 +384,7 @@ class CS_API FixedPointLiteral : public Expr
 public:
     FixedPointLiteral();
     SourceLocation location;
+    unsigned long long value;
 };
 
 class CS_API CharacterLiteral : public Expr

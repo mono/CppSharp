@@ -434,6 +434,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation Location;
+        public ulong Value;
     }
 
     public partial class FixedPointLiteral : Expr
@@ -443,6 +444,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation Location;
+        public ulong Value;
     }
 
     public partial class CharacterLiteral : Expr

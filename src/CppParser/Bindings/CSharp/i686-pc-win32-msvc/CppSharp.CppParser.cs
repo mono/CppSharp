@@ -24832,7 +24832,7 @@ namespace CppSharp
 
             public unsafe partial class IntegerLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24879,6 +24879,9 @@ namespace CppSharp
 
                     [FieldOffset(40)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(48)]
+                    internal ulong value;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -24954,11 +24957,24 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.IntegerLiteral.__Internal*)__Instance)->location = value.__Instance;
                     }
                 }
+
+                public ulong Value
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.IntegerLiteral.__Internal*) __Instance)->value;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.IntegerLiteral.__Internal*)__Instance)->value = value;
+                    }
+                }
             }
 
             public unsafe partial class FixedPointLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -25005,6 +25021,9 @@ namespace CppSharp
 
                     [FieldOffset(40)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(48)]
+                    internal ulong value;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -25078,6 +25097,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.FixedPointLiteral.__Internal*)__Instance)->location = value.__Instance;
+                    }
+                }
+
+                public ulong Value
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.FixedPointLiteral.__Internal*) __Instance)->value;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.FixedPointLiteral.__Internal*)__Instance)->value = value;
                     }
                 }
             }

@@ -741,6 +741,12 @@ namespace CppSharp
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
                 }
+
+                property unsigned long long Value
+                {
+                    unsigned long long get();
+                    void set(unsigned long long);
+                }
             };
 
             public ref class FixedPointLiteral : CppSharp::Parser::AST::Expr
@@ -759,6 +765,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property unsigned long long Value
+                {
+                    unsigned long long get();
+                    void set(unsigned long long);
                 }
             };
 
