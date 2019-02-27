@@ -60,6 +60,8 @@ namespace CppSharp.AST
         {
             foreach (var @base in @class.Bases)
             {
+                if (@base.Ignore) continue;
+
                 if (!@base.IsClass || @base.Class.OriginalClass == @class ||
                     (onlyFirstBase && @base.Class.IsInterface))
                     continue;
