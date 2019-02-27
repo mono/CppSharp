@@ -636,6 +636,16 @@ void CppSharp::Parser::AST::IntegerLiteral::Location::set(CppSharp::Parser::Sour
     ((::CppSharp::CppParser::AST::IntegerLiteral*)NativePtr)->location = _marshal0;
 }
 
+unsigned long long CppSharp::Parser::AST::IntegerLiteral::Value::get()
+{
+    return ((::CppSharp::CppParser::AST::IntegerLiteral*)NativePtr)->value;
+}
+
+void CppSharp::Parser::AST::IntegerLiteral::Value::set(unsigned long long value)
+{
+    ((::CppSharp::CppParser::AST::IntegerLiteral*)NativePtr)->value = value;
+}
+
 CppSharp::Parser::AST::FixedPointLiteral::FixedPointLiteral(::CppSharp::CppParser::AST::FixedPointLiteral* native)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native)
 {
@@ -677,6 +687,16 @@ void CppSharp::Parser::AST::FixedPointLiteral::Location::set(CppSharp::Parser::S
     auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
     _marshal0.ID = value.ID;
     ((::CppSharp::CppParser::AST::FixedPointLiteral*)NativePtr)->location = _marshal0;
+}
+
+unsigned long long CppSharp::Parser::AST::FixedPointLiteral::Value::get()
+{
+    return ((::CppSharp::CppParser::AST::FixedPointLiteral*)NativePtr)->value;
+}
+
+void CppSharp::Parser::AST::FixedPointLiteral::Value::set(unsigned long long value)
+{
+    ((::CppSharp::CppParser::AST::FixedPointLiteral*)NativePtr)->value = value;
 }
 
 CppSharp::Parser::AST::CharacterLiteral::CharacterLiteral(::CppSharp::CppParser::AST::CharacterLiteral* native)

@@ -91,12 +91,14 @@ DeclRefExpr::DeclRefExpr()
 IntegerLiteral::IntegerLiteral()
     : Expr(StmtClass::IntegerLiteral)
     , location(SourceLocation())
+    , value(0)
 {
 }
 
 FixedPointLiteral::FixedPointLiteral()
     : Expr(StmtClass::FixedPointLiteral)
     , location(SourceLocation())
+    , value(0)
 {
 }
 

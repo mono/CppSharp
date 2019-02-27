@@ -690,6 +690,7 @@ namespace CppSharp
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
             _expr.Location = VisitSourceLocation(expr.Location);
+            _expr.Value = expr.Value;
             return _expr;
         }
 
@@ -710,6 +711,7 @@ namespace CppSharp
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
             _expr.Location = VisitSourceLocation(expr.Location);
+            _expr.Value = expr.Value;
             return _expr;
         }
 

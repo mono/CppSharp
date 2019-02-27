@@ -294,6 +294,40 @@ namespace CppSharp
 
                 if (@base.Class.Name.Contains("TrailingObjects"))
                     @base.ExplicitlyIgnore();
+
+                if (@base.Class.Name == "APIntStorage")
+                {
+                    @base.ExplicitlyIgnore();
+
+                    var property = new Property
+                    {
+                        Access = AccessSpecifier.Public,
+                        Name = "value",
+                        Namespace = @class,
+                        QualifiedType = new QualifiedType(
+                            new BuiltinType(PrimitiveType.ULongLong))
+                    };
+
+                    if (!@class.Properties.Exists(p => p.Name == property.Name))
+                        @class.Properties.Add(property);
+                }
+
+                if (@base.Class.Name == "APFloatStorage")
+                {
+                    @base.ExplicitlyIgnore();
+
+                    var property = new Property
+                    {
+                        Access = AccessSpecifier.Public,
+                        Name = "value",
+                        Namespace = @class,
+                        QualifiedType = new QualifiedType(
+                            new BuiltinType(PrimitiveType.LongDouble))
+                    };
+
+                    if (!@class.Properties.Exists(p => p.Name == property.Name))
+                        @class.Properties.Add(property);
+                }
             }
 
             //
@@ -1146,7 +1180,7 @@ namespace CppSharp
         {
             var typeName = GetDeclTypeName(property);
             var fieldName = GetDeclName(property);
-            var methodName = property.GetMethod.Name;
+            var methodName = property.GetMethod?.Name;
 
             var validMethod = $"is{FirstLetterToUpperCase(property.Name)}";
             var @class = property.Namespace as Class;
@@ -1179,7 +1213,12 @@ namespace CppSharp
                 WriteLine($"_S->{fieldName} = WalkTemplateArgument(S->{methodName}());");
             else if (typeName.Contains("QualifiedType"))
                 WriteLine($"_S->{fieldName} = GetQualifiedType(S->{methodName}());");
-            else
+            else if (fieldName == "value" && @class.Bases.Exists(b => b.Class.Name.Contains("AP"))) {
+                // Use llvm::APInt or llvm::APFloat conversion methods
+                methodName = property.Type.IsPrimitiveType(PrimitiveType.ULongLong) ?
+                    "getLimitedValue" : "convertToDouble";
+                WriteLine($"_S->{fieldName} = S->getValue().{methodName}();");
+            } else
                 WriteLine($"_S->{fieldName} = S->{methodName}();");
 
             if (validMethodExists)
@@ -1344,12 +1383,7 @@ namespace CppSharp
             if (property.Access != AccessSpecifier.Public)
                 return true;
 
-            if (property.GetMethod == null)
-                return true;
-
             var @class = property.Namespace as Class;
-            if (property.GetMethod.Namespace != @class)
-                return true;
 
             if (!skipBaseCheck)
             {
