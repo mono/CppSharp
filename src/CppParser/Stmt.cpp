@@ -15,6 +15,7 @@ Stmt::Stmt()
     : stmtClass(StmtClass::NoStmt)
     , sourceRange(SourceRange())
     , endLoc(SourceLocation())
+    , stripLabelLikeStatements(nullptr)
 {
 }
 
@@ -22,12 +23,14 @@ Stmt::Stmt(StmtClass klass)
     : stmtClass(klass)
     , sourceRange(SourceRange())
     , endLoc(SourceLocation())
+    , stripLabelLikeStatements(nullptr)
 {
 }
 
 DeclStmt::DeclStmt()
     : Stmt(StmtClass::DeclStmt)
     , isSingleDecl(0)
+    , singleDecl(nullptr)
 {
 }
 
@@ -44,6 +47,8 @@ CompoundStmt::CompoundStmt()
     : Stmt(StmtClass::CompoundStmt)
     , body_empty(0)
     , size(0)
+    , body_front(nullptr)
+    , body_back(nullptr)
     , lBracLoc(SourceLocation())
     , rBracLoc(SourceLocation())
 {
@@ -55,6 +60,7 @@ SwitchCase::SwitchCase()
     : Stmt(StmtClass::NoStmt)
     , keywordLoc(SourceLocation())
     , colonLoc(SourceLocation())
+    , subStmt(nullptr)
 {
 }
 
@@ -62,6 +68,7 @@ SwitchCase::SwitchCase(StmtClass klass)
     : Stmt(klass)
     , keywordLoc(SourceLocation())
     , colonLoc(SourceLocation())
+    , subStmt(nullptr)
 {
 }
 
@@ -71,14 +78,12 @@ CaseStmt::CaseStmt()
     , ellipsisLoc(SourceLocation())
     , lHS(nullptr)
     , rHS(nullptr)
-    , subStmt(nullptr)
     , caseStmtIsGNURange(0)
 {
 }
 
 DefaultStmt::DefaultStmt()
     : SwitchCase(StmtClass::DefaultStmt)
-    , subStmt(nullptr)
     , defaultLoc(SourceLocation())
 {
 }
@@ -94,6 +99,7 @@ LabelStmt::LabelStmt()
 AttributedStmt::AttributedStmt()
     : Stmt(StmtClass::AttributedStmt)
     , attrLoc(SourceLocation())
+    , subStmt(nullptr)
 {
 }
 
@@ -109,6 +115,7 @@ IfStmt::IfStmt()
     , hasInitStorage(0)
     , hasVarStorage(0)
     , hasElseStorage(0)
+    , conditionVariableDeclStmt(nullptr)
     , isObjCAvailabilityCheck(0)
 {
 }
@@ -121,6 +128,7 @@ SwitchStmt::SwitchStmt()
     , switchLoc(SourceLocation())
     , hasInitStorage(0)
     , hasVarStorage(0)
+    , conditionVariableDeclStmt(nullptr)
     , isAllEnumCasesCovered(0)
 {
 }
@@ -131,6 +139,7 @@ WhileStmt::WhileStmt()
     , body(nullptr)
     , whileLoc(SourceLocation())
     , hasVarStorage(0)
+    , conditionVariableDeclStmt(nullptr)
 {
 }
 
@@ -275,6 +284,7 @@ CapturedStmt::Capture::Capture()
 
 CapturedStmt::CapturedStmt()
     : Stmt(StmtClass::CapturedStmt)
+    , capturedStmt(nullptr)
     , capture_size(0)
 {
 }
@@ -292,6 +302,7 @@ CXXCatchStmt::CXXCatchStmt()
 CXXTryStmt::CXXTryStmt()
     : Stmt(StmtClass::CXXTryStmt)
     , tryLoc(SourceLocation())
+    , tryBlock(nullptr)
     , numHandlers(0)
 {
 }
@@ -303,6 +314,10 @@ CXXForRangeStmt::CXXForRangeStmt()
     , cond(nullptr)
     , inc(nullptr)
     , body(nullptr)
+    , rangeStmt(nullptr)
+    , beginStmt(nullptr)
+    , endStmt(nullptr)
+    , loopVarStmt(nullptr)
     , forLoc(SourceLocation())
     , coawaitLoc(SourceLocation())
     , colonLoc(SourceLocation())

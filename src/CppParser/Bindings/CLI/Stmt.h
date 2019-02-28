@@ -233,6 +233,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
+                property CppSharp::Parser::AST::Stmt^ StripLabelLikeStatements
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
+                }
+
                 static operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::StmtClass klass);
 
             protected:
@@ -261,6 +267,12 @@ namespace CppSharp
                 {
                     bool get();
                     void set(bool);
+                }
+
+                property CppSharp::Parser::AST::Declaration^ SingleDecl
+                {
+                    CppSharp::Parser::AST::Declaration^ get();
+                    void set(CppSharp::Parser::AST::Declaration^);
                 }
 
                 property unsigned int GetdeclsCount
@@ -330,6 +342,18 @@ namespace CppSharp
                     void set(unsigned int);
                 }
 
+                property CppSharp::Parser::AST::Stmt^ BodyFront
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
+                }
+
+                property CppSharp::Parser::AST::Stmt^ BodyBack
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
+                }
+
                 property CppSharp::Parser::SourceLocation LBracLoc
                 {
                     CppSharp::Parser::SourceLocation get();
@@ -380,6 +404,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
+                property CppSharp::Parser::AST::Stmt^ SubStmt
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
+                }
+
                 static operator CppSharp::Parser::AST::SwitchCase^(CppSharp::Parser::AST::StmtClass klass);
             };
 
@@ -419,12 +449,6 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
-                property CppSharp::Parser::AST::Stmt^ SubStmt
-                {
-                    CppSharp::Parser::AST::Stmt^ get();
-                    void set(CppSharp::Parser::AST::Stmt^);
-                }
-
                 property bool CaseStmtIsGNURange
                 {
                     bool get();
@@ -443,12 +467,6 @@ namespace CppSharp
                 DefaultStmt(CppSharp::Parser::AST::DefaultStmt^ _0);
 
                 ~DefaultStmt();
-
-                property CppSharp::Parser::AST::Stmt^ SubStmt
-                {
-                    CppSharp::Parser::AST::Stmt^ get();
-                    void set(CppSharp::Parser::AST::Stmt^);
-                }
 
                 property CppSharp::Parser::SourceLocation DefaultLoc
                 {
@@ -504,6 +522,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::AST::Stmt^ SubStmt
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
                 }
             };
 
@@ -579,6 +603,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property CppSharp::Parser::AST::DeclStmt^ ConditionVariableDeclStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
+                }
+
                 property bool IsObjCAvailabilityCheck
                 {
                     bool get();
@@ -634,6 +664,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property CppSharp::Parser::AST::DeclStmt^ ConditionVariableDeclStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
+                }
+
                 property bool IsAllEnumCasesCovered
                 {
                     bool get();
@@ -675,6 +711,12 @@ namespace CppSharp
                 {
                     bool get();
                     void set(bool);
+                }
+
+                property CppSharp::Parser::AST::DeclStmt^ ConditionVariableDeclStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
                 }
             };
 
@@ -1318,6 +1360,12 @@ namespace CppSharp
                     void set(System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^);
                 }
 
+                property CppSharp::Parser::AST::Stmt^ capturedStmt
+                {
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
+                }
+
                 property unsigned int CaptureSize
                 {
                     unsigned int get();
@@ -1385,6 +1433,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
+                property CppSharp::Parser::AST::CompoundStmt^ TryBlock
+                {
+                    CppSharp::Parser::AST::CompoundStmt^ get();
+                    void set(CppSharp::Parser::AST::CompoundStmt^);
+                }
+
                 property unsigned int NumHandlers
                 {
                     unsigned int get();
@@ -1432,6 +1486,30 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Stmt^ get();
                     void set(CppSharp::Parser::AST::Stmt^);
+                }
+
+                property CppSharp::Parser::AST::DeclStmt^ RangeStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
+                }
+
+                property CppSharp::Parser::AST::DeclStmt^ BeginStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
+                }
+
+                property CppSharp::Parser::AST::DeclStmt^ EndStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
+                }
+
+                property CppSharp::Parser::AST::DeclStmt^ LoopVarStmt
+                {
+                    CppSharp::Parser::AST::DeclStmt^ get();
+                    void set(CppSharp::Parser::AST::DeclStmt^);
                 }
 
                 property CppSharp::Parser::SourceLocation ForLoc

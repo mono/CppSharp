@@ -17467,7 +17467,7 @@ namespace CppSharp
 
             public unsafe partial class Stmt : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -17478,6 +17478,9 @@ namespace CppSharp
 
                     [FieldOffset(12)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
+
+                    [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -17617,11 +17620,29 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.Stmt.__Internal*)__Instance)->endLoc = value.__Instance;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Stmt StripLabelLikeStatements
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.Stmt.__Internal*) __Instance)->stripLabelLikeStatements == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Stmt.__Internal*) __Instance)->stripLabelLikeStatements))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.Stmt.__Internal*) __Instance)->stripLabelLikeStatements];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.Stmt.__Internal*) __Instance)->stripLabelLikeStatements);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Stmt.__Internal*)__Instance)->stripLabelLikeStatements = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class DeclStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -17634,10 +17655,16 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_allocator__S0_ decls;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal byte isSingleDecl;
+
+                    [FieldOffset(36)]
+                    internal global::System.IntPtr singleDecl;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -17779,6 +17806,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Declaration SingleDecl
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Declaration __result0;
+                        if (((global::CppSharp.Parser.AST.DeclStmt.__Internal*) __Instance)->singleDecl == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.DeclStmt.__Internal*) __Instance)->singleDecl))
+                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.DeclStmt.__Internal*) __Instance)->singleDecl];
+                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.DeclStmt.__Internal*) __Instance)->singleDecl);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.DeclStmt.__Internal*)__Instance)->singleDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public uint GetdeclsCount
                 {
                     get
@@ -17791,7 +17836,7 @@ namespace CppSharp
 
             public unsafe partial class NullStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -17804,9 +17849,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal semiLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal semiLoc;
+
+                    [FieldOffset(24)]
                     internal byte hasLeadingEmptyMacro;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -17900,7 +17948,7 @@ namespace CppSharp
 
             public unsafe partial class CompoundStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -17913,18 +17961,27 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S_allocator__S0_ body;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal byte body_empty;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal uint size;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
+                    internal global::System.IntPtr body_front;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr body_back;
+
+                    [FieldOffset(48)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal lBracLoc;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(52)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rBracLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -18080,6 +18137,42 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Stmt BodyFront
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_front == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_front))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_front];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_front);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CompoundStmt.__Internal*)__Instance)->body_front = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Stmt BodyBack
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_back == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_back))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_back];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.CompoundStmt.__Internal*) __Instance)->body_back);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CompoundStmt.__Internal*)__Instance)->body_back = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.SourceLocation LBracLoc
                 {
                     get
@@ -18118,7 +18211,7 @@ namespace CppSharp
 
             public unsafe partial class SwitchCase : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -18131,10 +18224,16 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
+
+                    [FieldOffset(24)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+
+                    [FieldOffset(28)]
+                    internal global::System.IntPtr subStmt;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -18242,11 +18341,29 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.SwitchCase.__Internal*)__Instance)->colonLoc = value.__Instance;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Stmt SubStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.SwitchCase.__Internal*) __Instance)->subStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.SwitchCase.__Internal*) __Instance)->subStmt))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.SwitchCase.__Internal*) __Instance)->subStmt];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.SwitchCase.__Internal*) __Instance)->subStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.SwitchCase.__Internal*)__Instance)->subStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class CaseStmt : global::CppSharp.Parser.AST.SwitchCase, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 52)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -18259,27 +18376,30 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(24)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal caseLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
 
                     [FieldOffset(28)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
-
-                    [FieldOffset(32)]
-                    internal global::System.IntPtr lHS;
-
-                    [FieldOffset(36)]
-                    internal global::System.IntPtr rHS;
-
-                    [FieldOffset(40)]
                     internal global::System.IntPtr subStmt;
 
+                    [FieldOffset(32)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal caseLoc;
+
+                    [FieldOffset(36)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
+
+                    [FieldOffset(40)]
+                    internal global::System.IntPtr lHS;
+
                     [FieldOffset(44)]
+                    internal global::System.IntPtr rHS;
+
+                    [FieldOffset(48)]
                     internal byte caseStmtIsGNURange;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -18406,24 +18526,6 @@ namespace CppSharp
                     }
                 }
 
-                public global::CppSharp.Parser.AST.Stmt SubStmt
-                {
-                    get
-                    {
-                        global::CppSharp.Parser.AST.Stmt __result0;
-                        if (((global::CppSharp.Parser.AST.CaseStmt.__Internal*) __Instance)->subStmt == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CaseStmt.__Internal*) __Instance)->subStmt))
-                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CaseStmt.__Internal*) __Instance)->subStmt];
-                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.CaseStmt.__Internal*) __Instance)->subStmt);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.CaseStmt.__Internal*)__Instance)->subStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
-
                 public bool CaseStmtIsGNURange
                 {
                     get
@@ -18440,7 +18542,7 @@ namespace CppSharp
 
             public unsafe partial class DefaultStmt : global::CppSharp.Parser.AST.SwitchCase, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 36)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -18453,15 +18555,18 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr subStmt;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
 
                     [FieldOffset(28)]
+                    internal global::System.IntPtr subStmt;
+
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal defaultLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -18526,24 +18631,6 @@ namespace CppSharp
                     *((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) _0.__Instance);
                 }
 
-                public global::CppSharp.Parser.AST.Stmt SubStmt
-                {
-                    get
-                    {
-                        global::CppSharp.Parser.AST.Stmt __result0;
-                        if (((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) __Instance)->subStmt == IntPtr.Zero) __result0 = null;
-                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) __Instance)->subStmt))
-                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) __Instance)->subStmt];
-                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) __Instance)->subStmt);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.DefaultStmt.__Internal*)__Instance)->subStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
-
                 public global::CppSharp.Parser.SourceLocation DefaultLoc
                 {
                     get
@@ -18560,7 +18647,7 @@ namespace CppSharp
 
             public unsafe partial class LabelStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -18573,12 +18660,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal identLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr subStmt;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal identLoc;
 
                     [FieldOffset(24)]
+                    internal global::System.IntPtr subStmt;
+
+                    [FieldOffset(28)]
                     internal global::System.IntPtr name;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -18690,7 +18780,7 @@ namespace CppSharp
 
             public unsafe partial class AttributedStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -18703,7 +18793,13 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal attrLoc;
+
+                    [FieldOffset(24)]
+                    internal global::System.IntPtr subStmt;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -18779,11 +18875,29 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.AttributedStmt.__Internal*)__Instance)->attrLoc = value.__Instance;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Stmt SubStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.AttributedStmt.__Internal*) __Instance)->subStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.AttributedStmt.__Internal*) __Instance)->subStmt))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.AttributedStmt.__Internal*) __Instance)->subStmt];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.AttributedStmt.__Internal*) __Instance)->subStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.AttributedStmt.__Internal*)__Instance)->subStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class IfStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -18796,36 +18910,42 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr then;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr _else;
+                    internal global::System.IntPtr then;
 
                     [FieldOffset(28)]
-                    internal global::System.IntPtr init;
+                    internal global::System.IntPtr _else;
 
                     [FieldOffset(32)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal ifLoc;
+                    internal global::System.IntPtr init;
 
                     [FieldOffset(36)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal elseLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal ifLoc;
 
                     [FieldOffset(40)]
-                    internal byte _constexpr;
-
-                    [FieldOffset(41)]
-                    internal byte hasInitStorage;
-
-                    [FieldOffset(42)]
-                    internal byte hasVarStorage;
-
-                    [FieldOffset(43)]
-                    internal byte hasElseStorage;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal elseLoc;
 
                     [FieldOffset(44)]
+                    internal byte _constexpr;
+
+                    [FieldOffset(45)]
+                    internal byte hasInitStorage;
+
+                    [FieldOffset(46)]
+                    internal byte hasVarStorage;
+
+                    [FieldOffset(47)]
+                    internal byte hasElseStorage;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr conditionVariableDeclStmt;
+
+                    [FieldOffset(52)]
                     internal byte isObjCAvailabilityCheck;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -19040,6 +19160,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.DeclStmt ConditionVariableDeclStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.IfStmt.__Internal*) __Instance)->conditionVariableDeclStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.IfStmt.__Internal*) __Instance)->conditionVariableDeclStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.IfStmt.__Internal*) __Instance)->conditionVariableDeclStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.IfStmt.__Internal*) __Instance)->conditionVariableDeclStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.IfStmt.__Internal*)__Instance)->conditionVariableDeclStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public bool IsObjCAvailabilityCheck
                 {
                     get
@@ -19056,7 +19194,7 @@ namespace CppSharp
 
             public unsafe partial class SwitchStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 36)]
+                [StructLayout(LayoutKind.Explicit, Size = 48)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -19069,24 +19207,30 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr body;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr init;
+                    internal global::System.IntPtr body;
 
                     [FieldOffset(28)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal switchLoc;
+                    internal global::System.IntPtr init;
 
                     [FieldOffset(32)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal switchLoc;
+
+                    [FieldOffset(36)]
                     internal byte hasInitStorage;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte hasVarStorage;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(40)]
+                    internal global::System.IntPtr conditionVariableDeclStmt;
+
+                    [FieldOffset(44)]
                     internal byte isAllEnumCasesCovered;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -19244,6 +19388,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.DeclStmt ConditionVariableDeclStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.SwitchStmt.__Internal*) __Instance)->conditionVariableDeclStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.SwitchStmt.__Internal*) __Instance)->conditionVariableDeclStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.SwitchStmt.__Internal*) __Instance)->conditionVariableDeclStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.SwitchStmt.__Internal*) __Instance)->conditionVariableDeclStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.SwitchStmt.__Internal*)__Instance)->conditionVariableDeclStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public bool IsAllEnumCasesCovered
                 {
                     get
@@ -19260,7 +19422,7 @@ namespace CppSharp
 
             public unsafe partial class WhileStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -19273,16 +19435,22 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr body;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(24)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal whileLoc;
+                    internal global::System.IntPtr body;
 
                     [FieldOffset(28)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal whileLoc;
+
+                    [FieldOffset(32)]
                     internal byte hasVarStorage;
+
+                    [FieldOffset(36)]
+                    internal global::System.IntPtr conditionVariableDeclStmt;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -19407,11 +19575,29 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.WhileStmt.__Internal*)__Instance)->hasVarStorage = (byte) (value ? 1 : 0);
                     }
                 }
+
+                public global::CppSharp.Parser.AST.DeclStmt ConditionVariableDeclStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.WhileStmt.__Internal*) __Instance)->conditionVariableDeclStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.WhileStmt.__Internal*) __Instance)->conditionVariableDeclStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.WhileStmt.__Internal*) __Instance)->conditionVariableDeclStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.WhileStmt.__Internal*) __Instance)->conditionVariableDeclStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.WhileStmt.__Internal*)__Instance)->conditionVariableDeclStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class DoStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 36)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -19424,18 +19610,21 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr body;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(24)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal doLoc;
+                    internal global::System.IntPtr body;
 
                     [FieldOffset(28)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal whileLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal doLoc;
 
                     [FieldOffset(32)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal whileLoc;
+
+                    [FieldOffset(36)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -19578,7 +19767,7 @@ namespace CppSharp
 
             public unsafe partial class ForStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 52)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -19591,27 +19780,30 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr init;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr init;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr inc;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(28)]
-                    internal global::System.IntPtr body;
+                    internal global::System.IntPtr inc;
 
                     [FieldOffset(32)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal forLoc;
+                    internal global::System.IntPtr body;
 
                     [FieldOffset(36)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal forLoc;
 
                     [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
 
                     [FieldOffset(44)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(48)]
                     internal global::System.IntPtr conditionVariableDeclStmt;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -19808,7 +20000,7 @@ namespace CppSharp
 
             public unsafe partial class GotoStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -19821,9 +20013,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal gotoLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal gotoLoc;
+
+                    [FieldOffset(24)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal labelLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -19917,7 +20112,7 @@ namespace CppSharp
 
             public unsafe partial class IndirectGotoStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -19930,12 +20125,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal gotoLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal starLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal gotoLoc;
 
                     [FieldOffset(24)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal starLoc;
+
+                    [FieldOffset(28)]
                     internal global::System.IntPtr target;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -20047,7 +20245,7 @@ namespace CppSharp
 
             public unsafe partial class ContinueStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -20060,6 +20258,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal continueLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -20140,7 +20341,7 @@ namespace CppSharp
 
             public unsafe partial class BreakStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -20153,6 +20354,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal breakLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -20233,7 +20437,7 @@ namespace CppSharp
 
             public unsafe partial class ReturnStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -20246,9 +20450,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr retValue;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::System.IntPtr retValue;
+
+                    [FieldOffset(24)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal returnLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -20347,7 +20554,7 @@ namespace CppSharp
 
             public unsafe partial class AsmStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -20360,30 +20567,33 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ inputs;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ outputs;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal asmLoc;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(48)]
                     internal byte simple;
 
-                    [FieldOffset(45)]
+                    [FieldOffset(49)]
                     internal byte _volatile;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal uint numOutputs;
 
-                    [FieldOffset(52)]
+                    [FieldOffset(56)]
                     internal uint numPlusOperands;
 
-                    [FieldOffset(56)]
+                    [FieldOffset(60)]
                     internal uint numInputs;
 
-                    [FieldOffset(60)]
+                    [FieldOffset(64)]
                     internal uint numClobbers;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -20688,7 +20898,7 @@ namespace CppSharp
 
             public unsafe partial class GCCAsmStmt : global::CppSharp.Parser.AST.AsmStmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -20701,33 +20911,36 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ inputs;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ outputs;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal asmLoc;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(48)]
                     internal byte simple;
 
-                    [FieldOffset(45)]
+                    [FieldOffset(49)]
                     internal byte _volatile;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal uint numOutputs;
 
-                    [FieldOffset(52)]
+                    [FieldOffset(56)]
                     internal uint numPlusOperands;
 
-                    [FieldOffset(56)]
+                    [FieldOffset(60)]
                     internal uint numInputs;
 
-                    [FieldOffset(60)]
+                    [FieldOffset(64)]
                     internal uint numClobbers;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(68)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -21016,7 +21229,7 @@ namespace CppSharp
 
             public unsafe partial class MSAsmStmt : global::CppSharp.Parser.AST.AsmStmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 100)]
+                [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -21029,42 +21242,45 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ inputs;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ outputs;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal asmLoc;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(48)]
                     internal byte simple;
 
-                    [FieldOffset(45)]
+                    [FieldOffset(49)]
                     internal byte _volatile;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal uint numOutputs;
 
-                    [FieldOffset(52)]
+                    [FieldOffset(56)]
                     internal uint numPlusOperands;
 
-                    [FieldOffset(56)]
+                    [FieldOffset(60)]
                     internal uint numInputs;
 
-                    [FieldOffset(60)]
+                    [FieldOffset(64)]
                     internal uint numClobbers;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(68)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal lBraceLoc;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(72)]
                     internal byte hasBraces;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     internal uint numAsmToks;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C asmString;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -21208,7 +21424,7 @@ namespace CppSharp
 
             public unsafe partial class SEHExceptStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -21221,12 +21437,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal exceptLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr filterExpr;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal exceptLoc;
 
                     [FieldOffset(24)]
+                    internal global::System.IntPtr filterExpr;
+
+                    [FieldOffset(28)]
                     internal global::System.IntPtr block;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -21343,7 +21562,7 @@ namespace CppSharp
 
             public unsafe partial class SEHFinallyStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -21356,9 +21575,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal finallyLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal finallyLoc;
+
+                    [FieldOffset(24)]
                     internal global::System.IntPtr block;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -21457,7 +21679,7 @@ namespace CppSharp
 
             public unsafe partial class SEHTryStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 44)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -21470,21 +21692,24 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal tryLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal byte isCXXTry;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal tryLoc;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr tryBlock;
+                    internal byte isCXXTry;
 
                     [FieldOffset(28)]
-                    internal global::System.IntPtr handler;
+                    internal global::System.IntPtr tryBlock;
 
                     [FieldOffset(32)]
-                    internal global::System.IntPtr exceptHandler;
+                    internal global::System.IntPtr handler;
 
                     [FieldOffset(36)]
+                    internal global::System.IntPtr exceptHandler;
+
+                    [FieldOffset(40)]
                     internal global::System.IntPtr finallyHandler;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -21650,7 +21875,7 @@ namespace CppSharp
 
             public unsafe partial class SEHLeaveStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -21663,6 +21888,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal leaveLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -21743,7 +21971,7 @@ namespace CppSharp
 
             public unsafe partial class CapturedStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -21756,9 +21984,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ capture_inits;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
+                    internal global::System.IntPtr capturedStmt;
+
+                    [FieldOffset(36)]
                     internal uint capture_size;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -22080,6 +22314,24 @@ namespace CppSharp
                     __Internal.ClearcaptureInits((__Instance + __PointerAdjustment));
                 }
 
+                public global::CppSharp.Parser.AST.Stmt capturedStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.CapturedStmt.__Internal*) __Instance)->capturedStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CapturedStmt.__Internal*) __Instance)->capturedStmt))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CapturedStmt.__Internal*) __Instance)->capturedStmt];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.CapturedStmt.__Internal*) __Instance)->capturedStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CapturedStmt.__Internal*)__Instance)->capturedStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public uint CaptureSize
                 {
                     get
@@ -22105,7 +22357,7 @@ namespace CppSharp
 
             public unsafe partial class CXXCatchStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 36)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -22118,12 +22370,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal catchLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal catchLoc;
+
+                    [FieldOffset(24)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal caughtType;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::System.IntPtr handlerBlock;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -22235,7 +22490,7 @@ namespace CppSharp
 
             public unsafe partial class CXXTryStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -22248,9 +22503,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal tryLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal tryLoc;
+
+                    [FieldOffset(24)]
+                    internal global::System.IntPtr tryBlock;
+
+                    [FieldOffset(28)]
                     internal uint numHandlers;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -22328,6 +22589,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.CompoundStmt TryBlock
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.CompoundStmt __result0;
+                        if (((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*) __Instance)->tryBlock == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.CompoundStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*) __Instance)->tryBlock))
+                            __result0 = (global::CppSharp.Parser.AST.CompoundStmt) global::CppSharp.Parser.AST.CompoundStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*) __Instance)->tryBlock];
+                        else __result0 = global::CppSharp.Parser.AST.CompoundStmt.__CreateInstance(((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*) __Instance)->tryBlock);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*)__Instance)->tryBlock = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public uint NumHandlers
                 {
                     get
@@ -22344,7 +22623,7 @@ namespace CppSharp
 
             public unsafe partial class CXXForRangeStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -22357,30 +22636,45 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::System.IntPtr init;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr rangeInit;
+                    internal global::System.IntPtr init;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr rangeInit;
 
                     [FieldOffset(28)]
-                    internal global::System.IntPtr inc;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(32)]
-                    internal global::System.IntPtr body;
+                    internal global::System.IntPtr inc;
 
                     [FieldOffset(36)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal forLoc;
+                    internal global::System.IntPtr body;
 
                     [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal coawaitLoc;
+                    internal global::System.IntPtr rangeStmt;
 
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+                    internal global::System.IntPtr beginStmt;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr endStmt;
+
+                    [FieldOffset(52)]
+                    internal global::System.IntPtr loopVarStmt;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal forLoc;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal coawaitLoc;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+
+                    [FieldOffset(68)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -22535,6 +22829,78 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.DeclStmt RangeStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->rangeStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->rangeStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->rangeStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->rangeStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*)__Instance)->rangeStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.DeclStmt BeginStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->beginStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->beginStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->beginStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->beginStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*)__Instance)->beginStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.DeclStmt EndStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->endStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->endStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->endStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->endStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*)__Instance)->endStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.DeclStmt LoopVarStmt
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.DeclStmt __result0;
+                        if (((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->loopVarStmt == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->loopVarStmt))
+                            __result0 = (global::CppSharp.Parser.AST.DeclStmt) global::CppSharp.Parser.AST.DeclStmt.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->loopVarStmt];
+                        else __result0 = global::CppSharp.Parser.AST.DeclStmt.__CreateInstance(((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance)->loopVarStmt);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*)__Instance)->loopVarStmt = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.SourceLocation ForLoc
                 {
                     get
@@ -22590,7 +22956,7 @@ namespace CppSharp
 
             public unsafe partial class MSDependentExistsStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -22603,15 +22969,18 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal byte isIfExists;
-
-                    [FieldOffset(21)]
-                    internal byte isIfNotExists;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(24)]
+                    internal byte isIfExists;
+
+                    [FieldOffset(25)]
+                    internal byte isIfNotExists;
+
+                    [FieldOffset(28)]
                     internal global::System.IntPtr subStmt;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -22736,7 +23105,7 @@ namespace CppSharp
 
             public unsafe partial class CoroutineBodyStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -22749,42 +23118,45 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal byte hasDependentPromiseType;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr body;
+                    internal byte hasDependentPromiseType;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr promiseDeclStmt;
+                    internal global::System.IntPtr body;
 
                     [FieldOffset(28)]
-                    internal global::System.IntPtr initSuspendStmt;
+                    internal global::System.IntPtr promiseDeclStmt;
 
                     [FieldOffset(32)]
-                    internal global::System.IntPtr finalSuspendStmt;
+                    internal global::System.IntPtr initSuspendStmt;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr exceptionHandler;
+                    internal global::System.IntPtr finalSuspendStmt;
 
                     [FieldOffset(40)]
-                    internal global::System.IntPtr fallthroughHandler;
+                    internal global::System.IntPtr exceptionHandler;
 
                     [FieldOffset(44)]
-                    internal global::System.IntPtr allocate;
+                    internal global::System.IntPtr fallthroughHandler;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr deallocate;
+                    internal global::System.IntPtr allocate;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr returnValueInit;
+                    internal global::System.IntPtr deallocate;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr resultDecl;
+                    internal global::System.IntPtr returnValueInit;
 
                     [FieldOffset(60)]
-                    internal global::System.IntPtr returnStmt;
+                    internal global::System.IntPtr resultDecl;
 
                     [FieldOffset(64)]
+                    internal global::System.IntPtr returnStmt;
+
+                    [FieldOffset(68)]
                     internal global::System.IntPtr returnStmtOnAllocFailure;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -23186,7 +23558,7 @@ namespace CppSharp
 
             public unsafe partial class CoreturnStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 36)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -23199,15 +23571,18 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
-                    internal byte isImplicit;
+                    internal global::System.IntPtr stripLabelLikeStatements;
 
                     [FieldOffset(20)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
+                    internal byte isImplicit;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr operand;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(28)]
+                    internal global::System.IntPtr operand;
+
+                    [FieldOffset(32)]
                     internal global::System.IntPtr promiseCall;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -23537,7 +23912,7 @@ namespace CppSharp
 
             public unsafe partial class Expr : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -23550,37 +23925,49 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -24116,11 +24503,60 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.Expr.__Internal*)__Instance)->isOrdinaryOrBitFieldObject = (byte) (value ? 1 : 0);
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Field SourceBitField
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Field __result0;
+                        if (((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->sourceBitField == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Field.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->sourceBitField))
+                            __result0 = (global::CppSharp.Parser.AST.Field) global::CppSharp.Parser.AST.Field.NativeToManagedMap[((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->sourceBitField];
+                        else __result0 = global::CppSharp.Parser.AST.Field.__CreateInstance(((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->sourceBitField);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Expr.__Internal*)__Instance)->sourceBitField = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Declaration ReferencedDeclOfCallee
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Declaration __result0;
+                        if (((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->referencedDeclOfCallee == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->referencedDeclOfCallee))
+                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->referencedDeclOfCallee];
+                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->referencedDeclOfCallee);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Expr.__Internal*)__Instance)->referencedDeclOfCallee = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public bool HasPlaceholderType
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance)->hasPlaceholderType != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Expr.__Internal*)__Instance)->hasPlaceholderType = (byte) (value ? 1 : 0);
+                    }
+                }
             }
 
             public unsafe partial class FullExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24133,39 +24569,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr subExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -24270,7 +24718,7 @@ namespace CppSharp
 
             public unsafe partial class ConstantExpr : global::CppSharp.Parser.AST.FullExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24283,39 +24731,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr subExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -24383,7 +24843,7 @@ namespace CppSharp
 
             public unsafe partial class OpaqueValueExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24396,45 +24856,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal byte isUnique;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal byte isUnique;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(64)]
                     internal global::System.IntPtr sourceExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -24546,7 +25018,7 @@ namespace CppSharp
 
             public unsafe partial class DeclRefExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 96)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24559,69 +25031,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
-
                     [FieldOffset(44)]
-                    internal byte hadMultipleCandidates;
-
-                    [FieldOffset(45)]
-                    internal byte hasQualifier;
-
-                    [FieldOffset(46)]
-                    internal byte hasTemplateKWAndArgsInfo;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(60)]
-                    internal byte hasTemplateKeyword;
+                    internal byte hadMultipleCandidates;
 
                     [FieldOffset(61)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal byte hasQualifier;
 
                     [FieldOffset(64)]
-                    internal uint numTemplateArgs;
+                    internal global::System.IntPtr foundDecl;
 
                     [FieldOffset(68)]
+                    internal byte hasTemplateKWAndArgsInfo;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+
+                    [FieldOffset(76)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+
+                    [FieldOffset(80)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(84)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(85)]
+                    internal byte hasExplicitTemplateArgs;
+
+                    [FieldOffset(88)]
+                    internal uint numTemplateArgs;
+
+                    [FieldOffset(92)]
                     internal byte refersToEnclosingVariableOrCapture;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -24722,6 +25209,24 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*)__Instance)->hasQualifier = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Declaration FoundDecl
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Declaration __result0;
+                        if (((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*) __Instance)->foundDecl == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*) __Instance)->foundDecl))
+                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*) __Instance)->foundDecl];
+                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*) __Instance)->foundDecl);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*)__Instance)->foundDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -24832,7 +25337,7 @@ namespace CppSharp
 
             public unsafe partial class IntegerLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24845,42 +25350,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(64)]
                     internal ulong value;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -24974,7 +25491,7 @@ namespace CppSharp
 
             public unsafe partial class FixedPointLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -24987,42 +25504,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(64)]
                     internal ulong value;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -25116,7 +25645,7 @@ namespace CppSharp
 
             public unsafe partial class CharacterLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -25129,45 +25658,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.AST.CharacterLiteral.CharacterKind kind;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.AST.CharacterLiteral.CharacterKind kind;
+
+                    [FieldOffset(64)]
                     internal uint value;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -25283,7 +25824,7 @@ namespace CppSharp
 
             public unsafe partial class FloatingLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -25296,45 +25837,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal byte exact;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal byte exact;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+
+                    [FieldOffset(64)]
                     internal double valueAsApproximateDouble;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -25441,7 +25994,7 @@ namespace CppSharp
 
             public unsafe partial class ImaginaryLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -25454,39 +26007,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr subExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -25572,7 +26137,7 @@ namespace CppSharp
 
             public unsafe partial class StringLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 116)]
+                [StructLayout(LayoutKind.Explicit, Size = 132)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -25585,81 +26150,93 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(80)]
                     internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C bytes;
 
-                    [FieldOffset(88)]
+                    [FieldOffset(104)]
                     internal uint byteLength;
 
-                    [FieldOffset(92)]
+                    [FieldOffset(108)]
                     internal uint length;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(112)]
                     internal uint charByteWidth;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(116)]
                     internal global::CppSharp.Parser.AST.StringLiteral.StringKind kind;
 
-                    [FieldOffset(104)]
+                    [FieldOffset(120)]
                     internal byte isAscii;
 
-                    [FieldOffset(105)]
+                    [FieldOffset(121)]
                     internal byte isWide;
 
-                    [FieldOffset(106)]
+                    [FieldOffset(122)]
                     internal byte isUTF8;
 
-                    [FieldOffset(107)]
+                    [FieldOffset(123)]
                     internal byte isUTF16;
 
-                    [FieldOffset(108)]
+                    [FieldOffset(124)]
                     internal byte isUTF32;
 
-                    [FieldOffset(109)]
+                    [FieldOffset(125)]
                     internal byte isPascal;
 
-                    [FieldOffset(110)]
+                    [FieldOffset(126)]
                     internal byte containsNonAscii;
 
-                    [FieldOffset(111)]
+                    [FieldOffset(127)]
                     internal byte containsNonAsciiOrNull;
 
-                    [FieldOffset(112)]
+                    [FieldOffset(128)]
                     internal uint numConcatenated;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -25958,7 +26535,7 @@ namespace CppSharp
 
             public unsafe partial class PredefinedExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -25971,42 +26548,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.AST.PredefinedExpr.IdentKind identKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -26112,7 +26701,7 @@ namespace CppSharp
 
             public unsafe partial class ParenExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -26125,45 +26714,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr subExpr;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParen;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParen;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParen;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -26275,7 +26876,7 @@ namespace CppSharp
 
             public unsafe partial class UnaryOperator : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 76)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -26288,49 +26889,79 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.UnaryOperatorKind opcode;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.AST.UnaryOperatorKind opcode;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(68)]
                     internal byte canOverflow;
+
+                    [FieldOffset(69)]
+                    internal byte isPrefix;
+
+                    [FieldOffset(70)]
+                    internal byte isPostfix;
+
+                    [FieldOffset(71)]
+                    internal byte isIncrementOp;
+
+                    [FieldOffset(72)]
+                    internal byte isDecrementOp;
+
+                    [FieldOffset(73)]
+                    internal byte isIncrementDecrementOp;
+
+                    [FieldOffset(74)]
+                    internal byte isArithmeticOp;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -26450,11 +27081,89 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->canOverflow = (byte) (value ? 1 : 0);
                     }
                 }
+
+                public bool IsPrefix
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isPrefix != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isPrefix = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsPostfix
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isPostfix != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isPostfix = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsIncrementOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isIncrementOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isIncrementOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsDecrementOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isDecrementOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isDecrementOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsIncrementDecrementOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isIncrementDecrementOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isIncrementDecrementOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsArithmeticOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isArithmeticOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isArithmeticOp = (byte) (value ? 1 : 0);
+                    }
+                }
             }
 
             public unsafe partial class OffsetOfExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -26467,48 +27176,60 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal uint numComponents;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(64)]
+                    internal uint numComponents;
+
+                    [FieldOffset(68)]
                     internal uint numExpressions;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -26628,7 +27349,7 @@ namespace CppSharp
 
             public unsafe partial class UnaryExprOrTypeTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -26641,54 +27362,69 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.UnaryExprOrTypeTrait kind;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte isArgumentType;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal argumentType;
+                    internal global::CppSharp.Parser.AST.UnaryExprOrTypeTrait kind;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
 
                     [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(68)]
+                    internal byte isArgumentType;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal argumentType;
+
+                    [FieldOffset(80)]
+                    internal global::System.IntPtr argumentExpr;
+
+                    [FieldOffset(84)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeOfArgument;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -26818,6 +27554,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr ArgumentExpr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*) __Instance)->argumentExpr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*) __Instance)->argumentExpr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*) __Instance)->argumentExpr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*) __Instance)->argumentExpr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*)__Instance)->argumentExpr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.QualifiedType TypeOfArgument
                 {
                     get
@@ -26834,7 +27588,7 @@ namespace CppSharp
 
             public unsafe partial class ArraySubscriptExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 76)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -26847,46 +27601,64 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr lHS;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr rHS;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr lHS;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr rHS;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rBracketLoc;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr @base;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr idx;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -26998,11 +27770,47 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*)__Instance)->rBracketLoc = value.__Instance;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Expr Base
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->@base == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->@base))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->@base];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->@base);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*)__Instance)->@base = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr Idx
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->idx == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->idx))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->idx];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance)->idx);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*)__Instance)->idx = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class CallExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 100)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -27015,57 +27823,75 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr callee;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
-
-                    [FieldOffset(60)]
-                    internal uint numArgs;
-
-                    [FieldOffset(64)]
-                    internal uint numCommas;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
                     [FieldOffset(68)]
-                    internal uint builtinCallee;
+                    internal global::System.IntPtr callee;
 
                     [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(76)]
+                    internal global::System.IntPtr calleeDecl;
+
+                    [FieldOffset(80)]
+                    internal global::System.IntPtr directCallee;
+
+                    [FieldOffset(84)]
+                    internal uint numArgs;
+
+                    [FieldOffset(88)]
+                    internal uint numCommas;
+
+                    [FieldOffset(92)]
+                    internal uint builtinCallee;
+
+                    [FieldOffset(96)]
                     internal byte isCallToStdMove;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -27245,6 +28071,42 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Declaration CalleeDecl
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Declaration __result0;
+                        if (((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->calleeDecl == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->calleeDecl))
+                            __result0 = (global::CppSharp.Parser.AST.Declaration) global::CppSharp.Parser.AST.Declaration.NativeToManagedMap[((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->calleeDecl];
+                        else __result0 = global::CppSharp.Parser.AST.Declaration.__CreateInstance(((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->calleeDecl);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CallExpr.__Internal*)__Instance)->calleeDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Function DirectCallee
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Function __result0;
+                        if (((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->directCallee == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Function.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->directCallee))
+                            __result0 = (global::CppSharp.Parser.AST.Function) global::CppSharp.Parser.AST.Function.NativeToManagedMap[((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->directCallee];
+                        else __result0 = global::CppSharp.Parser.AST.Function.__CreateInstance(((global::CppSharp.Parser.AST.CallExpr.__Internal*) __Instance)->directCallee);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CallExpr.__Internal*)__Instance)->directCallee = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public uint NumArgs
                 {
                     get
@@ -27309,7 +28171,7 @@ namespace CppSharp
 
             public unsafe partial class MemberExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 84)]
+                [StructLayout(LayoutKind.Explicit, Size = 100)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -27322,75 +28184,87 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr @base;
-
                     [FieldOffset(44)]
-                    internal byte arrow;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal memberLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte hadMultipleCandidates;
-
-                    [FieldOffset(53)]
-                    internal byte hasQualifier;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal global::System.IntPtr @base;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal byte arrow;
 
                     [FieldOffset(64)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal memberLoc;
 
                     [FieldOffset(68)]
-                    internal byte hasTemplateKeyword;
+                    internal byte hadMultipleCandidates;
 
                     [FieldOffset(69)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal byte hasQualifier;
 
                     [FieldOffset(72)]
-                    internal uint numTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
 
                     [FieldOffset(80)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(84)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(85)]
+                    internal byte hasExplicitTemplateArgs;
+
+                    [FieldOffset(88)]
+                    internal uint numTemplateArgs;
+
+                    [FieldOffset(92)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(96)]
                     internal byte isImplicitAccess;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -27632,7 +28506,7 @@ namespace CppSharp
 
             public unsafe partial class CompoundLiteralExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -27645,45 +28519,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr initializer;
-
                     [FieldOffset(44)]
-                    internal byte fileScope;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr initializer;
+
+                    [FieldOffset(60)]
+                    internal byte fileScope;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -27795,7 +28681,7 @@ namespace CppSharp
 
             public unsafe partial class CastExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 60)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -27808,51 +28694,69 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr subExprAsWritten;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr conversionFunction;
+
+                    [FieldOffset(76)]
+                    internal byte path_empty;
+
+                    [FieldOffset(80)]
                     internal uint path_size;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -27967,6 +28871,37 @@ namespace CppSharp
                     }
                 }
 
+                public string CastKindName
+                {
+                    get
+                    {
+                        return Marshal.PtrToStringAnsi(((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName);
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CastExpr.__Internal*)__Instance)->castKindName = (global::System.IntPtr) Marshal.StringToHGlobalAnsi(value);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr SubExprAsWritten
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->subExprAsWritten == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->subExprAsWritten))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->subExprAsWritten];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->subExprAsWritten);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CastExpr.__Internal*)__Instance)->subExprAsWritten = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.Declaration ConversionFunction
                 {
                     get
@@ -28014,7 +28949,7 @@ namespace CppSharp
 
             public unsafe partial class ImplicitCastExpr : global::CppSharp.Parser.AST.CastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -28027,54 +28962,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr subExprAsWritten;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr conversionFunction;
+
+                    [FieldOffset(76)]
+                    internal byte path_empty;
+
+                    [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
                     internal byte isPartOfExplicitCast;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -28160,7 +29113,7 @@ namespace CppSharp
 
             public unsafe partial class ExplicitCastExpr : global::CppSharp.Parser.AST.CastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -28173,54 +29126,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr subExprAsWritten;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr conversionFunction;
+
+                    [FieldOffset(76)]
+                    internal byte path_empty;
+
+                    [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -28320,7 +29291,7 @@ namespace CppSharp
 
             public unsafe partial class CStyleCastExpr : global::CppSharp.Parser.AST.ExplicitCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 100)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -28333,60 +29304,78 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
+                    internal global::System.IntPtr conversionFunction;
+
+                    [FieldOffset(76)]
+                    internal byte path_empty;
+
+                    [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+
+                    [FieldOffset(96)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -28480,7 +29469,7 @@ namespace CppSharp
 
             public unsafe partial class BinaryOperator : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 60)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -28493,54 +29482,105 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr lHS;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr rHS;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr lHS;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr rHS;
+
+                    [FieldOffset(72)]
+                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C opcodeStr;
+
+                    [FieldOffset(96)]
+                    internal byte isPtrMemOp;
+
+                    [FieldOffset(97)]
+                    internal byte isMultiplicativeOp;
+
+                    [FieldOffset(98)]
+                    internal byte isAdditiveOp;
+
+                    [FieldOffset(99)]
+                    internal byte isShiftOp;
+
+                    [FieldOffset(100)]
+                    internal byte isBitwiseOp;
+
+                    [FieldOffset(101)]
+                    internal byte isRelationalOp;
+
+                    [FieldOffset(102)]
+                    internal byte isEqualityOp;
+
+                    [FieldOffset(103)]
+                    internal byte isComparisonOp;
+
+                    [FieldOffset(104)]
+                    internal byte isLogicalOp;
+
+                    [FieldOffset(105)]
+                    internal byte isAssignmentOp;
+
+                    [FieldOffset(106)]
+                    internal byte isCompoundAssignmentOp;
+
+                    [FieldOffset(107)]
+                    internal byte isShiftAssignOp;
+
+                    [FieldOffset(108)]
                     internal byte isFPContractableWithinStatement;
 
-                    [FieldOffset(57)]
+                    [FieldOffset(109)]
                     internal byte isFEnvAccessOn;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -28557,6 +29597,11 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0BinaryOperator@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??1BinaryOperator@AST@CppParser@CppSharp@@QAE@XZ")]
+                    internal static extern void dtor(global::System.IntPtr __instance, int delete);
                 }
 
                 internal static new global::CppSharp.Parser.AST.BinaryOperator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
@@ -28572,7 +29617,7 @@ namespace CppSharp
                 private static void* __CopyValue(global::CppSharp.Parser.AST.BinaryOperator.__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
-                    *(global::CppSharp.Parser.AST.BinaryOperator.__Internal*) ret = native;
+                    global::CppSharp.Parser.AST.BinaryOperator.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
@@ -28616,7 +29661,23 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) _0.__Instance);
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Stmt __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
                 }
 
                 public static implicit operator global::CppSharp.Parser.AST.BinaryOperator(global::CppSharp.Parser.AST.StmtClass klass)
@@ -28686,6 +29747,178 @@ namespace CppSharp
                     }
                 }
 
+                public string OpcodeStr
+                {
+                    get
+                    {
+                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr));
+                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
+                        __basicStringRet0.Dispose(false);
+                        return __stringRet0;
+                    }
+
+                    set
+                    {
+                        global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->opcodeStr), value);
+                    }
+                }
+
+                public bool IsPtrMemOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isPtrMemOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isPtrMemOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsMultiplicativeOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isMultiplicativeOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isMultiplicativeOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsAdditiveOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isAdditiveOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isAdditiveOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsShiftOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isShiftOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isShiftOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsBitwiseOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isBitwiseOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isBitwiseOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsRelationalOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isRelationalOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isRelationalOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsEqualityOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isEqualityOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isEqualityOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsComparisonOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isComparisonOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isComparisonOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsLogicalOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isLogicalOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isLogicalOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsAssignmentOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isAssignmentOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isAssignmentOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsCompoundAssignmentOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isCompoundAssignmentOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isCompoundAssignmentOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsShiftAssignOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->isShiftAssignOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BinaryOperator.__Internal*)__Instance)->isShiftAssignOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
                 public bool IsFPContractableWithinStatement
                 {
                     get
@@ -28715,7 +29948,7 @@ namespace CppSharp
 
             public unsafe partial class CompoundAssignOperator : global::CppSharp.Parser.AST.BinaryOperator, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 128)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -28728,60 +29961,111 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr lHS;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr rHS;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal byte isFPContractableWithinStatement;
-
-                    [FieldOffset(57)]
-                    internal byte isFEnvAccessOn;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal computationLHSType;
+                    internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr lHS;
 
                     [FieldOffset(68)]
+                    internal global::System.IntPtr rHS;
+
+                    [FieldOffset(72)]
+                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C opcodeStr;
+
+                    [FieldOffset(96)]
+                    internal byte isPtrMemOp;
+
+                    [FieldOffset(97)]
+                    internal byte isMultiplicativeOp;
+
+                    [FieldOffset(98)]
+                    internal byte isAdditiveOp;
+
+                    [FieldOffset(99)]
+                    internal byte isShiftOp;
+
+                    [FieldOffset(100)]
+                    internal byte isBitwiseOp;
+
+                    [FieldOffset(101)]
+                    internal byte isRelationalOp;
+
+                    [FieldOffset(102)]
+                    internal byte isEqualityOp;
+
+                    [FieldOffset(103)]
+                    internal byte isComparisonOp;
+
+                    [FieldOffset(104)]
+                    internal byte isLogicalOp;
+
+                    [FieldOffset(105)]
+                    internal byte isAssignmentOp;
+
+                    [FieldOffset(106)]
+                    internal byte isCompoundAssignmentOp;
+
+                    [FieldOffset(107)]
+                    internal byte isShiftAssignOp;
+
+                    [FieldOffset(108)]
+                    internal byte isFPContractableWithinStatement;
+
+                    [FieldOffset(109)]
+                    internal byte isFEnvAccessOn;
+
+                    [FieldOffset(112)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal computationLHSType;
+
+                    [FieldOffset(120)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal computationResultType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -28793,6 +30077,11 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0CompoundAssignOperator@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor(global::System.IntPtr __instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??1CompoundAssignOperator@AST@CppParser@CppSharp@@QAE@XZ")]
+                    internal static extern void dtor(global::System.IntPtr __instance, int delete);
                 }
 
                 internal static new global::CppSharp.Parser.AST.CompoundAssignOperator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
@@ -28808,7 +30097,7 @@ namespace CppSharp
                 private static void* __CopyValue(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal));
-                    *(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*) ret = native;
+                    global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal.cctor(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
 
@@ -28843,7 +30132,23 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal));
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    *((global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*) _0.__Instance);
+                    if (ReferenceEquals(_0, null))
+                        throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+                    var __arg0 = _0.__Instance;
+                    __Internal.cctor((__Instance + __PointerAdjustment), __arg0);
+                }
+
+                public override void Dispose(bool disposing)
+                {
+                    if (__Instance == IntPtr.Zero)
+                        return;
+                    global::CppSharp.Parser.AST.Stmt __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (disposing)
+                        __Internal.dtor((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                    __Instance = IntPtr.Zero;
                 }
 
                 public global::CppSharp.Parser.AST.QualifiedType ComputationLHSType
@@ -28875,7 +30180,7 @@ namespace CppSharp
 
             public unsafe partial class AbstractConditionalOperator : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 60)]
+                [StructLayout(LayoutKind.Explicit, Size = 76)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -28888,51 +30193,63 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr cond;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr trueExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr falseExpr;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal questionLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
+                    internal global::System.IntPtr cond;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr trueExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr falseExpr;
+
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal questionLoc;
+
+                    [FieldOffset(72)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -29099,7 +30416,7 @@ namespace CppSharp
 
             public unsafe partial class ConditionalOperator : global::CppSharp.Parser.AST.AbstractConditionalOperator, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -29112,57 +30429,69 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr cond;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr trueExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr falseExpr;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal questionLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(60)]
-                    internal global::System.IntPtr lHS;
+                    internal global::System.IntPtr trueExpr;
 
                     [FieldOffset(64)]
+                    internal global::System.IntPtr falseExpr;
+
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal questionLoc;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+
+                    [FieldOffset(76)]
+                    internal global::System.IntPtr lHS;
+
+                    [FieldOffset(80)]
                     internal global::System.IntPtr rHS;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -29266,7 +30595,7 @@ namespace CppSharp
 
             public unsafe partial class BinaryConditionalOperator : global::CppSharp.Parser.AST.AbstractConditionalOperator, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -29279,57 +30608,69 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr cond;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr trueExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr falseExpr;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal questionLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(60)]
-                    internal global::System.IntPtr common;
+                    internal global::System.IntPtr trueExpr;
 
                     [FieldOffset(64)]
+                    internal global::System.IntPtr falseExpr;
+
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal questionLoc;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal colonLoc;
+
+                    [FieldOffset(76)]
+                    internal global::System.IntPtr common;
+
+                    [FieldOffset(80)]
                     internal global::System.IntPtr opaqueValue;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -29433,7 +30774,7 @@ namespace CppSharp
 
             public unsafe partial class AddrLabelExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -29446,42 +30787,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal ampAmpLoc;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal labelLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -29575,7 +30928,7 @@ namespace CppSharp
 
             public unsafe partial class StmtExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -29588,45 +30941,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr subStmt;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr subStmt;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -29738,7 +31103,7 @@ namespace CppSharp
 
             public unsafe partial class ShuffleVectorExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -29751,45 +31116,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(64)]
                     internal uint numSubExprs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -29896,7 +31273,7 @@ namespace CppSharp
 
             public unsafe partial class ConvertVectorExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -29909,45 +31286,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr srcExpr;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr srcExpr;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -30059,7 +31448,7 @@ namespace CppSharp
 
             public unsafe partial class ChooseExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -30072,60 +31461,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal byte isConditionTrue;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr cond;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr lHS;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr rHS;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+                    internal byte isConditionTrue;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::System.IntPtr cond;
 
                     [FieldOffset(64)]
-                    internal byte isConditionDependent;
+                    internal global::System.IntPtr lHS;
 
                     [FieldOffset(68)]
+                    internal global::System.IntPtr rHS;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+
+                    [FieldOffset(76)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(80)]
+                    internal byte isConditionDependent;
+
+                    [FieldOffset(84)]
                     internal global::System.IntPtr chosenSubExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -30317,7 +31718,7 @@ namespace CppSharp
 
             public unsafe partial class GNUNullExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -30330,39 +31731,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal tokenLocation;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -30443,7 +31856,7 @@ namespace CppSharp
 
             public unsafe partial class VAArgExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -30456,48 +31869,60 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr subExpr;
-
                     [FieldOffset(44)]
-                    internal byte isMicrosoftABI;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(60)]
+                    internal byte isMicrosoftABI;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+
+                    [FieldOffset(68)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -30622,7 +32047,7 @@ namespace CppSharp
 
             public unsafe partial class InitListExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -30635,72 +32060,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr arrayFiller;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lBraceLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rBraceLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr syntacticForm;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint numInits;
+                    internal global::System.IntPtr arrayFiller;
 
                     [FieldOffset(60)]
-                    internal byte hasArrayFiller;
-
-                    [FieldOffset(61)]
-                    internal byte isExplicit;
-
-                    [FieldOffset(62)]
-                    internal byte isStringLiteralInit;
-
-                    [FieldOffset(63)]
-                    internal byte isTransparent;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lBraceLoc;
 
                     [FieldOffset(64)]
-                    internal byte isSemanticForm;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rBraceLoc;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr semanticForm;
+                    internal global::System.IntPtr syntacticForm;
 
                     [FieldOffset(72)]
+                    internal uint numInits;
+
+                    [FieldOffset(76)]
+                    internal byte hasArrayFiller;
+
+                    [FieldOffset(77)]
+                    internal byte isExplicit;
+
+                    [FieldOffset(78)]
+                    internal byte isStringLiteralInit;
+
+                    [FieldOffset(79)]
+                    internal byte isTransparent;
+
+                    [FieldOffset(80)]
+                    internal byte isSemanticForm;
+
+                    [FieldOffset(84)]
+                    internal global::System.IntPtr semanticForm;
+
+                    [FieldOffset(88)]
                     internal byte isSyntacticForm;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -30939,7 +32376,7 @@ namespace CppSharp
 
             public unsafe partial class DesignatedInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -30952,54 +32389,66 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal equalOrColonLoc;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr init;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal uint size;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte usesGNUSyntax;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint numSubExprs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal equalOrColonLoc;
 
                     [FieldOffset(60)]
+                    internal global::System.IntPtr init;
+
+                    [FieldOffset(64)]
+                    internal uint size;
+
+                    [FieldOffset(68)]
+                    internal byte usesGNUSyntax;
+
+                    [FieldOffset(72)]
+                    internal uint numSubExprs;
+
+                    [FieldOffset(76)]
                     internal global::CppSharp.Parser.SourceRange.__Internal designatorsSourceRange;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -31595,7 +33044,7 @@ namespace CppSharp
 
             public unsafe partial class NoInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -31608,37 +33057,49 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -31705,7 +33166,7 @@ namespace CppSharp
 
             public unsafe partial class DesignatedInitUpdateExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -31718,42 +33179,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr @base;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::System.IntPtr updater;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -31857,7 +33330,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayInitLoopExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -31870,42 +33343,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr commonExpr;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::System.IntPtr subExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -32009,7 +33494,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayInitIndexExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32022,37 +33507,49 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -32119,7 +33616,7 @@ namespace CppSharp
 
             public unsafe partial class ImplicitValueInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32132,37 +33629,49 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -32229,7 +33738,7 @@ namespace CppSharp
 
             public unsafe partial class ParenListExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32242,45 +33751,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal uint numExprs;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal uint numExprs;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -32387,7 +33908,7 @@ namespace CppSharp
 
             public unsafe partial class GenericSelectionExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32400,55 +33921,73 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal uint numAssocs;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal genericLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal defaultLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal byte isResultDependent;
+                    internal uint numAssocs;
 
                     [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal genericLoc;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal defaultLoc;
+
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr controllingExpr;
+
+                    [FieldOffset(76)]
+                    internal byte isResultDependent;
+
+                    [FieldOffset(80)]
                     internal uint resultIndex;
+
+                    [FieldOffset(84)]
+                    internal global::System.IntPtr resultExpr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -32564,6 +34103,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr ControllingExpr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->controllingExpr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->controllingExpr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->controllingExpr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->controllingExpr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*)__Instance)->controllingExpr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public bool IsResultDependent
                 {
                     get
@@ -32589,11 +34146,29 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*)__Instance)->resultIndex = value;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Expr ResultExpr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->resultExpr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->resultExpr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->resultExpr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance)->resultExpr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*)__Instance)->resultExpr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class ExtVectorElementExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32606,51 +34181,63 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr @base;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal accessorLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal uint numElements;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr @base;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal accessorLoc;
+
+                    [FieldOffset(64)]
+                    internal uint numElements;
+
+                    [FieldOffset(68)]
                     internal byte containsDuplicateElements;
 
-                    [FieldOffset(53)]
+                    [FieldOffset(69)]
                     internal byte isArrow;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -32788,7 +34375,7 @@ namespace CppSharp
 
             public unsafe partial class BlockExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32801,40 +34388,55 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal caretLocation;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr body;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -32910,11 +34512,29 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.BlockExpr.__Internal*)__Instance)->caretLocation = value.__Instance;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Stmt Body
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Stmt __result0;
+                        if (((global::CppSharp.Parser.AST.BlockExpr.__Internal*) __Instance)->body == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Stmt.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.BlockExpr.__Internal*) __Instance)->body))
+                            __result0 = (global::CppSharp.Parser.AST.Stmt) global::CppSharp.Parser.AST.Stmt.NativeToManagedMap[((global::CppSharp.Parser.AST.BlockExpr.__Internal*) __Instance)->body];
+                        else __result0 = global::CppSharp.Parser.AST.Stmt.__CreateInstance(((global::CppSharp.Parser.AST.BlockExpr.__Internal*) __Instance)->body);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.BlockExpr.__Internal*)__Instance)->body = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class AsTypeExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -32927,45 +34547,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr srcExpr;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr srcExpr;
+
+                    [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -33077,7 +34709,7 @@ namespace CppSharp
 
             public unsafe partial class PseudoObjectExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -33090,42 +34722,60 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr syntacticForm;
+
+                    [FieldOffset(60)]
                     internal uint resultExprIndex;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr resultExpr;
+
+                    [FieldOffset(68)]
                     internal uint numSemanticExprs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -33190,6 +34840,24 @@ namespace CppSharp
                     *((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) _0.__Instance);
                 }
 
+                public global::CppSharp.Parser.AST.Expr SyntacticForm
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->syntacticForm == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->syntacticForm))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->syntacticForm];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->syntacticForm);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*)__Instance)->syntacticForm = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public uint ResultExprIndex
                 {
                     get
@@ -33200,6 +34868,24 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*)__Instance)->resultExprIndex = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr ResultExpr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->resultExpr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->resultExpr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->resultExpr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance)->resultExpr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*)__Instance)->resultExpr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -33219,7 +34905,7 @@ namespace CppSharp
 
             public unsafe partial class AtomicExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 92)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -33232,78 +34918,93 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr ptr;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr order;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr scope;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr val1;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr orderFail;
+                    internal global::System.IntPtr ptr;
 
                     [FieldOffset(60)]
-                    internal global::System.IntPtr val2;
+                    internal global::System.IntPtr order;
 
                     [FieldOffset(64)]
-                    internal global::System.IntPtr weak;
+                    internal global::System.IntPtr scope;
 
                     [FieldOffset(68)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal valueType;
+                    internal global::System.IntPtr val1;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr orderFail;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.AST.AtomicExpr.AtomicOp op;
+                    internal global::System.IntPtr val2;
 
                     [FieldOffset(80)]
-                    internal byte isVolatile;
-
-                    [FieldOffset(81)]
-                    internal byte isCmpXChg;
-
-                    [FieldOffset(82)]
-                    internal byte isOpenCL;
+                    internal global::System.IntPtr weak;
 
                     [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal valueType;
+
+                    [FieldOffset(92)]
+                    internal global::CppSharp.Parser.AST.AtomicExpr.AtomicOp op;
+
+                    [FieldOffset(96)]
+                    internal uint numSubExprs;
+
+                    [FieldOffset(100)]
+                    internal byte isVolatile;
+
+                    [FieldOffset(101)]
+                    internal byte isCmpXChg;
+
+                    [FieldOffset(102)]
+                    internal byte isOpenCL;
+
+                    [FieldOffset(104)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal builtinLoc;
 
-                    [FieldOffset(88)]
+                    [FieldOffset(108)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -33570,6 +35271,19 @@ namespace CppSharp
                     }
                 }
 
+                public uint NumSubExprs
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.AtomicExpr.__Internal*) __Instance)->numSubExprs;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.AtomicExpr.__Internal*)__Instance)->numSubExprs = value;
+                    }
+                }
+
                 public bool IsVolatile
                 {
                     get
@@ -33638,7 +35352,7 @@ namespace CppSharp
 
             public unsafe partial class TypoExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -33651,37 +35365,49 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -33748,7 +35474,7 @@ namespace CppSharp
 
             public unsafe partial class CXXOperatorCallExpr : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 92)]
+                [StructLayout(LayoutKind.Explicit, Size = 116)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -33761,69 +35487,90 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr callee;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
-
-                    [FieldOffset(60)]
-                    internal uint numArgs;
-
-                    [FieldOffset(64)]
-                    internal uint numCommas;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
                     [FieldOffset(68)]
-                    internal uint builtinCallee;
+                    internal global::System.IntPtr callee;
 
                     [FieldOffset(72)]
-                    internal byte isCallToStdMove;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.AST.OverloadedOperatorKind _operator;
+                    internal global::System.IntPtr calleeDecl;
 
                     [FieldOffset(80)]
-                    internal byte isInfixBinaryOp;
+                    internal global::System.IntPtr directCallee;
 
                     [FieldOffset(84)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal uint numArgs;
 
                     [FieldOffset(88)]
+                    internal uint numCommas;
+
+                    [FieldOffset(92)]
+                    internal uint builtinCallee;
+
+                    [FieldOffset(96)]
+                    internal byte isCallToStdMove;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.AST.OverloadedOperatorKind _operator;
+
+                    [FieldOffset(104)]
+                    internal byte isAssignmentOp;
+
+                    [FieldOffset(105)]
+                    internal byte isInfixBinaryOp;
+
+                    [FieldOffset(108)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(112)]
                     internal byte isFPContractableWithinStatement;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -33922,6 +35669,19 @@ namespace CppSharp
                     }
                 }
 
+                public bool IsAssignmentOp
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal*) __Instance)->isAssignmentOp != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal*)__Instance)->isAssignmentOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
                 public bool IsInfixBinaryOp
                 {
                     get
@@ -33964,7 +35724,7 @@ namespace CppSharp
 
             public unsafe partial class CXXMemberCallExpr : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 84)]
+                [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -33977,63 +35737,81 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr callee;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
-
-                    [FieldOffset(60)]
-                    internal uint numArgs;
-
-                    [FieldOffset(64)]
-                    internal uint numCommas;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
                     [FieldOffset(68)]
-                    internal uint builtinCallee;
+                    internal global::System.IntPtr callee;
 
                     [FieldOffset(72)]
-                    internal byte isCallToStdMove;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [FieldOffset(76)]
-                    internal global::System.IntPtr implicitObjectArgument;
+                    internal global::System.IntPtr calleeDecl;
 
                     [FieldOffset(80)]
+                    internal global::System.IntPtr directCallee;
+
+                    [FieldOffset(84)]
+                    internal uint numArgs;
+
+                    [FieldOffset(88)]
+                    internal uint numCommas;
+
+                    [FieldOffset(92)]
+                    internal uint builtinCallee;
+
+                    [FieldOffset(96)]
+                    internal byte isCallToStdMove;
+
+                    [FieldOffset(100)]
+                    internal global::System.IntPtr implicitObjectArgument;
+
+                    [FieldOffset(104)]
                     internal global::System.IntPtr methodDecl;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -34158,7 +35936,7 @@ namespace CppSharp
 
             public unsafe partial class CUDAKernelCallExpr : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 80)]
+                [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -34171,60 +35949,78 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr callee;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
-
-                    [FieldOffset(60)]
-                    internal uint numArgs;
-
-                    [FieldOffset(64)]
-                    internal uint numCommas;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
                     [FieldOffset(68)]
-                    internal uint builtinCallee;
+                    internal global::System.IntPtr callee;
 
                     [FieldOffset(72)]
-                    internal byte isCallToStdMove;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [FieldOffset(76)]
+                    internal global::System.IntPtr calleeDecl;
+
+                    [FieldOffset(80)]
+                    internal global::System.IntPtr directCallee;
+
+                    [FieldOffset(84)]
+                    internal uint numArgs;
+
+                    [FieldOffset(88)]
+                    internal uint numCommas;
+
+                    [FieldOffset(92)]
+                    internal uint builtinCallee;
+
+                    [FieldOffset(96)]
+                    internal byte isCallToStdMove;
+
+                    [FieldOffset(100)]
                     internal global::System.IntPtr config;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -34331,7 +36127,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNamedCastExpr : global::CppSharp.Parser.AST.ExplicitCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 88)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -34344,66 +36140,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr castName;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr conversionFunction;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal byte path_empty;
 
                     [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::System.IntPtr castName;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(104)]
                     internal global::CppSharp.Parser.SourceRange.__Internal angleBrackets;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -34542,7 +36356,7 @@ namespace CppSharp
 
             public unsafe partial class CXXStaticCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 88)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -34555,66 +36369,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr castName;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr conversionFunction;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal byte path_empty;
 
                     [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::System.IntPtr castName;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(104)]
                     internal global::CppSharp.Parser.SourceRange.__Internal angleBrackets;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -34682,7 +36514,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDynamicCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 92)]
+                [StructLayout(LayoutKind.Explicit, Size = 116)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -34695,69 +36527,87 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr castName;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr conversionFunction;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal byte path_empty;
 
                     [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::System.IntPtr castName;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(104)]
                     internal global::CppSharp.Parser.SourceRange.__Internal angleBrackets;
 
-                    [FieldOffset(88)]
+                    [FieldOffset(112)]
                     internal byte isAlwaysNull;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -34838,7 +36688,7 @@ namespace CppSharp
 
             public unsafe partial class CXXReinterpretCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 88)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -34851,66 +36701,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr castName;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr conversionFunction;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal byte path_empty;
 
                     [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::System.IntPtr castName;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(104)]
                     internal global::CppSharp.Parser.SourceRange.__Internal angleBrackets;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -34978,7 +36846,7 @@ namespace CppSharp
 
             public unsafe partial class CXXConstCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 88)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -34991,66 +36859,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr castName;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr conversionFunction;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal byte path_empty;
 
                     [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::System.IntPtr castName;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(104)]
                     internal global::CppSharp.Parser.SourceRange.__Internal angleBrackets;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -35118,7 +37004,7 @@ namespace CppSharp
 
             public unsafe partial class UserDefinedLiteral : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 84)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -35131,63 +37017,84 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr callee;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
-
-                    [FieldOffset(60)]
-                    internal uint numArgs;
-
-                    [FieldOffset(64)]
-                    internal uint numCommas;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
                     [FieldOffset(68)]
-                    internal uint builtinCallee;
+                    internal global::System.IntPtr callee;
 
                     [FieldOffset(72)]
-                    internal byte isCallToStdMove;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.AST.UserDefinedLiteral.LiteralOperatorKind literalOperatorKind;
+                    internal global::System.IntPtr calleeDecl;
 
                     [FieldOffset(80)]
+                    internal global::System.IntPtr directCallee;
+
+                    [FieldOffset(84)]
+                    internal uint numArgs;
+
+                    [FieldOffset(88)]
+                    internal uint numCommas;
+
+                    [FieldOffset(92)]
+                    internal uint builtinCallee;
+
+                    [FieldOffset(96)]
+                    internal byte isCallToStdMove;
+
+                    [FieldOffset(100)]
+                    internal global::CppSharp.Parser.AST.UserDefinedLiteral.LiteralOperatorKind literalOperatorKind;
+
+                    [FieldOffset(104)]
+                    internal global::System.IntPtr cookedLiteral;
+
+                    [FieldOffset(108)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal uDSuffixLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -35296,6 +37203,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr CookedLiteral
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal*) __Instance)->cookedLiteral == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal*) __Instance)->cookedLiteral))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal*) __Instance)->cookedLiteral];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal*) __Instance)->cookedLiteral);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal*)__Instance)->cookedLiteral = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.SourceLocation UDSuffixLoc
                 {
                     get
@@ -35312,7 +37237,7 @@ namespace CppSharp
 
             public unsafe partial class CXXBoolLiteralExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -35325,42 +37250,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal byte value;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -35454,7 +37391,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNullPtrLiteralExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -35467,39 +37404,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -35580,7 +37529,7 @@ namespace CppSharp
 
             public unsafe partial class CXXStdInitializerListExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -35593,37 +37542,52 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr subExpr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -35686,11 +37650,29 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) _0.__Instance);
                 }
+
+                public global::CppSharp.Parser.AST.Expr SubExpr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) __Instance)->subExpr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) __Instance)->subExpr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) __Instance)->subExpr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) __Instance)->subExpr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*)__Instance)->subExpr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class CXXTypeidExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -35703,45 +37685,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr exprOperand;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal byte isPotentiallyEvaluated;
 
-                    [FieldOffset(45)]
+                    [FieldOffset(61)]
                     internal byte isTypeOperand;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -35853,7 +37847,7 @@ namespace CppSharp
 
             public unsafe partial class MSPropertyRefExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -35866,48 +37860,60 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal byte isImplicitAccess;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr baseExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal byte isArrow;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal byte isImplicitAccess;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr baseExpr;
+
+                    [FieldOffset(64)]
+                    internal byte isArrow;
+
+                    [FieldOffset(68)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal memberLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -36032,7 +38038,7 @@ namespace CppSharp
 
             public unsafe partial class MSPropertySubscriptExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36045,40 +38051,58 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rBracketLoc;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr @base;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr idx;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -36154,11 +38178,47 @@ namespace CppSharp
                         ((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*)__Instance)->rBracketLoc = value.__Instance;
                     }
                 }
+
+                public global::CppSharp.Parser.AST.Expr Base
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->@base == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->@base))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->@base];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->@base);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*)__Instance)->@base = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr Idx
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->idx == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->idx))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->idx];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance)->idx);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*)__Instance)->idx = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class CXXUuidofExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36171,45 +38231,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr exprOperand;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C uuidStr;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(84)]
                     internal byte isTypeOperand;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -36345,7 +38417,7 @@ namespace CppSharp
 
             public unsafe partial class CXXThisExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36358,42 +38430,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal byte @implicit;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -36487,7 +38571,7 @@ namespace CppSharp
 
             public unsafe partial class CXXThrowExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36500,42 +38584,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal throwLoc;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(64)]
                     internal byte isThrownVariableInScope;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -36600,6 +38699,24 @@ namespace CppSharp
                     *((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) _0.__Instance);
                 }
 
+                public global::CppSharp.Parser.AST.Expr SubExpr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) __Instance)->subExpr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) __Instance)->subExpr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) __Instance)->subExpr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) __Instance)->subExpr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*)__Instance)->subExpr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.SourceLocation ThrowLoc
                 {
                     get
@@ -36629,7 +38746,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDefaultArgExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36642,39 +38759,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr expr;
+
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal usedLocation;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -36739,6 +38871,24 @@ namespace CppSharp
                     *((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) _0.__Instance);
                 }
 
+                public global::CppSharp.Parser.AST.Expr Expr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) __Instance)->expr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) __Instance)->expr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) __Instance)->expr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) __Instance)->expr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*)__Instance)->expr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.SourceLocation UsedLocation
                 {
                     get
@@ -36755,7 +38905,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDefaultInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36768,37 +38918,55 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
+
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr field;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr expr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -36861,11 +39029,47 @@ namespace CppSharp
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) _0.__Instance);
                 }
+
+                public global::CppSharp.Parser.AST.Field Field
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Field __result0;
+                        if (((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->field == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Field.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->field))
+                            __result0 = (global::CppSharp.Parser.AST.Field) global::CppSharp.Parser.AST.Field.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->field];
+                        else __result0 = global::CppSharp.Parser.AST.Field.__CreateInstance(((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->field);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*)__Instance)->field = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.Expr Expr
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->expr == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->expr))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->expr];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance)->expr);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*)__Instance)->expr = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class CXXBindTemporaryExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -36878,39 +39082,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr subExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -36996,7 +39212,7 @@ namespace CppSharp
 
             public unsafe partial class CXXConstructExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -37009,63 +39225,75 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal byte elidable;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
-                    [FieldOffset(57)]
-                    internal byte hadMultipleCandidates;
-
-                    [FieldOffset(58)]
-                    internal byte listInitialization;
-
-                    [FieldOffset(59)]
-                    internal byte stdInitListInitialization;
-
-                    [FieldOffset(60)]
-                    internal byte requiresZeroInitialization;
-
-                    [FieldOffset(64)]
-                    internal global::CppSharp.Parser.SourceRange.__Internal parenOrBraceRange;
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(72)]
+                    internal byte elidable;
+
+                    [FieldOffset(73)]
+                    internal byte hadMultipleCandidates;
+
+                    [FieldOffset(74)]
+                    internal byte listInitialization;
+
+                    [FieldOffset(75)]
+                    internal byte stdInitListInitialization;
+
+                    [FieldOffset(76)]
+                    internal byte requiresZeroInitialization;
+
+                    [FieldOffset(80)]
+                    internal global::CppSharp.Parser.SourceRange.__Internal parenOrBraceRange;
+
+                    [FieldOffset(88)]
                     internal uint numArgs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -37338,7 +39566,7 @@ namespace CppSharp
 
             public unsafe partial class CXXInheritedCtorInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -37351,45 +39579,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal byte constructsVBase;
 
-                    [FieldOffset(41)]
+                    [FieldOffset(57)]
                     internal byte inheritedFromVBase;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -37496,7 +39736,7 @@ namespace CppSharp
 
             public unsafe partial class CXXFunctionalCastExpr : global::CppSharp.Parser.AST.ExplicitCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 80)]
+                [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -37509,63 +39749,81 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.CastKind castKind;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr subExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr conversionFunction;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal byte path_empty;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint path_size;
+                    internal global::CppSharp.Parser.AST.CastKind castKind;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr castKindName;
 
                     [FieldOffset(68)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+                    internal global::System.IntPtr subExprAsWritten;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::System.IntPtr conversionFunction;
 
                     [FieldOffset(76)]
+                    internal byte path_empty;
+
+                    [FieldOffset(80)]
+                    internal uint path_size;
+
+                    [FieldOffset(84)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(92)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(100)]
                     internal byte isListInitialization;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -37672,7 +39930,7 @@ namespace CppSharp
 
             public unsafe partial class CXXTemporaryObjectExpr : global::CppSharp.Parser.AST.CXXConstructExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -37685,63 +39943,75 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal byte elidable;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
-                    [FieldOffset(57)]
-                    internal byte hadMultipleCandidates;
-
-                    [FieldOffset(58)]
-                    internal byte listInitialization;
-
-                    [FieldOffset(59)]
-                    internal byte stdInitListInitialization;
-
-                    [FieldOffset(60)]
-                    internal byte requiresZeroInitialization;
-
-                    [FieldOffset(64)]
-                    internal global::CppSharp.Parser.SourceRange.__Internal parenOrBraceRange;
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(72)]
+                    internal byte elidable;
+
+                    [FieldOffset(73)]
+                    internal byte hadMultipleCandidates;
+
+                    [FieldOffset(74)]
+                    internal byte listInitialization;
+
+                    [FieldOffset(75)]
+                    internal byte stdInitListInitialization;
+
+                    [FieldOffset(76)]
+                    internal byte requiresZeroInitialization;
+
+                    [FieldOffset(80)]
+                    internal global::CppSharp.Parser.SourceRange.__Internal parenOrBraceRange;
+
+                    [FieldOffset(88)]
                     internal uint numArgs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -37830,7 +40100,7 @@ namespace CppSharp
 
             public unsafe partial class LambdaExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 84)]
+                [StructLayout(LayoutKind.Explicit, Size = 100)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -37843,66 +40113,78 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ capture_inits;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal captureDefaultLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint capture_size;
-
-                    [FieldOffset(60)]
-                    internal global::CppSharp.Parser.SourceRange.__Internal introducerRange;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ capture_inits;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr callOperator;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal captureDefaultLoc;
 
                     [FieldOffset(72)]
-                    internal byte isGenericLambda;
+                    internal uint capture_size;
 
                     [FieldOffset(76)]
+                    internal global::CppSharp.Parser.SourceRange.__Internal introducerRange;
+
+                    [FieldOffset(84)]
+                    internal global::System.IntPtr callOperator;
+
+                    [FieldOffset(88)]
+                    internal byte isGenericLambda;
+
+                    [FieldOffset(92)]
                     internal global::System.IntPtr body;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(96)]
                     internal byte isMutable;
 
-                    [FieldOffset(81)]
+                    [FieldOffset(97)]
                     internal byte hasExplicitParameters;
 
-                    [FieldOffset(82)]
+                    [FieldOffset(98)]
                     internal byte hasExplicitResultType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -38171,7 +40453,7 @@ namespace CppSharp
 
             public unsafe partial class CXXScalarValueInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 60)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -38184,39 +40466,51 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -38297,7 +40591,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNewExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 108)]
+                [StructLayout(LayoutKind.Explicit, Size = 132)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -38310,75 +40604,93 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ placement_arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr operatorNew;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr operatorDelete;
-
-                    [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal allocatedType;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ placement_arguments;
 
                     [FieldOffset(68)]
-                    internal byte isArray;
+                    internal global::System.IntPtr operatorNew;
 
                     [FieldOffset(72)]
-                    internal uint numPlacementArgs;
+                    internal global::System.IntPtr operatorDelete;
 
                     [FieldOffset(76)]
-                    internal byte isParenTypeId;
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal allocatedType;
 
-                    [FieldOffset(80)]
-                    internal global::CppSharp.Parser.SourceRange.__Internal typeIdParens;
+                    [FieldOffset(84)]
+                    internal byte isArray;
 
                     [FieldOffset(88)]
-                    internal byte isGlobalNew;
-
-                    [FieldOffset(89)]
-                    internal byte hasInitializer;
+                    internal global::System.IntPtr arraySize;
 
                     [FieldOffset(92)]
-                    internal global::CppSharp.Parser.AST.CXXNewExpr.InitializationStyle initializationStyle;
+                    internal uint numPlacementArgs;
 
                     [FieldOffset(96)]
-                    internal global::System.IntPtr constructExpr;
+                    internal byte isParenTypeId;
 
                     [FieldOffset(100)]
+                    internal global::CppSharp.Parser.SourceRange.__Internal typeIdParens;
+
+                    [FieldOffset(108)]
+                    internal byte isGlobalNew;
+
+                    [FieldOffset(109)]
+                    internal byte hasInitializer;
+
+                    [FieldOffset(112)]
+                    internal global::CppSharp.Parser.AST.CXXNewExpr.InitializationStyle initializationStyle;
+
+                    [FieldOffset(116)]
+                    internal global::System.IntPtr initializer;
+
+                    [FieldOffset(120)]
+                    internal global::System.IntPtr constructExpr;
+
+                    [FieldOffset(124)]
                     internal global::CppSharp.Parser.SourceRange.__Internal directInitRange;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -38577,6 +40889,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr ArraySize
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->arraySize == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->arraySize))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->arraySize];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->arraySize);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->arraySize = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public uint NumPlacementArgs
                 {
                     get
@@ -38655,6 +40985,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr Initializer
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->initializer == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->initializer))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->initializer];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*) __Instance)->initializer);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->initializer = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.CXXConstructExpr ConstructExpr
                 {
                     get
@@ -38698,7 +41046,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDeleteExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 76)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -38711,51 +41059,66 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal byte isGlobalDelete;
-
-                    [FieldOffset(41)]
-                    internal byte isArrayForm;
-
-                    [FieldOffset(42)]
-                    internal byte isArrayFormAsWritten;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr operatorDelete;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal byte isGlobalDelete;
+
+                    [FieldOffset(57)]
+                    internal byte isArrayForm;
+
+                    [FieldOffset(58)]
+                    internal byte isArrayFormAsWritten;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr operatorDelete;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr argument;
+
+                    [FieldOffset(68)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal destroyedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -38877,6 +41240,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr Argument
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*) __Instance)->argument == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*) __Instance)->argument))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*) __Instance)->argument];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*) __Instance)->argument);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*)__Instance)->argument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.QualifiedType DestroyedType
                 {
                     get
@@ -38893,7 +41274,7 @@ namespace CppSharp
 
             public unsafe partial class CXXPseudoDestructorExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -38906,60 +41287,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr @base;
-
                     [FieldOffset(44)]
-                    internal byte hasQualifier;
-
-                    [FieldOffset(45)]
-                    internal byte isArrow;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal colonColonLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal tildeLoc;
+                    internal global::System.IntPtr @base;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal destroyedType;
+                    internal byte hasQualifier;
+
+                    [FieldOffset(61)]
+                    internal byte isArrow;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
 
                     [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal colonColonLoc;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal tildeLoc;
+
+                    [FieldOffset(76)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal destroyedType;
+
+                    [FieldOffset(84)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal destroyedTypeLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -39136,7 +41529,7 @@ namespace CppSharp
 
             public unsafe partial class TypeTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -39149,42 +41542,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal byte value;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal uint numArgs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -39278,7 +41683,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayTypeTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 80)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -39291,45 +41696,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal queriedType;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal ulong value;
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal queriedType;
+
+                    [FieldOffset(64)]
+                    internal ulong value;
+
+                    [FieldOffset(72)]
                     internal global::System.IntPtr dimensionExpression;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -39441,7 +41858,7 @@ namespace CppSharp
 
             public unsafe partial class ExpressionTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -39454,42 +41871,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr queriedExpression;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal byte value;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -39588,7 +42017,7 @@ namespace CppSharp
 
             public unsafe partial class OverloadExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -39601,60 +42030,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal uint numDecls;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal uint numDecls;
 
                     [FieldOffset(60)]
-                    internal byte hasTemplateKeyword;
-
-                    [FieldOffset(61)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
 
                     [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(76)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(77)]
+                    internal byte hasExplicitTemplateArgs;
+
+                    [FieldOffset(80)]
                     internal uint numTemplateArgs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -39933,7 +42374,7 @@ namespace CppSharp
 
             public unsafe partial class UnresolvedLookupExpr : global::CppSharp.Parser.AST.OverloadExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -39946,66 +42387,78 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal uint numDecls;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal uint numDecls;
 
                     [FieldOffset(60)]
-                    internal byte hasTemplateKeyword;
-
-                    [FieldOffset(61)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
 
                     [FieldOffset(64)]
-                    internal uint numTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
 
                     [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+
+                    [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(76)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(77)]
+                    internal byte hasExplicitTemplateArgs;
+
+                    [FieldOffset(80)]
+                    internal uint numTemplateArgs;
+
+                    [FieldOffset(84)]
                     internal byte requiresADL;
 
-                    [FieldOffset(69)]
+                    [FieldOffset(85)]
                     internal byte isOverloaded;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -40099,7 +42552,7 @@ namespace CppSharp
 
             public unsafe partial class DependentScopeDeclRefExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 80)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -40112,57 +42565,69 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal byte hasTemplateKeyword;
-
-                    [FieldOffset(57)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
                     [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+
+                    [FieldOffset(68)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(72)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(73)]
+                    internal byte hasExplicitTemplateArgs;
+
+                    [FieldOffset(76)]
                     internal uint numTemplateArgs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -40321,7 +42786,7 @@ namespace CppSharp
 
             public unsafe partial class ExprWithCleanups : global::CppSharp.Parser.AST.FullExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -40334,45 +42799,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr subExpr;
-
                     [FieldOffset(44)]
-                    internal uint numObjects;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr subExpr;
+
+                    [FieldOffset(60)]
+                    internal uint numObjects;
+
+                    [FieldOffset(64)]
                     internal byte cleanupsHaveSideEffects;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -40466,7 +42943,7 @@ namespace CppSharp
 
             public unsafe partial class CXXUnresolvedConstructExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 76)]
+                [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -40479,54 +42956,66 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
-
-                    [FieldOffset(60)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_ arguments;
 
                     [FieldOffset(68)]
-                    internal byte isListInitialization;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
 
                     [FieldOffset(72)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(76)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
+
+                    [FieldOffset(84)]
+                    internal byte isListInitialization;
+
+                    [FieldOffset(88)]
                     internal uint arg_size;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -40733,7 +43222,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDependentScopeMemberExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 92)]
+                [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -40746,75 +43235,87 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal byte isImplicitAccess;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr @base;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal baseType;
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal byte isArrow;
+                    internal byte isImplicitAccess;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal global::System.IntPtr @base;
 
                     [FieldOffset(64)]
-                    internal global::System.IntPtr firstQualifierFoundInScope;
-
-                    [FieldOffset(68)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal memberLoc;
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal baseType;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal byte isArrow;
 
                     [FieldOffset(76)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
 
                     [FieldOffset(80)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal global::System.IntPtr firstQualifierFoundInScope;
 
                     [FieldOffset(84)]
-                    internal byte hasTemplateKeyword;
-
-                    [FieldOffset(85)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal memberLoc;
 
                     [FieldOffset(88)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+
+                    [FieldOffset(92)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+
+                    [FieldOffset(96)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(100)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(101)]
+                    internal byte hasExplicitTemplateArgs;
+
+                    [FieldOffset(104)]
                     internal uint numTemplateArgs;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -41061,7 +43562,7 @@ namespace CppSharp
 
             public unsafe partial class UnresolvedMemberExpr : global::CppSharp.Parser.AST.OverloadExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 92)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -41074,78 +43575,93 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal uint numDecls;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+                    internal uint numDecls;
 
                     [FieldOffset(60)]
-                    internal byte hasTemplateKeyword;
-
-                    [FieldOffset(61)]
-                    internal byte hasExplicitTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
 
                     [FieldOffset(64)]
-                    internal uint numTemplateArgs;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal templateKeywordLoc;
 
                     [FieldOffset(68)]
-                    internal byte isImplicitAccess;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal lAngleLoc;
 
                     [FieldOffset(72)]
-                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal baseType;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rAngleLoc;
+
+                    [FieldOffset(76)]
+                    internal byte hasTemplateKeyword;
+
+                    [FieldOffset(77)]
+                    internal byte hasExplicitTemplateArgs;
 
                     [FieldOffset(80)]
-                    internal byte hasUnresolvedUsing;
-
-                    [FieldOffset(81)]
-                    internal byte isArrow;
+                    internal uint numTemplateArgs;
 
                     [FieldOffset(84)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+                    internal byte isImplicitAccess;
 
                     [FieldOffset(88)]
+                    internal global::System.IntPtr @base;
+
+                    [FieldOffset(92)]
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal baseType;
+
+                    [FieldOffset(100)]
+                    internal byte hasUnresolvedUsing;
+
+                    [FieldOffset(101)]
+                    internal byte isArrow;
+
+                    [FieldOffset(104)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
+
+                    [FieldOffset(108)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal memberLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -41223,6 +43739,24 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Expr Base
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*) __Instance)->@base == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*) __Instance)->@base))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*) __Instance)->@base];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*) __Instance)->@base);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*)__Instance)->@base = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.QualifiedType BaseType
                 {
                     get
@@ -41291,7 +43825,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNoexceptExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -41304,42 +43838,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::System.IntPtr operand;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal byte value;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -41438,7 +43984,7 @@ namespace CppSharp
 
             public unsafe partial class PackExpansionExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -41451,39 +43997,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr pattern;
+
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -41548,6 +44109,24 @@ namespace CppSharp
                     *((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) _0.__Instance);
                 }
 
+                public global::CppSharp.Parser.AST.Expr Pattern
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.Expr __result0;
+                        if (((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) __Instance)->pattern == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.Expr.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) __Instance)->pattern))
+                            __result0 = (global::CppSharp.Parser.AST.Expr) global::CppSharp.Parser.AST.Expr.NativeToManagedMap[((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) __Instance)->pattern];
+                        else __result0 = global::CppSharp.Parser.AST.Expr.__CreateInstance(((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) __Instance)->pattern);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*)__Instance)->pattern = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
                 public global::CppSharp.Parser.SourceLocation EllipsisLoc
                 {
                     get
@@ -41564,7 +44143,7 @@ namespace CppSharp
 
             public unsafe partial class SizeOfPackExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 80)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -41577,54 +44156,66 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
-
                     [FieldOffset(44)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal packLoc;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr pack;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal uint packLength;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
 
                     [FieldOffset(60)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal packLoc;
+
+                    [FieldOffset(64)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr pack;
+
+                    [FieldOffset(72)]
+                    internal uint packLength;
+
+                    [FieldOffset(76)]
                     internal byte isPartiallySubstituted;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -41775,7 +44366,7 @@ namespace CppSharp
 
             public unsafe partial class SubstNonTypeTemplateParmExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -41788,42 +44379,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal nameLoc;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::System.IntPtr replacement;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -41922,7 +44525,7 @@ namespace CppSharp
 
             public unsafe partial class SubstNonTypeTemplateParmPackExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 80)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -41935,42 +44538,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal parameterPackLocation;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal global::CppSharp.Parser.AST.TemplateArgument.__Internal argumentPack;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -42064,7 +44679,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionParmPackExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -42077,42 +44692,54 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
+                    internal global::System.IntPtr sourceBitField;
+
+                    [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal parameterPackLocation;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(60)]
                     internal uint numExpansions;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -42206,7 +44833,7 @@ namespace CppSharp
 
             public unsafe partial class MaterializeTemporaryExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 72)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -42219,48 +44846,60 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr temporary;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr TemporaryExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal uint manglingNumber;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr temporary;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr TemporaryExpr;
+
+                    [FieldOffset(64)]
+                    internal uint manglingNumber;
+
+                    [FieldOffset(68)]
                     internal byte isBoundToLvalueReference;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -42478,7 +45117,7 @@ namespace CppSharp
 
             public unsafe partial class CXXFoldExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -42491,60 +45130,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr lHS;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr rHS;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal byte isRightFold;
-
-                    [FieldOffset(49)]
-                    internal byte isLeftFold;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr pattern;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr init;
+                    internal global::System.IntPtr lHS;
 
                     [FieldOffset(60)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
+                    internal global::System.IntPtr rHS;
 
                     [FieldOffset(64)]
+                    internal byte isRightFold;
+
+                    [FieldOffset(65)]
+                    internal byte isLeftFold;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr pattern;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr init;
+
+                    [FieldOffset(76)]
+                    internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
+
+                    [FieldOffset(80)]
                     internal global::CppSharp.Parser.AST.BinaryOperatorKind _operator;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -42736,7 +45387,7 @@ namespace CppSharp
 
             public unsafe partial class CoroutineSuspendExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 64)]
+                [StructLayout(LayoutKind.Explicit, Size = 80)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -42749,54 +45400,66 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr commonExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr opaqueValue;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr readyExpr;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr suspendExpr;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(60)]
+                    internal global::System.IntPtr commonExpr;
+
+                    [FieldOffset(64)]
+                    internal global::System.IntPtr opaqueValue;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr readyExpr;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr suspendExpr;
+
+                    [FieldOffset(76)]
                     internal global::System.IntPtr resumeExpr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -42995,7 +45658,7 @@ namespace CppSharp
 
             public unsafe partial class CoawaitExpr : global::CppSharp.Parser.AST.CoroutineSuspendExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -43008,60 +45671,72 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr commonExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr opaqueValue;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr readyExpr;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr suspendExpr;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(60)]
-                    internal global::System.IntPtr resumeExpr;
+                    internal global::System.IntPtr commonExpr;
 
                     [FieldOffset(64)]
-                    internal byte isImplicit;
+                    internal global::System.IntPtr opaqueValue;
 
                     [FieldOffset(68)]
+                    internal global::System.IntPtr readyExpr;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr suspendExpr;
+
+                    [FieldOffset(76)]
+                    internal global::System.IntPtr resumeExpr;
+
+                    [FieldOffset(80)]
+                    internal byte isImplicit;
+
+                    [FieldOffset(84)]
                     internal global::System.IntPtr operand;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -43160,7 +45835,7 @@ namespace CppSharp
 
             public unsafe partial class DependentCoawaitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 52)]
+                [StructLayout(LayoutKind.Explicit, Size = 68)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -43173,45 +45848,57 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::System.IntPtr operand;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr operatorCoawaitLookup;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
+                    internal global::System.IntPtr referencedDeclOfCallee;
+
+                    [FieldOffset(52)]
+                    internal byte hasPlaceholderType;
+
+                    [FieldOffset(56)]
+                    internal global::System.IntPtr operand;
+
+                    [FieldOffset(60)]
+                    internal global::System.IntPtr operatorCoawaitLookup;
+
+                    [FieldOffset(64)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -43328,7 +46015,7 @@ namespace CppSharp
 
             public unsafe partial class CoyieldExpr : global::CppSharp.Parser.AST.CoroutineSuspendExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 68)]
+                [StructLayout(LayoutKind.Explicit, Size = 84)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -43341,57 +46028,69 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
 
                     [FieldOffset(16)]
+                    internal global::System.IntPtr stripLabelLikeStatements;
+
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(28)]
                     internal byte valueDependent;
 
-                    [FieldOffset(25)]
+                    [FieldOffset(29)]
                     internal byte typeDependent;
 
-                    [FieldOffset(26)]
+                    [FieldOffset(30)]
                     internal byte instantiationDependent;
 
-                    [FieldOffset(27)]
+                    [FieldOffset(31)]
                     internal byte containsUnexpandedParameterPack;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal exprLoc;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal byte isLValue;
 
-                    [FieldOffset(33)]
+                    [FieldOffset(37)]
                     internal byte isRValue;
 
-                    [FieldOffset(34)]
+                    [FieldOffset(38)]
                     internal byte isXValue;
 
-                    [FieldOffset(35)]
+                    [FieldOffset(39)]
                     internal byte isGLValue;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal byte isOrdinaryOrBitFieldObject;
 
-                    [FieldOffset(40)]
-                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
-
                     [FieldOffset(44)]
-                    internal global::System.IntPtr commonExpr;
+                    internal global::System.IntPtr sourceBitField;
 
                     [FieldOffset(48)]
-                    internal global::System.IntPtr opaqueValue;
+                    internal global::System.IntPtr referencedDeclOfCallee;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr readyExpr;
+                    internal byte hasPlaceholderType;
 
                     [FieldOffset(56)]
-                    internal global::System.IntPtr suspendExpr;
+                    internal global::CppSharp.Parser.SourceLocation.__Internal keywordLoc;
 
                     [FieldOffset(60)]
-                    internal global::System.IntPtr resumeExpr;
+                    internal global::System.IntPtr commonExpr;
 
                     [FieldOffset(64)]
+                    internal global::System.IntPtr opaqueValue;
+
+                    [FieldOffset(68)]
+                    internal global::System.IntPtr readyExpr;
+
+                    [FieldOffset(72)]
+                    internal global::System.IntPtr suspendExpr;
+
+                    [FieldOffset(76)]
+                    internal global::System.IntPtr resumeExpr;
+
+                    [FieldOffset(80)]
                     internal global::System.IntPtr operand;
 
                     [SuppressUnmanagedCodeSecurity]

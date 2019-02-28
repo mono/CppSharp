@@ -719,7 +719,7 @@ namespace CppSharp
                 property.Visit(this);
             }
 
-            foreach (var method in @class.Methods.Where(m => m.IsGenerated))
+            foreach (var method in @class.Methods)
             {
                 if (SkipMethod(method))
                     continue;
@@ -1564,12 +1564,19 @@ namespace CppSharp
             if (typeName.Contains("ArrayRef"))
                 return true;
 
+            // AtomicExpr
+            if (typeName.Contains("unique_ptr<AtomicScopeModel, default_delete<AtomicScopeModel>>"))
+                return true;
+
+            if (typeName.Contains("Expr**"))
+                return true;
+
             return false;
         }
 
         public static bool SkipMethod(Method method)
         {
-            if (!method.IsGenerated)
+            if (method.Ignore)
                 return true;
 
             var @class = method.Namespace as Class;
@@ -1653,6 +1660,7 @@ namespace CppSharp
                     case "identKind":
                     case "literalOperatorKind":
                     case "initializationStyle":
+                    case "capturedStmt":
                         hasConflict = true;
                         break;
                 }
@@ -1711,6 +1719,8 @@ namespace CppSharp
                 className = "Method";
             else if (typeName.Contains("FunctionDecl"))
                 className = "Function";
+            else if (typeName == "Decl" || typeName == "Decl*")
+                className = "Declaration";
 
             if (className != null)
                 return (typePrinter is CppTypePrinter) ?

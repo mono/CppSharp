@@ -378,6 +378,9 @@ namespace CppSharp.AST
         public bool IsXValue;
         public bool IsGLValue;
         public bool IsOrdinaryOrBitFieldObject;
+        public Field SourceBitField;
+        public Declaration ReferencedDeclOfCallee;
+        public bool HasPlaceholderType;
     }
 
     public partial class FullExpr : Expr
@@ -417,6 +420,7 @@ namespace CppSharp.AST
         public SourceLocation Location;
         public bool HadMultipleCandidates;
         public bool HasQualifier;
+        public Declaration FoundDecl;
         public bool HasTemplateKWAndArgsInfo;
         public SourceLocation TemplateKeywordLoc;
         public SourceLocation LAngleLoc;
@@ -566,6 +570,12 @@ namespace CppSharp.AST
         public Expr SubExpr;
         public SourceLocation OperatorLoc;
         public bool CanOverflow;
+        public bool IsPrefix;
+        public bool IsPostfix;
+        public bool IsIncrementOp;
+        public bool IsDecrementOp;
+        public bool IsIncrementDecrementOp;
+        public bool IsArithmeticOp;
     }
 
     public partial class OffsetOfExpr : Expr
@@ -591,6 +601,7 @@ namespace CppSharp.AST
         public SourceLocation RParenLoc;
         public bool IsArgumentType;
         public QualifiedType ArgumentType;
+        public Expr ArgumentExpr;
         public QualifiedType TypeOfArgument;
     }
 
@@ -603,6 +614,8 @@ namespace CppSharp.AST
         public Expr LHS;
         public Expr RHS;
         public SourceLocation RBracketLoc;
+        public Expr Base;
+        public Expr Idx;
     }
 
     public partial class CallExpr : Expr
@@ -614,6 +627,8 @@ namespace CppSharp.AST
         public List<Expr> Arguments = new List<Expr>();
         public Expr Callee;
         public SourceLocation RParenLoc;
+        public Declaration CalleeDecl;
+        public Function DirectCallee;
         public uint NumArgs;
         public uint NumCommas;
         public uint BuiltinCallee;
@@ -660,6 +675,8 @@ namespace CppSharp.AST
 
         public CastKind CastKind;
         public Expr SubExpr;
+        public string CastKindName;
+        public Expr SubExprAsWritten;
         public Declaration ConversionFunction;
         public bool PathEmpty;
         public uint PathSize;
@@ -708,6 +725,19 @@ namespace CppSharp.AST
         public BinaryOperatorKind Opcode;
         public Expr LHS;
         public Expr RHS;
+        public string OpcodeStr;
+        public bool IsPtrMemOp;
+        public bool IsMultiplicativeOp;
+        public bool IsAdditiveOp;
+        public bool IsShiftOp;
+        public bool IsBitwiseOp;
+        public bool IsRelationalOp;
+        public bool IsEqualityOp;
+        public bool IsComparisonOp;
+        public bool IsLogicalOp;
+        public bool IsAssignmentOp;
+        public bool IsCompoundAssignmentOp;
+        public bool IsShiftAssignOp;
         public bool IsFPContractableWithinStatement;
         public bool IsFEnvAccessOn;
     }
@@ -967,8 +997,10 @@ namespace CppSharp.AST
         public SourceLocation GenericLoc;
         public SourceLocation DefaultLoc;
         public SourceLocation RParenLoc;
+        public Expr ControllingExpr;
         public bool IsResultDependent;
         public uint ResultIndex;
+        public Expr ResultExpr;
     }
 
     public partial class ExtVectorElementExpr : Expr
@@ -991,6 +1023,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation CaretLocation;
+        public Stmt Body;
     }
 
     public partial class AsTypeExpr : Expr
@@ -1010,7 +1043,9 @@ namespace CppSharp.AST
         {
         }
 
+        public Expr SyntacticForm;
         public uint ResultExprIndex;
+        public Expr ResultExpr;
         public uint NumSemanticExprs;
     }
 
@@ -1079,6 +1114,7 @@ namespace CppSharp.AST
         public Expr Weak;
         public QualifiedType ValueType;
         public AtomicExpr.AtomicOp Op;
+        public uint NumSubExprs;
         public bool IsVolatile;
         public bool IsCmpXChg;
         public bool IsOpenCL;
@@ -1101,6 +1137,7 @@ namespace CppSharp.AST
         }
 
         public OverloadedOperatorKind Operator;
+        public bool IsAssignmentOp;
         public bool IsInfixBinaryOp;
         public SourceLocation OperatorLoc;
         public bool IsFPContractableWithinStatement;
@@ -1193,6 +1230,7 @@ namespace CppSharp.AST
         }
 
         public UserDefinedLiteral.LiteralOperatorKind literalOperatorKind;
+        public Expr CookedLiteral;
         public SourceLocation UDSuffixLoc;
     }
 
@@ -1221,6 +1259,7 @@ namespace CppSharp.AST
         {
         }
 
+        public Expr SubExpr;
     }
 
     public partial class CXXTypeidExpr : Expr
@@ -1253,6 +1292,8 @@ namespace CppSharp.AST
         }
 
         public SourceLocation RBracketLoc;
+        public Expr Base;
+        public Expr Idx;
     }
 
     public partial class CXXUuidofExpr : Expr
@@ -1282,6 +1323,7 @@ namespace CppSharp.AST
         {
         }
 
+        public Expr SubExpr;
         public SourceLocation ThrowLoc;
         public bool IsThrownVariableInScope;
     }
@@ -1292,6 +1334,7 @@ namespace CppSharp.AST
         {
         }
 
+        public Expr Expr;
         public SourceLocation UsedLocation;
     }
 
@@ -1301,6 +1344,8 @@ namespace CppSharp.AST
         {
         }
 
+        public Field Field;
+        public Expr Expr;
     }
 
     public partial class CXXBindTemporaryExpr : Expr
@@ -1415,12 +1460,14 @@ namespace CppSharp.AST
         public Function OperatorDelete;
         public QualifiedType AllocatedType;
         public bool IsArray;
+        public Expr ArraySize;
         public uint NumPlacementArgs;
         public bool IsParenTypeId;
         public SourceRange TypeIdParens;
         public bool IsGlobalNew;
         public bool HasInitializer;
         public CXXNewExpr.InitializationStyle initializationStyle;
+        public Expr Initializer;
         public CXXConstructExpr ConstructExpr;
         public SourceRange DirectInitRange;
     }
@@ -1435,6 +1482,7 @@ namespace CppSharp.AST
         public bool IsArrayForm;
         public bool IsArrayFormAsWritten;
         public Function OperatorDelete;
+        public Expr Argument;
         public QualifiedType DestroyedType;
     }
 
@@ -1586,6 +1634,7 @@ namespace CppSharp.AST
         }
 
         public bool IsImplicitAccess;
+        public Expr Base;
         public QualifiedType BaseType;
         public bool HasUnresolvedUsing;
         public bool IsArrow;
@@ -1609,6 +1658,7 @@ namespace CppSharp.AST
         {
         }
 
+        public Expr Pattern;
         public SourceLocation EllipsisLoc;
     }
 

@@ -329,6 +329,9 @@ public:
     bool isXValue;
     bool isGLValue;
     bool isOrdinaryOrBitFieldObject;
+    Field* sourceBitField;
+    Declaration* referencedDeclOfCallee;
+    bool hasPlaceholderType;
 };
 
 class CS_API FullExpr : public Expr
@@ -361,6 +364,7 @@ public:
     SourceLocation location;
     bool hadMultipleCandidates;
     bool hasQualifier;
+    Declaration* foundDecl;
     bool hasTemplateKWAndArgsInfo;
     SourceLocation templateKeywordLoc;
     SourceLocation lAngleLoc;
@@ -488,6 +492,12 @@ public:
     Expr* subExpr;
     SourceLocation operatorLoc;
     bool canOverflow;
+    bool isPrefix;
+    bool isPostfix;
+    bool isIncrementOp;
+    bool isDecrementOp;
+    bool isIncrementDecrementOp;
+    bool isArithmeticOp;
 };
 
 class CS_API OffsetOfExpr : public Expr
@@ -509,6 +519,7 @@ public:
     SourceLocation rParenLoc;
     bool isArgumentType;
     QualifiedType argumentType;
+    Expr* argumentExpr;
     QualifiedType typeOfArgument;
 };
 
@@ -519,6 +530,8 @@ public:
     Expr* lHS;
     Expr* rHS;
     SourceLocation rBracketLoc;
+    Expr* base;
+    Expr* idx;
 };
 
 class CS_API CallExpr : public Expr
@@ -529,6 +542,8 @@ public:
     VECTOR(Expr*, arguments)
     Expr* callee;
     SourceLocation rParenLoc;
+    Declaration* calleeDecl;
+    Function* directCallee;
     unsigned int numArgs;
     unsigned int numCommas;
     unsigned int builtinCallee;
@@ -570,6 +585,8 @@ public:
     CastExpr(StmtClass klass);
     CastKind castKind;
     Expr* subExpr;
+    const char* castKindName;
+    Expr* subExprAsWritten;
     Declaration* conversionFunction;
     bool path_empty;
     unsigned int path_size;
@@ -612,6 +629,19 @@ public:
     BinaryOperatorKind opcode;
     Expr* lHS;
     Expr* rHS;
+    std::string opcodeStr;
+    bool isPtrMemOp;
+    bool isMultiplicativeOp;
+    bool isAdditiveOp;
+    bool isShiftOp;
+    bool isBitwiseOp;
+    bool isRelationalOp;
+    bool isEqualityOp;
+    bool isComparisonOp;
+    bool isLogicalOp;
+    bool isAssignmentOp;
+    bool isCompoundAssignmentOp;
+    bool isShiftAssignOp;
     bool isFPContractableWithinStatement;
     bool isFEnvAccessOn;
 };
@@ -828,8 +858,10 @@ public:
     SourceLocation genericLoc;
     SourceLocation defaultLoc;
     SourceLocation rParenLoc;
+    Expr* controllingExpr;
     bool isResultDependent;
     unsigned int resultIndex;
+    Expr* resultExpr;
 };
 
 class CS_API ExtVectorElementExpr : public Expr
@@ -848,6 +880,7 @@ class CS_API BlockExpr : public Expr
 public:
     BlockExpr();
     SourceLocation caretLocation;
+    Stmt* body;
 };
 
 class CS_API AsTypeExpr : public Expr
@@ -863,7 +896,9 @@ class CS_API PseudoObjectExpr : public Expr
 {
 public:
     PseudoObjectExpr();
+    Expr* syntacticForm;
     unsigned int resultExprIndex;
+    Expr* resultExpr;
     unsigned int numSemanticExprs;
 };
 
@@ -931,6 +966,7 @@ public:
     Expr* weak;
     QualifiedType valueType;
     AtomicOp op;
+    unsigned int numSubExprs;
     bool isVolatile;
     bool isCmpXChg;
     bool isOpenCL;
@@ -949,6 +985,7 @@ class CS_API CXXOperatorCallExpr : public CallExpr
 public:
     CXXOperatorCallExpr();
     OverloadedOperatorKind _operator;
+    bool isAssignmentOp;
     bool isInfixBinaryOp;
     SourceLocation operatorLoc;
     bool isFPContractableWithinStatement;
@@ -1020,6 +1057,7 @@ public:
 
     UserDefinedLiteral();
     LiteralOperatorKind literalOperatorKind;
+    Expr* cookedLiteral;
     SourceLocation uDSuffixLoc;
 };
 
@@ -1042,6 +1080,7 @@ class CS_API CXXStdInitializerListExpr : public Expr
 {
 public:
     CXXStdInitializerListExpr();
+    Expr* subExpr;
 };
 
 class CS_API CXXTypeidExpr : public Expr
@@ -1068,6 +1107,8 @@ class CS_API MSPropertySubscriptExpr : public Expr
 public:
     MSPropertySubscriptExpr();
     SourceLocation rBracketLoc;
+    Expr* base;
+    Expr* idx;
 };
 
 class CS_API CXXUuidofExpr : public Expr
@@ -1091,6 +1132,7 @@ class CS_API CXXThrowExpr : public Expr
 {
 public:
     CXXThrowExpr();
+    Expr* subExpr;
     SourceLocation throwLoc;
     bool isThrownVariableInScope;
 };
@@ -1099,6 +1141,7 @@ class CS_API CXXDefaultArgExpr : public Expr
 {
 public:
     CXXDefaultArgExpr();
+    Expr* expr;
     SourceLocation usedLocation;
 };
 
@@ -1106,6 +1149,8 @@ class CS_API CXXDefaultInitExpr : public Expr
 {
 public:
     CXXDefaultInitExpr();
+    Field* field;
+    Expr* expr;
 };
 
 class CS_API CXXBindTemporaryExpr : public Expr
@@ -1202,12 +1247,14 @@ public:
     Function* operatorDelete;
     QualifiedType allocatedType;
     bool isArray;
+    Expr* arraySize;
     unsigned int numPlacementArgs;
     bool isParenTypeId;
     SourceRange typeIdParens;
     bool isGlobalNew;
     bool hasInitializer;
     InitializationStyle initializationStyle;
+    Expr* initializer;
     CXXConstructExpr* constructExpr;
     SourceRange directInitRange;
 };
@@ -1220,6 +1267,7 @@ public:
     bool isArrayForm;
     bool isArrayFormAsWritten;
     Function* operatorDelete;
+    Expr* argument;
     QualifiedType destroyedType;
 };
 
@@ -1348,6 +1396,7 @@ class CS_API UnresolvedMemberExpr : public OverloadExpr
 public:
     UnresolvedMemberExpr();
     bool isImplicitAccess;
+    Expr* base;
     QualifiedType baseType;
     bool hasUnresolvedUsing;
     bool isArrow;
@@ -1367,6 +1416,7 @@ class CS_API PackExpansionExpr : public Expr
 {
 public:
     PackExpansionExpr();
+    Expr* pattern;
     SourceLocation ellipsisLoc;
 };
 
