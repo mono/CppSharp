@@ -999,6 +999,14 @@ AmbiguousParamNames::~AmbiguousParamNames()
 {
 }
 
+HasPropertyNamedAsParent::HasPropertyNamedAsParent()
+{
+}
+
+HasPropertyNamedAsParent::~HasPropertyNamedAsParent()
+{
+}
+
 void integerOverload(int i)
 {
 }

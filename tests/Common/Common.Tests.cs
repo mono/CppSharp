@@ -47,6 +47,10 @@ public class CommonTests : GeneratorTestFixture
         using (var hasProtectedEnum = new HasProtectedEnum())
         {
         }
+        using (var hasPropertyNamedAsParent = new HasPropertyNamedAsParent())
+        {
+            hasPropertyNamedAsParent.hasPropertyNamedAsParent.GetHashCode();
+        }
         EnumWithUnderscores e = EnumWithUnderscores.lOWER_BEFORE_CAPITAL;
         e = EnumWithUnderscores.UnderscoreAtEnd;
         e = EnumWithUnderscores.CAPITALS_More;

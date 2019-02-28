@@ -1401,6 +1401,14 @@ public:
     ~AmbiguousParamNames();
 };
 
+class DLL_API HasPropertyNamedAsParent
+{
+public:
+    HasPropertyNamedAsParent();
+    ~HasPropertyNamedAsParent();
+    int hasPropertyNamedAsParent;
+};
+
 template<typename T> void TemplatedFunction(T type)
 {
 

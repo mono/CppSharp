@@ -170,14 +170,12 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Classes.Where(c => !c.IsIncomplete));
             declarations.AddRange(decl.Namespace.Enums);
             declarations.AddRange(decl.Namespace.Events);
+            declarations.Add(decl.Namespace);
 
             var function = decl as Function;
             if (function != null)
-            {
-                declarations.Add(function.Namespace);
                 // account for overloads
                 declarations.AddRange(GetFunctionsWithTheSameParams(function));
-            }
             else
                 declarations.AddRange(decl.Namespace.Functions);
 
