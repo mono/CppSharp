@@ -606,6 +606,7 @@ namespace CppSharp
             var _expr = new AST.ConstantExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -617,6 +618,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             return _expr;
         }
@@ -626,6 +630,7 @@ namespace CppSharp
             var _expr = new AST.OpaqueValueExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -637,6 +642,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.IsUnique = expr.IsUnique;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.SourceExpr = VisitExpression(expr.SourceExpr) as AST.Expr;
@@ -648,6 +656,7 @@ namespace CppSharp
             var _expr = new AST.DeclRefExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -659,9 +668,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.HadMultipleCandidates = expr.HadMultipleCandidates;
             _expr.HasQualifier = expr.HasQualifier;
+            _expr.FoundDecl = VisitDeclaration(expr.FoundDecl) as AST.Declaration;
             _expr.HasTemplateKWAndArgsInfo = expr.HasTemplateKWAndArgsInfo;
             _expr.TemplateKeywordLoc = VisitSourceLocation(expr.TemplateKeywordLoc);
             _expr.LAngleLoc = VisitSourceLocation(expr.LAngleLoc);
@@ -678,6 +691,7 @@ namespace CppSharp
             var _expr = new AST.IntegerLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -689,6 +703,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.Value = expr.Value;
             return _expr;
@@ -699,6 +716,7 @@ namespace CppSharp
             var _expr = new AST.FixedPointLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -710,6 +728,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.Value = expr.Value;
             return _expr;
@@ -720,6 +741,7 @@ namespace CppSharp
             var _expr = new AST.CharacterLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -731,6 +753,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.Kind = (AST.CharacterLiteral.CharacterKind) expr.Kind;
             _expr.Value = expr.Value;
@@ -742,6 +767,7 @@ namespace CppSharp
             var _expr = new AST.FloatingLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -753,6 +779,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Exact = expr.Exact;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.ValueAsApproximateDouble = expr.ValueAsApproximateDouble;
@@ -764,6 +793,7 @@ namespace CppSharp
             var _expr = new AST.ImaginaryLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -775,6 +805,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             return _expr;
         }
@@ -784,6 +817,7 @@ namespace CppSharp
             var _expr = new AST.StringLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -795,6 +829,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.String = expr.String;
             _expr.Bytes = expr.Bytes;
             _expr.ByteLength = expr.ByteLength;
@@ -818,6 +855,7 @@ namespace CppSharp
             var _expr = new AST.PredefinedExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -829,6 +867,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.identKind = (AST.PredefinedExpr.IdentKind) expr.identKind;
             return _expr;
@@ -839,6 +880,7 @@ namespace CppSharp
             var _expr = new AST.ParenExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -850,6 +892,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             _expr.LParen = VisitSourceLocation(expr.LParen);
             _expr.RParen = VisitSourceLocation(expr.RParen);
@@ -861,6 +906,7 @@ namespace CppSharp
             var _expr = new AST.UnaryOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -872,10 +918,19 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Opcode = (AST.UnaryOperatorKind) expr.Opcode;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.CanOverflow = expr.CanOverflow;
+            _expr.IsPrefix = expr.IsPrefix;
+            _expr.IsPostfix = expr.IsPostfix;
+            _expr.IsIncrementOp = expr.IsIncrementOp;
+            _expr.IsDecrementOp = expr.IsDecrementOp;
+            _expr.IsIncrementDecrementOp = expr.IsIncrementDecrementOp;
+            _expr.IsArithmeticOp = expr.IsArithmeticOp;
             return _expr;
         }
 
@@ -884,6 +939,7 @@ namespace CppSharp
             var _expr = new AST.OffsetOfExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -895,6 +951,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
             _expr.NumComponents = expr.NumComponents;
@@ -907,6 +966,7 @@ namespace CppSharp
             var _expr = new AST.UnaryExprOrTypeTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -918,11 +978,15 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Kind = (AST.UnaryExprOrTypeTrait) expr.Kind;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
             _expr.IsArgumentType = expr.IsArgumentType;
             _expr.ArgumentType = VisitQualifiedType(expr.ArgumentType);
+            _expr.ArgumentExpr = VisitExpression(expr.ArgumentExpr) as AST.Expr;
             _expr.TypeOfArgument = VisitQualifiedType(expr.TypeOfArgument);
             return _expr;
         }
@@ -932,6 +996,7 @@ namespace CppSharp
             var _expr = new AST.ArraySubscriptExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -943,9 +1008,14 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.LHS = VisitExpression(expr.LHS) as AST.Expr;
             _expr.RHS = VisitExpression(expr.RHS) as AST.Expr;
             _expr.RBracketLoc = VisitSourceLocation(expr.RBracketLoc);
+            _expr.Base = VisitExpression(expr.Base) as AST.Expr;
+            _expr.Idx = VisitExpression(expr.Idx) as AST.Expr;
             return _expr;
         }
 
@@ -954,6 +1024,7 @@ namespace CppSharp
             var _expr = new AST.CallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -965,8 +1036,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Callee = VisitExpression(expr.Callee) as AST.Expr;
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
+            _expr.CalleeDecl = VisitDeclaration(expr.CalleeDecl) as AST.Declaration;
+            _expr.DirectCallee = VisitDeclaration(expr.DirectCallee) as AST.Function;
             _expr.NumArgs = expr.NumArgs;
             _expr.NumCommas = expr.NumCommas;
             _expr.BuiltinCallee = expr.BuiltinCallee;
@@ -984,6 +1060,7 @@ namespace CppSharp
             var _expr = new AST.MemberExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -995,6 +1072,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Base = VisitExpression(expr.Base) as AST.Expr;
             _expr.Arrow = expr.Arrow;
             _expr.MemberLoc = VisitSourceLocation(expr.MemberLoc);
@@ -1016,6 +1096,7 @@ namespace CppSharp
             var _expr = new AST.CompoundLiteralExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1027,6 +1108,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Initializer = VisitExpression(expr.Initializer) as AST.Expr;
             _expr.FileScope = expr.FileScope;
             _expr.LParenLoc = VisitSourceLocation(expr.LParenLoc);
@@ -1038,6 +1122,7 @@ namespace CppSharp
             var _expr = new AST.ImplicitCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1049,8 +1134,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -1063,6 +1153,7 @@ namespace CppSharp
             var _expr = new AST.CStyleCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1074,8 +1165,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -1090,6 +1186,7 @@ namespace CppSharp
             var _expr = new AST.BinaryOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1101,10 +1198,26 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.Opcode = (AST.BinaryOperatorKind) expr.Opcode;
             _expr.LHS = VisitExpression(expr.LHS) as AST.Expr;
             _expr.RHS = VisitExpression(expr.RHS) as AST.Expr;
+            _expr.OpcodeStr = expr.OpcodeStr;
+            _expr.IsPtrMemOp = expr.IsPtrMemOp;
+            _expr.IsMultiplicativeOp = expr.IsMultiplicativeOp;
+            _expr.IsAdditiveOp = expr.IsAdditiveOp;
+            _expr.IsShiftOp = expr.IsShiftOp;
+            _expr.IsBitwiseOp = expr.IsBitwiseOp;
+            _expr.IsRelationalOp = expr.IsRelationalOp;
+            _expr.IsEqualityOp = expr.IsEqualityOp;
+            _expr.IsComparisonOp = expr.IsComparisonOp;
+            _expr.IsLogicalOp = expr.IsLogicalOp;
+            _expr.IsAssignmentOp = expr.IsAssignmentOp;
+            _expr.IsCompoundAssignmentOp = expr.IsCompoundAssignmentOp;
+            _expr.IsShiftAssignOp = expr.IsShiftAssignOp;
             _expr.IsFPContractableWithinStatement = expr.IsFPContractableWithinStatement;
             _expr.IsFEnvAccessOn = expr.IsFEnvAccessOn;
             return _expr;
@@ -1115,6 +1228,7 @@ namespace CppSharp
             var _expr = new AST.CompoundAssignOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1126,10 +1240,26 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.Opcode = (AST.BinaryOperatorKind) expr.Opcode;
             _expr.LHS = VisitExpression(expr.LHS) as AST.Expr;
             _expr.RHS = VisitExpression(expr.RHS) as AST.Expr;
+            _expr.OpcodeStr = expr.OpcodeStr;
+            _expr.IsPtrMemOp = expr.IsPtrMemOp;
+            _expr.IsMultiplicativeOp = expr.IsMultiplicativeOp;
+            _expr.IsAdditiveOp = expr.IsAdditiveOp;
+            _expr.IsShiftOp = expr.IsShiftOp;
+            _expr.IsBitwiseOp = expr.IsBitwiseOp;
+            _expr.IsRelationalOp = expr.IsRelationalOp;
+            _expr.IsEqualityOp = expr.IsEqualityOp;
+            _expr.IsComparisonOp = expr.IsComparisonOp;
+            _expr.IsLogicalOp = expr.IsLogicalOp;
+            _expr.IsAssignmentOp = expr.IsAssignmentOp;
+            _expr.IsCompoundAssignmentOp = expr.IsCompoundAssignmentOp;
+            _expr.IsShiftAssignOp = expr.IsShiftAssignOp;
             _expr.IsFPContractableWithinStatement = expr.IsFPContractableWithinStatement;
             _expr.IsFEnvAccessOn = expr.IsFEnvAccessOn;
             _expr.ComputationLHSType = VisitQualifiedType(expr.ComputationLHSType);
@@ -1142,6 +1272,7 @@ namespace CppSharp
             var _expr = new AST.ConditionalOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1153,6 +1284,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Cond = VisitExpression(expr.Cond) as AST.Expr;
             _expr.TrueExpr = VisitExpression(expr.TrueExpr) as AST.Expr;
             _expr.FalseExpr = VisitExpression(expr.FalseExpr) as AST.Expr;
@@ -1168,6 +1302,7 @@ namespace CppSharp
             var _expr = new AST.BinaryConditionalOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1179,6 +1314,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Cond = VisitExpression(expr.Cond) as AST.Expr;
             _expr.TrueExpr = VisitExpression(expr.TrueExpr) as AST.Expr;
             _expr.FalseExpr = VisitExpression(expr.FalseExpr) as AST.Expr;
@@ -1194,6 +1332,7 @@ namespace CppSharp
             var _expr = new AST.AddrLabelExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1205,6 +1344,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.AmpAmpLoc = VisitSourceLocation(expr.AmpAmpLoc);
             _expr.LabelLoc = VisitSourceLocation(expr.LabelLoc);
             return _expr;
@@ -1215,6 +1357,7 @@ namespace CppSharp
             var _expr = new AST.StmtExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1226,6 +1369,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubStmt = VisitStatement(expr.SubStmt) as AST.CompoundStmt;
             _expr.LParenLoc = VisitSourceLocation(expr.LParenLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
@@ -1237,6 +1383,7 @@ namespace CppSharp
             var _expr = new AST.ShuffleVectorExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1248,6 +1395,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.BuiltinLoc = VisitSourceLocation(expr.BuiltinLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
             _expr.NumSubExprs = expr.NumSubExprs;
@@ -1259,6 +1409,7 @@ namespace CppSharp
             var _expr = new AST.ConvertVectorExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1270,6 +1421,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SrcExpr = VisitExpression(expr.SrcExpr) as AST.Expr;
             _expr.BuiltinLoc = VisitSourceLocation(expr.BuiltinLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
@@ -1281,6 +1435,7 @@ namespace CppSharp
             var _expr = new AST.ChooseExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1292,6 +1447,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.IsConditionTrue = expr.IsConditionTrue;
             _expr.Cond = VisitExpression(expr.Cond) as AST.Expr;
             _expr.LHS = VisitExpression(expr.LHS) as AST.Expr;
@@ -1308,6 +1466,7 @@ namespace CppSharp
             var _expr = new AST.GNUNullExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1319,6 +1478,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.TokenLocation = VisitSourceLocation(expr.TokenLocation);
             return _expr;
         }
@@ -1328,6 +1490,7 @@ namespace CppSharp
             var _expr = new AST.VAArgExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1339,6 +1502,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             _expr.IsMicrosoftABI = expr.IsMicrosoftABI;
             _expr.BuiltinLoc = VisitSourceLocation(expr.BuiltinLoc);
@@ -1351,6 +1517,7 @@ namespace CppSharp
             var _expr = new AST.InitListExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1362,6 +1529,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.ArrayFiller = VisitExpression(expr.ArrayFiller) as AST.Expr;
             _expr.LBraceLoc = VisitSourceLocation(expr.LBraceLoc);
             _expr.RBraceLoc = VisitSourceLocation(expr.RBraceLoc);
@@ -1382,6 +1552,7 @@ namespace CppSharp
             var _expr = new AST.DesignatedInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1393,6 +1564,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.EqualOrColonLoc = VisitSourceLocation(expr.EqualOrColonLoc);
             _expr.Init = VisitExpression(expr.Init) as AST.Expr;
             _expr.Size = expr.Size;
@@ -1407,6 +1581,7 @@ namespace CppSharp
             var _expr = new AST.NoInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1418,6 +1593,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             return _expr;
         }
 
@@ -1426,6 +1604,7 @@ namespace CppSharp
             var _expr = new AST.DesignatedInitUpdateExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1437,6 +1616,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Base = VisitExpression(expr.Base) as AST.Expr;
             _expr.Updater = VisitExpression(expr.Updater) as AST.InitListExpr;
             return _expr;
@@ -1447,6 +1629,7 @@ namespace CppSharp
             var _expr = new AST.ArrayInitLoopExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1458,6 +1641,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CommonExpr = VisitExpression(expr.CommonExpr) as AST.OpaqueValueExpr;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             return _expr;
@@ -1468,6 +1654,7 @@ namespace CppSharp
             var _expr = new AST.ArrayInitIndexExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1479,6 +1666,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             return _expr;
         }
 
@@ -1487,6 +1677,7 @@ namespace CppSharp
             var _expr = new AST.ImplicitValueInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1498,6 +1689,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             return _expr;
         }
 
@@ -1506,6 +1700,7 @@ namespace CppSharp
             var _expr = new AST.ParenListExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1517,6 +1712,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.NumExprs = expr.NumExprs;
             _expr.LParenLoc = VisitSourceLocation(expr.LParenLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
@@ -1528,6 +1726,7 @@ namespace CppSharp
             var _expr = new AST.GenericSelectionExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1539,12 +1738,17 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.NumAssocs = expr.NumAssocs;
             _expr.GenericLoc = VisitSourceLocation(expr.GenericLoc);
             _expr.DefaultLoc = VisitSourceLocation(expr.DefaultLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
+            _expr.ControllingExpr = VisitExpression(expr.ControllingExpr) as AST.Expr;
             _expr.IsResultDependent = expr.IsResultDependent;
             _expr.ResultIndex = expr.ResultIndex;
+            _expr.ResultExpr = VisitExpression(expr.ResultExpr) as AST.Expr;
             return _expr;
         }
 
@@ -1553,6 +1757,7 @@ namespace CppSharp
             var _expr = new AST.ExtVectorElementExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1564,6 +1769,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Base = VisitExpression(expr.Base) as AST.Expr;
             _expr.AccessorLoc = VisitSourceLocation(expr.AccessorLoc);
             _expr.NumElements = expr.NumElements;
@@ -1577,6 +1785,7 @@ namespace CppSharp
             var _expr = new AST.BlockExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1588,7 +1797,11 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CaretLocation = VisitSourceLocation(expr.CaretLocation);
+            _expr.Body = VisitStatement(expr.Body) as AST.Stmt;
             return _expr;
         }
 
@@ -1597,6 +1810,7 @@ namespace CppSharp
             var _expr = new AST.AsTypeExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1608,6 +1822,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SrcExpr = VisitExpression(expr.SrcExpr) as AST.Expr;
             _expr.BuiltinLoc = VisitSourceLocation(expr.BuiltinLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
@@ -1619,6 +1836,7 @@ namespace CppSharp
             var _expr = new AST.PseudoObjectExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1630,7 +1848,12 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
+            _expr.SyntacticForm = VisitExpression(expr.SyntacticForm) as AST.Expr;
             _expr.ResultExprIndex = expr.ResultExprIndex;
+            _expr.ResultExpr = VisitExpression(expr.ResultExpr) as AST.Expr;
             _expr.NumSemanticExprs = expr.NumSemanticExprs;
             return _expr;
         }
@@ -1640,6 +1863,7 @@ namespace CppSharp
             var _expr = new AST.AtomicExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1651,6 +1875,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Ptr = VisitExpression(expr.Ptr) as AST.Expr;
             _expr.Order = VisitExpression(expr.Order) as AST.Expr;
             _expr.Scope = VisitExpression(expr.Scope) as AST.Expr;
@@ -1660,6 +1887,7 @@ namespace CppSharp
             _expr.Weak = VisitExpression(expr.Weak) as AST.Expr;
             _expr.ValueType = VisitQualifiedType(expr.ValueType);
             _expr.Op = (AST.AtomicExpr.AtomicOp) expr.Op;
+            _expr.NumSubExprs = expr.NumSubExprs;
             _expr.IsVolatile = expr.IsVolatile;
             _expr.IsCmpXChg = expr.IsCmpXChg;
             _expr.IsOpenCL = expr.IsOpenCL;
@@ -1673,6 +1901,7 @@ namespace CppSharp
             var _expr = new AST.TypoExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1684,6 +1913,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             return _expr;
         }
 
@@ -1692,6 +1924,7 @@ namespace CppSharp
             var _expr = new AST.CXXOperatorCallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1703,8 +1936,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Callee = VisitExpression(expr.Callee) as AST.Expr;
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
+            _expr.CalleeDecl = VisitDeclaration(expr.CalleeDecl) as AST.Declaration;
+            _expr.DirectCallee = VisitDeclaration(expr.DirectCallee) as AST.Function;
             _expr.NumArgs = expr.NumArgs;
             _expr.NumCommas = expr.NumCommas;
             _expr.BuiltinCallee = expr.BuiltinCallee;
@@ -1715,6 +1953,7 @@ namespace CppSharp
                 _expr.Arguments.Add(VisitExpression(_E) as AST.Expr);
             }
             _expr.Operator = (AST.OverloadedOperatorKind) expr.Operator;
+            _expr.IsAssignmentOp = expr.IsAssignmentOp;
             _expr.IsInfixBinaryOp = expr.IsInfixBinaryOp;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.IsFPContractableWithinStatement = expr.IsFPContractableWithinStatement;
@@ -1726,6 +1965,7 @@ namespace CppSharp
             var _expr = new AST.CXXMemberCallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1737,8 +1977,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Callee = VisitExpression(expr.Callee) as AST.Expr;
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
+            _expr.CalleeDecl = VisitDeclaration(expr.CalleeDecl) as AST.Declaration;
+            _expr.DirectCallee = VisitDeclaration(expr.DirectCallee) as AST.Function;
             _expr.NumArgs = expr.NumArgs;
             _expr.NumCommas = expr.NumCommas;
             _expr.BuiltinCallee = expr.BuiltinCallee;
@@ -1758,6 +2003,7 @@ namespace CppSharp
             var _expr = new AST.CUDAKernelCallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1769,8 +2015,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Callee = VisitExpression(expr.Callee) as AST.Expr;
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
+            _expr.CalleeDecl = VisitDeclaration(expr.CalleeDecl) as AST.Declaration;
+            _expr.DirectCallee = VisitDeclaration(expr.DirectCallee) as AST.Function;
             _expr.NumArgs = expr.NumArgs;
             _expr.NumCommas = expr.NumCommas;
             _expr.BuiltinCallee = expr.BuiltinCallee;
@@ -1789,6 +2040,7 @@ namespace CppSharp
             var _expr = new AST.CXXStaticCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1800,8 +2052,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -1818,6 +2075,7 @@ namespace CppSharp
             var _expr = new AST.CXXDynamicCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1829,8 +2087,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -1848,6 +2111,7 @@ namespace CppSharp
             var _expr = new AST.CXXReinterpretCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1859,8 +2123,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -1877,6 +2146,7 @@ namespace CppSharp
             var _expr = new AST.CXXConstCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1888,8 +2158,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -1906,6 +2181,7 @@ namespace CppSharp
             var _expr = new AST.UserDefinedLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1917,8 +2193,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Callee = VisitExpression(expr.Callee) as AST.Expr;
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
+            _expr.CalleeDecl = VisitDeclaration(expr.CalleeDecl) as AST.Declaration;
+            _expr.DirectCallee = VisitDeclaration(expr.DirectCallee) as AST.Function;
             _expr.NumArgs = expr.NumArgs;
             _expr.NumCommas = expr.NumCommas;
             _expr.BuiltinCallee = expr.BuiltinCallee;
@@ -1929,6 +2210,7 @@ namespace CppSharp
                 _expr.Arguments.Add(VisitExpression(_E) as AST.Expr);
             }
             _expr.literalOperatorKind = (AST.UserDefinedLiteral.LiteralOperatorKind) expr.literalOperatorKind;
+            _expr.CookedLiteral = VisitExpression(expr.CookedLiteral) as AST.Expr;
             _expr.UDSuffixLoc = VisitSourceLocation(expr.UDSuffixLoc);
             return _expr;
         }
@@ -1938,6 +2220,7 @@ namespace CppSharp
             var _expr = new AST.CXXBoolLiteralExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1949,6 +2232,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Value = expr.Value;
             _expr.Location = VisitSourceLocation(expr.Location);
             return _expr;
@@ -1959,6 +2245,7 @@ namespace CppSharp
             var _expr = new AST.CXXNullPtrLiteralExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1970,6 +2257,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             return _expr;
         }
@@ -1979,6 +2269,7 @@ namespace CppSharp
             var _expr = new AST.CXXStdInitializerListExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1990,6 +2281,10 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
+            _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             return _expr;
         }
 
@@ -1998,6 +2293,7 @@ namespace CppSharp
             var _expr = new AST.CXXTypeidExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2009,6 +2305,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.ExprOperand = VisitExpression(expr.ExprOperand) as AST.Expr;
             _expr.IsPotentiallyEvaluated = expr.IsPotentiallyEvaluated;
             _expr.IsTypeOperand = expr.IsTypeOperand;
@@ -2020,6 +2319,7 @@ namespace CppSharp
             var _expr = new AST.MSPropertyRefExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2031,6 +2331,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.IsImplicitAccess = expr.IsImplicitAccess;
             _expr.BaseExpr = VisitExpression(expr.BaseExpr) as AST.Expr;
             _expr.IsArrow = expr.IsArrow;
@@ -2043,6 +2346,7 @@ namespace CppSharp
             var _expr = new AST.MSPropertySubscriptExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2054,7 +2358,12 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.RBracketLoc = VisitSourceLocation(expr.RBracketLoc);
+            _expr.Base = VisitExpression(expr.Base) as AST.Expr;
+            _expr.Idx = VisitExpression(expr.Idx) as AST.Expr;
             return _expr;
         }
 
@@ -2063,6 +2372,7 @@ namespace CppSharp
             var _expr = new AST.CXXUuidofExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2074,6 +2384,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.ExprOperand = VisitExpression(expr.ExprOperand) as AST.Expr;
             _expr.UuidStr = expr.UuidStr;
             _expr.IsTypeOperand = expr.IsTypeOperand;
@@ -2085,6 +2398,7 @@ namespace CppSharp
             var _expr = new AST.CXXThisExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2096,6 +2410,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.Implicit = expr.Implicit;
             return _expr;
@@ -2106,6 +2423,7 @@ namespace CppSharp
             var _expr = new AST.CXXThrowExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2117,6 +2435,10 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
+            _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             _expr.ThrowLoc = VisitSourceLocation(expr.ThrowLoc);
             _expr.IsThrownVariableInScope = expr.IsThrownVariableInScope;
             return _expr;
@@ -2127,6 +2449,7 @@ namespace CppSharp
             var _expr = new AST.CXXDefaultArgExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2138,6 +2461,10 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
+            _expr.Expr = VisitExpression(expr.Expr) as AST.Expr;
             _expr.UsedLocation = VisitSourceLocation(expr.UsedLocation);
             return _expr;
         }
@@ -2147,6 +2474,7 @@ namespace CppSharp
             var _expr = new AST.CXXDefaultInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2158,6 +2486,11 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
+            _expr.Field = VisitDeclaration(expr.Field) as AST.Field;
+            _expr.Expr = VisitExpression(expr.Expr) as AST.Expr;
             return _expr;
         }
 
@@ -2166,6 +2499,7 @@ namespace CppSharp
             var _expr = new AST.CXXBindTemporaryExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2177,6 +2511,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             return _expr;
         }
@@ -2186,6 +2523,7 @@ namespace CppSharp
             var _expr = new AST.CXXConstructExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2197,6 +2535,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.Elidable = expr.Elidable;
             _expr.HadMultipleCandidates = expr.HadMultipleCandidates;
@@ -2218,6 +2559,7 @@ namespace CppSharp
             var _expr = new AST.CXXInheritedCtorInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2229,6 +2571,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.ConstructsVBase = expr.ConstructsVBase;
             _expr.InheritedFromVBase = expr.InheritedFromVBase;
             _expr.Location = VisitSourceLocation(expr.Location);
@@ -2240,6 +2585,7 @@ namespace CppSharp
             var _expr = new AST.CXXFunctionalCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2251,8 +2597,13 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CastKind = (AST.CastKind) expr.CastKind;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
+            _expr.CastKindName = expr.CastKindName;
+            _expr.SubExprAsWritten = VisitExpression(expr.SubExprAsWritten) as AST.Expr;
             _expr.ConversionFunction = VisitDeclaration(expr.ConversionFunction) as AST.Declaration;
             _expr.PathEmpty = expr.PathEmpty;
             _expr.PathSize = expr.PathSize;
@@ -2268,6 +2619,7 @@ namespace CppSharp
             var _expr = new AST.CXXTemporaryObjectExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2279,6 +2631,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.Elidable = expr.Elidable;
             _expr.HadMultipleCandidates = expr.HadMultipleCandidates;
@@ -2300,6 +2655,7 @@ namespace CppSharp
             var _expr = new AST.LambdaExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2311,6 +2667,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.CaptureDefaultLoc = VisitSourceLocation(expr.CaptureDefaultLoc);
             _expr.CaptureSize = expr.CaptureSize;
             _expr.IntroducerRange = VisitSourceRange(expr.IntroducerRange);
@@ -2333,6 +2692,7 @@ namespace CppSharp
             var _expr = new AST.CXXScalarValueInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2344,6 +2704,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
             return _expr;
         }
@@ -2353,6 +2716,7 @@ namespace CppSharp
             var _expr = new AST.CXXNewExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2364,16 +2728,21 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.OperatorNew = VisitDeclaration(expr.OperatorNew) as AST.Function;
             _expr.OperatorDelete = VisitDeclaration(expr.OperatorDelete) as AST.Function;
             _expr.AllocatedType = VisitQualifiedType(expr.AllocatedType);
             _expr.IsArray = expr.IsArray;
+            _expr.ArraySize = VisitExpression(expr.ArraySize) as AST.Expr;
             _expr.NumPlacementArgs = expr.NumPlacementArgs;
             _expr.IsParenTypeId = expr.IsParenTypeId;
             _expr.TypeIdParens = VisitSourceRange(expr.TypeIdParens);
             _expr.IsGlobalNew = expr.IsGlobalNew;
             _expr.HasInitializer = expr.HasInitializer;
             _expr.initializationStyle = (AST.CXXNewExpr.InitializationStyle) expr.initializationStyle;
+            _expr.Initializer = VisitExpression(expr.Initializer) as AST.Expr;
             _expr.ConstructExpr = VisitExpression(expr.ConstructExpr) as AST.CXXConstructExpr;
             _expr.DirectInitRange = VisitSourceRange(expr.DirectInitRange);
             for (uint i = 0; i < expr.GetplacementArgumentsCount; i++)
@@ -2389,6 +2758,7 @@ namespace CppSharp
             var _expr = new AST.CXXDeleteExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2400,10 +2770,14 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.IsGlobalDelete = expr.IsGlobalDelete;
             _expr.IsArrayForm = expr.IsArrayForm;
             _expr.IsArrayFormAsWritten = expr.IsArrayFormAsWritten;
             _expr.OperatorDelete = VisitDeclaration(expr.OperatorDelete) as AST.Function;
+            _expr.Argument = VisitExpression(expr.Argument) as AST.Expr;
             _expr.DestroyedType = VisitQualifiedType(expr.DestroyedType);
             return _expr;
         }
@@ -2413,6 +2787,7 @@ namespace CppSharp
             var _expr = new AST.CXXPseudoDestructorExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2424,6 +2799,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Base = VisitExpression(expr.Base) as AST.Expr;
             _expr.HasQualifier = expr.HasQualifier;
             _expr.IsArrow = expr.IsArrow;
@@ -2440,6 +2818,7 @@ namespace CppSharp
             var _expr = new AST.TypeTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2451,6 +2830,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Value = expr.Value;
             _expr.NumArgs = expr.NumArgs;
             return _expr;
@@ -2461,6 +2843,7 @@ namespace CppSharp
             var _expr = new AST.ArrayTypeTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2472,6 +2855,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.QueriedType = VisitQualifiedType(expr.QueriedType);
             _expr.Value = expr.Value;
             _expr.DimensionExpression = VisitExpression(expr.DimensionExpression) as AST.Expr;
@@ -2483,6 +2869,7 @@ namespace CppSharp
             var _expr = new AST.ExpressionTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2494,6 +2881,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.QueriedExpression = VisitExpression(expr.QueriedExpression) as AST.Expr;
             _expr.Value = expr.Value;
             return _expr;
@@ -2504,6 +2894,7 @@ namespace CppSharp
             var _expr = new AST.UnresolvedLookupExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2515,6 +2906,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.NumDecls = expr.NumDecls;
             _expr.NameLoc = VisitSourceLocation(expr.NameLoc);
             _expr.TemplateKeywordLoc = VisitSourceLocation(expr.TemplateKeywordLoc);
@@ -2533,6 +2927,7 @@ namespace CppSharp
             var _expr = new AST.DependentScopeDeclRefExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2544,6 +2939,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Location = VisitSourceLocation(expr.Location);
             _expr.TemplateKeywordLoc = VisitSourceLocation(expr.TemplateKeywordLoc);
             _expr.LAngleLoc = VisitSourceLocation(expr.LAngleLoc);
@@ -2559,6 +2957,7 @@ namespace CppSharp
             var _expr = new AST.ExprWithCleanups();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2570,6 +2969,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.SubExpr = VisitExpression(expr.SubExpr) as AST.Expr;
             _expr.NumObjects = expr.NumObjects;
             _expr.CleanupsHaveSideEffects = expr.CleanupsHaveSideEffects;
@@ -2581,6 +2983,7 @@ namespace CppSharp
             var _expr = new AST.CXXUnresolvedConstructExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2592,6 +2995,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.LParenLoc = VisitSourceLocation(expr.LParenLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
             _expr.TypeAsWritten = VisitQualifiedType(expr.TypeAsWritten);
@@ -2610,6 +3016,7 @@ namespace CppSharp
             var _expr = new AST.CXXDependentScopeMemberExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2621,6 +3028,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.IsImplicitAccess = expr.IsImplicitAccess;
             _expr.Base = VisitExpression(expr.Base) as AST.Expr;
             _expr.BaseType = VisitQualifiedType(expr.BaseType);
@@ -2642,6 +3052,7 @@ namespace CppSharp
             var _expr = new AST.UnresolvedMemberExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2653,6 +3064,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.NumDecls = expr.NumDecls;
             _expr.NameLoc = VisitSourceLocation(expr.NameLoc);
             _expr.TemplateKeywordLoc = VisitSourceLocation(expr.TemplateKeywordLoc);
@@ -2662,6 +3076,7 @@ namespace CppSharp
             _expr.HasExplicitTemplateArgs = expr.HasExplicitTemplateArgs;
             _expr.NumTemplateArgs = expr.NumTemplateArgs;
             _expr.IsImplicitAccess = expr.IsImplicitAccess;
+            _expr.Base = VisitExpression(expr.Base) as AST.Expr;
             _expr.BaseType = VisitQualifiedType(expr.BaseType);
             _expr.HasUnresolvedUsing = expr.HasUnresolvedUsing;
             _expr.IsArrow = expr.IsArrow;
@@ -2675,6 +3090,7 @@ namespace CppSharp
             var _expr = new AST.CXXNoexceptExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2686,6 +3102,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Operand = VisitExpression(expr.Operand) as AST.Expr;
             _expr.Value = expr.Value;
             return _expr;
@@ -2696,6 +3115,7 @@ namespace CppSharp
             var _expr = new AST.PackExpansionExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2707,6 +3127,10 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
+            _expr.Pattern = VisitExpression(expr.Pattern) as AST.Expr;
             _expr.EllipsisLoc = VisitSourceLocation(expr.EllipsisLoc);
             return _expr;
         }
@@ -2716,6 +3140,7 @@ namespace CppSharp
             var _expr = new AST.SizeOfPackExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2727,6 +3152,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
             _expr.PackLoc = VisitSourceLocation(expr.PackLoc);
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
@@ -2741,6 +3169,7 @@ namespace CppSharp
             var _expr = new AST.SubstNonTypeTemplateParmExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2752,6 +3181,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.NameLoc = VisitSourceLocation(expr.NameLoc);
             _expr.Replacement = VisitExpression(expr.Replacement) as AST.Expr;
             return _expr;
@@ -2762,6 +3194,7 @@ namespace CppSharp
             var _expr = new AST.SubstNonTypeTemplateParmPackExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2773,6 +3206,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.ParameterPackLocation = VisitSourceLocation(expr.ParameterPackLocation);
             _expr.ArgumentPack = VisitTemplateArgument(expr.ArgumentPack);
             return _expr;
@@ -2783,6 +3219,7 @@ namespace CppSharp
             var _expr = new AST.FunctionParmPackExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2794,6 +3231,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.ParameterPackLocation = VisitSourceLocation(expr.ParameterPackLocation);
             _expr.NumExpansions = expr.NumExpansions;
             return _expr;
@@ -2804,6 +3244,7 @@ namespace CppSharp
             var _expr = new AST.MaterializeTemporaryExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2815,6 +3256,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Temporary = VisitStatement(expr.Temporary) as AST.Stmt;
             _expr.TemporaryExpr = VisitExpression(expr.TemporaryExpr) as AST.Expr;
             _expr.ManglingNumber = expr.ManglingNumber;
@@ -2827,6 +3271,7 @@ namespace CppSharp
             var _expr = new AST.CXXFoldExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2838,6 +3283,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.LHS = VisitExpression(expr.LHS) as AST.Expr;
             _expr.RHS = VisitExpression(expr.RHS) as AST.Expr;
             _expr.IsRightFold = expr.IsRightFold;
@@ -2854,6 +3302,7 @@ namespace CppSharp
             var _expr = new AST.CoawaitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2865,6 +3314,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.KeywordLoc = VisitSourceLocation(expr.KeywordLoc);
             _expr.CommonExpr = VisitExpression(expr.CommonExpr) as AST.Expr;
             _expr.OpaqueValue = VisitExpression(expr.OpaqueValue) as AST.OpaqueValueExpr;
@@ -2881,6 +3333,7 @@ namespace CppSharp
             var _expr = new AST.DependentCoawaitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2892,6 +3345,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.Operand = VisitExpression(expr.Operand) as AST.Expr;
             _expr.OperatorCoawaitLookup = VisitExpression(expr.OperatorCoawaitLookup) as AST.UnresolvedLookupExpr;
             _expr.KeywordLoc = VisitSourceLocation(expr.KeywordLoc);
@@ -2903,6 +3359,7 @@ namespace CppSharp
             var _expr = new AST.CoyieldExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
+            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2914,6 +3371,9 @@ namespace CppSharp
             _expr.IsXValue = expr.IsXValue;
             _expr.IsGLValue = expr.IsGLValue;
             _expr.IsOrdinaryOrBitFieldObject = expr.IsOrdinaryOrBitFieldObject;
+            _expr.SourceBitField = VisitDeclaration(expr.SourceBitField) as AST.Field;
+            _expr.ReferencedDeclOfCallee = VisitDeclaration(expr.ReferencedDeclOfCallee) as AST.Declaration;
+            _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.KeywordLoc = VisitSourceLocation(expr.KeywordLoc);
             _expr.CommonExpr = VisitExpression(expr.CommonExpr) as AST.Expr;
             _expr.OpaqueValue = VisitExpression(expr.OpaqueValue) as AST.OpaqueValueExpr;

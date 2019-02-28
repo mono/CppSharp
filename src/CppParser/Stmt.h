@@ -154,6 +154,7 @@ public:
     StmtClass stmtClass;
     SourceRange sourceRange;
     SourceLocation endLoc;
+    Stmt* stripLabelLikeStatements;
 };
 
 class CS_API DeclStmt : public Stmt
@@ -162,6 +163,7 @@ public:
     DeclStmt();
     VECTOR(Declaration*, decls)
     bool isSingleDecl;
+    Declaration* singleDecl;
 };
 
 class CS_API NullStmt : public Stmt
@@ -179,6 +181,8 @@ public:
     VECTOR(Stmt*, body)
     bool body_empty;
     unsigned int size;
+    Stmt* body_front;
+    Stmt* body_back;
     SourceLocation lBracLoc;
     SourceLocation rBracLoc;
 };
@@ -190,6 +194,7 @@ public:
     SwitchCase(StmtClass klass);
     SourceLocation keywordLoc;
     SourceLocation colonLoc;
+    Stmt* subStmt;
 };
 
 class CS_API CaseStmt : public SwitchCase
@@ -200,7 +205,6 @@ public:
     SourceLocation ellipsisLoc;
     Expr* lHS;
     Expr* rHS;
-    Stmt* subStmt;
     bool caseStmtIsGNURange;
 };
 
@@ -208,7 +212,6 @@ class CS_API DefaultStmt : public SwitchCase
 {
 public:
     DefaultStmt();
-    Stmt* subStmt;
     SourceLocation defaultLoc;
 };
 
@@ -226,6 +229,7 @@ class CS_API AttributedStmt : public Stmt
 public:
     AttributedStmt();
     SourceLocation attrLoc;
+    Stmt* subStmt;
 };
 
 class CS_API IfStmt : public Stmt
@@ -242,6 +246,7 @@ public:
     bool hasInitStorage;
     bool hasVarStorage;
     bool hasElseStorage;
+    DeclStmt* conditionVariableDeclStmt;
     bool isObjCAvailabilityCheck;
 };
 
@@ -255,6 +260,7 @@ public:
     SourceLocation switchLoc;
     bool hasInitStorage;
     bool hasVarStorage;
+    DeclStmt* conditionVariableDeclStmt;
     bool isAllEnumCasesCovered;
 };
 
@@ -266,6 +272,7 @@ public:
     Stmt* body;
     SourceLocation whileLoc;
     bool hasVarStorage;
+    DeclStmt* conditionVariableDeclStmt;
 };
 
 class CS_API DoStmt : public Stmt
@@ -445,6 +452,7 @@ public:
 
     CapturedStmt();
     VECTOR(Expr*, capture_inits)
+    Stmt* capturedStmt;
     unsigned int capture_size;
 };
 
@@ -462,6 +470,7 @@ class CS_API CXXTryStmt : public Stmt
 public:
     CXXTryStmt();
     SourceLocation tryLoc;
+    CompoundStmt* tryBlock;
     unsigned int numHandlers;
 };
 
@@ -474,6 +483,10 @@ public:
     Expr* cond;
     Expr* inc;
     Stmt* body;
+    DeclStmt* rangeStmt;
+    DeclStmt* beginStmt;
+    DeclStmt* endStmt;
+    DeclStmt* loopVarStmt;
     SourceLocation forLoc;
     SourceLocation coawaitLoc;
     SourceLocation colonLoc;

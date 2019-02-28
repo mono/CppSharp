@@ -26,6 +26,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ConstantExpr*>(llvm::cast<clang::ConstantExpr>(Expr));
         auto _S = new AST::ConstantExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -36,6 +37,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _Expr = _S;
         break;
@@ -44,6 +48,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::OpaqueValueExpr*>(llvm::cast<clang::OpaqueValueExpr>(Expr));
         auto _S = new AST::OpaqueValueExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -54,6 +59,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->isUnique = S->isUnique();
         _S->sourceExpr = static_cast<AST::Expr*>(WalkExpression(S->getSourceExpr()));
         _Expr = _S;
@@ -63,6 +71,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::DeclRefExpr*>(llvm::cast<clang::DeclRefExpr>(Expr));
         auto _S = new AST::DeclRefExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -73,8 +82,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->hadMultipleCandidates = S->hadMultipleCandidates();
         _S->hasQualifier = S->hasQualifier();
+        _S->foundDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getFoundDecl()));
         _S->hasTemplateKWAndArgsInfo = S->hasTemplateKWAndArgsInfo();
         _S->hasTemplateKeyword = S->hasTemplateKeyword();
         _S->hasExplicitTemplateArgs = S->hasExplicitTemplateArgs();
@@ -87,6 +100,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::IntegerLiteral*>(llvm::cast<clang::IntegerLiteral>(Expr));
         auto _S = new AST::IntegerLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -97,6 +111,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->value = S->getValue().getLimitedValue();
         _Expr = _S;
         break;
@@ -105,6 +122,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::FixedPointLiteral*>(llvm::cast<clang::FixedPointLiteral>(Expr));
         auto _S = new AST::FixedPointLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -115,6 +133,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->value = S->getValue().getLimitedValue();
         _Expr = _S;
         break;
@@ -123,6 +144,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CharacterLiteral*>(llvm::cast<clang::CharacterLiteral>(Expr));
         auto _S = new AST::CharacterLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -133,6 +155,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->kind = (CharacterLiteral::CharacterKind) S->getKind();
         _S->value = S->getValue();
         _Expr = _S;
@@ -142,6 +167,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::FloatingLiteral*>(llvm::cast<clang::FloatingLiteral>(Expr));
         auto _S = new AST::FloatingLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -152,6 +178,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->exact = S->isExact();
         _S->valueAsApproximateDouble = S->getValueAsApproximateDouble();
         _Expr = _S;
@@ -161,6 +190,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ImaginaryLiteral*>(llvm::cast<clang::ImaginaryLiteral>(Expr));
         auto _S = new AST::ImaginaryLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -171,6 +201,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _Expr = _S;
         break;
@@ -179,6 +212,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::StringLiteral*>(llvm::cast<clang::StringLiteral>(Expr));
         auto _S = new AST::StringLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -189,6 +223,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->string = S->getString();
         _S->bytes = S->getBytes();
         _S->byteLength = S->getByteLength();
@@ -211,6 +248,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::PredefinedExpr*>(llvm::cast<clang::PredefinedExpr>(Expr));
         auto _S = new AST::PredefinedExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -221,6 +259,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->identKind = (PredefinedExpr::IdentKind) S->getIdentKind();
         _Expr = _S;
         break;
@@ -229,6 +270,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ParenExpr*>(llvm::cast<clang::ParenExpr>(Expr));
         auto _S = new AST::ParenExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -239,6 +281,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _Expr = _S;
         break;
@@ -247,6 +292,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::UnaryOperator*>(llvm::cast<clang::UnaryOperator>(Expr));
         auto _S = new AST::UnaryOperator();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -257,9 +303,18 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->opcode = (UnaryOperatorKind) S->getOpcode();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _S->canOverflow = S->canOverflow();
+        _S->isPrefix = S->isPrefix();
+        _S->isPostfix = S->isPostfix();
+        _S->isIncrementOp = S->isIncrementOp();
+        _S->isDecrementOp = S->isDecrementOp();
+        _S->isIncrementDecrementOp = S->isIncrementDecrementOp();
+        _S->isArithmeticOp = S->isArithmeticOp();
         _Expr = _S;
         break;
     }
@@ -267,6 +322,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::OffsetOfExpr*>(llvm::cast<clang::OffsetOfExpr>(Expr));
         auto _S = new AST::OffsetOfExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -277,6 +333,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numComponents = S->getNumComponents();
         _S->numExpressions = S->getNumExpressions();
         _Expr = _S;
@@ -286,6 +345,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::UnaryExprOrTypeTraitExpr*>(llvm::cast<clang::UnaryExprOrTypeTraitExpr>(Expr));
         auto _S = new AST::UnaryExprOrTypeTraitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -296,10 +356,14 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->kind = (UnaryExprOrTypeTrait) S->getKind();
         _S->isArgumentType = S->isArgumentType();
         if (S->isArgumentType())
             _S->argumentType = GetQualifiedType(S->getArgumentType());
+        _S->argumentExpr = static_cast<AST::Expr*>(WalkExpression(S->getArgumentExpr()));
         _S->typeOfArgument = GetQualifiedType(S->getTypeOfArgument());
         _Expr = _S;
         break;
@@ -308,6 +372,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ArraySubscriptExpr*>(llvm::cast<clang::ArraySubscriptExpr>(Expr));
         auto _S = new AST::ArraySubscriptExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -318,8 +383,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
+        _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
+        _S->idx = static_cast<AST::Expr*>(WalkExpression(S->getIdx()));
         _Expr = _S;
         break;
     }
@@ -327,6 +397,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CallExpr*>(llvm::cast<clang::CallExpr>(Expr));
         auto _S = new AST::CallExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -337,7 +408,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->callee = static_cast<AST::Expr*>(WalkExpression(S->getCallee()));
+        _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
+        _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
         _S->numCommas = S->getNumCommas();
         _S->builtinCallee = S->getBuiltinCallee();
@@ -354,6 +430,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::MemberExpr*>(llvm::cast<clang::MemberExpr>(Expr));
         auto _S = new AST::MemberExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -364,6 +441,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->arrow = S->isArrow();
         _S->hadMultipleCandidates = S->hadMultipleCandidates();
@@ -379,6 +459,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CompoundLiteralExpr*>(llvm::cast<clang::CompoundLiteralExpr>(Expr));
         auto _S = new AST::CompoundLiteralExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -389,6 +470,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->initializer = static_cast<AST::Expr*>(WalkExpression(S->getInitializer()));
         _S->fileScope = S->isFileScope();
         _Expr = _S;
@@ -398,6 +482,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ImplicitCastExpr*>(llvm::cast<clang::ImplicitCastExpr>(Expr));
         auto _S = new AST::ImplicitCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -408,8 +493,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -421,6 +511,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CStyleCastExpr*>(llvm::cast<clang::CStyleCastExpr>(Expr));
         auto _S = new AST::CStyleCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -431,8 +522,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -444,6 +540,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::BinaryOperator*>(llvm::cast<clang::BinaryOperator>(Expr));
         auto _S = new AST::BinaryOperator();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -454,9 +551,25 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->opcode = (BinaryOperatorKind) S->getOpcode();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
+        _S->opcodeStr = S->getOpcodeStr();
+        _S->isPtrMemOp = S->isPtrMemOp();
+        _S->isMultiplicativeOp = S->isMultiplicativeOp();
+        _S->isAdditiveOp = S->isAdditiveOp();
+        _S->isShiftOp = S->isShiftOp();
+        _S->isBitwiseOp = S->isBitwiseOp();
+        _S->isRelationalOp = S->isRelationalOp();
+        _S->isEqualityOp = S->isEqualityOp();
+        _S->isComparisonOp = S->isComparisonOp();
+        _S->isLogicalOp = S->isLogicalOp();
+        _S->isAssignmentOp = S->isAssignmentOp();
+        _S->isCompoundAssignmentOp = S->isCompoundAssignmentOp();
+        _S->isShiftAssignOp = S->isShiftAssignOp();
         _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement();
         _S->isFEnvAccessOn = S->isFEnvAccessOn();
         _Expr = _S;
@@ -466,6 +579,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CompoundAssignOperator*>(llvm::cast<clang::CompoundAssignOperator>(Expr));
         auto _S = new AST::CompoundAssignOperator();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -476,9 +590,25 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->opcode = (BinaryOperatorKind) S->getOpcode();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
+        _S->opcodeStr = S->getOpcodeStr();
+        _S->isPtrMemOp = S->isPtrMemOp();
+        _S->isMultiplicativeOp = S->isMultiplicativeOp();
+        _S->isAdditiveOp = S->isAdditiveOp();
+        _S->isShiftOp = S->isShiftOp();
+        _S->isBitwiseOp = S->isBitwiseOp();
+        _S->isRelationalOp = S->isRelationalOp();
+        _S->isEqualityOp = S->isEqualityOp();
+        _S->isComparisonOp = S->isComparisonOp();
+        _S->isLogicalOp = S->isLogicalOp();
+        _S->isAssignmentOp = S->isAssignmentOp();
+        _S->isCompoundAssignmentOp = S->isCompoundAssignmentOp();
+        _S->isShiftAssignOp = S->isShiftAssignOp();
         _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement();
         _S->isFEnvAccessOn = S->isFEnvAccessOn();
         _S->computationLHSType = GetQualifiedType(S->getComputationLHSType());
@@ -490,6 +620,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ConditionalOperator*>(llvm::cast<clang::ConditionalOperator>(Expr));
         auto _S = new AST::ConditionalOperator();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -500,6 +631,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->trueExpr = static_cast<AST::Expr*>(WalkExpression(S->getTrueExpr()));
         _S->falseExpr = static_cast<AST::Expr*>(WalkExpression(S->getFalseExpr()));
@@ -515,6 +649,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::BinaryConditionalOperator*>(llvm::cast<clang::BinaryConditionalOperator>(Expr));
         auto _S = new AST::BinaryConditionalOperator();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -525,6 +660,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->trueExpr = static_cast<AST::Expr*>(WalkExpression(S->getTrueExpr()));
         _S->falseExpr = static_cast<AST::Expr*>(WalkExpression(S->getFalseExpr()));
@@ -540,6 +678,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::AddrLabelExpr*>(llvm::cast<clang::AddrLabelExpr>(Expr));
         auto _S = new AST::AddrLabelExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -550,6 +689,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -557,6 +699,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::StmtExpr*>(llvm::cast<clang::StmtExpr>(Expr));
         auto _S = new AST::StmtExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -567,6 +710,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subStmt = static_cast<AST::CompoundStmt*>(WalkStatement(S->getSubStmt()));
         _Expr = _S;
         break;
@@ -575,6 +721,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ShuffleVectorExpr*>(llvm::cast<clang::ShuffleVectorExpr>(Expr));
         auto _S = new AST::ShuffleVectorExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -585,6 +732,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numSubExprs = S->getNumSubExprs();
         _Expr = _S;
         break;
@@ -593,6 +743,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ConvertVectorExpr*>(llvm::cast<clang::ConvertVectorExpr>(Expr));
         auto _S = new AST::ConvertVectorExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -603,6 +754,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->srcExpr = static_cast<AST::Expr*>(WalkExpression(S->getSrcExpr()));
         _Expr = _S;
         break;
@@ -611,6 +765,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ChooseExpr*>(llvm::cast<clang::ChooseExpr>(Expr));
         auto _S = new AST::ChooseExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -621,6 +776,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->isConditionTrue = S->isConditionTrue();
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
@@ -634,6 +792,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::GNUNullExpr*>(llvm::cast<clang::GNUNullExpr>(Expr));
         auto _S = new AST::GNUNullExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -644,6 +803,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -651,6 +813,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::VAArgExpr*>(llvm::cast<clang::VAArgExpr>(Expr));
         auto _S = new AST::VAArgExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -661,6 +824,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _S->isMicrosoftABI = S->isMicrosoftABI();
         _Expr = _S;
@@ -670,6 +836,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::InitListExpr*>(llvm::cast<clang::InitListExpr>(Expr));
         auto _S = new AST::InitListExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -680,6 +847,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->arrayFiller = static_cast<AST::Expr*>(WalkExpression(S->getArrayFiller()));
         if (S->isSyntacticForm())
             _S->syntacticForm = static_cast<AST::InitListExpr*>(WalkExpression(S->getSyntacticForm()));
@@ -699,6 +869,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::DesignatedInitExpr*>(llvm::cast<clang::DesignatedInitExpr>(Expr));
         auto _S = new AST::DesignatedInitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -709,6 +880,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->init = static_cast<AST::Expr*>(WalkExpression(S->getInit()));
         _S->size = S->size();
         _S->usesGNUSyntax = S->usesGNUSyntax();
@@ -720,6 +894,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::NoInitExpr*>(llvm::cast<clang::NoInitExpr>(Expr));
         auto _S = new AST::NoInitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -730,6 +905,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -737,6 +915,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::DesignatedInitUpdateExpr*>(llvm::cast<clang::DesignatedInitUpdateExpr>(Expr));
         auto _S = new AST::DesignatedInitUpdateExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -747,6 +926,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->updater = static_cast<AST::InitListExpr*>(WalkExpression(S->getUpdater()));
         _Expr = _S;
@@ -756,6 +938,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ArrayInitLoopExpr*>(llvm::cast<clang::ArrayInitLoopExpr>(Expr));
         auto _S = new AST::ArrayInitLoopExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -766,6 +949,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->commonExpr = static_cast<AST::OpaqueValueExpr*>(WalkExpression(S->getCommonExpr()));
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _Expr = _S;
@@ -775,6 +961,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ArrayInitIndexExpr*>(llvm::cast<clang::ArrayInitIndexExpr>(Expr));
         auto _S = new AST::ArrayInitIndexExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -785,6 +972,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -792,6 +982,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ImplicitValueInitExpr*>(llvm::cast<clang::ImplicitValueInitExpr>(Expr));
         auto _S = new AST::ImplicitValueInitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -802,6 +993,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -809,6 +1003,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ParenListExpr*>(llvm::cast<clang::ParenListExpr>(Expr));
         auto _S = new AST::ParenListExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -819,6 +1014,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numExprs = S->getNumExprs();
         _Expr = _S;
         break;
@@ -827,6 +1025,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::GenericSelectionExpr*>(llvm::cast<clang::GenericSelectionExpr>(Expr));
         auto _S = new AST::GenericSelectionExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -837,9 +1036,14 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numAssocs = S->getNumAssocs();
+        _S->controllingExpr = static_cast<AST::Expr*>(WalkExpression(S->getControllingExpr()));
         _S->isResultDependent = S->isResultDependent();
         _S->resultIndex = S->getResultIndex();
+        _S->resultExpr = static_cast<AST::Expr*>(WalkExpression(S->getResultExpr()));
         _Expr = _S;
         break;
     }
@@ -847,6 +1051,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ExtVectorElementExpr*>(llvm::cast<clang::ExtVectorElementExpr>(Expr));
         auto _S = new AST::ExtVectorElementExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -857,6 +1062,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->numElements = S->getNumElements();
         _S->containsDuplicateElements = S->containsDuplicateElements();
@@ -868,6 +1076,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::BlockExpr*>(llvm::cast<clang::BlockExpr>(Expr));
         auto _S = new AST::BlockExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -878,6 +1087,10 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
         _Expr = _S;
         break;
     }
@@ -885,6 +1098,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::AsTypeExpr*>(llvm::cast<clang::AsTypeExpr>(Expr));
         auto _S = new AST::AsTypeExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -895,6 +1109,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->srcExpr = static_cast<AST::Expr*>(WalkExpression(S->getSrcExpr()));
         _Expr = _S;
         break;
@@ -903,6 +1120,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::PseudoObjectExpr*>(llvm::cast<clang::PseudoObjectExpr>(Expr));
         auto _S = new AST::PseudoObjectExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -913,7 +1131,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->syntacticForm = static_cast<AST::Expr*>(WalkExpression(S->getSyntacticForm()));
         _S->resultExprIndex = S->getResultExprIndex();
+        _S->resultExpr = static_cast<AST::Expr*>(WalkExpression(S->getResultExpr()));
         _S->numSemanticExprs = S->getNumSemanticExprs();
         _Expr = _S;
         break;
@@ -922,6 +1145,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::AtomicExpr*>(llvm::cast<clang::AtomicExpr>(Expr));
         auto _S = new AST::AtomicExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -932,6 +1156,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->ptr = static_cast<AST::Expr*>(WalkExpression(S->getPtr()));
         _S->order = static_cast<AST::Expr*>(WalkExpression(S->getOrder()));
         _S->scope = static_cast<AST::Expr*>(WalkExpression(S->getScope()));
@@ -941,6 +1168,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->weak = static_cast<AST::Expr*>(WalkExpression(S->getWeak()));
         _S->valueType = GetQualifiedType(S->getValueType());
         _S->op = (AtomicExpr::AtomicOp) S->getOp();
+        _S->numSubExprs = S->getNumSubExprs();
         _S->isVolatile = S->isVolatile();
         _S->isCmpXChg = S->isCmpXChg();
         _S->isOpenCL = S->isOpenCL();
@@ -951,6 +1179,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::TypoExpr*>(llvm::cast<clang::TypoExpr>(Expr));
         auto _S = new AST::TypoExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -961,6 +1190,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -968,6 +1200,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXOperatorCallExpr*>(llvm::cast<clang::CXXOperatorCallExpr>(Expr));
         auto _S = new AST::CXXOperatorCallExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -978,7 +1211,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->callee = static_cast<AST::Expr*>(WalkExpression(S->getCallee()));
+        _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
+        _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
         _S->numCommas = S->getNumCommas();
         _S->builtinCallee = S->getBuiltinCallee();
@@ -989,6 +1227,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
             _S->addarguments(_ES);
         }
         _S->_operator = (OverloadedOperatorKind) S->getOperator();
+        _S->isAssignmentOp = S->isAssignmentOp();
         _S->isInfixBinaryOp = S->isInfixBinaryOp();
         _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement();
         _Expr = _S;
@@ -998,6 +1237,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXMemberCallExpr*>(llvm::cast<clang::CXXMemberCallExpr>(Expr));
         auto _S = new AST::CXXMemberCallExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1008,7 +1248,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->callee = static_cast<AST::Expr*>(WalkExpression(S->getCallee()));
+        _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
+        _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
         _S->numCommas = S->getNumCommas();
         _S->builtinCallee = S->getBuiltinCallee();
@@ -1027,6 +1272,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CUDAKernelCallExpr*>(llvm::cast<clang::CUDAKernelCallExpr>(Expr));
         auto _S = new AST::CUDAKernelCallExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1037,7 +1283,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->callee = static_cast<AST::Expr*>(WalkExpression(S->getCallee()));
+        _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
+        _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
         _S->numCommas = S->getNumCommas();
         _S->builtinCallee = S->getBuiltinCallee();
@@ -1055,6 +1306,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXStaticCastExpr*>(llvm::cast<clang::CXXStaticCastExpr>(Expr));
         auto _S = new AST::CXXStaticCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1065,8 +1317,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -1079,6 +1336,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXDynamicCastExpr*>(llvm::cast<clang::CXXDynamicCastExpr>(Expr));
         auto _S = new AST::CXXDynamicCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1089,8 +1347,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -1104,6 +1367,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXReinterpretCastExpr*>(llvm::cast<clang::CXXReinterpretCastExpr>(Expr));
         auto _S = new AST::CXXReinterpretCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1114,8 +1378,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -1128,6 +1397,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXConstCastExpr*>(llvm::cast<clang::CXXConstCastExpr>(Expr));
         auto _S = new AST::CXXConstCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1138,8 +1408,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -1152,6 +1427,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::UserDefinedLiteral*>(llvm::cast<clang::UserDefinedLiteral>(Expr));
         auto _S = new AST::UserDefinedLiteral();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1162,7 +1438,12 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->callee = static_cast<AST::Expr*>(WalkExpression(S->getCallee()));
+        _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
+        _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
         _S->numCommas = S->getNumCommas();
         _S->builtinCallee = S->getBuiltinCallee();
@@ -1173,6 +1454,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
             _S->addarguments(_ES);
         }
         _S->literalOperatorKind = (UserDefinedLiteral::LiteralOperatorKind) S->getLiteralOperatorKind();
+        _S->cookedLiteral = static_cast<AST::Expr*>(WalkExpression(S->getCookedLiteral()));
         _Expr = _S;
         break;
     }
@@ -1180,6 +1462,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXBoolLiteralExpr*>(llvm::cast<clang::CXXBoolLiteralExpr>(Expr));
         auto _S = new AST::CXXBoolLiteralExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1190,6 +1473,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->value = S->getValue();
         _Expr = _S;
         break;
@@ -1198,6 +1484,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXNullPtrLiteralExpr*>(llvm::cast<clang::CXXNullPtrLiteralExpr>(Expr));
         auto _S = new AST::CXXNullPtrLiteralExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1208,6 +1495,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -1215,6 +1505,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXStdInitializerListExpr*>(llvm::cast<clang::CXXStdInitializerListExpr>(Expr));
         auto _S = new AST::CXXStdInitializerListExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1225,6 +1516,10 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _Expr = _S;
         break;
     }
@@ -1232,6 +1527,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXTypeidExpr*>(llvm::cast<clang::CXXTypeidExpr>(Expr));
         auto _S = new AST::CXXTypeidExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1242,6 +1538,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->exprOperand = static_cast<AST::Expr*>(WalkExpression(S->getExprOperand()));
         _S->isPotentiallyEvaluated = S->isPotentiallyEvaluated();
         _S->isTypeOperand = S->isTypeOperand();
@@ -1252,6 +1551,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::MSPropertyRefExpr*>(llvm::cast<clang::MSPropertyRefExpr>(Expr));
         auto _S = new AST::MSPropertyRefExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1262,6 +1562,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->isImplicitAccess = S->isImplicitAccess();
         _S->baseExpr = static_cast<AST::Expr*>(WalkExpression(S->getBaseExpr()));
         _S->isArrow = S->isArrow();
@@ -1272,6 +1575,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::MSPropertySubscriptExpr*>(llvm::cast<clang::MSPropertySubscriptExpr>(Expr));
         auto _S = new AST::MSPropertySubscriptExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1282,6 +1586,11 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
+        _S->idx = static_cast<AST::Expr*>(WalkExpression(S->getIdx()));
         _Expr = _S;
         break;
     }
@@ -1289,6 +1598,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXUuidofExpr*>(llvm::cast<clang::CXXUuidofExpr>(Expr));
         auto _S = new AST::CXXUuidofExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1299,6 +1609,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->exprOperand = static_cast<AST::Expr*>(WalkExpression(S->getExprOperand()));
         _S->uuidStr = S->getUuidStr();
         _S->isTypeOperand = S->isTypeOperand();
@@ -1309,6 +1622,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXThisExpr*>(llvm::cast<clang::CXXThisExpr>(Expr));
         auto _S = new AST::CXXThisExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1319,6 +1633,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->implicit = S->isImplicit();
         _Expr = _S;
         break;
@@ -1327,6 +1644,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXThrowExpr*>(llvm::cast<clang::CXXThrowExpr>(Expr));
         auto _S = new AST::CXXThrowExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1337,6 +1655,10 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _S->isThrownVariableInScope = S->isThrownVariableInScope();
         _Expr = _S;
         break;
@@ -1345,6 +1667,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXDefaultArgExpr*>(llvm::cast<clang::CXXDefaultArgExpr>(Expr));
         auto _S = new AST::CXXDefaultArgExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1355,6 +1678,10 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->expr = static_cast<AST::Expr*>(WalkExpression(S->getExpr()));
         _Expr = _S;
         break;
     }
@@ -1362,6 +1689,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXDefaultInitExpr*>(llvm::cast<clang::CXXDefaultInitExpr>(Expr));
         auto _S = new AST::CXXDefaultInitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1372,6 +1700,11 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->field = static_cast<AST::Field*>(WalkDeclaration(S->getField()));
+        _S->expr = static_cast<AST::Expr*>(WalkExpression(S->getExpr()));
         _Expr = _S;
         break;
     }
@@ -1379,6 +1712,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXBindTemporaryExpr*>(llvm::cast<clang::CXXBindTemporaryExpr>(Expr));
         auto _S = new AST::CXXBindTemporaryExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1389,6 +1723,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _Expr = _S;
         break;
@@ -1397,6 +1734,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXConstructExpr*>(llvm::cast<clang::CXXConstructExpr>(Expr));
         auto _S = new AST::CXXConstructExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1407,6 +1745,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->elidable = S->isElidable();
         _S->hadMultipleCandidates = S->hadMultipleCandidates();
         _S->listInitialization = S->isListInitialization();
@@ -1425,6 +1766,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXInheritedCtorInitExpr*>(llvm::cast<clang::CXXInheritedCtorInitExpr>(Expr));
         auto _S = new AST::CXXInheritedCtorInitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1435,6 +1777,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->constructsVBase = S->constructsVBase();
         _S->inheritedFromVBase = S->inheritedFromVBase();
         _Expr = _S;
@@ -1444,6 +1789,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXFunctionalCastExpr*>(llvm::cast<clang::CXXFunctionalCastExpr>(Expr));
         auto _S = new AST::CXXFunctionalCastExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1454,8 +1800,13 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->castKind = (CastKind) S->getCastKind();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
+        _S->castKindName = S->getCastKindName();
+        _S->subExprAsWritten = static_cast<AST::Expr*>(WalkExpression(S->getSubExprAsWritten()));
         _S->conversionFunction = static_cast<AST::Declaration*>(WalkDeclaration(S->getConversionFunction()));
         _S->path_empty = S->path_empty();
         _S->path_size = S->path_size();
@@ -1468,6 +1819,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXTemporaryObjectExpr*>(llvm::cast<clang::CXXTemporaryObjectExpr>(Expr));
         auto _S = new AST::CXXTemporaryObjectExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1478,6 +1830,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->elidable = S->isElidable();
         _S->hadMultipleCandidates = S->hadMultipleCandidates();
         _S->listInitialization = S->isListInitialization();
@@ -1496,6 +1851,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::LambdaExpr*>(llvm::cast<clang::LambdaExpr>(Expr));
         auto _S = new AST::LambdaExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1506,6 +1862,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->capture_size = S->capture_size();
         _S->callOperator = static_cast<AST::Method*>(WalkDeclaration(S->getCallOperator()));
         _S->isGenericLambda = S->isGenericLambda();
@@ -1525,6 +1884,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXScalarValueInitExpr*>(llvm::cast<clang::CXXScalarValueInitExpr>(Expr));
         auto _S = new AST::CXXScalarValueInitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1535,6 +1895,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _Expr = _S;
         break;
     }
@@ -1542,6 +1905,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXNewExpr*>(llvm::cast<clang::CXXNewExpr>(Expr));
         auto _S = new AST::CXXNewExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1552,15 +1916,20 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->operatorNew = static_cast<AST::Function*>(WalkDeclaration(S->getOperatorNew()));
         _S->operatorDelete = static_cast<AST::Function*>(WalkDeclaration(S->getOperatorDelete()));
         _S->allocatedType = GetQualifiedType(S->getAllocatedType());
         _S->isArray = S->isArray();
+        _S->arraySize = static_cast<AST::Expr*>(WalkExpression(S->getArraySize()));
         _S->numPlacementArgs = S->getNumPlacementArgs();
         _S->isParenTypeId = S->isParenTypeId();
         _S->isGlobalNew = S->isGlobalNew();
         _S->hasInitializer = S->hasInitializer();
         _S->initializationStyle = (CXXNewExpr::InitializationStyle) S->getInitializationStyle();
+        _S->initializer = static_cast<AST::Expr*>(WalkExpression(S->getInitializer()));
         _S->constructExpr = static_cast<AST::CXXConstructExpr*>(WalkExpression(S->getConstructExpr()));
         for (auto _E : S->placement_arguments())
         {
@@ -1574,6 +1943,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXDeleteExpr*>(llvm::cast<clang::CXXDeleteExpr>(Expr));
         auto _S = new AST::CXXDeleteExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1584,10 +1954,14 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->isGlobalDelete = S->isGlobalDelete();
         _S->isArrayForm = S->isArrayForm();
         _S->isArrayFormAsWritten = S->isArrayFormAsWritten();
         _S->operatorDelete = static_cast<AST::Function*>(WalkDeclaration(S->getOperatorDelete()));
+        _S->argument = static_cast<AST::Expr*>(WalkExpression(S->getArgument()));
         _S->destroyedType = GetQualifiedType(S->getDestroyedType());
         _Expr = _S;
         break;
@@ -1596,6 +1970,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXPseudoDestructorExpr*>(llvm::cast<clang::CXXPseudoDestructorExpr>(Expr));
         auto _S = new AST::CXXPseudoDestructorExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1606,6 +1981,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->hasQualifier = S->hasQualifier();
         _S->isArrow = S->isArrow();
@@ -1617,6 +1995,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::TypeTraitExpr*>(llvm::cast<clang::TypeTraitExpr>(Expr));
         auto _S = new AST::TypeTraitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1627,6 +2006,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->value = S->getValue();
         _S->numArgs = S->getNumArgs();
         _Expr = _S;
@@ -1636,6 +2018,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ArrayTypeTraitExpr*>(llvm::cast<clang::ArrayTypeTraitExpr>(Expr));
         auto _S = new AST::ArrayTypeTraitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1646,6 +2029,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->queriedType = GetQualifiedType(S->getQueriedType());
         _S->value = S->getValue();
         _S->dimensionExpression = static_cast<AST::Expr*>(WalkExpression(S->getDimensionExpression()));
@@ -1656,6 +2042,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ExpressionTraitExpr*>(llvm::cast<clang::ExpressionTraitExpr>(Expr));
         auto _S = new AST::ExpressionTraitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1666,6 +2053,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->queriedExpression = static_cast<AST::Expr*>(WalkExpression(S->getQueriedExpression()));
         _S->value = S->getValue();
         _Expr = _S;
@@ -1675,6 +2065,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::UnresolvedLookupExpr*>(llvm::cast<clang::UnresolvedLookupExpr>(Expr));
         auto _S = new AST::UnresolvedLookupExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1685,6 +2076,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numDecls = S->getNumDecls();
         _S->hasTemplateKeyword = S->hasTemplateKeyword();
         _S->hasExplicitTemplateArgs = S->hasExplicitTemplateArgs();
@@ -1698,6 +2092,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::DependentScopeDeclRefExpr*>(llvm::cast<clang::DependentScopeDeclRefExpr>(Expr));
         auto _S = new AST::DependentScopeDeclRefExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1708,6 +2103,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->hasTemplateKeyword = S->hasTemplateKeyword();
         _S->hasExplicitTemplateArgs = S->hasExplicitTemplateArgs();
         _S->numTemplateArgs = S->getNumTemplateArgs();
@@ -1718,6 +2116,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::ExprWithCleanups*>(llvm::cast<clang::ExprWithCleanups>(Expr));
         auto _S = new AST::ExprWithCleanups();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1728,6 +2127,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->subExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _S->numObjects = S->getNumObjects();
         _S->cleanupsHaveSideEffects = S->cleanupsHaveSideEffects();
@@ -1738,6 +2140,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXUnresolvedConstructExpr*>(llvm::cast<clang::CXXUnresolvedConstructExpr>(Expr));
         auto _S = new AST::CXXUnresolvedConstructExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1748,6 +2151,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->typeAsWritten = GetQualifiedType(S->getTypeAsWritten());
         _S->isListInitialization = S->isListInitialization();
         _S->arg_size = S->arg_size();
@@ -1763,6 +2169,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXDependentScopeMemberExpr*>(llvm::cast<clang::CXXDependentScopeMemberExpr>(Expr));
         auto _S = new AST::CXXDependentScopeMemberExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1773,6 +2180,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->isImplicitAccess = S->isImplicitAccess();
         _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->baseType = GetQualifiedType(S->getBaseType());
@@ -1788,6 +2198,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::UnresolvedMemberExpr*>(llvm::cast<clang::UnresolvedMemberExpr>(Expr));
         auto _S = new AST::UnresolvedMemberExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1798,11 +2209,15 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numDecls = S->getNumDecls();
         _S->hasTemplateKeyword = S->hasTemplateKeyword();
         _S->hasExplicitTemplateArgs = S->hasExplicitTemplateArgs();
         _S->numTemplateArgs = S->getNumTemplateArgs();
         _S->isImplicitAccess = S->isImplicitAccess();
+        _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->baseType = GetQualifiedType(S->getBaseType());
         _S->hasUnresolvedUsing = S->hasUnresolvedUsing();
         _S->isArrow = S->isArrow();
@@ -1813,6 +2228,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXNoexceptExpr*>(llvm::cast<clang::CXXNoexceptExpr>(Expr));
         auto _S = new AST::CXXNoexceptExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1823,6 +2239,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->operand = static_cast<AST::Expr*>(WalkExpression(S->getOperand()));
         _S->value = S->getValue();
         _Expr = _S;
@@ -1832,6 +2251,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::PackExpansionExpr*>(llvm::cast<clang::PackExpansionExpr>(Expr));
         auto _S = new AST::PackExpansionExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1842,6 +2262,10 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
+        _S->pattern = static_cast<AST::Expr*>(WalkExpression(S->getPattern()));
         _Expr = _S;
         break;
     }
@@ -1849,6 +2273,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::SizeOfPackExpr*>(llvm::cast<clang::SizeOfPackExpr>(Expr));
         auto _S = new AST::SizeOfPackExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1859,6 +2284,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->pack = static_cast<AST::Declaration*>(WalkDeclaration(S->getPack()));
         _S->packLength = S->getPackLength();
         _S->isPartiallySubstituted = S->isPartiallySubstituted();
@@ -1869,6 +2297,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::SubstNonTypeTemplateParmExpr*>(llvm::cast<clang::SubstNonTypeTemplateParmExpr>(Expr));
         auto _S = new AST::SubstNonTypeTemplateParmExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1879,6 +2308,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->replacement = static_cast<AST::Expr*>(WalkExpression(S->getReplacement()));
         _Expr = _S;
         break;
@@ -1887,6 +2319,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::SubstNonTypeTemplateParmPackExpr*>(llvm::cast<clang::SubstNonTypeTemplateParmPackExpr>(Expr));
         auto _S = new AST::SubstNonTypeTemplateParmPackExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1897,6 +2330,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->argumentPack = WalkTemplateArgument(S->getArgumentPack());
         _Expr = _S;
         break;
@@ -1905,6 +2341,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::FunctionParmPackExpr*>(llvm::cast<clang::FunctionParmPackExpr>(Expr));
         auto _S = new AST::FunctionParmPackExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1915,6 +2352,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->numExpansions = S->getNumExpansions();
         _Expr = _S;
         break;
@@ -1923,6 +2363,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::MaterializeTemporaryExpr*>(llvm::cast<clang::MaterializeTemporaryExpr>(Expr));
         auto _S = new AST::MaterializeTemporaryExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1933,6 +2374,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->temporary = static_cast<AST::Stmt*>(WalkStatement(S->getTemporary()));
         _S->TemporaryExpr = static_cast<AST::Expr*>(WalkExpression(S->GetTemporaryExpr()));
         _S->manglingNumber = S->getManglingNumber();
@@ -1944,6 +2388,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CXXFoldExpr*>(llvm::cast<clang::CXXFoldExpr>(Expr));
         auto _S = new AST::CXXFoldExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1954,6 +2399,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
         _S->isRightFold = S->isRightFold();
@@ -1968,6 +2416,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CoawaitExpr*>(llvm::cast<clang::CoawaitExpr>(Expr));
         auto _S = new AST::CoawaitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -1978,6 +2427,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->commonExpr = static_cast<AST::Expr*>(WalkExpression(S->getCommonExpr()));
         _S->opaqueValue = static_cast<AST::OpaqueValueExpr*>(WalkExpression(S->getOpaqueValue()));
         _S->readyExpr = static_cast<AST::Expr*>(WalkExpression(S->getReadyExpr()));
@@ -1992,6 +2444,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::DependentCoawaitExpr*>(llvm::cast<clang::DependentCoawaitExpr>(Expr));
         auto _S = new AST::DependentCoawaitExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -2002,6 +2455,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->operand = static_cast<AST::Expr*>(WalkExpression(S->getOperand()));
         _S->operatorCoawaitLookup = static_cast<AST::UnresolvedLookupExpr*>(WalkExpression(S->getOperatorCoawaitLookup()));
         _Expr = _S;
@@ -2011,6 +2467,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
     {
         auto S = const_cast<clang::CoyieldExpr*>(llvm::cast<clang::CoyieldExpr>(Expr));
         auto _S = new AST::CoyieldExpr();
+        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->type = GetQualifiedType(S->getType());
         _S->valueDependent = S->isValueDependent();
         _S->typeDependent = S->isTypeDependent();
@@ -2021,6 +2478,9 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
+        _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
+        _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
+        _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->commonExpr = static_cast<AST::Expr*>(WalkExpression(S->getCommonExpr()));
         _S->opaqueValue = static_cast<AST::OpaqueValueExpr*>(WalkExpression(S->getOpaqueValue()));
         _S->readyExpr = static_cast<AST::Expr*>(WalkExpression(S->getReadyExpr()));

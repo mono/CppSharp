@@ -148,6 +148,7 @@ namespace CppSharp.AST
 
         public SourceRange SourceRange;
         public SourceLocation EndLoc;
+        public Stmt StripLabelLikeStatements;
     }
 
     public partial class DeclStmt : Stmt
@@ -158,6 +159,7 @@ namespace CppSharp.AST
 
         public List<Declaration> Decls = new List<Declaration>();
         public bool IsSingleDecl;
+        public Declaration SingleDecl;
     }
 
     public partial class NullStmt : Stmt
@@ -179,6 +181,8 @@ namespace CppSharp.AST
         public List<Stmt> Body = new List<Stmt>();
         public bool BodyEmpty;
         public uint Size;
+        public Stmt BodyFront;
+        public Stmt BodyBack;
         public SourceLocation LBracLoc;
         public SourceLocation RBracLoc;
     }
@@ -191,6 +195,7 @@ namespace CppSharp.AST
 
         public SourceLocation KeywordLoc;
         public SourceLocation ColonLoc;
+        public Stmt SubStmt;
     }
 
     public partial class CaseStmt : SwitchCase
@@ -203,7 +208,6 @@ namespace CppSharp.AST
         public SourceLocation EllipsisLoc;
         public Expr LHS;
         public Expr RHS;
-        public Stmt SubStmt;
         public bool CaseStmtIsGNURange;
     }
 
@@ -213,7 +217,6 @@ namespace CppSharp.AST
         {
         }
 
-        public Stmt SubStmt;
         public SourceLocation DefaultLoc;
     }
 
@@ -235,6 +238,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation AttrLoc;
+        public Stmt SubStmt;
     }
 
     public partial class IfStmt : Stmt
@@ -253,6 +257,7 @@ namespace CppSharp.AST
         public bool HasInitStorage;
         public bool HasVarStorage;
         public bool HasElseStorage;
+        public DeclStmt ConditionVariableDeclStmt;
         public bool IsObjCAvailabilityCheck;
     }
 
@@ -268,6 +273,7 @@ namespace CppSharp.AST
         public SourceLocation SwitchLoc;
         public bool HasInitStorage;
         public bool HasVarStorage;
+        public DeclStmt ConditionVariableDeclStmt;
         public bool IsAllEnumCasesCovered;
     }
 
@@ -281,6 +287,7 @@ namespace CppSharp.AST
         public Stmt Body;
         public SourceLocation WhileLoc;
         public bool HasVarStorage;
+        public DeclStmt ConditionVariableDeclStmt;
     }
 
     public partial class DoStmt : Stmt
@@ -491,6 +498,7 @@ namespace CppSharp.AST
         }
 
         public List<Expr> CaptureInits = new List<Expr>();
+        public Stmt capturedStmt;
         public uint CaptureSize;
     }
 
@@ -512,6 +520,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation TryLoc;
+        public CompoundStmt TryBlock;
         public uint NumHandlers;
     }
 
@@ -526,6 +535,10 @@ namespace CppSharp.AST
         public Expr Cond;
         public Expr Inc;
         public Stmt Body;
+        public DeclStmt RangeStmt;
+        public DeclStmt BeginStmt;
+        public DeclStmt EndStmt;
+        public DeclStmt LoopVarStmt;
         public SourceLocation ForLoc;
         public SourceLocation CoawaitLoc;
         public SourceLocation ColonLoc;
