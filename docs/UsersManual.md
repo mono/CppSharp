@@ -31,6 +31,10 @@ binding technologies:
 - C# (P/Invoke)
 - C++/CLI
 
+We have recently introduced an option which makes Clang look up MSVC headers.
+If it works well, we're going to make it the default in our next release.
+Its only disadvantage is the ability to select a specific version of MSVC.
+
 # 3. C/C++ language features
 
 In this section we will go through how the generator deals C/C++ types.
