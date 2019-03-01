@@ -110,7 +110,7 @@ namespace CppSharp.Types
         public bool FindTypeMap(Declaration declaration, out TypeMap typeMap) =>
             FindTypeMap(new TagType(declaration), out typeMap);
 
-        private bool FindTypeMap(string name, out TypeMap typeMap) =>
+        public bool FindTypeMap(string name, out TypeMap typeMap) =>
             TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
 
         private Dictionary<Type, TypeMap> typeMaps = new Dictionary<Type, TypeMap>();
