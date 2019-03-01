@@ -49,7 +49,7 @@ namespace CppSharp
             module.Defines.Add("__STDC_CONSTANT_MACROS");
 
             var basePath = Path.Combine(GetSourceDirectory("build"), "scripts");
-            var llvmPath = Path.Combine(basePath, "llvm-981341-windows-vs2017-x86-RelWithDebInfo");
+            var llvmPath = Path.Combine(basePath, "..", "..", "deps", "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
             module.IncludeDirs.AddRange(new[]
@@ -522,8 +522,8 @@ namespace CppSharp
                 var iteratorTypeName = GetIteratorTypeName(iteratorType, TypePrinter);
                 var declName = GetDeclName(method, GeneratorKind.CSharp);
 
-                WriteLine($"public List<{iteratorTypeName}> {declName} = " +
-                    $"new List<{iteratorTypeName}>();");
+                WriteLine($@"public List<{iteratorTypeName}> {
+                    declName} {{ get; private set; }} = new List<{iteratorTypeName}>();");
             }
 
             foreach (var property in @class.Properties)
@@ -535,7 +535,7 @@ namespace CppSharp
                     property.Type, TypePrinter));
                 string propertyName = GetDeclName(property, GeneratorKind.CSharp);
 
-                WriteLine($"public {typeName} {propertyName};");
+                WriteLine($"public {typeName} {propertyName} {{ get; set; }}");
             }
 
             UnindentAndWriteCloseBrace();

@@ -353,34 +353,34 @@ namespace CppSharp.AST
             {
             }
 
-            public Expr.Classification.Kinds Kind;
-            public Expr.Classification.ModifiableType Modifiable;
-            public bool IsLValue;
-            public bool IsXValue;
-            public bool IsGLValue;
-            public bool IsPRValue;
-            public bool IsRValue;
-            public bool IsModifiable;
+            public Expr.Classification.Kinds Kind { get; set; }
+            public Expr.Classification.ModifiableType Modifiable { get; set; }
+            public bool IsLValue { get; set; }
+            public bool IsXValue { get; set; }
+            public bool IsGLValue { get; set; }
+            public bool IsPRValue { get; set; }
+            public bool IsRValue { get; set; }
+            public bool IsModifiable { get; set; }
         }
 
         public Expr()
         {
         }
 
-        public QualifiedType Type;
-        public bool ValueDependent;
-        public bool TypeDependent;
-        public bool InstantiationDependent;
-        public bool ContainsUnexpandedParameterPack;
-        public SourceLocation ExprLoc;
-        public bool IsLValue;
-        public bool IsRValue;
-        public bool IsXValue;
-        public bool IsGLValue;
-        public bool IsOrdinaryOrBitFieldObject;
-        public Field SourceBitField;
-        public Declaration ReferencedDeclOfCallee;
-        public bool HasPlaceholderType;
+        public QualifiedType Type { get; set; }
+        public bool ValueDependent { get; set; }
+        public bool TypeDependent { get; set; }
+        public bool InstantiationDependent { get; set; }
+        public bool ContainsUnexpandedParameterPack { get; set; }
+        public SourceLocation ExprLoc { get; set; }
+        public bool IsLValue { get; set; }
+        public bool IsRValue { get; set; }
+        public bool IsXValue { get; set; }
+        public bool IsGLValue { get; set; }
+        public bool IsOrdinaryOrBitFieldObject { get; set; }
+        public Field SourceBitField { get; set; }
+        public Declaration ReferencedDeclOfCallee { get; set; }
+        public bool HasPlaceholderType { get; set; }
     }
 
     public partial class FullExpr : Expr
@@ -389,7 +389,7 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
+        public Expr SubExpr { get; set; }
     }
 
     public partial class ConstantExpr : FullExpr
@@ -406,9 +406,9 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsUnique;
-        public SourceLocation Location;
-        public Expr SourceExpr;
+        public bool IsUnique { get; set; }
+        public SourceLocation Location { get; set; }
+        public Expr SourceExpr { get; set; }
     }
 
     public partial class DeclRefExpr : Expr
@@ -417,18 +417,18 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public bool HadMultipleCandidates;
-        public bool HasQualifier;
-        public Declaration FoundDecl;
-        public bool HasTemplateKWAndArgsInfo;
-        public SourceLocation TemplateKeywordLoc;
-        public SourceLocation LAngleLoc;
-        public SourceLocation RAngleLoc;
-        public bool HasTemplateKeyword;
-        public bool HasExplicitTemplateArgs;
-        public uint NumTemplateArgs;
-        public bool RefersToEnclosingVariableOrCapture;
+        public SourceLocation Location { get; set; }
+        public bool HadMultipleCandidates { get; set; }
+        public bool HasQualifier { get; set; }
+        public Declaration FoundDecl { get; set; }
+        public bool HasTemplateKWAndArgsInfo { get; set; }
+        public SourceLocation TemplateKeywordLoc { get; set; }
+        public SourceLocation LAngleLoc { get; set; }
+        public SourceLocation RAngleLoc { get; set; }
+        public bool HasTemplateKeyword { get; set; }
+        public bool HasExplicitTemplateArgs { get; set; }
+        public uint NumTemplateArgs { get; set; }
+        public bool RefersToEnclosingVariableOrCapture { get; set; }
     }
 
     public partial class IntegerLiteral : Expr
@@ -437,8 +437,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public ulong Value;
+        public SourceLocation Location { get; set; }
+        public ulong Value { get; set; }
     }
 
     public partial class FixedPointLiteral : Expr
@@ -447,8 +447,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public ulong Value;
+        public SourceLocation Location { get; set; }
+        public ulong Value { get; set; }
     }
 
     public partial class CharacterLiteral : Expr
@@ -466,9 +466,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public CharacterLiteral.CharacterKind Kind;
-        public uint Value;
+        public SourceLocation Location { get; set; }
+        public CharacterLiteral.CharacterKind Kind { get; set; }
+        public uint Value { get; set; }
     }
 
     public partial class FloatingLiteral : Expr
@@ -477,9 +477,9 @@ namespace CppSharp.AST
         {
         }
 
-        public bool Exact;
-        public SourceLocation Location;
-        public double ValueAsApproximateDouble;
+        public bool Exact { get; set; }
+        public SourceLocation Location { get; set; }
+        public double ValueAsApproximateDouble { get; set; }
     }
 
     public partial class ImaginaryLiteral : Expr
@@ -488,7 +488,7 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
+        public Expr SubExpr { get; set; }
     }
 
     public partial class StringLiteral : Expr
@@ -506,21 +506,21 @@ namespace CppSharp.AST
         {
         }
 
-        public string String;
-        public string Bytes;
-        public uint ByteLength;
-        public uint Length;
-        public uint CharByteWidth;
-        public StringLiteral.StringKind Kind;
-        public bool IsAscii;
-        public bool IsWide;
-        public bool IsUTF8;
-        public bool IsUTF16;
-        public bool IsUTF32;
-        public bool IsPascal;
-        public bool ContainsNonAscii;
-        public bool ContainsNonAsciiOrNull;
-        public uint NumConcatenated;
+        public string String { get; set; }
+        public string Bytes { get; set; }
+        public uint ByteLength { get; set; }
+        public uint Length { get; set; }
+        public uint CharByteWidth { get; set; }
+        public StringLiteral.StringKind Kind { get; set; }
+        public bool IsAscii { get; set; }
+        public bool IsWide { get; set; }
+        public bool IsUTF8 { get; set; }
+        public bool IsUTF16 { get; set; }
+        public bool IsUTF32 { get; set; }
+        public bool IsPascal { get; set; }
+        public bool ContainsNonAscii { get; set; }
+        public bool ContainsNonAsciiOrNull { get; set; }
+        public uint NumConcatenated { get; set; }
     }
 
     public partial class PredefinedExpr : Expr
@@ -545,8 +545,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public PredefinedExpr.IdentKind identKind;
+        public SourceLocation Location { get; set; }
+        public PredefinedExpr.IdentKind identKind { get; set; }
     }
 
     public partial class ParenExpr : Expr
@@ -555,9 +555,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
-        public SourceLocation LParen;
-        public SourceLocation RParen;
+        public Expr SubExpr { get; set; }
+        public SourceLocation LParen { get; set; }
+        public SourceLocation RParen { get; set; }
     }
 
     public partial class UnaryOperator : Expr
@@ -566,16 +566,16 @@ namespace CppSharp.AST
         {
         }
 
-        public UnaryOperatorKind Opcode;
-        public Expr SubExpr;
-        public SourceLocation OperatorLoc;
-        public bool CanOverflow;
-        public bool IsPrefix;
-        public bool IsPostfix;
-        public bool IsIncrementOp;
-        public bool IsDecrementOp;
-        public bool IsIncrementDecrementOp;
-        public bool IsArithmeticOp;
+        public UnaryOperatorKind Opcode { get; set; }
+        public Expr SubExpr { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public bool CanOverflow { get; set; }
+        public bool IsPrefix { get; set; }
+        public bool IsPostfix { get; set; }
+        public bool IsIncrementOp { get; set; }
+        public bool IsDecrementOp { get; set; }
+        public bool IsIncrementDecrementOp { get; set; }
+        public bool IsArithmeticOp { get; set; }
     }
 
     public partial class OffsetOfExpr : Expr
@@ -584,10 +584,10 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation OperatorLoc;
-        public SourceLocation RParenLoc;
-        public uint NumComponents;
-        public uint NumExpressions;
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public uint NumComponents { get; set; }
+        public uint NumExpressions { get; set; }
     }
 
     public partial class UnaryExprOrTypeTraitExpr : Expr
@@ -596,13 +596,13 @@ namespace CppSharp.AST
         {
         }
 
-        public UnaryExprOrTypeTrait Kind;
-        public SourceLocation OperatorLoc;
-        public SourceLocation RParenLoc;
-        public bool IsArgumentType;
-        public QualifiedType ArgumentType;
-        public Expr ArgumentExpr;
-        public QualifiedType TypeOfArgument;
+        public UnaryExprOrTypeTrait Kind { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public bool IsArgumentType { get; set; }
+        public QualifiedType ArgumentType { get; set; }
+        public Expr ArgumentExpr { get; set; }
+        public QualifiedType TypeOfArgument { get; set; }
     }
 
     public partial class ArraySubscriptExpr : Expr
@@ -611,11 +611,11 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr LHS;
-        public Expr RHS;
-        public SourceLocation RBracketLoc;
-        public Expr Base;
-        public Expr Idx;
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
+        public SourceLocation RBracketLoc { get; set; }
+        public Expr Base { get; set; }
+        public Expr Idx { get; set; }
     }
 
     public partial class CallExpr : Expr
@@ -624,15 +624,15 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Expr> Arguments = new List<Expr>();
-        public Expr Callee;
-        public SourceLocation RParenLoc;
-        public Declaration CalleeDecl;
-        public Function DirectCallee;
-        public uint NumArgs;
-        public uint NumCommas;
-        public uint BuiltinCallee;
-        public bool IsCallToStdMove;
+        public List<Expr> Arguments { get; private set; } = new List<Expr>();
+        public Expr Callee { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public Declaration CalleeDecl { get; set; }
+        public Function DirectCallee { get; set; }
+        public uint NumArgs { get; set; }
+        public uint NumCommas { get; set; }
+        public uint BuiltinCallee { get; set; }
+        public bool IsCallToStdMove { get; set; }
     }
 
     public partial class MemberExpr : Expr
@@ -641,19 +641,19 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Base;
-        public bool Arrow;
-        public SourceLocation MemberLoc;
-        public bool HadMultipleCandidates;
-        public bool HasQualifier;
-        public SourceLocation TemplateKeywordLoc;
-        public SourceLocation LAngleLoc;
-        public SourceLocation RAngleLoc;
-        public bool HasTemplateKeyword;
-        public bool HasExplicitTemplateArgs;
-        public uint NumTemplateArgs;
-        public SourceLocation OperatorLoc;
-        public bool IsImplicitAccess;
+        public Expr Base { get; set; }
+        public bool Arrow { get; set; }
+        public SourceLocation MemberLoc { get; set; }
+        public bool HadMultipleCandidates { get; set; }
+        public bool HasQualifier { get; set; }
+        public SourceLocation TemplateKeywordLoc { get; set; }
+        public SourceLocation LAngleLoc { get; set; }
+        public SourceLocation RAngleLoc { get; set; }
+        public bool HasTemplateKeyword { get; set; }
+        public bool HasExplicitTemplateArgs { get; set; }
+        public uint NumTemplateArgs { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public bool IsImplicitAccess { get; set; }
     }
 
     public partial class CompoundLiteralExpr : Expr
@@ -662,9 +662,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Initializer;
-        public bool FileScope;
-        public SourceLocation LParenLoc;
+        public Expr Initializer { get; set; }
+        public bool FileScope { get; set; }
+        public SourceLocation LParenLoc { get; set; }
     }
 
     public partial class CastExpr : Expr
@@ -673,13 +673,13 @@ namespace CppSharp.AST
         {
         }
 
-        public CastKind CastKind;
-        public Expr SubExpr;
-        public string CastKindName;
-        public Expr SubExprAsWritten;
-        public Declaration ConversionFunction;
-        public bool PathEmpty;
-        public uint PathSize;
+        public CastKind CastKind { get; set; }
+        public Expr SubExpr { get; set; }
+        public string CastKindName { get; set; }
+        public Expr SubExprAsWritten { get; set; }
+        public Declaration ConversionFunction { get; set; }
+        public bool PathEmpty { get; set; }
+        public uint PathSize { get; set; }
     }
 
     public partial class ImplicitCastExpr : CastExpr
@@ -693,7 +693,7 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsPartOfExplicitCast;
+        public bool IsPartOfExplicitCast { get; set; }
     }
 
     public partial class ExplicitCastExpr : CastExpr
@@ -702,7 +702,7 @@ namespace CppSharp.AST
         {
         }
 
-        public QualifiedType TypeAsWritten;
+        public QualifiedType TypeAsWritten { get; set; }
     }
 
     public partial class CStyleCastExpr : ExplicitCastExpr
@@ -711,8 +711,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation LParenLoc;
-        public SourceLocation RParenLoc;
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class BinaryOperator : Expr
@@ -721,25 +721,25 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation OperatorLoc;
-        public BinaryOperatorKind Opcode;
-        public Expr LHS;
-        public Expr RHS;
-        public string OpcodeStr;
-        public bool IsPtrMemOp;
-        public bool IsMultiplicativeOp;
-        public bool IsAdditiveOp;
-        public bool IsShiftOp;
-        public bool IsBitwiseOp;
-        public bool IsRelationalOp;
-        public bool IsEqualityOp;
-        public bool IsComparisonOp;
-        public bool IsLogicalOp;
-        public bool IsAssignmentOp;
-        public bool IsCompoundAssignmentOp;
-        public bool IsShiftAssignOp;
-        public bool IsFPContractableWithinStatement;
-        public bool IsFEnvAccessOn;
+        public SourceLocation OperatorLoc { get; set; }
+        public BinaryOperatorKind Opcode { get; set; }
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
+        public string OpcodeStr { get; set; }
+        public bool IsPtrMemOp { get; set; }
+        public bool IsMultiplicativeOp { get; set; }
+        public bool IsAdditiveOp { get; set; }
+        public bool IsShiftOp { get; set; }
+        public bool IsBitwiseOp { get; set; }
+        public bool IsRelationalOp { get; set; }
+        public bool IsEqualityOp { get; set; }
+        public bool IsComparisonOp { get; set; }
+        public bool IsLogicalOp { get; set; }
+        public bool IsAssignmentOp { get; set; }
+        public bool IsCompoundAssignmentOp { get; set; }
+        public bool IsShiftAssignOp { get; set; }
+        public bool IsFPContractableWithinStatement { get; set; }
+        public bool IsFEnvAccessOn { get; set; }
     }
 
     public partial class CompoundAssignOperator : BinaryOperator
@@ -748,8 +748,8 @@ namespace CppSharp.AST
         {
         }
 
-        public QualifiedType ComputationLHSType;
-        public QualifiedType ComputationResultType;
+        public QualifiedType ComputationLHSType { get; set; }
+        public QualifiedType ComputationResultType { get; set; }
     }
 
     public partial class AbstractConditionalOperator : Expr
@@ -758,11 +758,11 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Cond;
-        public Expr TrueExpr;
-        public Expr FalseExpr;
-        public SourceLocation QuestionLoc;
-        public SourceLocation ColonLoc;
+        public Expr Cond { get; set; }
+        public Expr TrueExpr { get; set; }
+        public Expr FalseExpr { get; set; }
+        public SourceLocation QuestionLoc { get; set; }
+        public SourceLocation ColonLoc { get; set; }
     }
 
     public partial class ConditionalOperator : AbstractConditionalOperator
@@ -771,8 +771,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr LHS;
-        public Expr RHS;
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
     }
 
     public partial class BinaryConditionalOperator : AbstractConditionalOperator
@@ -781,8 +781,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Common;
-        public OpaqueValueExpr OpaqueValue;
+        public Expr Common { get; set; }
+        public OpaqueValueExpr OpaqueValue { get; set; }
     }
 
     public partial class AddrLabelExpr : Expr
@@ -791,8 +791,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation AmpAmpLoc;
-        public SourceLocation LabelLoc;
+        public SourceLocation AmpAmpLoc { get; set; }
+        public SourceLocation LabelLoc { get; set; }
     }
 
     public partial class StmtExpr : Expr
@@ -801,9 +801,9 @@ namespace CppSharp.AST
         {
         }
 
-        public CompoundStmt SubStmt;
-        public SourceLocation LParenLoc;
-        public SourceLocation RParenLoc;
+        public CompoundStmt SubStmt { get; set; }
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class ShuffleVectorExpr : Expr
@@ -812,9 +812,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation BuiltinLoc;
-        public SourceLocation RParenLoc;
-        public uint NumSubExprs;
+        public SourceLocation BuiltinLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public uint NumSubExprs { get; set; }
     }
 
     public partial class ConvertVectorExpr : Expr
@@ -823,9 +823,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SrcExpr;
-        public SourceLocation BuiltinLoc;
-        public SourceLocation RParenLoc;
+        public Expr SrcExpr { get; set; }
+        public SourceLocation BuiltinLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class ChooseExpr : Expr
@@ -834,14 +834,14 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsConditionTrue;
-        public Expr Cond;
-        public Expr LHS;
-        public Expr RHS;
-        public SourceLocation BuiltinLoc;
-        public SourceLocation RParenLoc;
-        public bool IsConditionDependent;
-        public Expr ChosenSubExpr;
+        public bool IsConditionTrue { get; set; }
+        public Expr Cond { get; set; }
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
+        public SourceLocation BuiltinLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public bool IsConditionDependent { get; set; }
+        public Expr ChosenSubExpr { get; set; }
     }
 
     public partial class GNUNullExpr : Expr
@@ -850,7 +850,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation TokenLocation;
+        public SourceLocation TokenLocation { get; set; }
     }
 
     public partial class VAArgExpr : Expr
@@ -859,10 +859,10 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
-        public bool IsMicrosoftABI;
-        public SourceLocation BuiltinLoc;
-        public SourceLocation RParenLoc;
+        public Expr SubExpr { get; set; }
+        public bool IsMicrosoftABI { get; set; }
+        public SourceLocation BuiltinLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class InitListExpr : Expr
@@ -871,18 +871,18 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr ArrayFiller;
-        public SourceLocation LBraceLoc;
-        public SourceLocation RBraceLoc;
-        public InitListExpr SyntacticForm;
-        public uint NumInits;
-        public bool HasArrayFiller;
-        public bool IsExplicit;
-        public bool IsStringLiteralInit;
-        public bool IsTransparent;
-        public bool IsSemanticForm;
-        public InitListExpr SemanticForm;
-        public bool IsSyntacticForm;
+        public Expr ArrayFiller { get; set; }
+        public SourceLocation LBraceLoc { get; set; }
+        public SourceLocation RBraceLoc { get; set; }
+        public InitListExpr SyntacticForm { get; set; }
+        public uint NumInits { get; set; }
+        public bool HasArrayFiller { get; set; }
+        public bool IsExplicit { get; set; }
+        public bool IsStringLiteralInit { get; set; }
+        public bool IsTransparent { get; set; }
+        public bool IsSemanticForm { get; set; }
+        public InitListExpr SemanticForm { get; set; }
+        public bool IsSyntacticForm { get; set; }
     }
 
     public partial class DesignatedInitExpr : Expr
@@ -893,17 +893,17 @@ namespace CppSharp.AST
             {
             }
 
-            public Field Field;
-            public bool IsFieldDesignator;
-            public bool IsArrayDesignator;
-            public bool IsArrayRangeDesignator;
-            public SourceLocation DotLoc;
-            public SourceLocation FieldLoc;
-            public SourceLocation LBracketLoc;
-            public SourceLocation RBracketLoc;
-            public SourceLocation EllipsisLoc;
-            public uint FirstExprIndex;
-            public SourceRange SourceRange;
+            public Field Field { get; set; }
+            public bool IsFieldDesignator { get; set; }
+            public bool IsArrayDesignator { get; set; }
+            public bool IsArrayRangeDesignator { get; set; }
+            public SourceLocation DotLoc { get; set; }
+            public SourceLocation FieldLoc { get; set; }
+            public SourceLocation LBracketLoc { get; set; }
+            public SourceLocation RBracketLoc { get; set; }
+            public SourceLocation EllipsisLoc { get; set; }
+            public uint FirstExprIndex { get; set; }
+            public SourceRange SourceRange { get; set; }
         }
         public partial class FieldDesignator
         {
@@ -924,12 +924,12 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation EqualOrColonLoc;
-        public Expr Init;
-        public uint Size;
-        public bool UsesGNUSyntax;
-        public uint NumSubExprs;
-        public SourceRange DesignatorsSourceRange;
+        public SourceLocation EqualOrColonLoc { get; set; }
+        public Expr Init { get; set; }
+        public uint Size { get; set; }
+        public bool UsesGNUSyntax { get; set; }
+        public uint NumSubExprs { get; set; }
+        public SourceRange DesignatorsSourceRange { get; set; }
     }
 
     public partial class NoInitExpr : Expr
@@ -946,8 +946,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Base;
-        public InitListExpr Updater;
+        public Expr Base { get; set; }
+        public InitListExpr Updater { get; set; }
     }
 
     public partial class ArrayInitLoopExpr : Expr
@@ -956,8 +956,8 @@ namespace CppSharp.AST
         {
         }
 
-        public OpaqueValueExpr CommonExpr;
-        public Expr SubExpr;
+        public OpaqueValueExpr CommonExpr { get; set; }
+        public Expr SubExpr { get; set; }
     }
 
     public partial class ArrayInitIndexExpr : Expr
@@ -982,9 +982,9 @@ namespace CppSharp.AST
         {
         }
 
-        public uint NumExprs;
-        public SourceLocation LParenLoc;
-        public SourceLocation RParenLoc;
+        public uint NumExprs { get; set; }
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class GenericSelectionExpr : Expr
@@ -993,14 +993,14 @@ namespace CppSharp.AST
         {
         }
 
-        public uint NumAssocs;
-        public SourceLocation GenericLoc;
-        public SourceLocation DefaultLoc;
-        public SourceLocation RParenLoc;
-        public Expr ControllingExpr;
-        public bool IsResultDependent;
-        public uint ResultIndex;
-        public Expr ResultExpr;
+        public uint NumAssocs { get; set; }
+        public SourceLocation GenericLoc { get; set; }
+        public SourceLocation DefaultLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public Expr ControllingExpr { get; set; }
+        public bool IsResultDependent { get; set; }
+        public uint ResultIndex { get; set; }
+        public Expr ResultExpr { get; set; }
     }
 
     public partial class ExtVectorElementExpr : Expr
@@ -1009,11 +1009,11 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Base;
-        public SourceLocation AccessorLoc;
-        public uint NumElements;
-        public bool ContainsDuplicateElements;
-        public bool IsArrow;
+        public Expr Base { get; set; }
+        public SourceLocation AccessorLoc { get; set; }
+        public uint NumElements { get; set; }
+        public bool ContainsDuplicateElements { get; set; }
+        public bool IsArrow { get; set; }
     }
 
     public partial class BlockExpr : Expr
@@ -1022,8 +1022,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation CaretLocation;
-        public Stmt Body;
+        public SourceLocation CaretLocation { get; set; }
+        public Stmt Body { get; set; }
     }
 
     public partial class AsTypeExpr : Expr
@@ -1032,9 +1032,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SrcExpr;
-        public SourceLocation BuiltinLoc;
-        public SourceLocation RParenLoc;
+        public Expr SrcExpr { get; set; }
+        public SourceLocation BuiltinLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class PseudoObjectExpr : Expr
@@ -1043,10 +1043,10 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SyntacticForm;
-        public uint ResultExprIndex;
-        public Expr ResultExpr;
-        public uint NumSemanticExprs;
+        public Expr SyntacticForm { get; set; }
+        public uint ResultExprIndex { get; set; }
+        public Expr ResultExpr { get; set; }
+        public uint NumSemanticExprs { get; set; }
     }
 
     public partial class AtomicExpr : Expr
@@ -1105,21 +1105,21 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Ptr;
-        public Expr Order;
-        public Expr Scope;
-        public Expr Val1;
-        public Expr OrderFail;
-        public Expr Val2;
-        public Expr Weak;
-        public QualifiedType ValueType;
-        public AtomicExpr.AtomicOp Op;
-        public uint NumSubExprs;
-        public bool IsVolatile;
-        public bool IsCmpXChg;
-        public bool IsOpenCL;
-        public SourceLocation BuiltinLoc;
-        public SourceLocation RParenLoc;
+        public Expr Ptr { get; set; }
+        public Expr Order { get; set; }
+        public Expr Scope { get; set; }
+        public Expr Val1 { get; set; }
+        public Expr OrderFail { get; set; }
+        public Expr Val2 { get; set; }
+        public Expr Weak { get; set; }
+        public QualifiedType ValueType { get; set; }
+        public AtomicExpr.AtomicOp Op { get; set; }
+        public uint NumSubExprs { get; set; }
+        public bool IsVolatile { get; set; }
+        public bool IsCmpXChg { get; set; }
+        public bool IsOpenCL { get; set; }
+        public SourceLocation BuiltinLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class TypoExpr : Expr
@@ -1136,11 +1136,11 @@ namespace CppSharp.AST
         {
         }
 
-        public OverloadedOperatorKind Operator;
-        public bool IsAssignmentOp;
-        public bool IsInfixBinaryOp;
-        public SourceLocation OperatorLoc;
-        public bool IsFPContractableWithinStatement;
+        public OverloadedOperatorKind Operator { get; set; }
+        public bool IsAssignmentOp { get; set; }
+        public bool IsInfixBinaryOp { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public bool IsFPContractableWithinStatement { get; set; }
     }
 
     public partial class CXXMemberCallExpr : CallExpr
@@ -1149,8 +1149,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr ImplicitObjectArgument;
-        public Method MethodDecl;
+        public Expr ImplicitObjectArgument { get; set; }
+        public Method MethodDecl { get; set; }
     }
 
     public partial class CUDAKernelCallExpr : CallExpr
@@ -1159,7 +1159,7 @@ namespace CppSharp.AST
         {
         }
 
-        public CallExpr Config;
+        public CallExpr Config { get; set; }
     }
 
     public partial class CXXNamedCastExpr : ExplicitCastExpr
@@ -1168,10 +1168,10 @@ namespace CppSharp.AST
         {
         }
 
-        public string CastName;
-        public SourceLocation OperatorLoc;
-        public SourceLocation RParenLoc;
-        public SourceRange AngleBrackets;
+        public string CastName { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public SourceRange AngleBrackets { get; set; }
     }
 
     public partial class CXXStaticCastExpr : CXXNamedCastExpr
@@ -1188,7 +1188,7 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsAlwaysNull;
+        public bool IsAlwaysNull { get; set; }
     }
 
     public partial class CXXReinterpretCastExpr : CXXNamedCastExpr
@@ -1229,9 +1229,9 @@ namespace CppSharp.AST
         {
         }
 
-        public UserDefinedLiteral.LiteralOperatorKind literalOperatorKind;
-        public Expr CookedLiteral;
-        public SourceLocation UDSuffixLoc;
+        public UserDefinedLiteral.LiteralOperatorKind literalOperatorKind { get; set; }
+        public Expr CookedLiteral { get; set; }
+        public SourceLocation UDSuffixLoc { get; set; }
     }
 
     public partial class CXXBoolLiteralExpr : Expr
@@ -1240,8 +1240,8 @@ namespace CppSharp.AST
         {
         }
 
-        public bool Value;
-        public SourceLocation Location;
+        public bool Value { get; set; }
+        public SourceLocation Location { get; set; }
     }
 
     public partial class CXXNullPtrLiteralExpr : Expr
@@ -1250,7 +1250,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
+        public SourceLocation Location { get; set; }
     }
 
     public partial class CXXStdInitializerListExpr : Expr
@@ -1259,7 +1259,7 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
+        public Expr SubExpr { get; set; }
     }
 
     public partial class CXXTypeidExpr : Expr
@@ -1268,9 +1268,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr ExprOperand;
-        public bool IsPotentiallyEvaluated;
-        public bool IsTypeOperand;
+        public Expr ExprOperand { get; set; }
+        public bool IsPotentiallyEvaluated { get; set; }
+        public bool IsTypeOperand { get; set; }
     }
 
     public partial class MSPropertyRefExpr : Expr
@@ -1279,10 +1279,10 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsImplicitAccess;
-        public Expr BaseExpr;
-        public bool IsArrow;
-        public SourceLocation MemberLoc;
+        public bool IsImplicitAccess { get; set; }
+        public Expr BaseExpr { get; set; }
+        public bool IsArrow { get; set; }
+        public SourceLocation MemberLoc { get; set; }
     }
 
     public partial class MSPropertySubscriptExpr : Expr
@@ -1291,9 +1291,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation RBracketLoc;
-        public Expr Base;
-        public Expr Idx;
+        public SourceLocation RBracketLoc { get; set; }
+        public Expr Base { get; set; }
+        public Expr Idx { get; set; }
     }
 
     public partial class CXXUuidofExpr : Expr
@@ -1302,9 +1302,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr ExprOperand;
-        public string UuidStr;
-        public bool IsTypeOperand;
+        public Expr ExprOperand { get; set; }
+        public string UuidStr { get; set; }
+        public bool IsTypeOperand { get; set; }
     }
 
     public partial class CXXThisExpr : Expr
@@ -1313,8 +1313,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public bool Implicit;
+        public SourceLocation Location { get; set; }
+        public bool Implicit { get; set; }
     }
 
     public partial class CXXThrowExpr : Expr
@@ -1323,9 +1323,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
-        public SourceLocation ThrowLoc;
-        public bool IsThrownVariableInScope;
+        public Expr SubExpr { get; set; }
+        public SourceLocation ThrowLoc { get; set; }
+        public bool IsThrownVariableInScope { get; set; }
     }
 
     public partial class CXXDefaultArgExpr : Expr
@@ -1334,8 +1334,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Expr;
-        public SourceLocation UsedLocation;
+        public Expr Expr { get; set; }
+        public SourceLocation UsedLocation { get; set; }
     }
 
     public partial class CXXDefaultInitExpr : Expr
@@ -1344,8 +1344,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Field Field;
-        public Expr Expr;
+        public Field Field { get; set; }
+        public Expr Expr { get; set; }
     }
 
     public partial class CXXBindTemporaryExpr : Expr
@@ -1354,7 +1354,7 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr;
+        public Expr SubExpr { get; set; }
     }
 
     public partial class CXXConstructExpr : Expr
@@ -1371,15 +1371,15 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Expr> Arguments = new List<Expr>();
-        public SourceLocation Location;
-        public bool Elidable;
-        public bool HadMultipleCandidates;
-        public bool ListInitialization;
-        public bool StdInitListInitialization;
-        public bool RequiresZeroInitialization;
-        public SourceRange ParenOrBraceRange;
-        public uint NumArgs;
+        public List<Expr> Arguments { get; private set; } = new List<Expr>();
+        public SourceLocation Location { get; set; }
+        public bool Elidable { get; set; }
+        public bool HadMultipleCandidates { get; set; }
+        public bool ListInitialization { get; set; }
+        public bool StdInitListInitialization { get; set; }
+        public bool RequiresZeroInitialization { get; set; }
+        public SourceRange ParenOrBraceRange { get; set; }
+        public uint NumArgs { get; set; }
     }
 
     public partial class CXXInheritedCtorInitExpr : Expr
@@ -1388,9 +1388,9 @@ namespace CppSharp.AST
         {
         }
 
-        public bool ConstructsVBase;
-        public bool InheritedFromVBase;
-        public SourceLocation Location;
+        public bool ConstructsVBase { get; set; }
+        public bool InheritedFromVBase { get; set; }
+        public SourceLocation Location { get; set; }
     }
 
     public partial class CXXFunctionalCastExpr : ExplicitCastExpr
@@ -1399,9 +1399,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation LParenLoc;
-        public SourceLocation RParenLoc;
-        public bool IsListInitialization;
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public bool IsListInitialization { get; set; }
     }
 
     public partial class CXXTemporaryObjectExpr : CXXConstructExpr
@@ -1418,16 +1418,16 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Expr> CaptureInits = new List<Expr>();
-        public SourceLocation CaptureDefaultLoc;
-        public uint CaptureSize;
-        public SourceRange IntroducerRange;
-        public Method CallOperator;
-        public bool IsGenericLambda;
-        public CompoundStmt Body;
-        public bool IsMutable;
-        public bool HasExplicitParameters;
-        public bool HasExplicitResultType;
+        public List<Expr> CaptureInits { get; private set; } = new List<Expr>();
+        public SourceLocation CaptureDefaultLoc { get; set; }
+        public uint CaptureSize { get; set; }
+        public SourceRange IntroducerRange { get; set; }
+        public Method CallOperator { get; set; }
+        public bool IsGenericLambda { get; set; }
+        public CompoundStmt Body { get; set; }
+        public bool IsMutable { get; set; }
+        public bool HasExplicitParameters { get; set; }
+        public bool HasExplicitResultType { get; set; }
     }
 
     public partial class CXXScalarValueInitExpr : Expr
@@ -1436,7 +1436,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation RParenLoc;
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class CXXNewExpr : Expr
@@ -1455,21 +1455,21 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Expr> PlacementArguments = new List<Expr>();
-        public Function OperatorNew;
-        public Function OperatorDelete;
-        public QualifiedType AllocatedType;
-        public bool IsArray;
-        public Expr ArraySize;
-        public uint NumPlacementArgs;
-        public bool IsParenTypeId;
-        public SourceRange TypeIdParens;
-        public bool IsGlobalNew;
-        public bool HasInitializer;
-        public CXXNewExpr.InitializationStyle initializationStyle;
-        public Expr Initializer;
-        public CXXConstructExpr ConstructExpr;
-        public SourceRange DirectInitRange;
+        public List<Expr> PlacementArguments { get; private set; } = new List<Expr>();
+        public Function OperatorNew { get; set; }
+        public Function OperatorDelete { get; set; }
+        public QualifiedType AllocatedType { get; set; }
+        public bool IsArray { get; set; }
+        public Expr ArraySize { get; set; }
+        public uint NumPlacementArgs { get; set; }
+        public bool IsParenTypeId { get; set; }
+        public SourceRange TypeIdParens { get; set; }
+        public bool IsGlobalNew { get; set; }
+        public bool HasInitializer { get; set; }
+        public CXXNewExpr.InitializationStyle initializationStyle { get; set; }
+        public Expr Initializer { get; set; }
+        public CXXConstructExpr ConstructExpr { get; set; }
+        public SourceRange DirectInitRange { get; set; }
     }
 
     public partial class CXXDeleteExpr : Expr
@@ -1478,12 +1478,12 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsGlobalDelete;
-        public bool IsArrayForm;
-        public bool IsArrayFormAsWritten;
-        public Function OperatorDelete;
-        public Expr Argument;
-        public QualifiedType DestroyedType;
+        public bool IsGlobalDelete { get; set; }
+        public bool IsArrayForm { get; set; }
+        public bool IsArrayFormAsWritten { get; set; }
+        public Function OperatorDelete { get; set; }
+        public Expr Argument { get; set; }
+        public QualifiedType DestroyedType { get; set; }
     }
 
     public partial class CXXPseudoDestructorExpr : Expr
@@ -1492,14 +1492,14 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Base;
-        public bool HasQualifier;
-        public bool IsArrow;
-        public SourceLocation OperatorLoc;
-        public SourceLocation ColonColonLoc;
-        public SourceLocation TildeLoc;
-        public QualifiedType DestroyedType;
-        public SourceLocation DestroyedTypeLoc;
+        public Expr Base { get; set; }
+        public bool HasQualifier { get; set; }
+        public bool IsArrow { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation ColonColonLoc { get; set; }
+        public SourceLocation TildeLoc { get; set; }
+        public QualifiedType DestroyedType { get; set; }
+        public SourceLocation DestroyedTypeLoc { get; set; }
     }
 
     public partial class TypeTraitExpr : Expr
@@ -1508,8 +1508,8 @@ namespace CppSharp.AST
         {
         }
 
-        public bool Value;
-        public uint NumArgs;
+        public bool Value { get; set; }
+        public uint NumArgs { get; set; }
     }
 
     public partial class ArrayTypeTraitExpr : Expr
@@ -1518,9 +1518,9 @@ namespace CppSharp.AST
         {
         }
 
-        public QualifiedType QueriedType;
-        public ulong Value;
-        public Expr DimensionExpression;
+        public QualifiedType QueriedType { get; set; }
+        public ulong Value { get; set; }
+        public Expr DimensionExpression { get; set; }
     }
 
     public partial class ExpressionTraitExpr : Expr
@@ -1529,8 +1529,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr QueriedExpression;
-        public bool Value;
+        public Expr QueriedExpression { get; set; }
+        public bool Value { get; set; }
     }
 
     public partial class OverloadExpr : Expr
@@ -1547,14 +1547,14 @@ namespace CppSharp.AST
         {
         }
 
-        public uint NumDecls;
-        public SourceLocation NameLoc;
-        public SourceLocation TemplateKeywordLoc;
-        public SourceLocation LAngleLoc;
-        public SourceLocation RAngleLoc;
-        public bool HasTemplateKeyword;
-        public bool HasExplicitTemplateArgs;
-        public uint NumTemplateArgs;
+        public uint NumDecls { get; set; }
+        public SourceLocation NameLoc { get; set; }
+        public SourceLocation TemplateKeywordLoc { get; set; }
+        public SourceLocation LAngleLoc { get; set; }
+        public SourceLocation RAngleLoc { get; set; }
+        public bool HasTemplateKeyword { get; set; }
+        public bool HasExplicitTemplateArgs { get; set; }
+        public uint NumTemplateArgs { get; set; }
     }
 
     public partial class UnresolvedLookupExpr : OverloadExpr
@@ -1563,8 +1563,8 @@ namespace CppSharp.AST
         {
         }
 
-        public bool RequiresADL;
-        public bool IsOverloaded;
+        public bool RequiresADL { get; set; }
+        public bool IsOverloaded { get; set; }
     }
 
     public partial class DependentScopeDeclRefExpr : Expr
@@ -1573,13 +1573,13 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location;
-        public SourceLocation TemplateKeywordLoc;
-        public SourceLocation LAngleLoc;
-        public SourceLocation RAngleLoc;
-        public bool HasTemplateKeyword;
-        public bool HasExplicitTemplateArgs;
-        public uint NumTemplateArgs;
+        public SourceLocation Location { get; set; }
+        public SourceLocation TemplateKeywordLoc { get; set; }
+        public SourceLocation LAngleLoc { get; set; }
+        public SourceLocation RAngleLoc { get; set; }
+        public bool HasTemplateKeyword { get; set; }
+        public bool HasExplicitTemplateArgs { get; set; }
+        public uint NumTemplateArgs { get; set; }
     }
 
     public partial class ExprWithCleanups : FullExpr
@@ -1588,8 +1588,8 @@ namespace CppSharp.AST
         {
         }
 
-        public uint NumObjects;
-        public bool CleanupsHaveSideEffects;
+        public uint NumObjects { get; set; }
+        public bool CleanupsHaveSideEffects { get; set; }
     }
 
     public partial class CXXUnresolvedConstructExpr : Expr
@@ -1598,12 +1598,12 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Expr> Arguments = new List<Expr>();
-        public SourceLocation LParenLoc;
-        public SourceLocation RParenLoc;
-        public QualifiedType TypeAsWritten;
-        public bool IsListInitialization;
-        public uint ArgSize;
+        public List<Expr> Arguments { get; private set; } = new List<Expr>();
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public QualifiedType TypeAsWritten { get; set; }
+        public bool IsListInitialization { get; set; }
+        public uint ArgSize { get; set; }
     }
 
     public partial class CXXDependentScopeMemberExpr : Expr
@@ -1612,19 +1612,19 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsImplicitAccess;
-        public Expr Base;
-        public QualifiedType BaseType;
-        public bool IsArrow;
-        public SourceLocation OperatorLoc;
-        public Declaration FirstQualifierFoundInScope;
-        public SourceLocation MemberLoc;
-        public SourceLocation TemplateKeywordLoc;
-        public SourceLocation LAngleLoc;
-        public SourceLocation RAngleLoc;
-        public bool HasTemplateKeyword;
-        public bool HasExplicitTemplateArgs;
-        public uint NumTemplateArgs;
+        public bool IsImplicitAccess { get; set; }
+        public Expr Base { get; set; }
+        public QualifiedType BaseType { get; set; }
+        public bool IsArrow { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public Declaration FirstQualifierFoundInScope { get; set; }
+        public SourceLocation MemberLoc { get; set; }
+        public SourceLocation TemplateKeywordLoc { get; set; }
+        public SourceLocation LAngleLoc { get; set; }
+        public SourceLocation RAngleLoc { get; set; }
+        public bool HasTemplateKeyword { get; set; }
+        public bool HasExplicitTemplateArgs { get; set; }
+        public uint NumTemplateArgs { get; set; }
     }
 
     public partial class UnresolvedMemberExpr : OverloadExpr
@@ -1633,13 +1633,13 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsImplicitAccess;
-        public Expr Base;
-        public QualifiedType BaseType;
-        public bool HasUnresolvedUsing;
-        public bool IsArrow;
-        public SourceLocation OperatorLoc;
-        public SourceLocation MemberLoc;
+        public bool IsImplicitAccess { get; set; }
+        public Expr Base { get; set; }
+        public QualifiedType BaseType { get; set; }
+        public bool HasUnresolvedUsing { get; set; }
+        public bool IsArrow { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation MemberLoc { get; set; }
     }
 
     public partial class CXXNoexceptExpr : Expr
@@ -1648,8 +1648,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Operand;
-        public bool Value;
+        public Expr Operand { get; set; }
+        public bool Value { get; set; }
     }
 
     public partial class PackExpansionExpr : Expr
@@ -1658,8 +1658,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Pattern;
-        public SourceLocation EllipsisLoc;
+        public Expr Pattern { get; set; }
+        public SourceLocation EllipsisLoc { get; set; }
     }
 
     public partial class SizeOfPackExpr : Expr
@@ -1668,12 +1668,12 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation OperatorLoc;
-        public SourceLocation PackLoc;
-        public SourceLocation RParenLoc;
-        public Declaration Pack;
-        public uint PackLength;
-        public bool IsPartiallySubstituted;
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation PackLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public Declaration Pack { get; set; }
+        public uint PackLength { get; set; }
+        public bool IsPartiallySubstituted { get; set; }
     }
 
     public partial class SubstNonTypeTemplateParmExpr : Expr
@@ -1682,8 +1682,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation NameLoc;
-        public Expr Replacement;
+        public SourceLocation NameLoc { get; set; }
+        public Expr Replacement { get; set; }
     }
 
     public partial class SubstNonTypeTemplateParmPackExpr : Expr
@@ -1692,8 +1692,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation ParameterPackLocation;
-        public TemplateArgument ArgumentPack;
+        public SourceLocation ParameterPackLocation { get; set; }
+        public TemplateArgument ArgumentPack { get; set; }
     }
 
     public partial class FunctionParmPackExpr : Expr
@@ -1702,8 +1702,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation ParameterPackLocation;
-        public uint NumExpansions;
+        public SourceLocation ParameterPackLocation { get; set; }
+        public uint NumExpansions { get; set; }
     }
 
     public partial class MaterializeTemporaryExpr : Expr
@@ -1720,10 +1720,10 @@ namespace CppSharp.AST
         {
         }
 
-        public Stmt Temporary;
-        public Expr TemporaryExpr;
-        public uint ManglingNumber;
-        public bool IsBoundToLvalueReference;
+        public Stmt Temporary { get; set; }
+        public Expr TemporaryExpr { get; set; }
+        public uint ManglingNumber { get; set; }
+        public bool IsBoundToLvalueReference { get; set; }
     }
 
     public partial class CXXFoldExpr : Expr
@@ -1732,14 +1732,14 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr LHS;
-        public Expr RHS;
-        public bool IsRightFold;
-        public bool IsLeftFold;
-        public Expr Pattern;
-        public Expr Init;
-        public SourceLocation EllipsisLoc;
-        public BinaryOperatorKind Operator;
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
+        public bool IsRightFold { get; set; }
+        public bool IsLeftFold { get; set; }
+        public Expr Pattern { get; set; }
+        public Expr Init { get; set; }
+        public SourceLocation EllipsisLoc { get; set; }
+        public BinaryOperatorKind Operator { get; set; }
     }
 
     public partial class CoroutineSuspendExpr : Expr
@@ -1757,12 +1757,12 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation KeywordLoc;
-        public Expr CommonExpr;
-        public OpaqueValueExpr OpaqueValue;
-        public Expr ReadyExpr;
-        public Expr SuspendExpr;
-        public Expr ResumeExpr;
+        public SourceLocation KeywordLoc { get; set; }
+        public Expr CommonExpr { get; set; }
+        public OpaqueValueExpr OpaqueValue { get; set; }
+        public Expr ReadyExpr { get; set; }
+        public Expr SuspendExpr { get; set; }
+        public Expr ResumeExpr { get; set; }
     }
 
     public partial class CoawaitExpr : CoroutineSuspendExpr
@@ -1771,8 +1771,8 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsImplicit;
-        public Expr Operand;
+        public bool IsImplicit { get; set; }
+        public Expr Operand { get; set; }
     }
 
     public partial class DependentCoawaitExpr : Expr
@@ -1781,9 +1781,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Operand;
-        public UnresolvedLookupExpr OperatorCoawaitLookup;
-        public SourceLocation KeywordLoc;
+        public Expr Operand { get; set; }
+        public UnresolvedLookupExpr OperatorCoawaitLookup { get; set; }
+        public SourceLocation KeywordLoc { get; set; }
     }
 
     public partial class CoyieldExpr : CoroutineSuspendExpr
@@ -1792,6 +1792,6 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Operand;
+        public Expr Operand { get; set; }
     }
 }

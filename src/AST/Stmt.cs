@@ -146,9 +146,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceRange SourceRange;
-        public SourceLocation EndLoc;
-        public Stmt StripLabelLikeStatements;
+        public SourceRange SourceRange { get; set; }
+        public SourceLocation EndLoc { get; set; }
+        public Stmt StripLabelLikeStatements { get; set; }
     }
 
     public partial class DeclStmt : Stmt
@@ -157,9 +157,9 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Declaration> Decls = new List<Declaration>();
-        public bool IsSingleDecl;
-        public Declaration SingleDecl;
+        public List<Declaration> Decls { get; private set; } = new List<Declaration>();
+        public bool IsSingleDecl { get; set; }
+        public Declaration SingleDecl { get; set; }
     }
 
     public partial class NullStmt : Stmt
@@ -168,8 +168,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation SemiLoc;
-        public bool HasLeadingEmptyMacro;
+        public SourceLocation SemiLoc { get; set; }
+        public bool HasLeadingEmptyMacro { get; set; }
     }
 
     public partial class CompoundStmt : Stmt
@@ -178,13 +178,13 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Stmt> Body = new List<Stmt>();
-        public bool BodyEmpty;
-        public uint Size;
-        public Stmt BodyFront;
-        public Stmt BodyBack;
-        public SourceLocation LBracLoc;
-        public SourceLocation RBracLoc;
+        public List<Stmt> Body { get; private set; } = new List<Stmt>();
+        public bool BodyEmpty { get; set; }
+        public uint Size { get; set; }
+        public Stmt BodyFront { get; set; }
+        public Stmt BodyBack { get; set; }
+        public SourceLocation LBracLoc { get; set; }
+        public SourceLocation RBracLoc { get; set; }
     }
 
     public partial class SwitchCase : Stmt
@@ -193,9 +193,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation KeywordLoc;
-        public SourceLocation ColonLoc;
-        public Stmt SubStmt;
+        public SourceLocation KeywordLoc { get; set; }
+        public SourceLocation ColonLoc { get; set; }
+        public Stmt SubStmt { get; set; }
     }
 
     public partial class CaseStmt : SwitchCase
@@ -204,11 +204,11 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation CaseLoc;
-        public SourceLocation EllipsisLoc;
-        public Expr LHS;
-        public Expr RHS;
-        public bool CaseStmtIsGNURange;
+        public SourceLocation CaseLoc { get; set; }
+        public SourceLocation EllipsisLoc { get; set; }
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
+        public bool CaseStmtIsGNURange { get; set; }
     }
 
     public partial class DefaultStmt : SwitchCase
@@ -217,7 +217,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation DefaultLoc;
+        public SourceLocation DefaultLoc { get; set; }
     }
 
     public partial class LabelStmt : Stmt
@@ -226,9 +226,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation IdentLoc;
-        public Stmt SubStmt;
-        public string Name;
+        public SourceLocation IdentLoc { get; set; }
+        public Stmt SubStmt { get; set; }
+        public string Name { get; set; }
     }
 
     public partial class AttributedStmt : Stmt
@@ -237,8 +237,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation AttrLoc;
-        public Stmt SubStmt;
+        public SourceLocation AttrLoc { get; set; }
+        public Stmt SubStmt { get; set; }
     }
 
     public partial class IfStmt : Stmt
@@ -247,18 +247,18 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Cond;
-        public Stmt Then;
-        public Stmt Else;
-        public Stmt Init;
-        public SourceLocation IfLoc;
-        public SourceLocation ElseLoc;
-        public bool Constexpr;
-        public bool HasInitStorage;
-        public bool HasVarStorage;
-        public bool HasElseStorage;
-        public DeclStmt ConditionVariableDeclStmt;
-        public bool IsObjCAvailabilityCheck;
+        public Expr Cond { get; set; }
+        public Stmt Then { get; set; }
+        public Stmt Else { get; set; }
+        public Stmt Init { get; set; }
+        public SourceLocation IfLoc { get; set; }
+        public SourceLocation ElseLoc { get; set; }
+        public bool Constexpr { get; set; }
+        public bool HasInitStorage { get; set; }
+        public bool HasVarStorage { get; set; }
+        public bool HasElseStorage { get; set; }
+        public DeclStmt ConditionVariableDeclStmt { get; set; }
+        public bool IsObjCAvailabilityCheck { get; set; }
     }
 
     public partial class SwitchStmt : Stmt
@@ -267,14 +267,14 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Cond;
-        public Stmt Body;
-        public Stmt Init;
-        public SourceLocation SwitchLoc;
-        public bool HasInitStorage;
-        public bool HasVarStorage;
-        public DeclStmt ConditionVariableDeclStmt;
-        public bool IsAllEnumCasesCovered;
+        public Expr Cond { get; set; }
+        public Stmt Body { get; set; }
+        public Stmt Init { get; set; }
+        public SourceLocation SwitchLoc { get; set; }
+        public bool HasInitStorage { get; set; }
+        public bool HasVarStorage { get; set; }
+        public DeclStmt ConditionVariableDeclStmt { get; set; }
+        public bool IsAllEnumCasesCovered { get; set; }
     }
 
     public partial class WhileStmt : Stmt
@@ -283,11 +283,11 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Cond;
-        public Stmt Body;
-        public SourceLocation WhileLoc;
-        public bool HasVarStorage;
-        public DeclStmt ConditionVariableDeclStmt;
+        public Expr Cond { get; set; }
+        public Stmt Body { get; set; }
+        public SourceLocation WhileLoc { get; set; }
+        public bool HasVarStorage { get; set; }
+        public DeclStmt ConditionVariableDeclStmt { get; set; }
     }
 
     public partial class DoStmt : Stmt
@@ -296,11 +296,11 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Cond;
-        public Stmt Body;
-        public SourceLocation DoLoc;
-        public SourceLocation WhileLoc;
-        public SourceLocation RParenLoc;
+        public Expr Cond { get; set; }
+        public Stmt Body { get; set; }
+        public SourceLocation DoLoc { get; set; }
+        public SourceLocation WhileLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class ForStmt : Stmt
@@ -309,14 +309,14 @@ namespace CppSharp.AST
         {
         }
 
-        public Stmt Init;
-        public Expr Cond;
-        public Expr Inc;
-        public Stmt Body;
-        public SourceLocation ForLoc;
-        public SourceLocation LParenLoc;
-        public SourceLocation RParenLoc;
-        public DeclStmt ConditionVariableDeclStmt;
+        public Stmt Init { get; set; }
+        public Expr Cond { get; set; }
+        public Expr Inc { get; set; }
+        public Stmt Body { get; set; }
+        public SourceLocation ForLoc { get; set; }
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
+        public DeclStmt ConditionVariableDeclStmt { get; set; }
     }
 
     public partial class GotoStmt : Stmt
@@ -325,8 +325,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation GotoLoc;
-        public SourceLocation LabelLoc;
+        public SourceLocation GotoLoc { get; set; }
+        public SourceLocation LabelLoc { get; set; }
     }
 
     public partial class IndirectGotoStmt : Stmt
@@ -335,9 +335,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation GotoLoc;
-        public SourceLocation StarLoc;
-        public Expr Target;
+        public SourceLocation GotoLoc { get; set; }
+        public SourceLocation StarLoc { get; set; }
+        public Expr Target { get; set; }
     }
 
     public partial class ContinueStmt : Stmt
@@ -346,7 +346,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation ContinueLoc;
+        public SourceLocation ContinueLoc { get; set; }
     }
 
     public partial class BreakStmt : Stmt
@@ -355,7 +355,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation BreakLoc;
+        public SourceLocation BreakLoc { get; set; }
     }
 
     public partial class ReturnStmt : Stmt
@@ -364,8 +364,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr RetValue;
-        public SourceLocation ReturnLoc;
+        public Expr RetValue { get; set; }
+        public SourceLocation ReturnLoc { get; set; }
     }
 
     public partial class AsmStmt : Stmt
@@ -374,15 +374,15 @@ namespace CppSharp.AST
         {
         }
 
-        public List<Expr> Inputs = new List<Expr>();
-        public List<Expr> Outputs = new List<Expr>();
-        public SourceLocation AsmLoc;
-        public bool Simple;
-        public bool Volatile;
-        public uint NumOutputs;
-        public uint NumPlusOperands;
-        public uint NumInputs;
-        public uint NumClobbers;
+        public List<Expr> Inputs { get; private set; } = new List<Expr>();
+        public List<Expr> Outputs { get; private set; } = new List<Expr>();
+        public SourceLocation AsmLoc { get; set; }
+        public bool Simple { get; set; }
+        public bool Volatile { get; set; }
+        public uint NumOutputs { get; set; }
+        public uint NumPlusOperands { get; set; }
+        public uint NumInputs { get; set; }
+        public uint NumClobbers { get; set; }
     }
 
     public partial class GCCAsmStmt : AsmStmt
@@ -399,18 +399,18 @@ namespace CppSharp.AST
             {
             }
 
-            public bool IsString;
-            public bool IsOperand;
-            public string String;
-            public uint OperandNo;
-            public sbyte Modifier;
+            public bool IsString { get; set; }
+            public bool IsOperand { get; set; }
+            public string String { get; set; }
+            public uint OperandNo { get; set; }
+            public sbyte Modifier { get; set; }
         }
 
         public GCCAsmStmt()
         {
         }
 
-        public SourceLocation RParenLoc;
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class MSAsmStmt : AsmStmt
@@ -419,10 +419,10 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation LBraceLoc;
-        public bool HasBraces;
-        public uint NumAsmToks;
-        public string AsmString;
+        public SourceLocation LBraceLoc { get; set; }
+        public bool HasBraces { get; set; }
+        public uint NumAsmToks { get; set; }
+        public string AsmString { get; set; }
     }
 
     public partial class SEHExceptStmt : Stmt
@@ -431,9 +431,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation ExceptLoc;
-        public Expr FilterExpr;
-        public CompoundStmt Block;
+        public SourceLocation ExceptLoc { get; set; }
+        public Expr FilterExpr { get; set; }
+        public CompoundStmt Block { get; set; }
     }
 
     public partial class SEHFinallyStmt : Stmt
@@ -442,8 +442,8 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation FinallyLoc;
-        public CompoundStmt Block;
+        public SourceLocation FinallyLoc { get; set; }
+        public CompoundStmt Block { get; set; }
     }
 
     public partial class SEHTryStmt : Stmt
@@ -452,12 +452,12 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation TryLoc;
-        public bool IsCXXTry;
-        public CompoundStmt TryBlock;
-        public Stmt Handler;
-        public SEHExceptStmt ExceptHandler;
-        public SEHFinallyStmt FinallyHandler;
+        public SourceLocation TryLoc { get; set; }
+        public bool IsCXXTry { get; set; }
+        public CompoundStmt TryBlock { get; set; }
+        public Stmt Handler { get; set; }
+        public SEHExceptStmt ExceptHandler { get; set; }
+        public SEHFinallyStmt FinallyHandler { get; set; }
     }
 
     public partial class SEHLeaveStmt : Stmt
@@ -466,7 +466,7 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation LeaveLoc;
+        public SourceLocation LeaveLoc { get; set; }
     }
 
     public partial class CapturedStmt : Stmt
@@ -485,21 +485,21 @@ namespace CppSharp.AST
             {
             }
 
-            public CapturedStmt.VariableCaptureKind CaptureKind;
-            public SourceLocation Location;
-            public bool CapturesThis;
-            public bool CapturesVariable;
-            public bool CapturesVariableByCopy;
-            public bool CapturesVariableArrayType;
+            public CapturedStmt.VariableCaptureKind CaptureKind { get; set; }
+            public SourceLocation Location { get; set; }
+            public bool CapturesThis { get; set; }
+            public bool CapturesVariable { get; set; }
+            public bool CapturesVariableByCopy { get; set; }
+            public bool CapturesVariableArrayType { get; set; }
         }
 
         public CapturedStmt()
         {
         }
 
-        public List<Expr> CaptureInits = new List<Expr>();
-        public Stmt capturedStmt;
-        public uint CaptureSize;
+        public List<Expr> CaptureInits { get; private set; } = new List<Expr>();
+        public Stmt capturedStmt { get; set; }
+        public uint CaptureSize { get; set; }
     }
 
     public partial class CXXCatchStmt : Stmt
@@ -508,9 +508,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation CatchLoc;
-        public QualifiedType CaughtType;
-        public Stmt HandlerBlock;
+        public SourceLocation CatchLoc { get; set; }
+        public QualifiedType CaughtType { get; set; }
+        public Stmt HandlerBlock { get; set; }
     }
 
     public partial class CXXTryStmt : Stmt
@@ -519,9 +519,9 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation TryLoc;
-        public CompoundStmt TryBlock;
-        public uint NumHandlers;
+        public SourceLocation TryLoc { get; set; }
+        public CompoundStmt TryBlock { get; set; }
+        public uint NumHandlers { get; set; }
     }
 
     public partial class CXXForRangeStmt : Stmt
@@ -530,19 +530,19 @@ namespace CppSharp.AST
         {
         }
 
-        public Stmt Init;
-        public Expr RangeInit;
-        public Expr Cond;
-        public Expr Inc;
-        public Stmt Body;
-        public DeclStmt RangeStmt;
-        public DeclStmt BeginStmt;
-        public DeclStmt EndStmt;
-        public DeclStmt LoopVarStmt;
-        public SourceLocation ForLoc;
-        public SourceLocation CoawaitLoc;
-        public SourceLocation ColonLoc;
-        public SourceLocation RParenLoc;
+        public Stmt Init { get; set; }
+        public Expr RangeInit { get; set; }
+        public Expr Cond { get; set; }
+        public Expr Inc { get; set; }
+        public Stmt Body { get; set; }
+        public DeclStmt RangeStmt { get; set; }
+        public DeclStmt BeginStmt { get; set; }
+        public DeclStmt EndStmt { get; set; }
+        public DeclStmt LoopVarStmt { get; set; }
+        public SourceLocation ForLoc { get; set; }
+        public SourceLocation CoawaitLoc { get; set; }
+        public SourceLocation ColonLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
     }
 
     public partial class MSDependentExistsStmt : Stmt
@@ -551,10 +551,10 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation KeywordLoc;
-        public bool IsIfExists;
-        public bool IsIfNotExists;
-        public CompoundStmt SubStmt;
+        public SourceLocation KeywordLoc { get; set; }
+        public bool IsIfExists { get; set; }
+        public bool IsIfNotExists { get; set; }
+        public CompoundStmt SubStmt { get; set; }
     }
 
     public partial class CoroutineBodyStmt : Stmt
@@ -601,19 +601,19 @@ namespace CppSharp.AST
         {
         }
 
-        public bool HasDependentPromiseType;
-        public Stmt Body;
-        public Stmt PromiseDeclStmt;
-        public Stmt InitSuspendStmt;
-        public Stmt FinalSuspendStmt;
-        public Stmt ExceptionHandler;
-        public Stmt FallthroughHandler;
-        public Expr Allocate;
-        public Expr Deallocate;
-        public Expr ReturnValueInit;
-        public Stmt ResultDecl;
-        public Stmt ReturnStmt;
-        public Stmt ReturnStmtOnAllocFailure;
+        public bool HasDependentPromiseType { get; set; }
+        public Stmt Body { get; set; }
+        public Stmt PromiseDeclStmt { get; set; }
+        public Stmt InitSuspendStmt { get; set; }
+        public Stmt FinalSuspendStmt { get; set; }
+        public Stmt ExceptionHandler { get; set; }
+        public Stmt FallthroughHandler { get; set; }
+        public Expr Allocate { get; set; }
+        public Expr Deallocate { get; set; }
+        public Expr ReturnValueInit { get; set; }
+        public Stmt ResultDecl { get; set; }
+        public Stmt ReturnStmt { get; set; }
+        public Stmt ReturnStmtOnAllocFailure { get; set; }
     }
 
     public partial class CoreturnStmt : Stmt
@@ -629,9 +629,9 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsImplicit;
-        public SourceLocation KeywordLoc;
-        public Expr Operand;
-        public Expr PromiseCall;
+        public bool IsImplicit { get; set; }
+        public SourceLocation KeywordLoc { get; set; }
+        public Expr Operand { get; set; }
+        public Expr PromiseCall { get; set; }
     }
 }
