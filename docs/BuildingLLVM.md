@@ -33,6 +33,8 @@ You can specify an `--arch=x86` or `--arch=x64` flag to the invocations above to
 If the `clone_llvm` step fails, you can try to manually clone LLVM and Clang as explained below.
 You should still run clone_llvm to ensure that you are on the correct revision.
 
+If using Visual Studio / MSVC, be sure to run the scripts from a [VS Command Prompt](https://docs.microsoft.com/en-us/dotnet/framework/tools/developer-command-prompt-for-vs).
+
 ## Cloning from Git
 
 1. Clone LLVM to `<CppSharp>\deps\llvm`
