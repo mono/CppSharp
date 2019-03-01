@@ -41,6 +41,7 @@ namespace CppSharp
             driver.Options.DryRun = true;
             driver.ParserOptions.EnableRTTI = true;
             driver.ParserOptions.SkipLayoutInfo = true;
+            driver.ParserOptions.UnityBuild = true;
 
             var module = driver.Options.AddModule("CppSharp");
 
