@@ -578,6 +578,12 @@ DLL_API int Function()
 struct DLL_API TestProperties
 {
 public:
+    enum class NestedEnum
+    {
+        Value1,
+        Value2
+    };
+
     TestProperties();
     int Field;
 
@@ -600,6 +606,9 @@ public:
 
     virtual int virtualSetterReturnsBoolean();
     virtual bool setVirtualSetterReturnsBoolean(int value);
+
+    int nestedEnum();
+    int nestedEnum(int i);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;

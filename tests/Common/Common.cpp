@@ -586,6 +586,16 @@ bool TestProperties::setVirtualSetterReturnsBoolean(int value)
     return changed;
 }
 
+int TestProperties::nestedEnum()
+{
+    return 5;
+}
+
+int TestProperties::nestedEnum(int i)
+{
+    return i;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }
