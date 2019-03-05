@@ -6,7 +6,7 @@ project "CppSharp.Parser.Bootstrap"
   language "C#"
   debugdir "."
   
-  files { "Bootstrap.cs", "*.lua" }
+  files { "*.cs", "*.lua" }
   links { "CppSharp", "CppSharp.AST", "CppSharp.Generator", "CppSharp.Parser" }
 
   filter { "action:not netcore" }

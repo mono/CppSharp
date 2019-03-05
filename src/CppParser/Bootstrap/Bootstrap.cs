@@ -77,7 +77,10 @@ namespace CppSharp
 
         public void Preprocess(Driver driver, ASTContext ctx)
         {
-            GenerateProperties(driver.Context, ctx);
+            new IgnoreMethodsWithParametersPass { Context = driver.Context }
+                .VisitASTContext(ctx);
+            new GetterSetterToPropertyPass { Context = driver.Context }
+                .VisitASTContext(ctx);
 
             var preprocessDecls = new PreprocessDeclarations();
             foreach (var unit in ctx.TranslationUnits)
@@ -100,18 +103,6 @@ namespace CppSharp
 
         public void Postprocess(Driver driver, ASTContext ctx)
         {
-        }
-
-        private static void GenerateProperties(BindingContext ctx,
-            ASTContext ast)
-        {
-            var propertyPass = new GetterSetterToPropertyPass()
-            {
-                Context = ctx
-            };
-
-            foreach (var unit in ast.TranslationUnits)
-                unit.Visit(propertyPass);
         }
 
         public IEnumerable<Class> ExprClasses;
