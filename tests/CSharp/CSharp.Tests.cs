@@ -1265,6 +1265,6 @@ public unsafe class CSharpTests : GeneratorTestFixture
 
     private class OverrideVirtualTemplate : VirtualTemplate<int>
     {
-        public override int Function => 10;
+        public override int Function() => 10;
     }
 }

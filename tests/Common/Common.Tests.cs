@@ -480,25 +480,30 @@ public class CommonTests : GeneratorTestFixture
     public void TestProperties()
     {
         // Test field property
-        var prop = new TestProperties();
-        Assert.That(prop.Field, Is.EqualTo(0));
-        prop.Field = 10;
-        Assert.That(prop.Field, Is.EqualTo(10));
+        using (var prop = new TestProperties())
+        {
+            Assert.That(prop.Field, Is.EqualTo(0));
+            prop.Field = 10;
+            Assert.That(prop.Field, Is.EqualTo(10));
 
-        // Test getter/setter property
-        prop.Field = 20;
-        Assert.That(prop.FieldValue, Is.EqualTo(20));
-        prop.FieldValue = 10;
-        Assert.That(prop.FieldValue, Is.EqualTo(10));
+            // Test getter/setter property
+            prop.Field = 20;
+            Assert.That(prop.FieldValue, Is.EqualTo(20));
+            prop.FieldValue = 10;
+            Assert.That(prop.FieldValue, Is.EqualTo(10));
 
-        prop.GetterAndSetterWithTheSameName = 25;
-        Assert.That(prop.GetterAndSetterWithTheSameName, Is.EqualTo(25));
+            prop.GetterAndSetterWithTheSameName = 25;
+            Assert.That(prop.GetterAndSetterWithTheSameName, Is.EqualTo(25));
 
-        prop.SetterReturnsBoolean = 35;
-        Assert.That(prop.SetterReturnsBoolean, Is.EqualTo(35));
+            prop.SetterReturnsBoolean = 35;
+            Assert.That(prop.SetterReturnsBoolean, Is.EqualTo(35));
 
-        prop.VirtualSetterReturnsBoolean = 45;
-        Assert.That(prop.VirtualSetterReturnsBoolean, Is.EqualTo(45));
+            prop.VirtualSetterReturnsBoolean = 45;
+            Assert.That(prop.VirtualSetterReturnsBoolean, Is.EqualTo(45));
+
+            Assert.That(prop.nestedEnum(), Is.EqualTo(5));
+            Assert.That(prop.nestedEnum(55), Is.EqualTo(55));
+        }
     }
 
     [Test]

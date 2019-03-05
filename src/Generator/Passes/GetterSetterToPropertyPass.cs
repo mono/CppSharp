@@ -38,7 +38,10 @@ namespace CppSharp.Passes
                 foreach (Method getter in
                     from getter in getters
                     where getter.IsGenerated &&
-                          getter.SynthKind != FunctionSynthKind.ComplementOperator
+                          getter.SynthKind != FunctionSynthKind.ComplementOperator &&
+                          ((Class) getter.Namespace).Methods.All(
+                              m => m == getter || !m.IsGenerated || m.Name != getter.Name ||
+                                   m.Parameters.Count(p => p.Kind == ParameterKind.Regular) == 0)
                     select getter)
                 {
                     // Make it a read-only property
