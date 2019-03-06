@@ -116,485 +116,485 @@ namespace CppSharp
             if (expr == null)
                 return default(TRet);
 
-            switch(expr.StmtClass)
+            switch(expr.stmtClass)
             {
-                case StmtClass.ConstantExpr:
+                case Stmt.StmtClass.ConstantExpr:
                 {
                     var _expr = ConstantExpr.__CreateInstance(expr.__Instance);
                     return VisitConstantExpr(_expr);
                 }
-                case StmtClass.OpaqueValueExpr:
+                case Stmt.StmtClass.OpaqueValueExpr:
                 {
                     var _expr = OpaqueValueExpr.__CreateInstance(expr.__Instance);
                     return VisitOpaqueValueExpr(_expr);
                 }
-                case StmtClass.DeclRefExpr:
+                case Stmt.StmtClass.DeclRefExpr:
                 {
                     var _expr = DeclRefExpr.__CreateInstance(expr.__Instance);
                     return VisitDeclRefExpr(_expr);
                 }
-                case StmtClass.IntegerLiteral:
+                case Stmt.StmtClass.IntegerLiteral:
                 {
                     var _expr = IntegerLiteral.__CreateInstance(expr.__Instance);
                     return VisitIntegerLiteral(_expr);
                 }
-                case StmtClass.FixedPointLiteral:
+                case Stmt.StmtClass.FixedPointLiteral:
                 {
                     var _expr = FixedPointLiteral.__CreateInstance(expr.__Instance);
                     return VisitFixedPointLiteral(_expr);
                 }
-                case StmtClass.CharacterLiteral:
+                case Stmt.StmtClass.CharacterLiteral:
                 {
                     var _expr = CharacterLiteral.__CreateInstance(expr.__Instance);
                     return VisitCharacterLiteral(_expr);
                 }
-                case StmtClass.FloatingLiteral:
+                case Stmt.StmtClass.FloatingLiteral:
                 {
                     var _expr = FloatingLiteral.__CreateInstance(expr.__Instance);
                     return VisitFloatingLiteral(_expr);
                 }
-                case StmtClass.ImaginaryLiteral:
+                case Stmt.StmtClass.ImaginaryLiteral:
                 {
                     var _expr = ImaginaryLiteral.__CreateInstance(expr.__Instance);
                     return VisitImaginaryLiteral(_expr);
                 }
-                case StmtClass.StringLiteral:
+                case Stmt.StmtClass.StringLiteral:
                 {
                     var _expr = StringLiteral.__CreateInstance(expr.__Instance);
                     return VisitStringLiteral(_expr);
                 }
-                case StmtClass.PredefinedExpr:
+                case Stmt.StmtClass.PredefinedExpr:
                 {
                     var _expr = PredefinedExpr.__CreateInstance(expr.__Instance);
                     return VisitPredefinedExpr(_expr);
                 }
-                case StmtClass.ParenExpr:
+                case Stmt.StmtClass.ParenExpr:
                 {
                     var _expr = ParenExpr.__CreateInstance(expr.__Instance);
                     return VisitParenExpr(_expr);
                 }
-                case StmtClass.UnaryOperator:
+                case Stmt.StmtClass.UnaryOperator:
                 {
                     var _expr = UnaryOperator.__CreateInstance(expr.__Instance);
                     return VisitUnaryOperator(_expr);
                 }
-                case StmtClass.OffsetOfExpr:
+                case Stmt.StmtClass.OffsetOfExpr:
                 {
                     var _expr = OffsetOfExpr.__CreateInstance(expr.__Instance);
                     return VisitOffsetOfExpr(_expr);
                 }
-                case StmtClass.UnaryExprOrTypeTraitExpr:
+                case Stmt.StmtClass.UnaryExprOrTypeTraitExpr:
                 {
                     var _expr = UnaryExprOrTypeTraitExpr.__CreateInstance(expr.__Instance);
                     return VisitUnaryExprOrTypeTraitExpr(_expr);
                 }
-                case StmtClass.ArraySubscriptExpr:
+                case Stmt.StmtClass.ArraySubscriptExpr:
                 {
                     var _expr = ArraySubscriptExpr.__CreateInstance(expr.__Instance);
                     return VisitArraySubscriptExpr(_expr);
                 }
-                case StmtClass.CallExpr:
+                case Stmt.StmtClass.CallExpr:
                 {
                     var _expr = CallExpr.__CreateInstance(expr.__Instance);
                     return VisitCallExpr(_expr);
                 }
-                case StmtClass.MemberExpr:
+                case Stmt.StmtClass.MemberExpr:
                 {
                     var _expr = MemberExpr.__CreateInstance(expr.__Instance);
                     return VisitMemberExpr(_expr);
                 }
-                case StmtClass.CompoundLiteralExpr:
+                case Stmt.StmtClass.CompoundLiteralExpr:
                 {
                     var _expr = CompoundLiteralExpr.__CreateInstance(expr.__Instance);
                     return VisitCompoundLiteralExpr(_expr);
                 }
-                case StmtClass.ImplicitCastExpr:
+                case Stmt.StmtClass.ImplicitCastExpr:
                 {
                     var _expr = ImplicitCastExpr.__CreateInstance(expr.__Instance);
                     return VisitImplicitCastExpr(_expr);
                 }
-                case StmtClass.CStyleCastExpr:
+                case Stmt.StmtClass.CStyleCastExpr:
                 {
                     var _expr = CStyleCastExpr.__CreateInstance(expr.__Instance);
                     return VisitCStyleCastExpr(_expr);
                 }
-                case StmtClass.BinaryOperator:
+                case Stmt.StmtClass.BinaryOperator:
                 {
                     var _expr = BinaryOperator.__CreateInstance(expr.__Instance);
                     return VisitBinaryOperator(_expr);
                 }
-                case StmtClass.CompoundAssignOperator:
+                case Stmt.StmtClass.CompoundAssignOperator:
                 {
                     var _expr = CompoundAssignOperator.__CreateInstance(expr.__Instance);
                     return VisitCompoundAssignOperator(_expr);
                 }
-                case StmtClass.ConditionalOperator:
+                case Stmt.StmtClass.ConditionalOperator:
                 {
                     var _expr = ConditionalOperator.__CreateInstance(expr.__Instance);
                     return VisitConditionalOperator(_expr);
                 }
-                case StmtClass.BinaryConditionalOperator:
+                case Stmt.StmtClass.BinaryConditionalOperator:
                 {
                     var _expr = BinaryConditionalOperator.__CreateInstance(expr.__Instance);
                     return VisitBinaryConditionalOperator(_expr);
                 }
-                case StmtClass.AddrLabelExpr:
+                case Stmt.StmtClass.AddrLabelExpr:
                 {
                     var _expr = AddrLabelExpr.__CreateInstance(expr.__Instance);
                     return VisitAddrLabelExpr(_expr);
                 }
-                case StmtClass.StmtExpr:
+                case Stmt.StmtClass.StmtExpr:
                 {
                     var _expr = StmtExpr.__CreateInstance(expr.__Instance);
                     return VisitStmtExpr(_expr);
                 }
-                case StmtClass.ShuffleVectorExpr:
+                case Stmt.StmtClass.ShuffleVectorExpr:
                 {
                     var _expr = ShuffleVectorExpr.__CreateInstance(expr.__Instance);
                     return VisitShuffleVectorExpr(_expr);
                 }
-                case StmtClass.ConvertVectorExpr:
+                case Stmt.StmtClass.ConvertVectorExpr:
                 {
                     var _expr = ConvertVectorExpr.__CreateInstance(expr.__Instance);
                     return VisitConvertVectorExpr(_expr);
                 }
-                case StmtClass.ChooseExpr:
+                case Stmt.StmtClass.ChooseExpr:
                 {
                     var _expr = ChooseExpr.__CreateInstance(expr.__Instance);
                     return VisitChooseExpr(_expr);
                 }
-                case StmtClass.GNUNullExpr:
+                case Stmt.StmtClass.GNUNullExpr:
                 {
                     var _expr = GNUNullExpr.__CreateInstance(expr.__Instance);
                     return VisitGNUNullExpr(_expr);
                 }
-                case StmtClass.VAArgExpr:
+                case Stmt.StmtClass.VAArgExpr:
                 {
                     var _expr = VAArgExpr.__CreateInstance(expr.__Instance);
                     return VisitVAArgExpr(_expr);
                 }
-                case StmtClass.InitListExpr:
+                case Stmt.StmtClass.InitListExpr:
                 {
                     var _expr = InitListExpr.__CreateInstance(expr.__Instance);
                     return VisitInitListExpr(_expr);
                 }
-                case StmtClass.DesignatedInitExpr:
+                case Stmt.StmtClass.DesignatedInitExpr:
                 {
                     var _expr = DesignatedInitExpr.__CreateInstance(expr.__Instance);
                     return VisitDesignatedInitExpr(_expr);
                 }
-                case StmtClass.NoInitExpr:
+                case Stmt.StmtClass.NoInitExpr:
                 {
                     var _expr = NoInitExpr.__CreateInstance(expr.__Instance);
                     return VisitNoInitExpr(_expr);
                 }
-                case StmtClass.DesignatedInitUpdateExpr:
+                case Stmt.StmtClass.DesignatedInitUpdateExpr:
                 {
                     var _expr = DesignatedInitUpdateExpr.__CreateInstance(expr.__Instance);
                     return VisitDesignatedInitUpdateExpr(_expr);
                 }
-                case StmtClass.ArrayInitLoopExpr:
+                case Stmt.StmtClass.ArrayInitLoopExpr:
                 {
                     var _expr = ArrayInitLoopExpr.__CreateInstance(expr.__Instance);
                     return VisitArrayInitLoopExpr(_expr);
                 }
-                case StmtClass.ArrayInitIndexExpr:
+                case Stmt.StmtClass.ArrayInitIndexExpr:
                 {
                     var _expr = ArrayInitIndexExpr.__CreateInstance(expr.__Instance);
                     return VisitArrayInitIndexExpr(_expr);
                 }
-                case StmtClass.ImplicitValueInitExpr:
+                case Stmt.StmtClass.ImplicitValueInitExpr:
                 {
                     var _expr = ImplicitValueInitExpr.__CreateInstance(expr.__Instance);
                     return VisitImplicitValueInitExpr(_expr);
                 }
-                case StmtClass.ParenListExpr:
+                case Stmt.StmtClass.ParenListExpr:
                 {
                     var _expr = ParenListExpr.__CreateInstance(expr.__Instance);
                     return VisitParenListExpr(_expr);
                 }
-                case StmtClass.GenericSelectionExpr:
+                case Stmt.StmtClass.GenericSelectionExpr:
                 {
                     var _expr = GenericSelectionExpr.__CreateInstance(expr.__Instance);
                     return VisitGenericSelectionExpr(_expr);
                 }
-                case StmtClass.ExtVectorElementExpr:
+                case Stmt.StmtClass.ExtVectorElementExpr:
                 {
                     var _expr = ExtVectorElementExpr.__CreateInstance(expr.__Instance);
                     return VisitExtVectorElementExpr(_expr);
                 }
-                case StmtClass.BlockExpr:
+                case Stmt.StmtClass.BlockExpr:
                 {
                     var _expr = BlockExpr.__CreateInstance(expr.__Instance);
                     return VisitBlockExpr(_expr);
                 }
-                case StmtClass.AsTypeExpr:
+                case Stmt.StmtClass.AsTypeExpr:
                 {
                     var _expr = AsTypeExpr.__CreateInstance(expr.__Instance);
                     return VisitAsTypeExpr(_expr);
                 }
-                case StmtClass.PseudoObjectExpr:
+                case Stmt.StmtClass.PseudoObjectExpr:
                 {
                     var _expr = PseudoObjectExpr.__CreateInstance(expr.__Instance);
                     return VisitPseudoObjectExpr(_expr);
                 }
-                case StmtClass.AtomicExpr:
+                case Stmt.StmtClass.AtomicExpr:
                 {
                     var _expr = AtomicExpr.__CreateInstance(expr.__Instance);
                     return VisitAtomicExpr(_expr);
                 }
-                case StmtClass.TypoExpr:
+                case Stmt.StmtClass.TypoExpr:
                 {
                     var _expr = TypoExpr.__CreateInstance(expr.__Instance);
                     return VisitTypoExpr(_expr);
                 }
-                case StmtClass.CXXOperatorCallExpr:
+                case Stmt.StmtClass.CXXOperatorCallExpr:
                 {
                     var _expr = CXXOperatorCallExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXOperatorCallExpr(_expr);
                 }
-                case StmtClass.CXXMemberCallExpr:
+                case Stmt.StmtClass.CXXMemberCallExpr:
                 {
                     var _expr = CXXMemberCallExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXMemberCallExpr(_expr);
                 }
-                case StmtClass.CUDAKernelCallExpr:
+                case Stmt.StmtClass.CUDAKernelCallExpr:
                 {
                     var _expr = CUDAKernelCallExpr.__CreateInstance(expr.__Instance);
                     return VisitCUDAKernelCallExpr(_expr);
                 }
-                case StmtClass.CXXStaticCastExpr:
+                case Stmt.StmtClass.CXXStaticCastExpr:
                 {
                     var _expr = CXXStaticCastExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXStaticCastExpr(_expr);
                 }
-                case StmtClass.CXXDynamicCastExpr:
+                case Stmt.StmtClass.CXXDynamicCastExpr:
                 {
                     var _expr = CXXDynamicCastExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXDynamicCastExpr(_expr);
                 }
-                case StmtClass.CXXReinterpretCastExpr:
+                case Stmt.StmtClass.CXXReinterpretCastExpr:
                 {
                     var _expr = CXXReinterpretCastExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXReinterpretCastExpr(_expr);
                 }
-                case StmtClass.CXXConstCastExpr:
+                case Stmt.StmtClass.CXXConstCastExpr:
                 {
                     var _expr = CXXConstCastExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXConstCastExpr(_expr);
                 }
-                case StmtClass.UserDefinedLiteral:
+                case Stmt.StmtClass.UserDefinedLiteral:
                 {
                     var _expr = UserDefinedLiteral.__CreateInstance(expr.__Instance);
                     return VisitUserDefinedLiteral(_expr);
                 }
-                case StmtClass.CXXBoolLiteralExpr:
+                case Stmt.StmtClass.CXXBoolLiteralExpr:
                 {
                     var _expr = CXXBoolLiteralExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXBoolLiteralExpr(_expr);
                 }
-                case StmtClass.CXXNullPtrLiteralExpr:
+                case Stmt.StmtClass.CXXNullPtrLiteralExpr:
                 {
                     var _expr = CXXNullPtrLiteralExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXNullPtrLiteralExpr(_expr);
                 }
-                case StmtClass.CXXStdInitializerListExpr:
+                case Stmt.StmtClass.CXXStdInitializerListExpr:
                 {
                     var _expr = CXXStdInitializerListExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXStdInitializerListExpr(_expr);
                 }
-                case StmtClass.CXXTypeidExpr:
+                case Stmt.StmtClass.CXXTypeidExpr:
                 {
                     var _expr = CXXTypeidExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXTypeidExpr(_expr);
                 }
-                case StmtClass.MSPropertyRefExpr:
+                case Stmt.StmtClass.MSPropertyRefExpr:
                 {
                     var _expr = MSPropertyRefExpr.__CreateInstance(expr.__Instance);
                     return VisitMSPropertyRefExpr(_expr);
                 }
-                case StmtClass.MSPropertySubscriptExpr:
+                case Stmt.StmtClass.MSPropertySubscriptExpr:
                 {
                     var _expr = MSPropertySubscriptExpr.__CreateInstance(expr.__Instance);
                     return VisitMSPropertySubscriptExpr(_expr);
                 }
-                case StmtClass.CXXUuidofExpr:
+                case Stmt.StmtClass.CXXUuidofExpr:
                 {
                     var _expr = CXXUuidofExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXUuidofExpr(_expr);
                 }
-                case StmtClass.CXXThisExpr:
+                case Stmt.StmtClass.CXXThisExpr:
                 {
                     var _expr = CXXThisExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXThisExpr(_expr);
                 }
-                case StmtClass.CXXThrowExpr:
+                case Stmt.StmtClass.CXXThrowExpr:
                 {
                     var _expr = CXXThrowExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXThrowExpr(_expr);
                 }
-                case StmtClass.CXXDefaultArgExpr:
+                case Stmt.StmtClass.CXXDefaultArgExpr:
                 {
                     var _expr = CXXDefaultArgExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXDefaultArgExpr(_expr);
                 }
-                case StmtClass.CXXDefaultInitExpr:
+                case Stmt.StmtClass.CXXDefaultInitExpr:
                 {
                     var _expr = CXXDefaultInitExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXDefaultInitExpr(_expr);
                 }
-                case StmtClass.CXXBindTemporaryExpr:
+                case Stmt.StmtClass.CXXBindTemporaryExpr:
                 {
                     var _expr = CXXBindTemporaryExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXBindTemporaryExpr(_expr);
                 }
-                case StmtClass.CXXConstructExpr:
+                case Stmt.StmtClass.CXXConstructExpr:
                 {
                     var _expr = CXXConstructExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXConstructExpr(_expr);
                 }
-                case StmtClass.CXXInheritedCtorInitExpr:
+                case Stmt.StmtClass.CXXInheritedCtorInitExpr:
                 {
                     var _expr = CXXInheritedCtorInitExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXInheritedCtorInitExpr(_expr);
                 }
-                case StmtClass.CXXFunctionalCastExpr:
+                case Stmt.StmtClass.CXXFunctionalCastExpr:
                 {
                     var _expr = CXXFunctionalCastExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXFunctionalCastExpr(_expr);
                 }
-                case StmtClass.CXXTemporaryObjectExpr:
+                case Stmt.StmtClass.CXXTemporaryObjectExpr:
                 {
                     var _expr = CXXTemporaryObjectExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXTemporaryObjectExpr(_expr);
                 }
-                case StmtClass.LambdaExpr:
+                case Stmt.StmtClass.LambdaExpr:
                 {
                     var _expr = LambdaExpr.__CreateInstance(expr.__Instance);
                     return VisitLambdaExpr(_expr);
                 }
-                case StmtClass.CXXScalarValueInitExpr:
+                case Stmt.StmtClass.CXXScalarValueInitExpr:
                 {
                     var _expr = CXXScalarValueInitExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXScalarValueInitExpr(_expr);
                 }
-                case StmtClass.CXXNewExpr:
+                case Stmt.StmtClass.CXXNewExpr:
                 {
                     var _expr = CXXNewExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXNewExpr(_expr);
                 }
-                case StmtClass.CXXDeleteExpr:
+                case Stmt.StmtClass.CXXDeleteExpr:
                 {
                     var _expr = CXXDeleteExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXDeleteExpr(_expr);
                 }
-                case StmtClass.CXXPseudoDestructorExpr:
+                case Stmt.StmtClass.CXXPseudoDestructorExpr:
                 {
                     var _expr = CXXPseudoDestructorExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXPseudoDestructorExpr(_expr);
                 }
-                case StmtClass.TypeTraitExpr:
+                case Stmt.StmtClass.TypeTraitExpr:
                 {
                     var _expr = TypeTraitExpr.__CreateInstance(expr.__Instance);
                     return VisitTypeTraitExpr(_expr);
                 }
-                case StmtClass.ArrayTypeTraitExpr:
+                case Stmt.StmtClass.ArrayTypeTraitExpr:
                 {
                     var _expr = ArrayTypeTraitExpr.__CreateInstance(expr.__Instance);
                     return VisitArrayTypeTraitExpr(_expr);
                 }
-                case StmtClass.ExpressionTraitExpr:
+                case Stmt.StmtClass.ExpressionTraitExpr:
                 {
                     var _expr = ExpressionTraitExpr.__CreateInstance(expr.__Instance);
                     return VisitExpressionTraitExpr(_expr);
                 }
-                case StmtClass.UnresolvedLookupExpr:
+                case Stmt.StmtClass.UnresolvedLookupExpr:
                 {
                     var _expr = UnresolvedLookupExpr.__CreateInstance(expr.__Instance);
                     return VisitUnresolvedLookupExpr(_expr);
                 }
-                case StmtClass.DependentScopeDeclRefExpr:
+                case Stmt.StmtClass.DependentScopeDeclRefExpr:
                 {
                     var _expr = DependentScopeDeclRefExpr.__CreateInstance(expr.__Instance);
                     return VisitDependentScopeDeclRefExpr(_expr);
                 }
-                case StmtClass.ExprWithCleanups:
+                case Stmt.StmtClass.ExprWithCleanups:
                 {
                     var _expr = ExprWithCleanups.__CreateInstance(expr.__Instance);
                     return VisitExprWithCleanups(_expr);
                 }
-                case StmtClass.CXXUnresolvedConstructExpr:
+                case Stmt.StmtClass.CXXUnresolvedConstructExpr:
                 {
                     var _expr = CXXUnresolvedConstructExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXUnresolvedConstructExpr(_expr);
                 }
-                case StmtClass.CXXDependentScopeMemberExpr:
+                case Stmt.StmtClass.CXXDependentScopeMemberExpr:
                 {
                     var _expr = CXXDependentScopeMemberExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXDependentScopeMemberExpr(_expr);
                 }
-                case StmtClass.UnresolvedMemberExpr:
+                case Stmt.StmtClass.UnresolvedMemberExpr:
                 {
                     var _expr = UnresolvedMemberExpr.__CreateInstance(expr.__Instance);
                     return VisitUnresolvedMemberExpr(_expr);
                 }
-                case StmtClass.CXXNoexceptExpr:
+                case Stmt.StmtClass.CXXNoexceptExpr:
                 {
                     var _expr = CXXNoexceptExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXNoexceptExpr(_expr);
                 }
-                case StmtClass.PackExpansionExpr:
+                case Stmt.StmtClass.PackExpansionExpr:
                 {
                     var _expr = PackExpansionExpr.__CreateInstance(expr.__Instance);
                     return VisitPackExpansionExpr(_expr);
                 }
-                case StmtClass.SizeOfPackExpr:
+                case Stmt.StmtClass.SizeOfPackExpr:
                 {
                     var _expr = SizeOfPackExpr.__CreateInstance(expr.__Instance);
                     return VisitSizeOfPackExpr(_expr);
                 }
-                case StmtClass.SubstNonTypeTemplateParmExpr:
+                case Stmt.StmtClass.SubstNonTypeTemplateParmExpr:
                 {
                     var _expr = SubstNonTypeTemplateParmExpr.__CreateInstance(expr.__Instance);
                     return VisitSubstNonTypeTemplateParmExpr(_expr);
                 }
-                case StmtClass.SubstNonTypeTemplateParmPackExpr:
+                case Stmt.StmtClass.SubstNonTypeTemplateParmPackExpr:
                 {
                     var _expr = SubstNonTypeTemplateParmPackExpr.__CreateInstance(expr.__Instance);
                     return VisitSubstNonTypeTemplateParmPackExpr(_expr);
                 }
-                case StmtClass.FunctionParmPackExpr:
+                case Stmt.StmtClass.FunctionParmPackExpr:
                 {
                     var _expr = FunctionParmPackExpr.__CreateInstance(expr.__Instance);
                     return VisitFunctionParmPackExpr(_expr);
                 }
-                case StmtClass.MaterializeTemporaryExpr:
+                case Stmt.StmtClass.MaterializeTemporaryExpr:
                 {
                     var _expr = MaterializeTemporaryExpr.__CreateInstance(expr.__Instance);
                     return VisitMaterializeTemporaryExpr(_expr);
                 }
-                case StmtClass.CXXFoldExpr:
+                case Stmt.StmtClass.CXXFoldExpr:
                 {
                     var _expr = CXXFoldExpr.__CreateInstance(expr.__Instance);
                     return VisitCXXFoldExpr(_expr);
                 }
-                case StmtClass.CoawaitExpr:
+                case Stmt.StmtClass.CoawaitExpr:
                 {
                     var _expr = CoawaitExpr.__CreateInstance(expr.__Instance);
                     return VisitCoawaitExpr(_expr);
                 }
-                case StmtClass.DependentCoawaitExpr:
+                case Stmt.StmtClass.DependentCoawaitExpr:
                 {
                     var _expr = DependentCoawaitExpr.__CreateInstance(expr.__Instance);
                     return VisitDependentCoawaitExpr(_expr);
                 }
-                case StmtClass.CoyieldExpr:
+                case Stmt.StmtClass.CoyieldExpr:
                 {
                     var _expr = CoyieldExpr.__CreateInstance(expr.__Instance);
                     return VisitCoyieldExpr(_expr);
                 }
                 default:
-                    throw new System.NotImplementedException(expr.StmtClass.ToString());
+                    throw new System.NotImplementedException(expr.stmtClass.ToString());
             }
         }
     }
@@ -604,7 +604,9 @@ namespace CppSharp
         public override AST.Expr VisitConstantExpr(ConstantExpr expr)
         {
             var _expr = new AST.ConstantExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -628,7 +630,9 @@ namespace CppSharp
         public override AST.Expr VisitOpaqueValueExpr(OpaqueValueExpr expr)
         {
             var _expr = new AST.OpaqueValueExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -654,7 +658,9 @@ namespace CppSharp
         public override AST.Expr VisitDeclRefExpr(DeclRefExpr expr)
         {
             var _expr = new AST.DeclRefExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -689,7 +695,9 @@ namespace CppSharp
         public override AST.Expr VisitIntegerLiteral(IntegerLiteral expr)
         {
             var _expr = new AST.IntegerLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -714,7 +722,9 @@ namespace CppSharp
         public override AST.Expr VisitFixedPointLiteral(FixedPointLiteral expr)
         {
             var _expr = new AST.FixedPointLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -739,7 +749,9 @@ namespace CppSharp
         public override AST.Expr VisitCharacterLiteral(CharacterLiteral expr)
         {
             var _expr = new AST.CharacterLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -765,7 +777,9 @@ namespace CppSharp
         public override AST.Expr VisitFloatingLiteral(FloatingLiteral expr)
         {
             var _expr = new AST.FloatingLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -791,7 +805,9 @@ namespace CppSharp
         public override AST.Expr VisitImaginaryLiteral(ImaginaryLiteral expr)
         {
             var _expr = new AST.ImaginaryLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -815,7 +831,9 @@ namespace CppSharp
         public override AST.Expr VisitStringLiteral(StringLiteral expr)
         {
             var _expr = new AST.StringLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -853,7 +871,9 @@ namespace CppSharp
         public override AST.Expr VisitPredefinedExpr(PredefinedExpr expr)
         {
             var _expr = new AST.PredefinedExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -878,7 +898,9 @@ namespace CppSharp
         public override AST.Expr VisitParenExpr(ParenExpr expr)
         {
             var _expr = new AST.ParenExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -904,7 +926,9 @@ namespace CppSharp
         public override AST.Expr VisitUnaryOperator(UnaryOperator expr)
         {
             var _expr = new AST.UnaryOperator();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -937,7 +961,9 @@ namespace CppSharp
         public override AST.Expr VisitOffsetOfExpr(OffsetOfExpr expr)
         {
             var _expr = new AST.OffsetOfExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -964,7 +990,9 @@ namespace CppSharp
         public override AST.Expr VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr expr)
         {
             var _expr = new AST.UnaryExprOrTypeTraitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -994,7 +1022,9 @@ namespace CppSharp
         public override AST.Expr VisitArraySubscriptExpr(ArraySubscriptExpr expr)
         {
             var _expr = new AST.ArraySubscriptExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1022,7 +1052,9 @@ namespace CppSharp
         public override AST.Expr VisitCallExpr(CallExpr expr)
         {
             var _expr = new AST.CallExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1058,7 +1090,9 @@ namespace CppSharp
         public override AST.Expr VisitMemberExpr(MemberExpr expr)
         {
             var _expr = new AST.MemberExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1094,7 +1128,9 @@ namespace CppSharp
         public override AST.Expr VisitCompoundLiteralExpr(CompoundLiteralExpr expr)
         {
             var _expr = new AST.CompoundLiteralExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1120,7 +1156,9 @@ namespace CppSharp
         public override AST.Expr VisitImplicitCastExpr(ImplicitCastExpr expr)
         {
             var _expr = new AST.ImplicitCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1151,7 +1189,9 @@ namespace CppSharp
         public override AST.Expr VisitCStyleCastExpr(CStyleCastExpr expr)
         {
             var _expr = new AST.CStyleCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1184,7 +1224,9 @@ namespace CppSharp
         public override AST.Expr VisitBinaryOperator(BinaryOperator expr)
         {
             var _expr = new AST.BinaryOperator();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1226,7 +1268,9 @@ namespace CppSharp
         public override AST.Expr VisitCompoundAssignOperator(CompoundAssignOperator expr)
         {
             var _expr = new AST.CompoundAssignOperator();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1270,7 +1314,9 @@ namespace CppSharp
         public override AST.Expr VisitConditionalOperator(ConditionalOperator expr)
         {
             var _expr = new AST.ConditionalOperator();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1300,7 +1346,9 @@ namespace CppSharp
         public override AST.Expr VisitBinaryConditionalOperator(BinaryConditionalOperator expr)
         {
             var _expr = new AST.BinaryConditionalOperator();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1330,7 +1378,9 @@ namespace CppSharp
         public override AST.Expr VisitAddrLabelExpr(AddrLabelExpr expr)
         {
             var _expr = new AST.AddrLabelExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1355,7 +1405,9 @@ namespace CppSharp
         public override AST.Expr VisitStmtExpr(StmtExpr expr)
         {
             var _expr = new AST.StmtExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1381,7 +1433,9 @@ namespace CppSharp
         public override AST.Expr VisitShuffleVectorExpr(ShuffleVectorExpr expr)
         {
             var _expr = new AST.ShuffleVectorExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1407,7 +1461,9 @@ namespace CppSharp
         public override AST.Expr VisitConvertVectorExpr(ConvertVectorExpr expr)
         {
             var _expr = new AST.ConvertVectorExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1433,7 +1489,9 @@ namespace CppSharp
         public override AST.Expr VisitChooseExpr(ChooseExpr expr)
         {
             var _expr = new AST.ChooseExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1464,7 +1522,9 @@ namespace CppSharp
         public override AST.Expr VisitGNUNullExpr(GNUNullExpr expr)
         {
             var _expr = new AST.GNUNullExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1488,7 +1548,9 @@ namespace CppSharp
         public override AST.Expr VisitVAArgExpr(VAArgExpr expr)
         {
             var _expr = new AST.VAArgExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1515,7 +1577,9 @@ namespace CppSharp
         public override AST.Expr VisitInitListExpr(InitListExpr expr)
         {
             var _expr = new AST.InitListExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1550,7 +1614,9 @@ namespace CppSharp
         public override AST.Expr VisitDesignatedInitExpr(DesignatedInitExpr expr)
         {
             var _expr = new AST.DesignatedInitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1579,7 +1645,9 @@ namespace CppSharp
         public override AST.Expr VisitNoInitExpr(NoInitExpr expr)
         {
             var _expr = new AST.NoInitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1602,7 +1670,9 @@ namespace CppSharp
         public override AST.Expr VisitDesignatedInitUpdateExpr(DesignatedInitUpdateExpr expr)
         {
             var _expr = new AST.DesignatedInitUpdateExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1627,7 +1697,9 @@ namespace CppSharp
         public override AST.Expr VisitArrayInitLoopExpr(ArrayInitLoopExpr expr)
         {
             var _expr = new AST.ArrayInitLoopExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1652,7 +1724,9 @@ namespace CppSharp
         public override AST.Expr VisitArrayInitIndexExpr(ArrayInitIndexExpr expr)
         {
             var _expr = new AST.ArrayInitIndexExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1675,7 +1749,9 @@ namespace CppSharp
         public override AST.Expr VisitImplicitValueInitExpr(ImplicitValueInitExpr expr)
         {
             var _expr = new AST.ImplicitValueInitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1698,7 +1774,9 @@ namespace CppSharp
         public override AST.Expr VisitParenListExpr(ParenListExpr expr)
         {
             var _expr = new AST.ParenListExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1724,7 +1802,9 @@ namespace CppSharp
         public override AST.Expr VisitGenericSelectionExpr(GenericSelectionExpr expr)
         {
             var _expr = new AST.GenericSelectionExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1755,7 +1835,9 @@ namespace CppSharp
         public override AST.Expr VisitExtVectorElementExpr(ExtVectorElementExpr expr)
         {
             var _expr = new AST.ExtVectorElementExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1783,7 +1865,9 @@ namespace CppSharp
         public override AST.Expr VisitBlockExpr(BlockExpr expr)
         {
             var _expr = new AST.BlockExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1808,7 +1892,9 @@ namespace CppSharp
         public override AST.Expr VisitAsTypeExpr(AsTypeExpr expr)
         {
             var _expr = new AST.AsTypeExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1834,7 +1920,9 @@ namespace CppSharp
         public override AST.Expr VisitPseudoObjectExpr(PseudoObjectExpr expr)
         {
             var _expr = new AST.PseudoObjectExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1861,7 +1949,9 @@ namespace CppSharp
         public override AST.Expr VisitAtomicExpr(AtomicExpr expr)
         {
             var _expr = new AST.AtomicExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1899,7 +1989,9 @@ namespace CppSharp
         public override AST.Expr VisitTypoExpr(TypoExpr expr)
         {
             var _expr = new AST.TypoExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1922,7 +2014,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXOperatorCallExpr(CXXOperatorCallExpr expr)
         {
             var _expr = new AST.CXXOperatorCallExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1963,7 +2057,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXMemberCallExpr(CXXMemberCallExpr expr)
         {
             var _expr = new AST.CXXMemberCallExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2001,7 +2097,9 @@ namespace CppSharp
         public override AST.Expr VisitCUDAKernelCallExpr(CUDAKernelCallExpr expr)
         {
             var _expr = new AST.CUDAKernelCallExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2038,7 +2136,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXStaticCastExpr(CXXStaticCastExpr expr)
         {
             var _expr = new AST.CXXStaticCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2073,7 +2173,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXDynamicCastExpr(CXXDynamicCastExpr expr)
         {
             var _expr = new AST.CXXDynamicCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2109,7 +2211,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXReinterpretCastExpr(CXXReinterpretCastExpr expr)
         {
             var _expr = new AST.CXXReinterpretCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2144,7 +2248,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXConstCastExpr(CXXConstCastExpr expr)
         {
             var _expr = new AST.CXXConstCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2179,7 +2285,9 @@ namespace CppSharp
         public override AST.Expr VisitUserDefinedLiteral(UserDefinedLiteral expr)
         {
             var _expr = new AST.UserDefinedLiteral();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2218,7 +2326,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr expr)
         {
             var _expr = new AST.CXXBoolLiteralExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2243,7 +2353,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXNullPtrLiteralExpr(CXXNullPtrLiteralExpr expr)
         {
             var _expr = new AST.CXXNullPtrLiteralExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2267,7 +2379,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXStdInitializerListExpr(CXXStdInitializerListExpr expr)
         {
             var _expr = new AST.CXXStdInitializerListExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2291,7 +2405,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXTypeidExpr(CXXTypeidExpr expr)
         {
             var _expr = new AST.CXXTypeidExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2317,7 +2433,9 @@ namespace CppSharp
         public override AST.Expr VisitMSPropertyRefExpr(MSPropertyRefExpr expr)
         {
             var _expr = new AST.MSPropertyRefExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2344,7 +2462,9 @@ namespace CppSharp
         public override AST.Expr VisitMSPropertySubscriptExpr(MSPropertySubscriptExpr expr)
         {
             var _expr = new AST.MSPropertySubscriptExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2370,7 +2490,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXUuidofExpr(CXXUuidofExpr expr)
         {
             var _expr = new AST.CXXUuidofExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2396,7 +2518,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXThisExpr(CXXThisExpr expr)
         {
             var _expr = new AST.CXXThisExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2421,7 +2545,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXThrowExpr(CXXThrowExpr expr)
         {
             var _expr = new AST.CXXThrowExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2447,7 +2573,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXDefaultArgExpr(CXXDefaultArgExpr expr)
         {
             var _expr = new AST.CXXDefaultArgExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2472,7 +2600,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXDefaultInitExpr(CXXDefaultInitExpr expr)
         {
             var _expr = new AST.CXXDefaultInitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2497,7 +2627,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXBindTemporaryExpr(CXXBindTemporaryExpr expr)
         {
             var _expr = new AST.CXXBindTemporaryExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2521,7 +2653,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXConstructExpr(CXXConstructExpr expr)
         {
             var _expr = new AST.CXXConstructExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2557,7 +2691,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXInheritedCtorInitExpr(CXXInheritedCtorInitExpr expr)
         {
             var _expr = new AST.CXXInheritedCtorInitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2583,7 +2719,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXFunctionalCastExpr(CXXFunctionalCastExpr expr)
         {
             var _expr = new AST.CXXFunctionalCastExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2617,7 +2755,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXTemporaryObjectExpr(CXXTemporaryObjectExpr expr)
         {
             var _expr = new AST.CXXTemporaryObjectExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2653,7 +2793,9 @@ namespace CppSharp
         public override AST.Expr VisitLambdaExpr(LambdaExpr expr)
         {
             var _expr = new AST.LambdaExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2690,7 +2832,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXScalarValueInitExpr(CXXScalarValueInitExpr expr)
         {
             var _expr = new AST.CXXScalarValueInitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2714,7 +2858,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXNewExpr(CXXNewExpr expr)
         {
             var _expr = new AST.CXXNewExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2756,7 +2902,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXDeleteExpr(CXXDeleteExpr expr)
         {
             var _expr = new AST.CXXDeleteExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2785,7 +2933,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXPseudoDestructorExpr(CXXPseudoDestructorExpr expr)
         {
             var _expr = new AST.CXXPseudoDestructorExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2816,7 +2966,9 @@ namespace CppSharp
         public override AST.Expr VisitTypeTraitExpr(TypeTraitExpr expr)
         {
             var _expr = new AST.TypeTraitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2841,7 +2993,9 @@ namespace CppSharp
         public override AST.Expr VisitArrayTypeTraitExpr(ArrayTypeTraitExpr expr)
         {
             var _expr = new AST.ArrayTypeTraitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2867,7 +3021,9 @@ namespace CppSharp
         public override AST.Expr VisitExpressionTraitExpr(ExpressionTraitExpr expr)
         {
             var _expr = new AST.ExpressionTraitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2892,7 +3048,9 @@ namespace CppSharp
         public override AST.Expr VisitUnresolvedLookupExpr(UnresolvedLookupExpr expr)
         {
             var _expr = new AST.UnresolvedLookupExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2925,7 +3083,9 @@ namespace CppSharp
         public override AST.Expr VisitDependentScopeDeclRefExpr(DependentScopeDeclRefExpr expr)
         {
             var _expr = new AST.DependentScopeDeclRefExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2955,7 +3115,9 @@ namespace CppSharp
         public override AST.Expr VisitExprWithCleanups(ExprWithCleanups expr)
         {
             var _expr = new AST.ExprWithCleanups();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2981,7 +3143,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXUnresolvedConstructExpr(CXXUnresolvedConstructExpr expr)
         {
             var _expr = new AST.CXXUnresolvedConstructExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3014,7 +3178,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXDependentScopeMemberExpr(CXXDependentScopeMemberExpr expr)
         {
             var _expr = new AST.CXXDependentScopeMemberExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3050,7 +3216,9 @@ namespace CppSharp
         public override AST.Expr VisitUnresolvedMemberExpr(UnresolvedMemberExpr expr)
         {
             var _expr = new AST.UnresolvedMemberExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3088,7 +3256,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXNoexceptExpr(CXXNoexceptExpr expr)
         {
             var _expr = new AST.CXXNoexceptExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3113,7 +3283,9 @@ namespace CppSharp
         public override AST.Expr VisitPackExpansionExpr(PackExpansionExpr expr)
         {
             var _expr = new AST.PackExpansionExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3138,7 +3310,9 @@ namespace CppSharp
         public override AST.Expr VisitSizeOfPackExpr(SizeOfPackExpr expr)
         {
             var _expr = new AST.SizeOfPackExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3167,7 +3341,9 @@ namespace CppSharp
         public override AST.Expr VisitSubstNonTypeTemplateParmExpr(SubstNonTypeTemplateParmExpr expr)
         {
             var _expr = new AST.SubstNonTypeTemplateParmExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3192,7 +3368,9 @@ namespace CppSharp
         public override AST.Expr VisitSubstNonTypeTemplateParmPackExpr(SubstNonTypeTemplateParmPackExpr expr)
         {
             var _expr = new AST.SubstNonTypeTemplateParmPackExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3217,7 +3395,9 @@ namespace CppSharp
         public override AST.Expr VisitFunctionParmPackExpr(FunctionParmPackExpr expr)
         {
             var _expr = new AST.FunctionParmPackExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3242,7 +3422,9 @@ namespace CppSharp
         public override AST.Expr VisitMaterializeTemporaryExpr(MaterializeTemporaryExpr expr)
         {
             var _expr = new AST.MaterializeTemporaryExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3269,7 +3451,9 @@ namespace CppSharp
         public override AST.Expr VisitCXXFoldExpr(CXXFoldExpr expr)
         {
             var _expr = new AST.CXXFoldExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3300,7 +3484,9 @@ namespace CppSharp
         public override AST.Expr VisitCoawaitExpr(CoawaitExpr expr)
         {
             var _expr = new AST.CoawaitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3331,7 +3517,9 @@ namespace CppSharp
         public override AST.Expr VisitDependentCoawaitExpr(DependentCoawaitExpr expr)
         {
             var _expr = new AST.DependentCoawaitExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3357,7 +3545,9 @@ namespace CppSharp
         public override AST.Expr VisitCoyieldExpr(CoyieldExpr expr)
         {
             var _expr = new AST.CoyieldExpr();
+            _expr.stmtClass = (AST.Stmt.StmtClass) expr.stmtClass;
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);

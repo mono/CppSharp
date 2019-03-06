@@ -35,10 +35,10 @@ CppSharp::Parser::AST::Stmt::Stmt()
     NativePtr = new ::CppSharp::CppParser::AST::Stmt();
 }
 
-CppSharp::Parser::AST::Stmt::Stmt(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::Stmt::Stmt(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::Stmt(__arg0);
 }
 
@@ -51,9 +51,9 @@ CppSharp::Parser::AST::Stmt::Stmt(CppSharp::Parser::AST::Stmt^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::Stmt(__arg0);
 }
 
-CppSharp::Parser::AST::Stmt::operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::Stmt::operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::Stmt) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::Stmt(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)____ret);
@@ -69,14 +69,14 @@ void CppSharp::Parser::AST::Stmt::__Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::AST::Stmt*)object.ToPointer();
 }
 
-CppSharp::Parser::AST::StmtClass CppSharp::Parser::AST::Stmt::StmtClass::get()
+CppSharp::Parser::AST::Stmt::StmtClass CppSharp::Parser::AST::Stmt::stmtClass::get()
 {
-    return (CppSharp::Parser::AST::StmtClass)((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stmtClass;
+    return (CppSharp::Parser::AST::Stmt::StmtClass)((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stmtClass;
 }
 
-void CppSharp::Parser::AST::Stmt::StmtClass::set(CppSharp::Parser::AST::StmtClass value)
+void CppSharp::Parser::AST::Stmt::stmtClass::set(CppSharp::Parser::AST::Stmt::StmtClass value)
 {
-    ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stmtClass = (::CppSharp::CppParser::AST::StmtClass)value;
+    ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stmtClass = (::CppSharp::CppParser::AST::Stmt::StmtClass)value;
 }
 
 CppSharp::Parser::SourceRange^ CppSharp::Parser::AST::Stmt::SourceRange::get()
@@ -87,6 +87,18 @@ CppSharp::Parser::SourceRange^ CppSharp::Parser::AST::Stmt::SourceRange::get()
 void CppSharp::Parser::AST::Stmt::SourceRange::set(CppSharp::Parser::SourceRange^ value)
 {
     ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->sourceRange = *(::CppSharp::CppParser::SourceRange*)value->NativePtr;
+}
+
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::Stmt::BeginLoc::get()
+{
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::AST::Stmt*)NativePtr)->beginLoc);
+}
+
+void CppSharp::Parser::AST::Stmt::BeginLoc::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->beginLoc = _marshal0;
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::Stmt::EndLoc::get()
@@ -439,11 +451,11 @@ CppSharp::Parser::AST::SwitchCase::SwitchCase()
     NativePtr = new ::CppSharp::CppParser::AST::SwitchCase();
 }
 
-CppSharp::Parser::AST::SwitchCase::SwitchCase(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::SwitchCase::SwitchCase(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::SwitchCase(__arg0);
 }
 
@@ -457,9 +469,9 @@ CppSharp::Parser::AST::SwitchCase::SwitchCase(CppSharp::Parser::AST::SwitchCase^
     NativePtr = new ::CppSharp::CppParser::AST::SwitchCase(__arg0);
 }
 
-CppSharp::Parser::AST::SwitchCase::operator CppSharp::Parser::AST::SwitchCase^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::SwitchCase::operator CppSharp::Parser::AST::SwitchCase^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::SwitchCase) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::SwitchCase(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::SwitchCase((::CppSharp::CppParser::AST::SwitchCase*)____ret);
@@ -1585,11 +1597,11 @@ CppSharp::Parser::AST::AsmStmt::AsmStmt()
     NativePtr = new ::CppSharp::CppParser::AST::AsmStmt();
 }
 
-CppSharp::Parser::AST::AsmStmt::AsmStmt(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::AsmStmt::AsmStmt(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::AsmStmt(__arg0);
 }
 
@@ -1643,9 +1655,9 @@ CppSharp::Parser::AST::AsmStmt::AsmStmt(CppSharp::Parser::AST::AsmStmt^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::AsmStmt(__arg0);
 }
 
-CppSharp::Parser::AST::AsmStmt::operator CppSharp::Parser::AST::AsmStmt^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::AsmStmt::operator CppSharp::Parser::AST::AsmStmt^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::AsmStmt) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::AsmStmt(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::AsmStmt((::CppSharp::CppParser::AST::AsmStmt*)____ret);

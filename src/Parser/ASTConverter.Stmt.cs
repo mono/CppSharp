@@ -51,635 +51,635 @@ namespace CppSharp
             if (stmt == null)
                 return default(TRet);
 
-            switch(stmt.StmtClass)
+            switch(stmt.stmtClass)
             {
-                case StmtClass.GCCAsmStmt:
+                case Stmt.StmtClass.GCCAsmStmt:
                 {
                     var _stmt = GCCAsmStmt.__CreateInstance(stmt.__Instance);
                     return VisitGCCAsmStmt(_stmt);
                 }
-                case StmtClass.MSAsmStmt:
+                case Stmt.StmtClass.MSAsmStmt:
                 {
                     var _stmt = MSAsmStmt.__CreateInstance(stmt.__Instance);
                     return VisitMSAsmStmt(_stmt);
                 }
-                case StmtClass.AttributedStmt:
+                case Stmt.StmtClass.AttributedStmt:
                 {
                     var _stmt = AttributedStmt.__CreateInstance(stmt.__Instance);
                     return VisitAttributedStmt(_stmt);
                 }
-                case StmtClass.BreakStmt:
+                case Stmt.StmtClass.BreakStmt:
                 {
                     var _stmt = BreakStmt.__CreateInstance(stmt.__Instance);
                     return VisitBreakStmt(_stmt);
                 }
-                case StmtClass.CXXCatchStmt:
+                case Stmt.StmtClass.CXXCatchStmt:
                 {
                     var _stmt = CXXCatchStmt.__CreateInstance(stmt.__Instance);
                     return VisitCXXCatchStmt(_stmt);
                 }
-                case StmtClass.CXXForRangeStmt:
+                case Stmt.StmtClass.CXXForRangeStmt:
                 {
                     var _stmt = CXXForRangeStmt.__CreateInstance(stmt.__Instance);
                     return VisitCXXForRangeStmt(_stmt);
                 }
-                case StmtClass.CXXTryStmt:
+                case Stmt.StmtClass.CXXTryStmt:
                 {
                     var _stmt = CXXTryStmt.__CreateInstance(stmt.__Instance);
                     return VisitCXXTryStmt(_stmt);
                 }
-                case StmtClass.CapturedStmt:
+                case Stmt.StmtClass.CapturedStmt:
                 {
                     var _stmt = CapturedStmt.__CreateInstance(stmt.__Instance);
                     return VisitCapturedStmt(_stmt);
                 }
-                case StmtClass.CompoundStmt:
+                case Stmt.StmtClass.CompoundStmt:
                 {
                     var _stmt = CompoundStmt.__CreateInstance(stmt.__Instance);
                     return VisitCompoundStmt(_stmt);
                 }
-                case StmtClass.ContinueStmt:
+                case Stmt.StmtClass.ContinueStmt:
                 {
                     var _stmt = ContinueStmt.__CreateInstance(stmt.__Instance);
                     return VisitContinueStmt(_stmt);
                 }
-                case StmtClass.CoreturnStmt:
+                case Stmt.StmtClass.CoreturnStmt:
                 {
                     var _stmt = CoreturnStmt.__CreateInstance(stmt.__Instance);
                     return VisitCoreturnStmt(_stmt);
                 }
-                case StmtClass.CoroutineBodyStmt:
+                case Stmt.StmtClass.CoroutineBodyStmt:
                 {
                     var _stmt = CoroutineBodyStmt.__CreateInstance(stmt.__Instance);
                     return VisitCoroutineBodyStmt(_stmt);
                 }
-                case StmtClass.DeclStmt:
+                case Stmt.StmtClass.DeclStmt:
                 {
                     var _stmt = DeclStmt.__CreateInstance(stmt.__Instance);
                     return VisitDeclStmt(_stmt);
                 }
-                case StmtClass.DoStmt:
+                case Stmt.StmtClass.DoStmt:
                 {
                     var _stmt = DoStmt.__CreateInstance(stmt.__Instance);
                     return VisitDoStmt(_stmt);
                 }
-                case StmtClass.BinaryConditionalOperator:
+                case Stmt.StmtClass.BinaryConditionalOperator:
                 {
                     var _stmt = BinaryConditionalOperator.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ConditionalOperator:
+                case Stmt.StmtClass.ConditionalOperator:
                 {
                     var _stmt = ConditionalOperator.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.AddrLabelExpr:
+                case Stmt.StmtClass.AddrLabelExpr:
                 {
                     var _stmt = AddrLabelExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ArrayInitIndexExpr:
+                case Stmt.StmtClass.ArrayInitIndexExpr:
                 {
                     var _stmt = ArrayInitIndexExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ArrayInitLoopExpr:
+                case Stmt.StmtClass.ArrayInitLoopExpr:
                 {
                     var _stmt = ArrayInitLoopExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ArraySubscriptExpr:
+                case Stmt.StmtClass.ArraySubscriptExpr:
                 {
                     var _stmt = ArraySubscriptExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ArrayTypeTraitExpr:
+                case Stmt.StmtClass.ArrayTypeTraitExpr:
                 {
                     var _stmt = ArrayTypeTraitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.AsTypeExpr:
+                case Stmt.StmtClass.AsTypeExpr:
                 {
                     var _stmt = AsTypeExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.AtomicExpr:
+                case Stmt.StmtClass.AtomicExpr:
                 {
                     var _stmt = AtomicExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.BinaryOperator:
+                case Stmt.StmtClass.BinaryOperator:
                 {
                     var _stmt = BinaryOperator.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CompoundAssignOperator:
+                case Stmt.StmtClass.CompoundAssignOperator:
                 {
                     var _stmt = CompoundAssignOperator.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.BlockExpr:
+                case Stmt.StmtClass.BlockExpr:
                 {
                     var _stmt = BlockExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXBindTemporaryExpr:
+                case Stmt.StmtClass.CXXBindTemporaryExpr:
                 {
                     var _stmt = CXXBindTemporaryExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXBoolLiteralExpr:
+                case Stmt.StmtClass.CXXBoolLiteralExpr:
                 {
                     var _stmt = CXXBoolLiteralExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXConstructExpr:
+                case Stmt.StmtClass.CXXConstructExpr:
                 {
                     var _stmt = CXXConstructExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXTemporaryObjectExpr:
+                case Stmt.StmtClass.CXXTemporaryObjectExpr:
                 {
                     var _stmt = CXXTemporaryObjectExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXDefaultArgExpr:
+                case Stmt.StmtClass.CXXDefaultArgExpr:
                 {
                     var _stmt = CXXDefaultArgExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXDefaultInitExpr:
+                case Stmt.StmtClass.CXXDefaultInitExpr:
                 {
                     var _stmt = CXXDefaultInitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXDeleteExpr:
+                case Stmt.StmtClass.CXXDeleteExpr:
                 {
                     var _stmt = CXXDeleteExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXDependentScopeMemberExpr:
+                case Stmt.StmtClass.CXXDependentScopeMemberExpr:
                 {
                     var _stmt = CXXDependentScopeMemberExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXFoldExpr:
+                case Stmt.StmtClass.CXXFoldExpr:
                 {
                     var _stmt = CXXFoldExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXInheritedCtorInitExpr:
+                case Stmt.StmtClass.CXXInheritedCtorInitExpr:
                 {
                     var _stmt = CXXInheritedCtorInitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXNewExpr:
+                case Stmt.StmtClass.CXXNewExpr:
                 {
                     var _stmt = CXXNewExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXNoexceptExpr:
+                case Stmt.StmtClass.CXXNoexceptExpr:
                 {
                     var _stmt = CXXNoexceptExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXNullPtrLiteralExpr:
+                case Stmt.StmtClass.CXXNullPtrLiteralExpr:
                 {
                     var _stmt = CXXNullPtrLiteralExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXPseudoDestructorExpr:
+                case Stmt.StmtClass.CXXPseudoDestructorExpr:
                 {
                     var _stmt = CXXPseudoDestructorExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXScalarValueInitExpr:
+                case Stmt.StmtClass.CXXScalarValueInitExpr:
                 {
                     var _stmt = CXXScalarValueInitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXStdInitializerListExpr:
+                case Stmt.StmtClass.CXXStdInitializerListExpr:
                 {
                     var _stmt = CXXStdInitializerListExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXThisExpr:
+                case Stmt.StmtClass.CXXThisExpr:
                 {
                     var _stmt = CXXThisExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXThrowExpr:
+                case Stmt.StmtClass.CXXThrowExpr:
                 {
                     var _stmt = CXXThrowExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXTypeidExpr:
+                case Stmt.StmtClass.CXXTypeidExpr:
                 {
                     var _stmt = CXXTypeidExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXUnresolvedConstructExpr:
+                case Stmt.StmtClass.CXXUnresolvedConstructExpr:
                 {
                     var _stmt = CXXUnresolvedConstructExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXUuidofExpr:
+                case Stmt.StmtClass.CXXUuidofExpr:
                 {
                     var _stmt = CXXUuidofExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CallExpr:
+                case Stmt.StmtClass.CallExpr:
                 {
                     var _stmt = CallExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CUDAKernelCallExpr:
+                case Stmt.StmtClass.CUDAKernelCallExpr:
                 {
                     var _stmt = CUDAKernelCallExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXMemberCallExpr:
+                case Stmt.StmtClass.CXXMemberCallExpr:
                 {
                     var _stmt = CXXMemberCallExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXOperatorCallExpr:
+                case Stmt.StmtClass.CXXOperatorCallExpr:
                 {
                     var _stmt = CXXOperatorCallExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.UserDefinedLiteral:
+                case Stmt.StmtClass.UserDefinedLiteral:
                 {
                     var _stmt = UserDefinedLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CStyleCastExpr:
+                case Stmt.StmtClass.CStyleCastExpr:
                 {
                     var _stmt = CStyleCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXFunctionalCastExpr:
+                case Stmt.StmtClass.CXXFunctionalCastExpr:
                 {
                     var _stmt = CXXFunctionalCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXConstCastExpr:
+                case Stmt.StmtClass.CXXConstCastExpr:
                 {
                     var _stmt = CXXConstCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXDynamicCastExpr:
+                case Stmt.StmtClass.CXXDynamicCastExpr:
                 {
                     var _stmt = CXXDynamicCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXReinterpretCastExpr:
+                case Stmt.StmtClass.CXXReinterpretCastExpr:
                 {
                     var _stmt = CXXReinterpretCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CXXStaticCastExpr:
+                case Stmt.StmtClass.CXXStaticCastExpr:
                 {
                     var _stmt = CXXStaticCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ImplicitCastExpr:
+                case Stmt.StmtClass.ImplicitCastExpr:
                 {
                     var _stmt = ImplicitCastExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CharacterLiteral:
+                case Stmt.StmtClass.CharacterLiteral:
                 {
                     var _stmt = CharacterLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ChooseExpr:
+                case Stmt.StmtClass.ChooseExpr:
                 {
                     var _stmt = ChooseExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CompoundLiteralExpr:
+                case Stmt.StmtClass.CompoundLiteralExpr:
                 {
                     var _stmt = CompoundLiteralExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ConvertVectorExpr:
+                case Stmt.StmtClass.ConvertVectorExpr:
                 {
                     var _stmt = ConvertVectorExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CoawaitExpr:
+                case Stmt.StmtClass.CoawaitExpr:
                 {
                     var _stmt = CoawaitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.CoyieldExpr:
+                case Stmt.StmtClass.CoyieldExpr:
                 {
                     var _stmt = CoyieldExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.DeclRefExpr:
+                case Stmt.StmtClass.DeclRefExpr:
                 {
                     var _stmt = DeclRefExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.DependentCoawaitExpr:
+                case Stmt.StmtClass.DependentCoawaitExpr:
                 {
                     var _stmt = DependentCoawaitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.DependentScopeDeclRefExpr:
+                case Stmt.StmtClass.DependentScopeDeclRefExpr:
                 {
                     var _stmt = DependentScopeDeclRefExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.DesignatedInitExpr:
+                case Stmt.StmtClass.DesignatedInitExpr:
                 {
                     var _stmt = DesignatedInitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.DesignatedInitUpdateExpr:
+                case Stmt.StmtClass.DesignatedInitUpdateExpr:
                 {
                     var _stmt = DesignatedInitUpdateExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ExpressionTraitExpr:
+                case Stmt.StmtClass.ExpressionTraitExpr:
                 {
                     var _stmt = ExpressionTraitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ExtVectorElementExpr:
+                case Stmt.StmtClass.ExtVectorElementExpr:
                 {
                     var _stmt = ExtVectorElementExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.FixedPointLiteral:
+                case Stmt.StmtClass.FixedPointLiteral:
                 {
                     var _stmt = FixedPointLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.FloatingLiteral:
+                case Stmt.StmtClass.FloatingLiteral:
                 {
                     var _stmt = FloatingLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ConstantExpr:
+                case Stmt.StmtClass.ConstantExpr:
                 {
                     var _stmt = ConstantExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ExprWithCleanups:
+                case Stmt.StmtClass.ExprWithCleanups:
                 {
                     var _stmt = ExprWithCleanups.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.FunctionParmPackExpr:
+                case Stmt.StmtClass.FunctionParmPackExpr:
                 {
                     var _stmt = FunctionParmPackExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.GNUNullExpr:
+                case Stmt.StmtClass.GNUNullExpr:
                 {
                     var _stmt = GNUNullExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.GenericSelectionExpr:
+                case Stmt.StmtClass.GenericSelectionExpr:
                 {
                     var _stmt = GenericSelectionExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ImaginaryLiteral:
+                case Stmt.StmtClass.ImaginaryLiteral:
                 {
                     var _stmt = ImaginaryLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ImplicitValueInitExpr:
+                case Stmt.StmtClass.ImplicitValueInitExpr:
                 {
                     var _stmt = ImplicitValueInitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.InitListExpr:
+                case Stmt.StmtClass.InitListExpr:
                 {
                     var _stmt = InitListExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.IntegerLiteral:
+                case Stmt.StmtClass.IntegerLiteral:
                 {
                     var _stmt = IntegerLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.LambdaExpr:
+                case Stmt.StmtClass.LambdaExpr:
                 {
                     var _stmt = LambdaExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.MSPropertyRefExpr:
+                case Stmt.StmtClass.MSPropertyRefExpr:
                 {
                     var _stmt = MSPropertyRefExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.MSPropertySubscriptExpr:
+                case Stmt.StmtClass.MSPropertySubscriptExpr:
                 {
                     var _stmt = MSPropertySubscriptExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.MaterializeTemporaryExpr:
+                case Stmt.StmtClass.MaterializeTemporaryExpr:
                 {
                     var _stmt = MaterializeTemporaryExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.MemberExpr:
+                case Stmt.StmtClass.MemberExpr:
                 {
                     var _stmt = MemberExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.NoInitExpr:
+                case Stmt.StmtClass.NoInitExpr:
                 {
                     var _stmt = NoInitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.OffsetOfExpr:
+                case Stmt.StmtClass.OffsetOfExpr:
                 {
                     var _stmt = OffsetOfExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.OpaqueValueExpr:
+                case Stmt.StmtClass.OpaqueValueExpr:
                 {
                     var _stmt = OpaqueValueExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.UnresolvedLookupExpr:
+                case Stmt.StmtClass.UnresolvedLookupExpr:
                 {
                     var _stmt = UnresolvedLookupExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.UnresolvedMemberExpr:
+                case Stmt.StmtClass.UnresolvedMemberExpr:
                 {
                     var _stmt = UnresolvedMemberExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.PackExpansionExpr:
+                case Stmt.StmtClass.PackExpansionExpr:
                 {
                     var _stmt = PackExpansionExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ParenExpr:
+                case Stmt.StmtClass.ParenExpr:
                 {
                     var _stmt = ParenExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ParenListExpr:
+                case Stmt.StmtClass.ParenListExpr:
                 {
                     var _stmt = ParenListExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.PredefinedExpr:
+                case Stmt.StmtClass.PredefinedExpr:
                 {
                     var _stmt = PredefinedExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.PseudoObjectExpr:
+                case Stmt.StmtClass.PseudoObjectExpr:
                 {
                     var _stmt = PseudoObjectExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ShuffleVectorExpr:
+                case Stmt.StmtClass.ShuffleVectorExpr:
                 {
                     var _stmt = ShuffleVectorExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.SizeOfPackExpr:
+                case Stmt.StmtClass.SizeOfPackExpr:
                 {
                     var _stmt = SizeOfPackExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.StmtExpr:
+                case Stmt.StmtClass.StmtExpr:
                 {
                     var _stmt = StmtExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.StringLiteral:
+                case Stmt.StmtClass.StringLiteral:
                 {
                     var _stmt = StringLiteral.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.SubstNonTypeTemplateParmExpr:
+                case Stmt.StmtClass.SubstNonTypeTemplateParmExpr:
                 {
                     var _stmt = SubstNonTypeTemplateParmExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.SubstNonTypeTemplateParmPackExpr:
+                case Stmt.StmtClass.SubstNonTypeTemplateParmPackExpr:
                 {
                     var _stmt = SubstNonTypeTemplateParmPackExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.TypeTraitExpr:
+                case Stmt.StmtClass.TypeTraitExpr:
                 {
                     var _stmt = TypeTraitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.TypoExpr:
+                case Stmt.StmtClass.TypoExpr:
                 {
                     var _stmt = TypoExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.UnaryExprOrTypeTraitExpr:
+                case Stmt.StmtClass.UnaryExprOrTypeTraitExpr:
                 {
                     var _stmt = UnaryExprOrTypeTraitExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.UnaryOperator:
+                case Stmt.StmtClass.UnaryOperator:
                 {
                     var _stmt = UnaryOperator.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.VAArgExpr:
+                case Stmt.StmtClass.VAArgExpr:
                 {
                     var _stmt = VAArgExpr.__CreateInstance(stmt.__Instance);
                     return VisitExpression(_stmt as Expr) as TRet;
                 }
-                case StmtClass.ForStmt:
+                case Stmt.StmtClass.ForStmt:
                 {
                     var _stmt = ForStmt.__CreateInstance(stmt.__Instance);
                     return VisitForStmt(_stmt);
                 }
-                case StmtClass.GotoStmt:
+                case Stmt.StmtClass.GotoStmt:
                 {
                     var _stmt = GotoStmt.__CreateInstance(stmt.__Instance);
                     return VisitGotoStmt(_stmt);
                 }
-                case StmtClass.IfStmt:
+                case Stmt.StmtClass.IfStmt:
                 {
                     var _stmt = IfStmt.__CreateInstance(stmt.__Instance);
                     return VisitIfStmt(_stmt);
                 }
-                case StmtClass.IndirectGotoStmt:
+                case Stmt.StmtClass.IndirectGotoStmt:
                 {
                     var _stmt = IndirectGotoStmt.__CreateInstance(stmt.__Instance);
                     return VisitIndirectGotoStmt(_stmt);
                 }
-                case StmtClass.LabelStmt:
+                case Stmt.StmtClass.LabelStmt:
                 {
                     var _stmt = LabelStmt.__CreateInstance(stmt.__Instance);
                     return VisitLabelStmt(_stmt);
                 }
-                case StmtClass.MSDependentExistsStmt:
+                case Stmt.StmtClass.MSDependentExistsStmt:
                 {
                     var _stmt = MSDependentExistsStmt.__CreateInstance(stmt.__Instance);
                     return VisitMSDependentExistsStmt(_stmt);
                 }
-                case StmtClass.NullStmt:
+                case Stmt.StmtClass.NullStmt:
                 {
                     var _stmt = NullStmt.__CreateInstance(stmt.__Instance);
                     return VisitNullStmt(_stmt);
                 }
-                case StmtClass.ReturnStmt:
+                case Stmt.StmtClass.ReturnStmt:
                 {
                     var _stmt = ReturnStmt.__CreateInstance(stmt.__Instance);
                     return VisitReturnStmt(_stmt);
                 }
-                case StmtClass.SEHExceptStmt:
+                case Stmt.StmtClass.SEHExceptStmt:
                 {
                     var _stmt = SEHExceptStmt.__CreateInstance(stmt.__Instance);
                     return VisitSEHExceptStmt(_stmt);
                 }
-                case StmtClass.SEHFinallyStmt:
+                case Stmt.StmtClass.SEHFinallyStmt:
                 {
                     var _stmt = SEHFinallyStmt.__CreateInstance(stmt.__Instance);
                     return VisitSEHFinallyStmt(_stmt);
                 }
-                case StmtClass.SEHLeaveStmt:
+                case Stmt.StmtClass.SEHLeaveStmt:
                 {
                     var _stmt = SEHLeaveStmt.__CreateInstance(stmt.__Instance);
                     return VisitSEHLeaveStmt(_stmt);
                 }
-                case StmtClass.SEHTryStmt:
+                case Stmt.StmtClass.SEHTryStmt:
                 {
                     var _stmt = SEHTryStmt.__CreateInstance(stmt.__Instance);
                     return VisitSEHTryStmt(_stmt);
                 }
-                case StmtClass.CaseStmt:
+                case Stmt.StmtClass.CaseStmt:
                 {
                     var _stmt = CaseStmt.__CreateInstance(stmt.__Instance);
                     return VisitCaseStmt(_stmt);
                 }
-                case StmtClass.DefaultStmt:
+                case Stmt.StmtClass.DefaultStmt:
                 {
                     var _stmt = DefaultStmt.__CreateInstance(stmt.__Instance);
                     return VisitDefaultStmt(_stmt);
                 }
-                case StmtClass.SwitchStmt:
+                case Stmt.StmtClass.SwitchStmt:
                 {
                     var _stmt = SwitchStmt.__CreateInstance(stmt.__Instance);
                     return VisitSwitchStmt(_stmt);
                 }
-                case StmtClass.WhileStmt:
+                case Stmt.StmtClass.WhileStmt:
                 {
                     var _stmt = WhileStmt.__CreateInstance(stmt.__Instance);
                     return VisitWhileStmt(_stmt);
                 }
                 default:
-                    throw new System.NotImplementedException(stmt.StmtClass.ToString());
+                    throw new System.NotImplementedException(stmt.stmtClass.ToString());
             }
         }
     }
@@ -689,7 +689,9 @@ namespace CppSharp
         public override AST.Stmt VisitDeclStmt(DeclStmt stmt)
         {
             var _stmt = new AST.DeclStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.IsSingleDecl = stmt.IsSingleDecl;
@@ -705,7 +707,9 @@ namespace CppSharp
         public override AST.Stmt VisitNullStmt(NullStmt stmt)
         {
             var _stmt = new AST.NullStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.SemiLoc = VisitSourceLocation(stmt.SemiLoc);
@@ -716,7 +720,9 @@ namespace CppSharp
         public override AST.Stmt VisitCompoundStmt(CompoundStmt stmt)
         {
             var _stmt = new AST.CompoundStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.BodyEmpty = stmt.BodyEmpty;
@@ -736,7 +742,9 @@ namespace CppSharp
         public override AST.Stmt VisitCaseStmt(CaseStmt stmt)
         {
             var _stmt = new AST.CaseStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.KeywordLoc = VisitSourceLocation(stmt.KeywordLoc);
@@ -753,7 +761,9 @@ namespace CppSharp
         public override AST.Stmt VisitDefaultStmt(DefaultStmt stmt)
         {
             var _stmt = new AST.DefaultStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.KeywordLoc = VisitSourceLocation(stmt.KeywordLoc);
@@ -766,7 +776,9 @@ namespace CppSharp
         public override AST.Stmt VisitLabelStmt(LabelStmt stmt)
         {
             var _stmt = new AST.LabelStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.IdentLoc = VisitSourceLocation(stmt.IdentLoc);
@@ -778,7 +790,9 @@ namespace CppSharp
         public override AST.Stmt VisitAttributedStmt(AttributedStmt stmt)
         {
             var _stmt = new AST.AttributedStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.AttrLoc = VisitSourceLocation(stmt.AttrLoc);
@@ -789,7 +803,9 @@ namespace CppSharp
         public override AST.Stmt VisitIfStmt(IfStmt stmt)
         {
             var _stmt = new AST.IfStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -810,7 +826,9 @@ namespace CppSharp
         public override AST.Stmt VisitSwitchStmt(SwitchStmt stmt)
         {
             var _stmt = new AST.SwitchStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -827,7 +845,9 @@ namespace CppSharp
         public override AST.Stmt VisitWhileStmt(WhileStmt stmt)
         {
             var _stmt = new AST.WhileStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -841,7 +861,9 @@ namespace CppSharp
         public override AST.Stmt VisitDoStmt(DoStmt stmt)
         {
             var _stmt = new AST.DoStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -855,7 +877,9 @@ namespace CppSharp
         public override AST.Stmt VisitForStmt(ForStmt stmt)
         {
             var _stmt = new AST.ForStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Init = VisitStatement(stmt.Init) as AST.Stmt;
@@ -872,7 +896,9 @@ namespace CppSharp
         public override AST.Stmt VisitGotoStmt(GotoStmt stmt)
         {
             var _stmt = new AST.GotoStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.GotoLoc = VisitSourceLocation(stmt.GotoLoc);
@@ -883,7 +909,9 @@ namespace CppSharp
         public override AST.Stmt VisitIndirectGotoStmt(IndirectGotoStmt stmt)
         {
             var _stmt = new AST.IndirectGotoStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.GotoLoc = VisitSourceLocation(stmt.GotoLoc);
@@ -895,7 +923,9 @@ namespace CppSharp
         public override AST.Stmt VisitContinueStmt(ContinueStmt stmt)
         {
             var _stmt = new AST.ContinueStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.ContinueLoc = VisitSourceLocation(stmt.ContinueLoc);
@@ -905,7 +935,9 @@ namespace CppSharp
         public override AST.Stmt VisitBreakStmt(BreakStmt stmt)
         {
             var _stmt = new AST.BreakStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.BreakLoc = VisitSourceLocation(stmt.BreakLoc);
@@ -915,7 +947,9 @@ namespace CppSharp
         public override AST.Stmt VisitReturnStmt(ReturnStmt stmt)
         {
             var _stmt = new AST.ReturnStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.RetValue = VisitExpression(stmt.RetValue) as AST.Expr;
@@ -926,7 +960,9 @@ namespace CppSharp
         public override AST.Stmt VisitGCCAsmStmt(GCCAsmStmt stmt)
         {
             var _stmt = new AST.GCCAsmStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.AsmLoc = VisitSourceLocation(stmt.AsmLoc);
@@ -953,7 +989,9 @@ namespace CppSharp
         public override AST.Stmt VisitMSAsmStmt(MSAsmStmt stmt)
         {
             var _stmt = new AST.MSAsmStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.AsmLoc = VisitSourceLocation(stmt.AsmLoc);
@@ -983,7 +1021,9 @@ namespace CppSharp
         public override AST.Stmt VisitSEHExceptStmt(SEHExceptStmt stmt)
         {
             var _stmt = new AST.SEHExceptStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.ExceptLoc = VisitSourceLocation(stmt.ExceptLoc);
@@ -995,7 +1035,9 @@ namespace CppSharp
         public override AST.Stmt VisitSEHFinallyStmt(SEHFinallyStmt stmt)
         {
             var _stmt = new AST.SEHFinallyStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.FinallyLoc = VisitSourceLocation(stmt.FinallyLoc);
@@ -1006,7 +1048,9 @@ namespace CppSharp
         public override AST.Stmt VisitSEHTryStmt(SEHTryStmt stmt)
         {
             var _stmt = new AST.SEHTryStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.TryLoc = VisitSourceLocation(stmt.TryLoc);
@@ -1021,7 +1065,9 @@ namespace CppSharp
         public override AST.Stmt VisitSEHLeaveStmt(SEHLeaveStmt stmt)
         {
             var _stmt = new AST.SEHLeaveStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.LeaveLoc = VisitSourceLocation(stmt.LeaveLoc);
@@ -1031,7 +1077,9 @@ namespace CppSharp
         public override AST.Stmt VisitCapturedStmt(CapturedStmt stmt)
         {
             var _stmt = new AST.CapturedStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.capturedStmt = VisitStatement(stmt.capturedStmt) as AST.Stmt;
@@ -1047,7 +1095,9 @@ namespace CppSharp
         public override AST.Stmt VisitCXXCatchStmt(CXXCatchStmt stmt)
         {
             var _stmt = new AST.CXXCatchStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.CatchLoc = VisitSourceLocation(stmt.CatchLoc);
@@ -1059,7 +1109,9 @@ namespace CppSharp
         public override AST.Stmt VisitCXXTryStmt(CXXTryStmt stmt)
         {
             var _stmt = new AST.CXXTryStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.TryLoc = VisitSourceLocation(stmt.TryLoc);
@@ -1071,7 +1123,9 @@ namespace CppSharp
         public override AST.Stmt VisitCXXForRangeStmt(CXXForRangeStmt stmt)
         {
             var _stmt = new AST.CXXForRangeStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Init = VisitStatement(stmt.Init) as AST.Stmt;
@@ -1093,7 +1147,9 @@ namespace CppSharp
         public override AST.Stmt VisitMSDependentExistsStmt(MSDependentExistsStmt stmt)
         {
             var _stmt = new AST.MSDependentExistsStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.KeywordLoc = VisitSourceLocation(stmt.KeywordLoc);
@@ -1106,7 +1162,9 @@ namespace CppSharp
         public override AST.Stmt VisitCoroutineBodyStmt(CoroutineBodyStmt stmt)
         {
             var _stmt = new AST.CoroutineBodyStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.HasDependentPromiseType = stmt.HasDependentPromiseType;
@@ -1128,7 +1186,9 @@ namespace CppSharp
         public override AST.Stmt VisitCoreturnStmt(CoreturnStmt stmt)
         {
             var _stmt = new AST.CoreturnStmt();
+            _stmt.stmtClass = (AST.Stmt.StmtClass) stmt.stmtClass;
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.IsImplicit = stmt.IsImplicit;

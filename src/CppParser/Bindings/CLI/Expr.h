@@ -22,7 +22,6 @@ namespace CppSharp
             enum struct CastKind;
             enum struct ObjCBridgeCastKind;
             enum struct OverloadedOperatorKind;
-            enum struct StmtClass;
             enum struct UnaryExprOrTypeTrait;
             enum struct UnaryOperatorKind;
             ref class AbstractConditionalOperator;
@@ -503,7 +502,7 @@ namespace CppSharp
                 static Expr^ __CreateInstance(::System::IntPtr native);
                 Expr();
 
-                Expr(CppSharp::Parser::AST::StmtClass klass);
+                Expr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 Expr(CppSharp::Parser::AST::Expr^ _0);
 
@@ -593,7 +592,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                static operator CppSharp::Parser::AST::Expr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::Expr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class FullExpr : CppSharp::Parser::AST::Expr
@@ -604,7 +603,7 @@ namespace CppSharp
                 static FullExpr^ __CreateInstance(::System::IntPtr native);
                 FullExpr();
 
-                FullExpr(CppSharp::Parser::AST::StmtClass klass);
+                FullExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 FullExpr(CppSharp::Parser::AST::FullExpr^ _0);
 
@@ -616,7 +615,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
-                static operator CppSharp::Parser::AST::FullExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::FullExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class ConstantExpr : CppSharp::Parser::AST::FullExpr
@@ -1284,7 +1283,7 @@ namespace CppSharp
                 static CallExpr^ __CreateInstance(::System::IntPtr native);
                 CallExpr();
 
-                CallExpr(CppSharp::Parser::AST::StmtClass klass);
+                CallExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 CallExpr(CppSharp::Parser::AST::CallExpr^ _0);
 
@@ -1355,7 +1354,7 @@ namespace CppSharp
 
                 void Cleararguments();
 
-                static operator CppSharp::Parser::AST::CallExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::CallExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class MemberExpr : CppSharp::Parser::AST::Expr
@@ -1488,7 +1487,7 @@ namespace CppSharp
                 static CastExpr^ __CreateInstance(::System::IntPtr native);
                 CastExpr();
 
-                CastExpr(CppSharp::Parser::AST::StmtClass klass);
+                CastExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 CastExpr(CppSharp::Parser::AST::CastExpr^ _0);
 
@@ -1536,7 +1535,7 @@ namespace CppSharp
                     void set(unsigned int);
                 }
 
-                static operator CppSharp::Parser::AST::CastExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::CastExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class ImplicitCastExpr : CppSharp::Parser::AST::CastExpr
@@ -1571,7 +1570,7 @@ namespace CppSharp
                 static ExplicitCastExpr^ __CreateInstance(::System::IntPtr native);
                 ExplicitCastExpr();
 
-                ExplicitCastExpr(CppSharp::Parser::AST::StmtClass klass);
+                ExplicitCastExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 ExplicitCastExpr(CppSharp::Parser::AST::ExplicitCastExpr^ _0);
 
@@ -1583,7 +1582,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
-                static operator CppSharp::Parser::AST::ExplicitCastExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::ExplicitCastExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class CStyleCastExpr : CppSharp::Parser::AST::ExplicitCastExpr
@@ -1619,7 +1618,7 @@ namespace CppSharp
                 static BinaryOperator^ __CreateInstance(::System::IntPtr native);
                 BinaryOperator();
 
-                BinaryOperator(CppSharp::Parser::AST::StmtClass klass);
+                BinaryOperator(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 BinaryOperator(CppSharp::Parser::AST::BinaryOperator^ _0);
 
@@ -1739,7 +1738,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                static operator CppSharp::Parser::AST::BinaryOperator^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::BinaryOperator^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class CompoundAssignOperator : CppSharp::Parser::AST::BinaryOperator
@@ -1775,7 +1774,7 @@ namespace CppSharp
                 static AbstractConditionalOperator^ __CreateInstance(::System::IntPtr native);
                 AbstractConditionalOperator();
 
-                AbstractConditionalOperator(CppSharp::Parser::AST::StmtClass klass);
+                AbstractConditionalOperator(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 AbstractConditionalOperator(CppSharp::Parser::AST::AbstractConditionalOperator^ _0);
 
@@ -1811,7 +1810,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                static operator CppSharp::Parser::AST::AbstractConditionalOperator^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::AbstractConditionalOperator^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class ConditionalOperator : CppSharp::Parser::AST::AbstractConditionalOperator
@@ -2946,7 +2945,7 @@ namespace CppSharp
                 static CXXNamedCastExpr^ __CreateInstance(::System::IntPtr native);
                 CXXNamedCastExpr();
 
-                CXXNamedCastExpr(CppSharp::Parser::AST::StmtClass klass);
+                CXXNamedCastExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 CXXNamedCastExpr(CppSharp::Parser::AST::CXXNamedCastExpr^ _0);
 
@@ -2976,7 +2975,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceRange^);
                 }
 
-                static operator CppSharp::Parser::AST::CXXNamedCastExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::CXXNamedCastExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class CXXStaticCastExpr : CppSharp::Parser::AST::CXXNamedCastExpr
@@ -3412,7 +3411,7 @@ namespace CppSharp
                 static CXXConstructExpr^ __CreateInstance(::System::IntPtr native);
                 CXXConstructExpr();
 
-                CXXConstructExpr(CppSharp::Parser::AST::StmtClass klass);
+                CXXConstructExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 CXXConstructExpr(CppSharp::Parser::AST::CXXConstructExpr^ _0);
 
@@ -3483,7 +3482,7 @@ namespace CppSharp
 
                 void Cleararguments();
 
-                static operator CppSharp::Parser::AST::CXXConstructExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::CXXConstructExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class CXXInheritedCtorInitExpr : CppSharp::Parser::AST::Expr
@@ -4007,7 +4006,7 @@ namespace CppSharp
                 static OverloadExpr^ __CreateInstance(::System::IntPtr native);
                 OverloadExpr();
 
-                OverloadExpr(CppSharp::Parser::AST::StmtClass klass);
+                OverloadExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 OverloadExpr(CppSharp::Parser::AST::OverloadExpr^ _0);
 
@@ -4061,7 +4060,7 @@ namespace CppSharp
                     void set(unsigned int);
                 }
 
-                static operator CppSharp::Parser::AST::OverloadExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::OverloadExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class UnresolvedLookupExpr : CppSharp::Parser::AST::OverloadExpr
@@ -4687,7 +4686,7 @@ namespace CppSharp
                 static CoroutineSuspendExpr^ __CreateInstance(::System::IntPtr native);
                 CoroutineSuspendExpr();
 
-                CoroutineSuspendExpr(CppSharp::Parser::AST::StmtClass klass);
+                CoroutineSuspendExpr(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 CoroutineSuspendExpr(CppSharp::Parser::AST::CoroutineSuspendExpr^ _0);
 
@@ -4729,7 +4728,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
-                static operator CppSharp::Parser::AST::CoroutineSuspendExpr^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::CoroutineSuspendExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class CoawaitExpr : CppSharp::Parser::AST::CoroutineSuspendExpr
