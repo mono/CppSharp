@@ -38,10 +38,10 @@ public unsafe class CSharpTests : GeneratorTestFixture
         new HasCtorWithMappedToEnum<TestFlag>(TestFlag.Flag1).Dispose();
         using (var testOverrideFromSecondaryBase = new TestOverrideFromSecondaryBase())
         {
-            testOverrideFromSecondaryBase.function();
+            testOverrideFromSecondaryBase.Function();
             var ok = false;
-            testOverrideFromSecondaryBase.function(ref ok);
-            var property = testOverrideFromSecondaryBase.property;
+            testOverrideFromSecondaryBase.Function(ref ok);
+            var property = testOverrideFromSecondaryBase.Property;
             testOverrideFromSecondaryBase.VirtualMember();
         }
         using (var foo = new Foo())
@@ -670,12 +670,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (var proprietor = new Proprietor())
         {
-            Assert.That(proprietor.Items, Is.EqualTo(Bar.Items.Item1));
-            proprietor.Items = Bar.Items.Item2;
-            Assert.That(proprietor.Items, Is.EqualTo(Bar.Items.Item2));
-            Assert.That(proprietor.ItemsByValue, Is.EqualTo(Bar.Items.Item1));
-            proprietor.ItemsByValue = Bar.Items.Item2;
-            Assert.That(proprietor.ItemsByValue, Is.EqualTo(Bar.Items.Item2));
+            Assert.That(proprietor.Items, Is.EqualTo(Items.Item1));
+            proprietor.Items = Items.Item2;
+            Assert.That(proprietor.Items, Is.EqualTo(Items.Item2));
+            Assert.That(proprietor.ItemsByValue, Is.EqualTo(Items.Item1));
+            proprietor.ItemsByValue = Items.Item2;
+            Assert.That(proprietor.ItemsByValue, Is.EqualTo(Items.Item2));
         }
     }
 

@@ -596,6 +596,16 @@ int TestProperties::nestedEnum(int i)
     return i;
 }
 
+int TestProperties::nestedScopedEnum()
+{
+    return 10;
+}
+
+int TestProperties::nestedScopedEnum(int i)
+{
+    return i;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }
