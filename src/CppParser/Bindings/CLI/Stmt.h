@@ -17,7 +17,6 @@ namespace CppSharp
         ref class SourceRange;
         namespace AST
         {
-            enum struct StmtClass;
             ref class AsmStmt;
             ref class AttributedStmt;
             ref class BreakStmt;
@@ -64,139 +63,139 @@ namespace CppSharp
     {
         namespace AST
         {
-            public enum struct StmtClass
-            {
-                NoStmt = 0,
-                GCCAsmStmt = 1,
-                MSAsmStmt = 2,
-                AttributedStmt = 3,
-                BreakStmt = 4,
-                CXXCatchStmt = 5,
-                CXXForRangeStmt = 6,
-                CXXTryStmt = 7,
-                CapturedStmt = 8,
-                CompoundStmt = 9,
-                ContinueStmt = 10,
-                CoreturnStmt = 11,
-                CoroutineBodyStmt = 12,
-                DeclStmt = 13,
-                DoStmt = 14,
-                BinaryConditionalOperator = 15,
-                ConditionalOperator = 16,
-                AddrLabelExpr = 17,
-                ArrayInitIndexExpr = 18,
-                ArrayInitLoopExpr = 19,
-                ArraySubscriptExpr = 20,
-                ArrayTypeTraitExpr = 21,
-                AsTypeExpr = 22,
-                AtomicExpr = 23,
-                BinaryOperator = 24,
-                CompoundAssignOperator = 25,
-                BlockExpr = 26,
-                CXXBindTemporaryExpr = 27,
-                CXXBoolLiteralExpr = 28,
-                CXXConstructExpr = 29,
-                CXXTemporaryObjectExpr = 30,
-                CXXDefaultArgExpr = 31,
-                CXXDefaultInitExpr = 32,
-                CXXDeleteExpr = 33,
-                CXXDependentScopeMemberExpr = 34,
-                CXXFoldExpr = 35,
-                CXXInheritedCtorInitExpr = 36,
-                CXXNewExpr = 37,
-                CXXNoexceptExpr = 38,
-                CXXNullPtrLiteralExpr = 39,
-                CXXPseudoDestructorExpr = 40,
-                CXXScalarValueInitExpr = 41,
-                CXXStdInitializerListExpr = 42,
-                CXXThisExpr = 43,
-                CXXThrowExpr = 44,
-                CXXTypeidExpr = 45,
-                CXXUnresolvedConstructExpr = 46,
-                CXXUuidofExpr = 47,
-                CallExpr = 48,
-                CUDAKernelCallExpr = 49,
-                CXXMemberCallExpr = 50,
-                CXXOperatorCallExpr = 51,
-                UserDefinedLiteral = 52,
-                CStyleCastExpr = 53,
-                CXXFunctionalCastExpr = 54,
-                CXXConstCastExpr = 55,
-                CXXDynamicCastExpr = 56,
-                CXXReinterpretCastExpr = 57,
-                CXXStaticCastExpr = 58,
-                ImplicitCastExpr = 60,
-                CharacterLiteral = 61,
-                ChooseExpr = 62,
-                CompoundLiteralExpr = 63,
-                ConvertVectorExpr = 64,
-                CoawaitExpr = 65,
-                CoyieldExpr = 66,
-                DeclRefExpr = 67,
-                DependentCoawaitExpr = 68,
-                DependentScopeDeclRefExpr = 69,
-                DesignatedInitExpr = 70,
-                DesignatedInitUpdateExpr = 71,
-                ExpressionTraitExpr = 72,
-                ExtVectorElementExpr = 73,
-                FixedPointLiteral = 74,
-                FloatingLiteral = 75,
-                ConstantExpr = 76,
-                ExprWithCleanups = 77,
-                FunctionParmPackExpr = 78,
-                GNUNullExpr = 79,
-                GenericSelectionExpr = 80,
-                ImaginaryLiteral = 81,
-                ImplicitValueInitExpr = 82,
-                InitListExpr = 83,
-                IntegerLiteral = 84,
-                LambdaExpr = 85,
-                MSPropertyRefExpr = 86,
-                MSPropertySubscriptExpr = 87,
-                MaterializeTemporaryExpr = 88,
-                MemberExpr = 89,
-                NoInitExpr = 90,
-                OffsetOfExpr = 107,
-                OpaqueValueExpr = 108,
-                UnresolvedLookupExpr = 109,
-                UnresolvedMemberExpr = 110,
-                PackExpansionExpr = 111,
-                ParenExpr = 112,
-                ParenListExpr = 113,
-                PredefinedExpr = 114,
-                PseudoObjectExpr = 115,
-                ShuffleVectorExpr = 116,
-                SizeOfPackExpr = 117,
-                StmtExpr = 118,
-                StringLiteral = 119,
-                SubstNonTypeTemplateParmExpr = 120,
-                SubstNonTypeTemplateParmPackExpr = 121,
-                TypeTraitExpr = 122,
-                TypoExpr = 123,
-                UnaryExprOrTypeTraitExpr = 124,
-                UnaryOperator = 125,
-                VAArgExpr = 126,
-                ForStmt = 127,
-                GotoStmt = 128,
-                IfStmt = 129,
-                IndirectGotoStmt = 130,
-                LabelStmt = 131,
-                MSDependentExistsStmt = 132,
-                NullStmt = 133,
-                ReturnStmt = 188,
-                SEHExceptStmt = 189,
-                SEHFinallyStmt = 190,
-                SEHLeaveStmt = 191,
-                SEHTryStmt = 192,
-                CaseStmt = 193,
-                DefaultStmt = 194,
-                SwitchStmt = 195,
-                WhileStmt = 196
-            };
-
             public ref class Stmt : ICppInstance
             {
             public:
+
+                enum struct StmtClass
+                {
+                    NoStmt = 0,
+                    GCCAsmStmt = 1,
+                    MSAsmStmt = 2,
+                    AttributedStmt = 3,
+                    BreakStmt = 4,
+                    CXXCatchStmt = 5,
+                    CXXForRangeStmt = 6,
+                    CXXTryStmt = 7,
+                    CapturedStmt = 8,
+                    CompoundStmt = 9,
+                    ContinueStmt = 10,
+                    CoreturnStmt = 11,
+                    CoroutineBodyStmt = 12,
+                    DeclStmt = 13,
+                    DoStmt = 14,
+                    BinaryConditionalOperator = 15,
+                    ConditionalOperator = 16,
+                    AddrLabelExpr = 17,
+                    ArrayInitIndexExpr = 18,
+                    ArrayInitLoopExpr = 19,
+                    ArraySubscriptExpr = 20,
+                    ArrayTypeTraitExpr = 21,
+                    AsTypeExpr = 22,
+                    AtomicExpr = 23,
+                    BinaryOperator = 24,
+                    CompoundAssignOperator = 25,
+                    BlockExpr = 26,
+                    CXXBindTemporaryExpr = 27,
+                    CXXBoolLiteralExpr = 28,
+                    CXXConstructExpr = 29,
+                    CXXTemporaryObjectExpr = 30,
+                    CXXDefaultArgExpr = 31,
+                    CXXDefaultInitExpr = 32,
+                    CXXDeleteExpr = 33,
+                    CXXDependentScopeMemberExpr = 34,
+                    CXXFoldExpr = 35,
+                    CXXInheritedCtorInitExpr = 36,
+                    CXXNewExpr = 37,
+                    CXXNoexceptExpr = 38,
+                    CXXNullPtrLiteralExpr = 39,
+                    CXXPseudoDestructorExpr = 40,
+                    CXXScalarValueInitExpr = 41,
+                    CXXStdInitializerListExpr = 42,
+                    CXXThisExpr = 43,
+                    CXXThrowExpr = 44,
+                    CXXTypeidExpr = 45,
+                    CXXUnresolvedConstructExpr = 46,
+                    CXXUuidofExpr = 47,
+                    CallExpr = 48,
+                    CUDAKernelCallExpr = 49,
+                    CXXMemberCallExpr = 50,
+                    CXXOperatorCallExpr = 51,
+                    UserDefinedLiteral = 52,
+                    CStyleCastExpr = 53,
+                    CXXFunctionalCastExpr = 54,
+                    CXXConstCastExpr = 55,
+                    CXXDynamicCastExpr = 56,
+                    CXXReinterpretCastExpr = 57,
+                    CXXStaticCastExpr = 58,
+                    ImplicitCastExpr = 60,
+                    CharacterLiteral = 61,
+                    ChooseExpr = 62,
+                    CompoundLiteralExpr = 63,
+                    ConvertVectorExpr = 64,
+                    CoawaitExpr = 65,
+                    CoyieldExpr = 66,
+                    DeclRefExpr = 67,
+                    DependentCoawaitExpr = 68,
+                    DependentScopeDeclRefExpr = 69,
+                    DesignatedInitExpr = 70,
+                    DesignatedInitUpdateExpr = 71,
+                    ExpressionTraitExpr = 72,
+                    ExtVectorElementExpr = 73,
+                    FixedPointLiteral = 74,
+                    FloatingLiteral = 75,
+                    ConstantExpr = 76,
+                    ExprWithCleanups = 77,
+                    FunctionParmPackExpr = 78,
+                    GNUNullExpr = 79,
+                    GenericSelectionExpr = 80,
+                    ImaginaryLiteral = 81,
+                    ImplicitValueInitExpr = 82,
+                    InitListExpr = 83,
+                    IntegerLiteral = 84,
+                    LambdaExpr = 85,
+                    MSPropertyRefExpr = 86,
+                    MSPropertySubscriptExpr = 87,
+                    MaterializeTemporaryExpr = 88,
+                    MemberExpr = 89,
+                    NoInitExpr = 90,
+                    OffsetOfExpr = 107,
+                    OpaqueValueExpr = 108,
+                    UnresolvedLookupExpr = 109,
+                    UnresolvedMemberExpr = 110,
+                    PackExpansionExpr = 111,
+                    ParenExpr = 112,
+                    ParenListExpr = 113,
+                    PredefinedExpr = 114,
+                    PseudoObjectExpr = 115,
+                    ShuffleVectorExpr = 116,
+                    SizeOfPackExpr = 117,
+                    StmtExpr = 118,
+                    StringLiteral = 119,
+                    SubstNonTypeTemplateParmExpr = 120,
+                    SubstNonTypeTemplateParmPackExpr = 121,
+                    TypeTraitExpr = 122,
+                    TypoExpr = 123,
+                    UnaryExprOrTypeTraitExpr = 124,
+                    UnaryOperator = 125,
+                    VAArgExpr = 126,
+                    ForStmt = 127,
+                    GotoStmt = 128,
+                    IfStmt = 129,
+                    IndirectGotoStmt = 130,
+                    LabelStmt = 131,
+                    MSDependentExistsStmt = 132,
+                    NullStmt = 133,
+                    ReturnStmt = 188,
+                    SEHExceptStmt = 189,
+                    SEHFinallyStmt = 190,
+                    SEHLeaveStmt = 191,
+                    SEHTryStmt = 192,
+                    CaseStmt = 193,
+                    DefaultStmt = 194,
+                    SwitchStmt = 195,
+                    WhileStmt = 196
+                };
 
                 property ::CppSharp::CppParser::AST::Stmt* NativePtr;
                 property System::IntPtr __Instance
@@ -209,22 +208,28 @@ namespace CppSharp
                 static Stmt^ __CreateInstance(::System::IntPtr native);
                 Stmt();
 
-                Stmt(CppSharp::Parser::AST::StmtClass klass);
+                Stmt(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 Stmt(CppSharp::Parser::AST::Stmt^ _0);
 
                 ~Stmt();
 
-                property CppSharp::Parser::AST::StmtClass StmtClass
+                property CppSharp::Parser::AST::Stmt::StmtClass stmtClass
                 {
-                    CppSharp::Parser::AST::StmtClass get();
-                    void set(CppSharp::Parser::AST::StmtClass);
+                    CppSharp::Parser::AST::Stmt::StmtClass get();
+                    void set(CppSharp::Parser::AST::Stmt::StmtClass);
                 }
 
                 property CppSharp::Parser::SourceRange^ SourceRange
                 {
                     CppSharp::Parser::SourceRange^ get();
                     void set(CppSharp::Parser::SourceRange^);
+                }
+
+                property CppSharp::Parser::SourceLocation BeginLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
 
                 property CppSharp::Parser::SourceLocation EndLoc
@@ -239,7 +244,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Stmt^);
                 }
 
-                static operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
             protected:
                 bool __ownsNativeInstance;
@@ -386,7 +391,7 @@ namespace CppSharp
                 static SwitchCase^ __CreateInstance(::System::IntPtr native);
                 SwitchCase();
 
-                SwitchCase(CppSharp::Parser::AST::StmtClass klass);
+                SwitchCase(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 SwitchCase(CppSharp::Parser::AST::SwitchCase^ _0);
 
@@ -410,7 +415,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Stmt^);
                 }
 
-                static operator CppSharp::Parser::AST::SwitchCase^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::SwitchCase^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class CaseStmt : CppSharp::Parser::AST::SwitchCase
@@ -951,7 +956,7 @@ namespace CppSharp
                 static AsmStmt^ __CreateInstance(::System::IntPtr native);
                 AsmStmt();
 
-                AsmStmt(CppSharp::Parser::AST::StmtClass klass);
+                AsmStmt(CppSharp::Parser::AST::Stmt::StmtClass klass);
 
                 AsmStmt(CppSharp::Parser::AST::AsmStmt^ _0);
 
@@ -1033,7 +1038,7 @@ namespace CppSharp
 
                 void Clearoutputs();
 
-                static operator CppSharp::Parser::AST::AsmStmt^(CppSharp::Parser::AST::StmtClass klass);
+                static operator CppSharp::Parser::AST::AsmStmt^(CppSharp::Parser::AST::Stmt::StmtClass klass);
             };
 
             public ref class GCCAsmStmt : CppSharp::Parser::AST::AsmStmt

@@ -155,11 +155,11 @@ CppSharp::Parser::AST::Expr::Expr()
     NativePtr = new ::CppSharp::CppParser::AST::Expr();
 }
 
-CppSharp::Parser::AST::Expr::Expr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::Expr::Expr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::Expr(__arg0);
 }
 
@@ -173,9 +173,9 @@ CppSharp::Parser::AST::Expr::Expr(CppSharp::Parser::AST::Expr^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::Expr(__arg0);
 }
 
-CppSharp::Parser::AST::Expr::operator CppSharp::Parser::AST::Expr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::Expr::operator CppSharp::Parser::AST::Expr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::Expr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::Expr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)____ret);
@@ -344,11 +344,11 @@ CppSharp::Parser::AST::FullExpr::FullExpr()
     NativePtr = new ::CppSharp::CppParser::AST::FullExpr();
 }
 
-CppSharp::Parser::AST::FullExpr::FullExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::FullExpr::FullExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::FullExpr(__arg0);
 }
 
@@ -362,9 +362,9 @@ CppSharp::Parser::AST::FullExpr::FullExpr(CppSharp::Parser::AST::FullExpr^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::FullExpr(__arg0);
 }
 
-CppSharp::Parser::AST::FullExpr::operator CppSharp::Parser::AST::FullExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::FullExpr::operator CppSharp::Parser::AST::FullExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::FullExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::FullExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FullExpr((::CppSharp::CppParser::AST::FullExpr*)____ret);
@@ -1634,11 +1634,11 @@ CppSharp::Parser::AST::CallExpr::CallExpr()
     NativePtr = new ::CppSharp::CppParser::AST::CallExpr();
 }
 
-CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::CallExpr(__arg0);
 }
 
@@ -1672,9 +1672,9 @@ CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::CallExpr^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::CallExpr(__arg0);
 }
 
-CppSharp::Parser::AST::CallExpr::operator CppSharp::Parser::AST::CallExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CallExpr::operator CppSharp::Parser::AST::CallExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CallExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CallExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)____ret);
@@ -2045,11 +2045,11 @@ CppSharp::Parser::AST::CastExpr::CastExpr()
     NativePtr = new ::CppSharp::CppParser::AST::CastExpr();
 }
 
-CppSharp::Parser::AST::CastExpr::CastExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CastExpr::CastExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::CastExpr(__arg0);
 }
 
@@ -2063,9 +2063,9 @@ CppSharp::Parser::AST::CastExpr::CastExpr(CppSharp::Parser::AST::CastExpr^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::CastExpr(__arg0);
 }
 
-CppSharp::Parser::AST::CastExpr::operator CppSharp::Parser::AST::CastExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CastExpr::operator CppSharp::Parser::AST::CastExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CastExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CastExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*)____ret);
@@ -2204,11 +2204,11 @@ CppSharp::Parser::AST::ExplicitCastExpr::ExplicitCastExpr()
     NativePtr = new ::CppSharp::CppParser::AST::ExplicitCastExpr();
 }
 
-CppSharp::Parser::AST::ExplicitCastExpr::ExplicitCastExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::ExplicitCastExpr::ExplicitCastExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::ExplicitCastExpr(__arg0);
 }
 
@@ -2222,9 +2222,9 @@ CppSharp::Parser::AST::ExplicitCastExpr::ExplicitCastExpr(CppSharp::Parser::AST:
     NativePtr = new ::CppSharp::CppParser::AST::ExplicitCastExpr(__arg0);
 }
 
-CppSharp::Parser::AST::ExplicitCastExpr::operator CppSharp::Parser::AST::ExplicitCastExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::ExplicitCastExpr::operator CppSharp::Parser::AST::ExplicitCastExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::ExplicitCastExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::ExplicitCastExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)____ret);
@@ -2322,11 +2322,11 @@ CppSharp::Parser::AST::BinaryOperator::BinaryOperator()
     NativePtr = new ::CppSharp::CppParser::AST::BinaryOperator();
 }
 
-CppSharp::Parser::AST::BinaryOperator::BinaryOperator(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::BinaryOperator::BinaryOperator(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::BinaryOperator(__arg0);
 }
 
@@ -2340,9 +2340,9 @@ CppSharp::Parser::AST::BinaryOperator::BinaryOperator(CppSharp::Parser::AST::Bin
     NativePtr = new ::CppSharp::CppParser::AST::BinaryOperator(__arg0);
 }
 
-CppSharp::Parser::AST::BinaryOperator::operator CppSharp::Parser::AST::BinaryOperator^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::BinaryOperator::operator CppSharp::Parser::AST::BinaryOperator^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::BinaryOperator) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::BinaryOperator(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::BinaryOperator((::CppSharp::CppParser::AST::BinaryOperator*)____ret);
@@ -2618,11 +2618,11 @@ CppSharp::Parser::AST::AbstractConditionalOperator::AbstractConditionalOperator(
     NativePtr = new ::CppSharp::CppParser::AST::AbstractConditionalOperator();
 }
 
-CppSharp::Parser::AST::AbstractConditionalOperator::AbstractConditionalOperator(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::AbstractConditionalOperator::AbstractConditionalOperator(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::AbstractConditionalOperator(__arg0);
 }
 
@@ -2636,9 +2636,9 @@ CppSharp::Parser::AST::AbstractConditionalOperator::AbstractConditionalOperator(
     NativePtr = new ::CppSharp::CppParser::AST::AbstractConditionalOperator(__arg0);
 }
 
-CppSharp::Parser::AST::AbstractConditionalOperator::operator CppSharp::Parser::AST::AbstractConditionalOperator^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::AbstractConditionalOperator::operator CppSharp::Parser::AST::AbstractConditionalOperator^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::AbstractConditionalOperator) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::AbstractConditionalOperator(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::AbstractConditionalOperator((::CppSharp::CppParser::AST::AbstractConditionalOperator*)____ret);
@@ -4851,11 +4851,11 @@ CppSharp::Parser::AST::CXXNamedCastExpr::CXXNamedCastExpr()
     NativePtr = new ::CppSharp::CppParser::AST::CXXNamedCastExpr();
 }
 
-CppSharp::Parser::AST::CXXNamedCastExpr::CXXNamedCastExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CXXNamedCastExpr::CXXNamedCastExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::CXXNamedCastExpr(__arg0);
 }
 
@@ -4869,9 +4869,9 @@ CppSharp::Parser::AST::CXXNamedCastExpr::CXXNamedCastExpr(CppSharp::Parser::AST:
     NativePtr = new ::CppSharp::CppParser::AST::CXXNamedCastExpr(__arg0);
 }
 
-CppSharp::Parser::AST::CXXNamedCastExpr::operator CppSharp::Parser::AST::CXXNamedCastExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CXXNamedCastExpr::operator CppSharp::Parser::AST::CXXNamedCastExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CXXNamedCastExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CXXNamedCastExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)____ret);
@@ -5814,11 +5814,11 @@ CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr()
     NativePtr = new ::CppSharp::CppParser::AST::CXXConstructExpr();
 }
 
-CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::CXXConstructExpr(__arg0);
 }
 
@@ -5852,9 +5852,9 @@ CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST:
     NativePtr = new ::CppSharp::CppParser::AST::CXXConstructExpr(__arg0);
 }
 
-CppSharp::Parser::AST::CXXConstructExpr::operator CppSharp::Parser::AST::CXXConstructExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CXXConstructExpr::operator CppSharp::Parser::AST::CXXConstructExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CXXConstructExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CXXConstructExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CXXConstructExpr((::CppSharp::CppParser::AST::CXXConstructExpr*)____ret);
@@ -7014,11 +7014,11 @@ CppSharp::Parser::AST::OverloadExpr::OverloadExpr()
     NativePtr = new ::CppSharp::CppParser::AST::OverloadExpr();
 }
 
-CppSharp::Parser::AST::OverloadExpr::OverloadExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::OverloadExpr::OverloadExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::OverloadExpr(__arg0);
 }
 
@@ -7032,9 +7032,9 @@ CppSharp::Parser::AST::OverloadExpr::OverloadExpr(CppSharp::Parser::AST::Overloa
     NativePtr = new ::CppSharp::CppParser::AST::OverloadExpr(__arg0);
 }
 
-CppSharp::Parser::AST::OverloadExpr::operator CppSharp::Parser::AST::OverloadExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::OverloadExpr::operator CppSharp::Parser::AST::OverloadExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::OverloadExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::OverloadExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::OverloadExpr((::CppSharp::CppParser::AST::OverloadExpr*)____ret);
@@ -8359,11 +8359,11 @@ CppSharp::Parser::AST::CoroutineSuspendExpr::CoroutineSuspendExpr()
     NativePtr = new ::CppSharp::CppParser::AST::CoroutineSuspendExpr();
 }
 
-CppSharp::Parser::AST::CoroutineSuspendExpr::CoroutineSuspendExpr(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CoroutineSuspendExpr::CoroutineSuspendExpr(CppSharp::Parser::AST::Stmt::StmtClass klass)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)nullptr)
 {
     __ownsNativeInstance = true;
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     NativePtr = new ::CppSharp::CppParser::AST::CoroutineSuspendExpr(__arg0);
 }
 
@@ -8377,9 +8377,9 @@ CppSharp::Parser::AST::CoroutineSuspendExpr::CoroutineSuspendExpr(CppSharp::Pars
     NativePtr = new ::CppSharp::CppParser::AST::CoroutineSuspendExpr(__arg0);
 }
 
-CppSharp::Parser::AST::CoroutineSuspendExpr::operator CppSharp::Parser::AST::CoroutineSuspendExpr^(CppSharp::Parser::AST::StmtClass klass)
+CppSharp::Parser::AST::CoroutineSuspendExpr::operator CppSharp::Parser::AST::CoroutineSuspendExpr^(CppSharp::Parser::AST::Stmt::StmtClass klass)
 {
-    auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
+    auto __arg0 = (::CppSharp::CppParser::AST::Stmt::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CoroutineSuspendExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CoroutineSuspendExpr(__ret);
     return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CoroutineSuspendExpr((::CppSharp::CppParser::AST::CoroutineSuspendExpr*)____ret);

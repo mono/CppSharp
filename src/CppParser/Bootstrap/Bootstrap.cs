@@ -155,15 +155,13 @@ namespace CppSharp
             var stmtClass = stmtUnit.FindNamespace("clang").FindClass("Stmt");
 
             var stmtClassEnum = stmtClass.FindEnum("StmtClass");
-            stmtClass.Declarations.Remove(stmtClassEnum);
             CleanupEnumItems(stmtClassEnum);
 
             var stmtSubclassVisitor = new SubclassVisitor(stmtClass);
             stmtUnit.Visit(stmtSubclassVisitor);
             stmtCxxUnit.Visit(stmtSubclassVisitor);
 
-            var decls = new Declaration[] { stmtClassEnum }
-                .Union(stmtSubclassVisitor.Classes);
+            var decls = stmtSubclassVisitor.Classes;
 
             // Write the native declarations headers
             var declsCodeGen = new StmtDeclarationsCodeGenerator(ctx, decls);
@@ -628,7 +626,7 @@ namespace CppSharp
             WriteLineIndent("return default(TRet);");
             NewLine();
 
-            WriteLine($"switch({ParamName}.StmtClass)");
+            WriteLine($"switch({ParamName}.stmtClass)");
             WriteOpenBraceAndIndent();
 
             var enumItems = StmtClassEnum != null ?
@@ -648,7 +646,7 @@ namespace CppSharp
         {
             foreach (var className in classes)
             {
-                WriteLine($"case StmtClass.{className}:");
+                WriteLine($"case Stmt.StmtClass.{className}:");
                 WriteOpenBraceAndIndent();
 
                 WriteLine($"var _{ParamName} = {className}.__CreateInstance({ParamName}.__Instance);");
@@ -664,9 +662,9 @@ namespace CppSharp
                 UnindentAndWriteCloseBrace();
             }
             
-            WriteLine($"default:");
-            WriteLineIndent($"throw new System.NotImplementedException(" +
-                $"{ParamName}.StmtClass.ToString());");
+            WriteLine("default:");
+            WriteLineIndent("throw new System.NotImplementedException(" +
+                $"{ParamName}.stmtClass.ToString());");
         }
 
         private void GenerateConverter()
@@ -872,9 +870,6 @@ namespace CppSharp
             if (IsInheritedClass(@class))
                 WriteLine($"{@class.Name}(StmtClass klass);");
 
-            if (@class.Name == "Stmt")
-                WriteLine("StmtClass stmtClass;");
-
             foreach (var method in @class.Methods)
             {
                 if (SkipMethod(method))
@@ -989,7 +984,7 @@ namespace CppSharp
         {
             foreach (var property in @class.Properties)
             {
-                if (SkipProperty(property))
+                if (SkipProperty(property) || property.Name == "stmtClass")
                     continue;
 
                 var typeName = GetDeclTypeName(property);
@@ -1383,16 +1378,12 @@ namespace CppSharp
                     return true;
             }
 
-            if (property.Name == "beginLoc" || property.Name == "endLoc" &&
+            if ((property.Name == "beginLoc" || property.Name == "endLoc") &&
                 @class.Name != "Stmt")
                 return true;
 
-            switch (property.Name)
-            {
-                case "stmtClass":
-                case "stmtClassName":
-                    return true;
-            }
+            if (property.Name == "stmtClassName")
+                return true;
 
             var typeName = property.Type.Visit(CppTypePrinter).Type;
 
@@ -1653,6 +1644,7 @@ namespace CppSharp
                     case "literalOperatorKind":
                     case "initializationStyle":
                     case "capturedStmt":
+                    case "stmtClass":
                         hasConflict = true;
                         break;
                 }
