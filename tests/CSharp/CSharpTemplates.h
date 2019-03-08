@@ -42,6 +42,7 @@ public:
     T getDependent(const T& t);
     const T* propertyReturnDependentPointer();
     static T staticDependent(const T& t);
+    void hasDefaultDependentParam(T* ptr, const T& refT = T());
     template <typename AdditionalDependentType>
     void usesAdditionalDependentType(AdditionalDependentType additionalDependentType);
     static const int independentConst;
@@ -116,6 +117,11 @@ template <typename T>
 T IndependentFields<T>::staticDependent(const T& t)
 {
     return t;
+}
+
+template <typename T>
+void IndependentFields<T>::hasDefaultDependentParam(T* ptr, const T& refT)
+{
 }
 
 template <typename T>

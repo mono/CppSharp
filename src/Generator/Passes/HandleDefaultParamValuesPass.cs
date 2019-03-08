@@ -43,6 +43,15 @@ namespace CppSharp.Passes
             var overloadIndices = new List<int>(function.Parameters.Count);
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
+                Type type = parameter.Type.Desugar(resolveTemplateSubstitution: false);
+                type = (type.GetFinalPointee() ?? type).Desugar(
+                    resolveTemplateSubstitution: false);
+                if (type is TemplateParameterSubstitutionType)
+                {
+                    parameter.DefaultArgument = null;
+                    continue;
+                }
+
                 var result = parameter.DefaultArgument.String;
                 if (PrintExpression(function, parameter.Type,
                         parameter.OriginalDefaultArgument, ref result) == null)

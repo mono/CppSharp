@@ -100,6 +100,14 @@ namespace CppSharp.Passes
             foreach (var parameter in extensionMethod.Parameters)
             {
                 var qualType = parameter.QualifiedType;
+                if (parameter.DefaultArgument != null)
+                {
+                    Type type = qualType.Type.Desugar(resolveTemplateSubstitution: false);
+                    type = (type.GetFinalPointee() ?? type).Desugar(
+                        resolveTemplateSubstitution: false);
+                    if (type is TemplateParameterSubstitutionType)
+                        parameter.DefaultArgument = null;
+                }
                 RemoveTemplateSubstitution(ref qualType);
                 parameter.QualifiedType = qualType;
             }
