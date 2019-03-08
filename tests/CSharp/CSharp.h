@@ -1301,3 +1301,12 @@ private:
 
 DLL_API void va_listFunction(va_list v);
 DLL_API char* returnCharPointer();
+
+/* User functions. */
+struct {
+    struct {
+        struct {
+            int(*forIntegers)(int b, short s, unsigned int i);
+        } example;
+    } root;
+} kotlin;

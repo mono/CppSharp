@@ -10,12 +10,19 @@ namespace CppSharp.Passes
     public class CleanInvalidDeclNamesPass : TranslationUnitPass
     {
         private int uniqueName;
+        private int globalUniqueName;
 
-        string CheckName(string name)
+        string CheckName(Declaration decl)
         {
+            string name = decl.Name;
+
+            // If the decl is a class, then generate a unique name.
+            if (string.IsNullOrWhiteSpace(name) && decl is Class)
+                return $"_{globalUniqueName++}";
+
             // Generate a new name if the decl still does not have a name
             if (string.IsNullOrWhiteSpace(name))
-                return string.Format("_{0}", uniqueName++);
+                return $"_{uniqueName++}";
 
             // Clean up the item name if the first digit is not a valid name.
             if (char.IsNumber(name[0]))
@@ -42,8 +49,7 @@ namespace CppSharp.Passes
             // types with empty names are assumed to be private
             if (decl is Class && string.IsNullOrWhiteSpace(decl.Name))
             {
-                decl.Name = decl.Namespace.Name == "_" ? "__" : "_";
-                decl.ExplicitlyIgnore();
+                decl.Name = CheckName(decl);
                 return true;
             }
 
@@ -51,7 +57,7 @@ namespace CppSharp.Passes
             var method = function as Method;
             if ((function == null || !function.IsOperator) && !(decl is Enumeration) &&
                 (method == null || method.Kind == CXXMethodKind.Normal))
-                decl.Name = CheckName(decl.Name);
+                decl.Name = CheckName(decl);
 
             return true;
         }
@@ -63,10 +69,17 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            var currentUniqueName = uniqueName;
+            if (!VisitDeclaration(@class))
+                return false;
+
+            // Remove the class from the Visited list so the base.VisitClassDecl call
+            // below does not early out before processing the declaration.
+            // We have to do this because we need to call VisitDeclaration first
+            // so that the per-class unique naming logic works.
+            Visited.Remove(@class);
+
             uniqueName = 0;
             base.VisitClassDecl(@class);
-            uniqueName = currentUniqueName;
 
             if (!@class.IsDependent)
                 foreach (var field in @class.Layout.Fields.Where(f => string.IsNullOrEmpty(f.Name)))
@@ -96,20 +109,16 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            var currentUniqueName = uniqueName;
             uniqueName = 0;
             var ret = base.VisitFunctionDecl(function);
-            uniqueName = currentUniqueName;
 
             return ret;
         }
 
         public override bool VisitEvent(Event @event)
         {
-            var currentUniqueName = uniqueName;
             uniqueName = 0;
             var ret = base.VisitEvent(@event);
-            uniqueName = currentUniqueName;
 
             return ret;
         }
@@ -117,10 +126,8 @@ namespace CppSharp.Passes
         public override bool VisitFunctionType(FunctionType type,
             TypeQualifiers quals)
         {
-            var currentUniqueName = this.uniqueName;
-            this.uniqueName = 0;
+            uniqueName = 0;
             var ret = base.VisitFunctionType(type, quals);
-            this.uniqueName = currentUniqueName;
 
             return ret;
         }
@@ -139,7 +146,7 @@ namespace CppSharp.Passes
             // Try a simple heuristic to make sure we end up with a valid name.
             if (prefix.Length < 3)
             {
-                @enum.Name = CheckName(@enum.Name);
+                @enum.Name = CheckName(@enum);
                 return;
             }
 
@@ -165,7 +172,7 @@ namespace CppSharp.Passes
             if (!base.VisitEnumItemDecl(item))
                 return false;
 
-            item.Name = CheckName(item.Name);
+            item.Name = CheckName(item);
             return true;
         }
 
