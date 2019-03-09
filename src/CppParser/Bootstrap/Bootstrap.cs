@@ -1482,7 +1482,7 @@ namespace CppSharp
                     return true;
             }
 
-            if (property.Name == "beginLoc" || property.Name == "endLoc" &&
+            if ((property.Name == "beginLoc" || property.Name == "endLoc") &&
                 @class.Name != "Stmt")
                 return true;
 
