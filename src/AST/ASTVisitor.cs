@@ -11,7 +11,8 @@ namespace CppSharp.AST
         bool AlreadyVisited(Type type);
     }
 
-    public interface IAstVisitor<out T> : ITypeVisitor<T>, IDeclVisitor<T>
+    public interface IAstVisitor<out T> : ITypeVisitor<T>,
+        IDeclVisitor<T>, IStmtVisitor<T>
     {
         AstVisitorOptions VisitOptions { get; }
     }

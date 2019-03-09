@@ -522,6 +522,686 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public bool VisitStmt(Stmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDeclStmt(DeclStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitNullStmt(NullStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCompoundStmt(CompoundStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSwitchCase(SwitchCase stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCaseStmt(CaseStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDefaultStmt(DefaultStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitLabelStmt(LabelStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAttributedStmt(AttributedStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitIfStmt(IfStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSwitchStmt(SwitchStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitWhileStmt(WhileStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDoStmt(DoStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitForStmt(ForStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitGotoStmt(GotoStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitIndirectGotoStmt(IndirectGotoStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitContinueStmt(ContinueStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitBreakStmt(BreakStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitReturnStmt(ReturnStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAsmStmt(AsmStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitGCCAsmStmt(GCCAsmStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMSAsmStmt(MSAsmStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSEHExceptStmt(SEHExceptStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSEHFinallyStmt(SEHFinallyStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSEHTryStmt(SEHTryStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSEHLeaveStmt(SEHLeaveStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCapturedStmt(CapturedStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXCatchStmt(CXXCatchStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXTryStmt(CXXTryStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXForRangeStmt(CXXForRangeStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMSDependentExistsStmt(MSDependentExistsStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCoroutineBodyStmt(CoroutineBodyStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCoreturnStmt(CoreturnStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitExpr(Expr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitFullExpr(FullExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitConstantExpr(ConstantExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitOpaqueValueExpr(OpaqueValueExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDeclRefExpr(DeclRefExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitIntegerLiteral(IntegerLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitFixedPointLiteral(FixedPointLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCharacterLiteral(CharacterLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitFloatingLiteral(FloatingLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitImaginaryLiteral(ImaginaryLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitStringLiteral(StringLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitPredefinedExpr(PredefinedExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitParenExpr(ParenExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnaryOperator(UnaryOperator stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitOffsetOfExpr(OffsetOfExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitArraySubscriptExpr(ArraySubscriptExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCallExpr(CallExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMemberExpr(MemberExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCompoundLiteralExpr(CompoundLiteralExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCastExpr(CastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitImplicitCastExpr(ImplicitCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitExplicitCastExpr(ExplicitCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCStyleCastExpr(CStyleCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitBinaryOperator(BinaryOperator stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCompoundAssignOperator(CompoundAssignOperator stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAbstractConditionalOperator(AbstractConditionalOperator stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitConditionalOperator(ConditionalOperator stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitBinaryConditionalOperator(BinaryConditionalOperator stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAddrLabelExpr(AddrLabelExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitStmtExpr(StmtExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitShuffleVectorExpr(ShuffleVectorExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitConvertVectorExpr(ConvertVectorExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitChooseExpr(ChooseExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitGNUNullExpr(GNUNullExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitVAArgExpr(VAArgExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitInitListExpr(InitListExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDesignatedInitExpr(DesignatedInitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitNoInitExpr(NoInitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDesignatedInitUpdateExpr(DesignatedInitUpdateExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitArrayInitLoopExpr(ArrayInitLoopExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitArrayInitIndexExpr(ArrayInitIndexExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitImplicitValueInitExpr(ImplicitValueInitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitParenListExpr(ParenListExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitGenericSelectionExpr(GenericSelectionExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitExtVectorElementExpr(ExtVectorElementExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitBlockExpr(BlockExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAsTypeExpr(AsTypeExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitPseudoObjectExpr(PseudoObjectExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitAtomicExpr(AtomicExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTypoExpr(TypoExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXOperatorCallExpr(CXXOperatorCallExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXMemberCallExpr(CXXMemberCallExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCUDAKernelCallExpr(CUDAKernelCallExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXNamedCastExpr(CXXNamedCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXStaticCastExpr(CXXStaticCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXDynamicCastExpr(CXXDynamicCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXReinterpretCastExpr(CXXReinterpretCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXConstCastExpr(CXXConstCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUserDefinedLiteral(UserDefinedLiteral stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXNullPtrLiteralExpr(CXXNullPtrLiteralExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXStdInitializerListExpr(CXXStdInitializerListExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXTypeidExpr(CXXTypeidExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMSPropertyRefExpr(MSPropertyRefExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMSPropertySubscriptExpr(MSPropertySubscriptExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXUuidofExpr(CXXUuidofExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXThisExpr(CXXThisExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXThrowExpr(CXXThrowExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXDefaultArgExpr(CXXDefaultArgExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXDefaultInitExpr(CXXDefaultInitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXBindTemporaryExpr(CXXBindTemporaryExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXConstructExpr(CXXConstructExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXInheritedCtorInitExpr(CXXInheritedCtorInitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXFunctionalCastExpr(CXXFunctionalCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXTemporaryObjectExpr(CXXTemporaryObjectExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitLambdaExpr(LambdaExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXScalarValueInitExpr(CXXScalarValueInitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXNewExpr(CXXNewExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXDeleteExpr(CXXDeleteExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXPseudoDestructorExpr(CXXPseudoDestructorExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitTypeTraitExpr(TypeTraitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitArrayTypeTraitExpr(ArrayTypeTraitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitExpressionTraitExpr(ExpressionTraitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitOverloadExpr(OverloadExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnresolvedLookupExpr(UnresolvedLookupExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDependentScopeDeclRefExpr(DependentScopeDeclRefExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitExprWithCleanups(ExprWithCleanups stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXUnresolvedConstructExpr(CXXUnresolvedConstructExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXDependentScopeMemberExpr(CXXDependentScopeMemberExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnresolvedMemberExpr(UnresolvedMemberExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXNoexceptExpr(CXXNoexceptExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitPackExpansionExpr(PackExpansionExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSizeOfPackExpr(SizeOfPackExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSubstNonTypeTemplateParmExpr(SubstNonTypeTemplateParmExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSubstNonTypeTemplateParmPackExpr(SubstNonTypeTemplateParmPackExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitFunctionParmPackExpr(FunctionParmPackExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMaterializeTemporaryExpr(MaterializeTemporaryExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCXXFoldExpr(CXXFoldExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCoroutineSuspendExpr(CoroutineSuspendExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCoawaitExpr(CoawaitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDependentCoawaitExpr(DependentCoawaitExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCoyieldExpr(CoyieldExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 
