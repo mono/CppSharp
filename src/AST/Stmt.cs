@@ -140,7 +140,7 @@ namespace CppSharp.AST
         WhileStmt = 196,
     }
 
-    public partial class Stmt
+    public abstract partial class Stmt
     {
         public Stmt()
         {
@@ -149,6 +149,8 @@ namespace CppSharp.AST
         public SourceRange SourceRange { get; set; }
         public SourceLocation EndLoc { get; set; }
         public Stmt StripLabelLikeStatements { get; set; }
+
+        public abstract T Visit<T>(IStmtVisitor<T> visitor);
     }
 
     public partial class DeclStmt : Stmt
@@ -160,6 +162,9 @@ namespace CppSharp.AST
         public List<Declaration> Decls { get; private set; } = new List<Declaration>();
         public bool IsSingleDecl { get; set; }
         public Declaration SingleDecl { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitDeclStmt(this);
     }
 
     public partial class NullStmt : Stmt
@@ -170,6 +175,9 @@ namespace CppSharp.AST
 
         public SourceLocation SemiLoc { get; set; }
         public bool HasLeadingEmptyMacro { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitNullStmt(this);
     }
 
     public partial class CompoundStmt : Stmt
@@ -185,9 +193,12 @@ namespace CppSharp.AST
         public Stmt BodyBack { get; set; }
         public SourceLocation LBracLoc { get; set; }
         public SourceLocation RBracLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCompoundStmt(this);
     }
 
-    public partial class SwitchCase : Stmt
+    public abstract partial class SwitchCase : Stmt
     {
         public SwitchCase()
         {
@@ -209,6 +220,9 @@ namespace CppSharp.AST
         public Expr LHS { get; set; }
         public Expr RHS { get; set; }
         public bool CaseStmtIsGNURange { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCaseStmt(this);
     }
 
     public partial class DefaultStmt : SwitchCase
@@ -218,6 +232,9 @@ namespace CppSharp.AST
         }
 
         public SourceLocation DefaultLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitDefaultStmt(this);
     }
 
     public partial class LabelStmt : Stmt
@@ -229,6 +246,9 @@ namespace CppSharp.AST
         public SourceLocation IdentLoc { get; set; }
         public Stmt SubStmt { get; set; }
         public string Name { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitLabelStmt(this);
     }
 
     public partial class AttributedStmt : Stmt
@@ -239,6 +259,9 @@ namespace CppSharp.AST
 
         public SourceLocation AttrLoc { get; set; }
         public Stmt SubStmt { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitAttributedStmt(this);
     }
 
     public partial class IfStmt : Stmt
@@ -259,6 +282,9 @@ namespace CppSharp.AST
         public bool HasElseStorage { get; set; }
         public DeclStmt ConditionVariableDeclStmt { get; set; }
         public bool IsObjCAvailabilityCheck { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitIfStmt(this);
     }
 
     public partial class SwitchStmt : Stmt
@@ -275,6 +301,9 @@ namespace CppSharp.AST
         public bool HasVarStorage { get; set; }
         public DeclStmt ConditionVariableDeclStmt { get; set; }
         public bool IsAllEnumCasesCovered { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSwitchStmt(this);
     }
 
     public partial class WhileStmt : Stmt
@@ -288,6 +317,9 @@ namespace CppSharp.AST
         public SourceLocation WhileLoc { get; set; }
         public bool HasVarStorage { get; set; }
         public DeclStmt ConditionVariableDeclStmt { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitWhileStmt(this);
     }
 
     public partial class DoStmt : Stmt
@@ -301,6 +333,9 @@ namespace CppSharp.AST
         public SourceLocation DoLoc { get; set; }
         public SourceLocation WhileLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitDoStmt(this);
     }
 
     public partial class ForStmt : Stmt
@@ -317,6 +352,9 @@ namespace CppSharp.AST
         public SourceLocation LParenLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
         public DeclStmt ConditionVariableDeclStmt { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitForStmt(this);
     }
 
     public partial class GotoStmt : Stmt
@@ -327,6 +365,9 @@ namespace CppSharp.AST
 
         public SourceLocation GotoLoc { get; set; }
         public SourceLocation LabelLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitGotoStmt(this);
     }
 
     public partial class IndirectGotoStmt : Stmt
@@ -338,6 +379,9 @@ namespace CppSharp.AST
         public SourceLocation GotoLoc { get; set; }
         public SourceLocation StarLoc { get; set; }
         public Expr Target { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitIndirectGotoStmt(this);
     }
 
     public partial class ContinueStmt : Stmt
@@ -347,6 +391,9 @@ namespace CppSharp.AST
         }
 
         public SourceLocation ContinueLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitContinueStmt(this);
     }
 
     public partial class BreakStmt : Stmt
@@ -356,6 +403,9 @@ namespace CppSharp.AST
         }
 
         public SourceLocation BreakLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitBreakStmt(this);
     }
 
     public partial class ReturnStmt : Stmt
@@ -366,9 +416,12 @@ namespace CppSharp.AST
 
         public Expr RetValue { get; set; }
         public SourceLocation ReturnLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitReturnStmt(this);
     }
 
-    public partial class AsmStmt : Stmt
+    public abstract partial class AsmStmt : Stmt
     {
         public AsmStmt()
         {
@@ -411,6 +464,9 @@ namespace CppSharp.AST
         }
 
         public SourceLocation RParenLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitGCCAsmStmt(this);
     }
 
     public partial class MSAsmStmt : AsmStmt
@@ -423,6 +479,9 @@ namespace CppSharp.AST
         public bool HasBraces { get; set; }
         public uint NumAsmToks { get; set; }
         public string AsmString { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitMSAsmStmt(this);
     }
 
     public partial class SEHExceptStmt : Stmt
@@ -434,6 +493,9 @@ namespace CppSharp.AST
         public SourceLocation ExceptLoc { get; set; }
         public Expr FilterExpr { get; set; }
         public CompoundStmt Block { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSEHExceptStmt(this);
     }
 
     public partial class SEHFinallyStmt : Stmt
@@ -444,6 +506,9 @@ namespace CppSharp.AST
 
         public SourceLocation FinallyLoc { get; set; }
         public CompoundStmt Block { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSEHFinallyStmt(this);
     }
 
     public partial class SEHTryStmt : Stmt
@@ -458,6 +523,9 @@ namespace CppSharp.AST
         public Stmt Handler { get; set; }
         public SEHExceptStmt ExceptHandler { get; set; }
         public SEHFinallyStmt FinallyHandler { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSEHTryStmt(this);
     }
 
     public partial class SEHLeaveStmt : Stmt
@@ -467,6 +535,9 @@ namespace CppSharp.AST
         }
 
         public SourceLocation LeaveLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSEHLeaveStmt(this);
     }
 
     public partial class CapturedStmt : Stmt
@@ -500,6 +571,9 @@ namespace CppSharp.AST
         public List<Expr> CaptureInits { get; private set; } = new List<Expr>();
         public Stmt capturedStmt { get; set; }
         public uint CaptureSize { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCapturedStmt(this);
     }
 
     public partial class CXXCatchStmt : Stmt
@@ -511,6 +585,9 @@ namespace CppSharp.AST
         public SourceLocation CatchLoc { get; set; }
         public QualifiedType CaughtType { get; set; }
         public Stmt HandlerBlock { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCXXCatchStmt(this);
     }
 
     public partial class CXXTryStmt : Stmt
@@ -522,6 +599,9 @@ namespace CppSharp.AST
         public SourceLocation TryLoc { get; set; }
         public CompoundStmt TryBlock { get; set; }
         public uint NumHandlers { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCXXTryStmt(this);
     }
 
     public partial class CXXForRangeStmt : Stmt
@@ -543,6 +623,9 @@ namespace CppSharp.AST
         public SourceLocation CoawaitLoc { get; set; }
         public SourceLocation ColonLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCXXForRangeStmt(this);
     }
 
     public partial class MSDependentExistsStmt : Stmt
@@ -555,6 +638,9 @@ namespace CppSharp.AST
         public bool IsIfExists { get; set; }
         public bool IsIfNotExists { get; set; }
         public CompoundStmt SubStmt { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitMSDependentExistsStmt(this);
     }
 
     public partial class CoroutineBodyStmt : Stmt
@@ -614,6 +700,9 @@ namespace CppSharp.AST
         public Stmt ResultDecl { get; set; }
         public Stmt ReturnStmt { get; set; }
         public Stmt ReturnStmtOnAllocFailure { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCoroutineBodyStmt(this);
     }
 
     public partial class CoreturnStmt : Stmt
@@ -633,5 +722,8 @@ namespace CppSharp.AST
         public SourceLocation KeywordLoc { get; set; }
         public Expr Operand { get; set; }
         public Expr PromiseCall { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCoreturnStmt(this);
     }
 }

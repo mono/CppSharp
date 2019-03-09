@@ -43,7 +43,7 @@ namespace CppSharp.AST
     /// this will visit all the nodes in a default way that should be useful
     /// for a lot of applications.
     /// </summary>
-    public abstract class AstVisitor : IAstVisitor<bool>, IAstVisited
+    public abstract partial class AstVisitor : IAstVisitor<bool>, IAstVisited
     {
         public ISet<object> Visited { get; private set; }
         public AstVisitorOptions VisitOptions { get; private set; }
@@ -62,6 +62,11 @@ namespace CppSharp.AST
         public bool AlreadyVisited(Declaration decl)
         {
             return !Visited.Add(decl);
+        }
+
+        public bool AlreadyVisited(Stmt stmt)
+        {
+            return !Visited.Add(stmt);
         }
 
         #region Type Visitors
@@ -632,5 +637,10 @@ namespace CppSharp.AST
         }
 
         #endregion
+
+        public virtual bool VisitStmt(Stmt stmt)
+        {
+            return !AlreadyVisited(stmt);
+        }
     }
 }
