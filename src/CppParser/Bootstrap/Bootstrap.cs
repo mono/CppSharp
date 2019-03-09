@@ -185,6 +185,10 @@ namespace CppSharp
             managedCodeGen.GenerateDeclarations();
             WriteFile(managedCodeGen, Path.Combine("AST", "Stmt.cs"));
 
+            managedCodeGen = new ManagedVisitorCodeGenerator(ctx, decls.Union(ExprClasses));
+            managedCodeGen.Process();
+            WriteFile(managedCodeGen, Path.Combine("AST", "StmtVisitor.cs"));
+
             managedCodeGen = new StmtASTConverterCodeGenerator(ctx, decls, stmtClassEnum);
             managedCodeGen.Process();
             WriteFile(managedCodeGen, Path.Combine("Parser", "ASTConverter.Stmt.cs"));
@@ -266,6 +270,9 @@ namespace CppSharp
             //
             // Statements
             //
+
+            if (CodeGeneratorHelpers.IsAbstractStmt(@class))
+                @class.IsAbstract = true;
 
             if (@class.Name.EndsWith("Bitfields"))
                 @class.ExplicitlyIgnore();
@@ -529,9 +536,30 @@ namespace CppSharp
                 WriteLine($"public {typeName} {propertyName} {{ get; set; }}");
             }
 
+            var rootBase = @class.GetNonIgnoredRootBase();
+            var isStmt = rootBase != null && rootBase.Name == "Stmt";
+
+            if (isStmt && !(@class.IsAbstract && @class.Name != "Stmt"))
+            {
+                NewLine();
+                GenerateVisitMethod(@class);
+            }
+
             UnindentAndWriteCloseBrace();
 
             return true;
+        }
+
+        private void GenerateVisitMethod(Class @class)
+        {
+            if (@class.IsAbstract)
+            {
+                WriteLine("public abstract T Visit<T>(IStmtVisitor<T> visitor);");
+                return;
+            }
+
+            WriteLine("public override T Visit<T>(IStmtVisitor<T> visitor) =>");
+            WriteLineIndent("visitor.Visit{0}(this);", @class.Name);
         }
 
         public override string GetBaseClassTypeName(BaseClassSpecifier @base)
@@ -560,6 +588,77 @@ namespace CppSharp
             DeclarationContext context)
         {
 
+        }
+    }
+
+    class ManagedVisitorCodeGenerator : ManagedParserCodeGenerator
+    {
+        public ManagedVisitorCodeGenerator(BindingContext context,
+            IEnumerable<Declaration> declarations)
+            : base(context, declarations)
+        {
+        }
+
+        public override void Process()
+        {
+            GenerateFilePreamble(CommentKind.BCPL);
+            NewLine();
+
+            WriteLine("namespace CppSharp.AST");
+            WriteOpenBraceAndIndent();
+
+            GenerateVisitor();
+            NewLine();
+
+            GenerateVisitorInterface();
+
+            UnindentAndWriteCloseBrace();
+        }
+
+        private void GenerateVisitor()
+        {
+            WriteLine($"public abstract partial class AstVisitor");
+            WriteOpenBraceAndIndent();
+
+            foreach (var @class in Declarations.OfType<Class>())
+            {
+                if (@class.Name == "Stmt") continue;
+
+                PushBlock();
+                var paramName = "stmt";
+                WriteLine("public virtual bool Visit{0}({0} {1})",
+                    @class.Name, paramName);
+                WriteOpenBraceAndIndent();
+
+                var visitName = @class.BaseClass != null ?
+                    @class.BaseClass.Name : "Stmt";
+
+                WriteLine($"if (!Visit{@class.BaseClass.Name}({paramName}))");
+                WriteLineIndent("return false;");
+                NewLine();
+
+                WriteLine("return true;");
+
+                UnindentAndWriteCloseBrace();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+
+            UnindentAndWriteCloseBrace();
+        }
+
+        private void GenerateVisitorInterface()
+        {
+            WriteLine($"public interface IStmtVisitor<out T>");
+            WriteOpenBraceAndIndent();
+
+            foreach (var @class in Declarations.OfType<Class>())
+            {
+                var paramName = "stmt";
+                WriteLine("T Visit{0}({0} {1});",
+                    @class.Name, paramName);
+            }
+
+            UnindentAndWriteCloseBrace();
         }
     }
 
