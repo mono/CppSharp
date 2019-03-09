@@ -147,6 +147,7 @@ namespace CppSharp.AST
         }
 
         public SourceRange SourceRange { get; set; }
+        public SourceLocation BeginLoc { get; set; }
         public SourceLocation EndLoc { get; set; }
         public Stmt StripLabelLikeStatements { get; set; }
 

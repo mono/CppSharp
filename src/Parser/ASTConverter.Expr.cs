@@ -605,6 +605,7 @@ namespace CppSharp
         {
             var _expr = new AST.ConstantExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -629,6 +630,7 @@ namespace CppSharp
         {
             var _expr = new AST.OpaqueValueExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -655,6 +657,7 @@ namespace CppSharp
         {
             var _expr = new AST.DeclRefExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -690,6 +693,7 @@ namespace CppSharp
         {
             var _expr = new AST.IntegerLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -715,6 +719,7 @@ namespace CppSharp
         {
             var _expr = new AST.FixedPointLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -740,6 +745,7 @@ namespace CppSharp
         {
             var _expr = new AST.CharacterLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -766,6 +772,7 @@ namespace CppSharp
         {
             var _expr = new AST.FloatingLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -792,6 +799,7 @@ namespace CppSharp
         {
             var _expr = new AST.ImaginaryLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -816,6 +824,7 @@ namespace CppSharp
         {
             var _expr = new AST.StringLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -854,6 +863,7 @@ namespace CppSharp
         {
             var _expr = new AST.PredefinedExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -879,6 +889,7 @@ namespace CppSharp
         {
             var _expr = new AST.ParenExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -905,6 +916,7 @@ namespace CppSharp
         {
             var _expr = new AST.UnaryOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -938,6 +950,7 @@ namespace CppSharp
         {
             var _expr = new AST.OffsetOfExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -965,6 +978,7 @@ namespace CppSharp
         {
             var _expr = new AST.UnaryExprOrTypeTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -995,6 +1009,7 @@ namespace CppSharp
         {
             var _expr = new AST.ArraySubscriptExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1023,6 +1038,7 @@ namespace CppSharp
         {
             var _expr = new AST.CallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1059,6 +1075,7 @@ namespace CppSharp
         {
             var _expr = new AST.MemberExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1095,6 +1112,7 @@ namespace CppSharp
         {
             var _expr = new AST.CompoundLiteralExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1121,6 +1139,7 @@ namespace CppSharp
         {
             var _expr = new AST.ImplicitCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1152,6 +1171,7 @@ namespace CppSharp
         {
             var _expr = new AST.CStyleCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1185,6 +1205,7 @@ namespace CppSharp
         {
             var _expr = new AST.BinaryOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1227,6 +1248,7 @@ namespace CppSharp
         {
             var _expr = new AST.CompoundAssignOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1271,6 +1293,7 @@ namespace CppSharp
         {
             var _expr = new AST.ConditionalOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1301,6 +1324,7 @@ namespace CppSharp
         {
             var _expr = new AST.BinaryConditionalOperator();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1331,6 +1355,7 @@ namespace CppSharp
         {
             var _expr = new AST.AddrLabelExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1356,6 +1381,7 @@ namespace CppSharp
         {
             var _expr = new AST.StmtExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1382,6 +1408,7 @@ namespace CppSharp
         {
             var _expr = new AST.ShuffleVectorExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1408,6 +1435,7 @@ namespace CppSharp
         {
             var _expr = new AST.ConvertVectorExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1434,6 +1462,7 @@ namespace CppSharp
         {
             var _expr = new AST.ChooseExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1465,6 +1494,7 @@ namespace CppSharp
         {
             var _expr = new AST.GNUNullExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1489,6 +1519,7 @@ namespace CppSharp
         {
             var _expr = new AST.VAArgExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1516,6 +1547,7 @@ namespace CppSharp
         {
             var _expr = new AST.InitListExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1551,6 +1583,7 @@ namespace CppSharp
         {
             var _expr = new AST.DesignatedInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1580,6 +1613,7 @@ namespace CppSharp
         {
             var _expr = new AST.NoInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1603,6 +1637,7 @@ namespace CppSharp
         {
             var _expr = new AST.DesignatedInitUpdateExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1628,6 +1663,7 @@ namespace CppSharp
         {
             var _expr = new AST.ArrayInitLoopExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1653,6 +1689,7 @@ namespace CppSharp
         {
             var _expr = new AST.ArrayInitIndexExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1676,6 +1713,7 @@ namespace CppSharp
         {
             var _expr = new AST.ImplicitValueInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1699,6 +1737,7 @@ namespace CppSharp
         {
             var _expr = new AST.ParenListExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1725,6 +1764,7 @@ namespace CppSharp
         {
             var _expr = new AST.GenericSelectionExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1756,6 +1796,7 @@ namespace CppSharp
         {
             var _expr = new AST.ExtVectorElementExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1784,6 +1825,7 @@ namespace CppSharp
         {
             var _expr = new AST.BlockExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1809,6 +1851,7 @@ namespace CppSharp
         {
             var _expr = new AST.AsTypeExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1835,6 +1878,7 @@ namespace CppSharp
         {
             var _expr = new AST.PseudoObjectExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1862,6 +1906,7 @@ namespace CppSharp
         {
             var _expr = new AST.AtomicExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1900,6 +1945,7 @@ namespace CppSharp
         {
             var _expr = new AST.TypoExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1923,6 +1969,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXOperatorCallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -1964,6 +2011,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXMemberCallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2002,6 +2050,7 @@ namespace CppSharp
         {
             var _expr = new AST.CUDAKernelCallExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2039,6 +2088,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXStaticCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2074,6 +2124,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXDynamicCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2110,6 +2161,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXReinterpretCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2145,6 +2197,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXConstCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2180,6 +2233,7 @@ namespace CppSharp
         {
             var _expr = new AST.UserDefinedLiteral();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2219,6 +2273,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXBoolLiteralExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2244,6 +2299,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXNullPtrLiteralExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2268,6 +2324,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXStdInitializerListExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2292,6 +2349,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXTypeidExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2318,6 +2376,7 @@ namespace CppSharp
         {
             var _expr = new AST.MSPropertyRefExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2345,6 +2404,7 @@ namespace CppSharp
         {
             var _expr = new AST.MSPropertySubscriptExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2371,6 +2431,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXUuidofExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2397,6 +2458,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXThisExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2422,6 +2484,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXThrowExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2448,6 +2511,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXDefaultArgExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2473,6 +2537,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXDefaultInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2498,6 +2563,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXBindTemporaryExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2522,6 +2588,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXConstructExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2558,6 +2625,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXInheritedCtorInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2584,6 +2652,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXFunctionalCastExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2618,6 +2687,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXTemporaryObjectExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2654,6 +2724,7 @@ namespace CppSharp
         {
             var _expr = new AST.LambdaExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2691,6 +2762,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXScalarValueInitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2715,6 +2787,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXNewExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2757,6 +2830,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXDeleteExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2786,6 +2860,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXPseudoDestructorExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2817,6 +2892,7 @@ namespace CppSharp
         {
             var _expr = new AST.TypeTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2842,6 +2918,7 @@ namespace CppSharp
         {
             var _expr = new AST.ArrayTypeTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2868,6 +2945,7 @@ namespace CppSharp
         {
             var _expr = new AST.ExpressionTraitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2893,6 +2971,7 @@ namespace CppSharp
         {
             var _expr = new AST.UnresolvedLookupExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2926,6 +3005,7 @@ namespace CppSharp
         {
             var _expr = new AST.DependentScopeDeclRefExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2956,6 +3036,7 @@ namespace CppSharp
         {
             var _expr = new AST.ExprWithCleanups();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -2982,6 +3063,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXUnresolvedConstructExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3015,6 +3097,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXDependentScopeMemberExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3051,6 +3134,7 @@ namespace CppSharp
         {
             var _expr = new AST.UnresolvedMemberExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3089,6 +3173,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXNoexceptExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3114,6 +3199,7 @@ namespace CppSharp
         {
             var _expr = new AST.PackExpansionExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3139,6 +3225,7 @@ namespace CppSharp
         {
             var _expr = new AST.SizeOfPackExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3168,6 +3255,7 @@ namespace CppSharp
         {
             var _expr = new AST.SubstNonTypeTemplateParmExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3193,6 +3281,7 @@ namespace CppSharp
         {
             var _expr = new AST.SubstNonTypeTemplateParmPackExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3218,6 +3307,7 @@ namespace CppSharp
         {
             var _expr = new AST.FunctionParmPackExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3243,6 +3333,7 @@ namespace CppSharp
         {
             var _expr = new AST.MaterializeTemporaryExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3270,6 +3361,7 @@ namespace CppSharp
         {
             var _expr = new AST.CXXFoldExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3301,6 +3393,7 @@ namespace CppSharp
         {
             var _expr = new AST.CoawaitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3332,6 +3425,7 @@ namespace CppSharp
         {
             var _expr = new AST.DependentCoawaitExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
@@ -3358,6 +3452,7 @@ namespace CppSharp
         {
             var _expr = new AST.CoyieldExpr();
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
+            _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
             _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);

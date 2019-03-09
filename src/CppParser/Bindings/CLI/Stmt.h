@@ -227,6 +227,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceRange^);
                 }
 
+                property CppSharp::Parser::SourceLocation BeginLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
                 property CppSharp::Parser::SourceLocation EndLoc
                 {
                     CppSharp::Parser::SourceLocation get();

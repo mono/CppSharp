@@ -89,6 +89,18 @@ void CppSharp::Parser::AST::Stmt::SourceRange::set(CppSharp::Parser::SourceRange
     ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->sourceRange = *(::CppSharp::CppParser::SourceRange*)value->NativePtr;
 }
 
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::Stmt::BeginLoc::get()
+{
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::AST::Stmt*)NativePtr)->beginLoc);
+}
+
+void CppSharp::Parser::AST::Stmt::BeginLoc::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->beginLoc = _marshal0;
+}
+
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::Stmt::EndLoc::get()
 {
     return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::AST::Stmt*)NativePtr)->endLoc);

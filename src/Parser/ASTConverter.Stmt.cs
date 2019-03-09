@@ -690,6 +690,7 @@ namespace CppSharp
         {
             var _stmt = new AST.DeclStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.IsSingleDecl = stmt.IsSingleDecl;
@@ -706,6 +707,7 @@ namespace CppSharp
         {
             var _stmt = new AST.NullStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.SemiLoc = VisitSourceLocation(stmt.SemiLoc);
@@ -717,6 +719,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CompoundStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.BodyEmpty = stmt.BodyEmpty;
@@ -737,6 +740,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CaseStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.KeywordLoc = VisitSourceLocation(stmt.KeywordLoc);
@@ -754,6 +758,7 @@ namespace CppSharp
         {
             var _stmt = new AST.DefaultStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.KeywordLoc = VisitSourceLocation(stmt.KeywordLoc);
@@ -767,6 +772,7 @@ namespace CppSharp
         {
             var _stmt = new AST.LabelStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.IdentLoc = VisitSourceLocation(stmt.IdentLoc);
@@ -779,6 +785,7 @@ namespace CppSharp
         {
             var _stmt = new AST.AttributedStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.AttrLoc = VisitSourceLocation(stmt.AttrLoc);
@@ -790,6 +797,7 @@ namespace CppSharp
         {
             var _stmt = new AST.IfStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -811,6 +819,7 @@ namespace CppSharp
         {
             var _stmt = new AST.SwitchStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -828,6 +837,7 @@ namespace CppSharp
         {
             var _stmt = new AST.WhileStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -842,6 +852,7 @@ namespace CppSharp
         {
             var _stmt = new AST.DoStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Cond = VisitExpression(stmt.Cond) as AST.Expr;
@@ -856,6 +867,7 @@ namespace CppSharp
         {
             var _stmt = new AST.ForStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Init = VisitStatement(stmt.Init) as AST.Stmt;
@@ -873,6 +885,7 @@ namespace CppSharp
         {
             var _stmt = new AST.GotoStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.GotoLoc = VisitSourceLocation(stmt.GotoLoc);
@@ -884,6 +897,7 @@ namespace CppSharp
         {
             var _stmt = new AST.IndirectGotoStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.GotoLoc = VisitSourceLocation(stmt.GotoLoc);
@@ -896,6 +910,7 @@ namespace CppSharp
         {
             var _stmt = new AST.ContinueStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.ContinueLoc = VisitSourceLocation(stmt.ContinueLoc);
@@ -906,6 +921,7 @@ namespace CppSharp
         {
             var _stmt = new AST.BreakStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.BreakLoc = VisitSourceLocation(stmt.BreakLoc);
@@ -916,6 +932,7 @@ namespace CppSharp
         {
             var _stmt = new AST.ReturnStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.RetValue = VisitExpression(stmt.RetValue) as AST.Expr;
@@ -927,6 +944,7 @@ namespace CppSharp
         {
             var _stmt = new AST.GCCAsmStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.AsmLoc = VisitSourceLocation(stmt.AsmLoc);
@@ -954,6 +972,7 @@ namespace CppSharp
         {
             var _stmt = new AST.MSAsmStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.AsmLoc = VisitSourceLocation(stmt.AsmLoc);
@@ -984,6 +1003,7 @@ namespace CppSharp
         {
             var _stmt = new AST.SEHExceptStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.ExceptLoc = VisitSourceLocation(stmt.ExceptLoc);
@@ -996,6 +1016,7 @@ namespace CppSharp
         {
             var _stmt = new AST.SEHFinallyStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.FinallyLoc = VisitSourceLocation(stmt.FinallyLoc);
@@ -1007,6 +1028,7 @@ namespace CppSharp
         {
             var _stmt = new AST.SEHTryStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.TryLoc = VisitSourceLocation(stmt.TryLoc);
@@ -1022,6 +1044,7 @@ namespace CppSharp
         {
             var _stmt = new AST.SEHLeaveStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.LeaveLoc = VisitSourceLocation(stmt.LeaveLoc);
@@ -1032,6 +1055,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CapturedStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.capturedStmt = VisitStatement(stmt.capturedStmt) as AST.Stmt;
@@ -1048,6 +1072,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CXXCatchStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.CatchLoc = VisitSourceLocation(stmt.CatchLoc);
@@ -1060,6 +1085,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CXXTryStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.TryLoc = VisitSourceLocation(stmt.TryLoc);
@@ -1072,6 +1098,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CXXForRangeStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.Init = VisitStatement(stmt.Init) as AST.Stmt;
@@ -1094,6 +1121,7 @@ namespace CppSharp
         {
             var _stmt = new AST.MSDependentExistsStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.KeywordLoc = VisitSourceLocation(stmt.KeywordLoc);
@@ -1107,6 +1135,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CoroutineBodyStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.HasDependentPromiseType = stmt.HasDependentPromiseType;
@@ -1129,6 +1158,7 @@ namespace CppSharp
         {
             var _stmt = new AST.CoreturnStmt();
             _stmt.SourceRange = VisitSourceRange(stmt.SourceRange);
+            _stmt.BeginLoc = VisitSourceLocation(stmt.BeginLoc);
             _stmt.EndLoc = VisitSourceLocation(stmt.EndLoc);
             _stmt.StripLabelLikeStatements = VisitStatement(stmt.StripLabelLikeStatements) as AST.Stmt;
             _stmt.IsImplicit = stmt.IsImplicit;
