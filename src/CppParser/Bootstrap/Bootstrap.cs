@@ -359,6 +359,14 @@ namespace CppSharp
             return base.VisitClassDecl(@class);
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            if (property.Name == "stripLabelLikeStatements")
+                property.ExplicitlyIgnore();
+
+            return base.VisitProperty(property);
+        }
+
         public override bool VisitEnumDecl(Enumeration @enum)
         {
             if (AlreadyVisited(@enum))
