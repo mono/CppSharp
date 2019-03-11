@@ -638,9 +638,6 @@ namespace CppSharp
                     @class.Name, paramName);
                 WriteOpenBraceAndIndent();
 
-                var visitName = @class.BaseClass != null ?
-                    @class.BaseClass.Name : "Stmt";
-
                 WriteLine($"if (!Visit{@class.BaseClass.Name}({paramName}))");
                 WriteLineIndent("return false;");
                 NewLine();
