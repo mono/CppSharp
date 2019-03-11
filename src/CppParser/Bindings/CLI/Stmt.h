@@ -239,12 +239,6 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property CppSharp::Parser::AST::Stmt^ StripLabelLikeStatements
-                {
-                    CppSharp::Parser::AST::Stmt^ get();
-                    void set(CppSharp::Parser::AST::Stmt^);
-                }
-
                 static operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::StmtClass klass);
 
             protected:

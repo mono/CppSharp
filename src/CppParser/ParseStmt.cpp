@@ -26,7 +26,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::DeclStmt*>(llvm::cast<clang::DeclStmt>(Stmt));
         auto _S = new AST::DeclStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->isSingleDecl = S->isSingleDecl();
         if (S->isSingleDecl())
             _S->singleDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getSingleDecl()));
@@ -42,7 +41,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::NullStmt*>(llvm::cast<clang::NullStmt>(Stmt));
         auto _S = new AST::NullStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->hasLeadingEmptyMacro = S->hasLeadingEmptyMacro();
         _Stmt = _S;
         break;
@@ -51,7 +49,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CompoundStmt*>(llvm::cast<clang::CompoundStmt>(Stmt));
         auto _S = new AST::CompoundStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->body_empty = S->body_empty();
         _S->size = S->size();
         _S->body_front = static_cast<AST::Stmt*>(WalkStatement(S->body_front()));
@@ -68,7 +65,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CaseStmt*>(llvm::cast<clang::CaseStmt>(Stmt));
         auto _S = new AST::CaseStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
@@ -81,7 +77,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::DefaultStmt*>(llvm::cast<clang::DefaultStmt>(Stmt));
         auto _S = new AST::DefaultStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _Stmt = _S;
@@ -91,7 +86,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::LabelStmt*>(llvm::cast<clang::LabelStmt>(Stmt));
         auto _S = new AST::LabelStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _S->name = S->getName();
         _Stmt = _S;
@@ -101,7 +95,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::AttributedStmt*>(llvm::cast<clang::AttributedStmt>(Stmt));
         auto _S = new AST::AttributedStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _Stmt = _S;
         break;
@@ -110,7 +103,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::IfStmt*>(llvm::cast<clang::IfStmt>(Stmt));
         auto _S = new AST::IfStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->then = static_cast<AST::Stmt*>(WalkStatement(S->getThen()));
         _S->_else = static_cast<AST::Stmt*>(WalkStatement(S->getElse()));
@@ -128,7 +120,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::SwitchStmt*>(llvm::cast<clang::SwitchStmt>(Stmt));
         auto _S = new AST::SwitchStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
         _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
@@ -143,7 +134,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::WhileStmt*>(llvm::cast<clang::WhileStmt>(Stmt));
         auto _S = new AST::WhileStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
         _S->hasVarStorage = S->hasVarStorage();
@@ -155,7 +145,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::DoStmt*>(llvm::cast<clang::DoStmt>(Stmt));
         auto _S = new AST::DoStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
         _Stmt = _S;
@@ -165,7 +154,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::ForStmt*>(llvm::cast<clang::ForStmt>(Stmt));
         auto _S = new AST::ForStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->inc = static_cast<AST::Expr*>(WalkExpression(S->getInc()));
@@ -178,7 +166,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::GotoStmt*>(llvm::cast<clang::GotoStmt>(Stmt));
         auto _S = new AST::GotoStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _Stmt = _S;
         break;
     }
@@ -186,7 +173,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::IndirectGotoStmt*>(llvm::cast<clang::IndirectGotoStmt>(Stmt));
         auto _S = new AST::IndirectGotoStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->target = static_cast<AST::Expr*>(WalkExpression(S->getTarget()));
         _Stmt = _S;
         break;
@@ -195,7 +181,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::ContinueStmt*>(llvm::cast<clang::ContinueStmt>(Stmt));
         auto _S = new AST::ContinueStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _Stmt = _S;
         break;
     }
@@ -203,7 +188,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::BreakStmt*>(llvm::cast<clang::BreakStmt>(Stmt));
         auto _S = new AST::BreakStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _Stmt = _S;
         break;
     }
@@ -211,7 +195,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::ReturnStmt*>(llvm::cast<clang::ReturnStmt>(Stmt));
         auto _S = new AST::ReturnStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->retValue = static_cast<AST::Expr*>(WalkExpression(S->getRetValue()));
         _Stmt = _S;
         break;
@@ -220,7 +203,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::GCCAsmStmt*>(llvm::cast<clang::GCCAsmStmt>(Stmt));
         auto _S = new AST::GCCAsmStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->simple = S->isSimple();
         _S->_volatile = S->isVolatile();
         _S->numOutputs = S->getNumOutputs();
@@ -244,7 +226,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::MSAsmStmt*>(llvm::cast<clang::MSAsmStmt>(Stmt));
         auto _S = new AST::MSAsmStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->simple = S->isSimple();
         _S->_volatile = S->isVolatile();
         _S->numOutputs = S->getNumOutputs();
@@ -271,7 +252,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::SEHExceptStmt*>(llvm::cast<clang::SEHExceptStmt>(Stmt));
         auto _S = new AST::SEHExceptStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->filterExpr = static_cast<AST::Expr*>(WalkExpression(S->getFilterExpr()));
         _S->block = static_cast<AST::CompoundStmt*>(WalkStatement(S->getBlock()));
         _Stmt = _S;
@@ -281,7 +261,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::SEHFinallyStmt*>(llvm::cast<clang::SEHFinallyStmt>(Stmt));
         auto _S = new AST::SEHFinallyStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->block = static_cast<AST::CompoundStmt*>(WalkStatement(S->getBlock()));
         _Stmt = _S;
         break;
@@ -290,7 +269,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::SEHTryStmt*>(llvm::cast<clang::SEHTryStmt>(Stmt));
         auto _S = new AST::SEHTryStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->isCXXTry = S->getIsCXXTry();
         _S->tryBlock = static_cast<AST::CompoundStmt*>(WalkStatement(S->getTryBlock()));
         _S->handler = static_cast<AST::Stmt*>(WalkStatement(S->getHandler()));
@@ -303,7 +281,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::SEHLeaveStmt*>(llvm::cast<clang::SEHLeaveStmt>(Stmt));
         auto _S = new AST::SEHLeaveStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _Stmt = _S;
         break;
     }
@@ -311,7 +288,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CapturedStmt*>(llvm::cast<clang::CapturedStmt>(Stmt));
         auto _S = new AST::CapturedStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->capturedStmt = static_cast<AST::Stmt*>(WalkStatement(S->getCapturedStmt()));
         _S->capture_size = S->capture_size();
         for (auto _E : S->capture_inits())
@@ -326,7 +302,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CXXCatchStmt*>(llvm::cast<clang::CXXCatchStmt>(Stmt));
         auto _S = new AST::CXXCatchStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->caughtType = GetQualifiedType(S->getCaughtType());
         _S->handlerBlock = static_cast<AST::Stmt*>(WalkStatement(S->getHandlerBlock()));
         _Stmt = _S;
@@ -336,7 +311,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CXXTryStmt*>(llvm::cast<clang::CXXTryStmt>(Stmt));
         auto _S = new AST::CXXTryStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->tryBlock = static_cast<AST::CompoundStmt*>(WalkStatement(S->getTryBlock()));
         _S->numHandlers = S->getNumHandlers();
         _Stmt = _S;
@@ -346,7 +320,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CXXForRangeStmt*>(llvm::cast<clang::CXXForRangeStmt>(Stmt));
         auto _S = new AST::CXXForRangeStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
         _S->rangeInit = static_cast<AST::Expr*>(WalkExpression(S->getRangeInit()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
@@ -363,7 +336,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::MSDependentExistsStmt*>(llvm::cast<clang::MSDependentExistsStmt>(Stmt));
         auto _S = new AST::MSDependentExistsStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->isIfExists = S->isIfExists();
         _S->isIfNotExists = S->isIfNotExists();
         _S->subStmt = static_cast<AST::CompoundStmt*>(WalkStatement(S->getSubStmt()));
@@ -374,7 +346,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CoroutineBodyStmt*>(llvm::cast<clang::CoroutineBodyStmt>(Stmt));
         auto _S = new AST::CoroutineBodyStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->hasDependentPromiseType = S->hasDependentPromiseType();
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
         _S->promiseDeclStmt = static_cast<AST::Stmt*>(WalkStatement(S->getPromiseDeclStmt()));
@@ -395,7 +366,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CoreturnStmt*>(llvm::cast<clang::CoreturnStmt>(Stmt));
         auto _S = new AST::CoreturnStmt();
-        _S->stripLabelLikeStatements = static_cast<AST::Stmt*>(WalkStatement(S->stripLabelLikeStatements()));
         _S->isImplicit = S->isImplicit();
         _S->operand = static_cast<AST::Expr*>(WalkExpression(S->getOperand()));
         _S->promiseCall = static_cast<AST::Expr*>(WalkExpression(S->getPromiseCall()));

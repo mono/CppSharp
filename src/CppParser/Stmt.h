@@ -155,7 +155,6 @@ public:
     SourceRange sourceRange;
     SourceLocation beginLoc;
     SourceLocation endLoc;
-    Stmt* stripLabelLikeStatements;
 };
 
 class CS_API DeclStmt : public Stmt

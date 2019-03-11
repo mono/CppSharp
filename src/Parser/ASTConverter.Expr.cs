@@ -607,7 +607,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -632,7 +631,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -659,7 +657,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -695,7 +692,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -721,7 +717,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -747,7 +742,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -774,7 +768,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -801,7 +794,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -826,7 +818,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -865,7 +856,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -891,7 +881,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -918,7 +907,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -952,7 +940,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -980,7 +967,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1011,7 +997,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1040,7 +1025,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1077,7 +1061,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1114,7 +1097,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1141,7 +1123,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1173,7 +1154,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1207,7 +1187,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1250,7 +1229,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1295,7 +1273,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1326,7 +1303,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1357,7 +1333,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1383,7 +1358,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1410,7 +1384,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1437,7 +1410,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1464,7 +1436,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1496,7 +1467,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1521,7 +1491,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1549,7 +1518,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1585,7 +1553,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1615,7 +1582,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1639,7 +1605,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1665,7 +1630,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1691,7 +1655,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1715,7 +1678,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1739,7 +1701,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1766,7 +1727,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1798,7 +1758,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1827,7 +1786,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1853,7 +1811,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1880,7 +1837,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1908,7 +1864,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1947,7 +1902,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -1971,7 +1925,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2013,7 +1966,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2052,7 +2004,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2090,7 +2041,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2126,7 +2076,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2163,7 +2112,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2199,7 +2147,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2235,7 +2182,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2275,7 +2221,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2301,7 +2246,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2326,7 +2270,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2351,7 +2294,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2378,7 +2320,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2406,7 +2347,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2433,7 +2373,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2460,7 +2399,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2486,7 +2424,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2513,7 +2450,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2539,7 +2475,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2565,7 +2500,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2590,7 +2524,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2627,7 +2560,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2654,7 +2586,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2689,7 +2620,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2726,7 +2656,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2764,7 +2693,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2789,7 +2717,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2832,7 +2759,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2862,7 +2788,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2894,7 +2819,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2920,7 +2844,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2947,7 +2870,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -2973,7 +2895,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3007,7 +2928,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3038,7 +2958,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3065,7 +2984,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3099,7 +3017,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3136,7 +3053,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3175,7 +3091,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3201,7 +3116,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3227,7 +3141,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3257,7 +3170,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3283,7 +3195,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3309,7 +3220,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3335,7 +3245,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3363,7 +3272,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3395,7 +3303,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3427,7 +3334,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;
@@ -3454,7 +3360,6 @@ namespace CppSharp
             _expr.SourceRange = VisitSourceRange(expr.SourceRange);
             _expr.BeginLoc = VisitSourceLocation(expr.BeginLoc);
             _expr.EndLoc = VisitSourceLocation(expr.EndLoc);
-            _expr.StripLabelLikeStatements = VisitStatement(expr.StripLabelLikeStatements) as AST.Stmt;
             _expr.Type = VisitQualifiedType(expr.Type);
             _expr.ValueDependent = expr.ValueDependent;
             _expr.TypeDependent = expr.TypeDependent;

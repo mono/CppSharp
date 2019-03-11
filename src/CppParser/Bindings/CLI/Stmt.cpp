@@ -113,16 +113,6 @@ void CppSharp::Parser::AST::Stmt::EndLoc::set(CppSharp::Parser::SourceLocation v
     ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->endLoc = _marshal0;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::Stmt::StripLabelLikeStatements::get()
-{
-    return (((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stripLabelLikeStatements == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stripLabelLikeStatements);
-}
-
-void CppSharp::Parser::AST::Stmt::StripLabelLikeStatements::set(CppSharp::Parser::AST::Stmt^ value)
-{
-    ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->stripLabelLikeStatements = (::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
-}
-
 CppSharp::Parser::AST::DeclStmt::DeclStmt(::CppSharp::CppParser::AST::DeclStmt* native)
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native)
 {

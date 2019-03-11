@@ -16,7 +16,6 @@ Stmt::Stmt()
     , sourceRange(SourceRange())
     , beginLoc(SourceLocation())
     , endLoc(SourceLocation())
-    , stripLabelLikeStatements(nullptr)
 {
 }
 
@@ -25,7 +24,6 @@ Stmt::Stmt(StmtClass klass)
     , sourceRange(SourceRange())
     , beginLoc(SourceLocation())
     , endLoc(SourceLocation())
-    , stripLabelLikeStatements(nullptr)
 {
 }
 
