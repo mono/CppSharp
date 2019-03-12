@@ -268,6 +268,8 @@ T DependentPointerFields<T>::takeField(T t)
 template <typename K, typename V>
 class TwoTemplateArgs
 {
+public:
+    void takeDependentPtrToSecondTemplateArg(const V& v);
 private:
     K key;
     V value;
@@ -534,7 +536,8 @@ public:
                                            DependentValueFields<float*> p3);
     void completeSpecializationInParameter(TwoTemplateArgs<int*, int*> p1,
                                            TwoTemplateArgs<int*, int> p2,
-                                           TwoTemplateArgs<int*, float> p3);
+                                           TwoTemplateArgs<int*, float> p3,
+                                           TwoTemplateArgs<const char*, int> p4);
     VirtualTemplate<void> returnSpecializedWithVoid();
 private:
     IndependentFields<int> independentFields;

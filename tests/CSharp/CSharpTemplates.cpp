@@ -120,7 +120,8 @@ void TemplateSpecializer::completeSpecializationInParameter(DependentValueFields
 
 void TemplateSpecializer::completeSpecializationInParameter(TwoTemplateArgs<int *, int *> p1,
                                                             TwoTemplateArgs<int *, int> p2,
-                                                            TwoTemplateArgs<int *, float> p3)
+                                                            TwoTemplateArgs<int *, float> p3,
+                                                            TwoTemplateArgs<const char *, int> p4)
 {
 }
 
