@@ -152,6 +152,9 @@ namespace CppSharp
             if (abi == CppAbi.Microsoft)
                 parserOptions.MicrosoftMode = true;
 
+            parserOptions.UnityBuild = options.UnityBuild;
+            parserOptions.EnableRTTI = options.EnableRTTI;
+
             parserOptions.Setup();
 
             if (triple.Contains("linux"))
@@ -173,9 +176,6 @@ namespace CppSharp
                 else
                     parserOptions.AddDefines(d.Key + "=" + d.Value);
             }
-
-            parserOptions.UnityBuild = options.UnityBuild;
-            parserOptions.EnableRTTI = options.EnableRTTI;
 
             if (options.EnableExceptions)
                 parserOptions.AddArguments("-fcxx-exceptions");
