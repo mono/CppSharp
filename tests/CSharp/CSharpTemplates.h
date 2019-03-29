@@ -6,6 +6,10 @@
 #include <string>
 #include <map>
 
+class DLL_API QString
+{
+};
+
 class DLL_API T1
 {
 public:
@@ -275,6 +279,11 @@ private:
     V value;
 };
 
+template <typename K, typename V>
+void TwoTemplateArgs<K, V>::takeDependentPtrToSecondTemplateArg(const V& v)
+{
+}
+
 template <typename T, typename D = IndependentFields<T>>
 class DLL_API HasDefaultTemplateArgument
 {
@@ -537,7 +546,8 @@ public:
     void completeSpecializationInParameter(TwoTemplateArgs<int*, int*> p1,
                                            TwoTemplateArgs<int*, int> p2,
                                            TwoTemplateArgs<int*, float> p3,
-                                           TwoTemplateArgs<const char*, int> p4);
+                                           TwoTemplateArgs<const char*, int> p4,
+                                           TwoTemplateArgs<QString, int> p5);
     VirtualTemplate<void> returnSpecializedWithVoid();
 private:
     IndependentFields<int> independentFields;

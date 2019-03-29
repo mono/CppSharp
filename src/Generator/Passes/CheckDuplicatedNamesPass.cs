@@ -6,6 +6,7 @@ using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
@@ -95,7 +96,11 @@ namespace CppSharp.Passes
 
         public class ParameterTypeComparer : IEqualityComparer<Parameter>
         {
-            public static readonly ParameterTypeComparer Instance = new ParameterTypeComparer();
+            public static readonly ParameterTypeComparer Instance =
+                new ParameterTypeComparer();
+
+            public static TypeMapDatabase TypeMaps { get; set; }
+            public static GeneratorKind GeneratorKind { get; set; }
 
             public bool Equals(Parameter x, Parameter y)
             {
@@ -107,8 +112,29 @@ namespace CppSharp.Passes
                 // TODO: some target languages might make a difference between values and pointers
                 Type leftPointee = left.GetPointee();
                 Type rightPointee = right.GetPointee();
+
+                if (CheckForSpecializations(leftPointee, rightPointee))
+                    return true;
+
+                if (leftPointee != null && rightPointee != null &&
+                    leftPointee.GetMappedType(TypeMaps, GeneratorKind).Equals(
+                    rightPointee.GetMappedType(TypeMaps, GeneratorKind)))
+                    return true;
+
                 return (leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
                     (rightPointee != null && rightPointee.Desugar(false).Equals(left));
+            }
+
+            private static bool CheckForSpecializations(Type leftPointee, Type rightPointee)
+            {
+                ClassTemplateSpecialization leftSpecialization;
+                ClassTemplateSpecialization rightSpecialization;
+                return leftPointee.TryGetDeclaration(out leftSpecialization) &&
+                    rightPointee.TryGetDeclaration(out rightSpecialization) &&
+                    leftSpecialization.TemplatedDecl.TemplatedDecl.Equals(
+                        rightSpecialization.TemplatedDecl.TemplatedDecl) &&
+                    leftSpecialization.Arguments.SequenceEqual(
+                        rightSpecialization.Arguments, TemplateArgumentComparer.Instance);
             }
 
             public int GetHashCode(Parameter obj)
@@ -117,6 +143,28 @@ namespace CppSharp.Passes
             }
 
             public static TypePrinter TypePrinter { get; set; }
+        }
+
+        public class TemplateArgumentComparer : IEqualityComparer<TemplateArgument>
+        {
+            public static readonly TemplateArgumentComparer Instance =
+                new TemplateArgumentComparer();
+
+            public bool Equals(TemplateArgument x, TemplateArgument y)
+            {
+                if (x.Kind != TemplateArgument.ArgumentKind.Type ||
+                    y.Kind != TemplateArgument.ArgumentKind.Type)
+                    return x.Equals(y);
+                return x.Type.Type.GetMappedType(ParameterTypeComparer.TypeMaps,
+                    ParameterTypeComparer.GeneratorKind).Equals(
+                    y.Type.Type.GetMappedType(ParameterTypeComparer.TypeMaps,
+                        ParameterTypeComparer.GeneratorKind));
+            }
+
+            public int GetHashCode(TemplateArgument obj)
+            {
+                return obj.GetHashCode();
+            }
         }
     }
 
@@ -143,6 +191,8 @@ namespace CppSharp.Passes
                     break;
             }
             DeclarationName.ParameterTypeComparer.TypePrinter = typePrinter;
+            DeclarationName.ParameterTypeComparer.TypeMaps = Context.TypeMaps;
+            DeclarationName.ParameterTypeComparer.GeneratorKind = Options.GeneratorKind;
             return base.VisitASTContext(context);
         }
 

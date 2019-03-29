@@ -248,6 +248,12 @@ namespace CppSharp.Tests
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
+            if (ctx.Kind == TypePrinterContextKind.Native)
+            {
+                return new CustomType($@"global::CSharp.QString.{
+                    Helpers.InternalStruct}{
+                    (ctx.Type.IsAddress() ? "*" : string.Empty)}");
+            }
             return new CILType(typeof(string));
         }
 
