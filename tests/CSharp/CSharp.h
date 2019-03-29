@@ -8,10 +8,6 @@
 #include "AnotherUnit.h"
 #include "CSharpTemplates.h"
 
-class DLL_API QString
-{
-};
-
 class DLL_API Foo
 {
 public:
