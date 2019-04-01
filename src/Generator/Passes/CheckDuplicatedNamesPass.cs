@@ -50,7 +50,11 @@ namespace CppSharp.Passes
 
             var duplicate = functions.Keys.FirstOrDefault(f =>
                 function.SynthKind != FunctionSynthKind.DefaultValueOverload &&
-                f.Parameters.SequenceEqual(function.Parameters, ParameterTypeComparer.Instance));
+                f.Parameters.Where(p => p.Kind == ParameterKind.Regular ||
+                    p.Kind == ParameterKind.Extension).SequenceEqual(
+                    function.Parameters.Where(p => p.Kind == ParameterKind.Regular ||
+                        p.Kind == ParameterKind.Extension),
+                    ParameterTypeComparer.Instance));
 
             if (duplicate == null)
             {
