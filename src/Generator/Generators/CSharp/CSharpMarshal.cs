@@ -499,7 +499,7 @@ namespace CppSharp.Generators.CSharp
             var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
             var pointee = pointer.Pointee.Desugar();
-            if (pointee.IsConstCharString() && isRefParam)
+            if (pointee.IsConstCharString())
             {
                 if (param.IsOut)
                 {
@@ -513,13 +513,16 @@ namespace CppSharp.Generators.CSharp
                     MarshalString(pointee);
                     pointer.QualifiedPointee.Visit(this);
                     Context.ArgumentPrefix.Write("&");
+                    return true;
                 }
-                else
+                if (pointer.IsReference)
                 {
+                    Context.Return.Write($@"({typePrinter.PrintNative(
+                        pointee.GetQualifiedPointee())}*) ");
                     pointer.QualifiedPointee.Visit(this);
-                    Context.Cleanup.WriteLine($"Marshal.FreeHGlobal({Context.ArgName});");
+                    Context.ArgumentPrefix.Write("&");
+                    return true;
                 }
-                return true;
             }
 
             var finalPointee = (pointee.GetFinalPointee() ?? pointee).Desugar();

@@ -1551,3 +1551,8 @@ char* returnCharPointer()
 {
     return 0;
 }
+
+const char* takeConstCharStarRef(const char*& c)
+{
+    return c;
+}

@@ -168,6 +168,7 @@ namespace CppSharp.Types.Std
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             if (ctx.Parameter.Usage == ParameterUsage.Unknown &&
+                !ctx.Parameter.Type.IsReference() &&
                 ctx.MarshalKind != MarshalKind.NativeField &&
                 ctx.MarshalKind != MarshalKind.VTableReturnValue &&
                 ctx.MarshalKind != MarshalKind.Variable)

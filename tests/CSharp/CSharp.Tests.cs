@@ -1255,6 +1255,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestConstCharStarRef()
+    {
+        Assert.That(CSharp.CSharp.TakeConstCharStarRef("Test"), Is.EqualTo("Test"));
+    }
+
     public class Inter : SimpleInterface
     {
         public override int Size => s;
