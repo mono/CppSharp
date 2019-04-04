@@ -70,7 +70,7 @@ namespace CppSharp.Generator.Tests.Passes
             passBuilder.AddPass(new CleanCommentsPass());
             passBuilder.RunPasses(pass => pass.VisitDeclaration(c));
 
-            var para = (ParagraphComment)c.Comment.FullComment.Blocks[0];
+            var para = (ParagraphComment) c.Comment.FullComment.Blocks[0];
             var s = para.CommentToString(CommentKind.BCPLSlash);
 
             Assert.That(s, Is.EqualTo("/// <summary>A simple test.</summary>"));
@@ -133,7 +133,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.AreEqual(4, unnamedEnum2.Items[1].Value);
         }
 
-        [Test]
+        [Test, Ignore("Nameless enums are no longer uniquely named.")]
         public void TestUniqueNamesAcrossTranslationUnits()
         {
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());

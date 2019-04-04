@@ -822,44 +822,6 @@ public:
 
 DLL_API void va_listFunction(va_list v);
 
-struct DLL_API TestNestedTypes
-{
-public:
-    struct
-    {
-        struct
-        {
-        };
-    };
-    struct
-    {
-        struct
-        {
-        };
-    };
-    struct
-    {
-        struct
-        {
-        };
-    };
-    struct
-    {
-        struct
-        {
-        };
-    };
-
-    union as_types
-    {
-        int as_int;
-        struct uchars
-        {
-            unsigned char blue, green, red, alpha;
-        } as_uchar;
-    };
-};
-
 class DLL_API HasStdString
 {
 public:
@@ -920,19 +882,6 @@ private:
 };
 
 DLL_API bool operator ==(const DifferentConstOverloads& d, const char* s);
-
-class TestNamingAnonymousTypesInUnion
-{
-public:
-    union {
-        struct {
-        } argb;
-        struct {
-        } ahsv;
-        struct {
-        } acmyk;
-    } ct;
-};
 
 class DLL_API RefTypeClassPassTry { };
 
@@ -1430,21 +1379,6 @@ inline namespace InlineNamespace
 
     }
 }
-
-union
-{
-    struct
-    {
-        struct
-        {
-            long Capabilities;
-        } Server;
-        struct
-        {
-            long Capabilities;
-        } Share;
-    } Smb2;
-} ProtocolSpecific;
 
 
 template<class _Other>

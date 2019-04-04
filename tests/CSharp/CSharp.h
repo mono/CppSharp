@@ -1306,3 +1306,77 @@ public:
 DLL_API void va_listFunction(va_list v);
 DLL_API char* returnCharPointer();
 DLL_API const char* takeConstCharStarRef(const char*& c);
+
+union
+{
+    struct
+    {
+        struct
+        {
+            long Capabilities;
+        } Server;
+        struct
+        {
+            long Capabilities;
+        } Share;
+    } Smb2;
+} ProtocolSpecific;
+
+struct DLL_API TestNestedTypes
+{
+public:
+    struct
+    {
+        struct
+        {
+        };
+    };
+    struct
+    {
+        struct
+        {
+        };
+    };
+    struct
+    {
+        struct
+        {
+        };
+    };
+    struct
+    {
+        struct
+        {
+        };
+    };
+
+    union as_types
+    {
+        int as_int;
+        struct uchars
+        {
+            unsigned char blue, green, red, alpha;
+        } as_uchar;
+    };
+};
+
+class TestNamingAnonymousTypesInUnion
+{
+public:
+    union {
+        struct {
+        } argb;
+        struct {
+        } ahsv;
+        struct {
+        } acmyk;
+    } ct;
+};
+
+struct {
+    struct {
+        struct {
+            int(*forIntegers)(int b, short s, unsigned int i);
+        } example;
+    } root;
+} kotlin;
