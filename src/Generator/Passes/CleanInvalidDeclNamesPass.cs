@@ -4,6 +4,7 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -13,6 +14,13 @@ namespace CppSharp.Passes
         {
             if (!base.VisitClassDecl(@class))
                 return false;
+
+            if (Options.GeneratorKind == GeneratorKind.CLI &&
+                string.IsNullOrEmpty(@class.OriginalName))
+            {
+                @class.ExplicitlyIgnore();
+                return true;
+            }
 
             if (@class.Layout != null)
             {
