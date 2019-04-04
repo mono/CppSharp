@@ -1543,6 +1543,14 @@ void InterfaceTester::setInterface(SimpleInterface* i)
     interface = i;
 }
 
+HasFunctionPtrField::HasFunctionPtrField()
+{
+}
+
+HasFunctionPtrField::~HasFunctionPtrField()
+{
+}
+
 void va_listFunction(va_list v)
 {
 }

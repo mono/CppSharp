@@ -157,42 +157,6 @@ namespace CppSharp.Generators.CSharp
             return base.VisitBuiltinType(builtin, quals);
         }
 
-        public override TypePrinterResult VisitFunctionType(FunctionType function,
-            TypeQualifiers quals)
-        {
-            var arguments = function.Parameters;
-            var returnType = function.ReturnType;
-            var args = string.Empty;
-
-            PushMarshalKind(MarshalKind.GenericDelegate);
-
-            if (arguments.Count > 0)
-                args = VisitParameters(function.Parameters, hasNames: false).Type;
-
-            PopMarshalKind();
-
-            if (ContextKind != TypePrinterContextKind.Managed)
-                return IntPtrType;
-
-            if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
-            {
-                if (!string.IsNullOrEmpty(args))
-                    args = string.Format("<{0}>", args);
-                return string.Format("Action{0}", args);
-            }
-
-            if (!string.IsNullOrEmpty(args))
-                args = string.Format(", {0}", args);
-
-            PushMarshalKind(MarshalKind.GenericDelegate);
-
-            var returnTypePrinterResult = returnType.Visit(this);
-
-            PopMarshalKind();
-
-            return string.Format("Func<{0}{1}>", returnTypePrinterResult, args);
-        }
-
         private bool allowStrings = true;
 
         public override TypePrinterResult VisitPointerType(PointerType pointer,

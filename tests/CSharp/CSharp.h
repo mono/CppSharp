@@ -1295,6 +1295,14 @@ private:
     SimpleInterface* interface;
 };
 
+class DLL_API HasFunctionPtrField
+{
+public:
+    HasFunctionPtrField();
+    ~HasFunctionPtrField();
+    int (*functionPtrField)(const char*);
+};
+
 DLL_API void va_listFunction(va_list v);
 DLL_API char* returnCharPointer();
 DLL_API const char* takeConstCharStarRef(const char*& c);

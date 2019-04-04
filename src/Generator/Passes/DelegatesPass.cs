@@ -76,6 +76,26 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            if (!base.VisitProperty(property))
+                return false;
+
+            property.QualifiedType = CheckForDelegate(property.QualifiedType, property);
+
+            return true;
+        }
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (!base.VisitFieldDecl(field))
+                return false;
+
+            field.QualifiedType = CheckForDelegate(field.QualifiedType, field);
+
+            return true;
+        }
+
         private QualifiedType CheckForDelegate(QualifiedType type, ITypedDecl decl)
         {
             if (type.Type is TypedefType)

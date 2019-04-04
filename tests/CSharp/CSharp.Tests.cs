@@ -1261,6 +1261,16 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(CSharp.CSharp.TakeConstCharStarRef("Test"), Is.EqualTo("Test"));
     }
 
+    [Test]
+    public void Test()
+    {
+        using (var hasFunctionPtrField = new HasFunctionPtrField())
+        {
+            hasFunctionPtrField.FunctionPtrField = @string => @string.Length;
+            Assert.That(hasFunctionPtrField.FunctionPtrField("Test"), Is.EqualTo(4));
+        }
+    }
+
     public class Inter : SimpleInterface
     {
         public override int Size => s;

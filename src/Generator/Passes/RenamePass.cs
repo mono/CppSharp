@@ -190,8 +190,14 @@ namespace CppSharp.Passes
                 declarations.RemoveAll(d => specialization.TemplatedDecl.TemplatedDecl == d);
 
             var @class = decl.Namespace as Class;
-            if (@class != null && @class.IsDependent)
-                declarations.AddRange(@class.TemplateParameters);
+            if (@class != null)
+            {
+                declarations.AddRange(from typedefDecl in @class.Typedefs
+                                      where typedefDecl.Type.Desugar() is FunctionType
+                                      select typedefDecl);
+                if (@class.IsDependent)
+                    declarations.AddRange(@class.TemplateParameters);
+            }
 
             var result = declarations.Any(d => d != decl && d.Name == newName);
             if (result)

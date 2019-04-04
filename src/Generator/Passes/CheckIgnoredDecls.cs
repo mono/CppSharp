@@ -110,7 +110,7 @@ namespace CppSharp.Passes
             type.TryGetDeclaration(out decl);
             string msg = "internal";
             TypeMap typeMap;
-            if (!(type is FunctionType) && (decl == null ||
+            if ((decl == null ||
                 ((decl.GenerationKind != GenerationKind.Internal ||
                   Context.TypeMaps.FindTypeMap(type, out typeMap)) &&
                  !HasInvalidType(field, out msg))))
