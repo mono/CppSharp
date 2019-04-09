@@ -157,6 +157,9 @@ namespace CppSharp.Generators.CSharp
             return base.VisitBuiltinType(builtin, quals);
         }
 
+        public override TypePrinterResult VisitFunctionType(FunctionType function, TypeQualifiers quals)
+            => IntPtrType;
+
         private bool allowStrings = true;
 
         public override TypePrinterResult VisitPointerType(PointerType pointer,
