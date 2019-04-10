@@ -185,11 +185,10 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
     files { name .. ".Tests.cs" }
     vpaths { ["*"] = "*" }
 
-    links { name .. ".CSharp", "CppSharp.Generator.Tests" }
+    links { name .. ".CSharp", "CppSharp.Generator.Tests", "CppSharp.Runtime" }
     dependson { name .. ".Native" }
 
     LinkNUnit()
-    links { "CppSharp.Runtime" }
 
     filter { "action:netcore" }
       dotnetframework "netcoreapp2.0"
