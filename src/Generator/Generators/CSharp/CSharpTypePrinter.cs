@@ -560,14 +560,14 @@ namespace CppSharp.Generators.CSharp
         {
             if (a.Type.Type == null)
                 return a.Integral.ToString(CultureInfo.InvariantCulture);
-            var type = a.Type.Type.Desugar();
+            var type = a.Type.Type;
             PrimitiveType pointee;
             if (type.IsPointerToPrimitiveType(out pointee) && !type.IsConstCharString())
             {
                 return $@"CppSharp.Runtime.Pointer<{(pointee == PrimitiveType.Void ? IntPtrType :
                     VisitPrimitiveType(pointee, new TypeQualifiers()).Type)}>";
             }
-            return (type.IsPrimitiveType(PrimitiveType.Void)) ? "object" : type.Visit(this).Type;
+            return type.IsPrimitiveType(PrimitiveType.Void) ? "object" : type.Visit(this).Type;
         }
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)

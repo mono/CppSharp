@@ -127,22 +127,10 @@ namespace CppSharp.Passes
                 s => !s.IsExplicitlyGenerated && internalSpecializations.Contains(s)))
                 specialization.GenerationKind = GenerationKind.Internal;
 
-            Func<TemplateArgument, bool> allPointers =
-                a => a.Type.Type != null && a.Type.Type.IsAddress();
-            var groups = (from specialization in template.Specializations
-                          group specialization by specialization.Arguments.All(allPointers)
-                          into @group
-                          select @group).ToList();
-
-            foreach (var group in groups.Where(g => g.Key))
-                foreach (var specialization in group.Skip(1))
-                    template.Specializations.Remove(specialization);
-
             for (int i = template.Specializations.Count - 1; i >= 0; i--)
             {
                 var specialization = template.Specializations[i];
-                if (specialization is ClassTemplatePartialSpecialization &&
-                    !specialization.Arguments.All(allPointers))
+                if (specialization is ClassTemplatePartialSpecialization)
                     template.Specializations.RemoveAt(i);
             }
 

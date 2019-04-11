@@ -551,7 +551,7 @@ namespace CppSharp.AST
     /// <summary>
     /// Represents a template argument within a class template specialization.
     /// </summary>
-    public struct TemplateArgument
+    public class TemplateArgument
     {
         /// The kind of template argument we're storing.
         public enum ArgumentKind

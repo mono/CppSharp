@@ -312,7 +312,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassTemplateSpecializationsInternals(
                     nestedTemplate, nestedTemplate.Specializations);
 
-            foreach (var specialization in generated)
+            foreach (var specialization in generated.KeepSingleAllPointersSpecialization())
                 GenerateClassInternals(specialization);
 
             foreach (var group in generated.SelectMany(s => s.Classes).Where(
@@ -558,14 +558,32 @@ namespace CppSharp.Generators.CSharp
                     functions.AddRange(GatherClassInternalFunctions(@base.Class, false));
 
             var currentSpecialization = @class as ClassTemplateSpecialization;
-            Class template;
-            if (currentSpecialization != null &&
-                (template = currentSpecialization.TemplatedDecl.TemplatedClass)
-                .GetSpecializedClassesToGenerate().Count() == 1)
-                foreach (var specialization in template.Specializations.Where(s => s.IsGenerated))
-                    GatherClassInternalFunctions(specialization, includeCtors, functions);
-            else
-                GatherClassInternalFunctions(@class, includeCtors, functions);
+            if (currentSpecialization != null)
+            {
+                Class template = currentSpecialization.TemplatedDecl.TemplatedClass;
+                IEnumerable<ClassTemplateSpecialization> specializations = null;
+                if (template.GetSpecializedClassesToGenerate().Count() == 1)
+                    specializations = template.Specializations.Where(s => s.IsGenerated);
+                else
+                {
+                    Func<TemplateArgument, bool> allPointers = (TemplateArgument a) =>
+                        a.Type.Type?.Desugar().IsAddress() == true;
+                    if (currentSpecialization.Arguments.All(allPointers))
+                    {
+                        specializations = template.Specializations.Where(
+                            s => s.IsGenerated && s.Arguments.All(allPointers));
+                    }
+                }
+
+                if (specializations != null)
+                {
+                    foreach (var specialization in specializations)
+                        GatherClassInternalFunctions(specialization, includeCtors, functions);
+                    return functions;
+                }
+            }
+
+            GatherClassInternalFunctions(@class, includeCtors, functions);
 
             return functions;
         }

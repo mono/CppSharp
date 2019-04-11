@@ -23,11 +23,37 @@ namespace CppSharp.Generators.CSharp
         {
             var printedClass = @class.Visit(gen.TypePrinter);
             if (@class.IsDependent)
-                foreach (var specialization in @class.GetSpecializedClassesToGenerate(
-                    ).Where(s => s.IsGenerated))
+            {
+                IEnumerable<Class> specializations =
+                    @class.GetSpecializedClassesToGenerate().Where(s => s.IsGenerated);
+                if (@class.IsTemplate)
+                    specializations = specializations.KeepSingleAllPointersSpecialization();
+                foreach (var specialization in specializations)
                     gen.GenerateNativeConstructorByValue(specialization, printedClass.Type);
+            }
             else
+            {
                 gen.GenerateNativeConstructorByValue(@class, printedClass.Type);
+            }
+        }
+
+        public static IEnumerable<Class> KeepSingleAllPointersSpecialization(
+            this IEnumerable<Class> specializations)
+        {
+            Func<TemplateArgument, bool> allPointers = (TemplateArgument a) =>
+                a.Type.Type?.Desugar().IsAddress() == true;
+            var groups = (from ClassTemplateSpecialization spec in specializations
+                          group spec by spec.Arguments.All(allPointers)
+                          into @group
+                          select @group).ToList();
+            foreach (var group in groups)
+            {
+                if (group.Key)
+                    yield return group.First();
+                else
+                    foreach (var specialization in group)
+                        yield return specialization;
+            }
         }
 
         public static void GenerateField(this CSharpSources gen, Class @class,
@@ -112,7 +138,7 @@ namespace CppSharp.Generators.CSharp
                 Enumerable.Range(0, @class.TemplateParameters.Count).Select(
                 i =>
                 {
-                    CppSharp.AST.Type type = specialization.Arguments[i].Type.Type.Desugar();
+                    CppSharp.AST.Type type = specialization.Arguments[i].Type.Type;
                     return type.IsPointerToPrimitiveType() ?
                         $"__{@class.TemplateParameters[i].Name}.FullName == \"System.IntPtr\"" :
                         $"__{@class.TemplateParameters[i].Name}.IsAssignableFrom(typeof({type}))";

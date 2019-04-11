@@ -72,8 +72,11 @@ namespace CppSharp.Passes
                 foreach (var method in methodsWithDependentPointers.Where(
                     m => m.SynthKind == FunctionSynthKind.None))
                 {
-                    var specializedMethod = specialization.Methods.First(
+                    var specializedMethod = specialization.Methods.FirstOrDefault(
                         m => m.InstantiatedFrom == method);
+                    if (specializedMethod == null)
+                        continue;
+
                     Method extensionMethod = GetExtensionMethodForDependentPointer(specializedMethod);
                     classExtensions.Methods.Add(extensionMethod);
                     extensionMethod.Namespace = classExtensions;
