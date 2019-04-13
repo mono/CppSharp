@@ -312,7 +312,8 @@ namespace CppSharp.Generators.CSharp
             Type finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
             if (finalType.IsDependent)
                 Context.Return.Write($"({param.ReplacedParameter.Parameter.Name}) (object) ");
-            if (param.Replacement.Type.Desugar().IsPointerToPrimitiveType())
+            Type replacement = param.Replacement.Type.Desugar();
+            if (replacement.IsPointerToPrimitiveType() && !replacement.IsConstCharString())
                 Context.Return.Write($"({typePrinter.IntPtrType}) ");
             return base.VisitTemplateParameterSubstitutionType(param, quals);
         }
@@ -623,9 +624,10 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
             var replacement = param.Replacement.Type.Desugar();
-            if (replacement.IsPrimitiveType() ||
-                replacement.IsPointerToPrimitiveType() ||
-                replacement.IsEnum())
+            if ((replacement.IsPrimitiveType() ||
+                 replacement.IsPointerToPrimitiveType() ||
+                 replacement.IsEnum()) &&
+                !replacement.IsConstCharString())
             {
                 Context.Return.Write($"({replacement}) ");
                 if (replacement.IsPointerToPrimitiveType())

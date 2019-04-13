@@ -139,7 +139,7 @@ namespace CppSharp.Generators.CSharp
                 i =>
                 {
                     CppSharp.AST.Type type = specialization.Arguments[i].Type.Type;
-                    return type.IsPointerToPrimitiveType() ?
+                    return type.IsPointerToPrimitiveType() && !type.IsConstCharString() ?
                         $"__{@class.TemplateParameters[i].Name}.FullName == \"System.IntPtr\"" :
                         $"__{@class.TemplateParameters[i].Name}.IsAssignableFrom(typeof({type}))";
                 })));

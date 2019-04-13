@@ -167,24 +167,31 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
+            string param = ctx.Parameter.Name;
             if (ctx.Parameter.Usage == ParameterUsage.Unknown &&
                 !ctx.Parameter.Type.IsReference() &&
+                !(ctx.Parameter.Type is TemplateParameterSubstitutionType) &&
                 ctx.MarshalKind != MarshalKind.NativeField &&
                 ctx.MarshalKind != MarshalKind.VTableReturnValue &&
                 ctx.MarshalKind != MarshalKind.Variable)
             {
-                ctx.Return.Write(ctx.Parameter.Name);
+                ctx.Return.Write(param);
                 return;
             }
+
+            var substitution = Type as TemplateParameterSubstitutionType;
+            if (substitution != null)
+                param = $"({substitution.Replacement}) (object) {param}";
+
             if (Equals(Context.Options.Encoding, Encoding.ASCII))
             {
-                ctx.Return.Write($"Marshal.StringToHGlobalAnsi({ctx.Parameter.Name})");
+                ctx.Return.Write($"Marshal.StringToHGlobalAnsi({param})");
                 return;
             }
             if (Equals(Context.Options.Encoding, Encoding.Unicode) ||
                 Equals(Context.Options.Encoding, Encoding.BigEndianUnicode))
             {
-                ctx.Return.Write($"Marshal.StringToHGlobalUni({ctx.Parameter.Name})");
+                ctx.Return.Write($"Marshal.StringToHGlobalUni({param})");
                 return;
             }
             throw new System.NotSupportedException(
@@ -200,7 +207,7 @@ namespace CppSharp.Types.Std
                 return;
             }
 
-            Type type = ctx.ReturnType.Type.Desugar();
+            Type type = Type.Desugar();
             Type pointee = type.GetPointee().Desugar();
             var isChar = type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
                 (pointee.IsPointerToPrimitiveType(PrimitiveType.Char) &&
@@ -211,27 +218,31 @@ namespace CppSharp.Types.Std
             if (Equals(encoding, Encoding.ASCII))
                 encoding = Context.Options.Encoding;
 
+            string returnVarName = ctx.Function != null &&
+                ctx.Function.ReturnType.Type.Desugar().IsAddress() ?
+                $"(global::System.IntPtr) {ctx.ReturnVarName}" : ctx.ReturnVarName;
+
             if (Equals(encoding, Encoding.ASCII))
             {
-                ctx.Return.Write($"Marshal.PtrToStringAnsi({ctx.ReturnVarName})");
+                ctx.Return.Write($"Marshal.PtrToStringAnsi({returnVarName})");
                 return;
             }
             if (Equals(encoding, Encoding.UTF8))
             {
-                ctx.Return.Write($"Marshal.PtrToStringUTF8({ctx.ReturnVarName})");
+                ctx.Return.Write($"Marshal.PtrToStringUTF8({returnVarName})");
                 return;
             }
 
             // If we reach this, we know the string is Unicode.
             if (isChar || ctx.Context.TargetInfo.WCharWidth == 16)
             {
-                ctx.Return.Write($"Marshal.PtrToStringUni({ctx.ReturnVarName})");
+                ctx.Return.Write($"Marshal.PtrToStringUni({returnVarName})");
                 return;
             }
             // If we reach this, we should have an UTF-32 wide string.
             const string encodingName = "System.Text.Encoding.UTF32";
             ctx.Return.Write($@"CppSharp.Runtime.Helpers.MarshalEncodedString({
-                ctx.ReturnVarName}, {encodingName})");
+                returnVarName}, {encodingName})");
         }
     }
 

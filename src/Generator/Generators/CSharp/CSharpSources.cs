@@ -1049,15 +1049,15 @@ namespace CppSharp.Generators.CSharp
             if (type.IsPrimitiveType())
             {
                 WriteLine($@"*{@internal}.{internalFunction}({
-                    GetInstanceParam(function)}, {(paramMarshal.Context == null ?
-                    paramMarshal.Name : paramMarshal.Context.Return)}) = {marshal.Context.Return};");
+                    GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{
+                    paramMarshal.Name}) = {marshal.Context.Return};");
             }
             else
             {
                 var typeInternal = TypePrinter.PrintNative(type);
                 WriteLine($@"*({typeInternal}*) {@internal}.{internalFunction}({
-                    GetInstanceParam(function)}, {(paramMarshal.Context == null ?
-                    paramMarshal.Name : paramMarshal.Context.Return)}) = {marshal.Context.Return};");
+                    GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{
+                    paramMarshal.Name}) = {marshal.Context.Return};");
             }
         }
 

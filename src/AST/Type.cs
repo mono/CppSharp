@@ -866,10 +866,12 @@ namespace CppSharp.AST
             var type = obj as TemplateParameterSubstitutionType;
             if (type == null) return false;
 
-            return Replacement.Equals(type.Replacement);
+            return ReplacedParameter.Equals(type.ReplacedParameter) &&
+                Replacement.Equals(type.Replacement);
         }
 
-        public override int GetHashCode() => Replacement.GetHashCode();
+        public override int GetHashCode() =>
+            ReplacedParameter.GetHashCode() ^ Replacement.GetHashCode();
     }
 
     /// <summary>
