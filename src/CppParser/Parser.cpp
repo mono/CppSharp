@@ -85,6 +85,25 @@ LayoutField Parser::WalkVTablePointer(Class* Class,
     return LayoutField;
 }
 
+static CppAbi GetClassLayoutAbi(clang::TargetCXXABI::Kind abi)
+{
+    switch (abi)
+    {
+    case clang::TargetCXXABI::Microsoft:
+        return CppAbi::Microsoft;
+    case clang::TargetCXXABI::GenericItanium:
+        return CppAbi::Itanium;
+    case clang::TargetCXXABI::GenericARM:
+        return CppAbi::ARM;
+    case clang::TargetCXXABI::iOS:
+        return CppAbi::iOS;
+    case clang::TargetCXXABI::iOS64:
+        return CppAbi::iOS64;
+    default:
+        llvm_unreachable("Unsupported C++ ABI kind");
+    }
+}
+
 void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     clang::CharUnits Offset, bool IncludeVirtualBases)
 {
@@ -695,12 +714,13 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
     if (!C->layout)
         C->layout = new ClassLayout();
 
+    C->layout->ABI = GetClassLayoutAbi(targetABI);
+
     auto& AST = c->getASTContext();
     switch(targetABI)
     {
     case TargetCXXABI::Microsoft:
     {
-        C->layout->ABI = CppAbi::Microsoft;
         MicrosoftVTableContext VTContext(AST);
 
         const auto& VFPtrs = VTContext.getVFPtrOffsets(RD);
@@ -719,7 +739,6 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
     }
     case TargetCXXABI::GenericItanium:
     {
-        C->layout->ABI = CppAbi::Itanium;
         ItaniumVTableContext VTContext(AST);
 
         auto& VTLayout = VTContext.getVTableLayout(RD);
@@ -954,6 +973,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         const auto& Layout = c->getASTContext().getASTRecordLayout(Record);
         if (!RC->layout)
             RC->layout = new ClassLayout();
+        RC->layout->ABI = GetClassLayoutAbi(targetABI);
         RC->layout->alignment = (int)Layout.getAlignment().getQuantity();
         RC->layout->size = (int)Layout.getSize().getQuantity();
         RC->layout->dataSize = (int)Layout.getDataSize().getQuantity();
