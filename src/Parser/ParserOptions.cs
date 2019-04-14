@@ -285,31 +285,36 @@ namespace CppSharp.Parser
 
             string compiler, longVersion, shortVersion;
             GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
+
             string[] versions = {longVersion, shortVersion};
-            string[] tripples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
+            string[] triples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
             if (compiler == "gcc")
             {
                 foreach (var version in versions)
                 {
                     AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}");
                     AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/backward");
-                    foreach (var tripple in tripples)
+
+                    foreach (var triple in triples)
                     {
-                        AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}/c++/{version}");
-                        AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/{tripple}");
+                        AddSystemIncludeDirs($"{headersPath}/usr/include/{triple}/c++/{version}");
+                        AddSystemIncludeDirs($"{headersPath}/usr/include/c++/{version}/{triple}");
                     }
                 }
             }
-            foreach (var tripple in tripples)
+
+            foreach (var triple in triples)
             {
                 foreach (var version in versions)
                 {
-                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include");
-                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++");
-                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{tripple}/{version}/include/c++/{tripple}");
+                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{triple}/{version}/include");
+                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{triple}/{version}/include/c++");
+                    AddSystemIncludeDirs($"{headersPath}/usr/lib/{compiler}/{triple}/{version}/include/c++/{triple}");
                 }
-                AddSystemIncludeDirs($"{headersPath}/usr/include/{tripple}");
+
+                AddSystemIncludeDirs($"{headersPath}/usr/include/{triple}");
             }
+
             AddSystemIncludeDirs($"{headersPath}/usr/include");
             AddSystemIncludeDirs($"{headersPath}/usr/include/linux");
         }
