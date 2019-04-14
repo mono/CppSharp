@@ -17,15 +17,13 @@ namespace CppSharp
     {
         internal readonly GeneratorKind Kind;
         internal readonly string Triple;
-        internal readonly CppAbi Abi;
         internal readonly bool IsGnuCpp11Abi;
 
-        public ParserGen(GeneratorKind kind, string triple, CppAbi abi,
+        public ParserGen(GeneratorKind kind, string triple,
             bool isGnuCpp11Abi = false)
         {
             Kind = kind;
             Triple = triple;
-            Abi = abi;
             IsGnuCpp11Abi = isGnuCpp11Abi;
         }
 
@@ -51,7 +49,6 @@ namespace CppSharp
         {
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = Triple;
-            parserOptions.Abi = Abi;
 
             var options = driver.Options;
             options.GeneratorKind = Kind;
@@ -65,7 +62,7 @@ namespace CppSharp
             });
             parserModule.OutputNamespace = string.Empty;
 
-            if (Abi == CppAbi.Microsoft)
+            if (parserOptions.IsMicrosoftAbi)
                 parserOptions.MicrosoftMode = true;
 
             if (Triple.Contains("apple"))
@@ -168,18 +165,15 @@ namespace CppSharp
             if (Platform.IsWindows)
             {
                 Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc",
-                    CppAbi.Microsoft));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for Windows...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
-                    CppAbi.Microsoft));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# 64-bit parser bindings for Windows...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc",
-                    CppAbi.Microsoft));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc"));
                 Console.WriteLine();
             }
 
@@ -187,13 +181,11 @@ namespace CppSharp
             if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
             {
                 Console.WriteLine("Generating the C# parser bindings for OSX...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
-                    CppAbi.Itanium));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for OSX...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0",
-                    CppAbi.Itanium));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0"));
                 Console.WriteLine();
             }
 
@@ -201,13 +193,12 @@ namespace CppSharp
             if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
-                     CppAbi.Itanium));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for Linux (GCC C++11 ABI)...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
-                     CppAbi.Itanium, isGnuCpp11Abi: true));
+                    isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
         }

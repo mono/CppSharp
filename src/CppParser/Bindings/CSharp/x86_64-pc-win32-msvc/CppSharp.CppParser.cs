@@ -47028,7 +47028,7 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 320)]
+            [StructLayout(LayoutKind.Explicit, Size = 312)]
             public partial struct __Internal
             {
                 [FieldOffset(0)]
@@ -47071,30 +47071,27 @@ namespace CppSharp
                 internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C currentDir;
 
                 [FieldOffset(304)]
-                internal global::CppSharp.Parser.AST.CppAbi abi;
-
-                [FieldOffset(308)]
                 internal byte noStandardIncludes;
 
-                [FieldOffset(309)]
+                [FieldOffset(305)]
                 internal byte noBuiltinIncludes;
 
-                [FieldOffset(310)]
+                [FieldOffset(306)]
                 internal byte microsoftMode;
 
-                [FieldOffset(311)]
+                [FieldOffset(307)]
                 internal byte verbose;
 
-                [FieldOffset(312)]
+                [FieldOffset(308)]
                 internal byte unityBuild;
 
-                [FieldOffset(313)]
+                [FieldOffset(309)]
                 internal byte skipPrivateDeclarations;
 
-                [FieldOffset(314)]
+                [FieldOffset(310)]
                 internal byte skipLayoutInfo;
 
-                [FieldOffset(315)]
+                [FieldOffset(311)]
                 internal byte skipFunctionBodies;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -47553,19 +47550,6 @@ namespace CppSharp
                 set
                 {
                     global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->currentDir), value);
-                }
-            }
-
-            public global::CppSharp.Parser.AST.CppAbi Abi
-            {
-                get
-                {
-                    return ((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->abi;
-                }
-
-                set
-                {
-                    ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->abi = value;
                 }
             }
 

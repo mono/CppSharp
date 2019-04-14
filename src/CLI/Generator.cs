@@ -135,7 +135,6 @@ namespace CppSharp
         {
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = triple;
-            parserOptions.Abi = abi;
             parserOptions.Verbose = options.Verbose;
 
             var driverOptions = driver.Options;

@@ -281,7 +281,6 @@ void Parser::Setup()
     c->getLangOpts() = *Inv->LangOpts;
 
     auto& TO = Inv->TargetOpts;
-    targetABI = ConvertToClangTargetCXXABI(opts->abi);
 
     if (opts->targetTriple.empty())
         opts->targetTriple = llvm::sys::getDefaultTargetTriple();
@@ -421,6 +420,7 @@ std::string Parser::GetDeclMangledName(const clang::Decl* D)
     std::unique_ptr<MangleContext> MC;
     
     auto& AST = c->getASTContext();
+    auto targetABI = c->getTarget().getCXXABI().getKind();
     switch(targetABI)
     {
     default:
@@ -714,6 +714,7 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
     if (!C->layout)
         C->layout = new ClassLayout();
 
+    auto targetABI = c->getTarget().getCXXABI().getKind();
     C->layout->ABI = GetClassLayoutAbi(targetABI);
 
     auto& AST = c->getASTContext();
@@ -973,6 +974,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
         const auto& Layout = c->getASTContext().getASTRecordLayout(Record);
         if (!RC->layout)
             RC->layout = new ClassLayout();
+        auto targetABI = c->getTarget().getCXXABI().getKind();
         RC->layout->ABI = GetClassLayoutAbi(targetABI);
         RC->layout->alignment = (int)Layout.getAlignment().getQuantity();
         RC->layout->size = (int)Layout.getSize().getQuantity();

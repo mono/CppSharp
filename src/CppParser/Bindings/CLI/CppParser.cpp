@@ -431,16 +431,6 @@ void CppSharp::Parser::CppParserOptions::CurrentDir::set(System::String^ value)
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->currentDir = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::AST::CppAbi CppSharp::Parser::CppParserOptions::Abi::get()
-{
-    return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::CppParserOptions*)NativePtr)->abi;
-}
-
-void CppSharp::Parser::CppParserOptions::Abi::set(CppSharp::Parser::AST::CppAbi value)
-{
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->abi = (::CppSharp::CppParser::AST::CppAbi)value;
-}
-
 bool CppSharp::Parser::CppParserOptions::NoStandardIncludes::get()
 {
     return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->noStandardIncludes;

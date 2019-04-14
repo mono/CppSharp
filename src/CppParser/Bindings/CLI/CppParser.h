@@ -24,7 +24,6 @@ namespace CppSharp
         ref class ParserTargetInfo;
         namespace AST
         {
-            enum struct CppAbi;
             ref class ASTContext;
             ref class NativeLibrary;
         }
@@ -155,12 +154,6 @@ namespace CppSharp
             {
                 System::String^ get();
                 void set(System::String^);
-            }
-
-            property CppSharp::Parser::AST::CppAbi Abi
-            {
-                CppSharp::Parser::AST::CppAbi get();
-                void set(CppSharp::Parser::AST::CppAbi);
             }
 
             property bool NoStandardIncludes

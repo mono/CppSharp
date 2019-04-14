@@ -59,14 +59,12 @@ namespace CppSharp.Parser
     {
         public ParserOptions()
         {
-            Abi = Platform.IsUnixPlatform ? CppAbi.Itanium : CppAbi.Microsoft;
             MicrosoftMode = !Platform.IsUnixPlatform;
             CurrentDir = Assembly.GetExecutingAssembly().Location;
         }
 
         public ParserOptions(ParserOptions options)
         {
-            Abi = options.Abi;
             ToolSetToUse = options.ToolSetToUse;
             TargetTriple = options.TargetTriple;
             NoStandardIncludes = options.NoStandardIncludes;
@@ -82,8 +80,9 @@ namespace CppSharp.Parser
             ForceClangToolchainLookup = options.ForceClangToolchainLookup;
         }
 
-        public bool IsItaniumLikeAbi => Abi != CppAbi.Microsoft;
-        public bool IsMicrosoftAbi => Abi == CppAbi.Microsoft;
+        public bool IsItaniumLikeAbi => !IsMicrosoftAbi;
+        public bool IsMicrosoftAbi => TargetTriple.Contains("win32") || 
+            TargetTriple.Contains("windows") || TargetTriple.Contains("msvc");
 
         public bool EnableRTTI { get; set; }
         public LanguageVersion? LanguageVersion { get; set; }
@@ -201,7 +200,6 @@ namespace CppSharp.Parser
         public void SetupMSVC(VisualStudioVersion vsVersion)
         {
             MicrosoftMode = true;
-            Abi = CppAbi.Microsoft;
 
             var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
@@ -284,7 +282,6 @@ namespace CppSharp.Parser
             MicrosoftMode = false;
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
-            Abi = CppAbi.Itanium;
 
             string compiler, longVersion, shortVersion;
             GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);

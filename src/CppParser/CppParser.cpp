@@ -13,7 +13,6 @@ namespace CppSharp { namespace CppParser {
 CppParserOptions::CppParserOptions()
     : ASTContext(0)
     , toolSetToUse(0)
-    , abi(CppAbi::Itanium)
     , noStandardIncludes(false)
     , noBuiltinIncludes(false)
     , microsoftMode(false)

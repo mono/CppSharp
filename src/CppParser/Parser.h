@@ -168,7 +168,6 @@ private:
 
     int index;
     std::unique_ptr<clang::CompilerInstance> c;
-    clang::TargetCXXABI::Kind targetABI;
     llvm::LLVMContext LLVMCtx;
     std::unique_ptr<llvm::Module> LLVMModule;
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM;
