@@ -1311,6 +1311,12 @@ struct {
     struct {
         struct {
             int(*forIntegers)(int b, short s, unsigned int i);
+            struct {
+                int i;
+            } APIHost;
+            struct {
+                int i;
+            } Method;
         } example;
     } root;
 } kotlin;

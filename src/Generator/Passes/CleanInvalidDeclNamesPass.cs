@@ -58,13 +58,12 @@ namespace CppSharp.Passes
                 return false;
 
             DeclarationContext currentContext = context;
-            int parents = 0;
+            int order = -1;
             while (currentContext != null)
             {
-                parents++;
+                order++;
                 currentContext = currentContext.Namespace;
             }
-            int order = parents % 2;
             CheckChildrenNames(context.Declarations, ref order);
 
             var @class = context as Class;
