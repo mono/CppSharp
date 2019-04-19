@@ -113,6 +113,9 @@ namespace CppSharp.Passes
                 if (left.Equals(right))
                     return true;
 
+                if (CheckForSpecializations(left, right))
+                    return true;
+
                 // TODO: some target languages might make a difference between values and pointers
                 Type leftPointee = left.GetPointee();
                 Type rightPointee = right.GetPointee();
@@ -131,14 +134,23 @@ namespace CppSharp.Passes
 
             private static bool CheckForSpecializations(Type leftPointee, Type rightPointee)
             {
-                ClassTemplateSpecialization leftSpecialization;
-                ClassTemplateSpecialization rightSpecialization;
-                return leftPointee.TryGetDeclaration(out leftSpecialization) &&
-                    rightPointee.TryGetDeclaration(out rightSpecialization) &&
+                Class leftClass;
+                Class rightClass;
+                if (!leftPointee.TryGetDeclaration(out leftClass) ||
+                    !rightPointee.TryGetDeclaration(out rightClass))
+                    return false;
+
+                var leftSpecialization = leftClass as ClassTemplateSpecialization ??
+                    leftClass.Namespace as ClassTemplateSpecialization;
+                var rightSpecialization = rightClass as ClassTemplateSpecialization ??
+                    rightClass.Namespace as ClassTemplateSpecialization;
+
+                return leftSpecialization != null && rightSpecialization != null &&
                     leftSpecialization.TemplatedDecl.TemplatedDecl.Equals(
                         rightSpecialization.TemplatedDecl.TemplatedDecl) &&
                     leftSpecialization.Arguments.SequenceEqual(
-                        rightSpecialization.Arguments, TemplateArgumentComparer.Instance);
+                        rightSpecialization.Arguments, TemplateArgumentComparer.Instance) &&
+                    leftClass.OriginalName == rightClass.OriginalName;
             }
 
             public int GetHashCode(Parameter obj)

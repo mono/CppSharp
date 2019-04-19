@@ -122,7 +122,9 @@ void TemplateSpecializer::completeSpecializationInParameter(TwoTemplateArgs<int 
                                                             TwoTemplateArgs<int *, int> p2,
                                                             TwoTemplateArgs<int *, float> p3,
                                                             TwoTemplateArgs<const char *, int> p4,
-                                                            TwoTemplateArgs<QString, int> p5)
+                                                            TwoTemplateArgs<QString, int> p5,
+                                                            TwoTemplateArgs<const char *, int>::iterator p6,
+                                                            TwoTemplateArgs<QString, int>::iterator p7)
 {
 }
 

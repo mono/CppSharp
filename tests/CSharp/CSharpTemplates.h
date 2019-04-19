@@ -273,11 +273,23 @@ template <typename K, typename V>
 class TwoTemplateArgs
 {
 public:
+    class iterator
+    {
+    public:
+        iterator() {}
+        ~iterator() {}
+    };
+    void takeDependentPtrToFirstTemplateArg(iterator i, const K& k);
     void takeDependentPtrToSecondTemplateArg(const V& v);
 private:
     K key;
     V value;
 };
+
+template <typename K, typename V>
+void TwoTemplateArgs<K, V>::takeDependentPtrToFirstTemplateArg(iterator i, const K& k)
+{
+}
 
 template <typename K, typename V>
 void TwoTemplateArgs<K, V>::takeDependentPtrToSecondTemplateArg(const V& v)
@@ -547,7 +559,9 @@ public:
                                            TwoTemplateArgs<int*, int> p2,
                                            TwoTemplateArgs<int*, float> p3,
                                            TwoTemplateArgs<const char*, int> p4,
-                                           TwoTemplateArgs<QString, int> p5);
+                                           TwoTemplateArgs<QString, int> p5,
+                                           TwoTemplateArgs<const char*, int>::iterator p6,
+                                           TwoTemplateArgs<QString, int>::iterator p7);
     VirtualTemplate<void> returnSpecializedWithVoid();
 private:
     IndependentFields<int> independentFields;
@@ -754,6 +768,8 @@ template class DLL_API TemplateWithIndexer<float>;
 template class DLL_API TemplateWithIndexer<const char*>;
 template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
 template class DLL_API HasCtorWithMappedToEnum<TestFlag>;
+template class DLL_API TwoTemplateArgs<const char*, int>;
+template class DLL_API TwoTemplateArgs<QString, int>;
 
 class TestForwardedClassInAnotherUnit;
 
