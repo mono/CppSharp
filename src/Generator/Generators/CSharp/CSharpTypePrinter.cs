@@ -276,7 +276,14 @@ namespace CppSharp.Generators.CSharp
                 return typeMap.CSharpSignatureType(typePrinterContext).ToString();
             }
 
-            FunctionType func = decl.Type as FunctionType;
+            FunctionType func;
+            if (decl.Type.IsPointerTo(out func))
+            {
+                if (MarshalKind == MarshalKind.GenericDelegate && ContextKind == TypePrinterContextKind.Native)
+                    return VisitDeclaration(decl);
+            }
+
+            func = decl.Type as FunctionType;
             if (func != null || decl.Type.IsPointerTo(out func))
             {
                 if (ContextKind == TypePrinterContextKind.Native)

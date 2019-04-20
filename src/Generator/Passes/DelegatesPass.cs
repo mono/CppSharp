@@ -94,6 +94,9 @@ namespace CppSharp.Passes
 
         public override bool VisitParameterDecl(Parameter parameter)
         {
+            if(parameter.Namespace?.TranslationUnit?.Module == null && namespaces.Count > 0)
+                parameter.Namespace = namespaces.Peek();
+
             if (!base.VisitDeclaration(parameter) || parameter.Namespace == null ||
                 parameter.Namespace.Ignore)
                 return false;
@@ -117,11 +120,16 @@ namespace CppSharp.Passes
 
         public override bool VisitFieldDecl(Field field)
         {
+            if (field.Namespace?.TranslationUnit?.Module != null)
+                namespaces.Push(field.Namespace);
+
             if (!base.VisitFieldDecl(field))
                 return false;
 
             field.QualifiedType = CheckForDelegate(field.QualifiedType,
                 field.Namespace);
+
+            namespaces.Clear();
 
             return true;
         }
@@ -297,5 +305,6 @@ namespace CppSharp.Passes
         /// iterating over it, so we collect all the typedefs and add them at the end.
         /// </summary>
         private readonly List<TypedefDecl> delegates = new List<TypedefDecl>();
+        private readonly Stack<DeclarationContext> namespaces = new Stack<DeclarationContext>();
     }
 }
