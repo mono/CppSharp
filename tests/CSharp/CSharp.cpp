@@ -1560,7 +1560,7 @@ char* returnCharPointer()
     return 0;
 }
 
-const char* takeConstCharStarRef(const char*& c)
+const char*& takeConstCharStarRef(const char*& c)
 {
     return c;
 }

@@ -146,8 +146,10 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee.Desugar();
             var finalPointee = pointer.GetFinalPointee().Desugar();
+            var type = Context.ReturnType.Type.Desugar(
+                resolveTemplateSubstitution: false);
             PrimitiveType primitive;
-            if ((pointee.IsConstCharString() && isRefParam) ||
+            if ((pointee.IsConstCharString() && (isRefParam || type.IsReference())) ||
                 (!finalPointee.IsPrimitiveType(out primitive) &&
                  !finalPointee.IsEnumType()))
                 return pointer.QualifiedPointee.Visit(this);
@@ -162,8 +164,6 @@ namespace CppSharp.Generators.CSharp
                 primitive == PrimitiveType.Char)
                 Context.Return.Write($"({pointer}) ");
 
-            var type = Context.ReturnType.Type.Desugar(
-                resolveTemplateSubstitution: false);
             if (Context.Function != null &&
                 Context.Function.OperatorKind == CXXOperatorKind.Subscript)
             {

@@ -218,9 +218,16 @@ namespace CppSharp.Types.Std
             if (Equals(encoding, Encoding.ASCII))
                 encoding = Context.Options.Encoding;
 
-            string returnVarName = ctx.Function != null &&
-                ctx.Function.ReturnType.Type.Desugar().IsAddress() ?
-                $"(global::System.IntPtr) {ctx.ReturnVarName}" : ctx.ReturnVarName;
+            string returnVarName = ctx.ReturnVarName;
+            if (ctx.Function != null)
+            {
+                Type returnType = ctx.Function.ReturnType.Type.Desugar();
+                if (returnType.IsAddress() &&
+                    returnType.GetPointee().Desugar().IsAddress())
+                {
+                    returnVarName = $"new global::System.IntPtr(*{returnVarName})";
+                }
+            }
 
             if (Equals(encoding, Encoding.ASCII))
             {
