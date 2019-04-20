@@ -1268,6 +1268,8 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
             hasFunctionPtrField.FunctionPtrField = @string => @string.Length;
             Assert.That(hasFunctionPtrField.FunctionPtrField("Test"), Is.EqualTo(4));
+            hasFunctionPtrField.FunctionPtrTakeFunctionPtrField = field => field();
+            Assert.That(hasFunctionPtrField.FunctionPtrTakeFunctionPtrField(() => 42), Is.EqualTo(42));
         }
     }
 

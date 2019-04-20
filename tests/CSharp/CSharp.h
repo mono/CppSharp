@@ -1301,6 +1301,7 @@ public:
     HasFunctionPtrField();
     ~HasFunctionPtrField();
     int (*functionPtrField)(const char*);
+    int (*functionPtrTakeFunctionPtrField)(int(*TakenInFuncPtrField)());
 };
 
 DLL_API void va_listFunction(va_list v);
