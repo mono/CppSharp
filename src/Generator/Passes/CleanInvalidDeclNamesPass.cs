@@ -10,6 +10,15 @@ namespace CppSharp.Passes
 {
     public class CleanInvalidDeclNamesPass : TranslationUnitPass
     {
+        public override bool VisitASTContext(ASTContext context)
+        {
+            // TODO: Fix this to not need per-generator code.
+            generator = Options.IsCLIGenerator ?
+               new CLIHeaders(Context, new List<TranslationUnit>()) :
+               (CodeGenerator) new CSharpSources(Context);
+            return base.VisitASTContext(context);
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))
@@ -129,13 +138,10 @@ namespace CppSharp.Passes
             if (char.IsNumber(name[0]))
                 return '_' + name;
 
-            // TODO: Fix this to not need per-generator code.
-            var units = new List<TranslationUnit> { new TranslationUnit() };
-            if (Options.IsCLIGenerator)
-                return new CLIHeaders(Context, units).SafeIdentifier(name);
-
-            return new CSharpSources(Context, units).SafeIdentifier(name);
+            return generator.SafeIdentifier(name);
         }
+
+        private CodeGenerator generator;
     }
 }
 
