@@ -2,23 +2,12 @@
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
-using CppSharp.Generators.CLI;
-using CppSharp.Generators.CSharp;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
     public class CleanInvalidDeclNamesPass : TranslationUnitPass
     {
-        public override bool VisitASTContext(ASTContext context)
-        {
-            // TODO: Fix this to not need per-generator code.
-            generator = Options.IsCLIGenerator ?
-               new CLIHeaders(Context, new List<TranslationUnit>()) :
-               (CodeGenerator) new CSharpSources(Context);
-            return base.VisitASTContext(context);
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))
@@ -138,10 +127,8 @@ namespace CppSharp.Passes
             if (char.IsNumber(name[0]))
                 return '_' + name;
 
-            return generator.SafeIdentifier(name);
+            return name;
         }
-
-        private CodeGenerator generator;
     }
 }
 

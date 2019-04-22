@@ -277,7 +277,10 @@ namespace CppSharp
 
             if (Options.GeneratorKind == GeneratorKind.CLI ||
                 Options.GeneratorKind == GeneratorKind.CSharp)
-                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any &~ RenameTargets.Parameter);
+            {
+                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any & ~RenameTargets.Parameter);
+                TranslationUnitPasses.AddPass(new CheckKeywordNamesPass());
+            }
         }
 
         public void ProcessCode()

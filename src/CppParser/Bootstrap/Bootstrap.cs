@@ -1762,11 +1762,9 @@ namespace CppSharp
                 }
 
                 if (!hasConflict)
-                    name = CaseRenamePass.ConvertCaseString(decl,
-                        RenameCasePattern.UpperCamelCase);
-
-                if (CSharpSources.IsReservedKeyword(name))
-                    name = $"@{name}";
+                    name = CSharpSources.SafeIdentifier(
+                        CaseRenamePass.ConvertCaseString(decl,
+                            RenameCasePattern.UpperCamelCase));
             }
             else throw new NotImplementedException();
 

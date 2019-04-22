@@ -41,11 +41,6 @@ namespace CppSharp.Generators.C
             return decl.QualifiedName;
         }
 
-        public override string GeneratedIdentifier(string id)
-        {
-            return "__" + id.Replace('-', '_');
-        }
-
         private CppTypePrinter typePrinter = new CppTypePrinter();
         public virtual CppTypePrinter CTypePrinter => typePrinter;
 
@@ -186,7 +181,7 @@ namespace CppSharp.Generators.C
 
             if (Options.GeneratorKind == GeneratorKind.CLI)
             {
-                keywords.Add(AccessIdentifier(@class.Access));
+                keywords.Add(Helpers.GetAccess(@class.Access));
 
                 if (@class.IsAbstract)
                     keywords.Add("abstract");

@@ -59,9 +59,7 @@ namespace CppSharp.Generators.CSharp
             "void", "partial", "yield", "where"
         };
 
-        public static bool IsReservedKeyword(string id) => ReservedKeywords.Contains(id);
-
-        public override string SafeIdentifier(string id)
+        public static string SafeIdentifier(string id)
         {
             if (id.All(char.IsLetterOrDigit))
                 return ReservedKeywords.Contains(id) ? "@" + id : id;
@@ -246,7 +244,7 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             PushBlock(BlockKind.Functions);
-            var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+            var parentName = context.TranslationUnit.FileNameWithoutExtension;
 
             var keyword = "class";
             var classes = EnumerateClasses().ToList();
@@ -724,7 +722,7 @@ namespace CppSharp.Generators.CSharp
             keywords.Add("partial");
 
             keywords.Add(@class.IsInterface ? "interface" : (@class.IsValueType ? "struct" : "class"));
-            keywords.Add(SafeIdentifier(@class.Name));
+            keywords.Add(@class.Name);
 
             Write(string.Join(" ", keywords));
             if (@class.IsDependent && @class.TemplateParameters.Any())
@@ -927,7 +925,7 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                var identifier = SafeIdentifier(name);
+                var identifier = name;
                 if (@class.IsValueType)
                     returnVar = $"{Helpers.InstanceField}.{identifier}";
                 else
@@ -998,7 +996,7 @@ namespace CppSharp.Generators.CSharp
             var name = ((Class) field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
-                type, arrPtr, Helpers.InstanceField, SafeIdentifier(name)));
+                type, arrPtr, Helpers.InstanceField, name));
             WriteOpenBraceAndIndent();
             return arrPtr;
         }
@@ -1219,11 +1217,11 @@ namespace CppSharp.Generators.CSharp
                 if (arrayType != null)
                     returnVar = HandleValueArray(arrayType, field);
                 else
-                    returnVar = $"{Helpers.InstanceField}.{SafeIdentifier(name)}";
+                    returnVar = $"{Helpers.InstanceField}.{name}";
             }
             else
             {
-                returnVar = $"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})->{SafeIdentifier(name)}";
+                returnVar = $"(({TypePrinter.PrintNative(@class)}*) {Helpers.InstanceIdentifier})->{name}";
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
@@ -1372,8 +1370,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     var name = @class.Layout.Fields.First(f => f.FieldPtr == prop.Field.OriginalPtr).Name;
                     GenerateClassField(prop.Field);
-                    WriteLine("private bool {0};",
-                        GeneratedIdentifier(string.Format("{0}Initialised", name)));
+                    string safeIdentifier = name.StartsWith("@") ? name.Substring(1) : name;
+                    WriteLine($"private bool __{safeIdentifier}Initialised;");
                 }
 
                 GenerateDeclarationCommon(prop);
@@ -1434,7 +1432,7 @@ namespace CppSharp.Generators.CSharp
         {
             var isIndexer = prop.Parameters.Count != 0;
             if (!isIndexer)
-                return SafeIdentifier(prop.Name);
+                return prop.Name;
 
             var @params = prop.Parameters.Select(param => {
                 var p = new Parameter(param);
@@ -3109,7 +3107,7 @@ namespace CppSharp.Generators.CSharp
             // internal P/Invoke declarations must see protected enums
             if (@enum.Access == AccessSpecifier.Protected)
                 Write("internal ");
-            Write("enum {0}", SafeIdentifier(@enum.Name));
+            Write("enum {0}", @enum.Name);
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());

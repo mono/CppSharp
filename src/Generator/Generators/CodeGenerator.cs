@@ -105,19 +105,6 @@ namespace CppSharp.Generators
 
         #endregion
 
-        #region Identifiers generation
-
-        public virtual string SafeIdentifier(string id) => id;
-
-        public virtual string GeneratedIdentifier(string id) => Generator.GeneratedIdentifier(id);
-
-        public virtual string AccessIdentifier(AccessSpecifier accessSpecifier)
-        {
-            return Helpers.GetAccess(accessSpecifier);
-        }
-
-        #endregion
-
         #region Comment generation
 
         public virtual void GenerateSummary(string comment)

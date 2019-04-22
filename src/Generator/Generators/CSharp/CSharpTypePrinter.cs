@@ -739,22 +739,16 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitFieldDecl(Field field)
         {
             var cSharpSourcesDummy = new CSharpSources(Context, new List<TranslationUnit>());
-            var safeIdentifier = cSharpSourcesDummy.SafeIdentifier(field.Name);
 
-            if (safeIdentifier.All(c => c.Equals('_')))
-            {
-                safeIdentifier = cSharpSourcesDummy.SafeIdentifier(field.Name);
-            }
-
-            PushMarshalKind(MarshalKind.NativeField);   
+            PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.Visit(this);
             PopMarshalKind();
-                     
+
             var returnTypePrinter = new TypePrinterResult();
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
                 returnTypePrinter.NameSuffix = fieldTypePrinted.NameSuffix;
 
-            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {safeIdentifier}"; 
+            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {field.Name}"; 
 
             return returnTypePrinter;
         }
