@@ -21,6 +21,7 @@ namespace CppSharp.Passes
         public override void Process()
         {
             WriteLine("#define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS");
+            WriteLine("#define _LIBCPP_HIDE_FROM_ABI");
             NewLine();
 
             if (TranslationUnit.Module == Options.SystemModule)

@@ -1,4 +1,5 @@
 #define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS
+#define _LIBCPP_HIDE_FROM_ABI
 
 #include <string>
 
