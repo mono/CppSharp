@@ -569,13 +569,13 @@ CppSharp::Parser::AST::DeclarationContext::operator CppSharp::Parser::AST::Decla
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ CppSharp::Parser::AST::DeclarationContext::Namespaces::get()
 {
-    auto _tmp__Namespaces_ = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>();
+    auto _tmp__Namespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>();
     for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Namespaces)
     {
         auto _marshalElement = (_element == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)_element);
-        _tmp__Namespaces_->Add(_marshalElement);
+        _tmp__Namespaces->Add(_marshalElement);
     }
-    return _tmp__Namespaces_;
+    return _tmp__Namespaces;
 }
 
 void CppSharp::Parser::AST::DeclarationContext::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ value)
@@ -591,13 +591,13 @@ void CppSharp::Parser::AST::DeclarationContext::Namespaces::set(System::Collecti
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>^ CppSharp::Parser::AST::DeclarationContext::Enums::get()
 {
-    auto _tmp__Enums_ = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>();
+    auto _tmp__Enums = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>();
     for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Enums)
     {
         auto _marshalElement = (_element == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Enumeration((::CppSharp::CppParser::AST::Enumeration*)_element);
-        _tmp__Enums_->Add(_marshalElement);
+        _tmp__Enums->Add(_marshalElement);
     }
-    return _tmp__Enums_;
+    return _tmp__Enums;
 }
 
 void CppSharp::Parser::AST::DeclarationContext::Enums::set(System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>^ value)
@@ -613,13 +613,13 @@ void CppSharp::Parser::AST::DeclarationContext::Enums::set(System::Collections::
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ CppSharp::Parser::AST::DeclarationContext::Functions::get()
 {
-    auto _tmp__Functions_ = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Function^>();
+    auto _tmp__Functions = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Function^>();
     for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Functions)
     {
         auto _marshalElement = (_element == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)_element);
-        _tmp__Functions_->Add(_marshalElement);
+        _tmp__Functions->Add(_marshalElement);
     }
-    return _tmp__Functions_;
+    return _tmp__Functions;
 }
 
 void CppSharp::Parser::AST::DeclarationContext::Functions::set(System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ value)
@@ -635,13 +635,13 @@ void CppSharp::Parser::AST::DeclarationContext::Functions::set(System::Collectio
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Class^>^ CppSharp::Parser::AST::DeclarationContext::Classes::get()
 {
-    auto _tmp__Classes_ = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Class^>();
+    auto _tmp__Classes = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Class^>();
     for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Classes)
     {
         auto _marshalElement = (_element == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)_element);
-        _tmp__Classes_->Add(_marshalElement);
+        _tmp__Classes->Add(_marshalElement);
     }
-    return _tmp__Classes_;
+    return _tmp__Classes;
 }
 
 void CppSharp::Parser::AST::DeclarationContext::Classes::set(System::Collections::Generic::List<CppSharp::Parser::AST::Class^>^ value)

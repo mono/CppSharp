@@ -835,7 +835,7 @@ namespace Std
             internal ulong _M_string_length;
 
             [FieldOffset(16)]
-            internal global::Std.BasicString._.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C _;
+            internal global::Std.BasicString._3.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C _0;
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -864,7 +864,7 @@ namespace Std
 
         }
 
-        namespace _
+        namespace _3
         {
             [StructLayout(LayoutKind.Explicit, Size = 16)]
             public unsafe partial struct __Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C

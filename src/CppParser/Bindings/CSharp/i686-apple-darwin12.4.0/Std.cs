@@ -699,10 +699,10 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal global::Std.BasicString.Rep._.__Internal _;
+                internal global::Std.BasicString.Rep._4.__Internal _0;
             }
 
-            namespace _
+            namespace _4
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public unsafe partial struct __Internal
@@ -744,13 +744,13 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal global::Std.BasicString.Short._.__Internal _;
+                internal global::Std.BasicString.Short._4.__Internal _0;
 
                 [FieldOffset(1)]
                 internal fixed sbyte __data_[11];
             }
 
-            namespace _
+            namespace _4
             {
                 [StructLayout(LayoutKind.Explicit, Size = 1)]
                 public unsafe partial struct __Internal
