@@ -1508,3 +1508,12 @@ DLL_API void takeReferenceToVoidStar(const void*& p);
 DLL_API void takeVoidStarStar(void** p);
 DLL_API void overloadPointer(void* p, int i = 0);
 DLL_API void overloadPointer(const void* p, int i = 0);
+
+struct DLL_API StructWithCopyCtor
+{
+    StructWithCopyCtor();
+    StructWithCopyCtor(const StructWithCopyCtor& other);
+    uint16_t mBits;
+};
+
+uint16_t DLL_API TestStructWithCopyCtorByValue(StructWithCopyCtor s);

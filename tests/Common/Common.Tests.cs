@@ -896,4 +896,13 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(foo.ReturnChar16(), Is.EqualTo('a'));
         }
     }
+
+    [Test, Ignore("Indirect parameters not supported yet")]
+    public void TestStructWithCopyCtorByValue()
+    {
+        var structWithCopyCtor = new StructWithCopyCtor();
+        structWithCopyCtor.MBits = 10;
+        var ret = Common.TestStructWithCopyCtorByValue(structWithCopyCtor);
+        Assert.That(ret, Is.EqualTo(10));
+    }
 }
