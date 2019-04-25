@@ -1048,3 +1048,11 @@ void overloadPointer(void* p, int i)
 void overloadPointer(const void* p, int i)
 {
 }
+
+StructWithCopyCtor::StructWithCopyCtor() {}
+StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
+
+uint16_t TestStructWithCopyCtorByValue(StructWithCopyCtor s)
+{
+    return s.mBits;
+}
