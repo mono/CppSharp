@@ -524,10 +524,26 @@ public:
     Class* _class;
 };
 
+enum class RecordArgABI
+{
+    /// Pass it using the normal C aggregate rules for the ABI,
+    /// potentially introducing extra copies and passing some
+    /// or all of it in registers.
+    Default = 0,
+    /// Pass it on the stack using its defined layout.
+    /// The argument must be evaluated directly into the correct
+    /// stack position in the arguments area, and the call machinery
+    /// must not move it or introduce extra copies.
+    DirectInMemory,
+    /// Pass it as a pointer to temporary memory.
+    Indirect
+};
+
 struct CS_API ClassLayout
 {
     ClassLayout();
     CppAbi ABI;
+    RecordArgABI argABI;
     VECTOR(VFTableInfo, VFTables)
     VTableLayout layout;
     bool hasOwnVFPtr;

@@ -6258,6 +6258,25 @@ namespace CppSharp
                 iOS64 = 4
             }
 
+            public enum RecordArgABI
+            {
+                /// <summary>
+/// <para>Pass it using the normal C aggregate rules for the ABI,</para>
+/// <para>potentially introducing extra copies and passing some</para>
+/// <para>or all of it in registers.</para>
+/// </summary>
+                Default = 0,
+                /// <summary>
+/// <para>Pass it on the stack using its defined layout.</para>
+/// <para>The argument must be evaluated directly into the correct</para>
+/// <para>stack position in the arguments area, and the call machinery</para>
+/// <para>must not move it or introduce extra copies.</para>
+/// </summary>
+                DirectInMemory = 1,
+                /// <summary>Pass it as a pointer to temporary memory.</summary>
+                Indirect = 2
+            }
+
             public enum VTableComponentKind
             {
                 VCallOffset = 0,
@@ -12138,37 +12157,40 @@ namespace CppSharp
 
             public unsafe partial class ClassLayout : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 72)]
+                [StructLayout(LayoutKind.Explicit, Size = 76)]
                 public partial struct __Internal
                 {
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.CppAbi ABI;
 
                     [FieldOffset(4)]
+                    internal global::CppSharp.Parser.AST.RecordArgABI argABI;
+
+                    [FieldOffset(8)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_S_allocator__S0_ VFTables;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(20)]
                     internal global::CppSharp.Parser.AST.VTableLayout.__Internal layout;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(32)]
                     internal byte hasOwnVFPtr;
 
-                    [FieldOffset(32)]
+                    [FieldOffset(36)]
                     internal int VBPtrOffset;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(40)]
                     internal int alignment;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(44)]
                     internal int size;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(48)]
                     internal int dataSize;
 
-                    [FieldOffset(48)]
+                    [FieldOffset(52)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_S_allocator__S0_ Fields;
 
-                    [FieldOffset(60)]
+                    [FieldOffset(64)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_S_allocator__S0_ Bases;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -12393,6 +12415,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->ABI = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.RecordArgABI ArgABI
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->argABI;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->argABI = value;
                     }
                 }
 

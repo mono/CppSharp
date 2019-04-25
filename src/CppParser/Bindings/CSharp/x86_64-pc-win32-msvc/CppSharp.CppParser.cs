@@ -6258,6 +6258,25 @@ namespace CppSharp
                 iOS64 = 4
             }
 
+            public enum RecordArgABI
+            {
+                /// <summary>
+/// <para>Pass it using the normal C aggregate rules for the ABI,</para>
+/// <para>potentially introducing extra copies and passing some</para>
+/// <para>or all of it in registers.</para>
+/// </summary>
+                Default = 0,
+                /// <summary>
+/// <para>Pass it on the stack using its defined layout.</para>
+/// <para>The argument must be evaluated directly into the correct</para>
+/// <para>stack position in the arguments area, and the call machinery</para>
+/// <para>must not move it or introduce extra copies.</para>
+/// </summary>
+                DirectInMemory = 1,
+                /// <summary>Pass it as a pointer to temporary memory.</summary>
+                Indirect = 2
+            }
+
             public enum VTableComponentKind
             {
                 VCallOffset = 0,
@@ -12144,6 +12163,9 @@ namespace CppSharp
                     [FieldOffset(0)]
                     internal global::CppSharp.Parser.AST.CppAbi ABI;
 
+                    [FieldOffset(4)]
+                    internal global::CppSharp.Parser.AST.RecordArgABI argABI;
+
                     [FieldOffset(8)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_S_allocator__S0_ VFTables;
 
@@ -12393,6 +12415,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->ABI = value;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.RecordArgABI ArgABI
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.ClassLayout.__Internal*) __Instance)->argABI;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->argABI = value;
                     }
                 }
 
