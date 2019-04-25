@@ -228,8 +228,8 @@ LayoutBase::LayoutBase(const LayoutBase& other) : offset(other.offset), _class(o
 
 LayoutBase::~LayoutBase() {}
 
-ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), hasOwnVFPtr(false),
-    VBPtrOffset(0), alignment(0), size(0), dataSize(0) {}
+ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), argABI(RecordArgABI::Default),
+    hasOwnVFPtr(false), VBPtrOffset(0), alignment(0), size(0), dataSize(0) {}
 
 DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
 

@@ -2859,6 +2859,16 @@ void CppSharp::Parser::AST::ClassLayout::ABI::set(CppSharp::Parser::AST::CppAbi 
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->ABI = (::CppSharp::CppParser::AST::CppAbi)value;
 }
 
+CppSharp::Parser::AST::RecordArgABI CppSharp::Parser::AST::ClassLayout::ArgABI::get()
+{
+    return (CppSharp::Parser::AST::RecordArgABI)((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->argABI;
+}
+
+void CppSharp::Parser::AST::ClassLayout::ArgABI::set(CppSharp::Parser::AST::RecordArgABI value)
+{
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->argABI = (::CppSharp::CppParser::AST::RecordArgABI)value;
+}
+
 System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>^ CppSharp::Parser::AST::ClassLayout::VFTables::get()
 {
     auto _tmp__VFTables = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>();

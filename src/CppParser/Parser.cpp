@@ -941,6 +941,21 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
             supportedStdTypes.end());
 }
 
+static RecordArgABI GetRecordArgABI(
+    clang::CodeGen::CGCXXABI::RecordArgABI argAbi)
+{
+    using namespace clang::CodeGen;
+    switch (argAbi)
+    {
+    case CGCXXABI::RecordArgABI::RAA_Default:
+        return RecordArgABI::Default;
+    case CGCXXABI::RecordArgABI::RAA_DirectInMemory:
+        return RecordArgABI::DirectInMemory;
+    case CGCXXABI::RecordArgABI::RAA_Indirect:
+        return RecordArgABI::Indirect;
+    }
+}
+
 void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 {
     using namespace clang;
@@ -971,14 +986,23 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 
     if (hasLayout)
     {
-        const auto& Layout = c->getASTContext().getASTRecordLayout(Record);
         if (!RC->layout)
             RC->layout = new ClassLayout();
+
         auto targetABI = c->getTarget().getCXXABI().getKind();
         RC->layout->ABI = GetClassLayoutAbi(targetABI);
+
+        if (auto CXXRD = llvm::dyn_cast_or_null<clang::CXXRecordDecl>(Record))
+        {
+            auto& CXXABI = codeGenTypes->getCXXABI();
+            RC->layout->argABI = GetRecordArgABI(CXXABI.getRecordArgABI(CXXRD));
+        }
+
+        const auto& Layout = c->getASTContext().getASTRecordLayout(Record);
         RC->layout->alignment = (int)Layout.getAlignment().getQuantity();
         RC->layout->size = (int)Layout.getSize().getQuantity();
         RC->layout->dataSize = (int)Layout.getDataSize().getQuantity();
+
         ReadClassLayout(RC, Record, CharUnits(), true);
     }
 

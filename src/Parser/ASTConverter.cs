@@ -1577,11 +1577,27 @@ namespace CppSharp
             return _class;
         }
 
+        AST.RecordArgABI VisitRecordArgABI(RecordArgABI argAbi)
+        {
+            switch (argAbi)
+            {
+            case RecordArgABI.Default:
+                return AST.RecordArgABI.Default;
+            case RecordArgABI.DirectInMemory:
+                return AST.RecordArgABI.DirectInMemory;
+            case RecordArgABI.Indirect:
+                return AST.RecordArgABI.Indirect;
+            }
+
+            throw new NotImplementedException();
+        }
+
         AST.ClassLayout VisitClassLayout(ClassLayout layout)
         {
             var _layout = new AST.ClassLayout
             {
                 ABI = VisitCppAbi(layout.ABI),
+                ArgABI = VisitRecordArgABI(layout.ArgABI),
                 Layout = VisitVTableLayout(layout.Layout),
                 HasOwnVFPtr = layout.HasOwnVFPtr,
                 VBPtrOffset = layout.VBPtrOffset,
