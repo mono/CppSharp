@@ -1,4 +1,6 @@
 ﻿using CppSharp.AST;
+using CppSharp.AST.Extensions;
+using System.Linq;
 
 namespace CppSharp.Passes
 {
@@ -79,7 +81,12 @@ namespace CppSharp.Passes
                 });
             }
 
-            // TODO: Handle indirect parameters
+            foreach (var param in from p in function.Parameters
+                                  where p.IsIndirect && !p.Type.Desugar().IsAddress()
+                                  select p)
+            {
+                param.QualifiedType = new QualifiedType(new PointerType(param.QualifiedType));
+            }
 
             return true;
         }

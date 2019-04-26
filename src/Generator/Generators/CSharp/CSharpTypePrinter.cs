@@ -201,7 +201,8 @@ namespace CppSharp.Generators.CSharp
             // * Any pointer type.
             // * Any user-defined struct type that contains fields of unmanaged types only.
             var finalPointee = (pointee.GetFinalPointee() ?? pointee).Desugar();
-            if (finalPointee.IsPrimitiveType())
+            Enumeration @enum;
+            if (finalPointee.IsPrimitiveType() || finalPointee.TryGetEnum(out @enum))
             {
                 // Skip one indirection if passed by reference
                 bool isRefParam = Parameter != null && (Parameter.IsOut || Parameter.IsInOut);
@@ -220,18 +221,8 @@ namespace CppSharp.Generators.CSharp
                 var result = pointer.QualifiedPointee.Visit(this);
                 allowStrings = true;
 
-                return !isRefParam && result.Type == IntPtrType ? "void**" : result + "*";
-            }
-
-            Enumeration @enum;
-            if (pointee.TryGetEnum(out @enum))
-            {
-                // Skip one indirection if passed by reference
-                if (isManagedContext && Parameter != null && (Parameter.IsOut || Parameter.IsInOut)
-                    && pointee == finalPointee)
-                    return pointer.QualifiedPointee.Visit(this);
-
-                return pointer.QualifiedPointee.Visit(this) + "*";
+                string @ref = Parameter != null && Parameter.IsIndirect ? string.Empty : "*";
+                return !isRefParam && result.Type == this.IntPtrType ? "void**" : result + @ref;
             }
 
             Class @class;
@@ -738,8 +729,6 @@ namespace CppSharp.Generators.CSharp
 
         public override TypePrinterResult VisitFieldDecl(Field field)
         {
-            var cSharpSourcesDummy = new CSharpSources(Context, new List<TranslationUnit>());
-
             PushMarshalKind(MarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.Visit(this);
             PopMarshalKind();
