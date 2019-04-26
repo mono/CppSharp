@@ -3286,14 +3286,11 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->isReturnIndirect = CGInfo.getReturnInfo().isIndirect();
 
     unsigned Index = 0;
-    for (auto I = CGInfo.arg_begin(), E = CGInfo.arg_end(); I != E; I++)
+    for (const auto& Arg : CGInfo.arguments())
     {
-        // Skip the first argument as it's the return type.
-        if (I == CGInfo.arg_begin())
-            continue;
         if (Index >= F->Parameters.size())
             continue;
-        F->Parameters[Index++]->isIndirect = I->info.isIndirect();
+        F->Parameters[Index++]->isIndirect = Arg.info.isIndirect();
     }
 
     MarkValidity(F);

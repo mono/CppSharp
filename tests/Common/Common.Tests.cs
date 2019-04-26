@@ -897,12 +897,14 @@ This is a very long string. This is a very long string. This is a very long stri
         }
     }
 
-    [Test, Ignore("Indirect parameters not supported yet")]
+    [Test]
     public void TestStructWithCopyCtorByValue()
     {
-        var structWithCopyCtor = new StructWithCopyCtor();
-        structWithCopyCtor.MBits = 10;
-        var ret = Common.TestStructWithCopyCtorByValue(structWithCopyCtor);
-        Assert.That(ret, Is.EqualTo(10));
+        using (var structWithCopyCtor = new StructWithCopyCtor())
+        {
+            structWithCopyCtor.MBits = 10;
+            var ret = Common.TestStructWithCopyCtorByValue(structWithCopyCtor);
+            Assert.That(ret, Is.EqualTo(10));
+        }
     }
 }
