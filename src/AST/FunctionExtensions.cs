@@ -16,18 +16,8 @@ namespace CppSharp.AST
 
             var pointer = new QualifiedType(new PointerType(new QualifiedType(new BuiltinType(PrimitiveType.Void))));
 
-            if (isInstanceMethod && !isItaniumLikeAbi)
-            {
-                @params.Add(new Parameter
-                    {
-                        QualifiedType = pointer,
-                        Name = "__instance",
-                        Namespace = function
-                    });
-            }
-
-            if (!function.HasIndirectReturnTypeParameter &&
-                isInstanceMethod && isItaniumLikeAbi)
+            if (isInstanceMethod &&
+                (!isItaniumLikeAbi || !function.HasIndirectReturnTypeParameter))
             {
                 @params.Add(new Parameter
                     {

@@ -56,6 +56,7 @@ public:
     Quux(Foo f);
     ~Quux();
 
+    int getPriv() const;
     Foo* setterWithDefaultOverload();
     void setSetterWithDefaultOverload(Foo* value = new Foo());
 
@@ -419,7 +420,7 @@ public:
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
     void defaultZeroMappedToEnumAssignedWithCtor(DefaultZeroMappedToEnum defaultZeroMappedToEnum = DefaultZeroMappedToEnum());
-    void defaultImplicitCtorInt(Quux arg = 0);
+    Quux defaultImplicitCtorInt(Quux arg = 0);
     void defaultImplicitCtorChar(Quux arg = 'a');
     void defaultImplicitCtorFoo(Quux arg = Foo());
     // this looks the same test as 'defaultRefTypeEnumImplicitCtor' two lines below

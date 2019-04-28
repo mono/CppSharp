@@ -25,6 +25,12 @@ namespace CppSharp.Generators.CSharp
 
         public override bool SetupPasses()
         {
+            if (Context.Options.GenerateDefaultValuesForArguments)
+            {
+                Context.TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
+                Context.TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
+            }
+
             // Both the CheckOperatorsOverloadsPass and CheckAbiParameters can
             // create and and new parameters to functions and methods. Make sure
             // CheckAbiParameters runs last because hidden structure parameters

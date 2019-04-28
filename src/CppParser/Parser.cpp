@@ -2923,14 +2923,9 @@ Enumeration::Item* Parser::WalkEnumItem(clang::EnumConstantDecl* ECD)
 static const clang::CodeGen::CGFunctionInfo& GetCodeGenFunctionInfo(
     clang::CodeGen::CodeGenTypes* CodeGenTypes, const clang::FunctionDecl* FD)
 {
-    using namespace clang;
-    if (auto CD = dyn_cast<clang::CXXConstructorDecl>(FD)) {
-        return CodeGenTypes->arrangeCXXStructorDeclaration(CD);
-    } else if (auto DD = dyn_cast<clang::CXXDestructorDecl>(FD)) {
-        return CodeGenTypes->arrangeCXXStructorDeclaration(DD);
-    }
-
-    return CodeGenTypes->arrangeFunctionDeclaration(FD);
+    auto FTy = FD->getType()->getCanonicalTypeUnqualified();
+    return CodeGenTypes->arrangeFreeFunctionType(
+        FTy.castAs<clang::FunctionProtoType>());
 }
 
 bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
@@ -3294,9 +3289,8 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     unsigned Index = 0;
     for (const auto& Arg : CGInfo.arguments())
     {
-        if (Index >= F->Parameters.size())
-            continue;
-        F->Parameters[Index++]->isIndirect = Arg.info.isIndirect();
+        F->Parameters[Index++]->isIndirect =
+            Arg.info.isIndirect() && !Arg.info.getIndirectByVal();
     }
 
     MarkValidity(F);

@@ -117,7 +117,7 @@ Quux::Quux() : _setterWithDefaultOverload(0)
 
 Quux::Quux(int i) : Quux()
 {
-
+    priv = i;
 }
 
 Quux::Quux(char c) : Quux()
@@ -137,6 +137,11 @@ Quux::~Quux()
         delete _setterWithDefaultOverload;
         _setterWithDefaultOverload = 0;
     }
+}
+
+int Quux::getPriv() const
+{
+    return priv;
 }
 
 Foo* Quux::setterWithDefaultOverload()
@@ -645,8 +650,9 @@ void MethodsWithDefaultValues::defaultZeroMappedToEnumAssignedWithCtor(DefaultZe
 {
 }
 
-void MethodsWithDefaultValues::defaultImplicitCtorInt(Quux arg)
+Quux MethodsWithDefaultValues::defaultImplicitCtorInt(Quux arg)
 {
+    return arg;
 }
 
 void MethodsWithDefaultValues::defaultImplicitCtorChar(Quux arg)

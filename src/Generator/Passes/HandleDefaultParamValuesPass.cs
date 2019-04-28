@@ -75,7 +75,7 @@ namespace CppSharp.Passes
         {
             var desugared = type.Desugar();
 
-            if (!desugared.IsPrimitiveTypeConvertibleToRef() &&
+            if (desugared.IsAddress() && !desugared.IsPrimitiveTypeConvertibleToRef() &&
                 (expression.String == "0" || expression.String == "nullptr"))
             {
                 result = desugared.GetPointee()?.Desugar() is FunctionType ?
