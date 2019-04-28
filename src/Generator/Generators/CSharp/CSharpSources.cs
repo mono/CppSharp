@@ -244,7 +244,7 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             PushBlock(BlockKind.Functions);
-            var parentName = context.TranslationUnit.FileNameWithoutExtension;
+            var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
 
             var keyword = "class";
             var classes = EnumerateClasses().ToList();
@@ -740,10 +740,9 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            if (@class.IsGenerated && isBindingGen)
+            if (@class.IsGenerated && isBindingGen && @class.IsRefType && !@class.IsOpaque)
             {
-                if (@class.IsRefType && !@class.IsOpaque)
-                    bases.Add("IDisposable");
+                bases.Add("IDisposable");
             }
 
             if (bases.Count > 0 && !@class.IsStatic)
