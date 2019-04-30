@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
@@ -22,9 +23,32 @@ namespace CppSharp.Passes
 
             if (@class.Layout != null)
             {
-                int order = 0;
-                foreach (var field in @class.Layout.Fields)
-                    field.Name = CheckName(field.Name, ref order);
+                var fields = @class.Layout.Fields.Where(
+                    f => string.IsNullOrEmpty(f.Name)).ToList();
+
+                for (int i = 0; i < fields.Count; i++)
+                    fields[i].Name = $"_{i}";
+            }
+
+            return true;
+        }
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (!base.VisitDeclaration(field))
+                return false;
+
+            field.Type.Visit(this, field.QualifiedType.Qualifiers);
+
+            Class @class;
+            if (field.Type.TryGetClass(out @class) && string.IsNullOrEmpty(@class.OriginalName))
+            {
+                @class.Name = field.Name;
+
+                foreach (var item in @class.Fields.Where(f => f.Name == @class.Name))
+                    Rename(item);
+
+                Rename(field);
             }
 
             return true;
@@ -35,8 +59,10 @@ namespace CppSharp.Passes
             if (!base.VisitEnumDecl(@enum))
                 return false;
 
-            CheckChildrenNames(@enum.Items,
-                string.IsNullOrEmpty(@enum.Name) ? 1 : 0);
+            Check(@enum.Items);
+
+            foreach (Enumeration.Item item in @enum.Items.Where(i => char.IsNumber(i.Name[0])))
+                item.Name = $"_{item.Name}";
             CheckEnumName(@enum);
             return true;
         }
@@ -46,7 +72,7 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionDecl(function))
                 return false;
 
-            CheckChildrenNames(function.Parameters);
+            Check(function.Parameters);
             return true;
         }
 
@@ -55,18 +81,11 @@ namespace CppSharp.Passes
             if (!base.VisitDeclarationContext(context))
                 return false;
 
-            DeclarationContext currentContext = context;
-            int order = -1;
-            while (currentContext != null)
-            {
-                order++;
-                currentContext = currentContext.Namespace;
-            }
-            CheckChildrenNames(context.Declarations, ref order);
+            Check(context.Declarations);
 
             var @class = context as Class;
             if (@class != null)
-                CheckChildrenNames(@class.Fields, order);
+                Check(@class.Fields);
 
             return true;
         }
@@ -76,17 +95,8 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionType(function, quals))
                 return false;
 
-            CheckChildrenNames(function.Parameters);
+            Check(function.Parameters);
             return true;
-        }
-
-        private void CheckChildrenNames(IEnumerable<Declaration> children, int order = 0) =>
-            CheckChildrenNames(children, ref order);
-
-        private void CheckChildrenNames(IEnumerable<Declaration> children, ref int order)
-        {
-            foreach (var child in children)
-                child.Name = CheckName(child.Name, ref order);
         }
 
         private void CheckEnumName(Enumeration @enum)
@@ -102,12 +112,7 @@ namespace CppSharp.Passes
 
             // Try a simple heuristic to make sure we end up with a valid name.
             if (prefix.Length < 3)
-            {
-                int order = @enum.Namespace.Enums.Count(e => e != @enum &&
-                    string.IsNullOrEmpty(e.Name));
-                @enum.Name = CheckName(@enum.Name, ref order);
                 return;
-            }
 
             var prefixBuilder = new StringBuilder(prefix);
             prefixBuilder.TrimUnderscores();
@@ -117,17 +122,23 @@ namespace CppSharp.Passes
             @enum.Name = prefixBuilder.ToString();
         }
 
-        private string CheckName(string name, ref int order)
+        private static void Rename(Field field)
         {
-            // Generate a new name if the decl still does not have a name
-            if (string.IsNullOrWhiteSpace(name))
-                return $"_{order++}";
+            var nameBuilder = new StringBuilder(field.Name);
+            for (int i = 0; i < nameBuilder.Length; i++)
+            {
+                if (!char.IsUpper(nameBuilder[i]))
+                    break;
+                nameBuilder[i] = char.ToLowerInvariant(nameBuilder[i]);
+            }
+            field.Name = nameBuilder.ToString();
+        }
 
-            // Clean up the item name if the first digit is not a valid name.
-            if (char.IsNumber(name[0]))
-                return '_' + name;
-
-            return name;
+        private static void Check(IEnumerable<Declaration> decls)
+        {
+            var anonymousDecls = decls.Where(p => string.IsNullOrEmpty(p.Name)).ToList();
+            for (int i = 0; i < anonymousDecls.Count; i++)
+                anonymousDecls[i].Name = $"_{i}";
         }
     }
 }

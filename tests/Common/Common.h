@@ -825,31 +825,6 @@ DLL_API void va_listFunction(va_list v);
 struct DLL_API TestNestedTypes
 {
 public:
-    struct
-    {
-        struct
-        {
-        };
-    };
-    struct
-    {
-        struct
-        {
-        };
-    };
-    struct
-    {
-        struct
-        {
-        };
-    };
-    struct
-    {
-        struct
-        {
-        };
-    };
-
     union as_types
     {
         int as_int;
