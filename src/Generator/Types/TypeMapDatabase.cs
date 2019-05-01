@@ -93,7 +93,7 @@ namespace CppSharp.Types
                 PrintLogicalNames = true
             };
 
-            foreach (var resolveTypeDefs in new[] { true, false })
+            foreach (var resolveTypeDefs in new[] { false, true })
             {
                 foreach (var typePrintScopeKind in
                     new[] { TypePrintScopeKind.Local, TypePrintScopeKind.Qualified })

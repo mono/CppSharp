@@ -438,7 +438,11 @@ namespace CppSharp.AST
         public override bool Equals(object obj)
         {
             var typedef = obj as TypedefType;
-            return Declaration.Type.Equals(typedef == null ? obj : typedef.Declaration.Type);
+            if (typedef == null)
+                return false;
+
+            return Declaration.OriginalName == typedef.Declaration.OriginalName &&
+                   Declaration.Type.Equals(typedef.Declaration.Type);
         }
 
         public override int GetHashCode() =>

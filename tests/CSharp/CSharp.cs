@@ -95,6 +95,24 @@ namespace CppSharp.Tests
     }
 
     #region Type Maps
+    [TypeMap("boolean_t")]
+    public class BooleanTypeMap : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            return new BuiltinType(PrimitiveType.Bool);
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
 
     [TypeMap("QFlags")]
     public class QFlags : TypeMap

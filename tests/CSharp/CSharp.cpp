@@ -1564,3 +1564,8 @@ const char*& takeConstCharStarRef(const char*& c)
 {
     return c;
 }
+
+boolean_t takeTypemapTypedefParam(boolean_t b)
+{
+    return b;
+}

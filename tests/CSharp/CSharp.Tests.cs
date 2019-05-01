@@ -1285,4 +1285,10 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         public override int Function() => 10;
     }
+
+    [Test]
+    public void TestTypemapTypedefParam()
+    {
+        Assert.That(CSharp.CSharp.TakeTypemapTypedefParam(false), Is.False);
+    }
 }

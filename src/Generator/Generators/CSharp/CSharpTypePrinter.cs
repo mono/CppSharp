@@ -253,7 +253,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl.Type, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap))
             {
                 typeMap.Type = typedef;
 

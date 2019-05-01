@@ -1321,3 +1321,7 @@ struct {
         } example;
     } root;
 } kotlin;
+
+typedef int boolean_t;
+DLL_API boolean_t takeTypemapTypedefParam(boolean_t b);
+
