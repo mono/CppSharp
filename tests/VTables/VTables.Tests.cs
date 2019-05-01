@@ -78,4 +78,15 @@ public class VTablesTests : GeneratorTestFixture
         var retBase = new ManagedDerivedClassVirtualRetBase();
         TestVirtualFunction(retBase, 10);
     }
+
+    [Test]
+    public void TestStdStringInField()
+    {
+        using (var foo = new Foo())
+        {
+            Assert.That(foo.S, Is.Empty);
+            foo.S = "test";
+            Assert.That(foo.S, Is.EqualTo("test"));
+        }
+    }
 }

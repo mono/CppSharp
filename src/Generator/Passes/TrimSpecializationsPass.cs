@@ -85,9 +85,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            TypeMap typeMap;
-            if (!Context.TypeMaps.FindTypeMap(field.Type, out typeMap) &&
-                !ASTUtils.CheckTypeForSpecialization(field.Type,
+            if (!ASTUtils.CheckTypeForSpecialization(field.Type,
                     field, AddSpecialization, Context.TypeMaps))
                 CheckForInternalSpecialization(field, field.Type);
 
