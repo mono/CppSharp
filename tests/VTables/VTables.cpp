@@ -4,6 +4,10 @@ Foo::Foo()
 {
 }
 
+Foo::~Foo()
+{
+}
+
 int Foo::vfoo()
 {
     return 5;

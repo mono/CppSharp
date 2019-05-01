@@ -10,6 +10,7 @@ public:
     };
 
     Foo();
+    ~Foo();
     virtual int vfoo();
     virtual int vbar();
 
