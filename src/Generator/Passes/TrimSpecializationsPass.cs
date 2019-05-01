@@ -21,7 +21,6 @@ namespace CppSharp.Passes
             VisitOptions.VisitNamespaceEvents = false;
             VisitOptions.VisitNamespaceTemplates = false;
             VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceVariables = false;
             VisitOptions.VisitTemplateArguments = false;
         }
 
@@ -88,6 +87,21 @@ namespace CppSharp.Passes
             if (!ASTUtils.CheckTypeForSpecialization(field.Type,
                     field, AddSpecialization, Context.TypeMaps))
                 CheckForInternalSpecialization(field, field.Type);
+
+            return true;
+        }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!base.VisitVariableDecl(variable))
+                return false;
+
+            if (variable.Access == AccessSpecifier.Public)
+            {
+                ASTUtils.CheckTypeForSpecialization(variable.Type,
+                    variable, AddSpecialization, Context.TypeMaps);
+                return true;
+            }
 
             return true;
         }

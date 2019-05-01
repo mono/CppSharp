@@ -1,9 +1,13 @@
 #include "../Tests.h"
+#include <string>
 
 class DLL_API Foo
 {
 public:
-    const char* Unicode;
+    Foo();
+    ~Foo();
+
+    static std::string Unicode;
 
 	// TODO: VC++ does not support char16
 	// char16 chr16;    
