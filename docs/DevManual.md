@@ -75,6 +75,15 @@ It uses a unique approach of mixing the customization of the binding in interfac
 uses to specify the native declarations. This is possible because SWIG contains its own parser for
 native code.
 
+- SharpGenTools
+[https://github.com/SharpGenTools/SharpGenTools](https://github.com/SharpGenTools/SharpGenTools)
+
+This tool uses CastXML for C++ parsing, whereas CppSharp relies directly on Clang and is able to get 
+very accurate information not just for C++ types and declarations, but also ABI-specific codegen
+details. SharpGenTools uses the `calli` .NET IL instruction for indirect calls which can lead to
+higher performance code in some cases. CppSharp does not use this because its not available from C#
+and needs a separate post-processing build step to modify the .NET assembly after compilation.
+
 - Cxxi
 [https://github.com/mono/cxxi/](https://github.com/mono/cxxi/)
 
