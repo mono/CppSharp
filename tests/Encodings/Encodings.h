@@ -7,7 +7,8 @@ public:
     Foo();
     ~Foo();
 
-    static std::string Unicode;
+    const char* Unicode;
+    static std::string StringVariable;
 
 	// TODO: VC++ does not support char16
 	// char16 chr16;    

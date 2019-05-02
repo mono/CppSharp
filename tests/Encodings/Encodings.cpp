@@ -1,6 +1,6 @@
 #include "Encodings.h"
 
-std::string Foo::Unicode = "";
+std::string Foo::StringVariable = "";
 
 Foo::Foo()
 {
