@@ -52,6 +52,7 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
+            // Looks up the type in the cache map.
             if (typeMaps.ContainsKey(type))
             {
                 typeMap = typeMaps[type];
@@ -65,6 +66,7 @@ namespace CppSharp.Types
                 if (specialization != null &&
                     FindTypeMap(specialization, out typeMap))
                     return true;
+
                 if (template.Template.TemplatedDecl != null)
                 {
                     if (FindTypeMap(template.Template.TemplatedDecl,
@@ -73,14 +75,17 @@ namespace CppSharp.Types
                         typeMap.Type = type;
                         return true;
                     }
+
                     return false;
                 }
             }
 
             Type desugared = type.Desugar();
             desugared = (desugared.GetFinalPointee() ?? desugared).Desugar();
+
             bool printExtra = desugared.IsPrimitiveType() ||
                 (desugared.GetFinalPointee() ?? desugared).Desugar().IsPrimitiveType();
+
             var typePrinter = new CppTypePrinter
             {
                 PrintTypeQualifiers = printExtra,
@@ -89,6 +94,7 @@ namespace CppSharp.Types
             };
 
             foreach (var resolveTypeDefs in new[] { true, false })
+            {
                 foreach (var typePrintScopeKind in
                     new[] { TypePrintScopeKind.Local, TypePrintScopeKind.Qualified })
                 {
@@ -101,6 +107,7 @@ namespace CppSharp.Types
                         return true;
                     }
                 }
+            }
 
             typeMap = null;
             var typedef = type as TypedefType;
