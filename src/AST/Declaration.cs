@@ -201,13 +201,15 @@ namespace CppSharp.AST
         public string GetQualifiedName(Func<Declaration, string> getName,
             Func<Declaration, DeclarationContext> getNamespace)
         {
-            if (Namespace == null)
+            DeclarationContext declarationContext = getNamespace(this);
+
+            if (declarationContext == null)
                 return getName(this);
 
-            if (Namespace.IsRoot)
+            if (declarationContext.IsRoot)
                 return getName(this);
 
-            var namespaces = GatherNamespaces(getNamespace(this));
+            var namespaces = GatherNamespaces(declarationContext);
 
             var names = namespaces.Select(getName).ToList();
             names.Add(getName(this));

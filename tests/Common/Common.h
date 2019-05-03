@@ -578,7 +578,13 @@ DLL_API int Function()
 struct DLL_API TestProperties
 {
 public:
-    enum class NestedEnum
+    enum NestedEnum
+    {
+        Value1,
+        Value2
+    };
+
+    enum class NestedScopedEnum
     {
         Value1,
         Value2
@@ -609,6 +615,9 @@ public:
 
     int nestedEnum();
     int nestedEnum(int i);
+
+    int nestedScopedEnum();
+    int nestedScopedEnum(int i);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;

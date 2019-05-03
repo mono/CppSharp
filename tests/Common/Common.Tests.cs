@@ -19,11 +19,11 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(changedAccessOfInheritedProperty.Property, Is.EqualTo(2));
         }
         Foo.NestedAbstract a;
-        var renamedEmptyEnum = Foo.RenamedEmptyEnum.EmptyEnum1;
+        var renamedEmptyEnum = RenamedEmptyEnum.EmptyEnum1;
         using (var foo = new Foo())
         {
             Bar bar = foo;
-            Assert.IsTrue(Bar.Item.Item1 == bar);
+            Assert.IsTrue(Item.Item1 == bar);
 
             using (var hasOverloadsWithDifferentPointerKindsToSameType =
                 new HasOverloadsWithDifferentPointerKindsToSameType())
@@ -101,7 +101,7 @@ public class CommonTests : GeneratorTestFixture
 
         var bar = new Bar { A = 4, B = 7 };
         Assert.That(hello.AddBar(bar), Is.EqualTo(11));
-        Assert.That(bar.RetItem1(), Is.EqualTo(Bar.Item.Item1));
+        Assert.That(bar.RetItem1(), Is.EqualTo(Item.Item1));
 
         var retFoo = hello.RetFoo(7, 2.0f);
         Assert.That(retFoo.A, Is.EqualTo(7));
@@ -245,7 +245,7 @@ public class CommonTests : GeneratorTestFixture
     {
         var foo2 = new Foo2 { C = 2 };
         Foo2 result = foo2 << 3;
-        foo2.TestKeywordParam(IntPtr.Zero, Bar.Item.Item1, 1);
+        foo2.TestKeywordParam(IntPtr.Zero, Item.Item1, 1);
         Assert.That(result.C, Is.EqualTo(16));
     }
 
@@ -501,8 +501,11 @@ public class CommonTests : GeneratorTestFixture
             prop.VirtualSetterReturnsBoolean = 45;
             Assert.That(prop.VirtualSetterReturnsBoolean, Is.EqualTo(45));
 
-            Assert.That(prop.nestedEnum(), Is.EqualTo(5));
-            Assert.That(prop.nestedEnum(55), Is.EqualTo(55));
+            Assert.That(prop.NestedEnum(), Is.EqualTo(5));
+            Assert.That(prop.NestedEnum(55), Is.EqualTo(55));
+
+            Assert.That(prop.nestedScopedEnum(10), Is.EqualTo(10));
+            Assert.That(prop.nestedScopedEnum(65), Is.EqualTo(65));
         }
     }
 
