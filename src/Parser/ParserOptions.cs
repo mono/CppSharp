@@ -93,7 +93,7 @@ namespace CppSharp.Parser
         /// At the moment, it only makes a difference for MSVC targets.
         /// If its true, then we opt to use Clang's MSVC lookup logic.
         /// </summary>
-        public bool ForceClangToolchainLookup = false;
+        public bool ForceClangToolchainLookup = true;
 
         public ParserOptions BuildForSourceFile(
             IEnumerable<CppSharp.AST.Module> modules, string file = null)
