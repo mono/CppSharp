@@ -596,6 +596,11 @@ int TestProperties::nestedEnum(int i)
     return i;
 }
 
+int TestProperties::get32Bit()
+{
+    return 10;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }

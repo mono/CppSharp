@@ -609,6 +609,8 @@ public:
 
     int nestedEnum();
     int nestedEnum(int i);
+
+    int get32Bit();
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
