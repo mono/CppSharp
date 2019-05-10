@@ -64,7 +64,9 @@ namespace CppSharp.Generators.CSharp
             if (id.All(char.IsLetterOrDigit))
                 return ReservedKeywords.Contains(id) ? "@" + id : id;
 
-            return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+            return new string((from c in id
+                               where c != '$'
+                               select char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
         #endregion

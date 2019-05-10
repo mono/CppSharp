@@ -363,7 +363,7 @@ namespace CppSharp.Passes
 
             var sb = new StringBuilder(decl.Name);
             // check if it's been renamed to avoid a keyword
-            if (sb[0] == '@')
+            if (sb[0] == '@' || sb[0] == '$')
                 sb.Remove(0, 1);
 
             RemoveUnderscores(sb);

@@ -147,6 +147,9 @@ extern "C" {
                                         example_lib_kref_com_plangrid_example_Request_Response_ErrorResponse(*ErrorResponse)(example_lib_kref_kotlin_Error error);
                                         example_lib_kref_kotlin_Error(*get_error)(example_lib_kref_com_plangrid_example_Request_Response_ErrorResponse thiz);
                                     } ErrorResponse;
+                                    struct {
+                                      int i;
+                                    } $serializer;
                                 } Response;
                             } Request;
                         } example;
