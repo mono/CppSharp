@@ -1850,7 +1850,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->operatorDelete = static_cast<AST::Function*>(WalkDeclaration(S->getOperatorDelete()));
         _S->allocatedType = GetQualifiedType(S->getAllocatedType());
         _S->isArray = S->isArray();
-        _S->arraySize = static_cast<AST::Expr*>(WalkExpression(S->getArraySize()));
+        _S->arraySize = static_cast<AST::Expr*>(WalkExpression(S->getArraySize().getValue()));
         _S->numPlacementArgs = S->getNumPlacementArgs();
         _S->isParenTypeId = S->isParenTypeId();
         _S->isGlobalNew = S->isGlobalNew();
