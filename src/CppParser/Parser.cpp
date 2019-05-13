@@ -2810,6 +2810,12 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         Ty = WalkType(DT->getUnderlyingType(), TL);
         break;
     }
+    case clang::Type::MacroQualified:
+    {
+        auto MT = Type->getAs<clang::MacroQualifiedType>();
+        Ty = WalkType(MT->getUnderlyingType(), TL);
+        break;
+    }
     default:
     {   
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());
@@ -2919,9 +2925,9 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFunctionInfo(
 {
     using namespace clang;
     if (auto CD = dyn_cast<clang::CXXConstructorDecl>(FD)) {
-        return CodeGenTypes->arrangeCXXStructorDeclaration(CD, clang::CodeGen::StructorType::Base);
+        return CodeGenTypes->arrangeCXXStructorDeclaration(CD);
     } else if (auto DD = dyn_cast<clang::CXXDestructorDecl>(FD)) {
-        return CodeGenTypes->arrangeCXXStructorDeclaration(DD, clang::CodeGen::StructorType::Base);
+        return CodeGenTypes->arrangeCXXStructorDeclaration(DD);
     }
 
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
@@ -4163,7 +4169,7 @@ bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
     {
         auto FileEntry = c->getPreprocessor().getHeaderSearchInfo().LookupFile(SourceFile,
             clang::SourceLocation(), /*isAngled*/true,
-            nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr, nullptr);
+            nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
         if (!FileEntry)
             return false;

@@ -156,7 +156,6 @@ function SetupLLVMLibs()
       "LLVMMCParser",
       "LLVMBitReader",
       "LLVMX86Info",
-      "LLVMX86AsmPrinter",
       "LLVMX86Utils",
       "LLVMX86CodeGen",
       "LLVMX86Disassembler",
@@ -175,7 +174,8 @@ function SetupLLVMLibs()
       "LLVMCore",
       "LLVMSupport",
       "LLVMBinaryFormat",
-      "LLVMDemangle"
+      "LLVMDemangle",
+      "LLVMRemarks"
     }
     
   filter(c)
