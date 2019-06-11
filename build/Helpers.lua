@@ -28,11 +28,11 @@ function target_architecture()
     return "AnyCPU"
   end
 
-  -- Default to 32-bit on Windows and Mono architecture otherwise.
+  -- Default to 64-bit on Windows and Mono architecture otherwise.
   if explicit_target_architecture ~= nil then
     return explicit_target_architecture
   end
-  if os.ishost("windows") then return "x86" end
+  if os.ishost("windows") then return "x64" end
   return is_64_bits_mono_runtime() and "x64" or "x86"
 end
 
