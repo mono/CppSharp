@@ -32,12 +32,11 @@ configuration:
 
 environment:
   VS_VERSION: vs2017
-  BUILD_PLATFORM: 'x86'
   DEPS_PATH: '%APPVEYOR_BUILD_FOLDER%\deps'
   LLVM_PATH: '%APPVEYOR_BUILD_FOLDER%\deps\llvm'
   BUILD_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%'
-  LIB_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%\lib\%CONFIGURATION%_%BUILD_PLATFORM%'
-  ARTIFACT_NAME: '%APPVEYOR_PROJECT_NAME%-%APPVEYOR_REPO_TAG_NAME%-%VS_VERSION%-%BUILD_PLATFORM%.zip'
+  LIB_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%\lib\%CONFIGURATION%_%PLATFORM%'
+  ARTIFACT_NAME: '%APPVEYOR_PROJECT_NAME%-%APPVEYOR_REPO_TAG_NAME%-%VS_VERSION%-%PLATFORM%.zip'
   GITHUB_ACCESS_TOKEN:
     secure: CrxPDgxTKC9ZRvFjttpRPO+e1DT8s0Zkk9HrAmHOIzDkOfFbbu1iTm/yJjZ2eDcd
 
@@ -45,11 +44,11 @@ init:
   - git config --global core.autocrlf true
 
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+  - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm --arch=%PLATFORM%
 
 build_script:
-  - build\premake5.exe --file=build\premake5.lua %VS_VERSION%
+  - build\premake5.exe --file=build\premake5.lua %VS_VERSION% --arch=%PLATFORM%
   - msbuild %BUILD_PATH%\CppSharp.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal
 
 #---------------------------------#

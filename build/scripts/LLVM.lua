@@ -347,9 +347,9 @@ end
 function get_cmake_generator()
 	local vsver = get_vs_version()
 	if vsver == "vs2017" then
-		return "Visual Studio 15 2017"
+		return "Visual Studio 15 2017" .. (target_architecture() == "x64" and " Win64" or "")
 	elseif vsver == "vs2015" then
-		return "Visual Studio 14 2015"
+		return "Visual Studio 14 2015" .. (target_architecture() == "x64" and " Win64" or "")
 	else
 		error("Cannot map to CMake configuration due to unknown MSVC version")
 	end
@@ -368,7 +368,7 @@ function build_llvm(llvm_build)
 	if os.ishost("windows") and use_msbuild then
 		cmake(get_cmake_generator(), conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
-		msbuild(llvm_sln, conf)
+		msbuild('"' .. llvm_sln .. '"', conf)
 	else
 		local options = os.ishost("macosx") and
 			"-DLLVM_ENABLE_LIBCXX=true" or ""
