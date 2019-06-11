@@ -17,7 +17,7 @@ function msbuild(sln, conf)
 	local msbuild_path = "msbuild.exe"
 	local sln = path.normalize(sln)
 
-	local cmd = msbuild_path .. " " .. sln
+	local cmd = msbuild_path .. " " .. sln .. " /m"
 	if conf ~= nil then
 		cmd = cmd .. " /p:Configuration=" .. conf
 	end
