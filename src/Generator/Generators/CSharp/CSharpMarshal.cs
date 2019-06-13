@@ -556,7 +556,8 @@ namespace CppSharp.Generators.CSharp
                     Context.ArgumentPrefix.Write("&");
 
                 bool isVoid = primitive == PrimitiveType.Void &&
-                    pointee.IsAddress() && pointer.IsReference();
+                    pointee.IsAddress() && pointer.IsReference() &&
+                    pointer.GetFinalQualifiedPointee().Qualifiers.IsConst;
                 if (pointer.Pointee.Desugar(false) is TemplateParameterSubstitutionType ||
                     isVoid)
                 {

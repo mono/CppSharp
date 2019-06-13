@@ -1565,6 +1565,10 @@ const char*& takeConstCharStarRef(const char*& c)
     return c;
 }
 
+void rValueReferenceToPointer(void*&& v)
+{
+}
+
 boolean_t takeTypemapTypedefParam(boolean_t b)
 {
     return b;

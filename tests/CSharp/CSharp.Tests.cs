@@ -95,6 +95,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
 
         CSharp.CSharp.ReturnCharPointer();
+        CSharp.CSharp.RValueReferenceToPointer(null);
 
 #pragma warning restore 0168
 #pragma warning restore 0219
