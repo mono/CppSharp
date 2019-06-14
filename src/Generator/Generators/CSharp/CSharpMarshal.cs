@@ -182,7 +182,14 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (new QualifiedType(pointer, quals).IsConstRefToPrimitive())
+            {
+                if (finalPointee.IsPrimitiveType(PrimitiveType.Void))
+                {
+                    Context.Return.Write($"new {typePrinter.IntPtrType}(*{Context.ReturnVarName})");
+                    return true;
+                }
                 Context.Return.Write("*");
+            }
 
             Context.Return.Write(Context.ReturnVarName);
             return true;

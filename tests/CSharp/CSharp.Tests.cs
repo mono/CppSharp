@@ -95,7 +95,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
 
         CSharp.CSharp.ReturnCharPointer();
-        CSharp.CSharp.RValueReferenceToPointer(null);
+        int value = 5;
+        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((void**) &value);
+        Assert.That((int) intPtr, Is.EqualTo(value));
 
 #pragma warning restore 0168
 #pragma warning restore 0219

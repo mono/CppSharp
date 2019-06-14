@@ -1565,8 +1565,9 @@ const char*& takeConstCharStarRef(const char*& c)
     return c;
 }
 
-void rValueReferenceToPointer(void*&& v)
+const void*& rValueReferenceToPointer(void*&& v)
 {
+    return (const void*&) v;
 }
 
 boolean_t takeTypemapTypedefParam(boolean_t b)
