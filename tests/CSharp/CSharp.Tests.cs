@@ -951,7 +951,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestFieldWithDependentPointerType()
     {
-        using (var dependentPointerFields = new DependentPointerFields<float>())
+        using (var dependentPointerFields = new DependentPointerFields<float>(0))
         {
         }
     }

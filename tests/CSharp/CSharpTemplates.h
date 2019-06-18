@@ -240,7 +240,7 @@ template <typename T>
 class DLL_API DependentPointerFields
 {
 public:
-    DependentPointerFields();
+    DependentPointerFields(T t = 0);
     ~DependentPointerFields();
     T property();
     T takeField(T t);
@@ -248,7 +248,7 @@ public:
 };
 
 template <typename T>
-DependentPointerFields<T>::DependentPointerFields()
+DependentPointerFields<T>::DependentPointerFields(T t)
 {
 }
 

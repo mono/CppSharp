@@ -46,7 +46,7 @@ namespace CppSharp.Passes
                 Type type = parameter.Type.Desugar(resolveTemplateSubstitution: false);
                 type = (type.GetFinalPointee() ?? type).Desugar(
                     resolveTemplateSubstitution: false);
-                if (type is TemplateParameterSubstitutionType)
+                if (type is TemplateParameterSubstitutionType || type.IsDependent)
                 {
                     parameter.DefaultArgument = null;
                     continue;
