@@ -3284,7 +3284,8 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             return;
 
     auto& CGInfo = GetCodeGenFunctionInfo(codeGenTypes, FD);
-    F->isReturnIndirect = CGInfo.getReturnInfo().isIndirect();
+    F->isReturnIndirect = CGInfo.getReturnInfo().isIndirect() ||
+        CGInfo.getReturnInfo().isInAlloca();
 
     unsigned Index = 0;
     for (const auto& Arg : CGInfo.arguments())
