@@ -925,12 +925,12 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
-                var identifier = name;
+                var name = ((Class) field.Namespace).Layout.Fields.First(
+                    f => f.FieldPtr == field.OriginalPtr).Name;
                 if (@class.IsValueType)
-                    returnVar = $"{Helpers.InstanceField}.{identifier}";
+                    returnVar = $"{Helpers.InstanceField}.{name}";
                 else
-                    returnVar = $"(({TypePrinter.PrintNative(@class)}*){Helpers.InstanceIdentifier})->{identifier}";
+                    returnVar = $"(({TypePrinter.PrintNative(@class)}*){Helpers.InstanceIdentifier})->{name}";
             }
 
             var param = new Parameter
@@ -1210,7 +1210,8 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateFieldGetter(Field field, Class @class, QualifiedType returnType)
         {
-            var name = @class.Layout.Fields.First(f => f.FieldPtr == field.OriginalPtr).Name;
+            var name = ((Class) field.Namespace).Layout.Fields.First(
+                f => f.FieldPtr == field.OriginalPtr).Name;
             string returnVar;
             var arrayType = field.Type.Desugar() as ArrayType;
             if (@class.IsValueType)

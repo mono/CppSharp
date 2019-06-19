@@ -827,6 +827,8 @@ DLL_API void va_listFunction(va_list v);
 struct DLL_API TestNestedTypes
 {
 public:
+    TestNestedTypes();
+    ~TestNestedTypes();
     union as_types
     {
         int as_int;
@@ -835,6 +837,13 @@ public:
             unsigned char blue, green, red, alpha;
         } as_uchar;
     };
+    int toVerifyCorrectLayoutBefore;
+    union
+    {
+        int i;
+        char c;
+    };
+    int toVerifyCorrectLayoutAfter;
 };
 
 class DLL_API HasStdString

@@ -412,6 +412,14 @@ void va_listFunction(va_list v)
 {
 }
 
+TestNestedTypes::TestNestedTypes()
+{
+}
+
+TestNestedTypes::~TestNestedTypes()
+{
+}
+
 void TestDelegates::MarshalUnattributedDelegate(DelegateInGlobalNamespace del)
 {
 }
