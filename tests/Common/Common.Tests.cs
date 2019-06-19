@@ -355,6 +355,22 @@ public class CommonTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestNestedAnonymousTypes()
+    {
+        using (TestNestedTypes testNestedTypes = new TestNestedTypes())
+        {
+            testNestedTypes.ToVerifyCorrectLayoutBefore = 5;
+            Assert.That(testNestedTypes.ToVerifyCorrectLayoutBefore, Is.EqualTo(5));
+            testNestedTypes.I = 10;
+            Assert.That(testNestedTypes.I, Is.EqualTo(10));
+            testNestedTypes.C = 'D';
+            Assert.That(testNestedTypes.C, Is.EqualTo('D'));
+            testNestedTypes.ToVerifyCorrectLayoutAfter = 15;
+            Assert.That(testNestedTypes.ToVerifyCorrectLayoutAfter, Is.EqualTo(15));
+        }
+    }
+
+    [Test]
     public void TestPropertyChains()
     {
         var bar2 = new Bar2();
