@@ -56,6 +56,7 @@ namespace CppSharp.Types
             if (typeMaps.ContainsKey(type))
             {
                 typeMap = typeMaps[type];
+                typeMap.Type = type;
                 return typeMap.IsEnabled;
             }
 
