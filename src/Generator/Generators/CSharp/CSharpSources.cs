@@ -629,7 +629,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method))
+                if (!method.IsGenerated || ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -2752,6 +2752,13 @@ namespace CppSharp.Generators.CSharp
             if (function.IsPure)
             {
                 WriteLine("throw new System.NotImplementedException();");
+                return;
+            }
+
+            // ignored functions may get here from interfaces for secondary bases
+            if (function.Ignore)
+            {
+                WriteLine("throw new System.MissingMethodException(\"No C++ symbol to call.\");");
                 return;
             }
 
