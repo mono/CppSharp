@@ -32,6 +32,7 @@ class DLL_API Ignored
 template <typename T>
 class DLL_API IndependentFields : public T1
 {
+    typedef T Type;
 public:
     IndependentFields();
     IndependentFields(const IndependentFields<T>& other);
@@ -44,6 +45,7 @@ public:
     int getIndependent();
     const T* returnTakeDependentPointer(const T* p);
     T getDependent(const T& t);
+    Type property();
     const T* propertyReturnDependentPointer();
     static T staticDependent(const T& t);
     void hasDefaultDependentParam(T* ptr, const T& refT = T());
@@ -109,6 +111,12 @@ template <typename T>
 T IndependentFields<T>::getDependent(const T& t)
 {
     return t;
+}
+
+template <typename T>
+T IndependentFields<T>::property()
+{
+    return T();
 }
 
 template <typename T>

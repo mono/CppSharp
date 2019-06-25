@@ -217,32 +217,37 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            if (!VisitType(typedef, quals))
+            if (!(typedef.Declaration.Type.Desugar(false) is TemplateParameterSubstitutionType) &&
+                !VisitType(typedef, quals))
                 return false;
 
             var decl = typedef.Declaration;
 
-            var functionType = decl.Type as FunctionType;
-            if (functionType != null || decl.Type.IsPointerTo(out functionType))
-            {
-                var ptrName = $"{Generator.GeneratedIdentifier("ptr")}{Context.ParameterIndex}";
+            Type type = decl.Type.Desugar();
+            var functionType = type as FunctionType;
+            if (functionType == null && !type.IsPointerTo(out functionType))
+                return decl.Type.Visit(this);
 
-                Context.Before.WriteLine($"var {ptrName} = {Context.ReturnVarName};");
+            var ptrName = $@"{Generator.GeneratedIdentifier("ptr")}{
+                Context.ParameterIndex}";
 
-                var specialization = decl.Namespace as ClassTemplateSpecialization;
-                Type returnType = Context.ReturnType.Type.Desugar();
-                var finalType = (returnType.GetFinalPointee() ?? returnType).Desugar();
-                var res = string.Format(
-                    "{0} == IntPtr.Zero? null : {1}({2}) Marshal.GetDelegateForFunctionPointer({0}, typeof({2}))",
-                    ptrName,
-                    finalType.IsDependent ? $@"({specialization.TemplatedDecl.TemplatedClass.Typedefs.First(
-                        t => t.Name == decl.Name).Visit(this.typePrinter)}) (object) " : string.Empty,
-                    typedef);
-                Context.Return.Write(res);
-                return true;
-            }
+            Context.Before.WriteLine($"var {ptrName} = {Context.ReturnVarName};");
 
-            return decl.Type.Visit(this);
+            var substitution = decl.Type.Desugar(false)
+                as TemplateParameterSubstitutionType;
+
+            if (substitution != null)
+                Context.Return.Write($@"({
+                    substitution.ReplacedParameter.Parameter.Name}) (object) (");
+
+            Context.Return.Write($@"{ptrName} == IntPtr.Zero? null : {
+                (substitution == null ? $"({Context.ReturnType}) " :
+                 string.Empty)}Marshal.GetDelegateForFunctionPointer({
+                ptrName}, typeof({typedef}))");
+
+            if (substitution != null)
+                Context.Return.Write(")");
+            return true;
         }
 
         public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
