@@ -557,8 +557,7 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Context.Options.MarshalCharAsManagedChar &&
                     primitive == PrimitiveType.Char)
                 {
-                    Context.Return.Write($"({typePrinter.PrintNative(pointer)}) ");
-                    Context.Return.Write(param.Name);
+                    Context.Return.Write($"({typePrinter.PrintNative(pointer)}) &{param.Name}");
                     return true;
                 }
 
