@@ -104,6 +104,11 @@ public:
     Foo foos[4];
     int getIndex();
     void setIndex(int value);
+    union
+    {
+        int publicInt;
+        double publicDouble;
+    };
 
 private:
     int index;

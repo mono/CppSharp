@@ -43,7 +43,23 @@ namespace CppSharp.Passes
                     continue;
 
                 ReplaceField(@class, i, fieldType);
-                ReplaceLayoutField(@class, field, fieldType);
+                fieldType.Fields.Clear();
+                fieldType.ExplicitlyIgnore();
+            }
+
+            if (@class.Layout == null)
+                return true;
+
+            for (int i = @class.Layout.Fields.Count - 1; i >= 0; i--)
+            {
+                LayoutField field = @class.Layout.Fields[i];
+                Class fieldType;
+                if (!string.IsNullOrEmpty(field.Name) ||
+                    !field.QualifiedType.Type.Desugar().TryGetClass(out fieldType) ||
+                    !string.IsNullOrEmpty(fieldType.OriginalName))
+                    continue;
+                
+                ReplaceLayoutField(@class, i, fieldType);
                 fieldType.Fields.Clear();
                 fieldType.ExplicitlyIgnore();
             }
@@ -63,18 +79,23 @@ namespace CppSharp.Passes
             }
         }
 
-        private static void ReplaceLayoutField(Class @class, Field field, Class fieldType)
+        private static void ReplaceLayoutField(Class @class, int i, Class fieldType)
         {
-            LayoutField layoutField = @class.Layout.Fields.Find(
-                                f => f.FieldPtr == field.OriginalPtr);
-            int layoutIndex = @class.Layout.Fields.IndexOf(layoutField);
-            @class.Layout.Fields.RemoveAt(layoutIndex);
+            uint offset = @class.Layout.Fields[i].Offset;
+            @class.Layout.Fields.RemoveAt(i);
 
             for (int j = 0; j < fieldType.Layout.Fields.Count; j++)
             {
-                LayoutField nestedlayoutField = fieldType.Layout.Fields[j];
-                nestedlayoutField.Offset += layoutField.Offset;
-                @class.Layout.Fields.Insert(layoutIndex + j, nestedlayoutField);
+                LayoutField nestedLayoutField = fieldType.Layout.Fields[j];
+                var layoutField = new LayoutField
+                    {
+                        Expression = nestedLayoutField.Expression,
+                        FieldPtr = nestedLayoutField.FieldPtr,
+                        Name = nestedLayoutField.Name,
+                        Offset = nestedLayoutField.Offset + offset,
+                        QualifiedType = nestedLayoutField.QualifiedType
+                    };
+                @class.Layout.Fields.Insert(i + j, layoutField);
             }
         }
     }
