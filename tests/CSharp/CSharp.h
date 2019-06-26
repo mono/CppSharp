@@ -38,6 +38,7 @@ public:
 
     int operator ++();
     int operator --();
+    operator const char*() const;
 
     bool btest[5];
     QFlags<TestFlag> publicFieldMappedToEnum;

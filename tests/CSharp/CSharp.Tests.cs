@@ -1276,7 +1276,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
-    public void Test()
+    public void TestImplicitConversionToString()
+    {
+        using (Foo foo = new Foo())
+        {
+            string name = foo;
+            Assert.That(name, Is.EqualTo("test"));
+        }
+    }
+
+    [Test]
+    public void TestHasFunctionPointerField()
     {
         using (var hasFunctionPtrField = new HasFunctionPtrField())
         {

@@ -104,6 +104,11 @@ int Foo::operator --()
     return 4;
 }
 
+Foo::operator const char*() const
+{
+    return "test";
+}
+
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;

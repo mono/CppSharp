@@ -2901,7 +2901,6 @@ namespace CppSharp.Generators.CSharp
                     ArgName = Helpers.ReturnIdentifier,
                     ReturnVarName = Helpers.ReturnIdentifier,
                     ReturnType = returnType,
-                    Parameter = operatorParam,
                     Function = function
                 };
 
