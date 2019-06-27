@@ -81,9 +81,7 @@ namespace CppSharp.Passes
                 });
             }
 
-            foreach (var param in from p in function.Parameters
-                                  where p.IsIndirect && !p.Type.Desugar().IsAddress()
-                                  select p)
+            foreach (var param in function.Parameters.Where(p => p.IsIndirect))
             {
                 param.QualifiedType = new QualifiedType(new PointerType(param.QualifiedType));
             }

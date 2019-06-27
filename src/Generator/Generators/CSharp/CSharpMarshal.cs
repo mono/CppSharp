@@ -701,46 +701,61 @@ namespace CppSharp.Generators.CSharp
                 @interface.IsInterface)
                 paramInstance = $"{param}.__PointerTo{@interface.OriginalClass.Name}";
             else
-                paramInstance = $@"{param}.{Helpers.InstanceIdentifier}";
-            if (type.IsAddress())
+                paramInstance = $"{param}.{Helpers.InstanceIdentifier}";
+
+            if (!type.IsAddress())
             {
-                Class decl;
-                if (type.TryGetClass(out decl) && decl.IsValueType)
+                Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
+                Context.Before.WriteLineIndent(
+                    $@"throw new global::System.ArgumentNullException(""{
+                        Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
+                var realClass = @class.OriginalClass ?? @class;
+                var qualifiedIdentifier = typePrinter.PrintNative(realClass);
+                Context.Return.Write($"*({qualifiedIdentifier}*) {paramInstance}");
+                return;
+            }
+
+            Class decl;
+            if (type.TryGetClass(out decl) && decl.IsValueType)
+            {
+                Context.Return.Write(paramInstance);
+                return;
+            }
+
+            if (type.IsPointer())
+            {
+                if (Context.Parameter.IsIndirect)
+                {
+                    Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
+                    Context.Before.WriteLineIndent(
+                        $@"throw new global::System.ArgumentNullException(""{
+                            Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
                     Context.Return.Write(paramInstance);
+                }
                 else
                 {
-                    if (type.IsPointer())
-                    {
-                        Context.Return.Write("{0}{1}",
-                            method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
-                                ? string.Empty
-                                : $"ReferenceEquals({param}, null) ? global::System.IntPtr.Zero : ",
-                            paramInstance);
-                    }
-                    else
-                    {
-                        if (method == null ||
-                            // redundant for comparison operators, they are handled in a special way
-                            (method.OperatorKind != CXXOperatorKind.EqualEqual &&
-                            method.OperatorKind != CXXOperatorKind.ExclaimEqual))
-                        {
-                            Context.Before.WriteLine("if (ReferenceEquals({0}, null))", param);
-                            Context.Before.WriteLineIndent(
-                                "throw new global::System.ArgumentNullException(\"{0}\", " +
-                                "\"Cannot be null because it is a C++ reference (&).\");",
-                                param);
-                        }
-                        Context.Return.Write(paramInstance);
-                    }
+                    Context.Return.Write("{0}{1}",
+                        method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
+                            ? string.Empty
+                            : $"ReferenceEquals({param}, null) ? global::System.IntPtr.Zero : ",
+                        paramInstance);
                 }
                 return;
             }
 
-            var realClass = @class.OriginalClass ?? @class;
-            var qualifiedIdentifier = typePrinter.PrintNative(realClass);
-            Context.Return.Write(
-                "ReferenceEquals({0}, null) ? new {1}() : *({1}*) {2}",
-                param, qualifiedIdentifier, paramInstance);
+            if (method == null ||
+                // redundant for comparison operators, they are handled in a special way
+                (method.OperatorKind != CXXOperatorKind.EqualEqual &&
+                method.OperatorKind != CXXOperatorKind.ExclaimEqual))
+            {
+                Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
+                Context.Before.WriteLineIndent(
+                    $@"throw new global::System.ArgumentNullException(""{
+                        Context.Parameter.Name}"", ""Cannot be null because it is a C++ reference (&)."");",
+                    param);
+            }
+
+            Context.Return.Write(paramInstance);
         }
 
         private void MarshalValueClass()

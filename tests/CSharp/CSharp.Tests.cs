@@ -248,7 +248,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultEmptyEnum();
             methodsWithDefaultValues.DefaultRefTypeBeforeOthers();
             methodsWithDefaultValues.DefaultRefTypeAfterOthers();
-            methodsWithDefaultValues.DefaultRefTypeBeforeAndAfterOthers(0, null);
+            methodsWithDefaultValues.DefaultRefTypeBeforeAndAfterOthers();
             methodsWithDefaultValues.DefaultIntAssignedAnEnum();
             methodsWithDefaultValues.defaultRefAssignedValue();
             methodsWithDefaultValues.DefaultRefAssignedValue();

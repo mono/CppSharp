@@ -773,6 +773,12 @@ public class CommonTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPassingNullToValue()
+    {
+        Assert.Catch<ArgumentNullException>(() => new Bar((Foo) null));
+    }
+
+    [Test]
     public void TestNonTrivialDtorInvocation()
     {
         using (var nonTrivialDtor = new NonTrivialDtor())

@@ -679,6 +679,13 @@ namespace CppSharp.Generators.CLI
 
                 if (Context.Parameter.Type.IsReference())
                     VarPrefix.Write("&");
+                else
+                {
+                    Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, nullptr))");
+                    Context.Before.WriteLineIndent(
+                        $@"throw gcnew ::System::ArgumentNullException(""{
+                            Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
+                }
             }
 
             if (method != null
