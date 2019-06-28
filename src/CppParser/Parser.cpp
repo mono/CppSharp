@@ -173,6 +173,11 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     // Dump fields.
     uint64_t FieldNo = 0;
     for (const clang::FieldDecl* Field : RD->fields()) {
+        if (Field->getAccess() == clang::AccessSpecifier::AS_private)
+        {
+            ++FieldNo;
+            continue;
+        }
         uint64_t LocalFieldOffsetInBits = Layout.getFieldOffset(FieldNo++);
         CharUnits FieldOffset =
             Offset + c->getASTContext().toCharUnitsFromBits(LocalFieldOffsetInBits);
@@ -1007,7 +1012,8 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     }
 
     for (auto FD : Record->fields())
-        WalkFieldCXX(FD, RC);
+        if (FD->getAccess() != clang::AccessSpecifier::AS_private)
+            WalkFieldCXX(FD, RC);
 
     if (c->getSourceManager().isInSystemHeader(Record->getBeginLoc()))
     {

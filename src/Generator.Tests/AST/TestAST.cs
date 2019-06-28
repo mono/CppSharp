@@ -343,14 +343,6 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
-        public void TestAtomics()
-        {
-            var type = AstContext.FindClass("Atomics").Single().Fields
-                .Find(f => f.Name == "AtomicInt").Type as BuiltinType;
-            Assert.IsTrue(type != null && type.IsPrimitiveType(PrimitiveType.Int));
-        }
-
-        [Test]
         public void TestMacroLineNumber()
         {
             Assert.AreEqual(103, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);

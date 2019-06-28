@@ -315,8 +315,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var specialization in generated.KeepSingleAllPointersSpecialization())
                 GenerateClassInternals(specialization);
 
-            foreach (var group in generated.SelectMany(s => s.Classes).Where(
-                c => !c.IsIncomplete).GroupBy(c => c.Name))
+            foreach (var group in generated.SelectMany(s => s.Classes).GroupBy(c => c.Name))
             {
                 var nested = classTemplate.Classes.FirstOrDefault(c => c.Name == group.Key);
                 if (nested != null)
@@ -524,7 +523,7 @@ namespace CppSharp.Generators.CSharp
         {
             PushBlock(BlockKind.InternalsClass);
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
-                WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.Size})]");
+                WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.DataSize})]");
             else if (@class.MaxFieldAlignment > 0)
                 WriteLine($"[StructLayout(LayoutKind.Sequential, Pack = {@class.MaxFieldAlignment})]");
 
