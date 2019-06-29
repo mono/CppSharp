@@ -524,7 +524,7 @@ namespace CppSharp.Generators.CSharp
         {
             PushBlock(BlockKind.InternalsClass);
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
-                WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.Size})]");
+                WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.GetSize()})]");
             else if (@class.MaxFieldAlignment > 0)
                 WriteLine($"[StructLayout(LayoutKind.Sequential, Pack = {@class.MaxFieldAlignment})]");
 
@@ -2885,7 +2885,7 @@ namespace CppSharp.Generators.CSharp
                 ((Method) method.OriginalFunction).IsConstructor)
             {
                 WriteLine($@"Marshal.AllocHGlobal({
-                    ((Class) method.OriginalNamespace).Layout.Size});");
+                    ((Class) method.OriginalNamespace).Layout.GetSize()});");
                 names.Insert(0, Helpers.ReturnIdentifier);
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));

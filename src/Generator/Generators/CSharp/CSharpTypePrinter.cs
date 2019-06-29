@@ -100,7 +100,7 @@ namespace CppSharp.Generators.CSharp
                     return new TypePrinterResult
                     {
                         Type = "fixed byte",
-                        NameSuffix = $"[{array.Size * @class.Layout.Size}]"
+                        NameSuffix = $"[{array.Size * @class.Layout.GetSize()}]"
                     };
                 }
 
