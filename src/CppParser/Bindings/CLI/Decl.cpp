@@ -882,6 +882,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::TypedefNameDecl::Qu
 
 void CppSharp::Parser::AST::TypedefNameDecl::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::TypedefNameDecl*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -1419,6 +1421,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Parameter::Qualifie
 
 void CppSharp::Parser::AST::Parameter::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -1536,6 +1540,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Function::ReturnTyp
 
 void CppSharp::Parser::AST::Function::ReturnType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->returnType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -1738,6 +1744,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Function::Qualified
 
 void CppSharp::Parser::AST::Function::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -1891,6 +1899,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Method::ConversionT
 
 void CppSharp::Parser::AST::Method::ConversionType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->conversionType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -2166,6 +2176,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Variable::Qualified
 
 void CppSharp::Parser::AST::Variable::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Variable*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -2294,6 +2306,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Field::QualifiedTyp
 
 void CppSharp::Parser::AST::Field::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Field*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -2513,6 +2527,8 @@ void CppSharp::Parser::AST::VTableLayout::Components::set(System::Collections::G
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::VTableComponent>();
     for each(CppSharp::Parser::AST::VTableComponent^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::VTableComponent*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -2603,6 +2619,8 @@ CppSharp::Parser::AST::VTableLayout^ CppSharp::Parser::AST::VFTableInfo::Layout:
 
 void CppSharp::Parser::AST::VFTableInfo::Layout::set(CppSharp::Parser::AST::VTableLayout^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->layout = *(::CppSharp::CppParser::AST::VTableLayout*)value->NativePtr;
 }
 
@@ -2674,6 +2692,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::LayoutField::Qualif
 
 void CppSharp::Parser::AST::LayoutField::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::LayoutField*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -2886,6 +2906,8 @@ void CppSharp::Parser::AST::ClassLayout::VFTables::set(System::Collections::Gene
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::VFTableInfo>();
     for each(CppSharp::Parser::AST::VFTableInfo^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::VFTableInfo*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -2899,6 +2921,8 @@ CppSharp::Parser::AST::VTableLayout^ CppSharp::Parser::AST::ClassLayout::Layout:
 
 void CppSharp::Parser::AST::ClassLayout::Layout::set(CppSharp::Parser::AST::VTableLayout^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->layout = *(::CppSharp::CppParser::AST::VTableLayout*)value->NativePtr;
 }
 
@@ -2969,6 +2993,8 @@ void CppSharp::Parser::AST::ClassLayout::Fields::set(System::Collections::Generi
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::LayoutField>();
     for each(CppSharp::Parser::AST::LayoutField^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::LayoutField*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -2992,6 +3018,8 @@ void CppSharp::Parser::AST::ClassLayout::Bases::set(System::Collections::Generic
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::LayoutBase>();
     for each(CppSharp::Parser::AST::LayoutBase^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::LayoutBase*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -3690,6 +3718,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::TypeTemplateParamet
 
 void CppSharp::Parser::AST::TypeTemplateParameter::DefaultArgument::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::TypeTemplateParameter*)NativePtr)->defaultArgument = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
@@ -3965,6 +3995,8 @@ void CppSharp::Parser::AST::ClassTemplateSpecialization::Arguments::set(System::
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateArgument>();
     for each(CppSharp::Parser::AST::TemplateArgument^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateArgument*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -4205,6 +4237,8 @@ void CppSharp::Parser::AST::FunctionTemplateSpecialization::Arguments::set(Syste
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateArgument>();
     for each(CppSharp::Parser::AST::TemplateArgument^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateArgument*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -4422,6 +4456,8 @@ void CppSharp::Parser::AST::VarTemplateSpecialization::Arguments::set(System::Co
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateArgument>();
     for each(CppSharp::Parser::AST::TemplateArgument^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateArgument*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }

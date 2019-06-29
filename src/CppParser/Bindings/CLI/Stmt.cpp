@@ -86,6 +86,8 @@ CppSharp::Parser::SourceRange^ CppSharp::Parser::AST::Stmt::SourceRange::get()
 
 void CppSharp::Parser::AST::Stmt::SourceRange::set(CppSharp::Parser::SourceRange^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::Stmt*)NativePtr)->sourceRange = *(::CppSharp::CppParser::SourceRange*)value->NativePtr;
 }
 
@@ -2510,6 +2512,8 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::CXXCatchStmt::Caugh
 
 void CppSharp::Parser::AST::CXXCatchStmt::CaughtType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
     ((::CppSharp::CppParser::AST::CXXCatchStmt*)NativePtr)->caughtType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 

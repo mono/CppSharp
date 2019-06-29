@@ -670,80 +670,11 @@ namespace Std
 
 namespace Std
 {
-    namespace Less
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
-        public unsafe partial struct __Internal
-        {
-        }
-    }
-}
-
-namespace Std
-{
-    public enum RbTreeColor : uint
-    {
-    }
-
-    namespace RbTree
-    {
-        namespace RbTreeImpl
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 48)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::Std.Less.__Internal _M_key_compare;
-
-                [FieldOffset(8)]
-                internal global::Std.RbTreeNodeBase.__Internal _M_header;
-
-                [FieldOffset(40)]
-                internal ulong _M_node_count;
-            }
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_
-        {
-            [FieldOffset(0)]
-            internal global::Std.RbTree.RbTreeImpl.__Internal _M_impl;
-        }
-    }
-
-    public unsafe partial class RbTreeNodeBase
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal global::Std.RbTreeColor _M_color;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr _M_parent;
-
-            [FieldOffset(16)]
-            internal global::System.IntPtr _M_left;
-
-            [FieldOffset(24)]
-            internal global::System.IntPtr _M_right;
-        }
-    }
-}
-
-namespace GnuCxx
-{
-}
-
-namespace Std
-{
     namespace Map
     {
         [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public unsafe partial struct __Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_
+        public unsafe partial struct __Internal
         {
-            [FieldOffset(0)]
-            internal global::Std.RbTree.__Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_ _M_t;
         }
     }
 }
@@ -756,7 +687,7 @@ namespace Std
 {
     namespace CharTraits
     {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -826,11 +757,8 @@ namespace Std
     namespace BasicString
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public unsafe partial struct __Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C
+        public unsafe partial struct __Internal
         {
-            [FieldOffset(0)]
-            internal global::Std.BasicString.AllocHider.__Internal _M_dataplus;
-
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSsC2Ev")]
@@ -846,17 +774,6 @@ namespace Std
                 EntryPoint="_ZNKSs5c_strEv")]
             internal static extern global::System.IntPtr CStrc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
         }
-
-        namespace AllocHider
-        {
-            [StructLayout(LayoutKind.Explicit, Size = 8)]
-            public unsafe partial struct __Internal
-            {
-                [FieldOffset(0)]
-                internal global::System.IntPtr _M_p;
-            }
-        }
-
     }
 
     public unsafe partial class BasicString<_CharT, _Traits, _Alloc> : IDisposable
@@ -874,19 +791,19 @@ namespace Std
             return new global::Std.BasicString<_CharT, _Traits, _Alloc>(native.ToPointer(), skipVTables);
         }
 
-        internal static global::Std.BasicString<_CharT, _Traits, _Alloc> __CreateInstance(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native, bool skipVTables = false)
+        internal static global::Std.BasicString<_CharT, _Traits, _Alloc> __CreateInstance(global::Std.BasicString.__Internal native, bool skipVTables = false)
         {
             return new global::Std.BasicString<_CharT, _Traits, _Alloc>(native, skipVTables);
         }
 
-        private static void* __CopyValue(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native)
+        private static void* __CopyValue(global::Std.BasicString.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C));
-            *(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) ret = native;
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
+            *(global::Std.BasicString.__Internal*) ret = native;
             return ret.ToPointer();
         }
 
-        private BasicString(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native, bool skipVTables = false)
+        private BasicString(global::Std.BasicString.__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
@@ -907,10 +824,10 @@ namespace Std
             var ___Alloc = typeof(_Alloc);
             if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Alloc.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C));
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                global::Std.BasicString.__Internal.ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
                 return;
             }
             throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
@@ -934,7 +851,7 @@ namespace Std
                 var ___Alloc = typeof(_Alloc);
                 if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Alloc.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
                 {
-                    global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                    global::Std.BasicString.__Internal.dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
                     return;
                 }
                 throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
