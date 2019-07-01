@@ -325,7 +325,8 @@ namespace CppSharp.Types.Std
                     assign.Name}({varBasicString}, {ctx.Parameter.Name});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
                 if (!type.IsPointer())
-                    ctx.Cleanup.WriteLine($"{varBasicString}.Dispose(false);");
+                    ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
+                        (ctx.MarshalKind == MarshalKind.NativeField ? "false" : string.Empty)});");
             }
         }
 
@@ -350,7 +351,8 @@ namespace CppSharp.Types.Std
                 string varString = $"__stringRet{ctx.ParameterIndex}";
                 ctx.Before.WriteLine($@"var {varString} = {
                     qualifiedBasicString}Extensions.{c_str.Name}({varBasicString});");
-                ctx.Before.WriteLine($"{varBasicString}.Dispose(false);");
+                ctx.Before.WriteLine($@"{varBasicString}.Dispose({
+                    (ctx.MarshalKind == MarshalKind.NativeField ? "false" : string.Empty)});");
                 ctx.Return.Write(varString);
             }
         }
