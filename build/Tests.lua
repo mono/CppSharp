@@ -161,7 +161,7 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
   project(name .. ".CSharp")
     SetupManagedTestProject()
 
-    dependson { name .. ".Gen", name .. ".Native" }
+    dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
     SetupTestGeneratorBuildEvent(name)
 
     files
@@ -206,7 +206,7 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
     language "C++"
     clr "On"
 
-    dependson { name .. ".Gen", name .. ".Native" }
+    dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
     SetupTestGeneratorBuildEvent(name)
 
     if (suffix ~= nil) then 
