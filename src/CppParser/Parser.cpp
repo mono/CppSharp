@@ -931,12 +931,16 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
+    auto CopyCtor = llvm::dyn_cast<CXXConstructorDecl>(MD);
+
     return !c->getSourceManager().isInSystemHeader(MD->getBeginLoc()) ||
-        (isa<CXXConstructorDecl>(MD) && MD->getNumParams() == 0) ||
+        (CopyCtor && (MD->getNumParams() == 0 ||
+         (CopyCtor->isCopyConstructor() && !CopyCtor->isTrivial()))) ||
         isa<CXXDestructorDecl>(MD) ||
         (MD->getDeclName().isIdentifier() &&
          ((MD->getName() == "c_str" && MD->getNumParams() == 0) ||
-          (MD->getName() == "assign" && MD->getNumParams() == 1)) &&
+          (MD->getName() == "assign" && MD->getNumParams() == 1 &&
+           MD->parameters()[0]->getType()->isPointerType())) &&
          supportedStdTypes.find(MD->getParent()->getName()) !=
             supportedStdTypes.end());
 }

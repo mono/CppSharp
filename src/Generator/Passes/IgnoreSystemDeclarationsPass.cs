@@ -55,64 +55,19 @@ namespace CppSharp.Passes
             switch (@class.Name)
             {
                 case "basic_string":
-                    foreach (var method in @class.Methods.Where(m => !m.IsDestructor &&
-                        m.OriginalName != "c_str" && m.OriginalName != "assign"))
-                        method.ExplicitlyIgnore();
-                    foreach (var basicString in GetCharSpecializations(@class))
-                    {
-                        basicString.GenerationKind = GenerationKind.Generate;
-                        foreach (var method in basicString.Methods)
-                        {
-                            if (method.IsDestructor || method.OriginalName == "c_str" ||
-                                (method.OriginalName == "assign" &&
-                                 method.Parameters.Count == 1 &&
-                                 method.Parameters[0].Type.IsPointerToPrimitiveType()) ||
-                                (method.IsConstructor &&
-                                 !method.Parameters.Where(p => p.Kind == ParameterKind.Regular).Any()))
-                            {
-                                method.GenerationKind = GenerationKind.Generate;
-                                method.Namespace.GenerationKind = GenerationKind.Generate;
-                                method.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
-                                method.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
-                            }
-                            else
-                            {
-                                method.ExplicitlyIgnore();
-                            }
-                        }
-                    }
-                    break;
                 case "allocator":
-                    foreach (var method in @class.Methods)
-                        method.ExplicitlyIgnore();
-                    foreach (var allocator in GetCharSpecializations(@class))
-                    {
-                        foreach (var method in allocator.Methods)
-                            method.ExplicitlyIgnore();
-                        allocator.GenerationKind = GenerationKind.Generate;
-                        allocator.TemplatedDecl.TemplatedDecl.GenerationKind = GenerationKind.Generate;
-                        allocator.GenerationKind = GenerationKind.Generate;
-                    }
-                    break;
                 case "char_traits":
-                    foreach (var method in @class.Methods)
-                        method.ExplicitlyIgnore();
-                    foreach (var charTraits in GetCharSpecializations(@class))
+                    @class.GenerationKind = GenerationKind.Generate;
+                    foreach (var specialization in from s in @class.Specializations
+                                                   let arg = s.Arguments[0].Type.Type.Desugar()
+                                                   where arg.IsPrimitiveType(PrimitiveType.Char)
+                                                   select s)
                     {
-                        foreach (var method in charTraits.Methods)
-                            method.ExplicitlyIgnore();
-                        charTraits.GenerationKind = GenerationKind.Generate;
-                        charTraits.TemplatedDecl.TemplatedDecl.GenerationKind = GenerationKind.Generate;
+                        specialization.GenerationKind = GenerationKind.Generate;
                     }
                     break;
             }
             return true;
-        }
-
-        private static IEnumerable<ClassTemplateSpecialization> GetCharSpecializations(Class @class)
-        {
-            return @class.Specializations.Where(s =>
-                s.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char));
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)

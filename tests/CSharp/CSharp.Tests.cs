@@ -606,6 +606,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         }
     }
 
+    [Test]
     public void TestStdStringConstant()
     {
         Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));

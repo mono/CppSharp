@@ -829,7 +829,7 @@ This is a very long string. This is a very long string. This is a very long stri
         }
     }
 
-    [Ignore("https://github.com/mono/CppSharp/issues/867")] 
+    [Test] 
     public void TestStdStringPassedByValue()
     {
         // when C++ memory is deleted, it's only marked as free but not immediadely freed
