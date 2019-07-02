@@ -1045,18 +1045,26 @@ namespace CppSharp.Generators.CSharp
             var internalFunction = GetFunctionNativeIdentifier(function);
             var paramMarshal = GenerateFunctionParamMarshal(
                 function.Parameters[0], 0, function);
+            string call = $@"{@internal}.{internalFunction}({
+                GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{paramMarshal.Name})";
             if (type.IsPrimitiveType())
             {
-                WriteLine($@"*{@internal}.{internalFunction}({
-                    GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{
-                    paramMarshal.Name}) = {marshal.Context.Return};");
+                WriteLine($"*{call} = {marshal.Context.Return};");
             }
             else
             {
-                var typeInternal = TypePrinter.PrintNative(type);
-                WriteLine($@"*({typeInternal}*) {@internal}.{internalFunction}({
-                    GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{
-                    paramMarshal.Name}) = {marshal.Context.Return};");
+                Class @class;
+                if (type.TryGetClass(out @class) && @class.HasNonTrivialCopyConstructor)
+                {
+                    Method cctor = @class.Methods.First(c => c.IsCopyConstructor);
+                    WriteLine($@"{@class.Visit(TypePrinter)}.{Helpers.InternalStruct}.{
+                        GetFunctionNativeIdentifier(cctor)}({call}, {
+                        ctx.Parameter.Name}.{Helpers.InstanceIdentifier});");
+                }
+                else
+                {
+                    WriteLine($"*({TypePrinter.PrintNative(type)}*) {call} = {marshal.Context.Return};");
+                }
             }
         }
 

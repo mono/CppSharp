@@ -16,6 +16,8 @@ public:
     Foo(int a, int p = 0);
     Foo(char16_t ch);
     Foo(wchar_t ch);
+    Foo(const Foo& other);
+    ~Foo();
     int method();
     int operator[](int i) const;
     int operator[](unsigned int i);
@@ -46,6 +48,7 @@ public:
 protected:
     int P;
     TemplateInAnotherUnit<int> templateInAnotherUnit;
+    std::string _name;
 };
 
 class DLL_API Quux
@@ -94,6 +97,7 @@ public:
     Bar();
     Bar(Qux qux);
     Bar(Items item);
+    ~Bar();
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);
@@ -122,6 +126,7 @@ class DLL_API ForceCreationOfInterface : public Foo, public Bar
 {
 public:
     ForceCreationOfInterface();
+    ~ForceCreationOfInterface();
 };
 
 class DLL_API Baz : public Foo, public Bar
@@ -137,6 +142,7 @@ public:
 
     Baz();
     Baz(Bar::Items item);
+    ~Baz();
 
     int P;
 
@@ -689,6 +695,7 @@ class DLL_API TestOverrideFromSecondaryBase : public Foo, public SecondaryBase
 {
 public:
     TestOverrideFromSecondaryBase();
+    ~TestOverrideFromSecondaryBase();
     void VirtualMember();
     void setProperty(int value);
 };
@@ -729,12 +736,14 @@ class DLL_API InheritanceBuffer : public Foo, public HasProtectedVirtual
 {
 public:
     InheritanceBuffer();
+    ~InheritanceBuffer();
 };
 
 class DLL_API InheritsProtectedVirtualFromSecondaryBase : public InheritanceBuffer
 {
 public:
     InheritsProtectedVirtualFromSecondaryBase();
+    ~InheritsProtectedVirtualFromSecondaryBase();
 protected:
     void protectedVirtual();
 };

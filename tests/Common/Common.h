@@ -585,6 +585,7 @@ public:
     };
 
     TestProperties();
+    TestProperties(const TestProperties& other);
     int Field;
 
     int getFieldValue();

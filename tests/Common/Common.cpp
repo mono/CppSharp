@@ -527,6 +527,15 @@ TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0),
 {
 }
 
+TestProperties::TestProperties(const TestProperties& other) : Field(other.Field),
+    FieldValue(other.FieldValue),
+    _refToPrimitiveInSetter(other._refToPrimitiveInSetter),
+    _getterAndSetterWithTheSameName(other._getterAndSetterWithTheSameName),
+    _setterReturnsBoolean(other._setterReturnsBoolean),
+    _virtualSetterReturnsBoolean(other._virtualSetterReturnsBoolean)
+{
+}
+
 int TestProperties::getFieldValue()
 {
     return Field;

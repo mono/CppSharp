@@ -10,6 +10,10 @@ Foo::Foo(const char* name) : publicFieldMappedToEnum(TestFlag::Flag2)
 {
     A = 10;
     P = 50;
+    if (name)
+    {
+        _name = name;
+    }
 }
 
 Foo::Foo(int a, int p) : publicFieldMappedToEnum(TestFlag::Flag2)
@@ -23,6 +27,15 @@ Foo::Foo(char16_t ch)
 }
 
 Foo::Foo(wchar_t ch)
+{
+}
+
+Foo::Foo(const Foo& other) : A(other.A), P(other.P),
+    templateInAnotherUnit(other.templateInAnotherUnit), _name(other._name)
+{
+}
+
+Foo::~Foo()
 {
 }
 
@@ -106,7 +119,7 @@ int Foo::operator --()
 
 Foo::operator const char*() const
 {
-    return "test";
+    return _name.data();
 }
 
 const Foo& Bar::operator[](int i) const
@@ -220,6 +233,10 @@ Bar::Bar(Items item)
 {
 }
 
+Bar::~Bar()
+{
+}
+
 int Bar::method()
 {
     return 2;
@@ -268,7 +285,15 @@ ForceCreationOfInterface::ForceCreationOfInterface()
 {
 }
 
+ForceCreationOfInterface::~ForceCreationOfInterface()
+{
+}
+
 Baz::Baz(Bar::Items item)
+{
+}
+
+Baz::~Baz()
 {
 }
 
@@ -909,6 +934,10 @@ TestOverrideFromSecondaryBase::TestOverrideFromSecondaryBase()
 {
 }
 
+TestOverrideFromSecondaryBase::~TestOverrideFromSecondaryBase()
+{
+}
+
 void TestOverrideFromSecondaryBase::VirtualMember()
 {
 }
@@ -975,7 +1004,15 @@ InheritanceBuffer::InheritanceBuffer()
 {
 }
 
+InheritanceBuffer::~InheritanceBuffer()
+{
+}
+
 InheritsProtectedVirtualFromSecondaryBase::InheritsProtectedVirtualFromSecondaryBase()
+{
+}
+
+InheritsProtectedVirtualFromSecondaryBase::~InheritsProtectedVirtualFromSecondaryBase()
 {
 }
 

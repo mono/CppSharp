@@ -1279,10 +1279,10 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestImplicitConversionToString()
     {
-        using (Foo foo = new Foo())
+        using (Foo foo = new Foo("name"))
         {
             string name = foo;
-            Assert.That(name, Is.EqualTo("test"));
+            Assert.That(name, Is.EqualTo("name"));
         }
     }
 
