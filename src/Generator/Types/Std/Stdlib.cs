@@ -324,7 +324,7 @@ namespace CppSharp.Types.Std
                 ctx.Before.WriteLine($@"{qualifiedBasicString}Extensions.{
                     assign.Name}({varBasicString}, {ctx.Parameter.Name});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
-                if (!type.IsPointer())
+                if (!type.IsPointer() || ctx.Parameter.IsIndirect)
                     ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
                         (ctx.MarshalKind == MarshalKind.NativeField ? "false" : string.Empty)});");
             }
