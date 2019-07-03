@@ -1037,7 +1037,8 @@ namespace CppSharp.Generators.CSharp
                 },
                 ParameterIndex = function.Parameters.Count(
                     p => p.Kind != ParameterKind.IndirectReturnType),
-                ReturnType = new QualifiedType(type)
+                ReturnType = new QualifiedType(type),
+                ArgName = "value"
             };
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             type.Visit(marshal);

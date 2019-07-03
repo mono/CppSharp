@@ -94,10 +94,6 @@ public unsafe class CSharpTests : GeneratorTestFixture
         {
         }
 
-        int value = 5;
-        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((void**) &value);
-        Assert.That((int) intPtr, Is.EqualTo(value));
-
 #pragma warning restore 0168
 #pragma warning restore 0219
     }
@@ -1274,6 +1270,24 @@ public unsafe class CSharpTests : GeneratorTestFixture
     public void TestConstCharStarRef()
     {
         Assert.That(CSharp.CSharp.TakeConstCharStarRef("Test"), Is.EqualTo("Test"));
+    }
+
+    [Test]
+    public void TestRValueReferenceToPointer()
+    {
+        int value = 5;
+        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((void**) &value);
+        Assert.That((int) intPtr, Is.EqualTo(value));
+    }
+
+    [Test]
+    public void TakeRefToPointerToObject()
+    {
+        using (Foo foo = new Foo { A = 25  })
+        {
+            Foo returnedFoo = CSharp.CSharp.TakeRefToPointerToObject(foo);
+            Assert.That(returnedFoo.A, Is.EqualTo(foo.A));
+        }
     }
 
     [Test]

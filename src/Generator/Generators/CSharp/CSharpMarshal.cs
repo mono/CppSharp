@@ -587,25 +587,34 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
+
+            string arg = Generator.GeneratedIdentifier(Context.ArgName);
+
             if (pointee.TryGetClass(out Class @class) && @class.IsValueType)
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
                     var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
                     Context.Before.WriteLine("var {0} = new {1}.{2}();",
-                        Generator.GeneratedIdentifier(Context.ArgName), qualifiedIdentifier,
-                        Helpers.InternalStruct);
+                        arg, qualifiedIdentifier, Helpers.InternalStruct);
                 }
                 else
                 {
                     Context.Before.WriteLine("var {0} = {1}.{2};",
-                            Generator.GeneratedIdentifier(Context.ArgName),
-                            Context.Parameter.Name,
-                            Helpers.InstanceIdentifier);
+                        arg, Context.Parameter.Name, Helpers.InstanceIdentifier);
                 }
 
-                Context.Return.Write("new global::System.IntPtr(&{0})",
-                    Generator.GeneratedIdentifier(Context.ArgName));
+                Context.Return.Write($"new global::System.IntPtr(&{arg})");
+                return true;
+            }
+
+            if (pointee.IsPointerTo(out Type type) &&
+                type.Desugar().TryGetClass(out Class c))
+            {
+                pointer.QualifiedPointee.Visit(this);
+                Context.Before.WriteLine($"var {arg} = {Context.Return};");
+                Context.Return.StringBuilder.Clear();
+                Context.Return.Write($"new global::System.IntPtr(&{arg})");
                 return true;
             }
 

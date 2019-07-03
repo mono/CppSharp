@@ -1623,6 +1623,11 @@ const void*& rValueReferenceToPointer(void*&& v)
     return (const void*&) v;
 }
 
+const Foo* takeRefToPointerToObject(const Foo*& foo)
+{
+    return foo;
+}
+
 boolean_t takeTypemapTypedefParam(boolean_t b)
 {
     return b;
