@@ -711,7 +711,8 @@ namespace CppSharp.Generators.CSharp
                         Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
                 var realClass = @class.OriginalClass ?? @class;
                 var qualifiedIdentifier = typePrinter.PrintNative(realClass);
-                Context.Return.Write($"*({qualifiedIdentifier}*) {paramInstance}");
+                Context.ArgumentPrefix.Write($"*({qualifiedIdentifier}*) ");
+                Context.Return.Write(paramInstance);
                 return;
             }
 

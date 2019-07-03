@@ -876,7 +876,8 @@ namespace CppSharp.Generators.CSharp
             if (ctx.HasCodeBlock)
                 Indent();
 
-            WriteLine($"*{ptr} = {marshal.Context.Return};", marshal.Context.Return);
+            WriteLine($@"*{ptr} = {marshal.Context.ArgumentPrefix}{
+                marshal.Context.Return};", marshal.Context.Return);
 
             if (ctx.HasCodeBlock)
                 UnindentAndWriteCloseBrace();
@@ -974,7 +975,7 @@ namespace CppSharp.Generators.CSharp
                             Write("(object) ");
                     }
                 }
-                WriteLine($"{marshal.Context.Return};");
+                WriteLine($"{marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
             }
 
             if ((arrayType != null && @class.IsValueType) || ctx.HasCodeBlock)
@@ -1049,7 +1050,7 @@ namespace CppSharp.Generators.CSharp
                 GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{paramMarshal.Name})";
             if (type.IsPrimitiveType())
             {
-                WriteLine($"*{call} = {marshal.Context.Return};");
+                WriteLine($"*{call} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
             }
             else
             {
@@ -1057,13 +1058,13 @@ namespace CppSharp.Generators.CSharp
                 if (type.TryGetClass(out @class) && @class.HasNonTrivialCopyConstructor)
                 {
                     Method cctor = @class.Methods.First(c => c.IsCopyConstructor);
-                    WriteLine($@"{@class.Visit(TypePrinter)}.{Helpers.InternalStruct}.{
-                        GetFunctionNativeIdentifier(cctor)}({call}, {
-                        ctx.Parameter.Name}.{Helpers.InstanceIdentifier});");
+                    WriteLine($@"{TypePrinter.PrintNative(type)}.{
+                        GetFunctionNativeIdentifier(cctor)}({call}, {marshal.Context.Return});");
                 }
                 else
                 {
-                    WriteLine($"*({TypePrinter.PrintNative(type)}*) {call} = {marshal.Context.Return};");
+                    WriteLine($@"*({TypePrinter.PrintNative(type)}*) {call} = {
+                        marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
             }
         }
@@ -1790,13 +1791,12 @@ namespace CppSharp.Generators.CSharp
                 if (method.HasIndirectReturnTypeParameter)
                 {
                     var retParam = method.Parameters.First(p => p.Kind == ParameterKind.IndirectReturnType);
-                    WriteLine("*({0}*) {1} = {2};",
-                        TypePrinter.PrintNative(method.OriginalReturnType),
-                        retParam.Name, marshal.Context.Return);
+                    WriteLine($@"*({TypePrinter.PrintNative(method.OriginalReturnType)}*) {
+                        retParam.Name} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
                 else
                 {
-                    WriteLine("return {0};", marshal.Context.Return);
+                    WriteLine($"return {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
             }
 
