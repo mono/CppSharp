@@ -75,6 +75,9 @@ namespace CppSharp.Passes
 
             var commonParameters = Math.Min(functionParams.Count, overloadParams.Count);
 
+            int functionMappedParams = 0;
+            int overloadMappedParams = 0;
+
             var i = 0;
             for (; i < commonParameters; ++i)
             {
@@ -82,6 +85,11 @@ namespace CppSharp.Passes
                     TypeMaps, Options.GeneratorKind);
                 AST.Type overloadType = overloadParams[i].Type.GetMappedType(
                     TypeMaps, Options.GeneratorKind);
+
+                if (!funcType.Equals(functionParams[i].Type.Desugar()))
+                    functionMappedParams++;
+                if (!overloadType.Equals(overloadParams[i].Type.Desugar()))
+                    overloadMappedParams++;
 
                 AST.Type funcPointee = funcType.GetFinalPointee() ?? funcType;
                 AST.Type overloadPointee = overloadType.GetFinalPointee() ?? overloadType;
@@ -106,7 +114,8 @@ namespace CppSharp.Passes
                     return false;
             }
 
-            if (functionParams.Count > overloadParams.Count)
+            if (functionParams.Count > overloadParams.Count ||
+                functionMappedParams < overloadMappedParams)
                 overload.ExplicitlyIgnore();
             else
                 function.ExplicitlyIgnore();

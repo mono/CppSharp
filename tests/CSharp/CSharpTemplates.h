@@ -706,17 +706,17 @@ template <typename T>
 class HasCtorWithMappedToEnum
 {
 public:
-    HasCtorWithMappedToEnum(QFlags<T> t);
     HasCtorWithMappedToEnum(T t);
+    HasCtorWithMappedToEnum(QFlags<T> t);
 };
 
 template <typename T>
-HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(QFlags<T> t)
+HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(T t)
 {
 }
 
 template <typename T>
-HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(T t)
+HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(QFlags<T> t)
 {
 }
 

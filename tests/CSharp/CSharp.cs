@@ -149,6 +149,8 @@ namespace CppSharp.Tests
             }
         }
 
+        public override bool IsIgnored => Type.IsDependent;
+
         private static Type GetEnumType(Type mappedType)
         {
             var type = mappedType.Desugar();
