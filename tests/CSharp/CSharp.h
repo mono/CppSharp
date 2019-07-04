@@ -84,6 +84,7 @@ public:
     Qux* getInterface();
     void setInterface(Qux* qux);
     virtual void makeClassDynamic();
+    virtual int takeReferenceToPointer(Foo*& ret);
 };
 
 class DLL_API Bar : public Qux
@@ -1325,7 +1326,7 @@ DLL_API char* returnCharPointer();
 DLL_API char* takeConstCharRef(const char& c);
 DLL_API const char*& takeConstCharStarRef(const char*& c);
 DLL_API const void*& rValueReferenceToPointer(void*&& v);
-DLL_API const Foo* takeRefToPointerToObject(const Foo*& foo);
+DLL_API const Foo*& takeReturnReferenceToPointer(const Foo*& foo);
 
 struct {
     struct {

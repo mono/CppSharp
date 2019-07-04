@@ -146,13 +146,25 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee.Desugar();
             var finalPointee = pointer.GetFinalPointee().Desugar();
-            var type = Context.ReturnType.Type.Desugar(
+            var returnType = Context.ReturnType.Type.Desugar(
                 resolveTemplateSubstitution: false);
-            PrimitiveType primitive;
-            if ((pointee.IsConstCharString() && (isRefParam || type.IsReference())) ||
-                (!finalPointee.IsPrimitiveType(out primitive) &&
+            if ((pointee.IsConstCharString() && (isRefParam || returnType.IsReference())) ||
+                (!finalPointee.IsPrimitiveType(out PrimitiveType primitive) &&
                  !finalPointee.IsEnumType()))
+            {
+                if (Context.MarshalKind != MarshalKind.NativeField &&
+                    pointee.IsPointerTo(out Type type) &&
+                    type.Desugar().TryGetClass(out Class c))
+                {
+                    string ret = Generator.GeneratedIdentifier(Context.ReturnVarName);
+                    Context.Before.WriteLine($@"{typePrinter.IntPtrType} {ret} = {
+                        Context.ReturnVarName} == {typePrinter.IntPtrType}.Zero ? {
+                        typePrinter.IntPtrType}.Zero : new {
+                        typePrinter.IntPtrType}(*(void**) {Context.ReturnVarName});");
+                    Context.ReturnVarName = ret;
+                }
                 return pointer.QualifiedPointee.Visit(this);
+            }
 
             if (isRefParam)
             {
@@ -167,7 +179,7 @@ namespace CppSharp.Generators.CSharp
             if (Context.Function != null &&
                 Context.Function.OperatorKind == CXXOperatorKind.Subscript)
             {
-                if (type.IsPrimitiveType(primitive))
+                if (returnType.IsPrimitiveType(primitive))
                 {
                     Context.Return.Write("*");
                 }
@@ -517,7 +529,7 @@ namespace CppSharp.Generators.CSharp
                 if (param.IsOut)
                 {
                     MarshalString(pointee);
-                    Context.Return.Write("IntPtr.Zero");
+                    Context.Return.Write($"{typePrinter.IntPtrType}.Zero");
                     Context.ArgumentPrefix.Write("&");
                     return true;
                 }
@@ -604,7 +616,7 @@ namespace CppSharp.Generators.CSharp
                         arg, Context.Parameter.Name, Helpers.InstanceIdentifier);
                 }
 
-                Context.Return.Write($"new global::System.IntPtr(&{arg})");
+                Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
                 return true;
             }
 
@@ -614,7 +626,7 @@ namespace CppSharp.Generators.CSharp
                 pointer.QualifiedPointee.Visit(this);
                 Context.Before.WriteLine($"var {arg} = {Context.Return};");
                 Context.Return.StringBuilder.Clear();
-                Context.Return.Write($"new global::System.IntPtr(&{arg})");
+                Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
                 return true;
             }
 

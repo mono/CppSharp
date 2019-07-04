@@ -225,6 +225,11 @@ void Qux::makeClassDynamic()
 {
 }
 
+int Qux::takeReferenceToPointer(Foo*& ret)
+{
+    return ret->A;
+}
+
 Bar::Bar(Qux qux)
 {
 }
@@ -1623,7 +1628,7 @@ const void*& rValueReferenceToPointer(void*&& v)
     return (const void*&) v;
 }
 
-const Foo* takeRefToPointerToObject(const Foo*& foo)
+const Foo*& takeReturnReferenceToPointer(const Foo*& foo)
 {
     return foo;
 }

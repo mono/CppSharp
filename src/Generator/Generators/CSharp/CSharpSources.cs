@@ -1741,15 +1741,16 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            bool isVoid = method.OriginalReturnType.Type.Desugar().IsPrimitiveType(
-                PrimitiveType.Void);
+            Type returnType = method.OriginalReturnType.Type.Desugar();
+            bool isPrimitive = returnType.IsPrimitiveType();
+            bool isVoid = returnType.IsPrimitiveType(PrimitiveType.Void);
             var property = ((Class) method.Namespace).Properties.Find(
                 p => p.GetMethod == method || p.SetMethod == method);
             bool isSetter = property != null && property.SetMethod == method;
             var hasReturn = !isVoid && !isSetter;
 
             if (hasReturn)
-                Write($"var {Helpers.ReturnIdentifier} = ");
+                Write(isPrimitive && !isSetter ? "return " : $"var {Helpers.ReturnIdentifier} = ");
 
             Write($"{Helpers.TargetIdentifier}.");
             string marshalsCode = string.Join(", ", marshals);
@@ -1764,6 +1765,8 @@ namespace CppSharp.Generators.CSharp
                     Write($" = {marshalsCode}");
             }
             WriteLine(";");
+            if (isPrimitive && !isSetter)
+                return;
 
             if (hasReturn)
             {

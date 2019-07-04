@@ -1285,8 +1285,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (Foo foo = new Foo { A = 25  })
         {
-            Foo returnedFoo = CSharp.CSharp.TakeRefToPointerToObject(foo);
+            Foo returnedFoo = CSharp.CSharp.TakeReturnReferenceToPointer(foo);
             Assert.That(returnedFoo.A, Is.EqualTo(foo.A));
+            using (Qux qux = new Qux())
+            {
+                Assert.That(qux.TakeReferenceToPointer(foo), Is.EqualTo(foo.A));
+            }
         }
     }
 
