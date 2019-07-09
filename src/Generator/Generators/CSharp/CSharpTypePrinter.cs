@@ -129,7 +129,7 @@ namespace CppSharp.Generators.CSharp
             if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
             {
                 var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
-                    "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ";
+                    "[MarshalAs(UnmanagedType.LPArray)] ";
                 return $"{prefix}string[]";
             }
 

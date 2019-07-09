@@ -276,7 +276,6 @@ namespace CppSharp.Passes
         {
             // TODO: all of this needs proper general fixing by only leaving type names
             return types.Replace("global::System.", string.Empty)
-                .Replace("[MarshalAs(UnmanagedType.LPStr)] ", string.Empty)
                 .Replace("[MarshalAs(UnmanagedType.LPWStr)] ", string.Empty)
                 .Replace("global::", string.Empty).Replace("*", "Ptr")
                 .Replace('.', '_').Replace(' ', '_').Replace("::", "_")

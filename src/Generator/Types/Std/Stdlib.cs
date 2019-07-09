@@ -155,7 +155,7 @@ namespace CppSharp.Types.Std
             }
 
             if (Context.Options.Encoding == Encoding.ASCII)
-                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
+                return new CustomType("string");
 
             if (Context.Options.Encoding == Encoding.Unicode ||
                 Context.Options.Encoding == Encoding.BigEndianUnicode)
