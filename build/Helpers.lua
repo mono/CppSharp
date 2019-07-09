@@ -138,7 +138,7 @@ function SetupManagedProject()
   location ("%{wks.location}/projects")
   buildoptions {"/platform:".._OPTIONS["arch"]}
 
-  dotnetframework "4.6"
+  dotnetframework "4.7"
 
   if not os.istarget("macosx") then
     filter { "action:vs* or netcore" }
