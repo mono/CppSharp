@@ -95,7 +95,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?addSymbols@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
-                    internal static extern void AddSymbols(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                    internal static extern void AddSymbols(global::System.IntPtr __instance, string s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -110,7 +110,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?addDependencies@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
-                    internal static extern void AddDependencies(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                    internal static extern void AddDependencies(global::System.IntPtr __instance, string s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -612,7 +612,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddBlocks((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -869,7 +870,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddContent((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -1760,7 +1762,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddLines((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -3675,7 +3678,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.QualifiedType.__Internal*)__Instance)->qualifiers = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.TypeQualifiers.__Internal() : *(global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.QualifiedType.__Internal*)__Instance)->qualifiers = *(global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -3883,7 +3888,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.ArrayType.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4068,7 +4075,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddParameters((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -4086,7 +4094,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*)__Instance)->returnType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.FunctionType.__Internal*)__Instance)->returnType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4225,7 +4235,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.PointerType.__Internal*)__Instance)->qualifiedPointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.PointerType.__Internal*)__Instance)->qualifiedPointee = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4331,7 +4343,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.MemberPointerType.__Internal*)__Instance)->pointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.MemberPointerType.__Internal*)__Instance)->pointee = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -4525,7 +4539,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*)__Instance)->modified = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*)__Instance)->modified = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4538,7 +4554,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*)__Instance)->equivalent = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.AttributedType.__Internal*)__Instance)->equivalent = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -4637,7 +4655,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->decayed = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->decayed = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4650,7 +4670,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->original = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->original = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -4663,7 +4685,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->pointee = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.DecayedType.__Internal*)__Instance)->pointee = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -4801,7 +4825,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*)__Instance)->type = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.TemplateArgument.__Internal*)__Instance)->type = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5007,7 +5033,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*)__Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal*)__Instance)->desugared = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5170,7 +5198,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal*)__Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal*)__Instance)->desugared = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5439,7 +5469,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*)__Instance)->replacement = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal*)__Instance)->replacement = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5553,7 +5585,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*)__Instance)->injectedSpecializationType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.InjectedClassNameType.__Internal*)__Instance)->injectedSpecializationType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5685,7 +5719,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*)__Instance)->qualifier = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.DependentNameType.__Internal*)__Instance)->qualifier = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5874,7 +5910,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*)__Instance)->desugared = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*)__Instance)->desugared = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -5887,7 +5925,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*)__Instance)->baseType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.UnaryTransformType.__Internal*)__Instance)->baseType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -5983,7 +6023,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VectorType.__Internal*)__Instance)->elementType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.VectorType.__Internal*)__Instance)->elementType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -6501,7 +6543,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddPreprocessedEntities((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -6525,7 +6568,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddRedeclarations((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7192,7 +7236,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddNamespaces((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7216,7 +7261,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddEnums((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7240,7 +7286,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddFunctions((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7264,7 +7311,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddClasses((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7288,7 +7336,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddTemplates((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7312,7 +7361,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddTypedefs((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7336,7 +7386,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddTypeAliases((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7360,7 +7411,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddVariables((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7384,7 +7436,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddFriends((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -7658,7 +7711,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypedefNameDecl.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.TypedefNameDecl.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -8237,7 +8292,7 @@ namespace CppSharp
                     var __arg0 = __basicString0.__Instance;
                     var __arg2 = ReferenceEquals(decl, null) ? global::System.IntPtr.Zero : decl.__Instance;
                     __Internal.ctor((__Instance + __PointerAdjustment), __arg0, Class, __arg2);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                 }
 
                 public StatementObsolete(global::CppSharp.Parser.AST.StatementObsolete _0)
@@ -8391,7 +8446,7 @@ namespace CppSharp
                     var __arg0 = __basicString0.__Instance;
                     var __arg2 = ReferenceEquals(decl, null) ? global::System.IntPtr.Zero : decl.__Instance;
                     __Internal.ctor((__Instance + __PointerAdjustment), __arg0, Class, __arg2);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                 }
 
                 public ExpressionObsolete(global::CppSharp.Parser.AST.ExpressionObsolete _0)
@@ -8507,8 +8562,8 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString3, opcodeStr);
                     var __arg3 = __basicString3.__Instance;
                     __Internal.ctor((__Instance + __PointerAdjustment), __arg0, __arg1, __arg2, __arg3);
-                    __basicString0.Dispose(false);
-                    __basicString3.Dispose(false);
+                    __basicString0.Dispose();
+                    __basicString3.Dispose();
                 }
 
                 public BinaryOperatorObsolete(global::CppSharp.Parser.AST.BinaryOperatorObsolete _0)
@@ -8686,7 +8741,7 @@ namespace CppSharp
                     var __arg0 = __basicString0.__Instance;
                     var __arg1 = ReferenceEquals(decl, null) ? global::System.IntPtr.Zero : decl.__Instance;
                     __Internal.ctor((__Instance + __PointerAdjustment), __arg0, __arg1);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                 }
 
                 public CallExprObsolete(global::CppSharp.Parser.AST.CallExprObsolete _0)
@@ -8729,7 +8784,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddArguments((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -8845,7 +8901,7 @@ namespace CppSharp
                     var __arg0 = __basicString0.__Instance;
                     var __arg1 = ReferenceEquals(decl, null) ? global::System.IntPtr.Zero : decl.__Instance;
                     __Internal.ctor((__Instance + __PointerAdjustment), __arg0, __arg1);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                 }
 
                 public CXXConstructExprObsolete(global::CppSharp.Parser.AST.CXXConstructExprObsolete _0)
@@ -8888,7 +8944,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddArguments((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -9082,7 +9139,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Parameter.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -9438,7 +9497,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddParameters((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -9456,7 +9516,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->returnType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->returnType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -9714,7 +9776,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Function.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -10037,7 +10101,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddOverriddenMethods((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -10159,7 +10224,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->conversionType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Method.__Internal*)__Instance)->conversionType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -10611,7 +10678,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddItems((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -10626,7 +10694,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, Name);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindItemByName((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.Enumeration.Item __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.Enumeration.Item.NativeToManagedMap.ContainsKey(__ret))
@@ -10873,7 +10941,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Variable.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Variable.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -11204,7 +11274,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Field.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Field.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -11850,7 +11922,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.VFTableInfo.__Internal*)__Instance)->layout = *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -12002,7 +12076,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->qualifiedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.LayoutField.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -12440,7 +12516,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->layout = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.VTableLayout.__Internal() : *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.ClassLayout.__Internal*)__Instance)->layout = *(global::CppSharp.Parser.AST.VTableLayout.__Internal*) value.__Instance;
                     }
                 }
 
@@ -12858,7 +12936,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddBases((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -12882,7 +12961,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddFields((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -12906,7 +12986,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddMethods((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -12930,7 +13011,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddSpecifiers((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -13327,7 +13409,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddParameters((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -14098,7 +14181,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal*)__Instance)->defaultArgument = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal*)__Instance)->defaultArgument = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -14553,7 +14638,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddSpecializations((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -14568,7 +14654,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindSpecialization((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.ClassTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.ClassTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -14583,7 +14669,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindPartialSpecialization((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -15351,7 +15437,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddSpecializations((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -15366,7 +15453,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindSpecialization((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.FunctionTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -15795,7 +15882,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddSpecializations((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -15810,7 +15898,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindSpecialization((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.VarTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.VarTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -15825,7 +15913,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindPartialSpecialization((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.VarTemplatePartialSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -17139,7 +17227,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddMacros((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -17318,7 +17407,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, File);
                     var __arg0 = *(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
                     var __ret = __Internal.FindOrCreateModule((__Instance + __PointerAdjustment), __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose();
                     global::CppSharp.Parser.AST.TranslationUnit __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap.ContainsKey(__ret))
@@ -17342,7 +17431,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddTranslationUnits((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -17639,7 +17729,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Stmt.__Internal*)__Instance)->sourceRange = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Stmt.__Internal*)__Instance)->sourceRange = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
 
@@ -17814,7 +17906,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Adddecls((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -18132,7 +18225,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Addbody((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -20778,7 +20872,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Addinputs((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -20802,7 +20897,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Addoutputs((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -22335,7 +22431,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddcaptureInits((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -22495,7 +22592,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXCatchStmt.__Internal*)__Instance)->caughtType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXCatchStmt.__Internal*)__Instance)->caughtType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -24400,7 +24499,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.Expr.__Internal*)__Instance)->type = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.Expr.__Internal*)__Instance)->type = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -27580,7 +27681,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*)__Instance)->argumentType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*)__Instance)->argumentType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -27611,7 +27714,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*)__Instance)->typeOfArgument = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*)__Instance)->typeOfArgument = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -28056,7 +28161,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Addarguments((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -29314,7 +29420,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal*)__Instance)->typeAsWritten = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal*)__Instance)->typeAsWritten = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -30190,7 +30298,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*)__Instance)->computationLHSType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*)__Instance)->computationLHSType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -30203,7 +30313,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*)__Instance)->computationResultType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal*)__Instance)->computationResultType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -32756,7 +32868,9 @@ namespace CppSharp
 
                         set
                         {
-                            ((global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal*)__Instance)->sourceRange = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                            if (ReferenceEquals(value, null))
+                                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                            ((global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal*)__Instance)->sourceRange = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                         }
                     }
                 }
@@ -33067,7 +33181,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal*)__Instance)->designatorsSourceRange = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal*)__Instance)->designatorsSourceRange = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -35284,7 +35400,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.AtomicExpr.__Internal*)__Instance)->valueType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.AtomicExpr.__Internal*)__Instance)->valueType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -36379,7 +36497,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*)__Instance)->angleBrackets = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*)__Instance)->angleBrackets = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -39466,7 +39586,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Addarguments((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -39567,7 +39688,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXConstructExpr.__Internal*)__Instance)->parenOrBraceRange = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXConstructExpr.__Internal*)__Instance)->parenOrBraceRange = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
 
@@ -40335,7 +40458,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddcaptureInits((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -40379,7 +40503,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LambdaExpr.__Internal*)__Instance)->introducerRange = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.LambdaExpr.__Internal*)__Instance)->introducerRange = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
 
@@ -40848,7 +40974,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.AddplacementArguments((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -40902,7 +41029,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->allocatedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->allocatedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -40972,7 +41101,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->typeIdParens = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->typeIdParens = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
 
@@ -41060,7 +41191,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->directInitRange = ReferenceEquals(value, null) ? new global::CppSharp.Parser.SourceRange.__Internal() : *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXNewExpr.__Internal*)__Instance)->directInitRange = *(global::CppSharp.Parser.SourceRange.__Internal*) value.__Instance;
                     }
                 }
 
@@ -41297,7 +41430,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*)__Instance)->destroyedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*)__Instance)->destroyedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -41539,7 +41674,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal*)__Instance)->destroyedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal*)__Instance)->destroyedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -41850,7 +41987,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal*)__Instance)->queriedType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal*)__Instance)->queriedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -43166,7 +43305,8 @@ namespace CppSharp
                 {
                     if (ReferenceEquals(s, null))
                         throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-                    var __arg0 = s.__Instance;
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new global::System.IntPtr(&____arg0);
                     __Internal.Addarguments((__Instance + __PointerAdjustment), __arg0);
                 }
 
@@ -43210,7 +43350,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal*)__Instance)->typeAsWritten = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal*)__Instance)->typeAsWritten = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -43450,7 +43592,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal*)__Instance)->baseType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal*)__Instance)->baseType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -43796,7 +43940,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*)__Instance)->baseType = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.QualifiedType.__Internal() : *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*)__Instance)->baseType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
 
@@ -44702,7 +44848,9 @@ namespace CppSharp
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal*)__Instance)->argumentPack = ReferenceEquals(value, null) ? new global::CppSharp.Parser.AST.TemplateArgument.__Internal() : *(global::CppSharp.Parser.AST.TemplateArgument.__Internal*) value.__Instance;
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal*)__Instance)->argumentPack = *(global::CppSharp.Parser.AST.TemplateArgument.__Internal*) value.__Instance;
                     }
                 }
             }
@@ -47152,7 +47300,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addArguments@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddArguments(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddArguments(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47167,7 +47315,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addSourceFiles@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddSourceFiles(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddSourceFiles(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47182,7 +47330,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addIncludeDirs@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddIncludeDirs(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddIncludeDirs(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47197,7 +47345,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addSystemIncludeDirs@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddSystemIncludeDirs(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddSystemIncludeDirs(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47212,7 +47360,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addDefines@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddDefines(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddDefines(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47227,7 +47375,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addUndefines@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddUndefines(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddUndefines(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47242,7 +47390,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addLibraryDirs@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddLibraryDirs(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddLibraryDirs(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47257,7 +47405,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addSupportedStdTypes@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddSupportedStdTypes(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPStr)] string s);
+                internal static extern void AddSupportedStdTypes(global::System.IntPtr __instance, string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,

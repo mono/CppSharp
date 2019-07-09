@@ -738,6 +738,8 @@ void CppSharp::Parser::ParserResult::Diagnostics::set(System::Collections::Gener
     auto _tmpvalue = std::vector<::CppSharp::CppParser::ParserDiagnostic>();
     for each(CppSharp::Parser::ParserDiagnostic^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::ParserDiagnostic*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }

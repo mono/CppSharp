@@ -50,6 +50,10 @@ namespace Std
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
         {
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNSt3__19allocatorIcEC2Ev")]
+            internal static extern void ctorc__N_std_N___1_S_allocator__C(global::System.IntPtr __instance);
         }
     }
 
@@ -94,6 +98,20 @@ namespace Std
             __Instance = new global::System.IntPtr(native);
         }
 
+        public Allocator()
+        {
+            var ___Tp = typeof(_Tp);
+            if (___Tp.IsAssignableFrom(typeof(sbyte)))
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                global::Std.Allocator.__Internal.ctorc__N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment));
+                return;
+            }
+            throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -117,201 +135,6 @@ namespace Std
     namespace Vector
     {
         [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector__i___N_std_N___1_S_allocator__i
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S0_
-        {
-            [FieldOffset(0)]
-            internal global::System.IntPtr __begin_;
-
-            [FieldOffset(8)]
-            internal global::System.IntPtr __end_;
-
-            [FieldOffset(16)]
-            internal global::Std.CompressedPair.__Internal __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
@@ -326,6 +149,19 @@ namespace Std
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
             internal global::System.IntPtr __begin_;
@@ -507,6 +343,19 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
@@ -611,7 +460,176 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector__i___N_std_N___1_S_allocator__i
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internal __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
             internal global::System.IntPtr __begin_;
@@ -684,8 +702,18 @@ namespace Std
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2ERKS5_")]
+            internal static extern void cctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr __instance, global::System.IntPtr __str);
+
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev")]
             internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr __instance);
+
+            [SuppressUnmanagedCodeSecurity]
+            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc")]
+            internal static extern global::System.IntPtr Assignc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr __instance, string __s);
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -699,10 +727,10 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal global::Std.BasicString.Rep._4.__Internal _0;
+                internal global::Std.BasicString.Rep._0.__Internal _0;
             }
 
-            namespace _4
+            namespace _0
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public unsafe partial struct __Internal
@@ -744,13 +772,13 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal global::Std.BasicString.Short._4.__Internal _0;
+                internal global::Std.BasicString.Short._0.__Internal _0;
 
                 [FieldOffset(1)]
                 internal fixed sbyte __data_[23];
             }
 
-            namespace _4
+            namespace _0
             {
                 [StructLayout(LayoutKind.Explicit, Size = 1)]
                 public unsafe partial struct __Internal
@@ -801,7 +829,7 @@ namespace Std
         private static void* __CopyValue(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C native)
         {
             var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C));
-            *(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C*) ret = native;
+            global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C.cctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(ret, new global::System.IntPtr(&native));
             return ret.ToPointer();
         }
 
@@ -835,6 +863,25 @@ namespace Std
             throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
         }
 
+        public BasicString(global::Std.BasicString<_CharT, _Traits, _Allocator> __str)
+        {
+            var ___CharT = typeof(_CharT);
+            var ___Traits = typeof(_Traits);
+            var ___Allocator = typeof(_Allocator);
+            if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C));
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                if (ReferenceEquals(__str, null))
+                    throw new global::System.ArgumentNullException("__str", "Cannot be null because it is a C++ reference (&).");
+                var __arg0 = __str.__Instance;
+                global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C.cctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C((__Instance + __PointerAdjustment), __arg0);
+                return;
+            }
+            throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -862,23 +909,11 @@ namespace Std
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
         }
-
-        public global::Std.BasicString<_CharT, _Traits, _Allocator> Assign(global::Std.BasicString<_CharT, _Traits, _Allocator> str)
-        {
-            var ___CharT = typeof(_CharT);
-            var ___Traits = typeof(_Traits);
-            var ___Allocator = typeof(_Allocator);
-            if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
-            {
-                throw new MissingMethodException("Method Assign ignored in specialization global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
-            }
-            throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
-        }
     }
 
     namespace CharTraits
     {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }

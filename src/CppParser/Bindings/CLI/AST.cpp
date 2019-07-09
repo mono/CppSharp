@@ -669,6 +669,8 @@ void CppSharp::Parser::AST::BlockCommandComment::Arguments::set(System::Collecti
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::BlockCommandComment::Argument>();
     for each(CppSharp::Parser::AST::BlockCommandComment::Argument^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::BlockCommandComment::Argument*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -1145,6 +1147,8 @@ void CppSharp::Parser::AST::InlineCommandComment::Arguments::set(System::Collect
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::InlineCommandComment::Argument>();
     for each(CppSharp::Parser::AST::InlineCommandComment::Argument^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::InlineCommandComment::Argument*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
@@ -1349,6 +1353,8 @@ void CppSharp::Parser::AST::HTMLStartTagComment::Attributes::set(System::Collect
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute>();
     for each(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ _element in value)
     {
+        if (ReferenceEquals(_element, nullptr))
+        throw gcnew ::System::ArgumentNullException("_element", "Cannot be null because it is passed by value.");
         auto _marshalElement = *(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
