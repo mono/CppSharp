@@ -8,6 +8,18 @@
 #include "AnotherUnit.h"
 #include "CSharpTemplates.h"
 
+class DLL_API Latin1
+{
+public:
+    explicit Latin1(const char *s);
+    ~Latin1();
+    int size() const;
+    const char* data() const;
+private:
+    int m_size;
+    const char *m_data;
+};
+
 class DLL_API Foo
 {
 public:

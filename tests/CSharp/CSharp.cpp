@@ -35,6 +35,24 @@ Foo::Foo(const Foo& other) : A(other.A), P(other.P),
 {
 }
 
+Latin1::Latin1(const char *s) : m_size(s ? int(strlen(s)) : 0), m_data(s)
+{
+}
+
+Latin1::~Latin1()
+{
+}
+
+int Latin1::size() const
+{
+    return m_size;
+}
+
+const char* Latin1::data() const
+{
+    return m_data;
+}
+
 Foo::~Foo()
 {
 }

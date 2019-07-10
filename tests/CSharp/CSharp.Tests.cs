@@ -1283,6 +1283,12 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TakeRefToPointerToObject()
     {
+        const string test = "test";
+        using (Latin1 l = new Latin1(test))
+        {
+            Assert.That(l.Size, Is.EqualTo(test.Length));
+            Assert.That(l.Data, Is.EqualTo(test));
+        }
         using (Foo foo = new Foo { A = 25  })
         {
             Foo returnedFoo = CSharp.CSharp.TakeReturnReferenceToPointer(foo);
