@@ -383,15 +383,18 @@ namespace CppSharp.Generator.Tests.AST
         public void TestComments()
         {
             var @class = AstContext.FindCompleteClass("TestComments");
-            var commentClass = @class.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
+            var textGenerator = new TextGenerator();
+            textGenerator.Print(@class.Comment.FullComment, CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>
 /// <para>Hash set/map base class.</para>
 /// <para>Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor</para>
 /// <para>and therefore %HashBase pointers should never be used.</para>
-/// </summary>".Replace("\r", string.Empty), commentClass.Replace("\r", string.Empty));
+/// </summary>
+".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
 
             var method = @class.Methods.First(m => m.Name == "GetIOHandlerControlSequence");
-            var commentMethod = method.Comment.FullComment.CommentToString(CommentKind.BCPL);
+            textGenerator.StringBuilder.Clear();
+            textGenerator.Print(method.Comment.FullComment, CommentKind.BCPL);
             Assert.AreEqual(@"// <summary>
 // <para>Get the string that needs to be written to the debugger stdin file</para>
 // <para>handle when a control character is typed.</para>
@@ -407,10 +410,12 @@ namespace CppSharp.Generator.Tests.AST
 // <para>to have them do what normally would happen when using a real</para>
 // <para>terminal, so this function allows GUI programs to emulate this</para>
 // <para>functionality.</para>
-// </remarks>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
+// </remarks>
+".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
 
             var methodTestDoxygen = @class.Methods.First(m => m.Name == "SBAttachInfo");
-            var commentMethodDoxygen = methodTestDoxygen.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
+            textGenerator.StringBuilder.Clear();
+            textGenerator.Print(methodTestDoxygen.Comment.FullComment, CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Attach to a process by name.</summary>
 /// <param name=""path"">A full or partial name for the process to attach to.</param>
 /// <param name=""wait_for"">
@@ -420,11 +425,13 @@ namespace CppSharp.Generator.Tests.AST
 /// <remarks>
 /// <para>This function implies that a future call to SBTarget::Attach(...)</para>
 /// <para>will be synchronous.</para>
-/// </remarks>".Replace("\r", string.Empty), commentMethodDoxygen.Replace("\r", string.Empty));
+/// </remarks>
+".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
 
             var methodDoxygenCustomTags = @class.Methods.First(m => m.Name == "glfwDestroyWindow");
-            new CleanCommentsPass { }.VisitFull(methodDoxygenCustomTags.Comment.FullComment);
-            var commentMethodDoxygenCustomTag = methodDoxygenCustomTags.Comment.FullComment.CommentToString(CommentKind.BCPLSlash);
+            new CleanCommentsPass().VisitFull(methodDoxygenCustomTags.Comment.FullComment);
+            textGenerator.StringBuilder.Clear();
+            textGenerator.Print(methodDoxygenCustomTags.Comment.FullComment, CommentKind.BCPLSlash);
             Assert.AreEqual(@"/// <summary>Destroys the specified window and its context.</summary>
 /// <param name=""window"">The window to destroy.</param>
 /// <remarks>
@@ -437,7 +444,8 @@ namespace CppSharp.Generator.Tests.AST
 /// <para>This function must not be called from a callback.</para>
 /// <para>This function must only be called from the main thread.</para>
 /// <para>Added in version 3.0.  Replaces `glfwCloseWindow`.</para>
-/// </remarks>".Replace("\r", string.Empty), commentMethodDoxygenCustomTag.Replace("\r", string.Empty));
+/// </remarks>
+".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
         }
 
         [Test]

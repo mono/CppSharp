@@ -9,13 +9,13 @@ namespace CppSharp.Generators.CSharp
 {
     public static class CSharpCommentPrinter
     {
-        public static string CommentToString(this Comment comment, CommentKind kind)
+        public static void Print(this ITextGenerator textGenerator, Comment comment, CommentKind kind)
         {
             var sections = new List<Section> { new Section(CommentElement.Summary) };
             GetCommentSections(comment, sections);
             foreach (var section in sections)
                 TrimSection(section);
-            return FormatComment(sections, kind);
+            FormatComment(textGenerator, sections, kind);
         }
 
         private static void GetCommentSections(this Comment comment, List<Section> sections)
@@ -163,10 +163,9 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private static string FormatComment(List<Section> sections, CommentKind kind)
+        private static void FormatComment(ITextGenerator textGenerator, List<Section> sections, CommentKind kind)
         {
             var commentPrefix = Comment.GetMultiLineCommentPrologue(kind);
-            var commentBuilder = new StringBuilder();
 
             sections.Sort((x, y) => x.Type.CompareTo(y.Type));
             var remarks = sections.Where(s => s.Type == CommentElement.Remarks).ToList();
@@ -182,26 +181,20 @@ namespace CppSharp.Generators.CSharp
                 var attributes = string.Empty;
                 if (section.Attributes.Any())
                     attributes = ' ' + string.Join(" ", section.Attributes);
-                commentBuilder.Append($"{commentPrefix} <{tag}{attributes}>");
+                textGenerator.Write($"{commentPrefix} <{tag}{attributes}>");
                 if (lines.Count == 1)
                 {
-                    commentBuilder.Append(lines[0]);
+                    textGenerator.Write(lines[0]);
                 }
                 else
                 {
-                    commentBuilder.AppendLine();
+                    textGenerator.NewLine();
                     foreach (var line in lines)
-                        commentBuilder.AppendLine($"{commentPrefix} <para>{line}</para>");
-                    commentBuilder.Append($"{commentPrefix} ");
+                        textGenerator.WriteLine($"{commentPrefix} <para>{line}</para>");
+                    textGenerator.Write($"{commentPrefix} ");
                 }
-                commentBuilder.AppendLine($"</{tag}>");
+                textGenerator.WriteLine($"</{tag}>");
             }
-            if (commentBuilder.Length > 0)
-            {
-                var newLineLength = Environment.NewLine.Length;
-                commentBuilder.Remove(commentBuilder.Length - newLineLength, newLineLength);
-            }
-            return commentBuilder.ToString();
         }
 
         private class Section

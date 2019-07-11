@@ -132,7 +132,7 @@ namespace CppSharp.Generators
             if (comment.FullComment != null)
             {
                 PushBlock(BlockKind.BlockComment);
-                WriteLine(comment.FullComment.CommentToString(DocumentationCommentKind));
+                ActiveBlock.Text.Print(comment.FullComment, DocumentationCommentKind);
                 PopBlock();
                 return;
             }
