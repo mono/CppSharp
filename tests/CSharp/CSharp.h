@@ -116,6 +116,13 @@ public:
         double publicDouble;
     };
 
+protected:
+    enum class ProtectedNestedEnum
+    {
+        Item1,
+        Item2
+    };
+
 private:
     int index;
     Foo m_foo;
@@ -149,7 +156,7 @@ public:
 
     int takesQux(const Qux& qux);
     Qux returnQux();
-    void setMethod(int value);
+    void setMethod(ProtectedNestedEnum value);
 
     typedef bool (*FunctionTypedef)(const void *);
     FunctionTypedef functionTypedef;

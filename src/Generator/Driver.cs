@@ -251,6 +251,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
+            TranslationUnitPasses.AddPass(new MakeProtectedNestedTypesPublicPass());
 
             if (Options.IsCSharpGenerator)
             {

@@ -312,7 +312,7 @@ Qux Baz::returnQux()
     return Qux();
 }
 
-void Baz::setMethod(int value)
+void Baz::setMethod(ProtectedNestedEnum value)
 {
 }
 

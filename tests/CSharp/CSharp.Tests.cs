@@ -144,7 +144,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(baz.FarAwayFunc, Is.EqualTo(20));
             Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
             Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
-            baz.SetMethod(1);
+            baz.SetMethod(Bar.ProtectedNestedEnum.Item1);
             Assert.That(baz.P, Is.EqualTo(5));
             baz.PublicDouble = 1.5;
             Assert.That(baz.PublicDouble, Is.EqualTo(1.5));
