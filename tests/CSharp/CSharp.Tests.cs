@@ -61,7 +61,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
             hasOverride.CauseRenamingError();
         using (var qux = new Qux())
         {
-            new Bar(qux).Dispose();
+            qux.Type.GetHashCode();
+            using (Bar bar = new Bar(qux))
+            {
+                bar.Type.GetHashCode();
+            }
         }
         using (var quux = new Quux())
         {

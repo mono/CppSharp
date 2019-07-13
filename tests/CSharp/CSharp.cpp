@@ -230,6 +230,11 @@ int Qux::takeReferenceToPointer(Foo*& ret)
     return ret->A;
 }
 
+int Qux::type() const
+{
+    return 0;
+}
+
 Bar::Bar(Qux qux)
 {
 }
@@ -284,6 +289,11 @@ int Bar::getIndex()
 void Bar::setIndex(int value)
 {
     index = value;
+}
+
+int Bar::type() const
+{
+    return 1;
 }
 
 ForceCreationOfInterface::ForceCreationOfInterface()

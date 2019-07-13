@@ -199,9 +199,9 @@ namespace CppSharp.Passes
                     declarations.AddRange(@class.TemplateParameters);
             }
 
-            var result = declarations.Any(d => d != decl && d.Name == newName);
-            if (result)
-                return true;
+            var existing = declarations.Find(d => d != decl && d.Name == newName);
+            if (existing != null)
+                return CheckExisting(decl, existing);
 
             if (decl is Method && decl.IsGenerated)
                 return @class.GetPropertyByName(newName) != null;
@@ -224,6 +224,19 @@ namespace CppSharp.Passes
             }
             return function.Namespace.Functions.Where(
                 f => !f.Ignore && f.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
+        }
+
+        private static bool CheckExisting(Declaration decl, Declaration existing)
+        {
+            var method = decl as Method;
+            var property = decl as Property;
+            if (method?.IsOverride != true && property?.IsOverride != true)
+                return true;
+
+            existing.Name = existing.Name == existing.OriginalName ||
+                string.IsNullOrEmpty(existing.OriginalName) ?
+                existing.Name + "_" : existing.OriginalName;
+            return false;
         }
 
         public override bool VisitClassDecl(Class @class)

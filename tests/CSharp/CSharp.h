@@ -85,6 +85,7 @@ public:
     void setInterface(Qux* qux);
     virtual void makeClassDynamic();
     virtual int takeReferenceToPointer(Foo*& ret);
+    virtual int type() const;
 };
 
 class DLL_API Bar : public Qux
@@ -115,6 +116,8 @@ public:
         int publicInt;
         double publicDouble;
     };
+    static const int Type = 4;
+    int type() const override;
 
 protected:
     enum class ProtectedNestedEnum
