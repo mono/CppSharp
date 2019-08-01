@@ -20,8 +20,6 @@ namespace CppSharp
             GeneratorKind = GeneratorKind.CSharp;
             OutputInteropIncludes = true;
 
-            Encoding = Encoding.ASCII;
-
             StripLibPrefix = true;
 
             ExplicitlyPatchedVirtualFunctions = new HashSet<string>();
@@ -125,7 +123,7 @@ namespace CppSharp
         /// </summary>
         public CommentKind? CommentKind;
 
-        public Encoding Encoding { get; set; }
+        public Encoding Encoding { get; set; } = Encoding.UTF8;
 
         public bool IsCSharpGenerator => GeneratorKind == GeneratorKind.CSharp;
 

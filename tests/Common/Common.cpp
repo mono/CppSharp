@@ -1071,6 +1071,12 @@ void overloadPointer(const void* p, int i)
 {
 }
 
+const char* takeReturnUTF8(const char* utf8)
+{
+    UTF8 = utf8;
+    return UTF8.data();
+}
+
 StructWithCopyCtor::StructWithCopyCtor() {}
 StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
 

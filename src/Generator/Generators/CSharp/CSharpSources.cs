@@ -1068,6 +1068,11 @@ namespace CppSharp.Generators.CSharp
                         marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
             }
+            if (paramMarshal.HasUsingBlock)
+                UnindentAndWriteCloseBrace();
+
+            if (ctx.HasCodeBlock)
+                UnindentAndWriteCloseBrace();
         }
 
         private void GeneratePropertyGetter<T>(T decl, Class @class,
@@ -1802,6 +1807,9 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine($"return {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
+
+                if (ctx.HasCodeBlock)
+                    UnindentAndWriteCloseBrace();
             }
 
             if (!isVoid && isSetter)
