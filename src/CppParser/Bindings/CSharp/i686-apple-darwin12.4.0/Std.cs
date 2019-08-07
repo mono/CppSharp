@@ -713,7 +713,7 @@ namespace Std
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc")]
-            internal static extern global::System.IntPtr Assignc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr __instance, string __s);
+            internal static extern global::System.IntPtr Assignc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string __s);
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,

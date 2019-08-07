@@ -95,7 +95,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?addSymbols@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
-                    internal static extern void AddSymbols(global::System.IntPtr __instance, string s);
+                    internal static extern void AddSymbols(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -110,7 +110,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?addDependencies@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
-                    internal static extern void AddDependencies(global::System.IntPtr __instance, string s);
+                    internal static extern void AddDependencies(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -207,7 +207,12 @@ namespace CppSharp
                 public string GetSymbols(uint i)
                 {
                     var __ret = __Internal.GetSymbols((__Instance + __PointerAdjustment), i);
-                    return Marshal.PtrToStringAnsi(__ret);
+                    if (__ret == global::System.IntPtr.Zero)
+                        return default(string);
+                    var __retPtr = (byte*) __ret;
+                    int __length = 0;
+                    while (*(__retPtr++) != 0) __length += sizeof(byte);
+                    return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
                 }
 
                 public void AddSymbols(string s)
@@ -223,7 +228,12 @@ namespace CppSharp
                 public string GetDependencies(uint i)
                 {
                     var __ret = __Internal.GetDependencies((__Instance + __PointerAdjustment), i);
-                    return Marshal.PtrToStringAnsi(__ret);
+                    if (__ret == global::System.IntPtr.Zero)
+                        return default(string);
+                    var __retPtr = (byte*) __ret;
+                    int __length = 0;
+                    while (*(__retPtr++) != 0) __length += sizeof(byte);
+                    return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
                 }
 
                 public void AddDependencies(string s)
@@ -6303,17 +6313,17 @@ namespace CppSharp
             public enum RecordArgABI
             {
                 /// <summary>
-/// <para>Pass it using the normal C aggregate rules for the ABI,</para>
-/// <para>potentially introducing extra copies and passing some</para>
-/// <para>or all of it in registers.</para>
-/// </summary>
+                /// <para>Pass it using the normal C aggregate rules for the ABI,</para>
+                /// <para>potentially introducing extra copies and passing some</para>
+                /// <para>or all of it in registers.</para>
+                /// </summary>
                 Default = 0,
                 /// <summary>
-/// <para>Pass it on the stack using its defined layout.</para>
-/// <para>The argument must be evaluated directly into the correct</para>
-/// <para>stack position in the arguments area, and the call machinery</para>
-/// <para>must not move it or introduce extra copies.</para>
-/// </summary>
+                /// <para>Pass it on the stack using its defined layout.</para>
+                /// <para>The argument must be evaluated directly into the correct</para>
+                /// <para>stack position in the arguments area, and the call machinery</para>
+                /// <para>must not move it or introduce extra copies.</para>
+                /// </summary>
                 DirectInMemory = 1,
                 /// <summary>Pass it as a pointer to temporary memory.</summary>
                 Indirect = 2
@@ -18892,12 +18902,21 @@ namespace CppSharp
                 {
                     get
                     {
-                        return Marshal.PtrToStringAnsi(((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name);
+                        if (((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name == global::System.IntPtr.Zero)
+                            return default(string);
+                        var __retPtr = (byte*) ((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name;
+                        int __length = 0;
+                        while (*(__retPtr++) != 0) __length += sizeof(byte);
+                        return global::System.Text.Encoding.UTF8.GetString((byte*) ((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name, __length);
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.LabelStmt.__Internal*)__Instance)->name = (global::System.IntPtr) Marshal.StringToHGlobalAnsi(value);
+                        byte[] __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
+                        fixed (byte* __bytePtr0 = __bytes0)
+                        {
+                            ((global::CppSharp.Parser.AST.LabelStmt.__Internal*)__Instance)->name = (global::System.IntPtr) new global::System.IntPtr(__bytePtr0);
+                        }
                     }
                 }
             }
@@ -29011,12 +29030,21 @@ namespace CppSharp
                 {
                     get
                     {
-                        return Marshal.PtrToStringAnsi(((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName);
+                        if (((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName == global::System.IntPtr.Zero)
+                            return default(string);
+                        var __retPtr = (byte*) ((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName;
+                        int __length = 0;
+                        while (*(__retPtr++) != 0) __length += sizeof(byte);
+                        return global::System.Text.Encoding.UTF8.GetString((byte*) ((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName, __length);
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CastExpr.__Internal*)__Instance)->castKindName = (global::System.IntPtr) Marshal.StringToHGlobalAnsi(value);
+                        byte[] __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
+                        fixed (byte* __bytePtr0 = __bytes0)
+                        {
+                            ((global::CppSharp.Parser.AST.CastExpr.__Internal*)__Instance)->castKindName = (global::System.IntPtr) new global::System.IntPtr(__bytePtr0);
+                        }
                     }
                 }
 
@@ -36453,12 +36481,21 @@ namespace CppSharp
                 {
                     get
                     {
-                        return Marshal.PtrToStringAnsi(((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName);
+                        if (((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName == global::System.IntPtr.Zero)
+                            return default(string);
+                        var __retPtr = (byte*) ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName;
+                        int __length = 0;
+                        while (*(__retPtr++) != 0) __length += sizeof(byte);
+                        return global::System.Text.Encoding.UTF8.GetString((byte*) ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName, __length);
                     }
 
                     set
                     {
-                        ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*)__Instance)->castName = (global::System.IntPtr) Marshal.StringToHGlobalAnsi(value);
+                        byte[] __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
+                        fixed (byte* __bytePtr0 = __bytes0)
+                        {
+                            ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*)__Instance)->castName = (global::System.IntPtr) new global::System.IntPtr(__bytePtr0);
+                        }
                     }
                 }
 
@@ -47300,7 +47337,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addArguments@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddArguments(global::System.IntPtr __instance, string s);
+                internal static extern void AddArguments(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47315,7 +47352,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addSourceFiles@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddSourceFiles(global::System.IntPtr __instance, string s);
+                internal static extern void AddSourceFiles(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47330,7 +47367,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addIncludeDirs@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddIncludeDirs(global::System.IntPtr __instance, string s);
+                internal static extern void AddIncludeDirs(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47345,7 +47382,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addSystemIncludeDirs@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddSystemIncludeDirs(global::System.IntPtr __instance, string s);
+                internal static extern void AddSystemIncludeDirs(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47360,7 +47397,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addDefines@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddDefines(global::System.IntPtr __instance, string s);
+                internal static extern void AddDefines(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47375,7 +47412,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addUndefines@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddUndefines(global::System.IntPtr __instance, string s);
+                internal static extern void AddUndefines(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47390,7 +47427,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addLibraryDirs@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddLibraryDirs(global::System.IntPtr __instance, string s);
+                internal static extern void AddLibraryDirs(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47405,7 +47442,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addSupportedStdTypes@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
-                internal static extern void AddSupportedStdTypes(global::System.IntPtr __instance, string s);
+                internal static extern void AddSupportedStdTypes(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47532,7 +47569,12 @@ namespace CppSharp
             public string GetArguments(uint i)
             {
                 var __ret = __Internal.GetArguments((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddArguments(string s)
@@ -47548,7 +47590,12 @@ namespace CppSharp
             public string GetSourceFiles(uint i)
             {
                 var __ret = __Internal.GetSourceFiles((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddSourceFiles(string s)
@@ -47564,7 +47611,12 @@ namespace CppSharp
             public string GetIncludeDirs(uint i)
             {
                 var __ret = __Internal.GetIncludeDirs((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddIncludeDirs(string s)
@@ -47580,7 +47632,12 @@ namespace CppSharp
             public string GetSystemIncludeDirs(uint i)
             {
                 var __ret = __Internal.GetSystemIncludeDirs((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddSystemIncludeDirs(string s)
@@ -47596,7 +47653,12 @@ namespace CppSharp
             public string GetDefines(uint i)
             {
                 var __ret = __Internal.GetDefines((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddDefines(string s)
@@ -47612,7 +47674,12 @@ namespace CppSharp
             public string GetUndefines(uint i)
             {
                 var __ret = __Internal.GetUndefines((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddUndefines(string s)
@@ -47628,7 +47695,12 @@ namespace CppSharp
             public string GetLibraryDirs(uint i)
             {
                 var __ret = __Internal.GetLibraryDirs((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddLibraryDirs(string s)
@@ -47644,7 +47716,12 @@ namespace CppSharp
             public string GetSupportedStdTypes(uint i)
             {
                 var __ret = __Internal.GetSupportedStdTypes((__Instance + __PointerAdjustment), i);
-                return Marshal.PtrToStringAnsi(__ret);
+                if (__ret == global::System.IntPtr.Zero)
+                    return default(string);
+                var __retPtr = (byte*) __ret;
+                int __length = 0;
+                while (*(__retPtr++) != 0) __length += sizeof(byte);
+                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
             }
 
             public void AddSupportedStdTypes(string s)

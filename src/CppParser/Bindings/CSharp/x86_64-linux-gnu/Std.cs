@@ -1018,7 +1018,7 @@ namespace Std
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSs6assignEPKc")]
-            internal static extern global::System.IntPtr Assign(global::System.IntPtr __instance, string __s);
+            internal static extern global::System.IntPtr Assign(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string __s);
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -1042,7 +1042,12 @@ namespace Std
         {
             var __arg0 = ReferenceEquals(@this, null) ? global::System.IntPtr.Zero : @this.__Instance;
             var __ret = __Internal.CStr(__arg0);
-            return Marshal.PtrToStringAnsi(__ret);
+            if (__ret == global::System.IntPtr.Zero)
+                return default(string);
+            var __retPtr = (byte*) __ret;
+            int __length = 0;
+            while (*(__retPtr++) != 0) __length += sizeof(byte);
+            return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
         }
     }
 }
