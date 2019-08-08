@@ -224,7 +224,7 @@ namespace CppSharp.Passes
             private static string GetPropertyName(string name)
             {
                 var firstWord = GetFirstWord(name);
-                if (Match(firstWord, new[] { "get" }) && name != firstWord &&
+                if (Match(firstWord, new[] { "get" }) && name != firstWord && name.Length > 3 &&
                     !char.IsNumber(name[3]))
                 {
                     if (char.IsLower(name[0]))
