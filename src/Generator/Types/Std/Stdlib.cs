@@ -374,27 +374,17 @@ namespace CppSharp.Types.Std
         {
             var type = Type.Desugar(resolveTemplateSubstitution: false);
             ClassTemplateSpecialization basicString = GetBasicString(type);
-            var c_str = basicString.Methods.First(m => m.OriginalName == "c_str");
+            var data = basicString.Methods.First(m => m.OriginalName == "data");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
             string varBasicString = $"__basicStringRet{ctx.ParameterIndex}";
+            bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField;
             ctx.Before.WriteLine($@"var {varBasicString} = {
                 basicString.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({
-                ctx.ReturnVarName});");
-            if (type.IsAddress())
-            {
-                ctx.Return.Write($@"{qualifiedBasicString}Extensions.{c_str.Name}({
-                    varBasicString})");
-            }
-            else
-            {
-                string varString = $"__stringRet{ctx.ParameterIndex}";
-                ctx.Before.WriteLine($@"var {varString} = {
-                    qualifiedBasicString}Extensions.{c_str.Name}({varBasicString});");
-                ctx.Before.WriteLine($@"{varBasicString}.Dispose({
-                    (ctx.MarshalKind == MarshalKind.NativeField ? "false" : string.Empty)});");
-                ctx.Return.Write(varString);
-            }
+                (usePointer ? string.Empty : $"new {typePrinter.IntPtrType}(&")}{
+                 ctx.ReturnVarName}{(usePointer ? string.Empty : ")")});");
+            ctx.Return.Write($@"{qualifiedBasicString}Extensions.{data.Name}({
+                varBasicString})");
         }
 
         private static string GetQualifiedBasicString(ClassTemplateSpecialization basicString)
