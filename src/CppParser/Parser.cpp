@@ -931,8 +931,6 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
-    auto CopyCtor = llvm::dyn_cast<CXXConstructorDecl>(MD);
-
     return !c->getSourceManager().isInSystemHeader(MD->getBeginLoc()) ||
         (isa<CXXConstructorDecl>(MD) && MD->getNumParams() == 0) ||
         isa<CXXDestructorDecl>(MD) ||

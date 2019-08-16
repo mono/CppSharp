@@ -455,17 +455,6 @@ namespace Std
             throw new ArgumentOutOfRangeException("_Ty", string.Join(", ", new[] { typeof(_Ty).FullName }), "global::Std.Allocator<_Ty> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
         }
 
-        public Allocator(global::Std.Allocator<_Ty> _0)
-        {
-            var ___Ty = typeof(_Ty);
-            if (___Ty.IsAssignableFrom(typeof(sbyte)))
-            {
-                throw new MissingMethodException("Method allocator__Ty_ missing from explicit specialization global::Std.Allocator<sbyte>.");
-                return;
-            }
-            throw new ArgumentOutOfRangeException("_Ty", string.Join(", ", new[] { typeof(_Ty).FullName }), "global::Std.Allocator<_Ty> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
-        }
-
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -496,11 +485,6 @@ namespace Std
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                EntryPoint="??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@AEBV01@@Z")]
-            internal static extern global::System.IntPtr cctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance, global::System.IntPtr _Right);
-
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ")]
             internal static extern global::System.IntPtr ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
 
@@ -511,8 +495,8 @@ namespace Std
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                EntryPoint="?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ")]
-            internal static extern global::System.IntPtr CStrc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
+                EntryPoint="?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ")]
+            internal static extern global::System.IntPtr Datac__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
         }
     }
 
@@ -539,7 +523,7 @@ namespace Std
         private static void* __CopyValue(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native)
         {
             var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C));
-            global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.cctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(ret, new global::System.IntPtr(&native));
+            *(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) ret = native;
             return ret.ToPointer();
         }
 
@@ -555,25 +539,6 @@ namespace Std
             if (native == null)
                 return;
             __Instance = new global::System.IntPtr(native);
-        }
-
-        public BasicString(global::Std.BasicString<_Elem, _Traits, _Alloc> _Right)
-        {
-            var ___Elem = typeof(_Elem);
-            var ___Traits = typeof(_Traits);
-            var ___Alloc = typeof(_Alloc);
-            if (___Elem.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Alloc.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
-            {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C));
-                __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
-                if (ReferenceEquals(_Right, null))
-                    throw new global::System.ArgumentNullException("_Right", "Cannot be null because it is a C++ reference (&).");
-                var __arg0 = _Right.__Instance;
-                global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.cctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment), __arg0);
-                return;
-            }
-            throw new ArgumentOutOfRangeException("_Elem, _Traits, _Alloc", string.Join(", ", new[] { typeof(_Elem).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_Elem, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
         }
 
         public BasicString()
@@ -666,8 +631,8 @@ namespace Std
 
             [SuppressUnmanagedCodeSecurity]
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                EntryPoint="?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ")]
-            internal static extern global::System.IntPtr CStr(global::System.IntPtr __instance);
+                EntryPoint="?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ")]
+            internal static extern global::System.IntPtr Data(global::System.IntPtr __instance);
         }
 
         public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> Assign(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this, string _Ptr)
@@ -682,10 +647,10 @@ namespace Std
             return __result0;
         }
 
-        public static string CStr(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
+        public static string Data(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
         {
             var __arg0 = ReferenceEquals(@this, null) ? global::System.IntPtr.Zero : @this.__Instance;
-            var __ret = __Internal.CStr(__arg0);
+            var __ret = __Internal.Data(__arg0);
             if (__ret == global::System.IntPtr.Zero)
                 return default(string);
             var __retPtr = (byte*) __ret;

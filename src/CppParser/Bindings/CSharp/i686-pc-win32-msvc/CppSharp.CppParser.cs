@@ -251,9 +251,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.NativeLibrary.__Internal*) __Instance)->fileName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -1076,9 +1074,7 @@ namespace CppSharp
                         get
                         {
                             var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal*) __Instance)->text));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
+                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                         }
 
                         set
@@ -1622,9 +1618,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -1900,9 +1894,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.VerbatimLineComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -2081,9 +2073,7 @@ namespace CppSharp
                         get
                         {
                             var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal*) __Instance)->text));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
+                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                         }
 
                         set
@@ -2470,9 +2460,7 @@ namespace CppSharp
                         get
                         {
                             var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->name));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
+                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                         }
 
                         set
@@ -2486,9 +2474,7 @@ namespace CppSharp
                         get
                         {
                             var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal*) __Instance)->value));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
+                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                         }
 
                         set
@@ -2590,9 +2576,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal*) __Instance)->tagName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -2713,9 +2697,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal*) __Instance)->tagName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -2827,9 +2809,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TextComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -2966,9 +2946,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -2982,9 +2960,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.RawComment.__Internal*) __Instance)->briefText));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -5740,9 +5716,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.DependentNameType.__Internal*) __Instance)->identifier));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -6694,9 +6668,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->name));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -6710,9 +6682,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->USR));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -6726,9 +6696,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->debugText));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -8370,9 +8338,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.StatementObsolete.__Internal*) __Instance)->@string));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -8642,9 +8608,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal*) __Instance)->opcodeStr));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -9667,9 +9631,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->mangled));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -9683,9 +9645,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->signature));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -9699,9 +9659,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Function.__Internal*) __Instance)->body));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -10581,9 +10539,7 @@ namespace CppSharp
                         get
                         {
                             var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Enumeration.Item.__Internal*) __Instance)->expression));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
+                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                         }
 
                         set
@@ -10931,9 +10887,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->mangled));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -12066,9 +12020,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.LayoutField.__Internal*) __Instance)->name));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -16798,9 +16750,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->name));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -16814,9 +16764,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroDefinition.__Internal*) __Instance)->expression));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -16963,9 +16911,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->name));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -16979,9 +16925,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MacroExpansion.__Internal*) __Instance)->text));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -17252,9 +17196,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.TranslationUnit.__Internal*) __Instance)->fileName));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -21253,9 +21195,7 @@ namespace CppSharp
                         get
                         {
                             var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece.__Internal*) __Instance)->@string));
-                            var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                            __basicStringRet0.Dispose(false);
-                            return __stringRet0;
+                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                         }
 
                         set
@@ -21555,9 +21495,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.MSAsmStmt.__Internal*) __Instance)->asmString));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -26486,9 +26424,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.StringLiteral.__Internal*) __Instance)->@string));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -26502,9 +26438,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.StringLiteral.__Internal*) __Instance)->bytes));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -29918,9 +29852,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.BinaryOperator.__Internal*) __Instance)->opcodeStr));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -38577,9 +38509,7 @@ namespace CppSharp
                     get
                     {
                         var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.AST.CXXUuidofExpr.__Internal*) __Instance)->uuidStr));
-                        var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                        __basicStringRet0.Dispose(false);
-                        return __stringRet0;
+                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     }
 
                     set
@@ -46636,9 +46566,7 @@ namespace CppSharp
                 get
                 {
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.ParserTargetInfo.__Internal*) __Instance)->ABI));
-                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                    __basicStringRet0.Dispose(false);
-                    return __stringRet0;
+                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
@@ -47739,9 +47667,7 @@ namespace CppSharp
                 get
                 {
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->libraryFile));
-                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                    __basicStringRet0.Dispose(false);
-                    return __stringRet0;
+                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
@@ -47786,9 +47712,7 @@ namespace CppSharp
                 get
                 {
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->targetTriple));
-                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                    __basicStringRet0.Dispose(false);
-                    return __stringRet0;
+                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
@@ -47802,9 +47726,7 @@ namespace CppSharp
                 get
                 {
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir));
-                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                    __basicStringRet0.Dispose(false);
-                    return __stringRet0;
+                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
@@ -48107,9 +48029,7 @@ namespace CppSharp
                 get
                 {
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->fileName));
-                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                    __basicStringRet0.Dispose(false);
-                    return __stringRet0;
+                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
@@ -48123,9 +48043,7 @@ namespace CppSharp
                 get
                 {
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.ParserDiagnostic.__Internal*) __Instance)->message));
-                    var __stringRet0 = global::Std.BasicStringExtensions.CStr(__basicStringRet0);
-                    __basicStringRet0.Dispose(false);
-                    return __stringRet0;
+                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
