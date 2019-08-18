@@ -378,13 +378,24 @@ namespace CppSharp.Types.Std
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
             string varBasicString = $"__basicStringRet{ctx.ParameterIndex}";
-            bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField;
+            bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField  ||
+                ctx.MarshalKind == MarshalKind.ReturnVariableArray;
             ctx.Before.WriteLine($@"var {varBasicString} = {
                 basicString.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({
                 (usePointer ? string.Empty : $"new {typePrinter.IntPtrType}(&")}{
                  ctx.ReturnVarName}{(usePointer ? string.Empty : ")")});");
-            ctx.Return.Write($@"{qualifiedBasicString}Extensions.{data.Name}({
-                varBasicString})");
+            string @string = $"{qualifiedBasicString}Extensions.{data.Name}({varBasicString})";
+            if (usePointer)
+            {
+                ctx.Return.Write(@string);
+            }
+            else
+            {
+                string retString = $"{Generator.GeneratedIdentifier("retString")}{ctx.ParameterIndex}";
+                ctx.Before.WriteLine($"var {retString} = {@string};");
+                ctx.Before.WriteLine($"{varBasicString}.Dispose();");
+                ctx.Return.Write(retString);
+            }
         }
 
         private static string GetQualifiedBasicString(ClassTemplateSpecialization basicString)
