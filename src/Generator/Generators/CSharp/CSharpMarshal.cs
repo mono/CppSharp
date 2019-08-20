@@ -289,8 +289,13 @@ namespace CppSharp.Generators.CSharp
 
             if (returnType.IsAddress())
                 Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass.Type));
-            else
-                Context.Return.Write($"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName})");
+            else if (Context.MarshalKind == MarshalKind.NativeField ||
+                Context.Function?.HasIndirectReturnTypeParameter == true ||
+                Context.Function?.OperatorKind == CXXOperatorKind.Subscript)
+                Context.Return.Write($@"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({
+                    Context.ReturnVarName})");
+            else Context.Return.Write($@"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}(new {
+                    typePrinter.IntPtrType}(&{Context.ReturnVarName}))");
 
             return true;
         }

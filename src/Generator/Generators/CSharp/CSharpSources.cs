@@ -2808,6 +2808,7 @@ namespace CppSharp.Generators.CSharp
 
             var originalFunction = function.OriginalFunction ?? function;
 
+            var names = new List<string>();
             if (originalFunction.HasIndirectReturnTypeParameter)
             {
                 var indirectRetType = originalFunction.Parameters.First(
@@ -2825,8 +2826,8 @@ namespace CppSharp.Generators.CSharp
                     Class retClass;
                     type.TryGetClass(out retClass);
                     var @class = retClass.OriginalClass ?? retClass;
-                    WriteLine($@"var {Helpers.ReturnIdentifier} = new {
-                        TypePrinter.PrintNative(@class)}();");
+                    WriteLine($@"var {Helpers.ReturnIdentifier} = Marshal.AllocHGlobal({
+                        @class.Layout.GetSize()});");
                 }
                 else
                 {
@@ -2839,13 +2840,15 @@ namespace CppSharp.Generators.CSharp
 
                         WriteLine("{0} {1};", typeMap.CSharpSignatureType(typePrinterContext),
                             Helpers.ReturnIdentifier);
+                        names.Add($"new IntPtr(&{Helpers.ReturnIdentifier})");
                     }
                     else
                         WriteLine("var {0} = {1};", construct);
                 }
+                if (names.Count == 0)
+                    names.Add(Helpers.ReturnIdentifier);
             }
 
-            var names = new List<string>();
             foreach (var param in @params)
             {
                 if (param.Param == operatorParam && needsInstance)
@@ -2861,12 +2864,6 @@ namespace CppSharp.Generators.CSharp
             }
 
             var needsFixedThis = needsInstance && isValueType;
-
-            if (originalFunction.HasIndirectReturnTypeParameter)
-            {
-                var name = string.Format("new IntPtr(&{0})", Helpers.ReturnIdentifier);
-                names.Insert(0, name);
-            }
 
             if (needsInstance)
             {

@@ -382,8 +382,7 @@ namespace CppSharp.Types.Std
                 ctx.MarshalKind == MarshalKind.ReturnVariableArray;
             ctx.Before.WriteLine($@"var {varBasicString} = {
                 basicString.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({
-                (usePointer ? string.Empty : $"new {typePrinter.IntPtrType}(&")}{
-                 ctx.ReturnVarName}{(usePointer ? string.Empty : ")")});");
+                 ctx.ReturnVarName});");
             string @string = $"{qualifiedBasicString}Extensions.{data.Name}({varBasicString})";
             if (usePointer)
             {
