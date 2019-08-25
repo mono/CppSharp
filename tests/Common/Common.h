@@ -1495,8 +1495,6 @@ DLL_API void takeReferenceToVoidStar(const void*& p);
 DLL_API void takeVoidStarStar(void** p);
 DLL_API void overloadPointer(void* p, int i = 0);
 DLL_API void overloadPointer(const void* p, int i = 0);
-DLL_API const char* takeReturnUTF8(const char* utf8);
-DLL_API std::string UTF8;
 
 struct DLL_API StructWithCopyCtor
 {

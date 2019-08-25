@@ -129,7 +129,7 @@ namespace CppSharp.Types.Std
                 encoding = Context.Options.Encoding;
 
             string param;
-            if (Equals(encoding, Encoding.ASCII) || Equals(encoding, Encoding.UTF8))
+            if (Equals(encoding, Encoding.ASCII))
                 param = "E_UTF8";
             else if (Equals(encoding, Encoding.Unicode) ||
                      Equals(encoding, Encoding.BigEndianUnicode))
@@ -154,9 +154,8 @@ namespace CppSharp.Types.Std
                 return new CustomType(typePrinter.IntPtrType);
             }
 
-            if (Context.Options.Encoding == Encoding.ASCII ||
-                Context.Options.Encoding == Encoding.UTF8)
-                return new CustomType("[MarshalAs(UnmanagedType.LPUTF8Str)] string");
+            if (Context.Options.Encoding == Encoding.ASCII)
+                return new CustomType("string");
 
             if (Context.Options.Encoding == Encoding.Unicode ||
                 Context.Options.Encoding == Encoding.BigEndianUnicode)
@@ -184,14 +183,19 @@ namespace CppSharp.Types.Std
             if (substitution != null)
                 param = $"({substitution.Replacement}) (object) {param}";
 
-            string bytes = $"__bytes{ctx.ParameterIndex}";
-            string bytePtr = $"__bytePtr{ctx.ParameterIndex}";
-            ctx.Before.WriteLine($@"byte[] {bytes} = global::System.Text.Encoding.{
-                GetEncodingClass(ctx.Parameter)}.GetBytes({param});");
-            ctx.Before.WriteLine($"fixed (byte* {bytePtr} = {bytes})");
-            ctx.HasCodeBlock = true;
-            ctx.Before.WriteOpenBraceAndIndent();
-            ctx.Return.Write($"new global::System.IntPtr({bytePtr})");
+            if (Equals(Context.Options.Encoding, Encoding.ASCII))
+            {
+                ctx.Return.Write($"Marshal.StringToHGlobalAnsi({param})");
+                return;
+            }
+            if (Equals(Context.Options.Encoding, Encoding.Unicode) ||
+                Equals(Context.Options.Encoding, Encoding.BigEndianUnicode))
+            {
+                ctx.Return.Write($"Marshal.StringToHGlobalUni({param})");
+                return;
+            }
+            throw new System.NotSupportedException(
+                $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
@@ -203,93 +207,49 @@ namespace CppSharp.Types.Std
                 return;
             }
 
+            Type type = Type.Desugar();
+            Type pointee = type.GetPointee().Desugar();
+            var isChar = type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                (pointee.IsPointerToPrimitiveType(PrimitiveType.Char) &&
+                 ctx.Parameter != null &&
+                 (ctx.Parameter.IsInOut || ctx.Parameter.IsOut));
+            var encoding = isChar ? Encoding.ASCII : Encoding.Unicode;
+
+            if (Equals(encoding, Encoding.ASCII))
+                encoding = Context.Options.Encoding;
+
             string returnVarName = ctx.ReturnVarName;
-            string nullPtr = "global::System.IntPtr.Zero";
             if (ctx.Function != null)
             {
                 Type returnType = ctx.Function.ReturnType.Type.Desugar();
                 if (returnType.IsAddress() &&
                     returnType.GetPointee().Desugar().IsAddress())
                 {
-                    returnVarName = $"*{returnVarName}";
-                    nullPtr = "null";
+                    returnVarName = $"new global::System.IntPtr(*{returnVarName})";
                 }
             }
 
-            TextGenerator textGenerator;
-            if (ctx.Parameter == null)
+            if (Equals(encoding, Encoding.ASCII))
             {
-                textGenerator = ctx.Before;
-                textGenerator.WriteLine($"if ({ctx.ReturnVarName} == {nullPtr})");
-                textGenerator.WriteLineIndent($"return default({ctx.ReturnType});");
+                ctx.Return.Write($"Marshal.PtrToStringAnsi({returnVarName})");
+                return;
             }
-            else
+            if (Equals(encoding, Encoding.UTF8))
             {
-                textGenerator = ctx.Cleanup;
-                textGenerator.WriteLine($"if ({ctx.ReturnVarName} == {nullPtr})");
-                textGenerator.WriteOpenBraceAndIndent();
-                textGenerator.WriteLine($"{ctx.Parameter.Name} = default({Type.Desugar()});");
-                textGenerator.WriteLine("return;");
-                textGenerator.UnindentAndWriteCloseBrace();
+                ctx.Return.Write($"Marshal.PtrToStringUTF8({returnVarName})");
+                return;
             }
 
-            string encoding = GetEncodingClass(ctx.Parameter);
-            string type = GetTypeForCodePoint(encoding);
-            textGenerator.WriteLine($"var __retPtr = ({type}*) {returnVarName};");
-            textGenerator.WriteLine("int __length = 0;");
-            textGenerator.WriteLine($"while (*(__retPtr++) != 0) __length += sizeof({type});");
-
-            ctx.Return.Write($@"global::System.Text.Encoding.{
-                encoding}.GetString((byte*) {returnVarName}, __length)");
-        }
-
-        private string GetEncodingClass(Parameter parameter)
-        {
-            Type type = Type.Desugar();
-            Type pointee = type.GetPointee().Desugar();
-            var isChar = type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
-                (pointee.IsPointerToPrimitiveType(PrimitiveType.Char) &&
-                 parameter != null &&
-                 (parameter.IsInOut || parameter.IsOut));
-
-            if (!isChar)
-                return (Context.TargetInfo.WCharWidth == 16) ?
-                    nameof(Encoding.Unicode) : nameof(Encoding.UTF32);
-
-            if (Context.Options.Encoding == Encoding.ASCII)
-                return nameof(Encoding.ASCII);
-
-            if (Context.Options.Encoding == Encoding.BigEndianUnicode)
-                return nameof(Encoding.BigEndianUnicode);
-
-            if (Context.Options.Encoding == Encoding.Unicode)
-                return nameof(Encoding.Unicode);
-
-            if (Context.Options.Encoding == Encoding.UTF32)
-                return nameof(Encoding.UTF32);
-
-            if (Context.Options.Encoding == Encoding.UTF7)
-                return nameof(Encoding.UTF7);
-
-            if (Context.Options.Encoding == Encoding.UTF8)
-                return nameof(Encoding.UTF8);
-
-            throw new System.NotSupportedException(
-                $"{Context.Options.Encoding.EncodingName} is not supported yet.");
-        }
-
-        private static string GetTypeForCodePoint(string encoding)
-        {
-            switch (encoding)
+            // If we reach this, we know the string is Unicode.
+            if (isChar || ctx.Context.TargetInfo.WCharWidth == 16)
             {
-                case nameof(Encoding.UTF32):
-                    return "int";
-                case nameof(Encoding.Unicode):
-                case nameof(Encoding.BigEndianUnicode):
-                    return "short";
-                default:
-                    return "byte";
+                ctx.Return.Write($"Marshal.PtrToStringUni({returnVarName})");
+                return;
             }
+            // If we reach this, we should have an UTF-32 wide string.
+            const string encodingName = "System.Text.Encoding.UTF32";
+            ctx.Return.Write($@"CppSharp.Runtime.Helpers.MarshalEncodedString({
+                returnVarName}, {encodingName})");
         }
     }
 
