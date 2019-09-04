@@ -517,8 +517,8 @@ public class CommonTests : GeneratorTestFixture
             prop.VirtualSetterReturnsBoolean = 45;
             Assert.That(prop.VirtualSetterReturnsBoolean, Is.EqualTo(45));
 
-            Assert.That(prop.nestedEnum(), Is.EqualTo(5));
-            Assert.That(prop.nestedEnum(55), Is.EqualTo(55));
+            Assert.That(prop.nestedEnum, Is.EqualTo(5));
+            Assert.That(prop.GetNestedEnum(55), Is.EqualTo(55));
 
             Assert.That(prop.Get32Bit, Is.EqualTo(10));
         }

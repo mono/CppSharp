@@ -125,6 +125,7 @@ namespace CppSharp.Passes
                         QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr)),
                         GetMethod = new Method
                         {
+                            Name = Helpers.InstanceIdentifier,
                             SynthKind = FunctionSynthKind.InterfaceInstance,
                             Namespace = @interface
                         }
@@ -147,13 +148,15 @@ namespace CppSharp.Passes
             @interface.Declarations.AddRange(@base.Events);
 
             var type = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
+            string pointerAdjustment = "__PointerTo" + @base.Name;
             var adjustmentTo = new Property
             {
                 Namespace = @interface,
-                Name = "__PointerTo" + @base.Name,
+                Name = pointerAdjustment,
                 QualifiedType = type,
                 GetMethod = new Method
                 {
+                    Name = pointerAdjustment,
                     SynthKind = FunctionSynthKind.InterfaceInstance,
                     Namespace = @interface,
                     ReturnType = type
@@ -181,12 +184,16 @@ namespace CppSharp.Passes
         {
             var interfaceProperty = new Property(property) { Namespace = @namespace };
             if (property.GetMethod != null)
+            {
                 interfaceProperty.GetMethod = new Method(property.GetMethod)
                     {
                         OriginalFunction = property.GetMethod,
                         Namespace = @namespace
                     };
+                interfaceProperty.GetMethod.OverriddenMethods.Add(property.GetMethod);
+            }
             if (property.SetMethod != null)
+            {
                 // handle indexers
                 interfaceProperty.SetMethod = property.GetMethod == property.SetMethod ?
                     interfaceProperty.GetMethod : new Method(property.SetMethod)
@@ -194,6 +201,8 @@ namespace CppSharp.Passes
                             OriginalFunction = property.SetMethod,
                             Namespace = @namespace
                         };
+                interfaceProperty.SetMethod.OverriddenMethods.Add(property.SetMethod);
+            }
             return interfaceProperty;
         }
 
@@ -219,6 +228,7 @@ namespace CppSharp.Passes
                         OriginalNamespace = @interface,
                         OriginalFunction = method.OriginalFunction
                     };
+                impl.OverriddenMethods.Add((Method) method.OriginalFunction);
                 var rootBaseMethod = @class.GetBaseMethod(method);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
