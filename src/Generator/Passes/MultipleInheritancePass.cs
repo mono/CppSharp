@@ -125,6 +125,7 @@ namespace CppSharp.Passes
                         QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr)),
                         GetMethod = new Method
                         {
+                            Name = Helpers.InstanceIdentifier,
                             SynthKind = FunctionSynthKind.InterfaceInstance,
                             Namespace = @interface
                         }
@@ -147,13 +148,15 @@ namespace CppSharp.Passes
             @interface.Declarations.AddRange(@base.Events);
 
             var type = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
+            string pointerAdjustment = "__PointerTo" + @base.Name;
             var adjustmentTo = new Property
             {
                 Namespace = @interface,
-                Name = "__PointerTo" + @base.Name,
+                Name = pointerAdjustment,
                 QualifiedType = type,
                 GetMethod = new Method
                 {
+                    Name = pointerAdjustment,
                     SynthKind = FunctionSynthKind.InterfaceInstance,
                     Namespace = @interface,
                     ReturnType = type
