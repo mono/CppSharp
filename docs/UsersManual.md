@@ -345,10 +345,16 @@ Related passes:
 
 ## Limitations
 
-Support for these features is limited or only partial: 
+Support for these features is limited: 
 
 - Exceptions
 - RTTI
+
+They are supported and taken into account by the C++ parser for bindings generation,
+but there is currently no way to catch C++ exceptions from C#.
+
+There is also no way to check RTTI type information for a specific type from C#,
+but not an issue in practice since C# itself provides this via `GetType()`.
 
 ## Standard library support
 
