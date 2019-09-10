@@ -136,6 +136,8 @@ namespace CppSharp.Passes
                 }
             }
 
+            specializedMethod.Name = specializedMethod.OriginalName;
+            extensionMethod.Name = extensionMethod.OriginalName;
             extensionMethod.OriginalFunction = specializedMethod;
             extensionMethod.Kind = CXXMethodKind.Normal;
             extensionMethod.IsStatic = true;
