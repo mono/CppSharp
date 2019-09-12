@@ -56,7 +56,7 @@ namespace CppSharp.AST
         }
 
         public static Property GetBaseProperty(this Class @class, Property @override,
-            bool onlyFirstBase = false, bool getTopmost = false)
+            bool onlyFirstBase = false)
         {
             foreach (var @base in @class.Bases)
             {
@@ -66,44 +66,33 @@ namespace CppSharp.AST
                     (onlyFirstBase && @base.Class.IsInterface))
                     continue;
 
-                Property baseProperty;
-                if (!getTopmost)
-                {
-                    baseProperty = @base.Class.GetBaseProperty(@override, onlyFirstBase);
-                    if (baseProperty != null)
-                        return baseProperty;
-                }
-
                 var properties = @base.Class.Properties.Concat(@base.Class.Declarations.OfType<Property>());
-                baseProperty = (from property in properties
-                    where property.OriginalName == @override.OriginalName &&
-                        property.Parameters.SequenceEqual(@override.Parameters,
-                            ParameterTypeComparer.Instance)
-                    select property).FirstOrDefault();
+                Property baseProperty = (from property in properties
+                                         where property.OriginalName == @override.OriginalName &&
+                                             property.Parameters.SequenceEqual(@override.Parameters,
+                                                 ParameterTypeComparer.Instance)
+                                         select property).FirstOrDefault();
 
                 if (baseProperty != null)
                     return baseProperty;
 
-                if (getTopmost)
-                {
-                    baseProperty = @base.Class.GetBaseProperty(@override, onlyFirstBase, true);
-                    if (baseProperty != null)
-                        return baseProperty;
-                }
+                baseProperty = @base.Class.GetBaseProperty(@override, onlyFirstBase);
+                if (baseProperty != null)
+                    return baseProperty;
             }
             return null;
         }
 
         public static bool HasNonAbstractBasePropertyInPrimaryBase(this Class @class, Property property)
         {
-            var baseProperty = @class.GetBaseProperty(property, true, true);
+            var baseProperty = @class.GetBaseProperty(property, true);
             return baseProperty != null && !baseProperty.IsPure &&
                 !((Class) baseProperty.OriginalNamespace).IsInterface;
         }
 
         public static Property GetPropertyByName(this Class @class, string propertyName)
         {
-            Property property = @class.Properties.FirstOrDefault(m => m.Name == propertyName);
+            Property property = @class.Properties.Find(m => m.Name == propertyName);
             if (property != null)
                 return property;
 
@@ -119,10 +108,10 @@ namespace CppSharp.AST
 
         public static Property GetPropertyByConstituentMethod(this Class @class, Method method)
         {
-            var property = @class.Properties.FirstOrDefault(p => p.GetMethod == method);
+            var property = @class.Properties.Find(p => p.GetMethod == method);
             if (property != null)
                 return property;
-            property = @class.Properties.FirstOrDefault(p => p.SetMethod == method);
+            property = @class.Properties.Find(p => p.SetMethod == method);
             if (property != null)
                 return property;
 
