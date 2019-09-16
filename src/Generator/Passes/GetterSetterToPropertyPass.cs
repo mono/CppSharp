@@ -169,25 +169,16 @@ namespace CppSharp.Passes
                     @class.Properties.Remove(property);
                     continue;
                 }
+                if (property.SetMethod == null &&
+                    @class.GetOverloads(property.GetMethod).Any(
+                        m => m != property.GetMethod && !m.Ignore))
+                {
+                    property.GetMethod.GenerationKind = GenerationKind.Generate;
+                    @class.Properties.Remove(property);
+                    continue;
+                }
 
-                foreach (var method in @class.Methods.Where(
-                    m => m.IsGenerated && m.Name == property.Name))
-                {
-                    var oldName = method.Name;
-                    method.Name = $@"get{char.ToUpperInvariant(method.Name[0])}{
-                        method.Name.Substring(1)}";
-                    Diagnostics.Debug("Method {0}::{1} renamed to {2}",
-                        method.Namespace.Name, oldName, method.Name);
-                }
-                foreach (var @event in @class.Events.Where(
-                    e => e.Name == property.Name))
-                {
-                    var oldName = @event.Name;
-                    @event.Name = $@"on{char.ToUpperInvariant(@event.Name[0])}{
-                        @event.Name.Substring(1)}";
-                    Diagnostics.Debug("Event {0}::{1} renamed to {2}",
-                        @event.Namespace.Name, oldName, @event.Name);
-                }
+                RenameConflictingMethods(@class, property);
                 CombineComments(property);
             }
         }
@@ -209,6 +200,28 @@ namespace CppSharp.Passes
                     return baseProperty;
             }
             return null;
+        }
+
+        private static void RenameConflictingMethods(Class @class, Property property)
+        {
+            foreach (var method in @class.Methods.Where(
+                m => m.IsGenerated && m.Name == property.Name))
+            {
+                var oldName = method.Name;
+                method.Name = $@"get{char.ToUpperInvariant(method.Name[0])}{
+                    method.Name.Substring(1)}";
+                Diagnostics.Debug("Method {0}::{1} renamed to {2}",
+                    method.Namespace.Name, oldName, method.Name);
+            }
+            foreach (var @event in @class.Events.Where(
+                e => e.Name == property.Name))
+            {
+                var oldName = @event.Name;
+                @event.Name = $@"on{char.ToUpperInvariant(@event.Name[0])}{
+                    @event.Name.Substring(1)}";
+                Diagnostics.Debug("Event {0}::{1} renamed to {2}",
+                    @event.Namespace.Name, oldName, @event.Name);
+            }
         }
 
         private static string GetReadWritePropertyName(INamedDecl getter, string afterSet)
