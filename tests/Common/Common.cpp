@@ -618,6 +618,16 @@ int TestProperties::get32Bit()
     return 10;
 }
 
+bool TestProperties::isEmpty()
+{
+    return empty();
+}
+
+bool TestProperties::empty()
+{
+    return false;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }

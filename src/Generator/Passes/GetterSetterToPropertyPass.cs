@@ -94,7 +94,7 @@ namespace CppSharp.Passes
                 {
                     string name = GetPropertyNameFromSetter(method.Name);
                     QualifiedType type = method.Parameters.First(p => p.Kind == ParameterKind.Regular).QualifiedType;
-                    Property property = GetProperty(method, name, type);
+                    Property property = GetProperty(method, name, type, true);
                     property.SetMethod = method;
                     newProperties.Add(property);
                 }
@@ -103,14 +103,16 @@ namespace CppSharp.Passes
             return newProperties;
         }
 
-        private static Property GetProperty(Method method, string name, QualifiedType type)
+        private static Property GetProperty(Method method, string name,
+            QualifiedType type, bool isSetter = false)
         {
             Type underlyingType = GetUnderlyingType(type);
             Class @class = (Class) method.Namespace;
             Property property = @class.Properties.Find(
                 p => p.Field == null &&
                     (p.Name == name ||
-                     (p.GetMethod != null && GetReadWritePropertyName(p.GetMethod, name) == name)) &&
+                     (isSetter && p.GetMethod != null &&
+                      GetReadWritePropertyName(p.GetMethod, name) == name)) &&
                     ((p.GetMethod != null &&
                       GetUnderlyingType(p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
                      (p.SetMethod != null &&

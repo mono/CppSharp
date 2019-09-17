@@ -612,6 +612,8 @@ public:
     int nestedEnum(int i);
 
     int get32Bit();
+    bool isEmpty();
+    bool empty();
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
