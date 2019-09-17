@@ -143,27 +143,8 @@ namespace CppSharp.Passes
         {
             foreach (var property in newProperties)
             {
-                if (property.IsOverride)
-                {
-                    Property baseProperty = GetBaseProperty(@class, property);
-                    if (baseProperty == null)
-                    {
-                        if (property.SetMethod != null)
-                        {
-                            property.SetMethod.GenerationKind = GenerationKind.Generate;
-                            property.SetMethod = null;
-                        }
-                        else
-                        {
-                            property.GetMethod.GenerationKind = GenerationKind.Generate;
-                            property.GetMethod = null;
-                        }
-                    }
-                    else if (property.GetMethod == null && baseProperty.SetMethod != null)
-                        property.GetMethod = baseProperty.GetMethod;
-                    else if (property.SetMethod == null)
-                        property.SetMethod = baseProperty.SetMethod;
-                }
+                ProcessOverridden(@class, property);
+
                 if (property.GetMethod == null)
                 {
                     if (property.SetMethod != null)
@@ -185,14 +166,45 @@ namespace CppSharp.Passes
             }
         }
 
+        private static void ProcessOverridden(Class @class, Property property)
+        {
+            if (!property.IsOverride)
+                return;
+
+            Property baseProperty = GetBaseProperty(@class, property);
+            if (baseProperty == null)
+            {
+                if (property.SetMethod != null)
+                {
+                    property.SetMethod.GenerationKind = GenerationKind.Generate;
+                    property.SetMethod = null;
+                }
+                else
+                {
+                    property.GetMethod.GenerationKind = GenerationKind.Generate;
+                    property.GetMethod = null;
+                }
+            }
+            else if (property.GetMethod == null && baseProperty.SetMethod != null)
+                property.GetMethod = baseProperty.GetMethod;
+            else if (property.SetMethod == null || baseProperty.SetMethod == null)
+            {
+                if (property.SetMethod != null)
+                    property.SetMethod.GenerationKind = GenerationKind.Generate;
+                property.SetMethod = baseProperty.SetMethod;
+            }
+        }
+
         private static Property GetBaseProperty(Class @class, Property @override)
         {
             foreach (var @base in @class.Bases)
             {
                 Class baseClass = @base.Class.OriginalClass ?? @base.Class;
                 Property baseProperty = baseClass.Properties.Find(p =>
-                    (@override.GetMethod != null && @override.GetMethod.BaseMethod == p.GetMethod) ||
-                    (@override.SetMethod != null && @override.SetMethod.BaseMethod == p.SetMethod) ||
+                    (@override.GetMethod?.IsOverride == true &&
+                     @override.GetMethod.BaseMethod == p.GetMethod) ||
+                    (@override.SetMethod?.IsOverride == true &&
+                     @override.SetMethod.BaseMethod == p.SetMethod) ||
                     (@override.Field != null && @override.Field == p.Field));
                 if (baseProperty != null)
                     return baseProperty;

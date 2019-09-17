@@ -614,6 +614,8 @@ public:
     int get32Bit();
     bool isEmpty();
     bool empty();
+
+    virtual int virtualGetter();
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
@@ -630,6 +632,9 @@ public:
 
     int virtualSetterReturnsBoolean() override;
     bool setVirtualSetterReturnsBoolean(int value) override;
+
+    int virtualGetter() override;
+    void setVirtualGetter(int value);
 };
 
 class DLL_API TypeMappedIndex

@@ -628,6 +628,11 @@ bool TestProperties::empty()
     return false;
 }
 
+int TestProperties::virtualGetter()
+{
+    return 15;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }
@@ -644,6 +649,15 @@ int HasOverridenSetter::virtualSetterReturnsBoolean()
 bool HasOverridenSetter::setVirtualSetterReturnsBoolean(int value)
 {
     return TestProperties::setVirtualSetterReturnsBoolean(value);
+}
+
+int HasOverridenSetter::virtualGetter()
+{
+    return 20;
+}
+
+void HasOverridenSetter::setVirtualGetter(int value)
+{
 }
 
 TypeMappedIndex::TypeMappedIndex()

@@ -522,6 +522,13 @@ public class CommonTests : GeneratorTestFixture
 
             Assert.That(prop.Get32Bit, Is.EqualTo(10));
             Assert.That(prop.IsEmpty, Is.EqualTo(prop.Empty));
+
+            Assert.That(prop.VirtualGetter, Is.EqualTo(15));
+        }
+        using (var prop = new HasOverridenSetter())
+        {
+            Assert.That(prop.VirtualGetter, Is.EqualTo(20));
+            prop.SetVirtualGetter(5);
         }
     }
 
