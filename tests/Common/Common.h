@@ -616,6 +616,9 @@ public:
     bool empty();
 
     virtual int virtualGetter();
+
+    int startWithVerb();
+    void setStartWithVerb(int value);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;

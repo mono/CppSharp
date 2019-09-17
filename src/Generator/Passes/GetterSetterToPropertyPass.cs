@@ -66,10 +66,10 @@ namespace CppSharp.Passes
             return false;
         }
 
-        protected virtual HashSet<Property> GenerateProperties(Class @class)
+        protected virtual IEnumerable<Property> GenerateProperties(Class @class)
         {
-            var newProperties = new HashSet<Property>();
-            foreach (var method in @class.Methods.Where(
+            var newProperties = new List<Property>();
+            foreach (Method method in @class.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
                     m.SynthKind != FunctionSynthKind.DefaultValueOverload &&
                     m.SynthKind != FunctionSynthKind.ComplementOperator &&
@@ -80,7 +80,7 @@ namespace CppSharp.Passes
                     string name = GetPropertyName(method.Name);
                     QualifiedType type = method.OriginalReturnType;
                     Property property = GetProperty(method, name, type);
-                    if (property.GetMethod == null)
+                    if (!property.HasGetter)
                     {
                         property.GetMethod = method;
                         property.QualifiedType = method.OriginalReturnType;
@@ -100,6 +100,34 @@ namespace CppSharp.Passes
                 }
             }
 
+            return CleanUp(@class, newProperties);
+        }
+
+        private IEnumerable<Property> CleanUp(Class @class, List<Property> newProperties)
+        {
+            if (!Options.UsePropertyDetectionHeuristics)
+                return newProperties;
+
+            for (int i = newProperties.Count - 1; i >= 0; i--)
+            {
+                Property property = newProperties[i];
+                if (property.HasSetter)
+                    continue;
+
+                string firstWord = GetFirstWord(property.GetMethod.Name);
+                if (firstWord.Length < property.GetMethod.Name.Length &&
+                    Match(firstWord, new[] { "get", "is", "has" }))
+                    continue;
+
+                if (Match(firstWord, new[] { "to", "new" }) ||
+                    verbs.Contains(firstWord))
+                {
+                    property.GetMethod.GenerationKind = GenerationKind.Generate;
+                    @class.Properties.Remove(property);
+                    newProperties.RemoveAt(i);
+                }
+            }
+
             return newProperties;
         }
 
@@ -111,11 +139,11 @@ namespace CppSharp.Passes
             Property property = @class.Properties.Find(
                 p => p.Field == null &&
                     (p.Name == name ||
-                     (isSetter && p.GetMethod != null &&
+                     (isSetter && p.HasGetter &&
                       GetReadWritePropertyName(p.GetMethod, name) == name)) &&
-                    ((p.GetMethod != null &&
+                    ((p.HasGetter &&
                       GetUnderlyingType(p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
-                     (p.SetMethod != null &&
+                     (p.HasSetter &&
                       GetUnderlyingType(p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType)))) ??
                 new Property { Name = name, QualifiedType = type };
 
@@ -139,20 +167,20 @@ namespace CppSharp.Passes
             return property;
         }
 
-        private static void ProcessProperties(Class @class, HashSet<Property> newProperties)
+        private static void ProcessProperties(Class @class, IEnumerable<Property> newProperties)
         {
-            foreach (var property in newProperties)
+            foreach (Property property in newProperties)
             {
                 ProcessOverridden(@class, property);
 
-                if (property.GetMethod == null)
+                if (!property.HasGetter)
                 {
-                    if (property.SetMethod != null)
+                    if (property.HasSetter)
                         property.SetMethod.GenerationKind = GenerationKind.Generate;
                     @class.Properties.Remove(property);
                     continue;
                 }
-                if (property.SetMethod == null &&
+                if (!property.HasSetter &&
                     @class.GetOverloads(property.GetMethod).Any(
                         m => m != property.GetMethod && !m.Ignore))
                 {
@@ -174,7 +202,7 @@ namespace CppSharp.Passes
             Property baseProperty = GetBaseProperty(@class, property);
             if (baseProperty == null)
             {
-                if (property.SetMethod != null)
+                if (property.HasSetter)
                 {
                     property.SetMethod.GenerationKind = GenerationKind.Generate;
                     property.SetMethod = null;
@@ -185,11 +213,11 @@ namespace CppSharp.Passes
                     property.GetMethod = null;
                 }
             }
-            else if (property.GetMethod == null && baseProperty.SetMethod != null)
+            else if (!property.HasGetter && baseProperty.HasSetter)
                 property.GetMethod = baseProperty.GetMethod;
-            else if (property.SetMethod == null || baseProperty.SetMethod == null)
+            else if (!property.HasSetter || !baseProperty.HasSetter)
             {
-                if (property.SetMethod != null)
+                if (property.HasSetter)
                     property.SetMethod.GenerationKind = GenerationKind.Generate;
                 property.SetMethod = baseProperty.SetMethod;
             }
@@ -325,24 +353,10 @@ namespace CppSharp.Passes
             return nameBuilder.ToString();
         }
 
-        private bool IsGetter(Method method)
-        {
-            if (method.IsDestructor ||
-                method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) ||
-                method.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType))
-                return false;
-            var firstWord = GetFirstWord(method.Name);
-
-            if (firstWord.Length < method.Name.Length &&
-                Match(firstWord, new[] { "get", "is", "has" }))
-                return true;
-
-            if (Options.UsePropertyDetectionHeuristics &&
-                !Match(firstWord, new[] { "to", "new" }) && !verbs.Contains(firstWord))
-                return true;
-
-            return false;
-        }
+        private bool IsGetter(Method method) =>
+            !method.IsDestructor &&
+            !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) &&
+            !method.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType);
 
         private static bool IsSetter(Method method)
         {

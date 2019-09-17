@@ -524,6 +524,9 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(prop.IsEmpty, Is.EqualTo(prop.Empty));
 
             Assert.That(prop.VirtualGetter, Is.EqualTo(15));
+
+            Assert.That(prop.StartWithVerb, Is.EqualTo(25));
+            prop.StartWithVerb = 5;
         }
         using (var prop = new HasOverridenSetter())
         {

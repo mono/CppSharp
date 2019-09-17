@@ -633,6 +633,15 @@ int TestProperties::virtualGetter()
     return 15;
 }
 
+int TestProperties::startWithVerb()
+{
+    return 25;
+}
+
+void TestProperties::setStartWithVerb(int value)
+{
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }
