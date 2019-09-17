@@ -642,6 +642,16 @@ void TestProperties::setStartWithVerb(int value)
 {
 }
 
+bool TestProperties::contains(char c)
+{
+    return true;
+}
+
+bool TestProperties::contains(const char* str)
+{
+    return true;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }

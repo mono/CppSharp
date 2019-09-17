@@ -619,6 +619,9 @@ public:
 
     int startWithVerb();
     void setStartWithVerb(int value);
+
+    bool contains(char c);
+    bool contains(const char* str);
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;

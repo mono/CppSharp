@@ -138,7 +138,7 @@ namespace CppSharp.Passes
             Class @class = (Class) method.Namespace;
             Property property = @class.Properties.Find(
                 p => p.Field == null &&
-                    (p.Name == name ||
+                    ((!isSetter && p.HasSetter && p.Name == name) ||
                      (isSetter && p.HasGetter &&
                       GetReadWritePropertyName(p.GetMethod, name) == name)) &&
                     ((p.HasGetter &&
@@ -187,6 +187,15 @@ namespace CppSharp.Passes
                     property.GetMethod.GenerationKind = GenerationKind.Generate;
                     @class.Properties.Remove(property);
                     continue;
+                }
+
+                Property conflict = newProperties.LastOrDefault(
+                    p => p.Name == property.Name && p != property &&
+                        p.ExplicitInterfaceImpl == property.ExplicitInterfaceImpl);
+                if (conflict != null && conflict.GetMethod != null)
+                {
+                    conflict.GetMethod.GenerationKind = GenerationKind.Generate;
+                    conflict.GetMethod = null;
                 }
 
                 RenameConflictingMethods(@class, property);
