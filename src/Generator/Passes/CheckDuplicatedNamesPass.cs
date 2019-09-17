@@ -123,13 +123,9 @@ namespace CppSharp.Passes
                 if (CheckForSpecializations(leftPointee, rightPointee))
                     return true;
 
-                if (leftPointee != null && rightPointee != null &&
+                return leftPointee != null && rightPointee != null &&
                     leftPointee.GetMappedType(TypeMaps, GeneratorKind).Equals(
-                    rightPointee.GetMappedType(TypeMaps, GeneratorKind)))
-                    return true;
-
-                return (leftPointee != null && leftPointee.Desugar(false).Equals(right)) ||
-                    (rightPointee != null && rightPointee.Desugar(false).Equals(left));
+                    rightPointee.GetMappedType(TypeMaps, GeneratorKind));
             }
 
             private static bool CheckForSpecializations(Type leftPointee, Type rightPointee)

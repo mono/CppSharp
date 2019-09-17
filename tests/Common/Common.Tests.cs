@@ -528,7 +528,7 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(prop.StartWithVerb, Is.EqualTo(25));
             prop.StartWithVerb = 5;
 
-            Assert.That(prop.Contains('a'), Is.EqualTo(prop.Contains1("a")));
+            Assert.That(prop.Contains('a'), Is.EqualTo(prop.Contains("a")));
         }
         using (var prop = new HasOverridenSetter())
         {
