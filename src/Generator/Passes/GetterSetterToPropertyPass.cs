@@ -136,15 +136,16 @@ namespace CppSharp.Passes
         {
             Type underlyingType = GetUnderlyingType(type);
             Class @class = (Class) method.Namespace;
+
             Property property = @class.Properties.Find(
                 p => p.Field == null &&
-                    ((!isSetter && p.HasSetter && p.Name == name) ||
-                     (isSetter && p.HasGetter &&
-                      GetReadWritePropertyName(p.GetMethod, name) == name)) &&
-                    ((p.HasGetter &&
-                      GetUnderlyingType(p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
-                     (p.HasSetter &&
-                      GetUnderlyingType(p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType)))) ??
+                    ((!isSetter && p.SetMethod?.IsStatic == method.IsStatic) ||
+                        (isSetter && p.GetMethod?.IsStatic == method.IsStatic)) &&
+                        ((p.HasGetter && GetUnderlyingType(
+                            p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
+                        (p.HasSetter && GetUnderlyingType(
+                            p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType))) &&
+                    Match(p, name)) ??
                 new Property { Name = name, QualifiedType = type };
 
             if (property.Namespace == null)
@@ -160,11 +161,41 @@ namespace CppSharp.Passes
                     (int) method.Access);
             }
 
-            property.Name = property.OriginalName = name;
             method.GenerationKind = GenerationKind.Internal;
             if (method.ExplicitInterfaceImpl != null)
                 property.ExplicitInterfaceImpl = method.ExplicitInterfaceImpl;
             return property;
+        }
+
+        private static bool Match(Property property, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return false;
+
+            if (property.Name == name)
+                return true;
+
+            if (property.Name == RemovePrefix(name))
+                return true;
+
+            if (RemovePrefix(property.Name) == name)
+            {
+                property.Name = property.OriginalName = name;
+                return true;
+            }
+
+            return property.SetMethod != null &&
+                GetPropertyNameFromSetter(property.SetMethod.Name) == name;
+        }
+
+        private static string RemovePrefix(string identifier)
+        {
+            if (string.IsNullOrEmpty(identifier))
+                return identifier;
+
+            string name = GetPropertyName(identifier);
+            return name.StartsWith("is", StringComparison.Ordinal) && name != "is" ?
+                char.ToLowerInvariant(name[2]) + name.Substring(3) : name;
         }
 
         private static void ProcessProperties(Class @class, IEnumerable<Property> newProperties)
@@ -273,17 +304,6 @@ namespace CppSharp.Passes
                 Diagnostics.Debug("Event {0}::{1} renamed to {2}",
                     @event.Namespace.Name, oldName, @event.Name);
             }
-        }
-
-        private static string GetReadWritePropertyName(INamedDecl getter, string afterSet)
-        {
-            string name = GetPropertyName(getter.Name);
-            if (name != afterSet && name.StartsWith("is", StringComparison.Ordinal) &&
-                name != "is")
-            {
-                name = char.ToLowerInvariant(name[2]) + name.Substring(3);
-            }
-            return name;
         }
 
         private static Type GetUnderlyingType(QualifiedType type)

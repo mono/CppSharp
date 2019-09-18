@@ -620,6 +620,9 @@ public:
     int startWithVerb();
     void setStartWithVerb(int value);
 
+    void setSetterBeforeGetter(bool value);
+    bool isSetterBeforeGetter();
+
     bool contains(char c);
     bool contains(const char* str);
 private:

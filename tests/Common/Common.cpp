@@ -642,6 +642,15 @@ void TestProperties::setStartWithVerb(int value)
 {
 }
 
+void TestProperties::setSetterBeforeGetter(bool value)
+{
+}
+
+bool TestProperties::isSetterBeforeGetter()
+{
+    return true;
+}
+
 bool TestProperties::contains(char c)
 {
     return true;
