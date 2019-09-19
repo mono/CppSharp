@@ -239,7 +239,7 @@ namespace CppSharp.Passes
             if (!property.IsOverride)
                 return;
 
-            Property baseProperty = GetBaseProperty(@class, property);
+            Property baseProperty = @class.GetBaseProperty(property);
             if (baseProperty == null)
             {
                 if (property.HasSetter)
@@ -261,27 +261,6 @@ namespace CppSharp.Passes
                     property.SetMethod.GenerationKind = GenerationKind.Generate;
                 property.SetMethod = baseProperty.SetMethod;
             }
-        }
-
-        private static Property GetBaseProperty(Class @class, Property @override)
-        {
-            foreach (var @base in @class.Bases)
-            {
-                Class baseClass = @base.Class.OriginalClass ?? @base.Class;
-                Property baseProperty = baseClass.Properties.Find(p =>
-                    (@override.GetMethod?.IsOverride == true &&
-                     @override.GetMethod.BaseMethod == p.GetMethod) ||
-                    (@override.SetMethod?.IsOverride == true &&
-                     @override.SetMethod.BaseMethod == p.SetMethod) ||
-                    (@override.Field != null && @override.Field == p.Field));
-                if (baseProperty != null)
-                    return baseProperty;
-
-                baseProperty = GetBaseProperty(@base.Class, @override);
-                if (baseProperty != null)
-                    return baseProperty;
-            }
-            return null;
         }
 
         private static void RenameConflictingMethods(Class @class, Property property)

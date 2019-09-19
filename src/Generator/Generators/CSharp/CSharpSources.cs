@@ -629,7 +629,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (!method.IsGenerated || ASTUtils.CheckIgnoreMethod(method))
+                if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -640,10 +640,11 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var prop in @class.Properties)
             {
-                if (prop.GetMethod != null)
+                if (prop.GetMethod?.Namespace == @class)
                     tryAddOverload(prop.GetMethod);
 
-                if (prop.SetMethod != null && prop.SetMethod != prop.GetMethod)
+                if (prop.SetMethod?.Namespace == @class &&
+                    prop.SetMethod != prop.GetMethod)
                     tryAddOverload(prop.SetMethod);
             }
         }
@@ -894,25 +895,12 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
             property = actualProperty;
-            var param = new Parameter
-            {
-                Name = "value",
-                QualifiedType = property.SetMethod.Parameters[0].QualifiedType,
-                Kind = ParameterKind.PropertyValue
-            };
 
-            var parameters = new List<Parameter> { param };
-            var @void = new QualifiedType(new BuiltinType(PrimitiveType.Void));
-            if (property.SetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
-                GenerateVirtualPropertyCall(property.SetMethod, @class.BaseClass,
-                   property, parameters, @void);
-            else if (property.SetMethod.IsVirtual)
-                GenerateVirtualPropertyCall(property.SetMethod, @class,
-                    property, parameters, @void);
-            else if (property.SetMethod.OperatorKind == CXXOperatorKind.Subscript)
+            if (property.SetMethod.OperatorKind == CXXOperatorKind.Subscript)
                 GenerateIndexerSetter(property.SetMethod);
             else
-                GenerateInternalFunctionCall(property.SetMethod, parameters, @void);
+                GenerateFunctionInProperty(@class, property.SetMethod, actualProperty,
+                    new QualifiedType(new BuiltinType(PrimitiveType.Void)));
         }
 
         private void GenerateFieldSetter(Field field, Class @class, QualifiedType fieldType)
@@ -1046,7 +1034,7 @@ namespace CppSharp.Generators.CSharp
 
             var internalFunction = GetFunctionNativeIdentifier(function);
             var paramMarshal = GenerateFunctionParamMarshal(
-                function.Parameters[0], 0, function);
+                function.Parameters[0], 0);
             string call = $@"{@internal}.{internalFunction}({
                 GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{paramMarshal.Name})";
             if (type.IsPrimitiveType())
@@ -1205,14 +1193,8 @@ namespace CppSharp.Generators.CSharp
                     @class.Visit(TypePrinter)}."");");
                 return;
             }
-            if (actualProperty.GetMethod.SynthKind == FunctionSynthKind.AbstractImplCall)
-                GenerateVirtualPropertyCall(actualProperty.GetMethod,
-                    @class.BaseClass, actualProperty);
-            else if (actualProperty.GetMethod.IsVirtual)
-                GenerateVirtualPropertyCall(actualProperty.GetMethod,
-                    @class, actualProperty);
-            else GenerateInternalFunctionCall(actualProperty.GetMethod,
-                actualProperty.GetMethod.Parameters, property.QualifiedType);
+            GenerateFunctionInProperty(@class, actualProperty.GetMethod, actualProperty,
+                property.QualifiedType);
         }
 
         private static Property GetActualProperty(Property property, Class c)
@@ -1221,6 +1203,21 @@ namespace CppSharp.Generators.CSharp
                 return property;
             return c.Properties.SingleOrDefault(p => p.GetMethod != null &&
                 p.GetMethod.InstantiatedFrom == property.GetMethod);
+        }
+
+        private void GenerateFunctionInProperty(Class @class, Method constituent,
+            Property property, QualifiedType type)
+        {
+            if (constituent.IsVirtual && (!property.IsOverride ||
+                @class.GetBaseProperty(property).IsPure || constituent.OriginalFunction != null))
+                GenerateFunctionCall(GetVirtualCallDelegate(constituent),
+                    constituent, type);
+            else if (property.IsOverride &&
+                constituent.OriginalFunction == null)
+                WriteLine(property.GetMethod == constituent ?
+                    "return base.{0};" : "base.{0} = value;", property.Name);
+            else
+                GenerateInternalFunctionCall(constituent, type);
         }
 
         private void GenerateFieldGetter(Field field, Class @class, QualifiedType returnType)
@@ -1403,7 +1400,7 @@ namespace CppSharp.Generators.CSharp
                     // check if overriding a property from a secondary base
                     Property rootBaseProperty;
                     var isOverride = prop.IsOverride &&
-                        (rootBaseProperty = @class.GetBaseProperty(prop, true)) != null &&
+                        (rootBaseProperty = @class.GetBasePropertyByName(prop, true)) != null &&
                         (rootBaseProperty.IsVirtual || rootBaseProperty.IsPure);
 
                     if (isOverride)
@@ -2601,20 +2598,6 @@ namespace CppSharp.Generators.CSharp
                 Helpers.InstanceIdentifier}).GetHashCode();");
         }
 
-        private void GenerateVirtualPropertyCall(Method method, Class @class,
-            Property property, List<Parameter> parameters = null,
-            QualifiedType returnType = default(QualifiedType))
-        {
-            if (property.IsOverride && !property.IsPure &&
-                method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                @class.HasNonAbstractBasePropertyInPrimaryBase(property))
-                WriteLine(parameters == null ?
-                    "return base.{0};" : "base.{0} = value;", property.Name);
-            else
-                GenerateFunctionCall(GetVirtualCallDelegate(method),
-                    parameters ?? method.Parameters, method, returnType);
-        }
-
         private void GenerateVirtualFunctionCall(Method method,
             bool forceVirtualCall = false)
         {
@@ -2622,8 +2605,7 @@ namespace CppSharp.Generators.CSharp
                 !method.BaseMethod.IsPure)
                 GenerateManagedCall(method, true);
             else
-                GenerateFunctionCall(GetVirtualCallDelegate(method),
-                    method.Parameters, method);
+                GenerateFunctionCall(GetVirtualCallDelegate(method), method);
         }
 
         private string GetVirtualCallDelegate(Method method)
@@ -2749,12 +2731,8 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateInternalFunctionCall(Function function,
-            List<Parameter> parameters = null,
             QualifiedType returnType = default(QualifiedType))
         {
-            if (parameters == null)
-                parameters = function.Parameters;
-
             var @class = function.Namespace as Class;
 
             string @internal = Helpers.InternalStruct;
@@ -2763,11 +2741,11 @@ namespace CppSharp.Generators.CSharp
 
             var nativeFunction = GetFunctionNativeIdentifier(function);
             var functionName = $"{@internal}.{nativeFunction}";
-            GenerateFunctionCall(functionName, parameters, function, returnType);
+            GenerateFunctionCall(functionName, function, returnType);
         }
 
-        public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
-            Function function, QualifiedType returnType = default(QualifiedType))
+        public void GenerateFunctionCall(string functionName, Function function,
+            QualifiedType returnType = default(QualifiedType))
         {
             if (function.IsPure)
             {
@@ -2804,7 +2782,7 @@ namespace CppSharp.Generators.CSharp
                 needsInstance = !method.IsStatic || operatorParam != null;
             }
 
-            var @params = GenerateFunctionParamsMarshal(parameters, function);
+            var @params = GenerateFunctionParamsMarshal(function.Parameters);
 
             var originalFunction = function.OriginalFunction ?? function;
 
@@ -3002,8 +2980,7 @@ namespace CppSharp.Generators.CSharp
             public bool HasUsingBlock;
         }
 
-        public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
-                                                                Function function = null)
+        public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params)
         {
             var marshals = new List<ParamMarshal>();
 
@@ -3013,18 +2990,20 @@ namespace CppSharp.Generators.CSharp
                 if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
-                marshals.Add(GenerateFunctionParamMarshal(param, paramIndex++, function));
+                marshals.Add(GenerateFunctionParamMarshal(param, paramIndex++));
             }
 
             return marshals;
         }
 
-        private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
-            Function function = null)
+        private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex)
         {
             // Do not delete instance in MS ABI.
             var name = param.Name;
-            param.Name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : name;
+            var function = (Function) param.Namespace;
+            param.Name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" :
+                function.IsGenerated || function.OperatorKind == CXXOperatorKind.Subscript ?
+                name : "value";
 
             var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };

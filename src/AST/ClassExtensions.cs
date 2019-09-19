@@ -55,7 +55,28 @@ namespace CppSharp.AST
             return methods.FirstOrDefault(@override.CanOverride);
         }
 
-        public static Property GetBaseProperty(this Class @class, Property @override,
+        public static Property GetBaseProperty(this Class @class, Property @override)
+        {
+            foreach (var @base in @class.Bases.Where(b => b.IsClass))
+            {
+                Class baseClass = @base.Class.OriginalClass ?? @base.Class;
+                Property baseProperty = baseClass.Properties.Find(p =>
+                    (@override.GetMethod?.IsOverride == true &&
+                     @override.GetMethod.BaseMethod == p.GetMethod) ||
+                    (@override.SetMethod?.IsOverride == true &&
+                     @override.SetMethod.BaseMethod == p.SetMethod) ||
+                    (@override.Field != null && @override.Field == p.Field));
+                if (baseProperty != null)
+                    return baseProperty;
+
+                baseProperty = GetBaseProperty(@base.Class, @override);
+                if (baseProperty != null)
+                    return baseProperty;
+            }
+            return null;
+        }
+
+        public static Property GetBasePropertyByName(this Class @class, Property @override,
             bool onlyFirstBase = false)
         {
             foreach (var @base in @class.Bases)
@@ -76,18 +97,11 @@ namespace CppSharp.AST
                 if (baseProperty != null)
                     return baseProperty;
 
-                baseProperty = @base.Class.GetBaseProperty(@override, onlyFirstBase);
+                baseProperty = @base.Class.GetBasePropertyByName(@override, onlyFirstBase);
                 if (baseProperty != null)
                     return baseProperty;
             }
             return null;
-        }
-
-        public static bool HasNonAbstractBasePropertyInPrimaryBase(this Class @class, Property property)
-        {
-            var baseProperty = @class.GetBaseProperty(property, true);
-            return baseProperty != null && !baseProperty.IsPure &&
-                !((Class) baseProperty.OriginalNamespace).IsInterface;
         }
 
         public static Property GetPropertyByName(this Class @class, string propertyName)

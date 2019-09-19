@@ -247,7 +247,7 @@ namespace CppSharp.Passes
             {
                 var impl = CreateInterfaceProperty(property, @class);
                 impl.OriginalNamespace = @interface;
-                var rootBaseProperty = @class.GetBaseProperty(property, true);
+                var rootBaseProperty = @class.GetBasePropertyByName(property, true);
                 if (rootBaseProperty != null && rootBaseProperty.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
                 @class.Properties.Add(impl);
