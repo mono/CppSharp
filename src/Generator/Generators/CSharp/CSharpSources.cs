@@ -1208,12 +1208,13 @@ namespace CppSharp.Generators.CSharp
         private void GenerateFunctionInProperty(Class @class, Method constituent,
             Property property, QualifiedType type)
         {
+            bool isInSecondaryBase = constituent.OriginalFunction != null &&
+                 constituent.Namespace == @class;
             if (constituent.IsVirtual && (!property.IsOverride ||
-                @class.GetBaseProperty(property).IsPure || constituent.OriginalFunction != null))
+                isInSecondaryBase || @class.GetBaseProperty(property).IsPure))
                 GenerateFunctionCall(GetVirtualCallDelegate(constituent),
                     constituent, type);
-            else if (property.IsOverride &&
-                constituent.OriginalFunction == null)
+            else if (property.IsOverride && !isInSecondaryBase)
                 WriteLine(property.GetMethod == constituent ?
                     "return base.{0};" : "base.{0} = value;", property.Name);
             else
