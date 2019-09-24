@@ -68,7 +68,7 @@ namespace CppSharp.Passes
 
         protected virtual IEnumerable<Property> GenerateProperties(Class @class)
         {
-            var newProperties = new List<Property>();
+            var properties = new List<Property>();
             foreach (Method method in @class.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
                     m.SynthKind != FunctionSynthKind.DefaultValueOverload &&
@@ -78,39 +78,29 @@ namespace CppSharp.Passes
                 if (IsGetter(method))
                 {
                     string name = GetPropertyName(method.Name);
-                    QualifiedType type = method.OriginalReturnType;
-                    Property property = GetProperty(method, name, type);
-                    if (!property.HasGetter)
-                    {
-                        property.GetMethod = method;
-                        property.QualifiedType = method.OriginalReturnType;
-                        newProperties.Add(property);
-                    }
-                    else
-                        method.GenerationKind = GenerationKind.Generate;
+                    GetProperty(properties, method, name, method.OriginalReturnType);
                     continue;
                 }
                 if (IsSetter(method))
                 {
                     string name = GetPropertyNameFromSetter(method.Name);
-                    QualifiedType type = method.Parameters.First(p => p.Kind == ParameterKind.Regular).QualifiedType;
-                    Property property = GetProperty(method, name, type, true);
-                    property.SetMethod = method;
-                    newProperties.Add(property);
+                    QualifiedType type = method.Parameters.First(
+                        p => p.Kind == ParameterKind.Regular).QualifiedType;
+                    GetProperty(properties, method, name, type, true);
                 }
             }
 
-            return CleanUp(@class, newProperties);
+            return CleanUp(@class, properties);
         }
 
-        private IEnumerable<Property> CleanUp(Class @class, List<Property> newProperties)
+        private IEnumerable<Property> CleanUp(Class @class, List<Property> properties)
         {
             if (!Options.UsePropertyDetectionHeuristics)
-                return newProperties;
+                return properties;
 
-            for (int i = newProperties.Count - 1; i >= 0; i--)
+            for (int i = properties.Count - 1; i >= 0; i--)
             {
-                Property property = newProperties[i];
+                Property property = properties[i];
                 if (property.HasSetter)
                     continue;
 
@@ -124,47 +114,46 @@ namespace CppSharp.Passes
                 {
                     property.GetMethod.GenerationKind = GenerationKind.Generate;
                     @class.Properties.Remove(property);
-                    newProperties.RemoveAt(i);
+                    properties.RemoveAt(i);
                 }
             }
 
-            return newProperties;
+            return properties;
         }
 
-        private static Property GetProperty(Method method, string name,
-            QualifiedType type, bool isSetter = false)
+        private static void GetProperty(List<Property> properties, Method method,
+            string name, QualifiedType type, bool isSetter = false)
         {
             Type underlyingType = GetUnderlyingType(type);
             Class @class = (Class) method.Namespace;
 
-            Property property = @class.Properties.Find(
+            Property property = properties.Find(
                 p => p.Field == null &&
                     ((!isSetter && p.SetMethod?.IsStatic == method.IsStatic) ||
-                        (isSetter && p.GetMethod?.IsStatic == method.IsStatic)) &&
-                        ((p.HasGetter && GetUnderlyingType(
-                            p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
-                        (p.HasSetter && GetUnderlyingType(
-                            p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType))) &&
-                    Match(p, name)) ??
-                new Property { Name = name, QualifiedType = type };
+                     (isSetter && p.GetMethod?.IsStatic == method.IsStatic)) &&
+                    ((p.HasGetter && GetUnderlyingType(
+                         p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
+                     (p.HasSetter && GetUnderlyingType(
+                         p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType))) &&
+                    Match(p, name));
 
-            if (property.Namespace == null)
-            {
-                property.Namespace = method.Namespace;
-                property.Access = method.Access;
-                @class.Properties.Add(property);
-            }
+            if (property == null)
+                properties.Add(property = new Property { Name = name, QualifiedType = type });
+
+            if (isSetter)
+                property.SetMethod = method;
             else
             {
-                property.Access = (AccessSpecifier) Math.Max(
-                    (int) (property.GetMethod ?? property.SetMethod).Access,
-                    (int) method.Access);
+                property.GetMethod = method;
+                property.QualifiedType = method.OriginalReturnType;
             }
 
-            method.GenerationKind = GenerationKind.Internal;
+            property.Access = (AccessSpecifier) Math.Max(
+                (int) (property.GetMethod ?? property.SetMethod).Access,
+                (int) method.Access);
+            
             if (method.ExplicitInterfaceImpl != null)
                 property.ExplicitInterfaceImpl = method.ExplicitInterfaceImpl;
-            return property;
         }
 
         private static bool Match(Property property, string name)
@@ -198,37 +187,30 @@ namespace CppSharp.Passes
                 char.ToLowerInvariant(name[2]) + name.Substring(3) : name;
         }
 
-        private static void ProcessProperties(Class @class, IEnumerable<Property> newProperties)
+        private static void ProcessProperties(Class @class, IEnumerable<Property> properties)
         {
-            foreach (Property property in newProperties)
+            foreach (Property property in properties)
             {
                 ProcessOverridden(@class, property);
 
                 if (!property.HasGetter)
-                {
-                    if (property.HasSetter)
-                        property.SetMethod.GenerationKind = GenerationKind.Generate;
-                    @class.Properties.Remove(property);
                     continue;
-                }
                 if (!property.HasSetter &&
                     @class.GetOverloads(property.GetMethod).Any(
                         m => m != property.GetMethod && !m.Ignore))
-                {
-                    property.GetMethod.GenerationKind = GenerationKind.Generate;
-                    @class.Properties.Remove(property);
                     continue;
-                }
 
-                Property conflict = newProperties.LastOrDefault(
+                Property conflict = properties.LastOrDefault(
                     p => p.Name == property.Name && p != property &&
                         p.ExplicitInterfaceImpl == property.ExplicitInterfaceImpl);
-                if (conflict != null && conflict.GetMethod != null)
-                {
-                    conflict.GetMethod.GenerationKind = GenerationKind.Generate;
+                if (conflict?.GetMethod != null)
                     conflict.GetMethod = null;
-                }
 
+                property.GetMethod.GenerationKind = GenerationKind.Internal;
+                if (property.SetMethod != null)
+                    property.SetMethod.GenerationKind = GenerationKind.Internal;
+                property.Namespace = @class;
+                @class.Properties.Add(property);
                 RenameConflictingMethods(@class, property);
                 CombineComments(property);
             }
@@ -243,24 +225,14 @@ namespace CppSharp.Passes
             if (baseProperty == null)
             {
                 if (property.HasSetter)
-                {
-                    property.SetMethod.GenerationKind = GenerationKind.Generate;
                     property.SetMethod = null;
-                }
                 else
-                {
-                    property.GetMethod.GenerationKind = GenerationKind.Generate;
                     property.GetMethod = null;
-                }
             }
             else if (!property.HasGetter && baseProperty.HasSetter)
                 property.GetMethod = baseProperty.GetMethod;
             else if (!property.HasSetter || !baseProperty.HasSetter)
-            {
-                if (property.HasSetter)
-                    property.SetMethod.GenerationKind = GenerationKind.Generate;
                 property.SetMethod = baseProperty.SetMethod;
-            }
         }
 
         private static void RenameConflictingMethods(Class @class, Property property)
