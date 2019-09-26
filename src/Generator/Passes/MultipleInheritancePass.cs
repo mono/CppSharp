@@ -193,7 +193,6 @@ namespace CppSharp.Passes
                         OriginalFunction = property.GetMethod,
                         Namespace = @namespace
                     };
-                interfaceProperty.GetMethod.OverriddenMethods.Add(property.GetMethod);
             }
             if (property.SetMethod != null)
             {
@@ -204,7 +203,6 @@ namespace CppSharp.Passes
                             OriginalFunction = property.SetMethod,
                             Namespace = @namespace
                         };
-                interfaceProperty.SetMethod.OverriddenMethods.Add(property.SetMethod);
             }
             return interfaceProperty;
         }
@@ -231,7 +229,6 @@ namespace CppSharp.Passes
                         OriginalNamespace = @interface,
                         OriginalFunction = method.OriginalFunction
                     };
-                impl.OverriddenMethods.Add((Method) method.OriginalFunction);
                 var rootBaseMethod = @class.GetBaseMethod(method);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;

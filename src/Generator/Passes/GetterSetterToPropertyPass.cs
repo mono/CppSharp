@@ -66,9 +66,12 @@ namespace CppSharp.Passes
             return false;
         }
 
-        protected virtual IEnumerable<Property> GenerateProperties(Class @class)
+        protected virtual List<Property> GetProperties(Class @class) =>
+            new List<Property>();
+
+        protected IEnumerable<Property> GenerateProperties(Class @class)
         {
-            var properties = new List<Property>();
+            List<Property> properties = GetProperties(@class);
             foreach (Method method in @class.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
                     m.SynthKind != FunctionSynthKind.DefaultValueOverload &&
@@ -101,7 +104,7 @@ namespace CppSharp.Passes
             for (int i = properties.Count - 1; i >= 0; i--)
             {
                 Property property = properties[i];
-                if (property.HasSetter)
+                if (property.HasSetter || property.IsExplicitlyGenerated)
                     continue;
 
                 string firstWord = GetFirstWord(property.GetMethod.Name);
@@ -173,8 +176,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            return property.SetMethod != null &&
-                GetPropertyNameFromSetter(property.SetMethod.Name) == name;
+            return false;
         }
 
         private static string RemovePrefix(string identifier)

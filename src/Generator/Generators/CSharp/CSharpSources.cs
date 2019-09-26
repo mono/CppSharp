@@ -638,13 +638,15 @@ namespace CppSharp.Generators.CSharp
                 tryAddOverload(method);
             }
 
-            foreach (var prop in @class.Properties)
+            foreach (var prop in @class.Properties.Where(p => p.Field == null))
             {
-                if (prop.GetMethod?.Namespace == @class)
+                if ((!prop.IsOverride || prop.GetMethod.Namespace == @class) &&
+                    !functions.Contains(prop.GetMethod))
                     tryAddOverload(prop.GetMethod);
 
-                if (prop.SetMethod?.Namespace == @class &&
-                    prop.SetMethod != prop.GetMethod)
+                if (prop.SetMethod != null
+                    && (!prop.IsOverride || prop.SetMethod.Namespace == @class)
+                    && !functions.Contains(prop.SetMethod))
                     tryAddOverload(prop.SetMethod);
             }
         }

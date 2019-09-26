@@ -216,7 +216,7 @@ namespace CppSharp
         public void SetupPasses(ILibrary library)
         {
             var TranslationUnitPasses = Context.TranslationUnitPasses;
-            
+
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new IgnoreSystemDeclarationsPass());
             if (Options.IsCSharpGenerator)

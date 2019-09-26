@@ -66,7 +66,7 @@ namespace CppSharp.Passes
             var property = decl as Property;
             if (property != null && !property.IsStatic)
             {
-                var rootBaseProperty = ((Class) property.Namespace).GetBaseProperty(property);
+                var rootBaseProperty = ((Class) property.Namespace).GetBasePropertyByName(property);
                 if (rootBaseProperty != null && rootBaseProperty != property)
                 {
                     newName = rootBaseProperty.Name;
