@@ -9,6 +9,14 @@ namespace CppSharp.Passes
 {
     public class CleanInvalidDeclNamesPass : TranslationUnitPass
     {
+        public CleanInvalidDeclNamesPass()
+        {
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitEventParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitTemplateArguments = false;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))

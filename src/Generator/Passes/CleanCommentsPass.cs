@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CppSharp.AST;
-using CppSharp.Generators.CSharp;
-using System.Text.RegularExpressions;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
     public class CleanCommentsPass : TranslationUnitPass, ICommentVisitor<bool>
     {
-        public bool VisitBlockCommand(BlockCommandComment comment)
+        public CleanCommentsPass()
         {
-            return true;
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitTemplateArguments = false;
         }
+
+        public bool VisitBlockCommand(BlockCommandComment comment) => true;
+
+        public override bool VisitParameterDecl(Parameter parameter) =>
+            base.VisitDeclaration(parameter);
 
         public override bool VisitDeclaration(Declaration decl)
         {
@@ -38,20 +41,11 @@ namespace CppSharp.Passes
             return true;
         }
         #region Comments Visit
-        public bool VisitHTMLEndTag(HTMLEndTagComment comment)
-        {
-            return true;
-        }
+        public bool VisitHTMLEndTag(HTMLEndTagComment comment) => true;
 
-        public bool VisitHTMLStartTag(HTMLStartTagComment comment)
-        {
-            return true;
-        }
+        public bool VisitHTMLStartTag(HTMLStartTagComment comment) => true;
 
-        public bool VisitInlineCommand(InlineCommandComment comment)
-        {
-            return true;
-        }
+        public bool VisitInlineCommand(InlineCommandComment comment) => true;
 
         public bool VisitParagraphCommand(ParagraphComment comment)
         {
@@ -78,35 +72,17 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public bool VisitParamCommand(ParamCommandComment comment)
-        {
-            return true;
-        }
+        public bool VisitParamCommand(ParamCommandComment comment) => true;
 
-        public bool VisitText(TextComment comment)
-        {
-            return true;
-        }
+        public bool VisitText(TextComment comment) => true;
 
-        public bool VisitTParamCommand(TParamCommandComment comment)
-        {
-            return true;
-        }
+        public bool VisitTParamCommand(TParamCommandComment comment) => true;
 
-        public bool VisitVerbatimBlock(VerbatimBlockComment comment)
-        {
-            return true;
-        }
+        public bool VisitVerbatimBlock(VerbatimBlockComment comment) => true;
 
-        public bool VisitVerbatimBlockLine(VerbatimBlockLineComment comment)
-        {
-            return true;
-        }
+        public bool VisitVerbatimBlockLine(VerbatimBlockLineComment comment) => true;
 
-        public bool VisitVerbatimLine(VerbatimLineComment comment)
-        {
-            return true;
-        }
+        public bool VisitVerbatimLine(VerbatimLineComment comment) => true;
         #endregion
     }
 }

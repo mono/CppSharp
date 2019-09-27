@@ -12,8 +12,13 @@ namespace CppSharp.Passes
             VisitOptions.VisitClassBases = false;
             VisitOptions.VisitClassFields = false;
             VisitOptions.VisitEventParameters = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
             VisitOptions.VisitNamespaceEnums = false;
             VisitOptions.VisitNamespaceEvents = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitNamespaceTypedefs = false;
+            VisitOptions.VisitNamespaceVariables = false;
             VisitOptions.VisitTemplateArguments = false;
         }
 

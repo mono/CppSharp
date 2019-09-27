@@ -7,6 +7,22 @@ namespace CppSharp.Passes
 {
     public class MarshalPrimitivePointersAsRefTypePass : TranslationUnitPass
     {
+        public MarshalPrimitivePointersAsRefTypePass()
+        {
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassFields = false;
+            VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitEventParameters = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceEvents = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitNamespaceTypedefs = false;
+            VisitOptions.VisitNamespaceVariables = false;
+            VisitOptions.VisitTemplateArguments = false;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (!base.VisitFunctionDecl(function) ||

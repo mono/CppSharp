@@ -6,6 +6,21 @@ namespace CppSharp.Passes
 {
     public class FieldToPropertyPass : TranslationUnitPass
     {
+        public FieldToPropertyPass()
+        {
+            VisitOptions.VisitClassBases = false;
+            VisitOptions.VisitClassProperties = false;
+            VisitOptions.VisitEventParameters = false;
+            VisitOptions.VisitFunctionParameters = false;
+            VisitOptions.VisitFunctionReturnType = false;
+            VisitOptions.VisitNamespaceEnums = false;
+            VisitOptions.VisitNamespaceEvents = false;
+            VisitOptions.VisitNamespaceTemplates = false;
+            VisitOptions.VisitNamespaceTypedefs = false;
+            VisitOptions.VisitNamespaceVariables = false;
+            VisitOptions.VisitTemplateArguments = false;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (@class.CompleteDeclaration != null)
