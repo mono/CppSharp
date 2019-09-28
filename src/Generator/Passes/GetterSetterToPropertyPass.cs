@@ -74,6 +74,8 @@ namespace CppSharp.Passes
             List<Property> properties = GetProperties(@class);
             foreach (Method method in @class.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
+                    (properties.All(p => p.GetMethod != m && p.SetMethod != m) ||
+                        m.OriginalFunction != null) &&
                     m.SynthKind != FunctionSynthKind.DefaultValueOverload &&
                     m.SynthKind != FunctionSynthKind.ComplementOperator &&
                     !m.ExcludeFromPasses.Contains(typeof(GetterSetterToPropertyPass))))
