@@ -193,7 +193,12 @@ namespace CppSharp.Passes
                 specs = specializations[specialization.TranslationUnit.Module];
             else specs = specializations[specialization.TranslationUnit.Module] =
                 new HashSet<ClassTemplateSpecialization>();
-            specs.Add(specialization);
+            if (!specs.Contains(specialization))
+            {
+                specs.Add(specialization);
+                foreach (Method method in specialization.Methods)
+                    method.Visit(this);
+            }
             GetSymbolsCodeGenerator(specialization.TranslationUnit.Module);
         }
 
