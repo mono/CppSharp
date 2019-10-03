@@ -70,13 +70,27 @@ namespace CppSharp.Passes
                 "__declspec(dllexport) " : string.Empty;
         }
 
-        private string GetWrapper(Module module)
+        private string GetWrapper(Function function)
         {
-            var symbolsLibraryName = new StringBuilder(module.SymbolsLibraryName);
-            for (int i = 0; i < symbolsLibraryName.Length; i++)
-                if (!char.IsLetterOrDigit(symbolsLibraryName[i]))
-                    symbolsLibraryName[i] = '_';
-            return $"{symbolsLibraryName}{++functionCount}";
+            if (function is Method method && (method.IsConstructor || method.IsDestructor))
+            {
+                var nameBuilder = new StringBuilder(method.USR);
+                for (int i = 0; i < nameBuilder.Length; i++)
+                    if (!char.IsLetterOrDigit(nameBuilder[i]) &&
+                        nameBuilder[i] != '_')
+                    {
+                        if (nameBuilder[i] == '&')
+                            nameBuilder.Insert(i + 1, '_');
+                        nameBuilder[i] = '_';
+                    }
+                string @class = function.Namespace.Name;
+                nameBuilder.Replace("c__S_", string.Empty).Replace(
+                    $"{@class}_F_", $"{@class}_").TrimUnderscores();
+                if (function.IsOperator)
+                    nameBuilder.Append(function.OperatorKind);
+                return nameBuilder.ToString();
+            }
+            return $"_{functionCount++}";
         }
 
         private static string GetDerivedType(string @namespace, string wrapper)
@@ -86,7 +100,7 @@ namespace CppSharp.Passes
 
         private void WrapConstructor(Method method)
         {
-            string wrapper = GetWrapper(method.TranslationUnit.Module);
+            string wrapper = GetWrapper(method);
             if (Options.CheckSymbols)
             {
                 method.Mangled = wrapper;
@@ -144,7 +158,7 @@ namespace CppSharp.Passes
 
         private void WrapDestructor(Method method)
         {
-            string wrapper = GetWrapper(method.TranslationUnit.Module);
+            string wrapper = GetWrapper(method);
             if (Options.CheckSymbols)
             {
                 method.Mangled = wrapper;
@@ -178,7 +192,7 @@ namespace CppSharp.Passes
 
         private void TakeFunctionAddress(Function function)
         {
-            string wrapper = GetWrapper(function.TranslationUnit.Module);
+            string wrapper = GetWrapper(function);
             string @namespace = function.Namespace.Visit(cppTypePrinter);
             if (function.Access == AccessSpecifier.Protected)
             {
