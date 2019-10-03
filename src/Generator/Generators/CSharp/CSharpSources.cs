@@ -624,7 +624,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (@class.HasNonTrivialDestructor && !@class.IsStatic)
-                foreach (var dtor in @class.Destructors)
+                foreach (var dtor in @class.Destructors.Where(d => !d.IsVirtual))
                     tryAddOverload(dtor);
 
             foreach (var method in @class.Methods)
