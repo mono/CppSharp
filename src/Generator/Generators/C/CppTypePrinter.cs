@@ -337,7 +337,12 @@ namespace CppSharp.Generators.C
                 return printName ? string.Format(":({0}){1}", type, name)
                     : string.Format(":({0})", type);
 
-            return printName ? string.Format("{0} {1}", type, name) : type;
+            CppSharp.AST.Type desugared = arg.Type.Desugar();
+            desugared = (desugared.GetFinalPointee() ?? desugared).Desugar();
+            return printName ?
+                ((!(arg.Type is TypedefType) || ResolveTypedefs) &&
+                  desugared is FunctionType ?
+                  type.Replace("(*)", $"(*{name})") : $"{type} {name}") : type;
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
