@@ -225,8 +225,8 @@ namespace CppSharp
 
             if (Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new GenerateSymbolsPass());
                 TranslationUnitPasses.AddPass(new TrimSpecializationsPass());
+                TranslationUnitPasses.AddPass(new GenerateSymbolsPass());
                 TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             }
 

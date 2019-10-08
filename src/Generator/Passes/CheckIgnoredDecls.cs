@@ -93,7 +93,6 @@ namespace CppSharp.Passes
                 Diagnostics.Debug("Decl '{0}' was ignored due to invalid access",
                     decl.Name);
                 decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
-                return true;
             }
 
             return true;
@@ -524,6 +523,10 @@ namespace CppSharp.Passes
                     return typeMap.IsIgnored;
             }
 
+            if (decl.Ignore)
+                return true;
+
+            decl.Visit(this);
             return decl.Ignore;
         }
 
