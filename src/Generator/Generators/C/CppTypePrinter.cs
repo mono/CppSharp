@@ -179,9 +179,9 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
             FunctionType func;
-            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
-                return typedef.Declaration.Type.Visit(this, quals);
             var qual = GetStringQuals(quals);
+            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
+                return $"{qual}{typedef.Declaration.QualifiedType.Visit(this)}";
             return $"{qual}{typedef.Declaration.Visit(this)}";
         }
 
