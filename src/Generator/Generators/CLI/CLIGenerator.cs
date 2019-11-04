@@ -29,14 +29,7 @@ namespace CppSharp.Generators.CLI
             return outputs;
         }
 
-        public override bool SetupPasses()
-        {
-            // Note: The ToString override will only work if this pass runs
-            // after the MoveOperatorToCallPass.
-            if (Context.Options.GenerateObjectOverrides)
-                Context.TranslationUnitPasses.AddPass(new ObjectOverridesPass(this));
-            return true;
-        }
+        public override bool SetupPasses() => true;
 
         public static bool ShouldGenerateClassNativeField(Class @class)
         {
