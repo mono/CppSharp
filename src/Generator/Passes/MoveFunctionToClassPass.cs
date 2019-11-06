@@ -3,66 +3,78 @@ using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
-    /// <summary>
-    /// Moves a function to a class, if any, named after the function's header.
-    /// </summary>
     public class MoveFunctionToClassPass : TranslationUnitPass
     {
+        public MoveFunctionToClassPass()
+        {
+            VisitOptions.VisitClassBases = VisitOptions.VisitClassFields =
+            VisitOptions.VisitClassMethods = VisitOptions.VisitClassProperties =
+            VisitOptions.VisitClassTemplateSpecializations = VisitOptions.VisitEventParameters =
+            VisitOptions.VisitFunctionParameters = VisitOptions.VisitFunctionReturnType =
+            VisitOptions.VisitNamespaceEnums = VisitOptions.VisitNamespaceEvents =
+            VisitOptions.VisitNamespaceTemplates = VisitOptions.VisitNamespaceTypedefs =
+            VisitOptions.VisitNamespaceVariables = VisitOptions.VisitPropertyAccessors =
+            VisitOptions.VisitTemplateArguments = false;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!VisitDeclaration(function))
+            if (!function.IsGenerated)
                 return false;
 
-            if (!function.IsGenerated || function.Namespace is Class)
+            Class @class = FindClassToMoveFunctionTo(function);
+
+            if (@class == null ||
+                @class.TranslationUnit.Module != function.TranslationUnit.Module)
                 return false;
 
-            var @class = FindClassToMoveFunctionTo(function.Namespace);
-            if (@class != null && @class.TranslationUnit.Module == function.TranslationUnit.Module)
+            // Create a new fake method so it acts as a static method.
+            var method = new Method(function)
             {
-                MoveFunction(function, @class);
-                Diagnostics.Debug("Function moved to class: {0}::{1}", @class.Name, function.Name);
+                Namespace = @class,
+                OperatorKind = function.OperatorKind,
+                OriginalFunction = null,
+                IsStatic = true
+            };
+            if (method.IsOperator)
+            {
+                method.IsNonMemberOperator = true;
+                method.Kind = CXXMethodKind.Operator;
             }
 
-            if (function.IsOperator)
-                function.ExplicitlyIgnore();
+            function.ExplicitlyIgnore();
+
+            @class.Methods.Add(method);
+
+            Diagnostics.Debug($"Function {function.Name} moved to class {@class.Name}");
 
             return true;
         }
 
-        private Class FindClassToMoveFunctionTo(INamedDecl @namespace)
+        private Class FindClassToMoveFunctionTo(Function function)
         {
-            var unit = @namespace as TranslationUnit;
-            if (unit == null)
+            Class @class = null;
+            if (function.IsOperator)
             {
-                return ASTContext.FindClass(
-                    @namespace.Name, ignoreCase: true).FirstOrDefault();
+                foreach (var param in function.Parameters)
+                {
+                    if (FunctionToInstanceMethodPass.GetClassParameter(param, out @class))
+                        break;
+                }
+                if (@class == null)
+                    function.ExplicitlyIgnore();
             }
-            return ASTContext.FindCompleteClass(
-                unit.FileNameWithoutExtension.ToLowerInvariant(), true);
-        }
-
-        private static void MoveFunction(Function function, Class @class)
-        {
-            var method = new Method(function)
+            else
             {
-                Namespace = @class,
-                IsStatic = true
-            };
-
-            function.ExplicitlyIgnore();
-
-            if (method.OperatorKind != CXXOperatorKind.None)
-            {
-                var param = function.Parameters[0];
-                Class type;
-                if (!FunctionToInstanceMethodPass.GetClassParameter(param, out type))
-                    return;
-                method.Kind = CXXMethodKind.Operator;
-                method.IsNonMemberOperator = true;
-                method.OriginalFunction = null;
+                var unit = function.Namespace as TranslationUnit;
+                @class = unit == null
+                    ? ASTContext.FindClass(
+                        function.Namespace.Name, ignoreCase: true).FirstOrDefault()
+                    : ASTContext.FindCompleteClass(
+                        unit.FileNameWithoutExtension.ToLowerInvariant(), true);
             }
 
-            @class.Methods.Add(method);
+            return @class;
         }
     }
 }
