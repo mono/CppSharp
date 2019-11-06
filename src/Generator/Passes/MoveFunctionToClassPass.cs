@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -17,6 +18,14 @@ namespace CppSharp.Passes
             VisitOptions.VisitTemplateArguments = false;
         }
 
+        public override bool VisitASTContext(ASTContext context)
+        {
+            bool result = base.VisitASTContext(context);
+            foreach (Function movedFunction in movedFunctions)
+                movedFunction.OriginalNamespace.Declarations.Remove(movedFunction);
+            return result;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (!function.IsGenerated)
@@ -28,23 +37,9 @@ namespace CppSharp.Passes
                 @class.TranslationUnit.Module != function.TranslationUnit.Module)
                 return false;
 
-            // Create a new fake method so it acts as a static method.
-            var method = new Method(function)
-            {
-                Namespace = @class,
-                OperatorKind = function.OperatorKind,
-                OriginalFunction = null,
-                IsStatic = true
-            };
-            if (method.IsOperator)
-            {
-                method.IsNonMemberOperator = true;
-                method.Kind = CXXMethodKind.Operator;
-            }
-
-            function.ExplicitlyIgnore();
-
-            @class.Methods.Add(method);
+            function.Namespace = @class;
+            @class.Declarations.Add(function);
+            movedFunctions.Add(function);
 
             Diagnostics.Debug($"Function {function.Name} moved to class {@class.Name}");
 
@@ -76,5 +71,7 @@ namespace CppSharp.Passes
 
             return @class;
         }
+
+        private HashSet<Function> movedFunctions = new HashSet<Function>();
     }
 }

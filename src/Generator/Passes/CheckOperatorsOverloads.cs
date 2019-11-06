@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
@@ -65,6 +66,15 @@ namespace CppSharp.Passes
                 else
                     CreateOperator(@class, @operator);
             }
+
+            foreach (var @operator in @class.Functions.Where(
+                f => f.IsGenerated && f.IsOperator &&
+                    !IsValidOperatorOverload(f) && !f.IsExplicitlyGenerated))
+            {
+                Diagnostics.Debug("Invalid operator overload {0}::{1}",
+                    @class.OriginalName, @operator.OperatorKind);
+                @operator.ExplicitlyIgnore();
+            }
         }
 
         private static void CreateOperator(Class @class, Method @operator)
@@ -128,64 +138,85 @@ namespace CppSharp.Passes
             @operator.GenerationKind = GenerationKind.Internal;
         }
 
-        private static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
-            CXXOperatorKind op2)
+        private static void HandleMissingOperatorOverloadPair(Class @class,
+            CXXOperatorKind op1, CXXOperatorKind op2)
         {
-            foreach (var op in @class.Operators.Where(
+            List<Method> methods = HandleMissingOperatorOverloadPair(
+                @class, @class.Operators, op1, op2);
+            foreach (Method @operator in methods)
+            {
+                int index = @class.Methods.IndexOf(
+                    (Method) @operator.OriginalFunction);
+                @class.Methods.Insert(index, @operator);
+            }
+
+            List<Function> functions = HandleMissingOperatorOverloadPair(
+                @class, @class.Functions, op1, op2);
+            foreach (Method @operator in functions)
+            {
+                int index = @class.Declarations.IndexOf(
+                    @operator.OriginalFunction);
+                @class.Methods.Insert(index, @operator);
+            }
+        }
+
+        private static List<T> HandleMissingOperatorOverloadPair<T>(Class @class,
+            IEnumerable<T> functions, CXXOperatorKind op1,
+            CXXOperatorKind op2) where T : Function, new()
+        {
+            List<T> fs = new List<T>();
+            foreach (var op in functions.Where(
                 o => o.OperatorKind == op1 || o.OperatorKind == op2).ToList())
             {
-                int index;
-                var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2,
-                    op.Parameters.First().Type, op.Parameters.Last().Type);
+                var missingKind = CheckMissingOperatorOverloadPair(functions,
+                    op1, op2, op.Parameters.First().Type, op.Parameters.Last().Type);
 
                 if (missingKind == CXXOperatorKind.None || !op.IsGenerated)
                     continue;
 
-                var method = new Method()
-                    {
-                        Name = Operators.GetOperatorIdentifier(missingKind),
-                        Namespace = @class,
-                        SynthKind = FunctionSynthKind.ComplementOperator,
-                        Kind = CXXMethodKind.Operator,
-                        OperatorKind = missingKind,
-                        ReturnType = op.ReturnType
-                    };
+                var function = new T()
+                {
+                    Name = Operators.GetOperatorIdentifier(missingKind),
+                    Namespace = @class,
+                    SynthKind = FunctionSynthKind.ComplementOperator,
+                    OperatorKind = missingKind,
+                    ReturnType = op.ReturnType,
+                    OriginalFunction = op
+                };
 
-                method.Parameters.AddRange(op.Parameters.Select(
-                    p => new Parameter(p) { Namespace = method }));
+                var method = function as Method;
+                if (method != null)
+                    method.Kind = CXXMethodKind.Operator;
 
-                @class.Methods.Insert(index, method);
+                function.Parameters.AddRange(op.Parameters.Select(
+                    p => new Parameter(p) { Namespace = function }));
+
+                fs.Add(function);
             }
+            return fs;
         }
-
-        static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class, out int index,
-            CXXOperatorKind op1, CXXOperatorKind op2, Type typeLeft, Type typeRight)
+        
+        private static CXXOperatorKind CheckMissingOperatorOverloadPair(
+            IEnumerable<Function> functions,
+            CXXOperatorKind op1, CXXOperatorKind op2,
+            Type typeLeft, Type typeRight)
         {
-            var first = @class.Operators.FirstOrDefault(o => o.IsGenerated && o.OperatorKind == op1 &&
-                o.Parameters.First().Type.Equals(typeLeft) && o.Parameters.Last().Type.Equals(typeRight));
-            var second = @class.Operators.FirstOrDefault(o => o.IsGenerated && o.OperatorKind == op2 &&
-                o.Parameters.First().Type.Equals(typeLeft) && o.Parameters.Last().Type.Equals(typeRight));
+            var first = functions.FirstOrDefault(
+                o => o.IsGenerated && o.OperatorKind == op1 &&
+                    o.Parameters.First().Type.Equals(typeLeft) &&
+                    o.Parameters.Last().Type.Equals(typeRight));
+            var second = functions.FirstOrDefault(
+                o => o.IsGenerated && o.OperatorKind == op2 &&
+                    o.Parameters.First().Type.Equals(typeLeft) &&
+                    o.Parameters.Last().Type.Equals(typeRight));
 
             var hasFirst = first != null;
             var hasSecond = second != null;
 
-            if (hasFirst && !hasSecond)
-            {
-                index = @class.Methods.IndexOf(first);
-                return op2;
-            }
-
-            if (hasSecond && !hasFirst)
-            {
-                index = @class.Methods.IndexOf(second);
-                return op1;
-            }
-
-            index = 0;
-            return CXXOperatorKind.None;
+            return hasFirst && !hasSecond ? op2 : hasSecond && !hasFirst ? op1 : CXXOperatorKind.None;
         }
 
-        private bool IsValidOperatorOverload(Method @operator)
+        private bool IsValidOperatorOverload(Function @operator)
         {
             // These follow the order described in MSDN (Overloadable Operators).
 

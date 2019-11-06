@@ -222,10 +222,13 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(BlockKind.FunctionsClass);
 
-            WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
-            WriteLine("{");
-            WriteLine("public:");
-            Indent();
+            if (!(decl is Class))
+            {
+                WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
+                WriteLine("{");
+                WriteLine("public:");
+                Indent();
+            }
 
             // Generate all the function declarations for the module.
             foreach (var function in decl.Functions)
@@ -233,8 +236,11 @@ namespace CppSharp.Generators.CLI
                 GenerateFunction(function);
             }
 
-            Unindent();
-            WriteLine("};");
+            if (!(decl is Class))
+            {
+                Unindent();
+                WriteLine("};");
+            }
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }

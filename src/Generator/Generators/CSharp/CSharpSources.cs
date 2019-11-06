@@ -239,14 +239,18 @@ namespace CppSharp.Generators.CSharp
 
         public virtual void GenerateNamespaceFunctionsAndVariables(DeclarationContext context)
         {
+            var hasGlobalFunctions = !(context is Class) && context.Functions.Any(
+                f => f.IsGenerated);
+
             var hasGlobalVariables = !(context is Class) && context.Variables.Any(
                 v => v.IsGenerated && v.Access == AccessSpecifier.Public);
 
-            if (!context.Functions.Any(f => f.IsGenerated) && !hasGlobalVariables)
+            if (!hasGlobalFunctions && !hasGlobalVariables)
                 return;
 
-            PushBlock(BlockKind.Functions);
             var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+
+            PushBlock(BlockKind.Functions);
 
             var keyword = "class";
             var classes = EnumerateClasses().ToList();
@@ -271,12 +275,8 @@ namespace CppSharp.Generators.CSharp
             UnindentAndWriteCloseBrace();
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            foreach (var function in context.Functions)
-            {
-                if (!function.IsGenerated) continue;
-
+            foreach (Function function in context.Functions.Where(f => f.IsGenerated))
                 GenerateFunction(function, parentName);
-            }
 
             foreach (var variable in context.Variables.Where(
                 v => v.IsGenerated && v.Access == AccessSpecifier.Public))
@@ -443,7 +443,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             GenerateClassConstructors(@class);
-
+            foreach (Function function in @class.Functions.Where(f => f.IsGenerated))
+                GenerateFunction(function, @class.Name);
             GenerateClassMethods(@class.Methods);
             GenerateClassVariables(@class);
             GenerateClassProperties(@class);
@@ -649,6 +650,10 @@ namespace CppSharp.Generators.CSharp
                     && !functions.Contains(prop.SetMethod))
                     tryAddOverload(prop.SetMethod);
             }
+
+            functions.AddRange(from function in @class.Functions
+                               where function.IsGenerated && !function.IsSynthetized
+                               select function);
         }
 
         private IEnumerable<string> GatherInternalParams(Function function, out TypePrinterResult retType)
@@ -2323,6 +2328,8 @@ namespace CppSharp.Generators.CSharp
 
             if (function.SynthKind == FunctionSynthKind.DefaultValueOverload)
                 GenerateOverloadCall(function);
+            else if (function.IsOperator)
+                GenerateOperator(function, default(QualifiedType));
             else
                 GenerateInternalFunctionCall(function);
 
@@ -2650,14 +2657,14 @@ namespace CppSharp.Generators.CSharp
             return delegateId;
         }
 
-        private void GenerateOperator(Method method, QualifiedType returnType)
+        private void GenerateOperator(Function function, QualifiedType returnType)
         {
-            if (method.SynthKind == FunctionSynthKind.ComplementOperator)
+            if (function.SynthKind == FunctionSynthKind.ComplementOperator)
             {
-                if (method.Kind == CXXMethodKind.Conversion)
+                if (function is Method method && method.Kind == CXXMethodKind.Conversion)
                 {
                     // To avoid ambiguity when having the multiple inheritance pass enabled
-                    var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    var paramType = function.Parameters[0].Type.SkipPointerRefs().Desugar();
                     paramType = (paramType.GetPointee() ?? paramType).Desugar();
                     Class paramClass;
                     Class @interface = null;
@@ -2665,9 +2672,9 @@ namespace CppSharp.Generators.CSharp
                         @interface = paramClass.GetInterface();
 
                     var paramName = string.Format("{0}{1}",
-                        method.Parameters[0].Type.IsPrimitiveTypeConvertibleToRef() ?
+                        function.Parameters[0].Type.IsPrimitiveTypeConvertibleToRef() ?
                         "ref *" : string.Empty,
-                        method.Parameters[0].Name);
+                        function.Parameters[0].Name);
                     var printedType = method.ConversionType.Visit(TypePrinter);
                     if (@interface != null)
                     {
@@ -2679,30 +2686,45 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    var @operator = Operators.GetOperatorOverloadPair(method.OperatorKind);
+                    var @operator = Operators.GetOperatorOverloadPair(function.OperatorKind);
 
-                    WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
-                              @operator, method.Parameters[1].Name);
+                    // handle operators for comparison which return int instead of bool
+                    Type retType = function.OriginalReturnType.Type.Desugar();
+                    bool regular = retType.IsPrimitiveType(PrimitiveType.Bool);
+                    if (regular)
+                    {
+                        WriteLine($@"return !({function.Parameters[0].Name} {
+                            @operator} {function.Parameters[1].Name});");
+                    }
+                    else
+                    {
+                        WriteLine($@"return global::System.Convert.ToInt32(({
+                            function.Parameters[0].Name} {@operator} {
+                            function.Parameters[1].Name}) == 0);");
+                    }
                 }
                 return;
             }
 
-            if (method.OperatorKind == CXXOperatorKind.EqualEqual ||
-                method.OperatorKind == CXXOperatorKind.ExclaimEqual)
+            if (function.OperatorKind == CXXOperatorKind.EqualEqual ||
+                function.OperatorKind == CXXOperatorKind.ExclaimEqual)
             {
                 WriteLine("bool {0}Null = ReferenceEquals({0}, null);",
-                    method.Parameters[0].Name);
+                    function.Parameters[0].Name);
                 WriteLine("bool {0}Null = ReferenceEquals({0}, null);",
-                    method.Parameters[1].Name);
+                    function.Parameters[1].Name);
                 WriteLine("if ({0}Null || {1}Null)",
-                    method.Parameters[0].Name, method.Parameters[1].Name);
-                WriteLineIndent("return {0}{1}Null && {2}Null{3};",
-                    method.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : "!(",
-                    method.Parameters[0].Name, method.Parameters[1].Name,
-                    method.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : ")");
+                    function.Parameters[0].Name, function.Parameters[1].Name);
+                Type retType = function.OriginalReturnType.Type.Desugar();
+                bool regular = retType.IsPrimitiveType(PrimitiveType.Bool);
+                WriteLineIndent($@"return {(regular ? string.Empty : "global::System.Convert.ToInt32(")}{
+                    (function.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : "!(")}{
+                    function.Parameters[0].Name}Null && {function.Parameters[1].Name}Null{
+                    (function.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : ")")}{
+                    (regular ? string.Empty : ")")};");
             }
 
-            GenerateInternalFunctionCall(method, returnType: returnType);
+            GenerateInternalFunctionCall(function, returnType: returnType);
         }
 
         private void GenerateClassConstructor(Method method, Class @class)
