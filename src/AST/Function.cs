@@ -181,6 +181,7 @@ namespace CppSharp.AST
             IsDeleted = function.IsDeleted;
             IsDefaulted = function.IsDefaulted;
             IsAmbiguous = function.IsAmbiguous;
+            IsConstExpr = function.IsConstExpr;
             FriendKind = function.FriendKind;
             OperatorKind = function.OperatorKind;
             CallingConvention = function.CallingConvention;
@@ -188,6 +189,7 @@ namespace CppSharp.AST
             OriginalFunction = function.OriginalFunction;
             Mangled = function.Mangled;
             Signature = function.Signature;
+            Body = function.Body;
             FunctionType = function.FunctionType;
             if (function.SpecializationInfo != null)
             {
