@@ -15,7 +15,6 @@ namespace CppSharp.Passes
         {
             VisitOptions.VisitClassBases = false;
             VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassTemplateSpecializations = false;
             VisitOptions.VisitEventParameters = false;
             VisitOptions.VisitFunctionParameters = false;
             VisitOptions.VisitFunctionReturnType = false;
@@ -46,22 +45,6 @@ namespace CppSharp.Passes
             foreach (var module in modules)
             {
                 var symbolsCodeGenerator = symbolsCodeGenerators[module];
-                if (specializations.ContainsKey(module))
-                {
-                    symbolsCodeGenerator.NewLine();
-                    foreach (var specialization in specializations[module])
-                    {
-                        Func<Method, bool> exportable = m => !m.IsDependent &&
-                            !m.IsImplicit && !m.IsDeleted && !m.IsDefaulted;
-                        if (specialization.Methods.Any(m => m.IsInvalid && exportable(m)))
-                            foreach (var method in specialization.Methods.Where(
-                                m => m.IsGenerated && (m.InstantiatedFrom == null || m.InstantiatedFrom.IsGenerated) &&
-                                     exportable(m)))
-                                symbolsCodeGenerator.VisitMethodDecl(method);
-                        else
-                            symbolsCodeGenerator.VisitClassTemplateSpecializationDecl(specialization);
-                    }
-                }
 
                 var cpp = $"{module.SymbolsLibraryName}.{symbolsCodeGenerator.FileExtension}";
                 Directory.CreateDirectory(Options.OutputDir);
@@ -133,10 +116,18 @@ namespace CppSharp.Passes
         {
             var mangled = function.Mangled;
             var method = function as Method;
+            bool isInspecialization;
+            var declarationContext = function.Namespace;
+            do
+            {
+                isInspecialization = declarationContext is ClassTemplateSpecialization;
+                declarationContext = declarationContext.Namespace;
+            } while (!isInspecialization && declarationContext != null);
+
             return function.IsGenerated && !function.IsDeleted &&
-                !function.IsDependent && !function.IsPure &&
-                (!string.IsNullOrEmpty(function.Body) || function.IsImplicit) &&
-                !(function.Namespace is ClassTemplateSpecialization) &&
+                !function.IsDependent && !function.IsPure && function.Namespace.IsGenerated &&
+                (!string.IsNullOrEmpty(function.Body) ||
+                 isInspecialization || function.IsImplicit) &&
                 // we don't need symbols for virtual functions anyway
                 (method == null || (!method.IsVirtual && !method.IsSynthetized &&
                  (!method.IsConstructor || !((Class) method.Namespace).IsAbstract))) &&
