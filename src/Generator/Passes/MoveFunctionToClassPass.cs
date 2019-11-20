@@ -65,12 +65,12 @@ namespace CppSharp.Passes
             }
             else
             {
-                var unit = function.Namespace as TranslationUnit;
-                @class = unit == null
-                    ? ASTContext.FindClass(
-                        function.Namespace.Name, ignoreCase: true).FirstOrDefault()
-                    : ASTContext.FindCompleteClass(
-                        unit.FileNameWithoutExtension.ToLowerInvariant(), true);
+                string name = (function.Namespace as TranslationUnit)?.FileNameWithoutExtension ??
+                    function.Namespace.Name;
+                @class = ASTContext.FindClass(
+                    name, ignoreCase: true).FirstOrDefault(
+                        c => c.TranslationUnit.Module == function.TranslationUnit.Module &&
+                            !c.IsIncomplete);
             }
 
             return @class;
