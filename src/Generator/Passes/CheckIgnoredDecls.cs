@@ -61,14 +61,11 @@ namespace CppSharp.Passes
 
             Declaration decl = null;
             if (specialization.Arguments.Any(a =>
-                a.Type.Type?.TryGetDeclaration(out decl) == true))
+                a.Type.Type?.TryGetDeclaration(out decl) == true) &&
+                decl.Ignore)
             {
-                decl.Visit(this);
-                if (decl.Ignore)
-                {
-                    specialization.ExplicitlyIgnore();
-                    return false;
-                }
+                specialization.ExplicitlyIgnore();
+                return false;
             }
 
             return true;
@@ -523,10 +520,6 @@ namespace CppSharp.Passes
                     return typeMap.IsIgnored;
             }
 
-            if (decl.Ignore)
-                return true;
-
-            decl.Visit(this);
             return decl.Ignore;
         }
 
