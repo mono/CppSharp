@@ -87,6 +87,8 @@ public:
     ~DerivedFromSecondaryBaseInDependency();
 };
 
+DLL_API bool operator<<(const Base& b, const char* str);
+
 namespace NamespacesBase
 {
     class DLL_API ClassInNamespaceNamedAfterDependency

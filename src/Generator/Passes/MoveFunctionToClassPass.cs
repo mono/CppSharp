@@ -24,8 +24,7 @@ namespace CppSharp.Passes
 
             Class @class = FindClassToMoveFunctionTo(function);
 
-            if (@class == null ||
-                @class.TranslationUnit.Module != function.TranslationUnit.Module)
+            if (@class == null)
                 return false;
 
             // Create a new fake method so it acts as a static method.

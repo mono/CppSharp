@@ -92,3 +92,8 @@ DerivedFromSecondaryBaseInDependency::DerivedFromSecondaryBaseInDependency()
 DerivedFromSecondaryBaseInDependency::~DerivedFromSecondaryBaseInDependency()
 {
 }
+
+bool operator<<(const Base& b, const char* str)
+{
+    return false;
+}
