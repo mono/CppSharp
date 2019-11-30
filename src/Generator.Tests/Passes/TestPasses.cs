@@ -108,6 +108,11 @@ namespace CppSharp.Generator.Tests.Passes
             var @enum = AstContext.Enum("TestEnumItemName");
             Assert.IsNotNull(@enum);
 
+            // Testing the values read for the enum
+            Assert.AreEqual(0, @enum.Items[0].Value); // Decimal literal
+            Assert.AreEqual(1, @enum.Items[1].Value); // Hex literal
+            Assert.AreEqual(2, @enum.Items[2].Value); // Hex literal with suffix
+
             passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
