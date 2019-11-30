@@ -103,6 +103,9 @@ namespace CppSharp
             {
                 num = num.Substring(2);
 
+                // This is in case the literal contains suffix
+                num = Regex.Replace(num, "(?i)[ul]*$", String.Empty);
+
                 return long.TryParse(num, NumberStyles.HexNumber,
                     CultureInfo.CurrentCulture, out val);
             }
