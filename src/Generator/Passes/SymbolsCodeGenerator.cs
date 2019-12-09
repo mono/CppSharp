@@ -34,7 +34,7 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (method.Namespace is ClassTemplateSpecialization specialization &&
+            if (method.Namespace is ClassTemplateSpecialization &&
                 (method.TranslationUnit.IsSystemHeader ||
                  ((method.IsConstructor || method.IsDestructor) &&
                   !method.IsImplicit && !method.IsDefaulted && !method.IsPure &&
