@@ -56,3 +56,4 @@ src/generator/generator
 /build/nuget/*.nupkg
 /build/nuget/tools/*
 
+**/obj
