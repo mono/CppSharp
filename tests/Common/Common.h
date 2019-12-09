@@ -6,6 +6,7 @@
 #endif
 #include <string>
 #include <vector>
+#include <memory>
 
 class DLL_API TestPacking
 {
@@ -1522,3 +1523,17 @@ struct DLL_API StructWithCopyCtor
 };
 
 uint16_t DLL_API TestStructWithCopyCtorByValue(StructWithCopyCtor s);
+
+// Issue: https://github.com/mono/CppSharp/issues/1266
+struct BaseCovariant;
+typedef std::unique_ptr<BaseCovariant> PtrCovariant;
+
+struct BaseCovariant {
+  virtual PtrCovariant clone() const = 0;
+};
+
+struct DerivedCovariant: public BaseCovariant {
+  std::unique_ptr<BaseCovariant> clone() const override {
+    return PtrCovariant(new DerivedCovariant());
+  }
+};
