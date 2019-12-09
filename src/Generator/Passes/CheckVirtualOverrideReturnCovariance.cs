@@ -71,6 +71,19 @@ namespace CppSharp.Passes
             return tag.Declaration.Visit(this);
         }
 
+        public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
+            TypeQualifiers quals)
+        {
+            if (!currentType.Qualifiers.Equals(quals))
+                return false;
+
+            var currentTemplateType = currentType.Type as TemplateSpecializationType;
+            if (currentTemplateType == null)
+                return false;
+
+            return currentTemplateType.Equals(template);
+        }
+
         static bool IsDescendentOf(Class @class, Class parent)
         {
             return @class == parent ||
