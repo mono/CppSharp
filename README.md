@@ -1,10 +1,10 @@
-CppSharp is a tool and set of libraries which allows programmers to use
-C/C++ libraries with high-level programming languages (such as C#).
+CppSharp is a tool and set of libraries which facilitates the usage of native C/C++ code
+with the .NET ecosystem.
 
-It is a tool that takes C/C++ header and library files and generates the 
-necessary glue to surface the native API as a managed API. Such an API can be
-used to consume an existing native library in your high-level code or add
-scripting support to a native codebase.
+It consumes C/C++ header and library files and generates the 
+necessary glue code to surface the native API as a managed API. Such an API can be
+used to consume an existing native library in your managed code or add
+managed scripting support to a native codebase.
 
 The supported target languages at present are C# and C++/CLI.
 
