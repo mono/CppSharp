@@ -7,8 +7,8 @@ namespace CppSharp.Passes
     /// <summary>
     /// This pass generates internal classes that implement abstract classes.
     /// When the return type of a function is abstract, these internal
-    /// classes provide since the real type cannot be resolved while binding
-    /// an allocatable class that supports proper polymorphism.
+    /// classes are used instead since the real type cannot be resolved 
+    /// while binding an allocatable class that supports proper polymorphism.
     /// </summary>
     public class GenerateAbstractImplementationsPass : TranslationUnitPass
     {
@@ -57,7 +57,7 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            if (@class.IsAbstract)
+            if (@class.IsAbstract && !@class.IsTemplate)
             {
                 foreach (var ctor in from ctor in @class.Constructors
                                      where ctor.Access == AccessSpecifier.Public
