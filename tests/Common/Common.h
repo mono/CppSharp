@@ -1537,3 +1537,15 @@ struct DerivedCovariant: public BaseCovariant {
     return PtrCovariant(new DerivedCovariant());
   }
 };
+
+// Issue: https://github.com/mono/CppSharp/issues/1268
+template <typename T>
+class AbstractClassTemplate {
+  public:
+    virtual void func() = 0;
+};
+
+class DerivedClass: public AbstractClassTemplate<int> {
+  public:
+    void func() override {}
+};
