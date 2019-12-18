@@ -181,6 +181,7 @@ struct QByteArrayDataPtr
 class DLL_API AbstractProprietor
 {
 public:
+    virtual ~AbstractProprietor();
     virtual int getValue();
     virtual void setValue(int newValue) = 0;
 
@@ -480,6 +481,7 @@ private:
 class DLL_API HasPureVirtualWithDefaultArg
 {
 public:
+    virtual ~HasPureVirtualWithDefaultArg();
     virtual void pureVirtualWithDefaultArg(Foo* foo = nullptr) = 0;
 };
 
@@ -522,6 +524,7 @@ public:
 class DLL_API AbstractWithProperty
 {
 public:
+    virtual ~AbstractWithProperty();
     virtual int property() = 0;
 };
 
@@ -860,6 +863,7 @@ class DLL_API OverridePropertyFromIndirectPrimaryBaseBase
 {
 public:
     OverridePropertyFromIndirectPrimaryBaseBase();
+    virtual ~OverridePropertyFromIndirectPrimaryBaseBase();
     virtual int property() = 0;
     virtual void setProperty(int value) = 0;
 };
@@ -882,6 +886,7 @@ class DLL_API AbstractOverrideFromSecondaryBase : public Foo, public OverridePro
 {
 public:
     AbstractOverrideFromSecondaryBase();
+    virtual ~AbstractOverrideFromSecondaryBase();
     virtual void setProperty(int value) = 0;
 };
 
@@ -938,6 +943,7 @@ class InheritsFromHasSamePropertyInDerivedAbstractType : public HasSamePropertyI
 {
 public:
     InheritsFromHasSamePropertyInDerivedAbstractType();
+    virtual ~InheritsFromHasSamePropertyInDerivedAbstractType();
     virtual int property() = 0;
 };
 
@@ -993,6 +999,8 @@ namespace NamespaceB
 
 class HasPrivateVirtualProperty
 {
+public:
+    virtual ~HasPrivateVirtualProperty();
 private:
     virtual int property();
     virtual void protectedAbstractMethod() = 0;
@@ -1026,6 +1034,7 @@ struct iterator_category_with_traversal : Category, Traversal
 class HasConflictWithAbstractProperty
 {
 public:
+    virtual ~HasConflictWithAbstractProperty();
     int conflictWithProperty();
     virtual int getConflictWithProperty() = 0;
 };

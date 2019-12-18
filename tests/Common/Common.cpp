@@ -37,6 +37,10 @@ TestPacking8::~TestPacking8()
 {
 }
 
+Foo::NestedAbstract::~NestedAbstract()
+{
+}
+
 Foo::Foo()
 {
     auto p = new int[4];
@@ -355,6 +359,10 @@ int TestDelegates::CDecl(DelegateCDecl del)
     return del(1);
 }
 
+AbstractFoo::~AbstractFoo()
+{
+}
+
 int ImplementsAbstractFoo::pureFunction(typedefInOverride i)
 {
     return 5;
@@ -375,6 +383,10 @@ ReturnsAbstractFoo::ReturnsAbstractFoo() {}
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {
     return i;
+}
+
+Exception::~Exception()
+{
 }
 
 Ex2* DerivedException::clone()
@@ -520,6 +532,10 @@ std::string HasStdString::testStdStringPassedByValue(std::string s)
 std::string& HasStdString::getStdString()
 {
     return s;
+}
+
+SomeNamespace::AbstractClass::~AbstractClass()
+{
 }
 
 TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0),
@@ -855,6 +871,10 @@ int DerivedClassVirtual::retInt(const Foo2& foo)
     return 2;
 }
 
+DerivedClassAbstractVirtual::~DerivedClassAbstractVirtual()
+{
+}
+
 DerivedClassOverrideAbstractVirtual::DerivedClassOverrideAbstractVirtual()
 {
 }
@@ -921,7 +941,10 @@ void FuncWithTypeAlias(custom_int_t i)
 
 void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i)
 {
+}
 
+HasAbstractOperator::~HasAbstractOperator()
+{
 }
 
 HasOverloadsWithDifferentPointerKindsToSameType::HasOverloadsWithDifferentPointerKindsToSameType()
@@ -1135,4 +1158,12 @@ StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(
 uint16_t TestStructWithCopyCtorByValue(StructWithCopyCtor s)
 {
     return s.mBits;
+}
+
+BaseCovariant::~BaseCovariant()
+{
+}
+
+DerivedCovariant::~DerivedCovariant()
+{
 }

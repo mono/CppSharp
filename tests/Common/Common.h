@@ -79,6 +79,7 @@ public:
     class NestedAbstract
     {
     public:
+        virtual ~NestedAbstract();
         virtual int* abstractFunctionInNestedClass() = 0;
     };
 
@@ -253,6 +254,7 @@ public:
 class DLL_API AbstractFoo
 {
 public:
+    virtual ~AbstractFoo();
     virtual int pureFunction(int i = 0) = 0;
     virtual int pureFunction1() = 0;
     virtual int pureFunction2(bool* ok = 0) = 0;
@@ -291,6 +293,7 @@ typedef DerivedException Ex2;
 
 struct DLL_API Exception : public Foo
 {
+    virtual ~Exception();
     virtual Ex1* clone() = 0;
 };
 
@@ -540,11 +543,12 @@ class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 
 namespace SomeNamespace
 {
-        class DLL_API AbstractClass
-        {
-        public:
-                virtual void AbstractMethod() = 0;
-        };
+    class DLL_API AbstractClass
+    {
+    public:
+        ~AbstractClass();
+        virtual void AbstractMethod() = 0;
+    };
 }
 
 // Test operator overloads
@@ -553,11 +557,11 @@ class DLL_API ClassWithOverloadedOperators
 public:
     ClassWithOverloadedOperators();
 
-        operator char();
-        operator int();
-        operator short();
+    operator char();
+    operator int();
+    operator short();
 
-        virtual bool operator<(const ClassWithOverloadedOperators &other) const;
+    virtual bool operator<(const ClassWithOverloadedOperators &other) const;
 };
 
 ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
@@ -1022,6 +1026,7 @@ public:
 class DLL_API DerivedClassAbstractVirtual : public DerivedClassVirtual
 {
 public:
+    ~DerivedClassAbstractVirtual();
     virtual int retInt(const Foo& foo) = 0;
 };
 
@@ -1262,6 +1267,7 @@ private:
 class DLL_API HasAbstractOperator
 {
 public:
+    ~HasAbstractOperator();
     virtual bool operator==(const HasAbstractOperator& other) = 0;
 };
 
@@ -1528,11 +1534,13 @@ uint16_t DLL_API TestStructWithCopyCtorByValue(StructWithCopyCtor s);
 struct BaseCovariant;
 typedef std::unique_ptr<BaseCovariant> PtrCovariant;
 
-struct BaseCovariant {
-  virtual PtrCovariant clone() const = 0;
+struct DLL_API BaseCovariant {
+    virtual ~BaseCovariant();
+    virtual PtrCovariant clone() const = 0;
 };
 
-struct DerivedCovariant: public BaseCovariant {
+struct DLL_API DerivedCovariant: public BaseCovariant {
+    virtual ~DerivedCovariant();
   std::unique_ptr<BaseCovariant> clone() const override {
     return PtrCovariant(new DerivedCovariant());
   }
