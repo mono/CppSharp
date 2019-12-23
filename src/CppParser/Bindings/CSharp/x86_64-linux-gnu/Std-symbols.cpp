@@ -3,7 +3,9 @@
 
 #include <string>
 
-
-template class std::char_traits<char>;
-template class std::allocator<char>;
-template class std::basic_string<char, std::char_traits<char>, std::allocator<char>>;
+template std::allocator<char>::allocator();
+template std::allocator<char>::~allocator();
+template std::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string();
+template std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string() noexcept;
+template std::basic_string<char, std::char_traits<char>, std::allocator<char>>& std::basic_string<char, std::char_traits<char>, std::allocator<char>>::assign(const char*);
+template const char* std::basic_string<char, std::char_traits<char>, std::allocator<char>>::data() const noexcept;
