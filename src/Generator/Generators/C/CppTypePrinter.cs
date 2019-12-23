@@ -424,7 +424,8 @@ namespace CppSharp.Generators.C
                 $"operator {method.OriginalReturnType.Visit(this)}" :
                 method.OriginalName;
             var exceptionType =
-                functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept ?
+                functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept ||
+                functionType.ExceptionSpecType == ExceptionSpecType.NoexceptTrue ?
                 " noexcept" : string.Empty;
             return $"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
         }
