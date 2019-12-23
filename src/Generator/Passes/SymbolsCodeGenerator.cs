@@ -34,6 +34,11 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
+            if (method.IsDestructor &&
+                (!((Class) method.Namespace).HasNonTrivialDestructor ||
+                 method.Access == AccessSpecifier.Private))
+                return false;
+
             if (method.Namespace is ClassTemplateSpecialization &&
                 (method.TranslationUnit.IsSystemHeader ||
                  ((method.IsConstructor || method.IsDestructor) &&
