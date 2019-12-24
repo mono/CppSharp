@@ -503,12 +503,12 @@ namespace CppSharp.Generator.Tests.AST
                 Is.EqualTo(ExceptionSpecType.BasicNoexcept));
 
             var noExceptTrue = AstContext.FindFunction("noExceptTrue").First();
-            Assert.That(((FunctionType) noExcept.FunctionType.Type).ExceptionSpecType,
-                Is.EqualTo(ExceptionSpecType.NoexceptTrue).Or.EqualTo(ExceptionSpecType.BasicNoexcept));
+            Assert.That(((FunctionType) noExceptTrue.FunctionType.Type).ExceptionSpecType,
+                Is.EqualTo(ExceptionSpecType.NoexceptTrue));
 
             var noExceptFalse = AstContext.FindFunction("noExceptFalse").First();
-            Assert.That(((FunctionType) noExcept.FunctionType.Type).ExceptionSpecType,
-                Is.EqualTo(ExceptionSpecType.NoexceptFalse).Or.EqualTo(ExceptionSpecType.BasicNoexcept));
+            Assert.That(((FunctionType) noExceptFalse.FunctionType.Type).ExceptionSpecType,
+                Is.EqualTo(ExceptionSpecType.NoexceptFalse));
 
             var regular = AstContext.FindFunction("testSignature").First();
             Assert.IsFalse(regular.IsConstExpr);
