@@ -30,6 +30,7 @@ enum class TypeKind
     PackExpansion,
     Builtin,
     UnaryTransform,
+    UnresolvedUsing,
     Vector
 };
 
@@ -273,6 +274,15 @@ public:
     DECLARE_TYPE_KIND(UnaryTransform)
     QualifiedType desugared;
     QualifiedType baseType;
+};
+
+class UnresolvedUsingTypename;
+
+class CS_API UnresolvedUsingType : public Type
+{
+public:
+    DECLARE_TYPE_KIND(UnresolvedUsing)
+    UnresolvedUsingTypename* declaration;
 };
 
 class CS_API VectorType : public Type

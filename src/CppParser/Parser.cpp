@@ -1425,6 +1425,16 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
 
 //-----------------------------------//
 
+UnresolvedUsingTypename* Parser::WalkUnresolvedUsingTypename(const clang::UnresolvedUsingTypenameDecl* UUTD)
+{
+    auto UUT = new CppSharp::CppParser::UnresolvedUsingTypename();
+    HandleDeclaration(UUTD, UUT);
+
+    return UUT;
+}
+
+//-----------------------------------//
+
 template<typename TypeLoc>
 std::vector<CppSharp::CppParser::TemplateArgument>
 Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
@@ -2420,6 +2430,20 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         //A->Size = AT->getSizeExpr();
 
         Ty = A;
+        break;
+    }
+    case clang::Type::UnresolvedUsing:
+    {
+        auto UT = Type->getAs<clang::UnresolvedUsingType>();
+
+        TypeLoc Next;
+        if (LocValid) Next = TL->getNextTypeLoc();
+
+        auto U = new UnresolvedUsingType();
+        U->declaration = static_cast<UnresolvedUsingTypename*>(
+            WalkDeclaration(UT->getDecl()));
+
+        Ty = U;
         break;
     }
     case clang::Type::FunctionNoProto:
@@ -4036,6 +4060,12 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         Decl = WalkNonTypeTemplateParameter(NTTPD);
         break;
     }
+    case Decl::UnresolvedUsingTypename:
+    {
+        auto UUTD = cast<UnresolvedUsingTypenameDecl>(D);
+        Decl = WalkUnresolvedUsingTypename(UUTD);
+        break;
+    }
     case Decl::BuiltinTemplate:
     case Decl::ClassScopeFunctionSpecialization:
     case Decl::PragmaComment:
@@ -4046,7 +4076,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     case Decl::UsingDirective:
     case Decl::UsingShadow:
     case Decl::ConstructorUsingShadow:
-    case Decl::UnresolvedUsingTypename:
     case Decl::UnresolvedUsingValue:
     case Decl::IndirectField:
     case Decl::StaticAssert:

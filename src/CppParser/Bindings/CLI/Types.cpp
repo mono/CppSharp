@@ -1325,6 +1325,47 @@ void CppSharp::Parser::AST::UnaryTransformType::BaseType::set(CppSharp::Parser::
     ((::CppSharp::CppParser::AST::UnaryTransformType*)NativePtr)->baseType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::UnresolvedUsingType::UnresolvedUsingType(::CppSharp::CppParser::AST::UnresolvedUsingType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::UnresolvedUsingType^ CppSharp::Parser::AST::UnresolvedUsingType::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::UnresolvedUsingType((::CppSharp::CppParser::AST::UnresolvedUsingType*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::UnresolvedUsingType::~UnresolvedUsingType()
+{
+}
+
+CppSharp::Parser::AST::UnresolvedUsingType::UnresolvedUsingType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::UnresolvedUsingType();
+}
+
+CppSharp::Parser::AST::UnresolvedUsingType::UnresolvedUsingType(CppSharp::Parser::AST::UnresolvedUsingType^ _0)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::UnresolvedUsingType*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::UnresolvedUsingType(__arg0);
+}
+
+CppSharp::Parser::AST::UnresolvedUsingTypename^ CppSharp::Parser::AST::UnresolvedUsingType::Declaration::get()
+{
+    return (((::CppSharp::CppParser::AST::UnresolvedUsingType*)NativePtr)->declaration == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::UnresolvedUsingTypename((::CppSharp::CppParser::AST::UnresolvedUsingTypename*)((::CppSharp::CppParser::AST::UnresolvedUsingType*)NativePtr)->declaration);
+}
+
+void CppSharp::Parser::AST::UnresolvedUsingType::Declaration::set(CppSharp::Parser::AST::UnresolvedUsingTypename^ value)
+{
+    ((::CppSharp::CppParser::AST::UnresolvedUsingType*)NativePtr)->declaration = (::CppSharp::CppParser::AST::UnresolvedUsingTypename*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::VectorType::VectorType(::CppSharp::CppParser::AST::VectorType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

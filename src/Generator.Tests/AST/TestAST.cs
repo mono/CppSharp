@@ -219,6 +219,11 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new NotImplementedException();
             }
+
+            public bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 

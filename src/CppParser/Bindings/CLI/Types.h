@@ -46,6 +46,8 @@ namespace CppSharp
             ref class TypedefNameDecl;
             ref class TypedefType;
             ref class UnaryTransformType;
+            ref class UnresolvedUsingType;
+            ref class UnresolvedUsingTypename;
             ref class VectorType;
         }
     }
@@ -76,7 +78,8 @@ namespace CppSharp
                 PackExpansion = 14,
                 Builtin = 15,
                 UnaryTransform = 16,
-                Vector = 17
+                UnresolvedUsing = 17,
+                Vector = 18
             };
 
             public enum struct CallingConvention
@@ -769,6 +772,25 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+            };
+
+            public ref class UnresolvedUsingType : CppSharp::Parser::AST::Type
+            {
+            public:
+
+                UnresolvedUsingType(::CppSharp::CppParser::AST::UnresolvedUsingType* native);
+                static UnresolvedUsingType^ __CreateInstance(::System::IntPtr native);
+                UnresolvedUsingType();
+
+                UnresolvedUsingType(CppSharp::Parser::AST::UnresolvedUsingType^ _0);
+
+                ~UnresolvedUsingType();
+
+                property CppSharp::Parser::AST::UnresolvedUsingTypename^ Declaration
+                {
+                    CppSharp::Parser::AST::UnresolvedUsingTypename^ get();
+                    void set(CppSharp::Parser::AST::UnresolvedUsingTypename^);
                 }
             };
 

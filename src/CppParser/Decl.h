@@ -45,7 +45,8 @@ enum class DeclarationKind
     NonTypeTemplateParm,
     VarTemplate,
     VarTemplateSpecialization,
-    VarTemplatePartialSpecialization
+    VarTemplatePartialSpecialization,
+    UnresolvedUsingTypename,
 };
 
 #define DECLARE_DECL_KIND(klass, kind) \
@@ -739,6 +740,13 @@ class CS_API VarTemplatePartialSpecialization : public VarTemplateSpecialization
 public:
     VarTemplatePartialSpecialization();
     ~VarTemplatePartialSpecialization();
+};
+
+class CS_API UnresolvedUsingTypename : public Declaration
+{
+public:
+    UnresolvedUsingTypename();
+    ~UnresolvedUsingTypename();
 };
 
 class CS_API Namespace : public DeclarationContext

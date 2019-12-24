@@ -404,6 +404,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
             throw new NotImplementedException();
@@ -490,6 +495,11 @@ namespace CppSharp.Generators
         }
 
         public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }

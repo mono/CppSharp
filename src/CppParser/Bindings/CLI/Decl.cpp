@@ -4517,6 +4517,43 @@ CppSharp::Parser::AST::VarTemplatePartialSpecialization::VarTemplatePartialSpeci
     NativePtr = new ::CppSharp::CppParser::AST::VarTemplatePartialSpecialization(__arg0);
 }
 
+CppSharp::Parser::AST::UnresolvedUsingTypename::UnresolvedUsingTypename(::CppSharp::CppParser::AST::UnresolvedUsingTypename* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+{
+}
+
+CppSharp::Parser::AST::UnresolvedUsingTypename^ CppSharp::Parser::AST::UnresolvedUsingTypename::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::UnresolvedUsingTypename((::CppSharp::CppParser::AST::UnresolvedUsingTypename*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::UnresolvedUsingTypename::~UnresolvedUsingTypename()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::UnresolvedUsingTypename*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::UnresolvedUsingTypename::UnresolvedUsingTypename()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new ::CppSharp::CppParser::AST::UnresolvedUsingTypename();
+}
+
+CppSharp::Parser::AST::UnresolvedUsingTypename::UnresolvedUsingTypename(CppSharp::Parser::AST::UnresolvedUsingTypename^ _0)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(::CppSharp::CppParser::AST::UnresolvedUsingTypename*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::UnresolvedUsingTypename(__arg0);
+}
+
 CppSharp::Parser::AST::Namespace::Namespace(::CppSharp::CppParser::AST::Namespace* native)
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {

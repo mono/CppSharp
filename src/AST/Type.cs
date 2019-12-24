@@ -1062,6 +1062,32 @@ namespace CppSharp.AST
             Desugared.GetHashCode() ^ BaseType.GetHashCode();
     }
 
+    public class UnresolvedUsingType : Type
+    {
+        public UnresolvedUsingType()
+        {
+        }
+
+        public UnresolvedUsingType(UnresolvedUsingType type)
+            : base(type)
+        {
+        }
+
+        public UnresolvedUsingTypename Declaration { get; set; }
+
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitUnresolvedUsingType(this, quals);
+        }
+
+        public override object Clone()
+        {
+            return new UnresolvedUsingType(this);
+        }
+
+        public override int GetHashCode() => Declaration.GetHashCode();
+    }
+
     public class VectorType : Type
     {
         public VectorType()
@@ -1257,6 +1283,7 @@ namespace CppSharp.AST
             TypeQualifiers quals);
         T VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals);
         T VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals);
+        T VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals);
         T VisitVectorType(VectorType vectorType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
         T VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals);

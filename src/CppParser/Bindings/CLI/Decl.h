@@ -75,6 +75,7 @@ namespace CppSharp
             ref class TypeTemplateParameter;
             ref class TypedefDecl;
             ref class TypedefNameDecl;
+            ref class UnresolvedUsingTypename;
             ref class VFTableInfo;
             ref class VTableComponent;
             ref class VTableLayout;
@@ -123,7 +124,8 @@ namespace CppSharp
                 NonTypeTemplateParm = 26,
                 VarTemplate = 27,
                 VarTemplateSpecialization = 28,
-                VarTemplatePartialSpecialization = 29
+                VarTemplatePartialSpecialization = 29,
+                UnresolvedUsingTypename = 30
             };
 
             public enum struct AccessSpecifier
@@ -2248,6 +2250,19 @@ namespace CppSharp
                 VarTemplatePartialSpecialization(CppSharp::Parser::AST::VarTemplatePartialSpecialization^ _0);
 
                 ~VarTemplatePartialSpecialization();
+            };
+
+            public ref class UnresolvedUsingTypename : CppSharp::Parser::AST::Declaration
+            {
+            public:
+
+                UnresolvedUsingTypename(::CppSharp::CppParser::AST::UnresolvedUsingTypename* native);
+                static UnresolvedUsingTypename^ __CreateInstance(::System::IntPtr native);
+                UnresolvedUsingTypename();
+
+                UnresolvedUsingTypename(CppSharp::Parser::AST::UnresolvedUsingTypename^ _0);
+
+                ~UnresolvedUsingTypename();
             };
 
             public ref class Namespace : CppSharp::Parser::AST::DeclarationContext

@@ -187,10 +187,11 @@ DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
 DependentNameType::~DependentNameType() {}
 
-
 PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
 
 UnaryTransformType::UnaryTransformType() : Type(TypeKind::UnaryTransform) {}
+
+UnresolvedUsingType::UnresolvedUsingType() : Type(TypeKind::UnresolvedUsing) {}
 
 VectorType::VectorType() : Type(TypeKind::Vector), numElements(0) {}
 
@@ -851,6 +852,10 @@ VarTemplatePartialSpecialization::VarTemplatePartialSpecialization()
 VarTemplatePartialSpecialization::~VarTemplatePartialSpecialization()
 {
 }
+
+UnresolvedUsingTypename::UnresolvedUsingTypename() : Declaration(DeclarationKind::UnresolvedUsingTypename) {}
+
+UnresolvedUsingTypename::~UnresolvedUsingTypename() {}
 
 Namespace::Namespace() 
     : DeclarationContext(DeclarationKind::Namespace)
