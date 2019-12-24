@@ -423,10 +423,24 @@ namespace CppSharp.Generators.C
                 method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
                 $"operator {method.OriginalReturnType.Visit(this)}" :
                 method.OriginalName;
-            var exceptionType =
-                functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept ||
-                functionType.ExceptionSpecType == ExceptionSpecType.NoexceptTrue ?
-                " noexcept" : string.Empty;
+
+            string exceptionType;
+            switch (functionType.ExceptionSpecType)
+            {
+                case ExceptionSpecType.BasicNoexcept:
+                    exceptionType = " noexcept";
+                    break;
+                case ExceptionSpecType.NoexceptFalse:
+                    exceptionType = " noexcept(false)";
+                    break;
+                case ExceptionSpecType.NoexceptTrue:
+                    exceptionType = " noexcept(true)";
+                    break;
+                // TODO: research and handle the remaining cases
+                default:
+                    exceptionType = string.Empty;
+                    break;
+            }
             return $"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
         }
 

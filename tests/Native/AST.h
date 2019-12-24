@@ -204,7 +204,10 @@ typedef ForwardedTemplate<long> l;
 
 template class TestSpecializationArguments<const TestASTEnumItemByName>;
 
-constexpr void constExprNoExcept() noexcept;
+constexpr void constExpr();
+void noExcept() noexcept;
+void noExceptTrue() noexcept(true);
+void noExceptFalse() noexcept(false);
 
 template <typename T1, typename T2>
 bool functionWithSpecInfo(const T1& t11, const T1& t12, const T2& t2);
