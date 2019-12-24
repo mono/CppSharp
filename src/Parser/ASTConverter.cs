@@ -29,6 +29,7 @@ namespace CppSharp
         public abstract TRet VisitBuiltin(BuiltinType type);
         public abstract TRet VisitPackExpansion(PackExpansionType type);
         public abstract TRet VisitUnaryTransform(UnaryTransformType type);
+        public abstract TRet VisitUnresolvedUsing(UnresolvedUsingType type);
         public abstract TRet VisitVector(VectorType type);
 
         public TRet Visit(Parser.AST.Type type)
@@ -123,6 +124,11 @@ namespace CppSharp
                     var _type = UnaryTransformType.__CreateInstance(type.__Instance);
                     return VisitUnaryTransform(_type);
                 }
+                case TypeKind.UnresolvedUsing:
+                {
+                    var _type = UnresolvedUsingType.__CreateInstance(type.__Instance);
+                    return VisitUnresolvedUsing(_type);
+                }
                 case TypeKind.Vector:
                 {
                     var _type = VectorType.__CreateInstance(type.__Instance);
@@ -168,7 +174,8 @@ namespace CppSharp
         public abstract TRet VisitTemplateTemplateParameter(TemplateTemplateParameter decl);
         public abstract TRet VisitTypeTemplateParameter(TypeTemplateParameter decl);
         public abstract TRet VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl);
-
+        public abstract TRet VisitUnresolvedUsingTypename(UnresolvedUsingTypename decl);
+        
         public virtual TRet Visit(Parser.AST.Declaration decl)
         {
             switch (decl.Kind)
@@ -297,6 +304,11 @@ namespace CppSharp
                     {
                         var _decl = NonTypeTemplateParameter.__CreateInstance(decl.__Instance);
                         return VisitNonTypeTemplateParameter(_decl);
+                    }
+                case DeclarationKind.UnresolvedUsingTypename:
+                    {
+                        var _decl = UnresolvedUsingTypename.__CreateInstance(decl.__Instance);
+                        return VisitUnresolvedUsingTypename(_decl);
                     }
             }
 
@@ -807,6 +819,15 @@ namespace CppSharp
             VisitType(type, _type);
             _type.Desugared = VisitQualified(type.Desugared);
             _type.BaseType = VisitQualified(type.BaseType);
+            return _type;
+        }
+
+        public override AST.Type VisitUnresolvedUsing(UnresolvedUsingType type)
+        {
+            var _type = new AST.UnresolvedUsingType();
+            VisitType(type, _type);
+            _type.Declaration = (AST.UnresolvedUsingTypename)
+                declConverter.Visit(type.Declaration);
             return _type;
         }
 
@@ -2023,6 +2044,13 @@ namespace CppSharp
             templateTemplateParameter.IsPackExpansion = decl.IsPackExpansion;
             templateTemplateParameter.IsExpandedParameterPack = decl.IsExpandedParameterPack;
             return templateTemplateParameter;
+        }
+
+        public override AST.Declaration VisitUnresolvedUsingTypename(UnresolvedUsingTypename decl)
+        {
+            var unresolvedUsingTypename = new AST.UnresolvedUsingTypename();
+            VisitDeclaration(decl, unresolvedUsingTypename);
+            return unresolvedUsingTypename;
         }
     }
 

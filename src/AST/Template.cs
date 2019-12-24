@@ -438,4 +438,17 @@ namespace CppSharp.AST
     public class VarTemplatePartialSpecialization : VarTemplateSpecialization
     {
     }
+
+    /// <summary>
+    /// Represents a dependent using declaration which was marked with typename.
+    /// </summary>
+    public class UnresolvedUsingTypename : Declaration
+    {
+        //public TypeAliasTemplate DescribedAliasTemplate { get; set; }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitUnresolvedUsingDecl(this);
+        }
+    }
 }

@@ -1557,3 +1557,20 @@ class DerivedClass: public AbstractClassTemplate<int> {
   public:
     void func() override {}
 };
+
+// Issue: https://github.com/mono/CppSharp/issues/1235
+#include <functional>
+
+template <typename X, typename Y>
+class TemplateClassBase {
+  public:
+    using XType = X;
+};
+
+template <typename A, typename B = A>
+class TemplateClass : TemplateClassBase<A,B> {
+  public:
+    using typename TemplateClassBase<A,B>::XType;
+    using Func = std::function<B(XType)>;
+    explicit TemplateClass(Func function) {}
+};

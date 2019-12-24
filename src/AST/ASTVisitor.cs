@@ -273,6 +273,11 @@ namespace CppSharp.AST
             return true;
         }
 
+        public bool VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
         {
             return true;
@@ -632,6 +637,14 @@ namespace CppSharp.AST
         public bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             if (!VisitDeclaration(nonTypeTemplateParameter))
+                return false;
+
+            return true;
+        }
+
+        public bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
+        {
+            if (!VisitDeclaration(unresolvedUsingTypename))
                 return false;
 
             return true;

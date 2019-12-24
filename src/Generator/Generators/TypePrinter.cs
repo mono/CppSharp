@@ -350,6 +350,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public TypePrinterResult VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual TypePrinterResult VisitUnsupportedType(UnsupportedType type,
             TypeQualifiers quals)
         {
@@ -368,6 +373,11 @@ namespace CppSharp.Generators
 
         public virtual TypePrinterResult VisitVarTemplateSpecializationDecl(
             VarTemplateSpecialization template)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TypePrinterResult VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
         {
             throw new NotImplementedException();
         }
