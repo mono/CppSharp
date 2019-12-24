@@ -868,11 +868,6 @@ namespace Std
             [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED2Ev")]
             internal static extern void dtorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
-
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                EntryPoint="_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4dataEv")]
-            internal static extern global::System.IntPtr Datac__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
         }
 
         namespace AllocHider
