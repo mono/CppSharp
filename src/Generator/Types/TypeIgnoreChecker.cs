@@ -57,7 +57,7 @@ namespace CppSharp
 
         public override bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
-            return dependent.Qualifier.Type.Visit(this);
+            return dependent.Qualifier.Visit(this);
         }
 
         public override bool VisitClassDecl(Class @class)
