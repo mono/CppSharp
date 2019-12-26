@@ -25,6 +25,7 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
+#include <clang/Basic/Builtins.h>
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
@@ -273,8 +274,8 @@ void Parser::Setup()
     c->createDiagnostics();
 
     CompilerInvocation* Inv = new CompilerInvocation();
-    CompilerInvocation::CreateFromArgs(*Inv, args.data(), args.data() + args.size(),
-      c->getDiagnostics());
+    llvm::ArrayRef<const char*> arguments(args.data(), args.data() + args.size());
+    CompilerInvocation::CreateFromArgs(*Inv, arguments, c->getDiagnostics());
     c->setInvocation(std::shared_ptr<CompilerInvocation>(Inv));
     c->getLangOpts() = *Inv->LangOpts;
 
@@ -3641,7 +3642,7 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
             auto TemporaryExpr = dyn_cast<clang::MaterializeTemporaryExpr>(Arg);
             if (TemporaryExpr)
             {
-                auto SubTemporaryExpr = TemporaryExpr->GetTemporaryExpr();
+                auto SubTemporaryExpr = TemporaryExpr->getSubExpr();
                 auto Cast = dyn_cast<clang::CastExpr>(SubTemporaryExpr);
                 if (!Cast ||
                     (Cast->getSubExprAsWritten()->getStmtClass() != clang::Stmt::IntegerLiteralClass &&
@@ -3664,7 +3665,7 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
     case clang::Stmt::CXXDefaultArgExprClass:
         return WalkExpressionObsolete(cast<clang::CXXDefaultArgExpr>(Expr)->getExpr());
     case clang::Stmt::MaterializeTemporaryExprClass:
-        return WalkExpressionObsolete(cast<clang::MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
+        return WalkExpressionObsolete(cast<clang::MaterializeTemporaryExpr>(Expr)->getSubExpr());
     default:
         break;
     }
@@ -4196,7 +4197,7 @@ bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
         if (!FileEntry)
             return false;
 
-        FileEntries.push_back(FileEntry);
+        FileEntries.push_back(&FileEntry.getPointer()->getFileEntry());
     }
 
     // Create a virtual file that includes the header. This gets rid of some

@@ -2286,8 +2286,8 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
         _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
         _S->hasPlaceholderType = S->hasPlaceholderType();
-        _S->temporary = static_cast<AST::Stmt*>(WalkStatement(S->getTemporary()));
-        _S->TemporaryExpr = static_cast<AST::Expr*>(WalkExpression(S->GetTemporaryExpr()));
+        _S->temporary = static_cast<AST::Stmt*>(WalkStatement(S->getSubExpr()));
+        _S->TemporaryExpr = static_cast<AST::Expr*>(WalkExpression(S->getSubExpr()));
         _S->manglingNumber = S->getManglingNumber();
         _S->isBoundToLvalueReference = S->isBoundToLvalueReference();
         _Expr = _S;
