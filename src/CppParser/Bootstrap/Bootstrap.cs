@@ -35,6 +35,24 @@ namespace CppSharp
             throw new Exception("Could not find build directory: " + dir);
         }
 
+        static string GetLLVMRevision()
+        {
+            var buildDir = GetSourceDirectory("build");
+            return File.ReadAllText(Path.Combine(buildDir, "LLVM-commit"));
+        }
+
+        static string GetLLVMBuildDirectory()
+        {
+            var llvmRevision = GetLLVMRevision().Substring(0, 6);
+
+            var scriptsDir = Path.Combine(GetSourceDirectory("build"), "scripts");
+            var entries = Directory.EnumerateDirectories(scriptsDir);
+
+            var llvmPath = entries.FirstOrDefault(entry => entry.Contains(llvmRevision));
+
+            return llvmPath;
+        }
+
         public void Setup(Driver driver)
         {
             driver.Options.GeneratorKind = GeneratorKind.CSharp;
@@ -48,16 +66,17 @@ namespace CppSharp
             module.Defines.Add("__STDC_LIMIT_MACROS");
             module.Defines.Add("__STDC_CONSTANT_MACROS");
 
-            var basePath = Path.Combine(GetSourceDirectory("build"), "scripts");
-            var llvmPath = Path.Combine(basePath, "..", "..", "deps", "llvm");
-            var clangPath = Path.Combine(llvmPath, "tools", "clang");
+            var llvmPath = GetLLVMBuildDirectory();
+
+            if (llvmPath == null)
+                throw new Exception("Could not find LLVM build directory");
 
             module.IncludeDirs.AddRange(new[]
             {
                 Path.Combine(llvmPath, "include"),
                 Path.Combine(llvmPath, "build", "include"),
                 Path.Combine(llvmPath, "build", "tools", "clang", "include"),
-                Path.Combine(clangPath, "include")
+                Path.Combine(llvmPath, "tools", "clang", "include")
             });
 
             module.Headers.AddRange(new[]
