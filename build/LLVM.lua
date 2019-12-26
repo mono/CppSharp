@@ -182,7 +182,11 @@ function SetupLLVMLibs()
       "LLVMSupport",
       "LLVMBinaryFormat",
       "LLVMDemangle",
-      "LLVMRemarks"
+      "LLVMRemarks",
+      "LLVMCFGuard",
+      "LLVMBitstreamReader",
+      "LLVMTextAPI",
+      "LLVMFrontendOpenMP"
     }
     
   filter(c)
