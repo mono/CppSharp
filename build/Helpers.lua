@@ -15,6 +15,16 @@ newoption {
    description = "disable C++-11 ABI on GCC 4.9+"
 }
 
+newoption {
+   trigger = "disable-tests",
+   description = "disable tests from being included"
+}
+
+newoption {
+    trigger = "disable-examples",
+    description = "disable examples from being included"
+ }
+
 explicit_target_architecture = _OPTIONS["arch"]
 
 function is_64_bits_mono_runtime()
