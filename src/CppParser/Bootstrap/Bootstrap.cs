@@ -281,11 +281,30 @@ namespace CppSharp
 
     class PreprocessDeclarations : AstVisitor
     {
+        private static void Check(Declaration decl)
+        {
+            if (string.IsNullOrWhiteSpace(decl.Name))
+                decl.ExplicitlyIgnore();
+
+            if (decl.Name.EndsWith("Bitfields", StringComparison.Ordinal))
+                decl.ExplicitlyIgnore();
+
+            if (decl.Name.EndsWith("Iterator", StringComparison.Ordinal))
+                decl.ExplicitlyIgnore();
+
+            if (decl.Name == "AssociationTy" ||
+                decl.Name == "AssociationIteratorTy")
+                decl.ExplicitlyIgnore();
+
+            if (decl.Name == "EmptyShell")
+                decl.ExplicitlyIgnore();
+
+            if (decl.Name == "APIntStorage" || decl.Name == "APFloatStorage")
+                decl.ExplicitlyIgnore();
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
-            if (string.IsNullOrWhiteSpace(@class.Name))
-                @class.ExplicitlyIgnore();
-
             //
             // Statements
             //
@@ -293,17 +312,7 @@ namespace CppSharp
             if (CodeGeneratorHelpers.IsAbstractStmt(@class))
                 @class.IsAbstract = true;
 
-            if (@class.Name.EndsWith("Bitfields"))
-                @class.ExplicitlyIgnore();
-
-            if (@class.Name.EndsWith("Iterator"))
-                @class.ExplicitlyIgnore();
-
-            if (@class.Name == "EmptyShell")
-                @class.ExplicitlyIgnore();
-
-            if (@class.Name == "APIntStorage" || @class.Name == "APFloatStorage")
-                @class.ExplicitlyIgnore();
+            Check(@class);
 
             foreach (var @base in @class.Bases)
             {
@@ -376,6 +385,18 @@ namespace CppSharp
             }
 
             return base.VisitClassDecl(@class);
+        }
+
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        {
+            Check(template);
+            return base.VisitClassTemplateDecl(template);
+        }
+
+        public override bool VisitTypeAliasTemplateDecl(TypeAliasTemplate template)
+        {
+            Check(template);
+            return base.VisitTypeAliasTemplateDecl(template);
         }
 
         public override bool VisitProperty(Property property)
@@ -1515,6 +1536,8 @@ namespace CppSharp
                 case "stmtClass":
                 case "stmtClassName":
                     return true;
+                case "isOMPStructuredBlock":
+                    return true;
             }
 
             var typeName = property.Type.Visit(CppTypePrinter).Type;
@@ -1699,6 +1722,10 @@ namespace CppSharp
                 return true;
 
             if (method.Name == "children")
+                return true;
+
+            // CastExpr
+            if (method.Name == "path")
                 return true;
 
             // CXXNewExpr
