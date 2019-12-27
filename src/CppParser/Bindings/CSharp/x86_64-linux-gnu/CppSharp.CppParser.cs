@@ -47464,7 +47464,7 @@ namespace CppSharp
                 internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C targetTriple;
 
                 [FieldOffset(224)]
-                internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C currentDir;
+                internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C resourceDir;
 
                 [FieldOffset(232)]
                 internal byte noStandardIncludes;
@@ -47969,17 +47969,17 @@ namespace CppSharp
                 }
             }
 
-            public string CurrentDir
+            public string ResourceDir
             {
                 get
                 {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->currentDir));
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->resourceDir));
                     return global::Std.BasicStringExtensions.Data(__basicStringRet0);
                 }
 
                 set
                 {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->currentDir), value);
+                    global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->resourceDir), value);
                 }
             }
 

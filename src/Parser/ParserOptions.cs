@@ -1,13 +1,12 @@
 ﻿using System;
-using CppSharp.Parser.AST;
-using System.Reflection;
-using LanguageVersion = CppSharp.Parser.LanguageVersion;
-using System.Globalization;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using LanguageVersion = CppSharp.Parser.LanguageVersion;
 
 namespace CppSharp.Parser
 {
@@ -60,7 +59,6 @@ namespace CppSharp.Parser
         public ParserOptions()
         {
             MicrosoftMode = !Platform.IsUnixPlatform;
-            CurrentDir = Assembly.GetExecutingAssembly().Location;
         }
 
         public ParserOptions(ParserOptions options)
@@ -78,6 +76,7 @@ namespace CppSharp.Parser
             SkipFunctionBodies = options.SkipFunctionBodies;
             SkipLayoutInfo = options.SkipLayoutInfo;
             ForceClangToolchainLookup = options.ForceClangToolchainLookup;
+            ResourceDir = options.ResourceDir;
         }
 
         public bool IsItaniumLikeAbi => !IsMicrosoftAbi;
@@ -225,9 +224,6 @@ namespace CppSharp.Parser
 
         public void SetupXcode()
         {
-            var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
-            AddSystemIncludeDirs(builtinsPath);
-
             var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
             AddSystemIncludeDirs(cppIncPath);
 
@@ -323,6 +319,8 @@ namespace CppSharp.Parser
         {
             SetupArguments();
 
+            SetupBuiltinIncludes();
+
             if (!NoBuiltinIncludes)
                 SetupIncludes();
         }
@@ -380,6 +378,22 @@ namespace CppSharp.Parser
 
             if (!EnableRTTI)
                 AddArguments("-fno-rtti");
+        }
+
+        private void SetupBuiltinIncludes()
+        {
+            // If we have an explicit resource directory, then do nothing.
+            if (!string.IsNullOrEmpty(ResourceDir))
+                return;
+
+            // Else use the resource directory that was bundled next to the
+            // binaries by the build bootstrap scripts.
+            var assemblyDir =  Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            if (!Directory.Exists(Path.Combine(assemblyDir, "lib", "clang")))
+                throw new Exception("Clang resource folder 'lib/clang/<version>' was not found.");
+
+            ResourceDir = assemblyDir;
         }
 
         private void SetupIncludes()

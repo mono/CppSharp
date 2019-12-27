@@ -421,14 +421,14 @@ void CppSharp::Parser::CppParserOptions::TargetTriple::set(System::String^ value
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetTriple = clix::marshalString<clix::E_UTF8>(value);
 }
 
-System::String^ CppSharp::Parser::CppParserOptions::CurrentDir::get()
+System::String^ CppSharp::Parser::CppParserOptions::ResourceDir::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::CppParserOptions*)NativePtr)->currentDir);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::CppParserOptions*)NativePtr)->resourceDir);
 }
 
-void CppSharp::Parser::CppParserOptions::CurrentDir::set(System::String^ value)
+void CppSharp::Parser::CppParserOptions::ResourceDir::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->currentDir = clix::marshalString<clix::E_UTF8>(value);
+    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->resourceDir = clix::marshalString<clix::E_UTF8>(value);
 }
 
 bool CppSharp::Parser::CppParserOptions::NoStandardIncludes::get()

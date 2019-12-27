@@ -150,7 +150,7 @@ namespace CppSharp
                 void set(System::String^);
             }
 
-            property System::String^ CurrentDir
+            property System::String^ ResourceDir
             {
                 System::String^ get();
                 void set(System::String^);
