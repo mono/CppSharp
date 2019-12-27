@@ -209,22 +209,20 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
     }
 }
 
-static std::string GetClangResourceDir(std::string CurrentDir)
-{
-    using namespace llvm;
-    using namespace clang;
+//-----------------------------------//
 
-    // Compute the path to the resource directory.
-    StringRef ClangResourceDir(CLANG_RESOURCE_DIR);
-    SmallString<128> P(CurrentDir);
-    llvm::sys::path::remove_filename(P);
-    
+// Compute the path to the resource directory.
+static std::string GetClangResourceDir(std::string baseResourceDir)
+{
+    llvm::SmallString<128> Path(baseResourceDir);
+
+    llvm::StringRef ClangResourceDir(CLANG_RESOURCE_DIR);
     if (ClangResourceDir != "")
-        llvm::sys::path::append(P, ClangResourceDir);
+        llvm::sys::path::append(Path, ClangResourceDir);
     else
-        llvm::sys::path::append(P, "lib", "clang", CLANG_VERSION_STRING);
-    
-    return P.str();
+        llvm::sys::path::append(Path, "lib", "clang", CLANG_VERSION_STRING);
+
+    return Path.str();
 }
 
 //-----------------------------------//
@@ -319,15 +317,14 @@ void Parser::Setup()
     if (opts->verbose)
         HSOpts.Verbose = true;
 
-#ifndef __APPLE__
-    // Initialize the default platform headers.
-    HSOpts.ResourceDir = GetClangResourceDir(opts->currentDir);
+    // Initialize the builtin compiler headers.
+    HSOpts.ResourceDir = GetClangResourceDir(opts->resourceDir);
 
     llvm::SmallString<128> ResourceDir(HSOpts.ResourceDir);
     llvm::sys::path::append(ResourceDir, "include");
+
     HSOpts.AddPath(ResourceDir.str(), clang::frontend::System, /*IsFramework=*/false,
         /*IgnoreSysRoot=*/false);
-#endif
 
     for (unsigned I = 0, E = opts->IncludeDirs.size(); I != E; ++I)
     {

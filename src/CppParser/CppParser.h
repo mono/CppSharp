@@ -37,7 +37,7 @@ struct CS_API CppParserOptions
 
     int toolSetToUse;
     std::string targetTriple;
-    std::string currentDir;
+    std::string resourceDir;
 
     bool noStandardIncludes;
     bool noBuiltinIncludes;
