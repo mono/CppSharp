@@ -1,6 +1,4 @@
-﻿#pragma once
-
-#include "CSharp.h"
+﻿#include "CSharp.h"
 
 Foo::Foo(const QString& name)
 {
