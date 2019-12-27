@@ -86,11 +86,17 @@ function CopyClangIncludes()
 
     if os.isdir(path.join(clangBuiltinRelease, "clang")) then
       clangBuiltinIncludeDir = clangBuiltinRelease
-    end    
+    end
   end
 
   if os.isdir(clangBuiltinIncludeDir) then
-    postbuildcommands { string.format('{COPY} "%s" "%%{cfg.buildtarget.directory}"', clangBuiltinIncludeDir) }
+    postbuildcommands
+    { 
+        -- Workaround Premake OS-specific behaviour when copying folders:
+        -- See: https://github.com/premake/premake-core/issues/1232
+        '{MKDIR} "%%{cfg.buildtarget.directory}/lib"',
+        string.format('{COPY} "%s" "%%{cfg.buildtarget.directory}/lib"', clangBuiltinIncludeDir) 
+    }
   end
 end
 
