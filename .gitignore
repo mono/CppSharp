@@ -51,6 +51,7 @@ src/generator/generator
 /site
 /wip
 /.vs
+/.vscode
 
 # Nuget: do not include produced packages
 /build/nuget/*.nupkg
