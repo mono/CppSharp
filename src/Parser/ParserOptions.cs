@@ -233,6 +233,7 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
 
+            AddArguments("-fgnuc-version=4.2.1");
             AddArguments("-stdlib=libc++");
         }
 
@@ -282,6 +283,8 @@ namespace CppSharp.Parser
             string compiler, longVersion, shortVersion;
             GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
 
+            AddArguments($"-fgnuc-version={longVersion}");
+
             string[] versions = {longVersion, shortVersion};
             string[] triples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
             if (compiler == "gcc")
@@ -330,6 +333,23 @@ namespace CppSharp.Parser
             // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
                 LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+
+            // As of Clang revision 5e866e411caa we are required to pass "-fgnuc-version="
+            // to get the __GNUC__ symbol defined. macOS and Linux system headers require
+            // this define, so we need explicitly pass it to Clang.
+
+            // Note that this setup is more accurately done in the platform-specific
+            // setup methods, below is generic fallback in case that logic was disabled.
+            if (NoBuiltinIncludes)
+            {
+                switch (Platform.Host)
+                {
+                case TargetPlatform.MacOS:
+                case TargetPlatform.Linux:
+                    AddArguments("-fgnuc-version=4.2.1");
+                    break;
+                }
+            }
 
             switch (LanguageVersion)
             {
