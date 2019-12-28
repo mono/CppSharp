@@ -48694,16 +48694,6 @@ namespace Std
         namespace Pair
         {
             [StructLayout(LayoutKind.Explicit, Size = 32)]
-            public unsafe partial struct __Internalc__N_std_N___1_S_pair____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration
-            {
-                [FieldOffset(0)]
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C first;
-
-                [FieldOffset(24)]
-                internal global::System.IntPtr second;
-            }
-
-            [StructLayout(LayoutKind.Explicit, Size = 32)]
             public unsafe partial struct __Internalc__N_std_N___1_S_pair__1__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration
             {
                 [FieldOffset(0)]
