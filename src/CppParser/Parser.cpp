@@ -284,6 +284,9 @@ void Parser::Setup()
         opts->targetTriple = llvm::sys::getDefaultTargetTriple();
     TO->Triple = llvm::Triple::normalize(opts->targetTriple);
 
+    if (opts->verbose)
+        printf("Target triple: %s\n", TO->Triple.c_str());
+
     TargetInfo* TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     if (!TI)
     {
