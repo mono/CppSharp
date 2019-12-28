@@ -24,7 +24,6 @@ matrix:
 os: Visual Studio 2017
 
 platform:
-  - x86
   - x64
 
 configuration:
