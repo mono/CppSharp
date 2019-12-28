@@ -76,7 +76,6 @@ namespace CppSharp.Parser
             SkipFunctionBodies = options.SkipFunctionBodies;
             SkipLayoutInfo = options.SkipLayoutInfo;
             ForceClangToolchainLookup = options.ForceClangToolchainLookup;
-            ResourceDir = options.ResourceDir;
         }
 
         public bool IsItaniumLikeAbi => !IsMicrosoftAbi;
@@ -208,6 +207,8 @@ namespace CppSharp.Parser
                 NoStandardIncludes = true;
                 NoBuiltinIncludes = true;
 
+                AddSystemIncludeDirs(BuiltinsDir);
+
                 vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
                 foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
                     AddSystemIncludeDirs(include);
@@ -222,10 +223,21 @@ namespace CppSharp.Parser
             AddArguments("-fdelayed-template-parsing");
         }
 
+        /// <summary>
+        /// Set to true to opt for Xcode Clang builtin headers
+        /// </summary>
+        public bool UseXcodeBuiltins;
+
         public void SetupXcode()
         {
             var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
             AddSystemIncludeDirs(cppIncPath);
+
+            var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
+            if (UseXcodeBuiltins)
+                AddSystemIncludeDirs(builtinsPath);
+            else
+                AddSystemIncludeDirs(BuiltinsDir);
 
             var includePath = XcodeToolchain.GetXcodeIncludesFolder();
             AddSystemIncludeDirs(includePath);
@@ -242,6 +254,7 @@ namespace CppSharp.Parser
             if (!Platform.IsLinux)
             {
                 compiler = "gcc";
+
                 // Search for the available GCC versions on the provided headers.
                 var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
                     "usr", "include", "c++"));
@@ -252,15 +265,19 @@ namespace CppSharp.Parser
                 string gccVersionPath = versions.First();
                 longVersion = shortVersion = gccVersionPath.Substring(
                     gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
                 return;
             }
+
             var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
             info.RedirectStandardError = true;
             info.CreateNoWindow = true;
             info.UseShellExecute = false;
+
             var process = Process.Start(info);
             if (process == null)
                 throw new SystemException("GCC compiler was not found.");
+
             process.WaitForExit();
 
             var output = process.StandardError.ReadToEnd();
@@ -282,8 +299,10 @@ namespace CppSharp.Parser
             string compiler, longVersion, shortVersion;
             GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
 
-            string[] versions = {longVersion, shortVersion};
-            string[] triples = {"x86_64-linux-gnu", "x86_64-pc-linux-gnu"};
+            AddSystemIncludeDirs(BuiltinsDir);
+
+            string[] versions = { longVersion, shortVersion };
+            string[] triples = { "x86_64-linux-gnu", "x86_64-pc-linux-gnu" };
             if (compiler == "gcc")
             {
                 foreach (var version in versions)
@@ -318,8 +337,6 @@ namespace CppSharp.Parser
         public void Setup()
         {
             SetupArguments();
-
-            SetupBuiltinIncludes();
 
             if (!NoBuiltinIncludes)
                 SetupIncludes();
@@ -380,25 +397,23 @@ namespace CppSharp.Parser
                 AddArguments("-fno-rtti");
         }
 
-        private void SetupBuiltinIncludes()
+        public string BuiltinsDir 
         {
-            // If we have an explicit resource directory, then do nothing.
-            if (!string.IsNullOrEmpty(ResourceDir))
-                return;
-
-            // Else use the resource directory that was bundled next to the
-            // binaries by the build bootstrap scripts.
-            var assemblyDir =  Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            if (!Directory.Exists(Path.Combine(assemblyDir, "lib", "clang")))
-                throw new Exception("Clang resource folder 'lib/clang/<version>' was not found.");
-
-            ResourceDir = assemblyDir;
+            get
+            {
+                var assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var builtinsDir = Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
+                return builtinsDir;
+            }
         }
 
         private void SetupIncludes()
         {
-            switch(Platform.Host)
+            // Check that the builtin includes folder exists.
+            if (!Directory.Exists(BuiltinsDir))
+                throw new Exception($"Clang resource folder 'lib/clang/{ClangVersion}/include' was not found.");
+
+            switch (Platform.Host)
             {
                 case TargetPlatform.Windows:
                     SetupMSVC();

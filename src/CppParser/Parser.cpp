@@ -211,22 +211,6 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
 
 //-----------------------------------//
 
-// Compute the path to the resource directory.
-static std::string GetClangResourceDir(std::string baseResourceDir)
-{
-    llvm::SmallString<128> Path(baseResourceDir);
-
-    llvm::StringRef ClangResourceDir(CLANG_RESOURCE_DIR);
-    if (ClangResourceDir != "")
-        llvm::sys::path::append(Path, ClangResourceDir);
-    else
-        llvm::sys::path::append(Path, "lib", "clang", CLANG_VERSION_STRING);
-
-    return Path.str();
-}
-
-//-----------------------------------//
-
 static clang::TargetCXXABI::Kind
 ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
 {
@@ -319,15 +303,6 @@ void Parser::Setup()
 
     if (opts->verbose)
         HSOpts.Verbose = true;
-
-    // Initialize the builtin compiler headers.
-    HSOpts.ResourceDir = GetClangResourceDir(opts->resourceDir);
-
-    llvm::SmallString<128> ResourceDir(HSOpts.ResourceDir);
-    llvm::sys::path::append(ResourceDir, "include");
-
-    HSOpts.AddPath(ResourceDir.str(), clang::frontend::System, /*IsFramework=*/false,
-        /*IgnoreSysRoot=*/false);
 
     for (unsigned I = 0, E = opts->IncludeDirs.size(); I != E; ++I)
     {

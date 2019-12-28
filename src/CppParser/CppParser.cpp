@@ -7,6 +7,7 @@
 
 #include "CppParser.h"
 #include "Parser.h"
+#include <clang/Basic/Version.inc>
 
 namespace CppSharp { namespace CppParser {
 
@@ -21,10 +22,13 @@ CppParserOptions::CppParserOptions()
     , skipPrivateDeclarations(true)
     , skipLayoutInfo(false)
     , skipFunctionBodies(true)
+    , clangVersion(CLANG_VERSION_STRING)
 {
 }
 
 CppParserOptions::~CppParserOptions() {}
+
+std::string CppParserOptions::getClangVersion() { return clangVersion; }
 
 DEF_VECTOR_STRING(CppParserOptions, Arguments)
 DEF_VECTOR_STRING(CppParserOptions, SourceFiles)
