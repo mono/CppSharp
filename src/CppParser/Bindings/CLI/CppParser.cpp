@@ -421,16 +421,6 @@ void CppSharp::Parser::CppParserOptions::TargetTriple::set(System::String^ value
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->targetTriple = clix::marshalString<clix::E_UTF8>(value);
 }
 
-System::String^ CppSharp::Parser::CppParserOptions::ResourceDir::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::CppParserOptions*)NativePtr)->resourceDir);
-}
-
-void CppSharp::Parser::CppParserOptions::ResourceDir::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->resourceDir = clix::marshalString<clix::E_UTF8>(value);
-}
-
 bool CppSharp::Parser::CppParserOptions::NoStandardIncludes::get()
 {
     return ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->noStandardIncludes;
@@ -509,6 +499,12 @@ bool CppSharp::Parser::CppParserOptions::SkipFunctionBodies::get()
 void CppSharp::Parser::CppParserOptions::SkipFunctionBodies::set(bool value)
 {
     ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->skipFunctionBodies = value;
+}
+
+System::String^ CppSharp::Parser::CppParserOptions::ClangVersion::get()
+{
+    auto __ret = ((::CppSharp::CppParser::CppParserOptions*)NativePtr)->getClangVersion();
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()

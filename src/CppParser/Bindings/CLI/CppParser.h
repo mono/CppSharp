@@ -150,12 +150,6 @@ namespace CppSharp
                 void set(System::String^);
             }
 
-            property System::String^ ResourceDir
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
             property bool NoStandardIncludes
             {
                 bool get();
@@ -202,6 +196,11 @@ namespace CppSharp
             {
                 bool get();
                 void set(bool);
+            }
+
+            property System::String^ ClangVersion
+            {
+                System::String^ get();
             }
 
             property unsigned int ArgumentsCount

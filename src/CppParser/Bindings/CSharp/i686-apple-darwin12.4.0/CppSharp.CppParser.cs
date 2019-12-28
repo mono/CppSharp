@@ -47465,31 +47465,31 @@ namespace CppSharp
                 internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C targetTriple;
 
                 [FieldOffset(128)]
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C resourceDir;
-
-                [FieldOffset(140)]
                 internal byte noStandardIncludes;
 
-                [FieldOffset(141)]
+                [FieldOffset(129)]
                 internal byte noBuiltinIncludes;
 
-                [FieldOffset(142)]
+                [FieldOffset(130)]
                 internal byte microsoftMode;
 
-                [FieldOffset(143)]
+                [FieldOffset(131)]
                 internal byte verbose;
 
-                [FieldOffset(144)]
+                [FieldOffset(132)]
                 internal byte unityBuild;
 
-                [FieldOffset(145)]
+                [FieldOffset(133)]
                 internal byte skipPrivateDeclarations;
 
-                [FieldOffset(146)]
+                [FieldOffset(134)]
                 internal byte skipLayoutInfo;
 
-                [FieldOffset(147)]
+                [FieldOffset(135)]
                 internal byte skipFunctionBodies;
+
+                [FieldOffset(136)]
+                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C clangVersion;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -47625,6 +47625,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions22clearSupportedStdTypesEv")]
                 internal static extern void ClearSupportedStdTypes(global::System.IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser16CppParserOptions15getClangVersionEv")]
+                internal static extern void GetClangVersion(global::System.IntPtr @return, global::System.IntPtr __instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -47970,20 +47975,6 @@ namespace CppSharp
                 }
             }
 
-            public string ResourceDir
-            {
-                get
-                {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->resourceDir));
-                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                }
-
-                set
-                {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->resourceDir), value);
-                }
-            }
-
             public bool NoStandardIncludes
             {
                 get
@@ -48085,6 +48076,19 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->skipFunctionBodies = (byte) (value ? 1 : 0);
+                }
+            }
+
+            public string ClangVersion
+            {
+                get
+                {
+                    var __ret = new global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C();
+                    __Internal.GetClangVersion(new IntPtr(&__ret), (__Instance + __PointerAdjustment));
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&__ret));
+                    var __retString0 = global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                    __basicStringRet0.Dispose();
+                    return __retString0;
                 }
             }
 
@@ -48694,16 +48698,6 @@ namespace Std
     {
         namespace Pair
         {
-            [StructLayout(LayoutKind.Explicit, Size = 16)]
-            public unsafe partial struct __Internalc__N_std_N___1_S_pair____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration
-            {
-                [FieldOffset(0)]
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C first;
-
-                [FieldOffset(12)]
-                internal global::System.IntPtr second;
-            }
-
             [StructLayout(LayoutKind.Explicit, Size = 16)]
             public unsafe partial struct __Internalc__N_std_N___1_S_pair__1__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration
             {

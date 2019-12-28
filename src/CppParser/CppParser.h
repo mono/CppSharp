@@ -11,6 +11,9 @@
 #include "Helpers.h"
 #include "Target.h"
 
+#define CS_INTERNAL
+#define CS_READONLY
+
 namespace CppSharp { namespace CppParser {
 
 using namespace CppSharp::CppParser::AST;
@@ -19,6 +22,8 @@ struct CS_API CppParserOptions
 {
     CppParserOptions();
     ~CppParserOptions();
+
+    std::string getClangVersion();
 
     VECTOR_STRING(Arguments)
     std::string libraryFile;
@@ -37,7 +42,6 @@ struct CS_API CppParserOptions
 
     int toolSetToUse;
     std::string targetTriple;
-    std::string resourceDir;
 
     bool noStandardIncludes;
     bool noBuiltinIncludes;
@@ -47,6 +51,9 @@ struct CS_API CppParserOptions
     bool skipPrivateDeclarations;
     bool skipLayoutInfo;
     bool skipFunctionBodies;
+
+private:
+    std::string clangVersion;
 };
 
 enum class ParserDiagnosticLevel

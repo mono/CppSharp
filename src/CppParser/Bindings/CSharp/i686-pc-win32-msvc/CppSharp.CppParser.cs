@@ -47465,31 +47465,31 @@ namespace CppSharp
                 internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C targetTriple;
 
                 [FieldOffset(152)]
-                internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C resourceDir;
-
-                [FieldOffset(176)]
                 internal byte noStandardIncludes;
 
-                [FieldOffset(177)]
+                [FieldOffset(153)]
                 internal byte noBuiltinIncludes;
 
-                [FieldOffset(178)]
+                [FieldOffset(154)]
                 internal byte microsoftMode;
 
-                [FieldOffset(179)]
+                [FieldOffset(155)]
                 internal byte verbose;
 
-                [FieldOffset(180)]
+                [FieldOffset(156)]
                 internal byte unityBuild;
 
-                [FieldOffset(181)]
+                [FieldOffset(157)]
                 internal byte skipPrivateDeclarations;
 
-                [FieldOffset(182)]
+                [FieldOffset(158)]
                 internal byte skipLayoutInfo;
 
-                [FieldOffset(183)]
+                [FieldOffset(159)]
                 internal byte skipFunctionBodies;
+
+                [FieldOffset(160)]
+                internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C clangVersion;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47625,6 +47625,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?clearSupportedStdTypes@CppParserOptions@CppParser@CppSharp@@QAEXXZ")]
                 internal static extern void ClearSupportedStdTypes(global::System.IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?getClangVersion@CppParserOptions@CppParser@CppSharp@@QAE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ")]
+                internal static extern void GetClangVersion(global::System.IntPtr __instance, global::System.IntPtr @return);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -47970,20 +47975,6 @@ namespace CppSharp
                 }
             }
 
-            public string ResourceDir
-            {
-                get
-                {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*) __Instance)->resourceDir));
-                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                }
-
-                set
-                {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new global::System.IntPtr(&((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->resourceDir), value);
-                }
-            }
-
             public bool NoStandardIncludes
             {
                 get
@@ -48085,6 +48076,19 @@ namespace CppSharp
                 set
                 {
                     ((global::CppSharp.Parser.CppParserOptions.__Internal*)__Instance)->skipFunctionBodies = (byte) (value ? 1 : 0);
+                }
+            }
+
+            public string ClangVersion
+            {
+                get
+                {
+                    var __ret = new global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C();
+                    __Internal.GetClangVersion((__Instance + __PointerAdjustment), new IntPtr(&__ret));
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new global::System.IntPtr(&__ret));
+                    var __retString0 = global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                    __basicStringRet0.Dispose();
+                    return __retString0;
                 }
             }
 
