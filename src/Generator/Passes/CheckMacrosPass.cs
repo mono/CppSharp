@@ -42,7 +42,7 @@ namespace CppSharp.Passes
     ///     CS_CONSTRAINT(TYPE [, TYPE]*) (templates)
     ///         Used to define constraint of generated generic type or generic method.
     /// 
-    ///     CS_INTERNAL (methods)
+    ///     CS_INTERNAL (declarations)
     ///         Used to flag a method as internal to an assembly. So, it is
     ///         not accessible outside that assembly.
     /// 
@@ -60,7 +60,6 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
-
             if (AlreadyVisited(decl))
                 return false;
 
@@ -68,6 +67,9 @@ namespace CppSharp.Passes
                 return true;
 
             var expansions = decl.PreprocessedEntities.OfType<MacroExpansion>();
+
+            if (expansions.Any(e => e.Text == Prefix + "_INTERNAL"))
+                decl.Access = AccessSpecifier.Internal;
 
             CheckIgnoreMacros(decl, expansions);
             return true;
@@ -159,9 +161,6 @@ namespace CppSharp.Passes
             if (expansions.Any(e => e.Text == Prefix + "_HASHCODE"
                 || e.Text == Prefix + "_EQUALS"))
                 method.ExplicitlyIgnore();
-
-            if (expansions.Any(e => e.Text == Prefix + "_INTERNAL"))
-                method.Access = AccessSpecifier.Internal;
 
             return base.VisitMethodDecl(method);
         }
