@@ -2,6 +2,7 @@ language: cpp
 sudo: required
 
 os:
+  - windows
   - linux
   - osx
 
@@ -18,11 +19,13 @@ addons:
     - g++-7
 
 install:
-  - source build/InstallMono.sh
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cmd /C "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%; fi
+  - if [ "$TRAVIS_OS_NAME" != "windows" ]; then source build/InstallMono.sh; fi
   - build/InstallNugets.sh  
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CXX" = "g++" ]; then export CXX="g++-7" CC="gcc-7"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then PREMAKE=build/premake5.exe; elif [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi
   - $PREMAKE --file=build/scripts/LLVM.lua download_llvm
 
 script: |
-  build/Compile.sh && build/RunTests.sh
+  - if [ "$TRAVIS_OS_NAME" = "windows" ] then $PREMAKE --file=build\premake5.lua %VS_VERSION% --arch=%PLATFORM% && msbuild.exe %BUILD_PATH%\CppSharp.sln; else then build/Compile.sh; fi
+  - build/RunTests.sh

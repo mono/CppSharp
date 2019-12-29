@@ -15,7 +15,7 @@ rich declaration and type information model.
 
 |Windows 64-bit|Windows 32-bit| windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
 |---------------------------|---------------------------|---------------------------|-----------------------------|-----------------------------|
-| [![NuGet](https://img.shields.io/nuget/v/CppSharp.svg)](https://www.nuget.org/packages/CppSharp/) | [![GitHub release](https://img.shields.io/github/release/mono/CppSharp.svg)](https://github.com/mono/CppSharp/releases) | [![windows-vs-x86](https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true)](https://ci.appveyor.com/project/tritao/CppSharp/branch/master) | [![linux-gcc-x86_64](https://travis-ci.org/mono/CppSharp.svg?branch=master)](https://travis-ci.org/mono/CppSharp) | [![osx-clang-x86](https://travis-ci.org/mono/CppSharp.svg?branch=master)](https://travis-ci.org/mono/CppSharp)
+| [![NuGet](https://img.shields.io/nuget/v/CppSharp.svg)](https://www.nuget.org/packages/CppSharp/) | [![GitHub release](https://img.shields.io/github/release/mono/CppSharp.svg)](https://github.com/mono/CppSharp/releases) | [![linux-gcc-x86_64](https://travis-ci.org/mono/CppSharp.svg?branch=master)](https://travis-ci.org/mono/CppSharp) | [![osx-clang-x86](https://travis-ci.org/mono/CppSharp.svg?branch=master)](https://travis-ci.org/mono/CppSharp)
 
 1. [Libraries](#libraries)
 2. [Documentation](#documentation)
