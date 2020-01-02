@@ -4385,14 +4385,21 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
                 NativeLib->Dependencies.push_back(lib);
             }
         }
-        auto Error = llvm::Error::success();
-        for (const auto& Entry : MachOObjectFile->exports(Error))
+        // HACK: the correct way is with exported(Err) but it crashes with msvc 32
+        // see https://bugs.llvm.org/show_bug.cgi?id=44433
+        for (const auto& Symbol : MachOObjectFile->symbols())
         {
-            NativeLib->Symbols.push_back(Entry.name());
-        }
-        if (Error)
-        {
-            return ParserResultKind::Error;
+            if (Symbol.getName())
+            {
+                if ((Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
+                    !(Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
+                    NativeLib->Symbols.push_back(Symbol.getName().get());
+            }
+            else
+            {
+                Symbol.getName().takeError();
+                return ParserResultKind::Error;
+            }
         }
         return ParserResultKind::Success;
     }

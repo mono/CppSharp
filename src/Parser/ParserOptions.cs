@@ -233,8 +233,8 @@ namespace CppSharp.Parser
             var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
             AddSystemIncludeDirs(cppIncPath);
 
-            AddSystemIncludeDirs(UseXcodeBuiltins ?
-                XcodeToolchain.GetXcodeBuiltinIncludesFolder() : BuiltinsDir);
+            var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
+            AddSystemIncludeDirs(UseXcodeBuiltins ? builtinsPath : BuiltinsDir);
 
             var includePath = XcodeToolchain.GetXcodeIncludesFolder();
             AddSystemIncludeDirs(includePath);

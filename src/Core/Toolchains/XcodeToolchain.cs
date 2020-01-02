@@ -33,8 +33,8 @@ namespace CppSharp
 
             var includePath = Path.Combine(toolchainPath, "usr/include/c++/v1");
 
-            if (includePath == null)
-                throw new Exception("Could not find a valid C++ include folder");
+            if (includePath == null || !Directory.Exists(includePath))
+                throw new Exception($"Could not find a valid C++ include folder: {includePath}");
 
             return includePath;
         }
@@ -47,8 +47,8 @@ namespace CppSharp
                 "usr/lib/clang")).ToList();
             var includePath = includePaths.LastOrDefault();
 
-            if (includePath == null)
-                throw new Exception("Could not find a valid Clang include folder");
+            if (includePath == null || !Directory.Exists(includePath))
+                throw new Exception($"Could not find a valid Clang builtins folder: {includePath}");
 
             return Path.Combine(includePath, "include");
         }
@@ -58,11 +58,12 @@ namespace CppSharp
             var toolchainPath = GetXcodePath();
 
             var sdkPaths = Directory.EnumerateDirectories(Path.Combine(toolchainPath,
-                "Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs")).ToList();
+                "Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"))
+                .Where(dir => dir.Contains("MacOSX.sdk")).ToList();
             var sdkPath = sdkPaths.LastOrDefault();
 
-            if (sdkPath == null)
-                throw new Exception("Could not find a valid Mac SDK");
+            if (sdkPath == null || !Directory.Exists(sdkPath))
+                throw new Exception($"Could not find a valid Mac SDK folder: {sdkPath}");
 
             return Path.Combine(sdkPath, "usr/include");
         }
