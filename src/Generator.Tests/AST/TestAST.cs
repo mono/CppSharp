@@ -384,7 +384,7 @@ namespace CppSharp.Generator.Tests.AST
                 classTemplate.TemplatedClass.Constructors.First(c => !c.IsCopyConstructor && !c.IsMoveConstructor));
         }
 
-        [Test, Ignore("The new Clang exposes a non-trivial bug in the comments printer, will fix later.")]
+        [Test]
         public void TestComments()
         {
             var @class = AstContext.FindCompleteClass("TestComments");
