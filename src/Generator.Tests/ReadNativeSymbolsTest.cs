@@ -217,87 +217,91 @@ namespace CppSharp.Generator.Tests
         public void TestReadSymbolsOSX()
         {
             var symbols = GetSymbols("libexpat-osx");
-            Assert.AreEqual("_XML_ParserCreate_MM", symbols[0]);
-            Assert.AreEqual("_XML_ParserCreateNS", symbols[1]);
-            Assert.AreEqual("_XML_ParserCreate", symbols[2]);
-            Assert.AreEqual("_XML_ParserReset", symbols[3]);
-            Assert.AreEqual("_XML_ParserFree", symbols[4]);
-            Assert.AreEqual("_XML_ParseBuffer", symbols[5]);
-            Assert.AreEqual("_XML_Parse", symbols[6]);
-            Assert.AreEqual("_XML_SetEncoding", symbols[7]);
-            Assert.AreEqual("_XML_SetEndElementHandler", symbols[8]);
-            Assert.AreEqual("_XML_SetEndCdataSectionHandler", symbols[9]);
-            Assert.AreEqual("_XML_SetEndDoctypeDeclHandler", symbols[10]);
-            Assert.AreEqual("_XML_SetEndNamespaceDeclHandler", symbols[11]);
-            Assert.AreEqual("_XML_SetEntityDeclHandler", symbols[12]);
-            Assert.AreEqual("_XML_SetElementHandler", symbols[13]);
-            Assert.AreEqual("_XML_SetElementDeclHandler", symbols[14]);
-            Assert.AreEqual("_XML_SetExternalEntityRefHandlerArg", symbols[15]);
-            Assert.AreEqual("_XML_SetExternalEntityRefHandler", symbols[16]);
-            Assert.AreEqual("_XML_SetReturnNSTriplet", symbols[17]);
-            Assert.AreEqual("_XML_SetUserData", symbols[18]);
-            Assert.AreEqual("_XML_SetUnparsedEntityDeclHandler", symbols[19]);
-            Assert.AreEqual("_XML_SetUnknownEncodingHandler", symbols[20]);
-            Assert.AreEqual("_XML_SetBase", symbols[21]);
-            Assert.AreEqual("_XML_SetStartElementHandler", symbols[22]);
-            Assert.AreEqual("_XML_SetStartCdataSectionHandler", symbols[23]);
-            Assert.AreEqual("_XML_SetStartDoctypeDeclHandler", symbols[24]);
-            Assert.AreEqual("_XML_SetStartNamespaceDeclHandler", symbols[25]);
-            Assert.AreEqual("_XML_SetSkippedEntityHandler", symbols[26]);
-            Assert.AreEqual("_XML_SetCharacterDataHandler", symbols[27]);
-            Assert.AreEqual("_XML_SetCommentHandler", symbols[28]);
-            Assert.AreEqual("_XML_SetCdataSectionHandler", symbols[29]);
-            Assert.AreEqual("_XML_SetProcessingInstructionHandler", symbols[30]);
-            Assert.AreEqual("_XML_SetParamEntityParsing", symbols[31]);
-            Assert.AreEqual("_XML_SetDefaultHandlerExpand", symbols[32]);
-            Assert.AreEqual("_XML_SetDefaultHandler", symbols[33]);
-            Assert.AreEqual("_XML_SetDoctypeDeclHandler", symbols[34]);
-            Assert.AreEqual("_XML_SetNotationDeclHandler", symbols[35]);
-            Assert.AreEqual("_XML_SetNotStandaloneHandler", symbols[36]);
-            Assert.AreEqual("_XML_SetNamespaceDeclHandler", symbols[37]);
-            Assert.AreEqual("_XML_SetAttlistDeclHandler", symbols[38]);
-            Assert.AreEqual("_XML_SetXmlDeclHandler", symbols[39]);
-            Assert.AreEqual("_XML_SetHashSalt", symbols[40]);
-            Assert.AreEqual("_XML_StopParser", symbols[41]);
-            Assert.AreEqual("_XML_ExternalEntityParserCreate", symbols[42]);
-            Assert.AreEqual("_XML_ExpatVersionInfo", symbols[43]);
-            Assert.AreEqual("_XML_ExpatVersion", symbols[44]);
-            Assert.AreEqual("_XML_ErrorString", symbols[45]);
-            Assert.AreEqual("_XML_UseParserAsHandlerArg", symbols[46]);
-            Assert.AreEqual("_XML_UseForeignDTD", symbols[47]);
-            Assert.AreEqual("_XML_GetBase", symbols[48]);
-            Assert.AreEqual("_XML_GetBuffer", symbols[49]);
-            Assert.AreEqual("_XML_GetSpecifiedAttributeCount", symbols[50]);
-            Assert.AreEqual("_XML_GetIdAttributeIndex", symbols[51]);
-            Assert.AreEqual("_XML_GetInputContext", symbols[52]);
-            Assert.AreEqual("_XML_GetParsingStatus", symbols[53]);
-            Assert.AreEqual("_XML_GetErrorCode", symbols[54]);
-            Assert.AreEqual("_XML_GetCurrentByteIndex", symbols[55]);
-            Assert.AreEqual("_XML_GetCurrentByteCount", symbols[56]);
-            Assert.AreEqual("_XML_GetCurrentLineNumber", symbols[57]);
-            Assert.AreEqual("_XML_GetCurrentColumnNumber", symbols[58]);
-            Assert.AreEqual("_XML_GetFeatureList", symbols[59]);
-            Assert.AreEqual("_XML_ResumeParser", symbols[60]);
-            Assert.AreEqual("_XML_FreeContentModel", symbols[61]);
-            Assert.AreEqual("_XML_MemMalloc", symbols[62]);
-            Assert.AreEqual("_XML_MemRealloc", symbols[63]);
-            Assert.AreEqual("_XML_MemFree", symbols[64]);
-            Assert.AreEqual("_XML_DefaultCurrent", symbols[65]);
-            Assert.AreEqual("_XmlUtf8Encode", symbols[66]);
-            Assert.AreEqual("_XmlUtf16Encode", symbols[67]);
-            Assert.AreEqual("_XmlSizeOfUnknownEncoding", symbols[68]);
-            Assert.AreEqual("_XmlInitUnknownEncodingNS", symbols[69]);
-            Assert.AreEqual("_XmlInitUnknownEncoding", symbols[70]);
-            Assert.AreEqual("_XmlInitEncodingNS", symbols[71]);
-            Assert.AreEqual("_XmlInitEncoding", symbols[72]);
-            Assert.AreEqual("_XmlGetUtf8InternalEncodingNS", symbols[73]);
-            Assert.AreEqual("_XmlGetUtf8InternalEncoding", symbols[74]);
-            Assert.AreEqual("_XmlGetUtf16InternalEncodingNS", symbols[75]);
-            Assert.AreEqual("_XmlGetUtf16InternalEncoding", symbols[76]);
-            Assert.AreEqual("_XmlParseXmlDeclNS", symbols[77]);
-            Assert.AreEqual("_XmlParseXmlDecl", symbols[78]);
-            Assert.AreEqual("_XmlPrologStateInitExternalEntity", symbols[79]);
-            Assert.AreEqual("_XmlPrologStateInit", symbols[80]);
+            Assert.That(symbols, Is.EquivalentTo(
+                new[]
+                {
+                    "_XML_DefaultCurrent",
+                    "_XML_ErrorString",
+                    "_XML_ExpatVersion",
+                    "_XML_ExpatVersionInfo",
+                    "_XML_ExternalEntityParserCreate",
+                    "_XML_FreeContentModel",
+                    "_XML_GetBase",
+                    "_XML_GetBuffer",
+                    "_XML_GetCurrentByteCount",
+                    "_XML_GetCurrentByteIndex",
+                    "_XML_GetCurrentColumnNumber",
+                    "_XML_GetCurrentLineNumber",
+                    "_XML_GetErrorCode",
+                    "_XML_GetFeatureList",
+                    "_XML_GetIdAttributeIndex",
+                    "_XML_GetInputContext",
+                    "_XML_GetParsingStatus",
+                    "_XML_GetSpecifiedAttributeCount",
+                    "_XML_MemFree",
+                    "_XML_MemMalloc",
+                    "_XML_MemRealloc",
+                    "_XML_Parse",
+                    "_XML_ParseBuffer",
+                    "_XML_ParserCreate",
+                    "_XML_ParserCreateNS",
+                    "_XML_ParserCreate_MM",
+                    "_XML_ParserFree",
+                    "_XML_ParserReset",
+                    "_XML_ResumeParser",
+                    "_XML_SetAttlistDeclHandler",
+                    "_XML_SetBase",
+                    "_XML_SetCdataSectionHandler",
+                    "_XML_SetCharacterDataHandler",
+                    "_XML_SetCommentHandler",
+                    "_XML_SetDefaultHandler",
+                    "_XML_SetDefaultHandlerExpand",
+                    "_XML_SetDoctypeDeclHandler",
+                    "_XML_SetElementDeclHandler",
+                    "_XML_SetElementHandler",
+                    "_XML_SetEncoding",
+                    "_XML_SetEndCdataSectionHandler",
+                    "_XML_SetEndDoctypeDeclHandler",
+                    "_XML_SetEndElementHandler",
+                    "_XML_SetEndNamespaceDeclHandler",
+                    "_XML_SetEntityDeclHandler",
+                    "_XML_SetExternalEntityRefHandler",
+                    "_XML_SetExternalEntityRefHandlerArg",
+                    "_XML_SetHashSalt",
+                    "_XML_SetNamespaceDeclHandler",
+                    "_XML_SetNotStandaloneHandler",
+                    "_XML_SetNotationDeclHandler",
+                    "_XML_SetParamEntityParsing",
+                    "_XML_SetProcessingInstructionHandler",
+                    "_XML_SetReturnNSTriplet",
+                    "_XML_SetSkippedEntityHandler",
+                    "_XML_SetStartCdataSectionHandler",
+                    "_XML_SetStartDoctypeDeclHandler",
+                    "_XML_SetStartElementHandler",
+                    "_XML_SetStartNamespaceDeclHandler",
+                    "_XML_SetUnknownEncodingHandler",
+                    "_XML_SetUnparsedEntityDeclHandler",
+                    "_XML_SetUserData",
+                    "_XML_SetXmlDeclHandler",
+                    "_XML_StopParser",
+                    "_XML_UseForeignDTD",
+                    "_XML_UseParserAsHandlerArg",
+                    "_XmlGetUtf16InternalEncoding",
+                    "_XmlGetUtf16InternalEncodingNS",
+                    "_XmlGetUtf8InternalEncoding",
+                    "_XmlGetUtf8InternalEncodingNS",
+                    "_XmlInitEncoding",
+                    "_XmlInitEncodingNS",
+                    "_XmlInitUnknownEncoding",
+                    "_XmlInitUnknownEncodingNS",
+                    "_XmlParseXmlDecl",
+                    "_XmlParseXmlDeclNS",
+                    "_XmlPrologStateInit",
+                    "_XmlPrologStateInitExternalEntity",
+                    "_XmlSizeOfUnknownEncoding",
+                    "_XmlUtf16Encode",
+                    "_XmlUtf8Encode"
+                }));
         }
 
         private static IList<string> GetSymbols(string library)
