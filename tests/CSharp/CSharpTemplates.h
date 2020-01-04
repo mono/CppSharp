@@ -39,21 +39,18 @@ public:
     IndependentFields(const T& t);
     IndependentFields(T1* t1);
     IndependentFields(T2* t2);
-    IndependentFields(int i);
+    IndependentFields(float f);
     ~IndependentFields();
     explicit IndependentFields(const std::map<T, T> &other);
     int getIndependent();
-    const T* returnTakeDependentPointer(const T* p);
     T getDependent(const T& t);
     Type property();
-    const T* propertyReturnDependentPointer();
     static T staticDependent(const T& t);
-    void hasDefaultDependentParam(T* ptr, const T& refT = T());
     template <typename AdditionalDependentType>
     void usesAdditionalDependentType(AdditionalDependentType additionalDependentType);
     static const int independentConst;
 private:
-    int independent;
+    float independent;
 };
 
 template <typename T>
@@ -86,9 +83,9 @@ IndependentFields<T>::IndependentFields(T2* t2) : independent(1)
 }
 
 template <typename T>
-IndependentFields<T>::IndependentFields(int i)
+IndependentFields<T>::IndependentFields(float f)
 {
-    independent = i;
+    independent = f;
 }
 
 template <typename T>
@@ -99,12 +96,6 @@ IndependentFields<T>::IndependentFields(const std::map<T, T> &v)
 template <typename T>
 IndependentFields<T>::~IndependentFields()
 {
-}
-
-template <typename T>
-const T* IndependentFields<T>::returnTakeDependentPointer(const T* p)
-{
-    return p;
 }
 
 template <typename T>
@@ -120,20 +111,9 @@ T IndependentFields<T>::property()
 }
 
 template <typename T>
-const T* IndependentFields<T>::propertyReturnDependentPointer()
-{
-    return 0;
-}
-
-template <typename T>
 T IndependentFields<T>::staticDependent(const T& t)
 {
     return t;
-}
-
-template <typename T>
-void IndependentFields<T>::hasDefaultDependentParam(T* ptr, const T& refT)
-{
 }
 
 template <typename T>
@@ -177,6 +157,9 @@ public:
     T getDependentValue();
     void setDependentValue(const T& value);
     IndependentFields<Nested> returnNestedInTemplate();
+    const T* returnTakeDependentPointer(const T* p);
+    const T* propertyReturnDependentPointer();
+    void hasDefaultDependentParam(T* ptr, const T& refT = T());
     typedef void (*DependentFunctionPointer)(T);
     DependentFunctionPointer dependentFunctionPointerField;
 private:
@@ -217,6 +200,23 @@ template <typename T>
 IndependentFields<typename DependentValueFields<T>::Nested> DependentValueFields<T>::returnNestedInTemplate()
 {
     return DependentValueFields<T>::Nested();
+}
+
+template <typename T>
+const T* DependentValueFields<T>::returnTakeDependentPointer(const T* p)
+{
+    return p;
+}
+
+template <typename T>
+const T* DependentValueFields<T>::propertyReturnDependentPointer()
+{
+    return 0;
+}
+
+template <typename T>
+void DependentValueFields<T>::hasDefaultDependentParam(T* ptr, const T& refT)
+{
 }
 
 template <typename T>
@@ -665,6 +665,7 @@ public:
 template <typename T>
 DependentValueFields<OnlySpecialisedInTypeArg<T>> OnlySpecialisedInTypeArg<T>::returnSelfSpecialization()
 {
+    return DependentValueFields<OnlySpecialisedInTypeArg<T>>();
 }
 
 enum class UsedInTemplatedIndexer
