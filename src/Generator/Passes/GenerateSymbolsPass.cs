@@ -116,18 +116,21 @@ namespace CppSharp.Passes
         {
             var mangled = function.Mangled;
             var method = function as Method;
-            bool isInspecialization;
+            bool isInImplicitSpecialization;
             var declarationContext = function.Namespace;
             do
             {
-                isInspecialization = declarationContext is ClassTemplateSpecialization;
+                isInImplicitSpecialization =
+                    declarationContext is ClassTemplateSpecialization specialization &&
+                    specialization.SpecializationKind !=
+                        TemplateSpecializationKind.ExplicitSpecialization;
                 declarationContext = declarationContext.Namespace;
-            } while (!isInspecialization && declarationContext != null);
+            } while (!isInImplicitSpecialization && declarationContext != null);
 
             return function.IsGenerated && !function.IsDeleted &&
                 !function.IsDependent && !function.IsPure && function.Namespace.IsGenerated &&
                 (!string.IsNullOrEmpty(function.Body) ||
-                 isInspecialization || function.IsImplicit) &&
+                 isInImplicitSpecialization || function.IsImplicit) &&
                 // we don't need symbols for virtual functions anyway
                 (method == null || (!method.IsVirtual && !method.IsSynthetized &&
                  (!method.IsConstructor || !((Class) method.Namespace).IsAbstract))) &&
