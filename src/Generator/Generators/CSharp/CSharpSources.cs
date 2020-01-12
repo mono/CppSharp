@@ -764,7 +764,7 @@ namespace CppSharp.Generators.CSharp
 
             if (!Options.GenerateSequentialLayout || @class.IsUnion)
                 WriteLine($"[FieldOffset({field.Offset})]");
-            Write($"internal {retType}{retType.NameSuffix}");
+            Write($"internal {retType}");
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);

@@ -6,20 +6,18 @@ namespace CppSharp.Generators
 {
     public class TypePrinterResult
     {
-        public string Type;
-        public string NameSuffix;
+        public string Type { get; set; }
+        public string NameSuffix { get; set; } = string.Empty;
 
-        public static implicit operator TypePrinterResult(string type)
-        {
-            return new TypePrinterResult { Type = type };
-        }
+        public static implicit operator TypePrinterResult(string type) =>
+            new TypePrinterResult { Type = type };
 
-        public static implicit operator string(TypePrinterResult result)
-        {
-            return result.Type;
-        }
+        public static implicit operator string(TypePrinterResult result) =>
+           result.ToString();
 
-        public override string ToString() => Type;
+        public override string ToString() =>
+            NameSuffix.Length > 0 ? Type.Contains("{0}") ?
+            string.Format(Type, NameSuffix) : Type + NameSuffix : Type;
     }
 
     public class TypePrinter : ITypePrinter<TypePrinterResult>,
