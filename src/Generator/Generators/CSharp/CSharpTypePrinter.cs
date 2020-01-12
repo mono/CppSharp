@@ -104,7 +104,7 @@ namespace CppSharp.Generators.CSharp
                     };
                 }
 
-                var arrayElemType = array.QualifiedType.Visit(this).ToString();
+                TypePrinterResult arrayElemType = array.QualifiedType.Visit(this);
 
                 // C# does not support fixed arrays of machine pointer type (void* or IntPtr).
                 // In that case, replace it by a pointer to an integer type of the same size.
@@ -115,7 +115,7 @@ namespace CppSharp.Generators.CSharp
                 var fixedKeyword = arrayType is ArrayType ? string.Empty : "fixed ";
                 return new TypePrinterResult
                 {
-                    Type = $"{fixedKeyword}{arrayElemType}",
+                    Type = $"{fixedKeyword}{arrayElemType.Type}",
                     NameSuffix = $"[{array.Size}]"
                 };
             }

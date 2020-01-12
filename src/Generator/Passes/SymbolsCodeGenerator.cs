@@ -197,7 +197,6 @@ namespace CppSharp.Passes
 
         private void TakeFunctionAddress(Function function)
         {
-            //function = function.OriginalFunction ?? function;
             string wrapper = GetWrapper(function);
             string @namespace = function.OriginalNamespace.Visit(cppTypePrinter);
             if (function.Access == AccessSpecifier.Protected)
@@ -205,7 +204,7 @@ namespace CppSharp.Passes
                 Write($"class {wrapper}{function.Namespace.Name} : public {@namespace} {{ public: ");
                 Write("static constexpr ");
             }
-            string returnType = function.OriginalReturnType.Visit(cppTypePrinter);
+            TypePrinterResult returnType = function.OriginalReturnType.Visit(cppTypePrinter);
             string signature = GetSignature(function);
 
             string functionName = GetFunctionName(function, @namespace);
@@ -216,8 +215,14 @@ namespace CppSharp.Passes
             if (function.Namespace.Access == AccessSpecifier.Protected)
                 Write($@"class {wrapper}{function.Namespace.Name} : public {
                     function.Namespace.Namespace.Visit(cppTypePrinter)} {{ ");
-            Write($@"{returnType} ({(method != null && !method.IsStatic ?
-                (@namespace + "::") : string.Empty)}*{wrapper}){signature}");
+
+            string variable = $@"({(method?.IsStatic == false ?
+                (@namespace + "::") : string.Empty)}*{wrapper}){signature}";
+            if (!string.IsNullOrEmpty(returnType.NameSuffix))
+                Write(returnType.Type, $"{returnType.NameSuffix} {variable}");
+            else
+                Write($"{returnType} {variable}");
+
             if (function.Access == AccessSpecifier.Protected)
             {
                 Write($" = &{wrapper}{function.Namespace.Name}::{functionName};");
