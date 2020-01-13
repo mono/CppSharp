@@ -1,13 +1,20 @@
 ﻿using CppSharp.AST;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CppSharp.Generators
 {
     public class TypePrinterResult
     {
         public string Type { get; set; }
-        public string NameSuffix { get; set; } = string.Empty;
+        public StringBuilder NameSuffix { get; set; } = new StringBuilder();
+
+        public TypePrinterResult(string type = "", string nameSuffix = "")
+        {
+            Type = type;
+            NameSuffix.Append(nameSuffix);
+        }
 
         public static implicit operator TypePrinterResult(string type) =>
             new TypePrinterResult { Type = type };

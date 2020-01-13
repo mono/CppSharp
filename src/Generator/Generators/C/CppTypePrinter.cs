@@ -72,12 +72,10 @@ namespace CppSharp.Generators.C
             var qual = GetStringQuals(quals, false);
             var pointeeType = pointer.Pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
-            if (pointeeType.Type.Contains("{0}"))
-            {
-                pointeeType.NameSuffix = pointeeType.NameSuffix + mod + qual;
-                return pointeeType;
-            }
-            return $"{pointeeType}{mod}{(string.IsNullOrEmpty(qual) ? string.Empty : " ")}{qual}";
+            pointeeType.NameSuffix.Append(mod);
+            if (!string.IsNullOrEmpty(qual))
+                pointeeType.NameSuffix.Append(' ').Append(qual);
+            return pointeeType;
         }
 
         public override TypePrinterResult VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)

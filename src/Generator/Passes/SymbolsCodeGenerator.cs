@@ -218,10 +218,8 @@ namespace CppSharp.Passes
 
             string variable = $@"({(method?.IsStatic == false ?
                 (@namespace + "::") : string.Empty)}*{wrapper}){signature}";
-            if (!string.IsNullOrEmpty(returnType.NameSuffix))
-                Write(returnType.Type, $"{returnType.NameSuffix} {variable}");
-            else
-                Write($"{returnType} {variable}");
+            returnType.NameSuffix.Append(' ').Append(variable);
+            Write(returnType);
 
             if (function.Access == AccessSpecifier.Protected)
             {

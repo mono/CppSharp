@@ -477,7 +477,7 @@ namespace CppSharp.Generator.Tests.AST
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
             var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });
-            var type = pointer.Visit(cppTypePrinter).Type;
+            string type = pointer.Visit(cppTypePrinter);
             Assert.That(type, Is.EqualTo("const char* const"));
         }
 

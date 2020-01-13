@@ -87,21 +87,15 @@ namespace CppSharp.Generators.CSharp
                 Enumeration @enum;
                 if (arrayType.TryGetEnum(out @enum))
                 {
-                    return new TypePrinterResult
-                    {
-                        Type = $"fixed {@enum.BuiltinType}",
-                        NameSuffix = $"[{array.Size}]"
-                    };
+                    return new TypePrinterResult($"fixed {@enum.BuiltinType}",
+                        $"[{array.Size}]");
                 }
 
                 Class @class;
                 if (arrayType.TryGetClass(out @class))
                 {
-                    return new TypePrinterResult
-                    {
-                        Type = "fixed byte",
-                        NameSuffix = $"[{array.Size * @class.Layout.GetSize()}]"
-                    };
+                    return new TypePrinterResult($"fixed byte",
+                        $"[{array.Size * @class.Layout.GetSize()}]");
                 }
 
                 TypePrinterResult arrayElemType = array.QualifiedType.Visit(this);
@@ -113,11 +107,8 @@ namespace CppSharp.Generators.CSharp
 
                 // Do not write the fixed keyword multiple times for nested array types
                 var fixedKeyword = arrayType is ArrayType ? string.Empty : "fixed ";
-                return new TypePrinterResult
-                {
-                    Type = $"{fixedKeyword}{arrayElemType.Type}",
-                    NameSuffix = $"[{array.Size}]"
-                };
+                return new TypePrinterResult(fixedKeyword + arrayElemType.Type,
+                    $"[{array.Size}]");
             }
 
             // const char* and const char[] are the same so we can use a string
@@ -507,16 +498,16 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
                     return GetIntString(primitive, Context.TargetInfo);
-                case PrimitiveType.Int128: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = "[16]"}; // The type is always 128 bits wide
-                case PrimitiveType.UInt128: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = "[16]"}; // The type is always 128 bits wide
-                case PrimitiveType.Half: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = $"[{Context.TargetInfo.HalfWidth}]"};
+                case PrimitiveType.Int128: return new TypePrinterResult("fixed byte",
+                    "[16]"); // The type is always 128 bits wide
+                case PrimitiveType.UInt128: return new TypePrinterResult("fixed byte",
+                    "[16]"); // The type is always 128 bits wide
+                case PrimitiveType.Half: return new TypePrinterResult("fixed byte",
+                    $"[{Context.TargetInfo.HalfWidth}]");
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
-                case PrimitiveType.LongDouble: return new TypePrinterResult { Type = "fixed byte",
-                    NameSuffix = $"[{Context.TargetInfo.LongDoubleWidth}]"};
+                case PrimitiveType.LongDouble: return new TypePrinterResult("fixed byte",
+                    $"[{Context.TargetInfo.LongDoubleWidth}]");
                 case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return QualifiedType("System.UIntPtr");
                 case PrimitiveType.Null: return "void*";
@@ -734,8 +725,7 @@ namespace CppSharp.Generators.CSharp
             PopMarshalKind();
 
             var returnTypePrinter = new TypePrinterResult();
-            if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
-                returnTypePrinter.NameSuffix = fieldTypePrinted.NameSuffix;
+            returnTypePrinter.NameSuffix.Append(fieldTypePrinted.NameSuffix);
 
             returnTypePrinter.Type = $"{fieldTypePrinted.Type} {field.Name}"; 
 
