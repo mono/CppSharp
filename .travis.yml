@@ -7,7 +7,7 @@ os:
 
 osx_image: xcode11.3
 
-dist: xenial
+dist: bionic
 
 addons:
   apt:
