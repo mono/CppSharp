@@ -54,7 +54,8 @@ end
 
 function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
-    if major == "19" and minor >= "10" then return "vs2017"
+    if major == "19" and minor >= "20" then return "vs2019"
+    elseif major == "19" and minor >= "10" then return "vs2017"
     elseif major == "19" then return "vs2015"
     elseif major == "18" then return "vs2013"
     elseif major == "17" then return "vs2012"
@@ -333,10 +334,12 @@ end
 
 function get_cmake_generator()
 	local vsver = get_vs_version()
-	if vsver == "vs2017" then
-		return "Visual Studio 15 2017" .. (target_architecture() == "x64" and " Win64" or "")
+	if vsver == "vs2019" then
+		return "Visual Studio 16 2019", (target_architecture() == "x86") and "-A Win32" or nil
+	elseif vsver == "vs2017" then
+		return "Visual Studio 15 2017" .. (target_architecture() == "x64" and " Win64" or ""), nil
 	elseif vsver == "vs2015" then
-		return "Visual Studio 14 2015" .. (target_architecture() == "x64" and " Win64" or "")
+		return "Visual Studio 14 2015" .. (target_architecture() == "x64" and " Win64" or ""), nil
 	else
 		error("Cannot map to CMake configuration due to unknown MSVC version")
 	end
@@ -353,7 +356,8 @@ function build_llvm(llvm_build)
 	local conf = get_llvm_configuration_name()
 	local use_msbuild = true
 	if os.ishost("windows") and use_msbuild then
-		cmake(get_cmake_generator(), conf, llvm_build)
+		local cmake_generator, options = get_cmake_generator()
+		cmake(cmake_generator, conf, llvm_build, options)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild('"' .. llvm_sln .. '"', conf)
 	else
