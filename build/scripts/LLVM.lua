@@ -214,7 +214,7 @@ function cmake(gen, conf, builddir, options)
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
 		.. ' -DLLVM_BUILD_TOOLS=false'
 		.. ' -DLLVM_ENABLE_DUMP=true'
-		.. ' -DLLVM_ENABLE_PROJECTS=clang;lld'
+		.. ' -DLLVM_ENABLE_PROJECTS="clang;lld"'
 		.. ' -DLLVM_INCLUDE_TESTS=false'
  		.. ' -DLLVM_ENABLE_LIBEDIT=false'
  		.. ' -DLLVM_ENABLE_LIBXML2=false'
