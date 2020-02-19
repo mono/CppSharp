@@ -444,7 +444,7 @@ std::string Parser::GetDeclMangledName(const clang::Decl* D)
 static std::string GetDeclName(const clang::NamedDecl* D)
 {
     if (const clang::IdentifierInfo *II = D->getIdentifier())
-        return II->getName();
+        return II->getName().str();
     return D->getNameAsString();
 }
 
@@ -466,7 +466,7 @@ static std::string GetDeclUSR(const clang::Decl* D)
     using namespace clang;
     SmallString<128> usr;
     if (!index::generateUSRForDecl(D, usr))
-        return usr.str();
+        return usr.str().str();
     return "<invalid>";
 }
 
@@ -900,7 +900,7 @@ bool Parser::IsSupported(const clang::NamedDecl* ND)
 {
     return !c->getSourceManager().isInSystemHeader(ND->getBeginLoc()) ||
         (llvm::isa<clang::RecordDecl>(ND) &&
-         supportedStdTypes.find(ND->getName()) != supportedStdTypes.end());
+         supportedStdTypes.find(ND->getName().str()) != supportedStdTypes.end());
 }
 
 bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
@@ -914,7 +914,7 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
          ((MD->getName() == "data" && MD->getNumParams() == 0) ||
           (MD->getName() == "assign" && MD->getNumParams() == 1 &&
            MD->parameters()[0]->getType()->isPointerType())) &&
-         supportedStdTypes.find(MD->getParent()->getName()) !=
+         supportedStdTypes.find(MD->getParent()->getName().str()) !=
             supportedStdTypes.end());
 }
 
@@ -988,7 +988,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 
     if (c->getSourceManager().isInSystemHeader(Record->getBeginLoc()))
     {
-        if (supportedStdTypes.find(Record->getName()) != supportedStdTypes.end())
+        if (supportedStdTypes.find(Record->getName().str()) != supportedStdTypes.end())
         {
             for (auto D : Record->decls())
             {
@@ -1203,7 +1203,7 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->name = CTS->getName();
+    TS->name = CTS->getName().str();
     TS->templatedDecl = CT;
     TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations.push_back(TS);
@@ -1258,7 +1258,7 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->name = CTS->getName();
+    TS->name = CTS->getName().str();
     TS->templatedDecl = CT;
     TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations.push_back(TS);
@@ -1662,7 +1662,7 @@ Parser::WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl
     auto NS = GetNamespace(VTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->name = VTS->getName();
+    TS->name = VTS->getName().str();
     TS->templatedDecl = VT;
     TS->specializationKind = WalkTemplateSpecializationKind(VTS->getSpecializationKind());
     VT->Specializations.push_back(TS);
@@ -1702,7 +1702,7 @@ Parser::WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpec
     auto NS = GetNamespace(VTS);
     assert(NS && "Expected a valid namespace");
     TS->_namespace = NS;
-    TS->name = VTS->getName();
+    TS->name = VTS->getName().str();
     TS->templatedDecl = VT;
     TS->specializationKind = WalkTemplateSpecializationKind(VTS->getSpecializationKind());
     VT->Specializations.push_back(TS);
@@ -1873,7 +1873,7 @@ Field* Parser::WalkFieldCXX(const clang::FieldDecl* FD, Class* Class)
     HandleDeclaration(FD, F);
 
     F->_namespace = Class;
-    F->name = FD->getName();
+    F->name = FD->getName().str();
     auto TL = FD->getTypeSourceInfo()->getTypeLoc();
     F->qualifiedType = GetQualifiedType(FD->getType(), &TL);
     F->access = ConvertToAccess(FD->getAccess());
@@ -1922,7 +1922,7 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
     if (Kind)
         *Kind = LocKind;
 
-    auto Unit = opts->ASTContext->FindOrCreateModule(File);
+    auto Unit = opts->ASTContext->FindOrCreateModule(File.str());
 
     Unit->originalPtr = (void*) Unit;
     assert(Unit->originalPtr != nullptr);
@@ -1983,7 +1983,7 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
             if (ND->isAnonymousNamespace())
                 continue;
             auto Name = ND->getName();
-            DC = DC->FindCreateNamespace(Name);
+            DC = DC->FindCreateNamespace(Name.str());
             ((Namespace*)DC)->isAnonymous = ND->isAnonymousNamespace();
             ((Namespace*)DC)->isInline = ND->isInline();
             HandleDeclaration(ND, DC);
@@ -2629,7 +2629,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         auto TPT = new CppSharp::CppParser::TemplateParameterType();
 
         if (auto Ident = TP->getIdentifier())
-            TPT->parameter->name = Ident->getName();
+            TPT->parameter->name = Ident->getName().str();
 
         TypeLoc UTL, ETL, ITL, Next;
 
@@ -2730,7 +2730,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         }
         default: break;
         }
-        DNT->identifier = DN->getIdentifier()->getName();
+        DNT->identifier = DN->getIdentifier()->getName().str();
 
         Ty = DNT;
         break;
@@ -3375,7 +3375,7 @@ void Parser::WalkVariable(const clang::VarDecl* VD, Variable* Var)
 {
     HandleDeclaration(VD, Var);
 
-    Var->name = VD->getName();
+    Var->name = VD->getName().str();
     Var->access = ConvertToAccess(VD->getAccess());
 
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
@@ -3448,7 +3448,7 @@ bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
     auto Range = CharSourceRange::getTokenRange(SR);
 
     bool Invalid;
-    Text = Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
+    Text = Lexer::getSourceText(Range, SM, LangOpts, &Invalid).str();
 
     return !Invalid && !Text.empty();
 }
@@ -3529,8 +3529,8 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         Definition->lineNumberEnd = SM.getExpansionLineNumber(MD->getLocation());
         Entity = Definition;
 
-        Definition->name = II->getName().trim();
-        Definition->expression = Expression.trim();
+        Definition->name = II->getName().trim().str();
+        Definition->expression = Expression.trim().str();
     }
     case clang::PreprocessedEntity::InclusionDirectiveKind:
         // nothing to be done for InclusionDirectiveKind
@@ -3722,7 +3722,7 @@ void Parser::HandleOriginalText(const clang::Decl* D, Declaration* Decl)
     auto DeclText = clang::Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
     
     if (!Invalid)
-        Decl->debugText = DeclText;
+        Decl->debugText = DeclText.str();
 }
 
 void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
@@ -4101,7 +4101,7 @@ void Parser::HandleDiagnostics(ParserResult* res)
 
         auto PDiag = ParserDiagnostic();
         PDiag.fileName = FileName.str();
-        PDiag.message = Diag.Message.str();
+        PDiag.message = Diag.Message.str().str();
         PDiag.lineNumber = 0;
         PDiag.columnNumber = 0;
 
@@ -4209,7 +4209,7 @@ void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
 {
     auto FileEntry = FileEntries[0];
     auto FileName = FileEntry->getName();
-    auto Unit = Parser.opts->ASTContext->FindOrCreateModule(FileName);
+    auto Unit = Parser.opts->ASTContext->FindOrCreateModule(FileName.str());
 
     auto TU = Ctx.getTranslationUnitDecl();
     Parser.HandleDeclaration(TU, Unit);
@@ -4276,12 +4276,12 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 {
     auto LibName = File;
     NativeLib = new NativeLibrary();
-    NativeLib->fileName = LibName;
+    NativeLib->fileName = LibName.str();
 
     for(auto it = Archive->symbol_begin(); it != Archive->symbol_end(); ++it)
     {
         llvm::StringRef SymRef = it->getName();
-        NativeLib->Symbols.push_back(SymRef);
+        NativeLib->Symbols.push_back(SymRef.str());
     }
 
     return ParserResultKind::Success;
@@ -4304,7 +4304,7 @@ static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppS
 {
     ELFDumper<ELFT> ELFDumper(ELFFile);
     for (const auto& Dependency : ELFDumper.getNeededLibraries())
-        NativeLib->Dependencies.push_back(Dependency);
+        NativeLib->Dependencies.push_back(Dependency.str());
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
@@ -4313,7 +4313,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
 {
     auto LibName = File;
     NativeLib = new NativeLibrary();
-    NativeLib->fileName = LibName;
+    NativeLib->fileName = LibName.str();
     NativeLib->archType = ConvertArchType(ObjectFile->getArch());
 
     if (ObjectFile->isELF())
@@ -4357,13 +4357,13 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         {
             llvm::StringRef Symbol;
             if (!ExportedSymbol.getSymbolName(Symbol))
-                NativeLib->Symbols.push_back(Symbol);
+                NativeLib->Symbols.push_back(Symbol.str());
         }
         for (auto ImportedSymbol : COFFObjectFile->import_directories())
         {
             llvm::StringRef Name;
             if (!ImportedSymbol.getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
-                NativeLib->Dependencies.push_back(Name);
+                NativeLib->Dependencies.push_back(Name.str());
         }
         return ParserResultKind::Success;
     }
@@ -4382,7 +4382,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
             {
                 auto dl = MachOObjectFile->getDylibIDLoadCommand(Load);
                 auto lib = llvm::sys::path::filename(Load.Ptr + dl.dylib.name);
-                NativeLib->Dependencies.push_back(lib);
+                NativeLib->Dependencies.push_back(lib.str());
             }
         }
         // HACK: the correct way is with exported(Err) but it crashes with msvc 32
@@ -4393,7 +4393,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
             {
                 if ((Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
                     !(Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
-                    NativeLib->Symbols.push_back(Symbol.getName().get());
+                    NativeLib->Symbols.push_back(Symbol.getName().get().str());
             }
             else
             {
@@ -4414,7 +4414,7 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
 {
     auto LibName = File;
     NativeLib = new NativeLibrary();
-    NativeLib->fileName = LibName;
+    NativeLib->fileName = LibName.str();
 
     for (auto it = Begin; it != End; ++it)
     {
@@ -4510,7 +4510,7 @@ ParserTargetInfo* Parser::GetTargetInfo()
     auto parserTargetInfo = new ParserTargetInfo();
 
     auto& TI = c->getTarget();
-    parserTargetInfo->ABI = TI.getABI();
+    parserTargetInfo->ABI = TI.getABI().str();
 
     parserTargetInfo->char16Type = ConvertIntType(TI.getChar16Type());
     parserTargetInfo->char32Type = ConvertIntType(TI.getChar32Type());

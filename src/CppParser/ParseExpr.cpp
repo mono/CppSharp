@@ -217,8 +217,8 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->sourceBitField = static_cast<AST::Field*>(WalkDeclaration(S->getSourceBitField()));
         _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
         _S->hasPlaceholderType = S->hasPlaceholderType();
-        _S->string = S->getString();
-        _S->bytes = S->getBytes();
+        _S->string = S->getString().str();
+        _S->bytes = S->getBytes().str();
         _S->byteLength = S->getByteLength();
         _S->length = S->getLength();
         _S->charByteWidth = S->getCharByteWidth();
@@ -536,7 +536,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->opcode = (BinaryOperatorKind) S->getOpcode();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
-        _S->opcodeStr = S->getOpcodeStr();
+        _S->opcodeStr = S->getOpcodeStr().str();
         _S->isPtrMemOp = S->isPtrMemOp();
         _S->isMultiplicativeOp = S->isMultiplicativeOp();
         _S->isAdditiveOp = S->isAdditiveOp();
@@ -574,7 +574,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->opcode = (BinaryOperatorKind) S->getOpcode();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
-        _S->opcodeStr = S->getOpcodeStr();
+        _S->opcodeStr = S->getOpcodeStr().str();
         _S->isPtrMemOp = S->isPtrMemOp();
         _S->isMultiplicativeOp = S->isMultiplicativeOp();
         _S->isAdditiveOp = S->isAdditiveOp();
@@ -1552,7 +1552,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
         _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->exprOperand = static_cast<AST::Expr*>(WalkExpression(S->getExprOperand()));
-        _S->uuidStr = S->getUuidStr();
+        _S->uuidStr = S->getUuidStr().str();
         _S->isTypeOperand = S->isTypeOperand();
         _Expr = _S;
         break;
