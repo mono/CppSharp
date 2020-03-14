@@ -366,6 +366,9 @@ void Parser::Setup()
         }
     }
 
+    if (TC)
+        delete TC;
+
     // Enable preprocessing record.
     PPOpts.DetailedRecord = true;
 
@@ -3120,9 +3123,7 @@ void Parser::MarkValidity(Function* F)
 
     auto FD = static_cast<FunctionDecl*>(F->originalPtr);
 
-    if (!FD->getTemplateInstantiationPattern() ||
-        !FD->isExternallyVisible() ||
-        c->getSourceManager().isInSystemHeader(FD->getBeginLoc()))
+    if (!FD->getTemplateInstantiationPattern() || !FD->isExternallyVisible())
         return;
 
     auto existingClient = c->getSema().getDiagnostics().getClient();
@@ -3269,20 +3270,17 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->specializationInfo = WalkFunctionTemplateSpec(FTSI, F);
 
-    if (FD->isDependentContext())
-        return;
-
     const CXXMethodDecl* MD;
-    if ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
-        !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext())))
+    if (FD->isDependentContext() ||
+        (MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
+        !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext())) ||
+        !CanCheckCodeGenInfo(c->getSema(), FD->getReturnType().getTypePtr()) ||
+        std::any_of(FD->parameters().begin(), FD->parameters().end(),
+            [this](auto* P) { return !CanCheckCodeGenInfo(c->getSema(), P->getType().getTypePtr()); }))
+    {
+        F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
         return;
-
-    if (!CanCheckCodeGenInfo(c->getSema(), FD->getReturnType().getTypePtr()))
-        return;
-
-    for (const auto& P : FD->parameters())
-        if (!CanCheckCodeGenInfo(c->getSema(), P->getType().getTypePtr()))
-            return;
+    }
 
     auto& CGInfo = GetCodeGenFunctionInfo(codeGenTypes, FD);
     F->isReturnIndirect = CGInfo.getReturnInfo().isIndirect() ||
@@ -3296,6 +3294,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     }
 
     MarkValidity(F);
+    F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
 }
 
 Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool IsDependent,
