@@ -977,4 +977,13 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(ret, Is.EqualTo(10));
         }
     }
+
+    [Test]
+    public void TestStructWithIndirectReturn()
+    {
+        using (var structWithIndirectReturn = StructWithIndirectReturn.ReturnStructIndirectReturn())
+        {
+            Assert.That(structWithIndirectReturn.A, Is.EqualTo(1));
+        }
+    }
 }

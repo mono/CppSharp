@@ -1167,3 +1167,23 @@ BaseCovariant::~BaseCovariant()
 DerivedCovariant::~DerivedCovariant()
 {
 }
+
+StructWithIndirectReturn::StructWithIndirectReturn() :
+    A(1)
+{
+}
+
+StructWithIndirectReturn::StructWithIndirectReturn(StructWithIndirectReturn& s) :
+    A(s.A)
+{
+}
+
+StructWithIndirectReturn::StructWithIndirectReturn(StructWithIndirectReturn&& s) :
+    A(s.A)
+{
+}
+
+StructWithIndirectReturn StructWithIndirectReturn::ReturnStructIndirectReturn()
+{
+    return StructWithIndirectReturn();
+}
