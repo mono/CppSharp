@@ -53,14 +53,11 @@ project "Std-symbols"
   if os.istarget("windows") then
       files { "Bindings/CSharp/i686-pc-win32-msvc/Std-symbols.cpp" }
   elseif os.istarget("macosx") then
-      local file = io.popen("lipo -info `which mono`")
-      local output = file:read('*all')
-      if string.find(output, "x86_64") then
+      if is_64_bits_mono_runtime() or _OPTIONS["arch"] == "x64" then
         files { "Bindings/CSharp/x86_64-apple-darwin12.4.0/Std-symbols.cpp" }
       else
         files { "Bindings/CSharp/i686-apple-darwin12.4.0/Std-symbols.cpp" }
       end
-
   elseif os.istarget("linux") then
       local abi = ""
       if UseCxx11ABI() then

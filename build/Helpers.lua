@@ -27,8 +27,22 @@ newoption {
 
 explicit_target_architecture = _OPTIONS["arch"]
 
+function get_mono_path()
+  local mono = "mono"
+  local result, errorcode = os.outputof(mono .. " --version")
+  if result == nil and os.ishost("macosx") then
+    mono = "/Library/Frameworks/Mono.framework/Versions/Current/bin/" .. mono
+    result, errorcode = os.outputof(mono .. " --version")
+  end
+  if result == nil then
+    print("Could not find Mono executable, please make sure it is in PATH.")
+    os.exit(1)
+  end
+  return mono
+end
+
 function is_64_bits_mono_runtime()
-  result, errorcode = os.outputof("mono --version")
+  local result, errorcode = os.outputof(get_mono_path() .. " --version")
   local arch = string.match(result, "Architecture:%s*([%w]+)")
   return arch == "amd64"
 end

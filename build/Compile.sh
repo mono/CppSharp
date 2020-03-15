@@ -9,12 +9,20 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	PREMAKE=$CUR_DIR/premake5-linux-64;
 fi
 
-MONO_VERSION_OUTPUT="$(mono --version)"
+MONO=mono
+if [ "$(uname)" == "Darwin" ]; then
+  MONO_PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin/
+  MONO="$MONO_PATH$MONO"
+fi
+
+MONO_VERSION_OUTPUT="$($MONO --version)"
 if [[ $MONO_VERSION_OUTPUT == *"amd64"* ]]; then
 	BUILD_CONF=release_x64;
 else
 	BUILD_CONF=release_x86;
 fi
+
+export PATH=$PATH:$MONO_PATH
 
 $PREMAKE --file=$CUR_DIR/premake5.lua gmake "$@"
 config=$BUILD_CONF make -C $CUR_DIR/gmake/

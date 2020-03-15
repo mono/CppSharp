@@ -16,9 +16,7 @@ project "CppSharp.Parser.CSharp"
   if os.istarget("windows") then
       files { "i686-pc-win32-msvc/**.cs" }
   elseif os.istarget("macosx") then
-      local file = io.popen("lipo -info `which mono`")
-      local output = file:read('*all')
-      if string.find(output, "x86_64") or _OPTIONS["arch"] == "x64" then  
+      if is_64_bits_mono_runtime() or _OPTIONS["arch"] == "x64" then  
         files { "x86_64-apple-darwin12.4.0/**.cs" }
       else
         files { "i686-apple-darwin12.4.0/**.cs" }
