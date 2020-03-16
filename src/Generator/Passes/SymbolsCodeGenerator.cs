@@ -29,6 +29,7 @@ namespace CppSharp.Passes
             else
                 foreach (var header in TranslationUnit.Module.Headers)
                     WriteLine($"#include <{header}>");
+            WriteLine("#include <new>");
             NewLine();
         }
 
