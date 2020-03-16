@@ -450,6 +450,10 @@ public class CommonTests : GeneratorTestFixture
             Assert.AreEqual(4, newProperties.Field);
             newProperties.Field = 5;
             Assert.AreEqual(5, indexedProperties[(byte) 0].Field);
+            newProperties.get();
+            newProperties.set(0);
+            newProperties.Get();
+            newProperties.Set(0);
 
             var bar = new Bar { A = 5 };
             indexedProperties[0u] = bar;

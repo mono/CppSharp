@@ -591,7 +591,21 @@ void TestProperties::getterAndSetterWithTheSameName(int value)
     _getterAndSetterWithTheSameName = value;
 }
 
+int TestProperties::get() const
+{
+    return 3;
+}
+
 void TestProperties::set(int value)
+{
+}
+
+int TestProperties::Get() const
+{
+    return 3;
+}
+
+void TestProperties::Set(int value)
 {
 }
 

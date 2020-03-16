@@ -605,6 +605,10 @@ public:
     int getterAndSetterWithTheSameName();
     void getterAndSetterWithTheSameName(int value);
 
+    int Get() const;
+    void Set(int value);
+
+    int get() const;
     void set(int value);
 
     int setterReturnsBoolean();
@@ -630,6 +634,7 @@ public:
 
     bool contains(char c);
     bool contains(const char* str);
+
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;

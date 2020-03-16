@@ -303,7 +303,8 @@ namespace CppSharp.Passes
         private static string GetPropertyName(string name)
         {
             var firstWord = GetFirstWord(name);
-            if (Match(firstWord, new[] { "get" }) && name != firstWord &&
+            if (Match(firstWord, new[] { "get" }) &&
+                (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) != 0) &&
                 !char.IsNumber(name[3]))
             {
                 if (char.IsLower(name[0]))
