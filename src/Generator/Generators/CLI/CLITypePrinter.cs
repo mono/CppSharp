@@ -30,7 +30,6 @@ namespace CppSharp.Generators.CLI
             }
 
             Declaration decl = tag.Declaration;
-
             if (decl == null)
                 return string.Empty;
 
@@ -46,7 +45,7 @@ namespace CppSharp.Generators.CLI
                 array.QualifiedType.Qualifiers.IsConst)
                 return "System::String^";
 
-            return string.Format("cli::array<{0}>^", array.Type.Visit(this));
+            return $"cli::array<{array.Type.Visit(this)}>^";
         }
 
         public override TypePrinterResult VisitFunctionType(FunctionType function,
@@ -62,14 +61,14 @@ namespace CppSharp.Generators.CLI
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
                 if (!string.IsNullOrEmpty(args))
-                    args = string.Format("<{0}>", args);
-                return string.Format("System::Action{0}", args);
+                    args = $"<{args}>";
+                return $"System::Action{args}";
             }
 
             if (!string.IsNullOrEmpty(args))
-                args = string.Format(", {0}", args);
+                args = $", {args}";
 
-            return string.Format("System::Func<{0}{1}>", returnType.Visit(this), args);
+            return $"System::Func<{returnType.Visit(this)}{args}>";
         }
 
         public override TypePrinterResult VisitParameter(Parameter param,
@@ -125,7 +124,7 @@ namespace CppSharp.Generators.CLI
             if (pointee is FunctionType)
             {
                 var function = pointee as FunctionType;
-                return string.Format("{0}^", function.Visit(this, quals));
+                return $"{function.Visit(this, quals)}^";
             }
 
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
@@ -157,9 +156,9 @@ namespace CppSharp.Generators.CLI
                 // Skip one indirection if passed by reference
                 if (Parameter != null && (Parameter.IsOut || Parameter.IsInOut)
                     && pointee == finalPointee)
-                    return string.Format("{0}", typeName);
+                    return typeName;
 
-                return string.Format("{0}*", typeName);
+                return $"{typeName}*";
             }
 
             return pointer.QualifiedPointee.Visit(this);
@@ -218,7 +217,7 @@ namespace CppSharp.Generators.CLI
             if (decl.Type.IsPointerTo(out func))
             {
                 // TODO: Use SafeIdentifier()
-                return string.Format("{0}^", VisitDeclaration(decl));
+                return $"{VisitDeclaration(decl)}^";
             }
 
             return decl.Type.Visit(this);
@@ -285,6 +284,7 @@ namespace CppSharp.Generators.CLI
         {
             if (unaryTransformType.Desugared.Type != null)
                 return unaryTransformType.Desugared.Visit(this);
+
             return unaryTransformType.BaseType.Visit(this);
         }
 
@@ -293,6 +293,7 @@ namespace CppSharp.Generators.CLI
             var result = type.Type.FullName.Replace(".", "::");
             if (!type.Type.IsValueType)
                 result += "^";
+
             return result;
         }
 
@@ -331,8 +332,7 @@ namespace CppSharp.Generators.CLI
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            return string.Format("{0}{1}", @class.Name, @class.IsRefType ? "^"
-                : string.Empty);
+            return $"{@class.Name}{(@class.IsRefType ? "^" : string.Empty)}";
         }
 
         public override TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
@@ -352,8 +352,7 @@ namespace CppSharp.Generators.CLI
 
         public override TypePrinterResult VisitEnumItemDecl(Enumeration.Item item)
         {
-            return string.Format("{0}::{1}",
-                VisitEnumDecl((Enumeration) item.Namespace), VisitDeclaration(item));
+            return $"{VisitEnumDecl((Enumeration)item.Namespace)}::{VisitDeclaration(item)}";
         }
 
         public override string ToString(Type type)
