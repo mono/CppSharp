@@ -2945,7 +2945,7 @@ namespace CppSharp.Generators.CSharp
                 to = to.OriginalClass ?? to;
                 baseOffset = GetOffsetToBase(from, to);
             }
-            var isPrimaryBase = from.BaseClass == to;
+            var isPrimaryBase = (from.BaseClass?.OriginalClass ?? from.BaseClass) == to;
             if (isPrimaryBase)
             {
                 return string.Format("({0} + {1}{2})",

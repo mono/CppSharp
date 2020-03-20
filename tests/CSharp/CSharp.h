@@ -580,6 +580,20 @@ struct DLL_API MI_C : public MI_A0, public MI_B
 
 MI_C::MI_C() {}
 
+struct DLL_API MI_A1
+{
+    MI_A1();
+};
+
+MI_A1::MI_A1() {}
+
+struct DLL_API MI_D : public MI_A1, public MI_C
+{
+    MI_D();
+};
+
+MI_D::MI_D() {}
+
 class DLL_API StructWithPrivateFields
 {
 public:
