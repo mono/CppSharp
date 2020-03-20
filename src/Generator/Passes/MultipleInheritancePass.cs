@@ -15,6 +15,11 @@ namespace CppSharp.Passes
         /// </summary>
         private readonly HashSet<Class> interfaces = new HashSet<Class>();
 
+        /// <summary>
+        /// Change and implement secondaryy bases at the end to avoid processing implementations.
+        /// </summary>
+        private readonly HashSet<Class> classesWithSecondaryBases = new HashSet<Class>();
+
         public MultipleInheritancePass()
         {
             VisitOptions.VisitClassFields = false;
@@ -35,14 +40,32 @@ namespace CppSharp.Passes
                 int index = @interface.Namespace.Declarations.IndexOf(@interface.OriginalClass);
                 @interface.Namespace.Declarations.Insert(index, @interface);
             }
+
+            foreach (Class @class in classesWithSecondaryBases)
+            {
+                for (var i = 1; i < @class.Bases.Count; i++)
+                {
+                    var @base = @class.Bases[i];
+                    Class @interface = interfaces.FirstOrDefault(iface => iface.OriginalClass == @base.Class);
+                    if (@interface == null)
+                        continue;
+                    @class.Bases[i] = new BaseClassSpecifier(@base) { Type = new TagType(@interface) };
+                    ImplementInterfaceMethods(@class, @interface);
+                    ImplementInterfaceProperties(@class, @interface);
+                }
+            }
+
             interfaces.Clear();
+            classesWithSecondaryBases.Clear();
             return result;
         }
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || !@class.IsGenerated)
+            if (!base.VisitClassDecl(@class) || !@class.IsGenerated || @class.Bases.Count == 1)
                 return false;
+
+            classesWithSecondaryBases.Add(@class);
 
             // skip the first base because we can inherit from one class
             for (var i = 1; i < @class.Bases.Count; i++)
@@ -50,11 +73,7 @@ namespace CppSharp.Passes
                 var @base = @class.Bases[i];
                 var baseClass = @base.Class;
                 if (baseClass == null || baseClass.IsInterface || !baseClass.IsGenerated) continue;
-
-                var @interface = GetInterface(baseClass);
-                @class.Bases[i] = new BaseClassSpecifier(@base) { Type = new TagType(@interface) };
-                ImplementInterfaceMethods(@class, @interface);
-                ImplementInterfaceProperties(@class, @interface);
+                GetInterface(baseClass);
             }
             return true;
         }

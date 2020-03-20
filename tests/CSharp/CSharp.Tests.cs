@@ -371,13 +371,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestPrimarySecondaryBase()
     {
-        var a = new MI_A0();
-        var resa = a.Get();
-        Assert.That(resa, Is.EqualTo(50));
+        using (var a = new MI_A0())
+        {
+            Assert.That(a.Get(), Is.EqualTo(50));
+        }
 
-        var c = new MI_C();
-        var res = c.Get();
-        Assert.That(res, Is.EqualTo(50));
+        using (var c = new MI_C())
+        {
+            Assert.That(c.Get(), Is.EqualTo(50));
+        }
+
+        using (var d = new MI_D())
+        {
+            Assert.That(d.Get(), Is.EqualTo(50));
+        }
     }
 
     [Test]
