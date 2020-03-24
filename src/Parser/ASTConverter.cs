@@ -1587,7 +1587,15 @@ namespace CppSharp
             _class.IsInjected = @class.IsInjected;
 
             if (@class.Layout != null)
+            {
                 _class.Layout = VisitClassLayout(@class.Layout);
+                if (_class.BaseClass != null)
+                {
+                    AST.LayoutBase @base = _class.Layout.Bases.Find(
+                        b => b.Class == _class.BaseClass);
+                    _class.BaseClass.Layout.HasSubclassAtNonZeroOffset = @base.Offset > 0;
+                }
+            }
         }
 
         public override AST.Declaration VisitClass(Class @class)

@@ -171,6 +171,11 @@ namespace CppSharp.AST
             }
         }
 
+        /// <summary>
+        /// Indicates whether this class layout has a subclass at a non-zero offset.
+        /// </summary>
+        public bool HasSubclassAtNonZeroOffset { get; set; }
+
         private List<LayoutField> vTablePointers;
     }
 }
