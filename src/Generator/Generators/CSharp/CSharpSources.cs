@@ -428,7 +428,8 @@ namespace CppSharp.Generators.CSharp
 
                     PushBlock(BlockKind.Field);
 
-                    WriteLine("protected int {0};", Helpers.PointerAdjustmentIdentifier);
+                    if (@class.Layout.HasSubclassAtNonZeroOffset)
+                        WriteLine($"protected int {Helpers.PrimaryBaseOffsetIdentifier};");
 
                     // use interfaces if any - derived types with a secondary base this class must be compatible with the map
                     var @interface = @class.Namespace.Classes.FirstOrDefault(
@@ -2183,8 +2184,8 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                if (@class.HasBaseClass)
-                    WriteLine("{0} = {1};", Helpers.PointerAdjustmentIdentifier,
+                if (@class.BaseClass?.Layout.HasSubclassAtNonZeroOffset == true)
+                    WriteLine("{0} = {1};", Helpers.PrimaryBaseOffsetIdentifier,
                         GetOffsetToBase(@class, @class.BaseClass));
                 if (!@class.IsAbstractImpl)
                 {
@@ -2945,17 +2946,17 @@ namespace CppSharp.Generators.CSharp
                 to = to.OriginalClass ?? to;
                 baseOffset = GetOffsetToBase(from, to);
             }
-            var isPrimaryBase = (from.BaseClass?.OriginalClass ?? from.BaseClass) == to;
-            if (isPrimaryBase)
+            bool isPrimaryBase = (from.BaseClass?.OriginalClass ?? from.BaseClass) == to;
+            bool isOrHasSubclassAtNonZeroOffset =
+                from.Layout.HasSubclassAtNonZeroOffset ||
+                to?.Layout.HasSubclassAtNonZeroOffset == true;
+            if (isPrimaryBase && isOrHasSubclassAtNonZeroOffset)
             {
-                return string.Format("({0} + {1}{2})",
-                    Helpers.InstanceIdentifier,
-                    Helpers.PointerAdjustmentIdentifier,
-                    baseOffset == 0 ? string.Empty : (" - " + baseOffset));
+                return Helpers.InstanceIdentifier +
+                    (baseOffset == 0 ? " + " + Helpers.PrimaryBaseOffsetIdentifier : string.Empty);
             }
-            return string.Format("({0}{1})",
-                Helpers.InstanceIdentifier,
-                baseOffset == 0 ? string.Empty : " + " + baseOffset);
+            return Helpers.InstanceIdentifier +
+                (baseOffset == 0 ? string.Empty : " + " + baseOffset);
         }
 
         private static uint GetOffsetToBase(Class from, Class to)

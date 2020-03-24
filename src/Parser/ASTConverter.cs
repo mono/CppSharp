@@ -1587,7 +1587,15 @@ namespace CppSharp
             _class.IsInjected = @class.IsInjected;
 
             if (@class.Layout != null)
+            {
                 _class.Layout = VisitClassLayout(@class.Layout);
+                if (_class.BaseClass != null)
+                {
+                    AST.LayoutBase @base = _class.Layout.Bases.Find(
+                        b => b.Class == _class.BaseClass);
+                    _class.BaseClass.Layout.HasSubclassAtNonZeroOffset = @base.Offset > 0;
+                }
+            }
         }
 
         public override AST.Declaration VisitClass(Class @class)
@@ -1651,6 +1659,8 @@ namespace CppSharp
                 var _base = new AST.LayoutBase();
                 _base.Offset = @base.Offset;
                 _base.Class = (AST.Class) Visit(@base.Class);
+                if (i == 0)
+                    _base.Class.Layout.HasSubclassAtNonZeroOffset = _base.Offset > 0;
                 _layout.Bases.Add(_base);
             }
 
