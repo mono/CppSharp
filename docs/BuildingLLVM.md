@@ -26,7 +26,7 @@ $PREMAKE --file=scripts/LLVM.lua build_llvm
 $PREMAKE --file=scripts/LLVM.lua package_llvm
 ```
 
-`$PREMAKE` should be replaced with `premake5.exe`, `premake5-osx` or `premake5-linux-64` depending on environment.
+`$PREMAKE` should be replaced with `premake5.exe`, `premake5-osx` or `premake5-linux` depending on environment.
 
 You can specify an `--arch=x86` or `--arch=x64` flag to the invocations above to specify an explicit build architecture.  
 

@@ -33,7 +33,7 @@ The dependencies can be automatically downloaded by running:
 cd <CppSharp>\build
 premake5 --file=scripts/LLVM.lua download_llvm # on Windows
 premake5-osx --file=scripts/LLVM.lua download_llvm # on OSX
-premake5-linux-64 --file=scripts/LLVM.lua download_llvm # on Linux
+premake5-linux --file=scripts/LLVM.lua download_llvm # on Linux
 ```
 
 Alternatively, if on Windows, just run `<CppSharp>/build/DownloadDeps.bat` from a Visual Studio command prompt
@@ -80,7 +80,7 @@ If the above script fails, you can try these equivalent manual steps:
 
 ```
 ./premake5-osx gmake # if on OSX
-./premake5-linux-64 gmake # if on Linux
+./premake5-linux gmake # if on Linux
 ```
 
 2. Build the generated makefiles:

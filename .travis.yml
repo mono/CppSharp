@@ -21,7 +21,7 @@ install:
   - source build/InstallMono.sh
   - build/InstallNugets.sh  
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CXX" = "g++" ]; then export CXX="g++-7" CC="gcc-7"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux; else PREMAKE=build/premake5-osx; fi
   - $PREMAKE --file=build/scripts/LLVM.lua download_llvm
 
 script: |
