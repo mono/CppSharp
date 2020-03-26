@@ -69,12 +69,14 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var qual = GetStringQuals(quals, false);
             var pointeeType = pointer.Pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
             pointeeType.NameSuffix.Append(mod);
+
+            var qual = GetStringQuals(quals, false);
             if (!string.IsNullOrEmpty(qual))
                 pointeeType.NameSuffix.Append(' ').Append(qual);
+
             return pointeeType;
         }
 
@@ -325,8 +327,7 @@ namespace CppSharp.Generators.C
             bool printName = hasName && !string.IsNullOrEmpty(name);
 
             if (PrintFlavorKind == CppTypePrintFlavorKind.ObjC)
-                return printName ? string.Format(":({0}){1}", type, name)
-                    : string.Format(":({0})", type);
+                return printName ? $":({type}){name}" : $":({type})";
 
             CppSharp.AST.Type desugared = arg.Type.Desugar();
             desugared = (desugared.GetFinalPointee() ?? desugared).Desugar();
@@ -346,18 +347,26 @@ namespace CppSharp.Generators.C
             switch (scope)
             {
             case TypePrintScopeKind.Local:
+            {
                 return PrintLogicalNames ? declaration.LogicalOriginalName
                     : declaration.OriginalName;
+            }
             case TypePrintScopeKind.Qualified:
+            {
                 if (declaration.Namespace is Class)
                     return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
+
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
+            }
             case TypePrintScopeKind.GlobalQualified:
+            {
                 if (declaration.Namespace is Class)
                     return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
+
                 var qualifier = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : string.Empty;
                 return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
+            }
             }
 
             throw new NotSupportedException();
