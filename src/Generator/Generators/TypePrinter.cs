@@ -42,11 +42,11 @@ namespace CppSharp.Generators
         public TypePrintScopeKind ScopeKind = TypePrintScopeKind.GlobalQualified;
         public bool IsGlobalQualifiedScope => ScopeKind == TypePrintScopeKind.GlobalQualified;
 
-        public TypePrinter()
+        public TypePrinter(TypePrinterContextKind contextKind = TypePrinterContextKind.Managed)
         {
             contexts = new Stack<TypePrinterContextKind>();
             marshalKinds = new Stack<MarshalKind>();
-            PushContext(TypePrinterContextKind.Managed);
+            PushContext(contextKind);
             PushMarshalKind(MarshalKind.Unknown);
         }
 
