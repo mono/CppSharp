@@ -21,7 +21,7 @@ namespace CppSharp.Generators.C
         public bool PrintTypeModifiers { get; set; }
         public bool PrintVariableArrayAsPointers { get; set; }
 
-        public CppTypePrinter()
+        public CppTypePrinter() : base(TypePrinterContextKind.Managed)
         {
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
             ScopeKind = TypePrintScopeKind.GlobalQualified;
