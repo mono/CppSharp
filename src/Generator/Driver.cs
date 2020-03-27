@@ -240,7 +240,12 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
             TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
-            TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
+
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
+            {
+                TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
+            }
+
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
             TranslationUnitPasses.AddPass(new CleanCommentsPass());
 
@@ -258,7 +263,11 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
             }
-            TranslationUnitPasses.AddPass(new DelegatesPass());
+
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
+            {
+                TranslationUnitPasses.AddPass(new DelegatesPass());
+            }
 
             TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());
@@ -272,8 +281,7 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 
-            if (Options.GeneratorKind == GeneratorKind.CLI ||
-                Options.GeneratorKind == GeneratorKind.CSharp)
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
                 TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any & ~RenameTargets.Parameter);
                 TranslationUnitPasses.AddPass(new CheckKeywordNamesPass());
