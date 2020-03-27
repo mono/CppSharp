@@ -312,7 +312,7 @@ namespace CppSharp.Passes
                     continue;
 
                 ignoredBase = @base;
-                isIgnored |= !@base.IsDeclared
+                isIgnored |= !@base.IsGenerated
                     || HasIgnoredBaseClass(@override, @base, out ignoredBase);
 
                 if (isIgnored)
