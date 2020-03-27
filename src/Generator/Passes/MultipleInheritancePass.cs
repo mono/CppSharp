@@ -83,6 +83,11 @@ namespace CppSharp.Passes
             if (@base.CompleteDeclaration != null)
                 @base = (Class) @base.CompleteDeclaration;
 
+            // Prevent multiple interfaces from being generated in cases of
+            // a secondary base being inherited multiple times in a chain.
+            if (@base.IsInterface)
+                return @base;
+
             return interfaces.FirstOrDefault(i => i.OriginalClass == @base) ??
                 GetNewInterface("I" + @base.Name, @base);
         }
