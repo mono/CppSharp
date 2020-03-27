@@ -447,7 +447,43 @@ namespace CppSharp
 
             foreach (var unit in units)
             {
-                unit.ExplicitlyIgnore();
+                unit.GenerationKind = GenerationKind.None;
+            }
+        }
+
+        public static void IgnoreTranslationUnits(this ASTContext context, IEnumerable<string> patterns)
+        {
+            foreach (var pattern in patterns)
+                context.IgnoreHeadersWithName(pattern);
+        }
+
+        public static void IgnoreTranslationUnits(this ASTContext context)
+        {
+            foreach (var unit in context.TranslationUnits)
+            {
+                unit.GenerationKind = GenerationKind.None;
+            }
+        }
+
+        public static void GenerateTranslationUnits(this ASTContext context, IEnumerable<string> patterns)
+        {
+            foreach (var pattern in patterns)
+                context.GenerateTranslationUnits(pattern);
+        }
+
+        public static void GenerateTranslationUnits(this ASTContext context, string pattern)
+        {
+            var units = context.TranslationUnits.FindAll(m =>
+            {
+                var hasMatch = Regex.Match(m.FilePath, pattern).Success;
+                if (m.IncludePath != null)
+                    hasMatch |= Regex.Match(m.IncludePath, pattern).Success;
+                return hasMatch;
+            });
+
+            foreach (var unit in units)
+            {
+                unit.GenerationKind = GenerationKind.Generate;
             }
         }
 
