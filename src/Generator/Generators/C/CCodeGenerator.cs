@@ -34,6 +34,8 @@ namespace CppSharp.Generators.C
             VisitOptions.VisitPropertyAccessors = true;
         }
 
+        public override string FileExtension => "h";
+
         public virtual string QualifiedName(Declaration decl)
         {
             if (Options.GeneratorKind == GeneratorKind.CPlusPlus)
