@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CppSharp.AST;
+using CppSharp.Generators.C;
 
 namespace CppSharp.Generators.CLI
 {
@@ -9,7 +10,7 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public class CLIGenerator : Generator
     {
-        private readonly CLITypePrinter typePrinter;
+        private readonly CppTypePrinter typePrinter;
 
         public CLIGenerator(BindingContext context) : base(context)
         {
@@ -35,6 +36,7 @@ namespace CppSharp.Generators.CLI
         {
             if (@class.IsStatic)
                 return false;
+
             return @class.IsRefType && (!@class.HasBase || !@class.HasRefBase());
         }
 

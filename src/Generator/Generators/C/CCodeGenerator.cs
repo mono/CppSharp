@@ -27,8 +27,9 @@ namespace CppSharp.Generators.C
 
     public abstract class CCodeGenerator : CodeGenerator
     {
-        public CCodeGenerator(BindingContext context)
-            : base(context)
+        public CCodeGenerator(BindingContext context,
+            IEnumerable<TranslationUnit> units = null)
+            : base(context, units)
         {
             VisitOptions.VisitPropertyAccessors = true;
         }
@@ -41,7 +42,7 @@ namespace CppSharp.Generators.C
             return decl.QualifiedName;
         }
 
-        private CppTypePrinter typePrinter = new CppTypePrinter();
+        protected CppTypePrinter typePrinter = new CppTypePrinter();
         public virtual CppTypePrinter CTypePrinter => typePrinter;
 
         public virtual void WriteHeaders() { }
