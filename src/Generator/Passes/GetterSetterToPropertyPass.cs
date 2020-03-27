@@ -145,6 +145,8 @@ namespace CppSharp.Passes
             if (property == null)
                 properties.Add(property = new Property { Name = name, QualifiedType = type });
 
+            method.AssociatedDeclaration = property;
+
             if (isSetter)
                 property.SetMethod = method;
             else
