@@ -44,7 +44,13 @@ namespace CppSharp.Passes
             // store all specializations in the real template class because ClassTemplateDecl only forwards
             foreach (var specialization in template.Specializations.Where(
                 s => !templatedClass.Specializations.Contains(s)))
+            {
                 templatedClass.Specializations.Add(specialization);
+
+                // TODO: Move this to the AST converter layer?
+                if (specialization.IsAbstract)
+                    templatedClass.IsAbstract = true;
+            }
 
             if (templatedClass.TemplateParameters.Count == 0 || complete)
             {
