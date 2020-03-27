@@ -8,6 +8,8 @@
 // ------------------------------------------------------------------------------------------- //
 #pragma once
 
+#if defined(__cplusplus_cli)
+
 #include <string>
 #include <ostream>
 #include <vcclr.h>
@@ -291,3 +293,5 @@ namespace msclr {
         };
     }
 } // namespace msclr
+
+#endif
