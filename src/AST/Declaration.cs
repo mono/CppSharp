@@ -140,7 +140,8 @@ namespace CppSharp.AST
             {
                 if (this is TranslationUnit)
                     return this as TranslationUnit;
-                return Namespace.TranslationUnit;
+
+                return Namespace?.TranslationUnit;
             }
         }
 
