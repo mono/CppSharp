@@ -91,7 +91,13 @@ namespace CppSharp.Generators.C
             return $"{qual}{VisitPrimitiveType(builtin.Type)}";
         }
 
-        public TypePrinterResult VisitPrimitiveType(PrimitiveType primitive)
+        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
+        {
+            var qual = GetStringQuals(quals);
+            return $"{qual}{VisitPrimitiveType(primitive)}";
+        }
+
+        public virtual TypePrinterResult VisitPrimitiveType(PrimitiveType primitive)
         {
             switch (primitive)
             {
@@ -151,12 +157,6 @@ namespace CppSharp.Generators.C
             }
 
             throw new NotSupportedException();
-        }
-
-        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
-        {
-            var qual = GetStringQuals(quals);
-            return $"{qual}{VisitPrimitiveType(primitive)}";
         }
 
         public override TypePrinterResult VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
@@ -284,7 +284,7 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(decl);
         }
 
         public override TypePrinterResult VisitFunctionType(FunctionType function, TypeQualifiers quals)

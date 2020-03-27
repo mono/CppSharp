@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators.C;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
-    public class CLITypePrinter : TypePrinter
+    public class CLITypePrinter : CppTypePrinter
     {
         public BindingContext Context { get; private set; }
 
@@ -164,8 +165,17 @@ namespace CppSharp.Generators.CLI
             return pointer.QualifiedPointee.Visit(this);
         }
 
-        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
-            TypeQualifiers quals)
+        public override TypePrinterResult VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
+        {
+            return VisitPrimitiveType(builtin.Type);
+        }
+
+        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
+        {
+            return VisitPrimitiveType(primitive);
+        }
+
+        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive)
         {
             switch (primitive)
             {
@@ -333,6 +343,11 @@ namespace CppSharp.Generators.CLI
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
             return $"{@class.Name}{(@class.IsRefType ? "^" : string.Empty)}";
+        }
+
+        public override TypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
+        {
+            return template.Name;
         }
 
         public override TypePrinterResult VisitTypedefDecl(TypedefDecl typedef)

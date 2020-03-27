@@ -898,7 +898,7 @@ namespace CppSharp.Generators.CLI
             for (var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                Write("{0}", TypePrinter.VisitParameter(param));
+                Write("{0}", CTypePrinter.VisitParameter(param));
                 if (i < function.Parameters.Count - 1)
                     Write(", ");
             }
@@ -1040,7 +1040,7 @@ namespace CppSharp.Generators.CLI
 
             if (needsReturn)
             {
-                var retTypeName = retType.Visit(TypePrinter).ToString();
+                var retTypeName = retType.Visit(CTypePrinter).ToString();
                 var isIntPtr = retTypeName.Contains("IntPtr");
 
                 if (retType.Type.IsPointer() && (isIntPtr || retTypeName.EndsWith("^", StringComparison.Ordinal)))

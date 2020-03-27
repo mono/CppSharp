@@ -628,10 +628,10 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateIndexer(Property property)
         {
-            var type = property.QualifiedType.Visit(TypePrinter);
+            var type = property.QualifiedType.Visit(CTypePrinter);
             var getter = property.GetMethod;
             var indexParameter = getter.Parameters[0];
-            var indexParameterType = indexParameter.QualifiedType.Visit(TypePrinter);
+            var indexParameterType = indexParameter.QualifiedType.Visit(CTypePrinter);
 
             WriteLine("property {0} default[{1}]", type, indexParameterType);
             WriteOpenBraceAndIndent();
@@ -651,7 +651,7 @@ namespace CppSharp.Generators.CLI
                 return;
 
             PushBlock(BlockKind.Property, property);
-            var type = property.QualifiedType.Visit(TypePrinter);
+            var type = property.QualifiedType.Visit(CTypePrinter);
 
             if (property.IsStatic)
                 Write("static ");
@@ -763,7 +763,7 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
-                    string.Format(TypePrinter.VisitDelegate(functionType).ToString(),
+                    string.Format(CTypePrinter.VisitDelegate(functionType).ToString(),
                     typedef.Name));
                 PopBlock(NewLineKind.BeforeNextBlock);
 
@@ -825,7 +825,7 @@ namespace CppSharp.Generators.CLI
 
             Write("enum struct {0}", @enum.Name);
 
-            var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
+            var typeName = CTypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                 new TypeQualifiers());
 
             if (@enum.BuiltinType.Type != PrimitiveType.Int &&
