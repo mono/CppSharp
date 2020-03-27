@@ -20,8 +20,8 @@ namespace CppSharp.Generators.C
 
         public override string ToString()
         {
-            return string.Format(Kind == IncludeKind.Angled ?
-                "#include <{0}>" : "#include \"{0}\"", File);
+            return Kind == IncludeKind.Angled ?
+                $"#include <{File}>" : $"#include \"{File}\"";
         }
     }
 
@@ -151,7 +151,7 @@ namespace CppSharp.Generators.C
             if (!string.IsNullOrWhiteSpace(enumName) && useTypedefEnum)
                 WriteLine($"}} {enumName};");
             else
-                WriteLine($"}};");
+                WriteLine("};");
 
             PopBlock(NewLineKind.BeforeNextBlock);
 
