@@ -322,7 +322,7 @@ namespace CppSharp
 
                 foreach (var template in output.Outputs)
                 {
-                    var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                    var fileRelativePath = $"{fileBase}.{template.FileExtension}";
 
                     var file = Path.Combine(outputPath, fileRelativePath);
                     File.WriteAllText(file, template.Generate());

@@ -288,9 +288,9 @@ namespace CppSharp.Generators.CLI
         public string QualifiedIdentifier(Declaration decl)
         {
             if (!string.IsNullOrEmpty(decl.TranslationUnit.Module.OutputNamespace))
-                return string.Format("{0}::{1}", decl.TranslationUnit.Module.OutputNamespace,
-                    decl.QualifiedName);
-            return string.Format("{0}", decl.QualifiedName);
+                return $"{decl.TranslationUnit.Module.OutputNamespace}::{decl.QualifiedName}";
+
+            return decl.QualifiedName;
         }
 
         public void WriteClassInstance(Class @class, string instance)

@@ -150,7 +150,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("void {0}::{1}::set(System::IntPtr object)",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteOpenBraceAndIndent();
-                var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
+                var nativeType = $"::{@class.QualifiedOriginalName}*";
                 WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -356,11 +356,11 @@ namespace CppSharp.Generators.CLI
             var args = new List<string>();
             var isIndexer = indexParameter != null;
             if (isIndexer)
-                args.Add(string.Format("{0} {1}", indexParameter.Type, indexParameter.Name));
+                args.Add($"{indexParameter.Type} {indexParameter.Name}");
 
             var function = decl as Function;
             var argName = function != null && !isIndexer ? function.Parameters[0].Name : "value";
-            args.Add(string.Format("{0} {1}", type, argName));
+            args.Add($"{type} {argName}");
 
             WriteLine("void {0}::{1}::set({2})", QualifiedIdentifier(@class),
                 name, string.Join(", ", args));
@@ -468,33 +468,33 @@ namespace CppSharp.Generators.CLI
             {
                 if (@class.IsValueType && decl is Field)
                 {
-                    WriteLine("return {0};", decl.Name);
+                    WriteLine($"return {decl.Name};");
                     UnindentAndWriteCloseBrace();
                     NewLine();
                     return;
                 }
+
                 string variable;
                 if (decl is Variable)
-                    variable = string.Format("::{0}::{1}",
-                                         @class.QualifiedOriginalName, decl.OriginalName);
+                    variable = $"::{@class.QualifiedOriginalName}::{decl.OriginalName}";
                 else
-                    variable = string.Format("((::{0}*)NativePtr)->{1}",
-                                             @class.QualifiedOriginalName, decl.OriginalName);
+                    variable = $"((::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
-                    {
-                        ArgName = decl.Name,
-                        ReturnVarName = variable,
-                        ReturnType = decl.QualifiedType
-                    };
+                {
+                    ArgName = decl.Name,
+                    ReturnVarName = variable,
+                    ReturnType = decl.QualifiedType
+                };
                 ctx.PushMarshalKind(MarshalKind.NativeField);
+
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 decl.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
 
-                WriteLine("return {0};", marshal.Context.Return);
+                WriteLine($"return {marshal.Context.Return};");
             }
             
 
@@ -864,7 +864,7 @@ namespace CppSharp.Generators.CLI
             {
                 if (!property.IsDeclared || property.Field == null) continue;
 
-                var varName = string.Format("_native.{0}", property.Field.OriginalName);
+                var varName = $"_native.{property.Field.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
@@ -991,12 +991,12 @@ namespace CppSharp.Generators.CLI
             {
                 if (IsNativeFunctionOrStaticMethod(function))
                 {
-                    Write("::{0}(", function.QualifiedOriginalName);
+                    Write($"::{function.QualifiedOriginalName}(");
                 }
                 else
                 {
                     if (isValueType)
-                        Write("{0}.", valueMarshalName);
+                        Write($"{valueMarshalName}.");
                     else if (IsNativeMethod(function))
                         Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
                     Write("{0}(", function.OriginalName);
@@ -1175,8 +1175,7 @@ namespace CppSharp.Generators.CLI
             effectiveParam.Visit(marshal);
 
             if (string.IsNullOrEmpty(marshal.Context.Return))
-                throw new Exception(string.Format("Cannot marshal argument of function '{0}'",
-                    function.QualifiedOriginalName));
+                throw new Exception($"Cannot marshal argument of function '{function.QualifiedOriginalName}'");
 
             if (isRef)
             {
