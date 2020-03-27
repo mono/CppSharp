@@ -224,10 +224,12 @@ namespace CppSharp.AST
     {
         public static CXXOperatorArity ClassifyOperator(Function function)
         {
-            if (function.Parameters.Count == 1)
-                return CXXOperatorArity.Unary;
-
-            return CXXOperatorArity.Binary;
+            switch(function.Parameters.Count)
+            {
+                case 0: return CXXOperatorArity.Zero;
+                case 1: return CXXOperatorArity.Unary;
+                default: return CXXOperatorArity.Binary;
+            }
         }
 
         public static string GetOperatorOverloadPair(CXXOperatorKind kind)

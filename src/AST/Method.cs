@@ -16,6 +16,7 @@ namespace CppSharp.AST
 
     public enum CXXOperatorArity
     {
+        Zero,
         Unary,
         Binary
     }
