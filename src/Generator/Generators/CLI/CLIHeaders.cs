@@ -154,9 +154,7 @@ namespace CppSharp.Generators.CLI
                 if (!@enum.IsGenerated || @enum.IsIncomplete)
                     continue;
 
-                PushBlock(BlockKind.Enum, @enum);
-                GenerateEnum(@enum);
-                PopBlock(NewLineKind.BeforeNextBlock);
+                @enum.Visit(this);
             }
 
             // Generate all the typedef declarations for the module.
@@ -804,43 +802,6 @@ namespace CppSharp.Generators.CLI
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
             Class @class;
             return finalType.TryGetClass(out @class) && @class.IsIncomplete;
-        }
-
-        public void GenerateEnum(Enumeration @enum)
-        {
-            if (!@enum.IsGenerated || @enum.IsIncomplete)
-                return;
-
-            PushBlock(BlockKind.Enum, @enum);
-
-            GenerateDeclarationCommon(@enum);
-
-            if (@enum.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
-                WriteLine("[System::Flags]");
-
-            // A nested class cannot have an assembly access specifier as part
-            // of its declaration.
-            if (@enum.Namespace is Namespace)
-                Write("public ");
-
-            Write("enum struct {0}", @enum.Name);
-
-            var typeName = CTypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
-                new TypeQualifiers());
-
-            if (@enum.BuiltinType.Type != PrimitiveType.Int &&
-                @enum.BuiltinType.Type != PrimitiveType.Null)
-                Write(" : {0}", typeName);
-
-            NewLine();
-            WriteOpenBraceAndIndent();
-
-            GenerateEnumItems(@enum);
-
-            Unindent();
-            WriteLine("};");
-
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
     }
 }

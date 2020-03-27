@@ -47,6 +47,8 @@ namespace CppSharp.Generators.C
         protected CppTypePrinter typePrinter = new CppTypePrinter();
         public virtual CppTypePrinter CTypePrinter => typePrinter;
 
+        public bool IsCLIGenerator => Context.Options.GeneratorKind == GeneratorKind.CLI;
+
         public virtual void WriteHeaders() { }
 
         public virtual void WriteInclude(CInclude include)
@@ -105,57 +107,72 @@ namespace CppSharp.Generators.C
             if (!VisitDeclaration(@enum))
                 return false;
 
-            PushBlock();
+            PushBlock(BlockKind.Enum, @enum);
 
-            var useTypedefEnum = Options.GeneratorKind == GeneratorKind.C;
-            var enumName = Options.GeneratorKind != GeneratorKind.CPlusPlus ?
+            GenerateDeclarationCommon(@enum);
+
+            if (IsCLIGenerator)
+            {
+                if (@enum.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
+                    WriteLine("[System::Flags]");
+
+                // A nested class cannot have an assembly access specifier as part
+                // of its declaration.
+                if (@enum.Namespace is Namespace)
+                    Write("public ");
+            }
+
+            var enumKind = @enum.IsScoped || IsCLIGenerator ? "enum class" : "enum";
+            var enumName = Options.GeneratorKind == GeneratorKind.C ?
                 QualifiedName(@enum) : @enum.Name;
 
-            var enumKind = @enum.IsScoped ? "enum class" : "enum";
-
-            if (useTypedefEnum)
+            var generateTypedef = Options.GeneratorKind == GeneratorKind.C;
+            if (generateTypedef)
                 Write($"typedef {enumKind} {enumName}");
             else
                 Write($"{enumKind} {enumName}");
 
-            if (Options.GeneratorKind == GeneratorKind.CPlusPlus)
+            if (Options.GeneratorKind == GeneratorKind.CPlusPlus ||
+                Options.GeneratorKind == GeneratorKind.CLI)
             {
                 var typeName = CTypePrinter.VisitPrimitiveType(
                     @enum.BuiltinType.Type, new TypeQualifiers());
 
-                if (@enum.BuiltinType.Type != PrimitiveType.Int)
+                if (@enum.BuiltinType.Type != PrimitiveType.Int &&
+                    @enum.BuiltinType.Type != PrimitiveType.Null)
                     Write($" : {typeName}");
             }
 
             NewLine();
             WriteOpenBraceAndIndent();
 
-            foreach (var item in @enum.Items)
-            {
-                if (!item.IsGenerated)
-                    continue;
+            GenerateEnumItems(@enum);
 
-                var enumItemName = Options.GeneratorKind != GeneratorKind.CPlusPlus ?
-                    $"{@enum.QualifiedName}_{item.Name}" : item.Name;
-
-                Write(enumItemName);
-
-                if (item.ExplicitValue)
-                    Write($" = {@enum.GetItemValueAsString(item)}");
-
-                if (item != @enum.Items.Last())
-                    WriteLine(",");
-            }
-
-            NewLine();
             Unindent();
 
-            if (!string.IsNullOrWhiteSpace(enumName) && useTypedefEnum)
+            if (!string.IsNullOrWhiteSpace(enumName) && generateTypedef)
                 WriteLine($"}} {enumName};");
             else
                 WriteLine("};");
 
             PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
+        }
+
+        public override bool VisitEnumItemDecl(Enumeration.Item item)
+        {
+            if (item.Comment != null)
+                GenerateInlineSummary(item.Comment);
+
+            var @enum = item.Namespace as Enumeration;
+            var enumItemName = Options.GeneratorKind == GeneratorKind.C ?
+                $"{@enum.QualifiedName}_{item.Name}" : item.Name;
+
+            Write(enumItemName);
+
+            if (item.ExplicitValue)
+                Write($" = {@enum.GetItemValueAsString(item)}");
 
             return true;
         }
