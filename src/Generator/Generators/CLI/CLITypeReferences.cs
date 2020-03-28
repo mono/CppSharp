@@ -146,6 +146,11 @@ namespace CppSharp.Generators.CLI
                 var extension = Path.GetExtension(TranslationUnit.FileName);
                 return $"{DriverOptions.GenerateName(translationUnit)}{extension}";
             }
+            else if (DriverOptions.UseHeaderDirectories)
+            {
+                var path = Path.Combine(translationUnit.FileRelativeDirectory, translationUnit.FileName);
+                return path;
+            }
 
             return translationUnit.FileName;
         }
@@ -185,8 +190,13 @@ namespace CppSharp.Generators.CLI
             if (@class.IsIncomplete && @class.CompleteDeclaration != null)
                 @class = (Class) @class.CompleteDeclaration;
 
-            var keywords = @class.IsValueType ? "value struct" : "ref class";
-            var @ref = string.Format("{0} {1};", keywords, @class.Name);
+            string keywords;
+            if (DriverOptions.IsCLIGenerator)
+                keywords = @class.IsValueType ? "value struct" : "ref class";
+            else
+                keywords = @class.IsValueType ? "struct" : "class";
+
+            var @ref = $"{keywords} {@class.Name};";
 
             GetTypeReference(@class).FowardReference = @ref;
 
@@ -200,9 +210,12 @@ namespace CppSharp.Generators.CLI
 
             var @base = "";
             if (!@enum.Type.IsPrimitiveType(PrimitiveType.Int))
-                @base = string.Format(" : {0}", @enum.Type);
+                @base = $" : {@enum.Type}";
 
-            var @ref = string.Format("enum struct {0}{1};", @enum.Name, @base);
+            var isCLIGenerator = DriverOptions.GeneratorKind == GeneratorKind.CLI;
+            var enumKind = @enum.IsScoped || isCLIGenerator ? "enum class" : "enum";
+
+            var @ref = $"{enumKind} {@enum.Name}{@base};";
 
             GetTypeReference(@enum).FowardReference = @ref;
 
