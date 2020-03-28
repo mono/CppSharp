@@ -3,6 +3,7 @@ using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.AST;
 using CppSharp.Generators.CLI;
+using CppSharp.Generators.Cpp;
 using CppSharp.Generators.CSharp;
 using Attribute = System.Attribute;
 using Type = CppSharp.AST.Type;
@@ -99,6 +100,30 @@ namespace CppSharp.Types
         }
 
         #endregion
+
+        #region C++ backend
+
+        public virtual Type CppSignatureType(TypePrinterContext ctx)
+        {
+            return new CILType(typeof(object));
+        }
+
+        public virtual void CppTypeReference(CLITypeReference collector, ASTRecord<Declaration> record)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CppMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public virtual void CppMarshalToManaged(MarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+
+        #endregion 
     }
 
     public interface ITypeMapDatabase

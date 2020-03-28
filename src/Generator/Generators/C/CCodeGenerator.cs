@@ -32,9 +32,14 @@ namespace CppSharp.Generators.C
             : base(context, units)
         {
             VisitOptions.VisitPropertyAccessors = true;
+            typePrinter = new CppTypePrinter();
         }
 
-        public override string FileExtension => "h";
+        public abstract override string FileExtension { get; }
+
+        public abstract override void Process();
+
+        public ISet<CInclude> Includes = new HashSet<CInclude>();
 
         public virtual string QualifiedName(Declaration decl)
         {
@@ -44,7 +49,20 @@ namespace CppSharp.Generators.C
             return decl.QualifiedName;
         }
 
-        protected CppTypePrinter typePrinter = new CppTypePrinter();
+        public string QualifiedIdentifier(Declaration decl)
+        {
+            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
+            {
+                if (string.IsNullOrEmpty(decl.QualifiedName))
+                    return $"{decl.TranslationUnit.Module.OutputNamespace}";
+
+                return $"{decl.TranslationUnit.Module.OutputNamespace}::{decl.QualifiedName}";
+            }
+
+            return decl.QualifiedName;
+        }
+
+        protected CppTypePrinter typePrinter;
         public virtual CppTypePrinter CTypePrinter => typePrinter;
 
         public bool IsCLIGenerator => Context.Options.GeneratorKind == GeneratorKind.CLI;
@@ -65,16 +83,6 @@ namespace CppSharp.Generators.C
         public override bool VisitDeclaration(Declaration decl)
         {
             return decl.IsGenerated && !AlreadyVisited(decl);
-        }
-
-        public virtual string GetMethodIdentifier(Method method) => method.Name;
-
-        public override void GenerateMethodSpecifier(Method method, Class @class)
-        {
-            var retType = method.ReturnType.Visit(CTypePrinter);
-            Write($"{retType} {GetMethodIdentifier(method)}(");
-            Write(CTypePrinter.VisitParameters(method.Parameters));
-            Write(")");
         }
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
@@ -276,7 +284,179 @@ namespace CppSharp.Generators.C
 
         public override bool VisitFieldDecl(Field field)
         {
+            CTypePrinter.PushContext(TypePrinterContextKind.Native);
+            var typeName = field.Type.Visit(CTypePrinter);
+            CTypePrinter.PopContext();
+
+            PushBlock(BlockKind.Field, field);
+
+            WriteLine($"{typeName} {field.Name};");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
             return true;
+        }
+
+        public virtual string GetMethodIdentifier(Function function,
+            TypePrinterContextKind context = TypePrinterContextKind.Managed)
+        {
+            var method = function as Method;
+            if (method != null)
+            {
+                if (method.OperatorKind == CXXOperatorKind.Star)
+                {
+                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
+                    var conversionType = method.ReturnType.Visit(CTypePrinter);
+                    CTypePrinter.PopContext();
+                }
+
+                if (method.OperatorKind == CXXOperatorKind.Conversion ||
+                    method.OperatorKind == CXXOperatorKind.ExplicitConversion)
+                {
+                    CTypePrinter.PushContext(context);
+                    var conversionType = method.ConversionType.Visit(CTypePrinter);
+                    CTypePrinter.PopContext();
+
+                    return "operator " + conversionType;
+                }
+
+                if (method.IsConstructor || method.IsDestructor)
+                {
+                    var @class = (Class)method.Namespace;
+                    return @class.Name;
+                }
+            }
+
+            return (context == TypePrinterContextKind.Managed) ?
+                function.Name : function.OriginalName;
+        }
+
+        public override void GenerateMethodSpecifier(Method method, Class @class)
+        {
+            var isHeaderFile = FileExtension == "h";
+            if (isHeaderFile)
+            {
+                if (method.IsVirtual || method.IsOverride)
+                    Write("virtual ");
+
+                if (method.IsStatic)
+                    Write("static ");
+
+                if (method.IsExplicit)
+                    Write("explicit ");
+            }
+
+            if (method.IsConstructor || method.IsDestructor ||
+                method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion)
+            {
+                Write($"{GetMethodIdentifier(method)}(");
+            }
+            else
+            {
+                var returnType = method.ReturnType.Visit(CTypePrinter);
+                Write($"{returnType} {GetMethodIdentifier(method)}(");
+            }
+
+            GenerateMethodParameters(method);
+
+            Write(")");
+
+            if (method.IsOverride)
+                Write(" override");
+        }
+
+        public virtual void GenerateMethodParameters(Function function)
+        {
+            Write(CTypePrinter.VisitParameters(function.Parameters)); 
+        }
+
+        public override bool VisitMethodDecl(Method method)
+        {
+            PushBlock(BlockKind.Method, method);
+
+            GenerateMethodSpecifier(method, method.Namespace as Class);
+            Write(";");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
+        }
+
+        public override bool VisitProperty(Property property)
+        {
+            if (!(property.HasGetter || property.HasSetter))
+                return false;
+
+            if (property.Field != null)
+                return false;
+
+            if (property.HasGetter)
+                GeneratePropertyGetter(property.GetMethod);
+
+            if (property.HasSetter)
+                GeneratePropertySetter(property.SetMethod);
+
+            //if (Options.GenerateMSDeclspecProperties)
+                //GenerateMSDeclspecProperty(property);
+
+            return true;
+        }
+
+        public virtual void GeneratePropertyAccessorSpecifier(Method method)
+        {
+            GenerateMethodSpecifier(method, method.Namespace as Class);
+        }
+
+        public virtual void GeneratePropertyGetter(Method method)
+        {
+            PushBlock(BlockKind.Method, method);
+
+            GeneratePropertyAccessorSpecifier(method);
+            WriteLine(";");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        public virtual void GeneratePropertySetter(Method method)
+        {
+            PushBlock(BlockKind.Method, method);
+
+            GeneratePropertyAccessorSpecifier(method);
+            WriteLine(";");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateMSDeclspecProperty(Property property)
+        {
+            PushBlock(BlockKind.Property, property);
+
+            if (property.IsStatic)
+                Write("static ");
+
+            if (property.IsIndexer)
+            {
+                //GenerateIndexer(property);
+                //throw new System.NotImplementedException();
+            }
+            else
+            {
+                var blocks = new List<string>();
+
+                if (property.HasGetter)
+                    blocks.Add($"get = {property.GetMethod.Name}");
+
+                if (property.HasSetter)
+                    blocks.Add($"put = {property.SetMethod.Name}");
+
+                var getterSetter = string.Join(",", blocks);
+
+                var type = property.QualifiedType.Visit(CTypePrinter);
+                WriteLine($"__declspec(property({getterSetter})) {type} {property.Name};");
+            }
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         static readonly List<string> CReservedKeywords = new List<string> {

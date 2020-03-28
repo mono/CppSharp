@@ -13,6 +13,7 @@ using CppSharp.Passes;
 using CppSharp.Utils;
 using Microsoft.CSharp;
 using CppSharp.Types;
+using CppSharp.Generators.Cpp;
 
 namespace CppSharp
 {
@@ -35,13 +36,15 @@ namespace CppSharp
         {
             switch (kind)
             {
+                case GeneratorKind.CPlusPlus:
+                    return new CppGenerator(Context);
                 case GeneratorKind.CLI:
                     return new CLIGenerator(Context);
                 case GeneratorKind.CSharp:
                     return new CSharpGenerator(Context);
             }
 
-            return null;
+            throw new NotImplementedException();
         }
 
         void ValidateOptions()
