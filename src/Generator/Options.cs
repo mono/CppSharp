@@ -127,6 +127,8 @@ namespace CppSharp
 
         public bool IsCSharpGenerator => GeneratorKind == GeneratorKind.CSharp;
 
+        public bool IsCppGenerator => GeneratorKind == GeneratorKind.CPlusPlus;
+
         public bool IsCLIGenerator => GeneratorKind == GeneratorKind.CLI;
 
         public readonly List<string> DependentNameSpaces = new List<string>();
