@@ -759,10 +759,11 @@ namespace CppSharp.Generators.CLI
                         "(System::Runtime::InteropServices::CallingConvention::{0})] ",
                         interopCallConv);
 
-                WriteLine("{0}{1};",
-                    !insideClass ? "public " : "",
-                    string.Format(CTypePrinter.VisitDelegate(functionType).ToString(),
-                    typedef.Name));
+                var visibility = !insideClass ? "public " : string.Empty;
+                var result = CTypePrinter.VisitDelegate(functionType);
+                result.Name = typedef.Name;
+                WriteLine($"{visibility}{result};");
+
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 return true;

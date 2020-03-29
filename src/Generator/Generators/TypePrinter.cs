@@ -8,7 +8,11 @@ namespace CppSharp.Generators
     public class TypePrinterResult
     {
         public string Type { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public StringBuilder NamePrefix { get; set; } = new StringBuilder();
         public StringBuilder NameSuffix { get; set; } = new StringBuilder();
+
+        public bool HasNamePlaceholder => Type.Contains("{0}");
 
         public TypePrinterResult(string type = "", string nameSuffix = "")
         {
@@ -22,9 +26,14 @@ namespace CppSharp.Generators
         public static implicit operator string(TypePrinterResult result) =>
            result.ToString();
 
-        public override string ToString() =>
-            NameSuffix.Length > 0 ? Type.Contains("{0}") ?
-            string.Format(Type, NameSuffix) : Type + NameSuffix : Type;
+        public override string ToString()
+        {
+            if (HasNamePlaceholder)
+                return string.Format(Type, $"{NamePrefix}{Name}{NameSuffix}");
+
+            var namePrefix = (Name.Length > 0) ? $"{NamePrefix} " : NamePrefix.ToString();
+            return $"{Type}{namePrefix}{Name}{NameSuffix}";
+        }
     }
 
     public class TypePrinter : ITypePrinter<TypePrinterResult>,
