@@ -12,8 +12,6 @@ namespace CppSharp.Generators
         public StringBuilder NamePrefix { get; set; } = new StringBuilder();
         public StringBuilder NameSuffix { get; set; } = new StringBuilder();
 
-        public bool HasNamePlaceholder => Type.Contains("{0}");
-
         public TypePrinterResult(string type = "", string nameSuffix = "")
         {
             Type = type;
@@ -28,7 +26,8 @@ namespace CppSharp.Generators
 
         public override string ToString()
         {
-            if (HasNamePlaceholder)
+            bool hasPlaceholder = Type.Contains("{0}");
+            if (hasPlaceholder)
                 return string.Format(Type, $"{NamePrefix}{Name}{NameSuffix}");
 
             var namePrefix = (Name.Length > 0) ? $"{NamePrefix} " : NamePrefix.ToString();

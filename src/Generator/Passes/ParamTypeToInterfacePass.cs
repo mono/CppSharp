@@ -31,10 +31,6 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionDecl(function))
                 return false;
 
-            // TODO: Fix this once Dispose methods are generated in a pass.
-            if (function.SynthKind == FunctionSynthKind.InterfaceDispose)
-                return false;
-
             // parameters and returns from a specialised interface
             // must not be replaced if the templated interface uses a template parameter
             var interfaceFunction = GetInterfaceFunction(function);
@@ -101,7 +97,7 @@ namespace CppSharp.Passes
             if (@class == null || !@class.IsInterface)
                 return null;
 
-            return @class.Methods.FirstOrDefault(m => m.OriginalFunction == function.OriginalFunction);
+            return @class.Methods.First(m => m.OriginalFunction == function.OriginalFunction);
         }
 
         private static Property GetTemplateInterfaceProperty(Property property)
