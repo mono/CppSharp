@@ -250,7 +250,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitTranslationUnit(TranslationUnit unit)
         {
-            return VisitDeclContext(unit);
+            return VisitNamespace(unit);
         }
 
         public virtual bool VisitDeclContext(DeclarationContext context)
