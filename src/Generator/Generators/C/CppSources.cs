@@ -39,7 +39,7 @@ namespace CppSharp.Generators.Cpp
             NewLine();
             PopBlock();
 
-            VisitDeclContext(TranslationUnit);
+            VisitNamespace(TranslationUnit);
 
             PushBlock(BlockKind.Footer);
             PopBlock();
@@ -114,7 +114,7 @@ namespace CppSharp.Generators.Cpp
             return true;
         }
 
-        public void GenerateClass(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             PushBlock(BlockKind.Class);
 
@@ -144,6 +144,8 @@ namespace CppSharp.Generators.Cpp
             }
 
             PopBlock();
+
+            return true;
         }
 
         public virtual void GenerateClassConstructors(Class @class)
@@ -308,13 +310,14 @@ namespace CppSharp.Generators.Cpp
                 Indent();
 
                 var baseClass = @class.Bases[0].Class;
-                Write(": {0}(", QualifiedIdentifier(baseClass));
+                Write($": {QualifiedIdentifier(baseClass)}(");
 
-                // We cast the value to the base clas type since otherwise there
+                // We cast the value to the base class type since otherwise there
                 // could be ambiguous call to overloaded constructors.
-                var cppTypePrinter = new CppTypePrinter();
-                var nativeTypeName = baseClass.Visit(cppTypePrinter);
-                Write("({0}*)", nativeTypeName);
+                CTypePrinter.PushContext(TypePrinterContextKind.Native);
+                var nativeTypeName = baseClass.Visit(CTypePrinter);
+                CTypePrinter.PopContext();
+                Write($"({nativeTypeName}*)");
 
                 WriteLine("{0})", method != null ? "nullptr" : ClassCtorInstanceParamIdentifier);
 
@@ -437,9 +440,9 @@ namespace CppSharp.Generators.Cpp
             }
 
             var method = function as Method;
-            var field = (method?.AssociatedDeclaration as Property)?.Field;
             var @class = function.Namespace as Class;
 
+            var field = (method?.AssociatedDeclaration as Property)?.Field;
             if (field != null)
             {
                 Write($"((::{@class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");

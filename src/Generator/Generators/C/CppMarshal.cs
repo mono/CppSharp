@@ -236,7 +236,7 @@ namespace CppSharp.Generators.Cpp
             if (@class.IsRefType && needsCopy)
             {
                 var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
-                Context.Before.WriteLine($"auto {name} = {MemoryAllocOperator} ::{0}({1});",
+                Context.Before.WriteLine($"auto {name} = {MemoryAllocOperator} ::{{0}}({{1}});",
                     @class.QualifiedOriginalName, Context.ReturnVarName);
                 instance = name;
             }

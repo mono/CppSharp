@@ -145,7 +145,7 @@ namespace CppSharp.Generators.Cpp
             @namespace.Visit(this);
         }
 
-        public void GenerateDeclContext(DeclarationContext decl)
+        public override bool VisitDeclContext(DeclarationContext decl)
         {
             // Generate all the type references for the module.
             foreach (var typeRef in decl.TypeReferences)
@@ -176,6 +176,8 @@ namespace CppSharp.Generators.Cpp
 
             foreach (var childNamespace in decl.Namespaces)
                 childNamespace.Visit(this);
+
+            return true;
         }
 
         public override bool VisitNamespace(Namespace @namespace)
@@ -193,7 +195,7 @@ namespace CppSharp.Generators.Cpp
                 WriteOpenBraceAndIndent();
             }
 
-            GenerateDeclContext(@namespace);
+            VisitDeclContext(@namespace);
 
             if (generateNamespace)
             {
@@ -258,15 +260,13 @@ namespace CppSharp.Generators.Cpp
 
             // Process the nested types.
             Indent();
-            GenerateDeclContext(@class);
+            VisitDeclContext(@class);
             Unindent();
 
-            var nativeType = $"::{@class.QualifiedOriginalName}*";
-
             if (CppGenerator.ShouldGenerateClassNativeField(@class))
-                GenerateClassNativeField(@class, nativeType);
+                GenerateClassNativeField(@class);
 
-            GenerateClassConstructors(@class, nativeType);
+            GenerateClassConstructors(@class);
             GenerateClassProperties(@class);
             GenerateClassEvents(@class);
             GenerateClassMethods(@class.Methods);
@@ -303,8 +303,10 @@ namespace CppSharp.Generators.Cpp
             return true;
         }
 
-        public void GenerateClassNativeField(Class @class, string nativeType)
+        public void GenerateClassNativeField(Class @class)
         {
+            PushBlock();
+
             var nativeInstanceField = new Field()
             {
                 Name = Helpers.InstanceIdentifier,
@@ -313,8 +315,12 @@ namespace CppSharp.Generators.Cpp
             };
 
             Indent();
+            CTypePrinter.PushContext(TypePrinterContextKind.Native);
             nativeInstanceField.Visit(this);
+            CTypePrinter.PopContext();
             Unindent();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
 
             /*var nativeInstanceProperty = new Property()
             {
@@ -329,20 +335,18 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
-        public void GenerateClassConstructors(Class @class, string nativeType)
+        public void GenerateClassConstructors(Class @class)
         {
             if (@class.IsStatic)
                 return;
 
             Indent();
 
-            var classNativeName = @class.Visit(CTypePrinter);
-
             CTypePrinter.PushContext(TypePrinterContextKind.Native);
-            var classManagedName = @class.Visit(CTypePrinter);
+            var classNativeName = @class.Visit(CTypePrinter);
             CTypePrinter.PopContext();
 
-            WriteLine($"{@class.Name}({classManagedName}* native);");
+            WriteLine($"{@class.Name}({classNativeName}* instance);");
             NewLine();
 
             foreach (var ctor in @class.Constructors)
@@ -416,7 +420,8 @@ namespace CppSharp.Generators.Cpp
             GenerateDeclarationCommon(field);
 
             var @class = field.Namespace as Class;
-            WriteLine($"{field.Type} {field.Name};");
+            var fieldType = field.Type.Visit(CTypePrinter);
+            WriteLine($"{fieldType} {field.Name};");
 
             PopBlock();
 

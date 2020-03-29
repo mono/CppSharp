@@ -94,6 +94,8 @@ namespace CppSharp.Types
                 PrintLogicalNames = true
             };
 
+            typePrinter.PushContext(TypePrinterContextKind.Native);
+
             foreach (var resolveTypeDefs in new[] { false, true })
             {
                 foreach (var typePrintScopeKind in
