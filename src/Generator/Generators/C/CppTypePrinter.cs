@@ -332,10 +332,7 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitParameter(Parameter param, bool hasName = true)
         {
-            Parameter oldParam = Parameter;
-            Parameter = param;
             var result = param.Type.Visit(this, param.QualifiedType.Qualifiers);
-            Parameter = oldParam;
 
             string name = param.Name;
             bool printName = hasName && !string.IsNullOrEmpty(name);
@@ -346,11 +343,8 @@ namespace CppSharp.Generators.C
             if (!printName)
                 return result;
 
-            string typeName;
             result.Name = param.Name;
-            typeName = result.ToString();
-
-            return typeName;
+            return result.ToString();
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
