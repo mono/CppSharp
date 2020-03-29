@@ -71,11 +71,11 @@ namespace CppSharp.Generators.C
         {
             var pointeeType = pointer.Pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
-            pointeeType.NameSuffix.Append(mod);
+            pointeeType.NamePrefix.Append(mod);
 
             var qual = GetStringQuals(quals, false);
             if (!string.IsNullOrEmpty(qual))
-                pointeeType.NameSuffix.Append(' ').Append(qual);
+                pointeeType.NamePrefix.Append(' ').Append(qual);
 
             return pointeeType;
         }
@@ -166,7 +166,7 @@ namespace CppSharp.Generators.C
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
             {
                 TypePrinterResult type = typedef.Declaration.QualifiedType.Visit(this);
-                return new TypePrinterResult { Type = $"{qual}{type.Type}", NameSuffix = type.NameSuffix };
+                return new TypePrinterResult { Type = $"{qual}{type.Type}", NamePrefix = type.NamePrefix, NameSuffix = type.NameSuffix };
             }
             return $"{qual}{typedef.Declaration.Visit(this)}";
         }
@@ -320,21 +320,27 @@ namespace CppSharp.Generators.C
             return string.Join(", ", args);
         }
 
-        public override TypePrinterResult VisitParameter(Parameter arg, bool hasName = true)
+        public override TypePrinterResult VisitParameter(Parameter param, bool hasName = true)
         {
-            string type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
-            string name = arg.Name;
+            Parameter oldParam = Parameter;
+            Parameter = param;
+            var result = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            Parameter = oldParam;
+
+            string name = param.Name;
             bool printName = hasName && !string.IsNullOrEmpty(name);
 
             if (PrintFlavorKind == CppTypePrintFlavorKind.ObjC)
-                return printName ? $":({type}){name}" : $":({type})";
+                return printName ? $":({result.Type}){name}" : $":({result.Type})";
 
-            CppSharp.AST.Type desugared = arg.Type.Desugar();
-            desugared = (desugared.GetFinalPointee() ?? desugared).Desugar();
-            return printName ?
-                ((!(arg.Type is TypedefType) || ResolveTypedefs) &&
-                  desugared is FunctionType ?
-                  type.Replace("(*)", $"(*{name})") : $"{type} {name}") : type;
+            if (!printName)
+                return result;
+
+            string typeName;
+            result.Name = param.Name;
+            typeName = result.ToString();
+
+            return typeName;
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)

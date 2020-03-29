@@ -92,8 +92,9 @@ namespace CppSharp.Generators.C
 
             PushBlock();
 
-            var typeName = typedef.Type.Visit(CTypePrinter);
-            WriteLine($"typedef {typeName} {typedef};");
+            var result = typedef.Type.Visit(CTypePrinter);
+            result.Name = typedef.Name;
+            WriteLine($"typedef {result};");
 
             var newlineKind = NewLineKind.BeforeNextBlock;
 
