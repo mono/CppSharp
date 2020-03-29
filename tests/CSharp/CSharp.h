@@ -849,12 +849,17 @@ public:
 };
 
 template <typename T>
-class TemplateWithDependentField
+class DLL_API TemplateWithDependentField
 {
 public:
     TemplateWithDependentField();
     T t;
 };
+
+template <typename T>
+TemplateWithDependentField<T>::TemplateWithDependentField()
+{
+}
 
 class DerivesFromTemplateInstantiation : public TemplateWithDependentField<int>
 {

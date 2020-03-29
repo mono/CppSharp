@@ -1133,11 +1133,6 @@ void TestOutTypeInterfaces::funcTryInterfaceTypeOut(CS_OUT TestParamToInterfaceP
 {
 }
 
-template <typename T>
-TemplateWithDependentField<T>::TemplateWithDependentField()
-{
-}
-
 DerivesFromTemplateInstantiation::DerivesFromTemplateInstantiation()
 {
 }
