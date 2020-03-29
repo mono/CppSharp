@@ -39,19 +39,29 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
-            var typeName = array.Type.Visit(this);
+            var arraySuffix = string.Empty;
 
             switch (array.SizeType)
             {
             case ArrayType.ArraySize.Constant:
-                return $"{typeName}[{array.Size}]";
+                arraySuffix = $"[{array.Size}]";
+                break;
             case ArrayType.ArraySize.Variable:
             case ArrayType.ArraySize.Dependent:
             case ArrayType.ArraySize.Incomplete:
-                return $"{typeName}{(PrintVariableArrayAsPointers ? "*" : "[]")}";
+                arraySuffix = $"{(PrintVariableArrayAsPointers ? "*" : "[]")}";
+                break;
+            default:
+                throw new NotImplementedException();
             }
 
-            throw new NotSupportedException();
+            var result = new TypePrinterResult
+            {
+                Type = array.Type.Visit(this),
+                NameSuffix = new System.Text.StringBuilder(arraySuffix)
+            };
+
+            return result;
         }
 
         private static string ConvertModifierToString(PointerType.TypeModifier modifier)
