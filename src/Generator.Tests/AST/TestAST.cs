@@ -602,5 +602,13 @@ namespace CppSharp.Generator.Tests.AST
             var @classC = AstContext.FindClass("ClassC").First();
             Assert.That(@classC.Redeclarations.Count, Is.EqualTo(2));
         }
+
+        [Test]
+        public void TestPrivateCCtorCopyAssignment()
+        {
+            Class @class = AstContext.FindCompleteClass("HasPrivateCCtorCopyAssignment");
+            Assert.That(@class.Constructors.Any(c => c.IsCopyConstructor), Is.True);
+            Assert.That(@class.Methods.Any(o => o.OperatorKind == CXXOperatorKind.Equal), Is.True);
+        }
     }
 }

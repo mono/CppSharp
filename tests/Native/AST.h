@@ -237,3 +237,10 @@ class ClassB;
 class ClassC {};
 class ClassC;
 class ClassC;
+
+class HasPrivateCCtorCopyAssignment
+{
+private:
+    HasPrivateCCtorCopyAssignment(const HasPrivateCCtorCopyAssignment&) = delete;
+    HasPrivateCCtorCopyAssignment& operator=(const HasPrivateCCtorCopyAssignment&) = delete;
+};
