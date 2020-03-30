@@ -399,14 +399,14 @@ function package_llvm(conf, llvm_base, llvm_build)
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
 	end
 
-	os.copydir(llvm_base .. "/clang/include", out .. "/tools/clang/include")
-	os.copydir(llvm_build .. "/tools/clang/include", out .. "/build/tools/clang/include")
+	os.copydir(llvm_base .. "/clang/include", out .. "/clang/include")
+	os.copydir(llvm_build .. "/tools/clang/include", out .. "/build/clang/include")
 
 	os.copydir(llvm_build_libdir .. "/clang", out .. "/lib/clang")
 
-	os.copydir(llvm_base .. "/clang/lib/CodeGen", out .. "/tools/clang/lib/CodeGen", "*.h")
-	os.copydir(llvm_base .. "/clang/lib/Driver", out .. "/tools/clang/lib/Driver", "*.h")
-	os.copydir(llvm_base .. "/clang/lib/Driver/ToolChains", out .. "/tools/clang/lib/Driver/ToolChains", "*.h")
+	os.copydir(llvm_base .. "/clang/lib/CodeGen", out .. "/clang/lib/CodeGen", "*.h")
+	os.copydir(llvm_base .. "/clang/lib/Driver", out .. "/clang/lib/Driver", "*.h")
+	os.copydir(llvm_base .. "/clang/lib/Driver/ToolChains", out .. "/clang/lib/Driver/ToolChains", "*.h")
 
 	local out_lib_dir = out .. "/build/lib"
 	if os.ishost("windows") then
