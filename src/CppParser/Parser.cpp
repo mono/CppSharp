@@ -1779,11 +1779,11 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
     const clang::CXXConstructorDecl* Ctor;
     if (opts->skipPrivateDeclarations &&
         MD->getAccess() == clang::AccessSpecifier::AS_private &&
+        !MD->isVirtual() &&
         !MD->isCopyAssignmentOperator() &&
         !MD->isMoveAssignmentOperator() &&
         (!(Ctor = llvm::dyn_cast<clang::CXXConstructorDecl>(MD)) ||
-         !Ctor->isCopyOrMoveConstructor()) &&
-        !MD->isVirtual())
+         (!Ctor->isDefaultConstructor() && !Ctor->isCopyOrMoveConstructor())))
         return nullptr;
 
     using namespace clang;

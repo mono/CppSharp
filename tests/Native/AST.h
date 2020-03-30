@@ -241,6 +241,7 @@ class ClassC;
 class HasPrivateCCtorCopyAssignment
 {
 private:
+    HasPrivateCCtorCopyAssignment() = delete;
     HasPrivateCCtorCopyAssignment(const HasPrivateCCtorCopyAssignment&) = delete;
     HasPrivateCCtorCopyAssignment& operator=(const HasPrivateCCtorCopyAssignment&) = delete;
 };
