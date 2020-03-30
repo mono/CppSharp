@@ -43,30 +43,30 @@ function SetupLLVMIncludes()
       includedirs
       {
         path.join(LLVMRootDirDebug, "include"),
-        path.join(LLVMRootDirDebug, "tools/clang/include"),
-        path.join(LLVMRootDirDebug, "tools/clang/lib"),
+        path.join(LLVMRootDirDebug, "clang/include"),
+        path.join(LLVMRootDirDebug, "clang/lib"),
         path.join(LLVMRootDirDebug, "build/include"),
-        path.join(LLVMRootDirDebug, "build/tools/clang/include"),
+        path.join(LLVMRootDirDebug, "build/clang/include"),
       }
 
     filter { "configurations:Release" }
       includedirs
       {
         path.join(LLVMRootDirRelease, "include"),
-        path.join(LLVMRootDirRelease, "tools/clang/include"),
-        path.join(LLVMRootDirRelease, "tools/clang/lib"),
+        path.join(LLVMRootDirRelease, "clang/include"),
+        path.join(LLVMRootDirRelease, "clang/lib"),
         path.join(LLVMRootDirRelease, "build/include"),
-        path.join(LLVMRootDirRelease, "build/tools/clang/include"),
+        path.join(LLVMRootDirRelease, "build/clang/include"),
       }
   else
     local LLVMBuildDir = get_llvm_build_dir()
     includedirs
     {
       path.join(LLVMRootDir, "include"),
-      path.join(LLVMRootDir, "tools/clang/include"),
-      path.join(LLVMRootDir, "tools/clang/lib"),
+      path.join(LLVMRootDir, "clang/include"),
+      path.join(LLVMRootDir, "clang/lib"),
       path.join(LLVMBuildDir, "include"),
-      path.join(LLVMBuildDir, "tools/clang/include"),
+      path.join(LLVMBuildDir, "clang/include"),
     }
   end
 
