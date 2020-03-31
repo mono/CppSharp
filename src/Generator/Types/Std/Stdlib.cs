@@ -489,7 +489,8 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            var templateType = Type as TemplateSpecializationType;
+            var desugared = Type.Desugar();
+            var templateType = desugared as TemplateSpecializationType;
             var type = templateType.Arguments[0].Type;
             var isPointerToPrimitive = type.Type.IsPointerToPrimitiveType();
             var managedType = isPointerToPrimitive
@@ -546,7 +547,8 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            var templateType = Type as TemplateSpecializationType;
+            var desugared = Type.Desugar();
+            var templateType = desugared as TemplateSpecializationType;
             var type = templateType.Arguments[0].Type;
             var isPointerToPrimitive = type.Type.IsPointerToPrimitiveType();
             var managedType = isPointerToPrimitive
