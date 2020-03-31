@@ -12,6 +12,8 @@ struct DLL_API IntWrapperValueType
     int Value;
 };
 
+typedef std::vector<IntWrapperValueType> VectorTypedef;
+
 struct DLL_API TestVectors
 {
     TestVectors();
@@ -28,6 +30,8 @@ struct DLL_API TestVectors
     std::vector<IntWrapper*> IntWrapperPtrVector;
     // Should get mapped to List<IntWrapperValueType>
     std::vector<IntWrapperValueType> IntWrapperValueTypeVector;
+    // Should get mapped to List<IntWrapperValueType>
+    VectorTypedef IntWrapperValueTypeVectorTypedef;
 };
 
 struct DLL_API OStreamTest
