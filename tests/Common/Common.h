@@ -773,6 +773,26 @@ TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
     if (values && count) Value = values[0];
 }
 
+class DLL_API NonPrimitiveType
+{
+    void SetFoo(int foo)
+    {
+        this->foo = foo;
+    }
+
+private:
+    int foo;
+};
+
+class DLL_API TestFixedNonPrimitiveArrays
+{
+public:
+    TestFixedNonPrimitiveArrays();
+    NonPrimitiveType NonPrimitiveTypeArray[3];
+};
+
+TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() {}
+
 struct DLL_API TestGetterSetterToProperties
 {
     int getWidth();
