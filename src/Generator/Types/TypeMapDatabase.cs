@@ -11,9 +11,11 @@ namespace CppSharp.Types
     public class TypeMapDatabase : ITypeMapDatabase
     {
         public IDictionary<string, TypeMap> TypeMaps { get; set; }
+        private readonly BindingContext Context;
 
         public TypeMapDatabase(BindingContext bindingContext)
         {
+            Context = bindingContext;
             TypeMaps = new Dictionary<string, TypeMap>();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -87,7 +89,7 @@ namespace CppSharp.Types
             bool printExtra = desugared.IsPrimitiveType() ||
                 (desugared.GetFinalPointee() ?? desugared).Desugar().IsPrimitiveType();
 
-            var typePrinter = new CppTypePrinter
+            var typePrinter = new CppTypePrinter(Context)
             {
                 PrintTypeQualifiers = printExtra,
                 PrintTypeModifiers = printExtra,

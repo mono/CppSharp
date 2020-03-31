@@ -588,7 +588,7 @@ namespace CppSharp.Generators.CSharp
                     var local = Generator.GeneratedIdentifier($@"{
                         param.Name}{Context.ParameterIndex}");
                     string cast = isVoid ? $@"({pointee.Visit(
-                        new CppTypePrinter { PrintTypeQualifiers = false })}) " : string.Empty;
+                        new CppTypePrinter(Context.Context) { PrintTypeQualifiers = false })}) " : string.Empty;
                     Context.Before.WriteLine($"var {local} = {cast}{Context.Return};");
                     Context.Return.StringBuilder.Clear();
                     Context.Return.Write(local);

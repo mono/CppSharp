@@ -119,7 +119,7 @@ namespace CppSharp.Generators.CLI
                 if (pointer.GetFinalQualifiedPointee().Qualifiers.IsConst !=
                     Context.ReturnType.Qualifiers.IsConst)
                 {
-                    var nativeTypePrinter = new CppTypePrinter { PrintTypeQualifiers = false };
+                    var nativeTypePrinter = new CppTypePrinter(Context.Context) { PrintTypeQualifiers = false };
                     var returnType = Context.ReturnType.Type.Desugar();
                     var constlessPointer = new PointerType()
                     {
@@ -139,7 +139,7 @@ namespace CppSharp.Generators.CLI
                         Modifier = pointer.Modifier,
                         QualifiedPointee = new QualifiedType(pointee)
                     };
-                    var nativeTypePrinter = new CppTypePrinter();
+                    var nativeTypePrinter = new CppTypePrinter(Context.Context);
                     var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
                     Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
                         returnVarName);
@@ -504,7 +504,7 @@ namespace CppSharp.Generators.CLI
 
             if (pointee is FunctionType)
             {
-                var cppTypePrinter = new CppTypePrinter();
+                var cppTypePrinter = new CppTypePrinter(Context.Context);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 return VisitDelegateType(cppTypeName);
@@ -533,7 +533,7 @@ namespace CppSharp.Generators.CLI
             var finalPointee = pointer.GetFinalPointee();
             if (finalPointee.IsPrimitiveType())
             {
-                var cppTypePrinter = new CppTypePrinter();
+                var cppTypePrinter = new CppTypePrinter(Context.Context);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 Context.Return.Write("({0})", cppTypeName);
@@ -602,7 +602,7 @@ namespace CppSharp.Generators.CLI
                     cppTypeName = "::" + typedef.Declaration.QualifiedOriginalName;
                 else
                 {
-                    var cppTypePrinter = new CppTypePrinter();
+                    var cppTypePrinter = new CppTypePrinter(Context.Context);
                     cppTypeName = decl.Type.Visit(cppTypePrinter, quals);
                 }
 

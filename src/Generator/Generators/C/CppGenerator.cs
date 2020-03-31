@@ -14,7 +14,7 @@ namespace CppSharp.Generators.Cpp
 
         public CppGenerator(BindingContext context) : base(context)
         {
-            typePrinter = new CppTypePrinter();
+            typePrinter = new CppTypePrinter(Context);
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)

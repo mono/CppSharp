@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
@@ -12,9 +13,14 @@ namespace CppSharp.Generator.Tests.AST
     [TestFixture]
     public class TestAST : ASTTestFixture
     {
+        private BindingContext Context;
+
         [OneTimeSetUp]
         public void Init()
         {
+            Context = new BindingContext(new DriverOptions());
+            Context.TypeMaps = new Types.TypeMapDatabase(Context);
+
             CppSharp.AST.Type.TypePrinterDelegate = type =>
             {
                 PrimitiveType primitiveType;
@@ -473,7 +479,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestPrintingConstPointerWithConstType()
         {
-            var cppTypePrinter = new CppTypePrinter { ScopeKind = TypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
             var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });
@@ -485,7 +491,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestPrintingSpecializationWithConstValue()
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();
-            var cppTypePrinter = new CppTypePrinter { ScopeKind = TypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
             Assert.That(template.Specializations.Last().Visit(cppTypePrinter).Type,
                 Is.EqualTo("TestSpecializationArguments<const TestASTEnumItemByName>"));
         }
@@ -537,7 +543,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestVolatile()
         {
-            var cppTypePrinter = new CppTypePrinter { ScopeKind = TypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true, IsVolatile = true });
             var type = pointee.Visit(cppTypePrinter).Type;
@@ -555,7 +561,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestPrintNestedInSpecialization()
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestTemplateClass").First();
-            var cppTypePrinter = new CppTypePrinter { ScopeKind = TypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
             Assert.That(template.Specializations[3].Classes.First().Visit(cppTypePrinter).Type,
                 Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
         }
@@ -564,7 +570,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestPrintQualifiedSpecialization()
         {
             var functionWithSpecializationArg = AstContext.FindFunction("functionWithSpecializationArg").First();
-            var cppTypePrinter = new CppTypePrinter { ScopeKind = TypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
             Assert.That(functionWithSpecializationArg.Parameters[0].Visit(cppTypePrinter).Type,
                 Is.EqualTo("const TestTemplateClass<int>"));
         }

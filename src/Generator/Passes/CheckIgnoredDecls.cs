@@ -116,7 +116,7 @@ namespace CppSharp.Passes
 
             var @class = (Class)field.Namespace;
 
-            var cppTypePrinter = new CppTypePrinter();
+            var cppTypePrinter = new CppTypePrinter(Context);
             var typeName = field.Type.Visit(cppTypePrinter);
 
             Diagnostics.Debug("Field '{0}::{1}' was ignored due to {2} type '{3}'",

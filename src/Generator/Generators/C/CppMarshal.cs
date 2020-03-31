@@ -77,7 +77,8 @@ namespace CppSharp.Generators.Cpp
                 if (pointer.GetFinalQualifiedPointee().Qualifiers.IsConst !=
                     Context.ReturnType.Qualifiers.IsConst)
                 {
-                    var nativeTypePrinter = new CppTypePrinter { PrintTypeQualifiers = false };
+                    var nativeTypePrinter = new CppTypePrinter(Context.Context)
+                        { PrintTypeQualifiers = false };
                     var returnType = Context.ReturnType.Type.Desugar();
                     var constlessPointer = new PointerType()
                     {
@@ -98,7 +99,7 @@ namespace CppSharp.Generators.Cpp
                         Modifier = pointer.Modifier,
                         QualifiedPointee = new QualifiedType(pointee)
                     };
-                    var nativeTypePrinter = new CppTypePrinter();
+                    var nativeTypePrinter = new CppTypePrinter(Context.Context);
                     var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
                     Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
                         returnVarName);
@@ -300,7 +301,7 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            var typePrinter = new CppTypePrinter();
+            var typePrinter = new CppTypePrinter(Context.Context);
             var typeName = typePrinter.VisitDeclaration(@enum);
             Context.Return.Write($"({typeName}){Context.ReturnVarName}");
 
@@ -393,7 +394,7 @@ namespace CppSharp.Generators.Cpp
 
             if (pointee is FunctionType)
             {
-                var cppTypePrinter = new CppTypePrinter();
+                var cppTypePrinter = new CppTypePrinter(Context.Context);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 return VisitDelegateType(cppTypeName);
@@ -422,7 +423,7 @@ namespace CppSharp.Generators.Cpp
             var finalPointee = pointer.GetFinalPointee();
             if (finalPointee.IsPrimitiveType())
             {
-                var cppTypePrinter = new CppTypePrinter();
+                var cppTypePrinter = new CppTypePrinter(Context.Context);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 Context.Return.Write($"({cppTypeName})");
@@ -485,14 +486,14 @@ namespace CppSharp.Generators.Cpp
             FunctionType func;
             if (decl.Type.IsPointerTo(out func))
             {
+                var typePrinter = new CppTypePrinter(Context.Context);
                 // Use the original typedef name if available, otherwise just use the function pointer type
                 string cppTypeName;
                 if (!decl.IsSynthetized)
                     cppTypeName = "::" + typedef.Declaration.QualifiedOriginalName;
                 else
                 {
-                    var cppTypePrinter = new CppTypePrinter();
-                    cppTypeName = decl.Type.Visit(cppTypePrinter, quals);
+                    cppTypeName = decl.Type.Visit(typePrinter, quals);
                 }
 
                 VisitDelegateType(cppTypeName);
