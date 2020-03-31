@@ -50,6 +50,9 @@ namespace CppSharp
         Destructor,
         AccessSpecifier,
         Fields,
+        ConstructorBody,
+        DestructorBody,
+        FinalizerBody
     }
 
     [DebuggerDisplay("{Kind} | {Object}")]

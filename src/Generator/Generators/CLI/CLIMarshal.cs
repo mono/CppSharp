@@ -275,15 +275,19 @@ namespace CppSharp.Generators.CLI
             instance += Context.ReturnVarName;
             var needsCopy = Context.MarshalKind != MarshalKind.NativeField;
 
+            bool ownNativeInstance = false;
+
             if (@class.IsRefType && needsCopy)
             {
                 var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
                 Context.Before.WriteLine("auto {0} = new ::{1}({2});", name,
                     @class.QualifiedOriginalName, Context.ReturnVarName);
                 instance = name;
+
+                ownNativeInstance = true;
             }
 
-            WriteClassInstance(@class, instance);
+            WriteClassInstance(@class, instance, ownNativeInstance);
             return true;
         }
 
@@ -295,7 +299,7 @@ namespace CppSharp.Generators.CLI
             return decl.QualifiedName;
         }
 
-        public void WriteClassInstance(Class @class, string instance)
+        public void WriteClassInstance(Class @class, string instance, bool ownNativeInstance = false)
         {
             if (@class.IsRefType)
                 Context.Return.Write("({0} == nullptr) ? nullptr : gcnew ",
@@ -303,7 +307,7 @@ namespace CppSharp.Generators.CLI
 
             Context.Return.Write("{0}(", QualifiedIdentifier(@class));
             Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-            Context.Return.Write("{0})", instance);
+            Context.Return.Write("{0}{1})", instance, !ownNativeInstance ? "" : ", true");
         }
 
         public override bool VisitFieldDecl(Field field)
