@@ -390,7 +390,6 @@ namespace CppSharp.Generators.Cpp
             return true;
         }
 
-
         public override bool VisitFunctionDecl(Function function)
         {
             if (!function.IsGenerated || CppHeaders.FunctionIgnored(function))
