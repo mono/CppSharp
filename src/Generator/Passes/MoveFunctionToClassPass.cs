@@ -23,7 +23,6 @@ namespace CppSharp.Passes
                 return false;
 
             Class @class = FindClassToMoveFunctionTo(function);
-
             if (@class == null)
                 return false;
 
@@ -35,6 +34,7 @@ namespace CppSharp.Passes
                 OriginalFunction = null,
                 IsStatic = true
             };
+
             if (method.IsOperator)
             {
                 method.IsNonMemberOperator = true;
