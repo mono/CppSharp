@@ -1181,3 +1181,12 @@ BaseCovariant::~BaseCovariant()
 DerivedCovariant::~DerivedCovariant()
 {
 }
+
+int NonPrimitiveType::GetFoo()
+{
+    return foo;
+}
+
+TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() 
+{
+}

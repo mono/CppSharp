@@ -52,6 +52,8 @@ namespace CppSharp.Generators.CLI
                     if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
                         Context.Before.WriteLineIndent("{0}[i] = new ::System::IntPtr({1}[i]);",
                             value, Context.ReturnVarName);
+                    else if (!array.Type.IsPrimitiveType())
+                        Context.Before.WriteLineIndent($"{value}[i] = gcnew {array.Type.ToString().TrimEnd('^')}(&{Context.ReturnVarName}[i]);");
                     else
                         Context.Before.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
                     Context.Before.UnindentAndWriteCloseBrace();
@@ -436,13 +438,28 @@ namespace CppSharp.Generators.CLI
                     }
                     else
                     {
+                        bool isPointerToPrimitive = array.Type.IsPointerToPrimitiveType(PrimitiveType.Void);
+                        bool isPrimitive = array.Type.IsPrimitiveType();
                         var supportBefore = Context.Before;
                         supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
                         supportBefore.WriteOpenBraceAndIndent();
+
+                        string nativeVal = string.Empty;
+                        if (isPointerToPrimitive)
+                        {
+                            nativeVal = ".ToPointer()";
+                        }
+                        else if (!isPrimitive)
+                        {
+                            nativeVal = "->NativePtr";
+                        }
+
                         supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                        supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
-                            Context.ReturnVarName, Context.ArgName,
-                            array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
+                        supportBefore.WriteLineIndent("{0}[i] = {1}{2}[i]{3};",
+                            Context.ReturnVarName,
+                            isPointerToPrimitive || isPrimitive ? string.Empty : "*",
+                            Context.ArgName,
+                            nativeVal);
                         supportBefore.UnindentAndWriteCloseBrace();   
                     }
                     break;
