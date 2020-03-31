@@ -115,7 +115,7 @@ namespace CppSharp.Passes
                     Match(firstWord, new[] { "get", "is", "has" }))
                     continue;
 
-                if (Match(firstWord, new[] { "to", "new" }) ||
+                if (Match(firstWord, new[] { "to", "new", "on" }) ||
                     verbs.Contains(firstWord))
                 {
                     property.GetMethod.GenerationKind = GenerationKind.Generate;
