@@ -16,6 +16,11 @@ namespace CppSharp.Passes
         public SymbolsCodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
+            cppTypePrinter = new CppTypePrinter(Context)
+            {
+                ScopeKind = TypePrintScopeKind.Qualified,
+                ResolveTypedefs = true
+            };
         }
 
         public override void Process()
@@ -349,11 +354,8 @@ namespace CppSharp.Passes
             return parentsOpen;
         }
 
-        private CppTypePrinter cppTypePrinter = new CppTypePrinter
-        {
-            ScopeKind = TypePrintScopeKind.Qualified,
-            ResolveTypedefs = true
-        };
+        private CppTypePrinter cppTypePrinter;
+
         private int functionCount;
     }
 }

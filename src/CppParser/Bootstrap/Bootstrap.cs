@@ -116,6 +116,9 @@ namespace CppSharp
             exprCxxUnit.Visit(exprSubclassVisitor);
             ExprClasses = exprSubclassVisitor.Classes;
 
+            CodeGeneratorHelpers.CppTypePrinter = new CppTypePrinter(driver.Context)
+                { ScopeKind = TypePrintScopeKind.Local };
+
             GenerateStmt(driver.Context);
             GenerateExpr(driver.Context);
         }
@@ -1492,8 +1495,7 @@ namespace CppSharp
 
     static class CodeGeneratorHelpers
     {
-        internal static CppTypePrinter CppTypePrinter = 
-            new CppTypePrinter { ScopeKind = TypePrintScopeKind.Local };
+        internal static CppTypePrinter CppTypePrinter;
 
         public static bool IsAbstractStmt(Class @class) => IsAbstractStmt(@class.Name);
 

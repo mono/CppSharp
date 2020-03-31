@@ -124,7 +124,7 @@ namespace CppSharp.Generators.CSharp
             var names = new List<string> { mapped.OriginalName };
             foreach (TypePrintScopeKind kind in Enum.GetValues(typeof(TypePrintScopeKind)))
             {
-                var cppTypePrinter = new CppTypePrinter { ScopeKind = kind };
+                var cppTypePrinter = new CppTypePrinter(context) { ScopeKind = kind };
                 names.Add(mapped.Visit(cppTypePrinter));
             }
             foreach (var name in names.Where(context.TypeMaps.TypeMaps.ContainsKey))

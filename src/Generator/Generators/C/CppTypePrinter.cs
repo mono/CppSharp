@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Types;
 
 namespace CppSharp.Generators.C
 {
@@ -21,13 +22,18 @@ namespace CppSharp.Generators.C
         public bool PrintTypeModifiers { get; set; }
         public bool PrintVariableArrayAsPointers { get; set; }
 
-        public CppTypePrinter() : base(TypePrinterContextKind.Managed)
+        public CppTypePrinter(BindingContext context) : base(TypePrinterContextKind.Managed)
         {
+            Context = context;
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
             ScopeKind = TypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = true;
             PrintTypeModifiers = true;
         }
+
+        public BindingContext Context { get; private set; }
+        public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;
+        public DriverOptions Options => Context.Options;
 
         public bool ResolveTypedefs { get; set; }
 

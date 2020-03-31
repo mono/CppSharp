@@ -591,8 +591,7 @@ namespace CppSharp.Generators.Cpp
 
             if (isRef)
             {
-                var typePrinter = new CppTypePrinter();
-                var type = paramType.Visit(typePrinter);
+                var type = paramType.Visit(CTypePrinter);
 
                 if (param.IsInOut)
                 {

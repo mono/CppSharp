@@ -501,7 +501,7 @@ namespace CppSharp.Types.Std
 
             var tmpVarName = "_tmp" + entryString;
 
-            var cppTypePrinter = new CppTypePrinter();
+            var cppTypePrinter = new CppTypePrinter(Context);
             var nativeType = type.Type.Visit(cppTypePrinter);
 
             ctx.Before.WriteLine("auto {0} = std::vector<{1}>();",

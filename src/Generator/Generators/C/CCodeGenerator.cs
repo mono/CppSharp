@@ -32,7 +32,7 @@ namespace CppSharp.Generators.C
             : base(context, units)
         {
             VisitOptions.VisitPropertyAccessors = true;
-            typePrinter = new CppTypePrinter();
+            typePrinter = new CppTypePrinter(context);
         }
 
         public abstract override string FileExtension { get; }

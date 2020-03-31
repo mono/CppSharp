@@ -11,14 +11,8 @@ namespace CppSharp.Generators.CLI
 {
     public class CLITypePrinter : CppTypePrinter
     {
-        public BindingContext Context { get; private set; }
-
-        public DriverOptions Options { get { return Context.Options; } }
-        public TypeMapDatabase TypeMapDatabase { get { return Context.TypeMaps; } }
-
-        public CLITypePrinter(BindingContext context)
+        public CLITypePrinter(BindingContext context) : base(context)
         {
-            Context = context;
         }
 
         public override TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
