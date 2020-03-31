@@ -1,4 +1,5 @@
 ﻿using CppSharp.AST;
+using CppSharp.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,7 @@ namespace CppSharp.Generators
         public string Name { get; set; } = string.Empty;
         public StringBuilder NamePrefix { get; set; } = new StringBuilder();
         public StringBuilder NameSuffix { get; set; } = new StringBuilder();
+        public TypeMap TypeMap { get; set; }
 
         public TypePrinterResult(string type = "", string nameSuffix = "")
         {

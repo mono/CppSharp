@@ -35,10 +35,21 @@ namespace CppSharp.Generators.C
         public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;
         public DriverOptions Options => Context.Options;
 
+        public bool ResolveTypeMaps { get; set; } = true;
         public bool ResolveTypedefs { get; set; }
 
-        public override TypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
+        public override TypePrinterResult VisitTagType(TagType tag,
+            TypeQualifiers quals)
         {
+            TypeMap typeMap;
+            if (ResolveTypeMaps && TypeMapDatabase.FindTypeMap(tag, out typeMap) &&
+                !typeMap.IsIgnored)
+            {
+                var typePrinterContext = new TypePrinterContext { Type = tag };
+                var type = typeMap.CppSignatureType(typePrinterContext).ToString();
+                return new TypePrinterResult(type) { TypeMap = typeMap };
+            }
+
             var qual = GetStringQuals(quals);
             return $"{qual}{tag.Declaration.Visit(this)}";
         }
@@ -88,6 +99,9 @@ namespace CppSharp.Generators.C
             TypeQualifiers quals)
         {
             var pointeeType = pointer.Pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
+            if (pointeeType.TypeMap != null)
+                return pointeeType;
+
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
             pointeeType.NamePrefix.Append(mod);
 

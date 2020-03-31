@@ -91,6 +91,7 @@ namespace CppSharp.Types
 
             var typePrinter = new CppTypePrinter(Context)
             {
+                ResolveTypeMaps = false,
                 PrintTypeQualifiers = printExtra,
                 PrintTypeModifiers = printExtra,
                 PrintLogicalNames = true
