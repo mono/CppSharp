@@ -777,10 +777,7 @@ class DLL_API NonPrimitiveType
 {
 
 public:
-    int GetFoo()
-    {
-        return this->foo;
-    }
+    int GetFoo();
 
     int foo;
 };
@@ -791,8 +788,6 @@ public:
     TestFixedNonPrimitiveArrays();
     NonPrimitiveType NonPrimitiveTypeArray[3];
 };
-
-TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() {}
 
 struct DLL_API TestGetterSetterToProperties
 {
