@@ -981,4 +981,24 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(ret, Is.EqualTo(10));
         }
     }
+
+    [Test]
+    public void TestNonPrimitiveFixedArrays()
+    {
+        using (var nonPrimitiveFixedArray = new TestFixedNonPrimitiveArrays())
+        {
+            nonPrimitiveFixedArray.NonPrimitiveTypeArray = new NonPrimitiveType[]
+            { 
+                new NonPrimitiveType{ foo = 1 },
+                new NonPrimitiveType{ foo = 2 },
+                new NonPrimitiveType{ foo = 3 }
+            };
+
+            Assert.AreEqual(3, nonPrimitiveFixedArray.NonPrimitiveTypeArray.Length);
+
+            Assert.AreEqual(1, nonPrimitiveFixedArray.NonPrimitiveTypeArray[0].Foo);
+            Assert.AreEqual(2, nonPrimitiveFixedArray.NonPrimitiveTypeArray[1].Foo);
+            Assert.AreEqual(3, nonPrimitiveFixedArray.NonPrimitiveTypeArray[2].Foo);
+        }
+    }
 }
