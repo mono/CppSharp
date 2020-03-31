@@ -27,6 +27,19 @@ namespace CppSharp
             IsIgnored = true;
         }
 
+        public override bool VisitType(Type type, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(type, out typeMap)
+                && typeMap.IsIgnored)
+            {
+                Ignore();
+                return false;
+            }
+
+            return base.VisitType(type, quals);
+        }
+
         public override bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             // we do not support long double yet because its high-level representation is often problematic
@@ -45,6 +58,12 @@ namespace CppSharp
 
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
+
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            {
+                return typeMap.IsIgnored;
+            }
 
             if (!(decl is TypedefDecl) && !decl.IsGenerated)
             {
