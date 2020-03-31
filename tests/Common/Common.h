@@ -775,12 +775,13 @@ TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
 
 class DLL_API NonPrimitiveType
 {
-    void SetFoo(int foo)
+
+public:
+    int GetFoo()
     {
-        this->foo = foo;
+        return this->foo;
     }
 
-private:
     int foo;
 };
 
