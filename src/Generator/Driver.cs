@@ -222,8 +222,10 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new IgnoreSystemDeclarationsPass());
+
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new EqualiseAccessOfOverrideAndBasePass());
+
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
 
             if (Options.IsCSharpGenerator)
@@ -239,7 +241,12 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new FindSymbolsPass());
             TranslationUnitPasses.AddPass(new CheckMacroPass());
             TranslationUnitPasses.AddPass(new CheckStaticClass());
-            TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
+
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
+            {
+                TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
+            }
+
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
             TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
@@ -280,6 +287,7 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new SpecializationMethodsWithDependentPointersPass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
+
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
 
             TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
