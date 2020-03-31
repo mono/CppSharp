@@ -363,7 +363,7 @@ namespace CppSharp.Generators.C
 
             Write(")");
 
-            if (method.IsOverride)
+            if (method.IsOverride && isHeaderFile)
                 Write(" override");
         }
 
