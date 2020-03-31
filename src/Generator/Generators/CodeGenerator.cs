@@ -1220,6 +1220,8 @@ namespace CppSharp.Generators
 
         public static readonly string CreateInstanceIdentifier = Generator.GeneratedIdentifier("CreateInstance");
 
+        public static readonly string FreeFunctionsClassSuffix = "Helpers";
+
         public static string GetSuffixForInternal(DeclarationContext @class)
         {
             if (@class == null)

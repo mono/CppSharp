@@ -1,5 +1,7 @@
 #include "../Tests.h"
 
+#include "FreeFunctionsClass.h"
+
 #include <ostream>
 
 // Tests for C++ types

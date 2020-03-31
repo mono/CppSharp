@@ -1345,4 +1345,15 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         Assert.That(CSharp.CSharp.TakeTypemapTypedefParam(false), Is.False);
     }
+
+    [Test]
+    public void TestFreeFunctionsPartialClassName()
+    {
+        using (var freeFuncClass = new CSharp.FreeFunctions.FreeFunctionsClass())
+        {
+            Assert.AreEqual(1, freeFuncClass.Int);
+        }
+
+        Assert.AreEqual(2, CSharp.FreeFunctions.FreeFunctionsClass.F());
+    }
 }

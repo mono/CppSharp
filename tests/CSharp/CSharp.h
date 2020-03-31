@@ -7,6 +7,7 @@
 #include <string>
 #include "AnotherUnit.h"
 #include "CSharpTemplates.h"
+#include "FreeFunctionsClass.h"
 
 class DLL_API Foo
 {

@@ -890,7 +890,7 @@ namespace CppSharp.Generators.CLI
             GenerateDeclarationCommon(function);
 
             var classSig = string.Format("{0}::{1}", QualifiedIdentifier(@namespace),
-                TranslationUnit.FileNameWithoutExtension);
+                TranslationUnit.FileNameWithoutExtension + Helpers.FreeFunctionsClassSuffix);
 
             Write("{0} {1}::{2}(", function.ReturnType, classSig,
                 function.Name);
