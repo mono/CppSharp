@@ -100,7 +100,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(field))
                 return false;
 
-            var type = (field.Type.GetFinalPointee() ?? field.Type).Desugar();
+            var type = (field.Type.Desugar().GetFinalPointee() ?? field.Type).Desugar();
 
             Declaration decl;
             type.TryGetDeclaration(out decl);
