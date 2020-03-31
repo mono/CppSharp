@@ -119,7 +119,7 @@ namespace CppSharp
                 evaluator.Variables.Add(item.Name.ToLower(), item.Value);
             }
             try
-            {               
+            {
                 var ret = evaluator.Evaluate("(long)" + num.ReplaceLineBreaks(" ").Replace('\\',' '));
                 val = (long)ret;
                 return true;
@@ -149,8 +149,14 @@ namespace CppSharp
             var pattern = string.Join("|", macros);
             var regex = new Regex(pattern);
 
+            int maxItems = 0;
+            TranslationUnit unitToAttach = null;
+            ulong maxValue = 0;
+
             foreach (var unit in context.TranslationUnits)
             {
+                int numItems = 0;
+
                 foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
                 {
                     var match = regex.Match(macro.Name);
@@ -159,25 +165,29 @@ namespace CppSharp
                     if (macro.Enumeration != null)
                         continue;
 
-                    // Skip this macro if the enum already has an item with same entry.
+                    // Skip this macro if the enum already has an item with same name.
                     if (@enum.Items.Exists(it => it.Name == macro.Name))
                         continue;
 
-                    // Set the namespace to the namespace we found the 1st item in
-                    if (@enum.Namespace == null)
-                        @enum.Namespace = unit;
-
                     var item = @enum.GenerateEnumItemFromMacro(macro);
                     @enum.AddItem(item);
-
                     macro.Enumeration = @enum;
+
+                    maxValue = Math.Max(maxValue, item.Value);
+                    numItems++;
                 }
 
-                if (@enum.Items.Count > 0)
+                if (numItems > maxItems)
                 {
-                    unit.Declarations.Add(@enum);
-                    break;
+                    maxItems = numItems;
+                    unitToAttach = unit;
                 }
+            }
+
+            if (@enum.Items.Count > 0)
+            {
+                @enum.Namespace = unitToAttach;
+                unitToAttach.Declarations.Add(@enum);
             }
 
             return @enum;
