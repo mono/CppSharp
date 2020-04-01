@@ -586,9 +586,15 @@ namespace CppSharp.Generators.Cpp
             }
 
             var paramType = Context.Parameter.Type.Desugar();
-            var deref = paramType.SkipPointerRefs().IsPointer() ? "->" : ".";
-            Context.Return.Write($"(::{@class.QualifiedOriginalName}*)");
-            Context.Return.Write($"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}");
+            var isPointer = paramType.SkipPointerRefs().IsPointer();
+            var deref = isPointer ? "->" : ".";
+            var instance = $"(::{@class.QualifiedOriginalName}*)" +
+                $"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}";
+
+            if (isPointer)
+                Context.Return.Write($"{Context.Parameter.Name} ? {instance} : nullptr");
+            else
+                Context.Return.Write($"{instance}");
         }
 
         private void MarshalValueClass(Class @class)
