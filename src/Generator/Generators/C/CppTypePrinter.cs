@@ -204,9 +204,15 @@ namespace CppSharp.Generators.C
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
             {
                 TypePrinterResult type = typedef.Declaration.QualifiedType.Visit(this);
-                return new TypePrinterResult { Type = $"{qual}{type.Type}", NamePrefix = type.NamePrefix, NameSuffix = type.NameSuffix };
+                return new TypePrinterResult { Type = $"{qual}{type.Type}",
+                    NamePrefix = type.NamePrefix, NameSuffix = type.NameSuffix };
             }
-            return $"{qual}{typedef.Declaration.Visit(this)}";
+
+            var result = typedef.Declaration.Visit(this);
+            if (result.NamePrefix.Length > 0)
+                result.NamePrefix.Append($"{qual}");
+
+            return result;
         }
 
         public override TypePrinterResult VisitAttributedType(AttributedType attributed,
