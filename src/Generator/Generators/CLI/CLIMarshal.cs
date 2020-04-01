@@ -307,7 +307,7 @@ namespace CppSharp.Generators.CLI
 
             Context.Return.Write("{0}(", QualifiedIdentifier(@class));
             Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-            Context.Return.Write("{0}{1})", instance, !ownNativeInstance ? "" : ", true");
+            Context.Return.Write("{0}{1})", instance, !ownNativeInstance ? ", true" : "");
         }
 
         public override bool VisitFieldDecl(Field field)
