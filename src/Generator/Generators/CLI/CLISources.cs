@@ -250,6 +250,8 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
             WriteOpenBraceAndIndent();
 
+            PushBlock(BlockKind.DestructorBody, @class);
+
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
                 WriteLine("delete NativePtr;");
@@ -264,6 +266,8 @@ namespace CppSharp.Generators.CLI
                 UnindentAndWriteCloseBrace();
             }
 
+            PopBlock();
+
             UnindentAndWriteCloseBrace();
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -276,8 +280,12 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);
             WriteOpenBraceAndIndent();
 
+            PushBlock(BlockKind.FinalizerBody, @class);
+
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 WriteLine("delete NativePtr;");
+
+            PopBlock();
 
             UnindentAndWriteCloseBrace();
 
@@ -618,16 +626,16 @@ namespace CppSharp.Generators.CLI
                 GeneratePropertySetter(variable, @class, variable.Name, variable.Type);
         }
 
-        private void GenerateClassConstructor(Class @class)
+        private void GenerateClassConstructor(Class @class, bool withOwnNativeInstanceParam = false)
         {
             string qualifiedIdentifier = QualifiedIdentifier(@class);
 
             Write("{0}::{1}(", qualifiedIdentifier, @class.Name);
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
-            WriteLine("{0} native)", nativeType);
+            WriteLine(!withOwnNativeInstanceParam ? "{0} native)" : "{0} native, const bool ownNativeInstance)", nativeType);
 
-            var hasBase = GenerateClassConstructorBase(@class);
+            var hasBase = GenerateClassConstructorBase(@class, null, withOwnNativeInstanceParam);
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
@@ -635,10 +643,12 @@ namespace CppSharp.Generators.CLI
                 Write(hasBase ? "," : ":");
                 Unindent();
 
-                WriteLine(" {0}(false)", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLine(!withOwnNativeInstanceParam ? " {0}(false)" : " {0}(ownNativeInstance)", Helpers.OwnsNativeInstanceIdentifier);
             }
 
             WriteOpenBraceAndIndent();
+
+            PushBlock(BlockKind.ConstructorBody, @class);
 
             const string nativePtr = "native";
 
@@ -654,16 +664,24 @@ namespace CppSharp.Generators.CLI
                 GenerateStructMarshaling(@class, nativePtr + "->");
             }
 
-            UnindentAndWriteCloseBrace();
-            NewLine();
-            WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
-
-            WriteOpenBraceAndIndent();
-
-            WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
+            PopBlock();
 
             UnindentAndWriteCloseBrace();
-            NewLine();
+
+            if (!withOwnNativeInstanceParam)
+            {
+                NewLine();
+                WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
+
+                WriteOpenBraceAndIndent();
+
+                WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
+
+                UnindentAndWriteCloseBrace();
+                NewLine();
+
+                GenerateClassConstructor(@class, true);
+            }
         }
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
@@ -701,7 +719,7 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        private bool GenerateClassConstructorBase(Class @class, Method method = null)
+        private bool GenerateClassConstructorBase(Class @class, Method method = null, bool withOwnNativeInstanceParam = false)
         {
             var hasBase = @class.HasBase && @class.Bases[0].IsClass && @class.Bases[0].Class.IsGenerated;
             if (!hasBase)
@@ -720,7 +738,7 @@ namespace CppSharp.Generators.CLI
                 var nativeTypeName = baseClass.Visit(cppTypePrinter);
                 Write("({0}*)", nativeTypeName);
 
-                WriteLine("{0})", method != null ? "nullptr" : "native");
+                WriteLine("{0}{1})", method != null ? "nullptr" : "native", !withOwnNativeInstanceParam ? "" : ", ownNativeInstance");
 
                 Unindent();
             }
@@ -754,7 +772,11 @@ namespace CppSharp.Generators.CLI
             PushBlock(BlockKind.MethodBody, method);
 
             if (method.IsConstructor && @class.IsRefType)
+            {
+                PushBlock(BlockKind.ConstructorBody, @class);
+
                 WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+            }
 
             if (method.IsProxy)
                 goto SkipImpl;
@@ -770,6 +792,8 @@ namespace CppSharp.Generators.CLI
                         GenerateFunctionParams(@params);
                         WriteLine(");");
                     }
+
+                    PopBlock();
                 }
                 else
                 {
