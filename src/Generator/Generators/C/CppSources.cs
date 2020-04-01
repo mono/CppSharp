@@ -292,8 +292,11 @@ namespace CppSharp.Generators.Cpp
 
             var nativeType = $"::{@class.QualifiedOriginalName}*";
             WriteLine($"{nativeType} {ClassCtorInstanceParamIdentifier})");
+            GenerateClassConstructorBase(@class);
 
             WriteOpenBraceAndIndent();
+
+            WriteLine($"{Helpers.InstanceIdentifier} = {ClassCtorInstanceParamIdentifier};");
 
             UnindentAndWriteCloseBrace();
             NewLine();
