@@ -408,7 +408,7 @@ namespace CppSharp.Generators.Cpp
             var returnType = function.ReturnType.Visit(CTypePrinter);
 
             var name = function.Visit(CTypePrinter);
-            Write($"{returnType} {name}(");
+            Write($"{returnType} ({name})(");
 
             for (var i = 0; i < function.Parameters.Count; ++i)
             {
