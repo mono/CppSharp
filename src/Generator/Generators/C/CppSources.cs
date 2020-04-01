@@ -369,12 +369,15 @@ namespace CppSharp.Generators.Cpp
 
             if (@class.IsRefType)
             {
-                if (method.IsConstructor && !@class.IsAbstract)
+                if (method.IsConstructor)
                 {
-                    var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-                    Write($"{Helpers.InstanceIdentifier} = new ::{method.Namespace.QualifiedOriginalName}(");
-                    GenerateFunctionParams(@params);
-                    WriteLine(");");
+                    if (!@class.IsAbstract)
+                    {
+                        var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
+                        Write($"{Helpers.InstanceIdentifier} = new ::{method.Namespace.QualifiedOriginalName}(");
+                        GenerateFunctionParams(@params);
+                        WriteLine(");");
+                    }
                 }
                 else
                 {
