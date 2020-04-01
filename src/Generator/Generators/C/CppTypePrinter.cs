@@ -590,12 +590,12 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(typedef);
         }
 
         public override TypePrinterResult VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(typeAliasTemplate);
         }
 
         public override TypePrinterResult VisitFunctionTemplateSpecializationDecl(
@@ -612,7 +612,7 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitVarTemplateSpecializationDecl(
             VarTemplateSpecialization template)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(template);
         }
 
         private string GetStringQuals(TypeQualifiers quals, bool appendSpace = true)
