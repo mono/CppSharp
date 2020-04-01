@@ -50,6 +50,57 @@ namespace CppSharp.Types
         /// </summary>
         public virtual bool DoesMarshalling => true;
 
+        public virtual Type SignatureType(GeneratorKind kind, TypePrinterContext ctx)
+        {
+            switch (kind)
+            {
+            case GeneratorKind.CPlusPlus:
+                return CppSignatureType(ctx);
+            case GeneratorKind.CLI:
+                return CLISignatureType(ctx);
+            case GeneratorKind.CSharp:
+                return CSharpSignatureType(ctx);
+            default:
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public virtual void MarshalToNative(GeneratorKind kind, MarshalContext ctx)
+        {
+            switch (kind)
+            {
+            case GeneratorKind.CPlusPlus:
+                CppMarshalToNative(ctx);
+                return;
+            case GeneratorKind.CLI:
+                CLIMarshalToNative(ctx);
+                return;
+            case GeneratorKind.CSharp:
+                CSharpMarshalToNative(ctx as CSharpMarshalContext);
+                return;
+            default:
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public virtual void MarshalToManaged(GeneratorKind kind, MarshalContext ctx)
+        {
+            switch (kind)
+            {
+            case GeneratorKind.CPlusPlus:
+                CppMarshalToManaged(ctx);
+                return;
+            case GeneratorKind.CLI:
+                CLIMarshalToManaged(ctx);
+                return;
+            case GeneratorKind.CSharp:
+                CSharpMarshalToManaged(ctx as CSharpMarshalContext);
+                return;
+            default:
+                throw new System.NotImplementedException();
+            }
+        }
+
         #region C# backend
 
         public virtual Type CSharpSignatureType(TypePrinterContext ctx)
