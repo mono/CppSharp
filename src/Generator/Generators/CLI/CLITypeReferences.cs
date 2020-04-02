@@ -58,9 +58,7 @@ namespace CppSharp.Generators.CLI
                 {
                     File = GetIncludePath(translationUnit),
                     TranslationUnit = translationUnit,
-                    Kind = translationUnit.IsGenerated
-                    ? CInclude.IncludeKind.Quoted
-                    : CInclude.IncludeKind.Angled,
+                    Kind = translationUnit.IsGenerated ? CInclude.IncludeKind.Quoted : CInclude.IncludeKind.Angled
                 };
 
                 typeReferences.Add(decl, @ref);
