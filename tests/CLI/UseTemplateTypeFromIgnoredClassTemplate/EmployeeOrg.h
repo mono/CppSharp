@@ -10,6 +10,4 @@ public:
     void DoSomething();
 
     EmployeeTypedef GetEmployee();
-
-    EmployeeTypedef GetDeveloperEmployee();
 };

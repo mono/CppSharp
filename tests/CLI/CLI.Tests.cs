@@ -19,15 +19,6 @@ public class CLITests : GeneratorTestFixture
     }
 
     [Test]
-    public void GetDeveloperEmployeeNameFromOrgTest()
-    {
-        using (EmployeeOrg org = new EmployeeOrg())
-        {
-            Assert.AreEqual("DeveloperEmployee", org.DeveloperEmployee.Name);
-        }
-    }
-
-    [Test]
     public void GetEmployeeNameFromOrgTest()
     {
         using (EmployeeOrg org = new EmployeeOrg())
