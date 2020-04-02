@@ -218,7 +218,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunctions(DeclarationContext decl)
         {
-            PushBlock(BlockKind.FunctionsClass);
+            PushBlock(BlockKind.FunctionsClass, decl);
 
             WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");

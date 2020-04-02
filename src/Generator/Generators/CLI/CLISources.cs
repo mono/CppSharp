@@ -95,12 +95,14 @@ namespace CppSharp.Generators.CLI
                 GenerateClass(@class);
             }
 
+            PushBlock(BlockKind.FunctionsClass, @namespace);
             // Generate all the function declarations for the module.
             foreach (var function in @namespace.Functions.Where(f => f.IsGenerated))
             {
                 GenerateFunction(function, @namespace);
                 NewLine();
             }
+            PopBlock();
 
             if (Options.GenerateFunctionTemplates)
             {
