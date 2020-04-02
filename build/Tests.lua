@@ -31,10 +31,10 @@ function SetupTestCSharp(name)
   SetupTestProjectsCSharp(name)
 end
 
-function SetupTestCLI(name)
+function SetupTestCLI(name, extraFiles, suffix)
   SetupTestGeneratorProject(name)
   SetupTestNativeProject(name)
-  SetupTestProjectsCLI(name)
+  SetupTestProjectsCLI(name, extraFiles, suffix)
 end
 
 function SetupManagedTestProject()

@@ -17,4 +17,22 @@ public class CLITests : GeneratorTestFixture
     {
         Assert.AreEqual("test_test", new Date(0, 0, 0).TestStdString("test"));
     }
+
+    [Test]
+    public void GetDeveloperEmployeeNameFromOrgTest()
+    {
+        using (EmployeeOrg org = new EmployeeOrg())
+        {
+            Assert.AreEqual("DeveloperEmployee", org.DeveloperEmployee.Name);
+        }
+    }
+
+    [Test]
+    public void GetEmployeeNameFromOrgTest()
+    {
+        using (EmployeeOrg org = new EmployeeOrg())
+        {
+            Assert.AreEqual("Employee", org.Employee.Name);
+        }
+    }
 }

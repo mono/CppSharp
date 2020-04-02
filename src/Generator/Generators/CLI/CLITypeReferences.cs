@@ -48,10 +48,27 @@ namespace CppSharp.Generators.CLI
             if (typeReferences.ContainsKey(decl))
                 return typeReferences[decl];
 
-            var @ref = new CLITypeReference { Declaration = decl };
-            typeReferences.Add(decl, @ref);
+            var translationUnit = decl.Namespace.TranslationUnit;
 
-            return @ref;
+            if (ShouldIncludeTranslationUnit(translationUnit) && decl.IsGenerated && !IsBuiltinTypedef(decl))
+            {
+                var @ref = new CLITypeReference { Declaration = decl };
+
+                @ref.Include = new CInclude
+                {
+                    File = GetIncludePath(translationUnit),
+                    TranslationUnit = translationUnit,
+                    Kind = translationUnit.IsGenerated
+                    ? CInclude.IncludeKind.Quoted
+                    : CInclude.IncludeKind.Angled,
+                };
+
+                typeReferences.Add(decl, @ref);
+
+                return @ref;
+            }
+
+            return null;
         }
 
         static Namespace GetEffectiveNamespace(Declaration decl)
@@ -104,39 +121,27 @@ namespace CppSharp.Generators.CLI
             if (decl.Namespace == null)
                 return;
 
+            var typedefType = record.Value as TypedefNameDecl;
+
             // Find a type map for the declaration and use it if it exists.
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap) 
+                || (typedefType != null && TypeMapDatabase.FindTypeMap(typedefType.Type.Desugar(), out typeMap)))
             {
                 typeMap.CLITypeReference(this, record);
                 return;
             }
 
-            var translationUnit = decl.Namespace.TranslationUnit;
-
-            if (translationUnit.IsSystemHeader || !translationUnit.IsValid)
-                return;
-
-            if (!decl.IsGenerated)
-                return;
-
-            if (IsBuiltinTypedef(decl))
-                return;
-
             var typeRef = GetTypeReference(decl);
-            if (typeRef.Include.TranslationUnit == null)
+            if(typeRef != null)
             {
-                typeRef.Include = new CInclude
-                {
-                    File = GetIncludePath(translationUnit),
-                    TranslationUnit = translationUnit,
-                    Kind = translationUnit.IsGenerated
-                            ? CInclude.IncludeKind.Quoted
-                            : CInclude.IncludeKind.Angled,
-                };
+                typeRef.Include.InHeader |= IsIncludeInHeader(record);
             }
+        }
 
-            typeRef.Include.InHeader |= IsIncludeInHeader(record);
+        private bool ShouldIncludeTranslationUnit(TranslationUnit unit)
+        {
+            return !unit.IsSystemHeader && unit.IsValid && !unit.Ignore;
         }
 
         private string GetIncludePath(TranslationUnit translationUnit)
@@ -168,7 +173,7 @@ namespace CppSharp.Generators.CLI
             return typedefType.Declaration.Type is BuiltinType;
         }
 
-        private bool IsIncludeInHeader(ASTRecord<Declaration> record)
+        public bool IsIncludeInHeader(ASTRecord<Declaration> record)
         {
             if (TranslationUnit == record.Value.Namespace.TranslationUnit)
                 return false;
@@ -198,7 +203,12 @@ namespace CppSharp.Generators.CLI
 
             var @ref = $"{keywords} {@class.Name};";
 
-            GetTypeReference(@class).FowardReference = @ref;
+            var typeRef = GetTypeReference(@class);
+
+            if (typeRef != null)
+            {
+                typeRef.FowardReference = @ref;
+            }
 
             return false;
         }
@@ -217,7 +227,12 @@ namespace CppSharp.Generators.CLI
 
             var @ref = $"{enumKind} {@enum.Name}{@base};";
 
-            GetTypeReference(@enum).FowardReference = @ref;
+            var typeRef = GetTypeReference(@enum);
+
+            if (typeRef != null)
+            {
+                typeRef.FowardReference = @ref;
+            }
 
             return false;
         }

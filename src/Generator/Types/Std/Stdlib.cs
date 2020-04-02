@@ -690,13 +690,16 @@ namespace CppSharp.Types.Std
         {
             var typeRef = collector.GetTypeReference(loc.Value);
 
-            var include = new CInclude
+            if (typeRef != null)
             {
-                File = "cstddef",
-                Kind = CInclude.IncludeKind.Angled,
-            };
+                var include = new CInclude
+                {
+                    File = "cstddef",
+                    Kind = CInclude.IncludeKind.Angled,
+                };
 
-            typeRef.Include = include;
+                typeRef.Include = include;
+            }
         }
     }
 
