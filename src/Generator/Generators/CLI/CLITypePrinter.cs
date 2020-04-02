@@ -149,7 +149,8 @@ namespace CppSharp.Generators.CLI
                 var typeName = VisitDeclaration(@enum, quals);
 
                 // Skip one indirection if passed by reference
-                if (Parameter != null && (Parameter.Type.IsReference() || ((Parameter.IsOut || Parameter.IsInOut)
+                if (Parameter != null && (Parameter.Type.IsReference() 
+                    || ((Parameter.IsOut || Parameter.IsInOut)
                     && pointee == finalPointee)))
                     return typeName;
 
