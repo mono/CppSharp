@@ -24,6 +24,7 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
+            System.Diagnostics.Debugger.Launch();
             ConsoleDriver.Run(new CLITestsGenerator(GeneratorKind.CLI));
         }
     }

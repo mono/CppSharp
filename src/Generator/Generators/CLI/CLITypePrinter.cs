@@ -146,11 +146,11 @@ namespace CppSharp.Generators.CLI
             Enumeration @enum;
             if (pointee.TryGetEnum(out @enum))
             {
-                var typeName = @enum.Visit(this);
+                var typeName = VisitDeclaration(@enum, quals);
 
                 // Skip one indirection if passed by reference
-                if (Parameter != null && (Parameter.IsOut || Parameter.IsInOut)
-                    && pointee == finalPointee)
+                if (Parameter != null && (Parameter.Type.IsReference() || ((Parameter.IsOut || Parameter.IsInOut)
+                    && pointee == finalPointee)))
                     return typeName;
 
                 return $"{typeName}*";
