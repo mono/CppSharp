@@ -17,4 +17,13 @@ public class CLITests : GeneratorTestFixture
     {
         Assert.AreEqual("test_test", new Date(0, 0, 0).TestStdString("test"));
     }
+
+    [Test]
+    public void TestByRefEnumParam()
+    {
+        using (var byRefEnumParam = new TestByRefEnumParam())
+        {
+            Assert.AreEqual(EnumParam.E1, byRefEnumParam.GetPassedEnumParam(EnumParam.E1));
+        }
+    }
 }
