@@ -26,4 +26,13 @@ public class CLITests : GeneratorTestFixture
             Assert.AreEqual(EnumParam.E1, byRefEnumParam.GetPassedEnumParam(EnumParam.E1));
         }
     }
+
+    [Test]
+    public void GetEmployeeNameFromOrgTest()
+    {
+        using (EmployeeOrg org = new EmployeeOrg())
+        {
+            Assert.AreEqual("Employee", org.Employee.Name);
+        }
+    }
 }

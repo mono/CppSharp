@@ -1,2 +1,2 @@
 group "Tests/CLI"
-  SetupTestCLI("CLI")
+  SetupTestCLI("CLI", { "Employee", "EmployeeOrg" })

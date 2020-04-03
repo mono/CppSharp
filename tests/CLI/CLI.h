@@ -1,5 +1,8 @@
 #include "../Tests.h"
 
+#include "UseTemplateTypeFromIgnoredClassTemplate/Employee.h"
+#include "UseTemplateTypeFromIgnoredClassTemplate/EmployeeOrg.h"
+
 #include <ostream>
 
 // Tests for C++ types
