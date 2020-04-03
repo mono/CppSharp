@@ -35,4 +35,13 @@ public class CLITests : GeneratorTestFixture
             Assert.AreEqual("Employee", org.Employee.Name);
         }
     }
+
+    [Test]
+    public void TestConsumerOfEnumNestedInClass()
+    {
+        using (NestedEnumConsumer consumer = new NestedEnumConsumer())
+        {
+            Assert.AreEqual(ClassWithNestedEnum.NestedEnum.E1, consumer.GetPassedEnum(ClassWithNestedEnum.NestedEnum.E1));
+        }
+    }
 }

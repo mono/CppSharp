@@ -3,6 +3,9 @@
 #include "UseTemplateTypeFromIgnoredClassTemplate/Employee.h"
 #include "UseTemplateTypeFromIgnoredClassTemplate/EmployeeOrg.h"
 
+#include "NestedEnumInClassTest/ClassWithNestedEnum.h"
+#include "NestedEnumInClassTest/NestedEnumConsumer.h"
+
 #include <ostream>
 
 // Tests for C++ types

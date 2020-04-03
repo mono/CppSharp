@@ -150,6 +150,19 @@ namespace CppSharp.Generators.AST
             return field.Type.Desugar().TryGetClass(out decl) && decl.IsValueType;
         }
 
+        public static bool IsEnumNestedInClass(this ASTRecord<Declaration> record)
+        {
+            Enumeration @enum = record.Value as Enumeration;
+            var typedDecl = record.Value as ITypedDecl;
+            if (@enum != null 
+                || (typedDecl?.Type?.TryGetEnum(out @enum)).GetValueOrDefault())
+            {
+                return @enum.Namespace is Class;
+            }
+
+            return false;
+        }
+
         public static bool IsDelegate(this ASTRecord record)
         {
             var typedef = record.Object as TypedefDecl;

@@ -176,7 +176,8 @@ namespace CppSharp.Generators.CLI
             if (TranslationUnit == record.Value.Namespace.TranslationUnit)
                 return false;
 
-            return record.IsBaseClass() || record.IsFieldValueType() || record.IsDelegate();
+            return record.IsBaseClass() || record.IsFieldValueType() || record.IsDelegate()
+                || record.IsEnumNestedInClass();
         }
 
         public override bool VisitDeclaration(Declaration decl)
