@@ -517,10 +517,15 @@ namespace CppSharp.Generators.CLI
             Enumeration @enum;
             if (pointee.TryGetEnum(out @enum))
             {
-                var isRef = Context.Parameter.Usage == ParameterUsage.Out ||
+                var isRef = Context.Parameter.Type.IsReference() ||
+                    Context.Parameter.Usage == ParameterUsage.Out ||
                     Context.Parameter.Usage == ParameterUsage.InOut;
 
-                ArgumentPrefix.Write("&");
+                if(!isRef)
+                {
+                    ArgumentPrefix.Write("&");
+                }
+
                 Context.Return.Write("(::{0}){1}{2}", @enum.QualifiedOriginalName,
                     isRef ? string.Empty : "*", Context.Parameter.Name);
                 return true;
