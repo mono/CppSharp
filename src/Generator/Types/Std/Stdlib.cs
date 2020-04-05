@@ -91,7 +91,8 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char*")]
+    [TypeMap("const char*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char*", GeneratorKind = GeneratorKind.CLI)]
     public class ConstCharPointer : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
@@ -293,22 +294,26 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char[]")]
+    [TypeMap("const char[]", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char[]", GeneratorKind = GeneratorKind.CLI)]
     public class ConstCharArray : ConstCharPointer
     {
     }
 
-    [TypeMap("const wchar_t*")]
+    [TypeMap("const wchar_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const wchar_t*", GeneratorKind = GeneratorKind.CLI)]
     public class ConstWCharTPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("const char16_t*")]
+    [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CLI)]
     public class ConstChar16TPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>")]
+    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CLI)]
     public class String : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
