@@ -20,6 +20,11 @@ CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__Create
     return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
 }
 
+CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
 {
     delete NativePtr;
