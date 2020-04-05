@@ -21,6 +21,8 @@ namespace CppSharp.Passes
                 ScopeKind = TypePrintScopeKind.Qualified,
                 ResolveTypedefs = true
             };
+
+            cppTypePrinter.PushContext(TypePrinterContextKind.Native);
         }
 
         public override void Process()
