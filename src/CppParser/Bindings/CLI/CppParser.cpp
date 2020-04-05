@@ -23,6 +23,11 @@ CppSharp::Parser::CppParserOptions^ CppSharp::Parser::CppParserOptions::__Create
     return gcnew ::CppSharp::Parser::CppParserOptions((::CppSharp::CppParser::CppParserOptions*) native.ToPointer());
 }
 
+CppSharp::Parser::CppParserOptions::CppParserOptions(::CppSharp::CppParser::CppParserOptions* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::CppParserOptions::~CppParserOptions()
 {
     delete NativePtr;
@@ -566,6 +571,11 @@ CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserDiagnostic::__Create
     return gcnew ::CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*) native.ToPointer());
 }
 
+CppSharp::Parser::ParserDiagnostic::ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::ParserDiagnostic::~ParserDiagnostic()
 {
     delete NativePtr;
@@ -657,6 +667,11 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ParserResult::__CreateInstance
     return gcnew ::CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*) native.ToPointer());
 }
 
+CppSharp::Parser::ParserResult::ParserResult(::CppSharp::CppParser::ParserResult* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::ParserResult::~ParserResult()
 {
     delete NativePtr;
@@ -681,7 +696,7 @@ CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::GetDiagnosti
 {
     auto __ret = ((::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnostics(i);
     auto ____ret = new ::CppSharp::CppParser::ParserDiagnostic(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)____ret, true);
 }
 
 void CppSharp::Parser::ParserResult::AddDiagnostics(CppSharp::Parser::ParserDiagnostic^ s)
@@ -723,7 +738,7 @@ System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ CppShar
     for(auto _element : ((::CppSharp::CppParser::ParserResult*)NativePtr)->Diagnostics)
     {
         auto ___element = new ::CppSharp::CppParser::ParserDiagnostic(_element);
-        auto _marshalElement = (___element == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)___element);
+        auto _marshalElement = (___element == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)___element, true);
         _tmp__Diagnostics->Add(_marshalElement);
     }
     return _tmp__Diagnostics;
@@ -779,6 +794,11 @@ CppSharp::Parser::ClangParser^ CppSharp::Parser::ClangParser::__CreateInstance(:
     return gcnew ::CppSharp::Parser::ClangParser((::CppSharp::CppParser::ClangParser*) native.ToPointer());
 }
 
+CppSharp::Parser::ClangParser::ClangParser(::CppSharp::CppParser::ClangParser* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::ClangParser::~ClangParser()
 {
     delete NativePtr;

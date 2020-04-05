@@ -24,6 +24,11 @@ CppSharp::Parser::AST::Expr::Classification^ CppSharp::Parser::AST::Expr::Classi
     return gcnew ::CppSharp::Parser::AST::Expr::Classification((::CppSharp::CppParser::AST::Expr::Classification*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::Expr::Classification::Classification(::CppSharp::CppParser::AST::Expr::Classification* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::AST::Expr::Classification::~Classification()
 {
     delete NativePtr;
@@ -144,6 +149,10 @@ CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::Expr::__CreateInstance(::Sys
     return gcnew ::CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::Expr::Expr(::CppSharp::CppParser::AST::Expr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::Expr::~Expr()
 {
 }
@@ -178,7 +187,7 @@ CppSharp::Parser::AST::Expr::operator CppSharp::Parser::AST::Expr^(CppSharp::Par
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::Expr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::Expr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)____ret, true);
 }
 
 CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Expr::Type::get()
@@ -335,6 +344,10 @@ CppSharp::Parser::AST::FullExpr^ CppSharp::Parser::AST::FullExpr::__CreateInstan
     return gcnew ::CppSharp::Parser::AST::FullExpr((::CppSharp::CppParser::AST::FullExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::FullExpr::FullExpr(::CppSharp::CppParser::AST::FullExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::FullExpr::~FullExpr()
 {
 }
@@ -369,7 +382,7 @@ CppSharp::Parser::AST::FullExpr::operator CppSharp::Parser::AST::FullExpr^(CppSh
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::FullExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::FullExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FullExpr((::CppSharp::CppParser::AST::FullExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FullExpr((::CppSharp::CppParser::AST::FullExpr*)____ret, true);
 }
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::FullExpr::SubExpr::get()
@@ -392,6 +405,10 @@ CppSharp::Parser::AST::ConstantExpr^ CppSharp::Parser::AST::ConstantExpr::__Crea
     return gcnew ::CppSharp::Parser::AST::ConstantExpr((::CppSharp::CppParser::AST::ConstantExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ConstantExpr::ConstantExpr(::CppSharp::CppParser::AST::ConstantExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::FullExpr((::CppSharp::CppParser::AST::FullExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ConstantExpr::~ConstantExpr()
 {
 }
@@ -423,6 +440,10 @@ CppSharp::Parser::AST::OpaqueValueExpr^ CppSharp::Parser::AST::OpaqueValueExpr::
     return gcnew ::CppSharp::Parser::AST::OpaqueValueExpr((::CppSharp::CppParser::AST::OpaqueValueExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::OpaqueValueExpr::OpaqueValueExpr(::CppSharp::CppParser::AST::OpaqueValueExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::OpaqueValueExpr::~OpaqueValueExpr()
 {
 }
@@ -486,6 +507,10 @@ CppSharp::Parser::AST::DeclRefExpr^ CppSharp::Parser::AST::DeclRefExpr::__Create
     return gcnew ::CppSharp::Parser::AST::DeclRefExpr((::CppSharp::CppParser::AST::DeclRefExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DeclRefExpr::DeclRefExpr(::CppSharp::CppParser::AST::DeclRefExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::DeclRefExpr::~DeclRefExpr()
 {
 }
@@ -645,6 +670,10 @@ CppSharp::Parser::AST::IntegerLiteral^ CppSharp::Parser::AST::IntegerLiteral::__
     return gcnew ::CppSharp::Parser::AST::IntegerLiteral((::CppSharp::CppParser::AST::IntegerLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::IntegerLiteral::IntegerLiteral(::CppSharp::CppParser::AST::IntegerLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::IntegerLiteral::~IntegerLiteral()
 {
 }
@@ -698,6 +727,10 @@ CppSharp::Parser::AST::FixedPointLiteral^ CppSharp::Parser::AST::FixedPointLiter
     return gcnew ::CppSharp::Parser::AST::FixedPointLiteral((::CppSharp::CppParser::AST::FixedPointLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::FixedPointLiteral::FixedPointLiteral(::CppSharp::CppParser::AST::FixedPointLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::FixedPointLiteral::~FixedPointLiteral()
 {
 }
@@ -751,6 +784,10 @@ CppSharp::Parser::AST::CharacterLiteral^ CppSharp::Parser::AST::CharacterLiteral
     return gcnew ::CppSharp::Parser::AST::CharacterLiteral((::CppSharp::CppParser::AST::CharacterLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CharacterLiteral::CharacterLiteral(::CppSharp::CppParser::AST::CharacterLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CharacterLiteral::~CharacterLiteral()
 {
 }
@@ -814,6 +851,10 @@ CppSharp::Parser::AST::FloatingLiteral^ CppSharp::Parser::AST::FloatingLiteral::
     return gcnew ::CppSharp::Parser::AST::FloatingLiteral((::CppSharp::CppParser::AST::FloatingLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::FloatingLiteral::FloatingLiteral(::CppSharp::CppParser::AST::FloatingLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::FloatingLiteral::~FloatingLiteral()
 {
 }
@@ -877,6 +918,10 @@ CppSharp::Parser::AST::ImaginaryLiteral^ CppSharp::Parser::AST::ImaginaryLiteral
     return gcnew ::CppSharp::Parser::AST::ImaginaryLiteral((::CppSharp::CppParser::AST::ImaginaryLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ImaginaryLiteral::ImaginaryLiteral(::CppSharp::CppParser::AST::ImaginaryLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ImaginaryLiteral::~ImaginaryLiteral()
 {
 }
@@ -918,6 +963,10 @@ CppSharp::Parser::AST::StringLiteral^ CppSharp::Parser::AST::StringLiteral::__Cr
     return gcnew ::CppSharp::Parser::AST::StringLiteral((::CppSharp::CppParser::AST::StringLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::StringLiteral::StringLiteral(::CppSharp::CppParser::AST::StringLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::StringLiteral::~StringLiteral()
 {
     if (NativePtr)
@@ -1105,6 +1154,10 @@ CppSharp::Parser::AST::PredefinedExpr^ CppSharp::Parser::AST::PredefinedExpr::__
     return gcnew ::CppSharp::Parser::AST::PredefinedExpr((::CppSharp::CppParser::AST::PredefinedExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::PredefinedExpr::PredefinedExpr(::CppSharp::CppParser::AST::PredefinedExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::PredefinedExpr::~PredefinedExpr()
 {
 }
@@ -1158,6 +1211,10 @@ CppSharp::Parser::AST::ParenExpr^ CppSharp::Parser::AST::ParenExpr::__CreateInst
     return gcnew ::CppSharp::Parser::AST::ParenExpr((::CppSharp::CppParser::AST::ParenExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ParenExpr::ParenExpr(::CppSharp::CppParser::AST::ParenExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ParenExpr::~ParenExpr()
 {
 }
@@ -1223,6 +1280,10 @@ CppSharp::Parser::AST::UnaryOperator^ CppSharp::Parser::AST::UnaryOperator::__Cr
     return gcnew ::CppSharp::Parser::AST::UnaryOperator((::CppSharp::CppParser::AST::UnaryOperator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::UnaryOperator::UnaryOperator(::CppSharp::CppParser::AST::UnaryOperator* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::UnaryOperator::~UnaryOperator()
 {
 }
@@ -1356,6 +1417,10 @@ CppSharp::Parser::AST::OffsetOfExpr^ CppSharp::Parser::AST::OffsetOfExpr::__Crea
     return gcnew ::CppSharp::Parser::AST::OffsetOfExpr((::CppSharp::CppParser::AST::OffsetOfExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::OffsetOfExpr::OffsetOfExpr(::CppSharp::CppParser::AST::OffsetOfExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::OffsetOfExpr::~OffsetOfExpr()
 {
 }
@@ -1431,6 +1496,10 @@ CppSharp::Parser::AST::UnaryExprOrTypeTraitExpr^ CppSharp::Parser::AST::UnaryExp
     return gcnew ::CppSharp::Parser::AST::UnaryExprOrTypeTraitExpr((::CppSharp::CppParser::AST::UnaryExprOrTypeTraitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::UnaryExprOrTypeTraitExpr::UnaryExprOrTypeTraitExpr(::CppSharp::CppParser::AST::UnaryExprOrTypeTraitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::UnaryExprOrTypeTraitExpr::~UnaryExprOrTypeTraitExpr()
 {
 }
@@ -1540,6 +1609,10 @@ CppSharp::Parser::AST::ArraySubscriptExpr^ CppSharp::Parser::AST::ArraySubscript
     return gcnew ::CppSharp::Parser::AST::ArraySubscriptExpr((::CppSharp::CppParser::AST::ArraySubscriptExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ArraySubscriptExpr::ArraySubscriptExpr(::CppSharp::CppParser::AST::ArraySubscriptExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ArraySubscriptExpr::~ArraySubscriptExpr()
 {
 }
@@ -1623,6 +1696,10 @@ CppSharp::Parser::AST::CallExpr^ CppSharp::Parser::AST::CallExpr::__CreateInstan
     return gcnew ::CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CallExpr::CallExpr(::CppSharp::CppParser::AST::CallExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CallExpr::~CallExpr()
 {
     if (NativePtr)
@@ -1683,7 +1760,7 @@ CppSharp::Parser::AST::CallExpr::operator CppSharp::Parser::AST::CallExpr^(CppSh
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CallExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CallExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)____ret, true);
 }
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^ CppSharp::Parser::AST::CallExpr::Arguments::get()
@@ -1806,6 +1883,10 @@ CppSharp::Parser::AST::MemberExpr^ CppSharp::Parser::AST::MemberExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::MemberExpr((::CppSharp::CppParser::AST::MemberExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::MemberExpr::MemberExpr(::CppSharp::CppParser::AST::MemberExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::MemberExpr::~MemberExpr()
 {
 }
@@ -1977,6 +2058,10 @@ CppSharp::Parser::AST::CompoundLiteralExpr^ CppSharp::Parser::AST::CompoundLiter
     return gcnew ::CppSharp::Parser::AST::CompoundLiteralExpr((::CppSharp::CppParser::AST::CompoundLiteralExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CompoundLiteralExpr::CompoundLiteralExpr(::CppSharp::CppParser::AST::CompoundLiteralExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CompoundLiteralExpr::~CompoundLiteralExpr()
 {
 }
@@ -2040,6 +2125,10 @@ CppSharp::Parser::AST::CastExpr^ CppSharp::Parser::AST::CastExpr::__CreateInstan
     return gcnew ::CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CastExpr::CastExpr(::CppSharp::CppParser::AST::CastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CastExpr::~CastExpr()
 {
 }
@@ -2074,7 +2163,7 @@ CppSharp::Parser::AST::CastExpr::operator CppSharp::Parser::AST::CastExpr^(CppSh
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CastExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CastExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*)____ret, true);
 }
 
 CppSharp::Parser::AST::CastKind CppSharp::Parser::AST::CastExpr::CastKind::get()
@@ -2158,6 +2247,10 @@ CppSharp::Parser::AST::ImplicitCastExpr^ CppSharp::Parser::AST::ImplicitCastExpr
     return gcnew ::CppSharp::Parser::AST::ImplicitCastExpr((::CppSharp::CppParser::AST::ImplicitCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ImplicitCastExpr::ImplicitCastExpr(::CppSharp::CppParser::AST::ImplicitCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ImplicitCastExpr::~ImplicitCastExpr()
 {
 }
@@ -2199,6 +2292,10 @@ CppSharp::Parser::AST::ExplicitCastExpr^ CppSharp::Parser::AST::ExplicitCastExpr
     return gcnew ::CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ExplicitCastExpr::ExplicitCastExpr(::CppSharp::CppParser::AST::ExplicitCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CastExpr((::CppSharp::CppParser::AST::CastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ExplicitCastExpr::~ExplicitCastExpr()
 {
 }
@@ -2233,7 +2330,7 @@ CppSharp::Parser::AST::ExplicitCastExpr::operator CppSharp::Parser::AST::Explici
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::ExplicitCastExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::ExplicitCastExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)____ret, true);
 }
 
 CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::ExplicitCastExpr::TypeAsWritten::get()
@@ -2258,6 +2355,10 @@ CppSharp::Parser::AST::CStyleCastExpr^ CppSharp::Parser::AST::CStyleCastExpr::__
     return gcnew ::CppSharp::Parser::AST::CStyleCastExpr((::CppSharp::CppParser::AST::CStyleCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CStyleCastExpr::CStyleCastExpr(::CppSharp::CppParser::AST::CStyleCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CStyleCastExpr::~CStyleCastExpr()
 {
 }
@@ -2313,6 +2414,10 @@ CppSharp::Parser::AST::BinaryOperator^ CppSharp::Parser::AST::BinaryOperator::__
     return gcnew ::CppSharp::Parser::AST::BinaryOperator((::CppSharp::CppParser::AST::BinaryOperator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::BinaryOperator::BinaryOperator(::CppSharp::CppParser::AST::BinaryOperator* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::BinaryOperator::~BinaryOperator()
 {
     if (NativePtr)
@@ -2353,7 +2458,7 @@ CppSharp::Parser::AST::BinaryOperator::operator CppSharp::Parser::AST::BinaryOpe
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::BinaryOperator) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::BinaryOperator(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::BinaryOperator((::CppSharp::CppParser::AST::BinaryOperator*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::BinaryOperator((::CppSharp::CppParser::AST::BinaryOperator*)____ret, true);
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::BinaryOperator::OperatorLoc::get()
@@ -2558,6 +2663,10 @@ CppSharp::Parser::AST::CompoundAssignOperator^ CppSharp::Parser::AST::CompoundAs
     return gcnew ::CppSharp::Parser::AST::CompoundAssignOperator((::CppSharp::CppParser::AST::CompoundAssignOperator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CompoundAssignOperator::CompoundAssignOperator(::CppSharp::CppParser::AST::CompoundAssignOperator* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::BinaryOperator((::CppSharp::CppParser::AST::BinaryOperator*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CompoundAssignOperator::~CompoundAssignOperator()
 {
     if (NativePtr)
@@ -2619,6 +2728,10 @@ CppSharp::Parser::AST::AbstractConditionalOperator^ CppSharp::Parser::AST::Abstr
     return gcnew ::CppSharp::Parser::AST::AbstractConditionalOperator((::CppSharp::CppParser::AST::AbstractConditionalOperator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::AbstractConditionalOperator::AbstractConditionalOperator(::CppSharp::CppParser::AST::AbstractConditionalOperator* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::AbstractConditionalOperator::~AbstractConditionalOperator()
 {
 }
@@ -2653,7 +2766,7 @@ CppSharp::Parser::AST::AbstractConditionalOperator::operator CppSharp::Parser::A
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::AbstractConditionalOperator) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::AbstractConditionalOperator(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::AbstractConditionalOperator((::CppSharp::CppParser::AST::AbstractConditionalOperator*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::AbstractConditionalOperator((::CppSharp::CppParser::AST::AbstractConditionalOperator*)____ret, true);
 }
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::AbstractConditionalOperator::Cond::get()
@@ -2720,6 +2833,10 @@ CppSharp::Parser::AST::ConditionalOperator^ CppSharp::Parser::AST::ConditionalOp
     return gcnew ::CppSharp::Parser::AST::ConditionalOperator((::CppSharp::CppParser::AST::ConditionalOperator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ConditionalOperator::ConditionalOperator(::CppSharp::CppParser::AST::ConditionalOperator* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::AbstractConditionalOperator((::CppSharp::CppParser::AST::AbstractConditionalOperator*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ConditionalOperator::~ConditionalOperator()
 {
 }
@@ -2771,6 +2888,10 @@ CppSharp::Parser::AST::BinaryConditionalOperator^ CppSharp::Parser::AST::BinaryC
     return gcnew ::CppSharp::Parser::AST::BinaryConditionalOperator((::CppSharp::CppParser::AST::BinaryConditionalOperator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::BinaryConditionalOperator::BinaryConditionalOperator(::CppSharp::CppParser::AST::BinaryConditionalOperator* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::AbstractConditionalOperator((::CppSharp::CppParser::AST::AbstractConditionalOperator*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::BinaryConditionalOperator::~BinaryConditionalOperator()
 {
 }
@@ -2822,6 +2943,10 @@ CppSharp::Parser::AST::AddrLabelExpr^ CppSharp::Parser::AST::AddrLabelExpr::__Cr
     return gcnew ::CppSharp::Parser::AST::AddrLabelExpr((::CppSharp::CppParser::AST::AddrLabelExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::AddrLabelExpr::AddrLabelExpr(::CppSharp::CppParser::AST::AddrLabelExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::AddrLabelExpr::~AddrLabelExpr()
 {
 }
@@ -2877,6 +3002,10 @@ CppSharp::Parser::AST::StmtExpr^ CppSharp::Parser::AST::StmtExpr::__CreateInstan
     return gcnew ::CppSharp::Parser::AST::StmtExpr((::CppSharp::CppParser::AST::StmtExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::StmtExpr::StmtExpr(::CppSharp::CppParser::AST::StmtExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::StmtExpr::~StmtExpr()
 {
 }
@@ -2942,6 +3071,10 @@ CppSharp::Parser::AST::ShuffleVectorExpr^ CppSharp::Parser::AST::ShuffleVectorEx
     return gcnew ::CppSharp::Parser::AST::ShuffleVectorExpr((::CppSharp::CppParser::AST::ShuffleVectorExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ShuffleVectorExpr::ShuffleVectorExpr(::CppSharp::CppParser::AST::ShuffleVectorExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ShuffleVectorExpr::~ShuffleVectorExpr()
 {
 }
@@ -3007,6 +3140,10 @@ CppSharp::Parser::AST::ConvertVectorExpr^ CppSharp::Parser::AST::ConvertVectorEx
     return gcnew ::CppSharp::Parser::AST::ConvertVectorExpr((::CppSharp::CppParser::AST::ConvertVectorExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ConvertVectorExpr::ConvertVectorExpr(::CppSharp::CppParser::AST::ConvertVectorExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ConvertVectorExpr::~ConvertVectorExpr()
 {
 }
@@ -3072,6 +3209,10 @@ CppSharp::Parser::AST::ChooseExpr^ CppSharp::Parser::AST::ChooseExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::ChooseExpr((::CppSharp::CppParser::AST::ChooseExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ChooseExpr::ChooseExpr(::CppSharp::CppParser::AST::ChooseExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ChooseExpr::~ChooseExpr()
 {
 }
@@ -3187,6 +3328,10 @@ CppSharp::Parser::AST::GNUNullExpr^ CppSharp::Parser::AST::GNUNullExpr::__Create
     return gcnew ::CppSharp::Parser::AST::GNUNullExpr((::CppSharp::CppParser::AST::GNUNullExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::GNUNullExpr::GNUNullExpr(::CppSharp::CppParser::AST::GNUNullExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::GNUNullExpr::~GNUNullExpr()
 {
 }
@@ -3230,6 +3375,10 @@ CppSharp::Parser::AST::VAArgExpr^ CppSharp::Parser::AST::VAArgExpr::__CreateInst
     return gcnew ::CppSharp::Parser::AST::VAArgExpr((::CppSharp::CppParser::AST::VAArgExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::VAArgExpr::VAArgExpr(::CppSharp::CppParser::AST::VAArgExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::VAArgExpr::~VAArgExpr()
 {
 }
@@ -3305,6 +3454,10 @@ CppSharp::Parser::AST::InitListExpr^ CppSharp::Parser::AST::InitListExpr::__Crea
     return gcnew ::CppSharp::Parser::AST::InitListExpr((::CppSharp::CppParser::AST::InitListExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::InitListExpr::InitListExpr(::CppSharp::CppParser::AST::InitListExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::InitListExpr::~InitListExpr()
 {
 }
@@ -3461,6 +3614,11 @@ CppSharp::Parser::AST::DesignatedInitExpr::Designator^ CppSharp::Parser::AST::De
     return gcnew ::CppSharp::Parser::AST::DesignatedInitExpr::Designator((::CppSharp::CppParser::AST::DesignatedInitExpr::Designator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DesignatedInitExpr::Designator::Designator(::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::AST::DesignatedInitExpr::Designator::~Designator()
 {
     delete NativePtr;
@@ -3624,6 +3782,11 @@ CppSharp::Parser::AST::DesignatedInitExpr::FieldDesignator^ CppSharp::Parser::AS
     return gcnew ::CppSharp::Parser::AST::DesignatedInitExpr::FieldDesignator((::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DesignatedInitExpr::FieldDesignator::FieldDesignator(::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::AST::DesignatedInitExpr::FieldDesignator::~FieldDesignator()
 {
     delete NativePtr;
@@ -3664,6 +3827,11 @@ CppSharp::Parser::AST::DesignatedInitExpr::ArrayOrRangeDesignator^ CppSharp::Par
     return gcnew ::CppSharp::Parser::AST::DesignatedInitExpr::ArrayOrRangeDesignator((::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DesignatedInitExpr::ArrayOrRangeDesignator::ArrayOrRangeDesignator(::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::AST::DesignatedInitExpr::ArrayOrRangeDesignator::~ArrayOrRangeDesignator()
 {
     delete NativePtr;
@@ -3703,6 +3871,10 @@ CppSharp::Parser::AST::DesignatedInitExpr^ CppSharp::Parser::AST::DesignatedInit
     return gcnew ::CppSharp::Parser::AST::DesignatedInitExpr((::CppSharp::CppParser::AST::DesignatedInitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DesignatedInitExpr::DesignatedInitExpr(::CppSharp::CppParser::AST::DesignatedInitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::DesignatedInitExpr::~DesignatedInitExpr()
 {
 }
@@ -3798,6 +3970,10 @@ CppSharp::Parser::AST::NoInitExpr^ CppSharp::Parser::AST::NoInitExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::NoInitExpr((::CppSharp::CppParser::AST::NoInitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::NoInitExpr::NoInitExpr(::CppSharp::CppParser::AST::NoInitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::NoInitExpr::~NoInitExpr()
 {
 }
@@ -3829,6 +4005,10 @@ CppSharp::Parser::AST::DesignatedInitUpdateExpr^ CppSharp::Parser::AST::Designat
     return gcnew ::CppSharp::Parser::AST::DesignatedInitUpdateExpr((::CppSharp::CppParser::AST::DesignatedInitUpdateExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DesignatedInitUpdateExpr::DesignatedInitUpdateExpr(::CppSharp::CppParser::AST::DesignatedInitUpdateExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::DesignatedInitUpdateExpr::~DesignatedInitUpdateExpr()
 {
 }
@@ -3880,6 +4060,10 @@ CppSharp::Parser::AST::ArrayInitLoopExpr^ CppSharp::Parser::AST::ArrayInitLoopEx
     return gcnew ::CppSharp::Parser::AST::ArrayInitLoopExpr((::CppSharp::CppParser::AST::ArrayInitLoopExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ArrayInitLoopExpr::ArrayInitLoopExpr(::CppSharp::CppParser::AST::ArrayInitLoopExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ArrayInitLoopExpr::~ArrayInitLoopExpr()
 {
 }
@@ -3931,6 +4115,10 @@ CppSharp::Parser::AST::ArrayInitIndexExpr^ CppSharp::Parser::AST::ArrayInitIndex
     return gcnew ::CppSharp::Parser::AST::ArrayInitIndexExpr((::CppSharp::CppParser::AST::ArrayInitIndexExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ArrayInitIndexExpr::ArrayInitIndexExpr(::CppSharp::CppParser::AST::ArrayInitIndexExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ArrayInitIndexExpr::~ArrayInitIndexExpr()
 {
 }
@@ -3962,6 +4150,10 @@ CppSharp::Parser::AST::ImplicitValueInitExpr^ CppSharp::Parser::AST::ImplicitVal
     return gcnew ::CppSharp::Parser::AST::ImplicitValueInitExpr((::CppSharp::CppParser::AST::ImplicitValueInitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ImplicitValueInitExpr::ImplicitValueInitExpr(::CppSharp::CppParser::AST::ImplicitValueInitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ImplicitValueInitExpr::~ImplicitValueInitExpr()
 {
 }
@@ -3993,6 +4185,10 @@ CppSharp::Parser::AST::ParenListExpr^ CppSharp::Parser::AST::ParenListExpr::__Cr
     return gcnew ::CppSharp::Parser::AST::ParenListExpr((::CppSharp::CppParser::AST::ParenListExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ParenListExpr::ParenListExpr(::CppSharp::CppParser::AST::ParenListExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ParenListExpr::~ParenListExpr()
 {
 }
@@ -4058,6 +4254,10 @@ CppSharp::Parser::AST::GenericSelectionExpr^ CppSharp::Parser::AST::GenericSelec
     return gcnew ::CppSharp::Parser::AST::GenericSelectionExpr((::CppSharp::CppParser::AST::GenericSelectionExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::GenericSelectionExpr::GenericSelectionExpr(::CppSharp::CppParser::AST::GenericSelectionExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::GenericSelectionExpr::~GenericSelectionExpr()
 {
 }
@@ -4175,6 +4375,10 @@ CppSharp::Parser::AST::ExtVectorElementExpr^ CppSharp::Parser::AST::ExtVectorEle
     return gcnew ::CppSharp::Parser::AST::ExtVectorElementExpr((::CppSharp::CppParser::AST::ExtVectorElementExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ExtVectorElementExpr::ExtVectorElementExpr(::CppSharp::CppParser::AST::ExtVectorElementExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ExtVectorElementExpr::~ExtVectorElementExpr()
 {
 }
@@ -4258,6 +4462,10 @@ CppSharp::Parser::AST::BlockExpr^ CppSharp::Parser::AST::BlockExpr::__CreateInst
     return gcnew ::CppSharp::Parser::AST::BlockExpr((::CppSharp::CppParser::AST::BlockExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::BlockExpr::BlockExpr(::CppSharp::CppParser::AST::BlockExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::BlockExpr::~BlockExpr()
 {
 }
@@ -4311,6 +4519,10 @@ CppSharp::Parser::AST::AsTypeExpr^ CppSharp::Parser::AST::AsTypeExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::AsTypeExpr((::CppSharp::CppParser::AST::AsTypeExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::AsTypeExpr::AsTypeExpr(::CppSharp::CppParser::AST::AsTypeExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::AsTypeExpr::~AsTypeExpr()
 {
 }
@@ -4376,6 +4588,10 @@ CppSharp::Parser::AST::PseudoObjectExpr^ CppSharp::Parser::AST::PseudoObjectExpr
     return gcnew ::CppSharp::Parser::AST::PseudoObjectExpr((::CppSharp::CppParser::AST::PseudoObjectExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::PseudoObjectExpr::PseudoObjectExpr(::CppSharp::CppParser::AST::PseudoObjectExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::PseudoObjectExpr::~PseudoObjectExpr()
 {
 }
@@ -4447,6 +4663,10 @@ CppSharp::Parser::AST::AtomicExpr^ CppSharp::Parser::AST::AtomicExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::AtomicExpr((::CppSharp::CppParser::AST::AtomicExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::AtomicExpr::AtomicExpr(::CppSharp::CppParser::AST::AtomicExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::AtomicExpr::~AtomicExpr()
 {
 }
@@ -4634,6 +4854,10 @@ CppSharp::Parser::AST::TypoExpr^ CppSharp::Parser::AST::TypoExpr::__CreateInstan
     return gcnew ::CppSharp::Parser::AST::TypoExpr((::CppSharp::CppParser::AST::TypoExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::TypoExpr::TypoExpr(::CppSharp::CppParser::AST::TypoExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::TypoExpr::~TypoExpr()
 {
 }
@@ -4665,6 +4889,10 @@ CppSharp::Parser::AST::CXXOperatorCallExpr^ CppSharp::Parser::AST::CXXOperatorCa
     return gcnew ::CppSharp::Parser::AST::CXXOperatorCallExpr((::CppSharp::CppParser::AST::CXXOperatorCallExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXOperatorCallExpr::CXXOperatorCallExpr(::CppSharp::CppParser::AST::CXXOperatorCallExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXOperatorCallExpr::~CXXOperatorCallExpr()
 {
     if (NativePtr)
@@ -4754,6 +4982,10 @@ CppSharp::Parser::AST::CXXMemberCallExpr^ CppSharp::Parser::AST::CXXMemberCallEx
     return gcnew ::CppSharp::Parser::AST::CXXMemberCallExpr((::CppSharp::CppParser::AST::CXXMemberCallExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXMemberCallExpr::CXXMemberCallExpr(::CppSharp::CppParser::AST::CXXMemberCallExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXMemberCallExpr::~CXXMemberCallExpr()
 {
     if (NativePtr)
@@ -4811,6 +5043,10 @@ CppSharp::Parser::AST::CUDAKernelCallExpr^ CppSharp::Parser::AST::CUDAKernelCall
     return gcnew ::CppSharp::Parser::AST::CUDAKernelCallExpr((::CppSharp::CppParser::AST::CUDAKernelCallExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CUDAKernelCallExpr::CUDAKernelCallExpr(::CppSharp::CppParser::AST::CUDAKernelCallExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CUDAKernelCallExpr::~CUDAKernelCallExpr()
 {
     if (NativePtr)
@@ -4858,6 +5094,10 @@ CppSharp::Parser::AST::CXXNamedCastExpr^ CppSharp::Parser::AST::CXXNamedCastExpr
     return gcnew ::CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXNamedCastExpr::CXXNamedCastExpr(::CppSharp::CppParser::AST::CXXNamedCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXNamedCastExpr::~CXXNamedCastExpr()
 {
 }
@@ -4892,7 +5132,7 @@ CppSharp::Parser::AST::CXXNamedCastExpr::operator CppSharp::Parser::AST::CXXName
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CXXNamedCastExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CXXNamedCastExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)____ret, true);
 }
 
 System::String^ CppSharp::Parser::AST::CXXNamedCastExpr::CastName::get()
@@ -4952,6 +5192,10 @@ CppSharp::Parser::AST::CXXStaticCastExpr^ CppSharp::Parser::AST::CXXStaticCastEx
     return gcnew ::CppSharp::Parser::AST::CXXStaticCastExpr((::CppSharp::CppParser::AST::CXXStaticCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXStaticCastExpr::CXXStaticCastExpr(::CppSharp::CppParser::AST::CXXStaticCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXStaticCastExpr::~CXXStaticCastExpr()
 {
 }
@@ -4983,6 +5227,10 @@ CppSharp::Parser::AST::CXXDynamicCastExpr^ CppSharp::Parser::AST::CXXDynamicCast
     return gcnew ::CppSharp::Parser::AST::CXXDynamicCastExpr((::CppSharp::CppParser::AST::CXXDynamicCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXDynamicCastExpr::CXXDynamicCastExpr(::CppSharp::CppParser::AST::CXXDynamicCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXDynamicCastExpr::~CXXDynamicCastExpr()
 {
 }
@@ -5024,6 +5272,10 @@ CppSharp::Parser::AST::CXXReinterpretCastExpr^ CppSharp::Parser::AST::CXXReinter
     return gcnew ::CppSharp::Parser::AST::CXXReinterpretCastExpr((::CppSharp::CppParser::AST::CXXReinterpretCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXReinterpretCastExpr::CXXReinterpretCastExpr(::CppSharp::CppParser::AST::CXXReinterpretCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXReinterpretCastExpr::~CXXReinterpretCastExpr()
 {
 }
@@ -5055,6 +5307,10 @@ CppSharp::Parser::AST::CXXConstCastExpr^ CppSharp::Parser::AST::CXXConstCastExpr
     return gcnew ::CppSharp::Parser::AST::CXXConstCastExpr((::CppSharp::CppParser::AST::CXXConstCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXConstCastExpr::CXXConstCastExpr(::CppSharp::CppParser::AST::CXXConstCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CXXNamedCastExpr((::CppSharp::CppParser::AST::CXXNamedCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXConstCastExpr::~CXXConstCastExpr()
 {
 }
@@ -5086,6 +5342,10 @@ CppSharp::Parser::AST::UserDefinedLiteral^ CppSharp::Parser::AST::UserDefinedLit
     return gcnew ::CppSharp::Parser::AST::UserDefinedLiteral((::CppSharp::CppParser::AST::UserDefinedLiteral*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::UserDefinedLiteral::UserDefinedLiteral(::CppSharp::CppParser::AST::UserDefinedLiteral* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::UserDefinedLiteral::~UserDefinedLiteral()
 {
     if (NativePtr)
@@ -5155,6 +5415,10 @@ CppSharp::Parser::AST::CXXBoolLiteralExpr^ CppSharp::Parser::AST::CXXBoolLiteral
     return gcnew ::CppSharp::Parser::AST::CXXBoolLiteralExpr((::CppSharp::CppParser::AST::CXXBoolLiteralExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXBoolLiteralExpr::CXXBoolLiteralExpr(::CppSharp::CppParser::AST::CXXBoolLiteralExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXBoolLiteralExpr::~CXXBoolLiteralExpr()
 {
 }
@@ -5208,6 +5472,10 @@ CppSharp::Parser::AST::CXXNullPtrLiteralExpr^ CppSharp::Parser::AST::CXXNullPtrL
     return gcnew ::CppSharp::Parser::AST::CXXNullPtrLiteralExpr((::CppSharp::CppParser::AST::CXXNullPtrLiteralExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXNullPtrLiteralExpr::CXXNullPtrLiteralExpr(::CppSharp::CppParser::AST::CXXNullPtrLiteralExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXNullPtrLiteralExpr::~CXXNullPtrLiteralExpr()
 {
 }
@@ -5251,6 +5519,10 @@ CppSharp::Parser::AST::CXXStdInitializerListExpr^ CppSharp::Parser::AST::CXXStdI
     return gcnew ::CppSharp::Parser::AST::CXXStdInitializerListExpr((::CppSharp::CppParser::AST::CXXStdInitializerListExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXStdInitializerListExpr::CXXStdInitializerListExpr(::CppSharp::CppParser::AST::CXXStdInitializerListExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXStdInitializerListExpr::~CXXStdInitializerListExpr()
 {
 }
@@ -5292,6 +5564,10 @@ CppSharp::Parser::AST::CXXTypeidExpr^ CppSharp::Parser::AST::CXXTypeidExpr::__Cr
     return gcnew ::CppSharp::Parser::AST::CXXTypeidExpr((::CppSharp::CppParser::AST::CXXTypeidExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXTypeidExpr::CXXTypeidExpr(::CppSharp::CppParser::AST::CXXTypeidExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXTypeidExpr::~CXXTypeidExpr()
 {
 }
@@ -5353,6 +5629,10 @@ CppSharp::Parser::AST::MSPropertyRefExpr^ CppSharp::Parser::AST::MSPropertyRefEx
     return gcnew ::CppSharp::Parser::AST::MSPropertyRefExpr((::CppSharp::CppParser::AST::MSPropertyRefExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::MSPropertyRefExpr::MSPropertyRefExpr(::CppSharp::CppParser::AST::MSPropertyRefExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::MSPropertyRefExpr::~MSPropertyRefExpr()
 {
 }
@@ -5426,6 +5706,10 @@ CppSharp::Parser::AST::MSPropertySubscriptExpr^ CppSharp::Parser::AST::MSPropert
     return gcnew ::CppSharp::Parser::AST::MSPropertySubscriptExpr((::CppSharp::CppParser::AST::MSPropertySubscriptExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::MSPropertySubscriptExpr::MSPropertySubscriptExpr(::CppSharp::CppParser::AST::MSPropertySubscriptExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::MSPropertySubscriptExpr::~MSPropertySubscriptExpr()
 {
 }
@@ -5489,6 +5773,10 @@ CppSharp::Parser::AST::CXXUuidofExpr^ CppSharp::Parser::AST::CXXUuidofExpr::__Cr
     return gcnew ::CppSharp::Parser::AST::CXXUuidofExpr((::CppSharp::CppParser::AST::CXXUuidofExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXUuidofExpr::CXXUuidofExpr(::CppSharp::CppParser::AST::CXXUuidofExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXUuidofExpr::~CXXUuidofExpr()
 {
     if (NativePtr)
@@ -5556,6 +5844,10 @@ CppSharp::Parser::AST::CXXThisExpr^ CppSharp::Parser::AST::CXXThisExpr::__Create
     return gcnew ::CppSharp::Parser::AST::CXXThisExpr((::CppSharp::CppParser::AST::CXXThisExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXThisExpr::CXXThisExpr(::CppSharp::CppParser::AST::CXXThisExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXThisExpr::~CXXThisExpr()
 {
 }
@@ -5609,6 +5901,10 @@ CppSharp::Parser::AST::CXXThrowExpr^ CppSharp::Parser::AST::CXXThrowExpr::__Crea
     return gcnew ::CppSharp::Parser::AST::CXXThrowExpr((::CppSharp::CppParser::AST::CXXThrowExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXThrowExpr::CXXThrowExpr(::CppSharp::CppParser::AST::CXXThrowExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXThrowExpr::~CXXThrowExpr()
 {
 }
@@ -5672,6 +5968,10 @@ CppSharp::Parser::AST::CXXDefaultArgExpr^ CppSharp::Parser::AST::CXXDefaultArgEx
     return gcnew ::CppSharp::Parser::AST::CXXDefaultArgExpr((::CppSharp::CppParser::AST::CXXDefaultArgExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXDefaultArgExpr::CXXDefaultArgExpr(::CppSharp::CppParser::AST::CXXDefaultArgExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXDefaultArgExpr::~CXXDefaultArgExpr()
 {
 }
@@ -5725,6 +6025,10 @@ CppSharp::Parser::AST::CXXDefaultInitExpr^ CppSharp::Parser::AST::CXXDefaultInit
     return gcnew ::CppSharp::Parser::AST::CXXDefaultInitExpr((::CppSharp::CppParser::AST::CXXDefaultInitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXDefaultInitExpr::CXXDefaultInitExpr(::CppSharp::CppParser::AST::CXXDefaultInitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXDefaultInitExpr::~CXXDefaultInitExpr()
 {
 }
@@ -5776,6 +6080,10 @@ CppSharp::Parser::AST::CXXBindTemporaryExpr^ CppSharp::Parser::AST::CXXBindTempo
     return gcnew ::CppSharp::Parser::AST::CXXBindTemporaryExpr((::CppSharp::CppParser::AST::CXXBindTemporaryExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXBindTemporaryExpr::CXXBindTemporaryExpr(::CppSharp::CppParser::AST::CXXBindTemporaryExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXBindTemporaryExpr::~CXXBindTemporaryExpr()
 {
 }
@@ -5817,6 +6125,10 @@ CppSharp::Parser::AST::CXXConstructExpr^ CppSharp::Parser::AST::CXXConstructExpr
     return gcnew ::CppSharp::Parser::AST::CXXConstructExpr((::CppSharp::CppParser::AST::CXXConstructExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(::CppSharp::CppParser::AST::CXXConstructExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXConstructExpr::~CXXConstructExpr()
 {
     if (NativePtr)
@@ -5877,7 +6189,7 @@ CppSharp::Parser::AST::CXXConstructExpr::operator CppSharp::Parser::AST::CXXCons
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CXXConstructExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CXXConstructExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CXXConstructExpr((::CppSharp::CppParser::AST::CXXConstructExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CXXConstructExpr((::CppSharp::CppParser::AST::CXXConstructExpr*)____ret, true);
 }
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^ CppSharp::Parser::AST::CXXConstructExpr::Arguments::get()
@@ -6002,6 +6314,10 @@ CppSharp::Parser::AST::CXXInheritedCtorInitExpr^ CppSharp::Parser::AST::CXXInher
     return gcnew ::CppSharp::Parser::AST::CXXInheritedCtorInitExpr((::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXInheritedCtorInitExpr::CXXInheritedCtorInitExpr(::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXInheritedCtorInitExpr::~CXXInheritedCtorInitExpr()
 {
 }
@@ -6065,6 +6381,10 @@ CppSharp::Parser::AST::CXXFunctionalCastExpr^ CppSharp::Parser::AST::CXXFunction
     return gcnew ::CppSharp::Parser::AST::CXXFunctionalCastExpr((::CppSharp::CppParser::AST::CXXFunctionalCastExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXFunctionalCastExpr::CXXFunctionalCastExpr(::CppSharp::CppParser::AST::CXXFunctionalCastExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::ExplicitCastExpr((::CppSharp::CppParser::AST::ExplicitCastExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXFunctionalCastExpr::~CXXFunctionalCastExpr()
 {
 }
@@ -6130,6 +6450,10 @@ CppSharp::Parser::AST::CXXTemporaryObjectExpr^ CppSharp::Parser::AST::CXXTempora
     return gcnew ::CppSharp::Parser::AST::CXXTemporaryObjectExpr((::CppSharp::CppParser::AST::CXXTemporaryObjectExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXTemporaryObjectExpr::CXXTemporaryObjectExpr(::CppSharp::CppParser::AST::CXXTemporaryObjectExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CXXConstructExpr((::CppSharp::CppParser::AST::CXXConstructExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXTemporaryObjectExpr::~CXXTemporaryObjectExpr()
 {
     if (NativePtr)
@@ -6167,6 +6491,10 @@ CppSharp::Parser::AST::LambdaExpr^ CppSharp::Parser::AST::LambdaExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::LambdaExpr((::CppSharp::CppParser::AST::LambdaExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::LambdaExpr::LambdaExpr(::CppSharp::CppParser::AST::LambdaExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::LambdaExpr::~LambdaExpr()
 {
     if (NativePtr)
@@ -6346,6 +6674,10 @@ CppSharp::Parser::AST::CXXScalarValueInitExpr^ CppSharp::Parser::AST::CXXScalarV
     return gcnew ::CppSharp::Parser::AST::CXXScalarValueInitExpr((::CppSharp::CppParser::AST::CXXScalarValueInitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXScalarValueInitExpr::CXXScalarValueInitExpr(::CppSharp::CppParser::AST::CXXScalarValueInitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXScalarValueInitExpr::~CXXScalarValueInitExpr()
 {
 }
@@ -6389,6 +6721,10 @@ CppSharp::Parser::AST::CXXNewExpr^ CppSharp::Parser::AST::CXXNewExpr::__CreateIn
     return gcnew ::CppSharp::Parser::AST::CXXNewExpr((::CppSharp::CppParser::AST::CXXNewExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXNewExpr::CXXNewExpr(::CppSharp::CppParser::AST::CXXNewExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXNewExpr::~CXXNewExpr()
 {
     if (NativePtr)
@@ -6620,6 +6956,10 @@ CppSharp::Parser::AST::CXXDeleteExpr^ CppSharp::Parser::AST::CXXDeleteExpr::__Cr
     return gcnew ::CppSharp::Parser::AST::CXXDeleteExpr((::CppSharp::CppParser::AST::CXXDeleteExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXDeleteExpr::CXXDeleteExpr(::CppSharp::CppParser::AST::CXXDeleteExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXDeleteExpr::~CXXDeleteExpr()
 {
 }
@@ -6713,6 +7053,10 @@ CppSharp::Parser::AST::CXXPseudoDestructorExpr^ CppSharp::Parser::AST::CXXPseudo
     return gcnew ::CppSharp::Parser::AST::CXXPseudoDestructorExpr((::CppSharp::CppParser::AST::CXXPseudoDestructorExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXPseudoDestructorExpr::CXXPseudoDestructorExpr(::CppSharp::CppParser::AST::CXXPseudoDestructorExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXPseudoDestructorExpr::~CXXPseudoDestructorExpr()
 {
 }
@@ -6834,6 +7178,10 @@ CppSharp::Parser::AST::TypeTraitExpr^ CppSharp::Parser::AST::TypeTraitExpr::__Cr
     return gcnew ::CppSharp::Parser::AST::TypeTraitExpr((::CppSharp::CppParser::AST::TypeTraitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::TypeTraitExpr::TypeTraitExpr(::CppSharp::CppParser::AST::TypeTraitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::TypeTraitExpr::~TypeTraitExpr()
 {
 }
@@ -6885,6 +7233,10 @@ CppSharp::Parser::AST::ArrayTypeTraitExpr^ CppSharp::Parser::AST::ArrayTypeTrait
     return gcnew ::CppSharp::Parser::AST::ArrayTypeTraitExpr((::CppSharp::CppParser::AST::ArrayTypeTraitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ArrayTypeTraitExpr::ArrayTypeTraitExpr(::CppSharp::CppParser::AST::ArrayTypeTraitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ArrayTypeTraitExpr::~ArrayTypeTraitExpr()
 {
 }
@@ -6948,6 +7300,10 @@ CppSharp::Parser::AST::ExpressionTraitExpr^ CppSharp::Parser::AST::ExpressionTra
     return gcnew ::CppSharp::Parser::AST::ExpressionTraitExpr((::CppSharp::CppParser::AST::ExpressionTraitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ExpressionTraitExpr::ExpressionTraitExpr(::CppSharp::CppParser::AST::ExpressionTraitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ExpressionTraitExpr::~ExpressionTraitExpr()
 {
 }
@@ -7000,6 +7356,11 @@ CppSharp::Parser::AST::OverloadExpr::FindResult^ CppSharp::Parser::AST::Overload
     return gcnew ::CppSharp::Parser::AST::OverloadExpr::FindResult((::CppSharp::CppParser::AST::OverloadExpr::FindResult*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::OverloadExpr::FindResult::FindResult(::CppSharp::CppParser::AST::OverloadExpr::FindResult* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::AST::OverloadExpr::FindResult::~FindResult()
 {
     delete NativePtr;
@@ -7039,6 +7400,10 @@ CppSharp::Parser::AST::OverloadExpr^ CppSharp::Parser::AST::OverloadExpr::__Crea
     return gcnew ::CppSharp::Parser::AST::OverloadExpr((::CppSharp::CppParser::AST::OverloadExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::OverloadExpr::OverloadExpr(::CppSharp::CppParser::AST::OverloadExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::OverloadExpr::~OverloadExpr()
 {
 }
@@ -7073,7 +7438,7 @@ CppSharp::Parser::AST::OverloadExpr::operator CppSharp::Parser::AST::OverloadExp
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::OverloadExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::OverloadExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::OverloadExpr((::CppSharp::CppParser::AST::OverloadExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::OverloadExpr((::CppSharp::CppParser::AST::OverloadExpr*)____ret, true);
 }
 
 unsigned int CppSharp::Parser::AST::OverloadExpr::NumDecls::get()
@@ -7174,6 +7539,10 @@ CppSharp::Parser::AST::UnresolvedLookupExpr^ CppSharp::Parser::AST::UnresolvedLo
     return gcnew ::CppSharp::Parser::AST::UnresolvedLookupExpr((::CppSharp::CppParser::AST::UnresolvedLookupExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::UnresolvedLookupExpr::UnresolvedLookupExpr(::CppSharp::CppParser::AST::UnresolvedLookupExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::OverloadExpr((::CppSharp::CppParser::AST::OverloadExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::UnresolvedLookupExpr::~UnresolvedLookupExpr()
 {
 }
@@ -7225,6 +7594,10 @@ CppSharp::Parser::AST::DependentScopeDeclRefExpr^ CppSharp::Parser::AST::Depende
     return gcnew ::CppSharp::Parser::AST::DependentScopeDeclRefExpr((::CppSharp::CppParser::AST::DependentScopeDeclRefExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DependentScopeDeclRefExpr::DependentScopeDeclRefExpr(::CppSharp::CppParser::AST::DependentScopeDeclRefExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::DependentScopeDeclRefExpr::~DependentScopeDeclRefExpr()
 {
 }
@@ -7334,6 +7707,10 @@ CppSharp::Parser::AST::ExprWithCleanups^ CppSharp::Parser::AST::ExprWithCleanups
     return gcnew ::CppSharp::Parser::AST::ExprWithCleanups((::CppSharp::CppParser::AST::ExprWithCleanups*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::ExprWithCleanups::ExprWithCleanups(::CppSharp::CppParser::AST::ExprWithCleanups* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::FullExpr((::CppSharp::CppParser::AST::FullExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::ExprWithCleanups::~ExprWithCleanups()
 {
 }
@@ -7385,6 +7762,10 @@ CppSharp::Parser::AST::CXXUnresolvedConstructExpr^ CppSharp::Parser::AST::CXXUnr
     return gcnew ::CppSharp::Parser::AST::CXXUnresolvedConstructExpr((::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXUnresolvedConstructExpr::CXXUnresolvedConstructExpr(::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXUnresolvedConstructExpr::~CXXUnresolvedConstructExpr()
 {
     if (NativePtr)
@@ -7526,6 +7907,10 @@ CppSharp::Parser::AST::CXXDependentScopeMemberExpr^ CppSharp::Parser::AST::CXXDe
     return gcnew ::CppSharp::Parser::AST::CXXDependentScopeMemberExpr((::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXDependentScopeMemberExpr::CXXDependentScopeMemberExpr(::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXDependentScopeMemberExpr::~CXXDependentScopeMemberExpr()
 {
 }
@@ -7699,6 +8084,10 @@ CppSharp::Parser::AST::UnresolvedMemberExpr^ CppSharp::Parser::AST::UnresolvedMe
     return gcnew ::CppSharp::Parser::AST::UnresolvedMemberExpr((::CppSharp::CppParser::AST::UnresolvedMemberExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::UnresolvedMemberExpr::UnresolvedMemberExpr(::CppSharp::CppParser::AST::UnresolvedMemberExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::OverloadExpr((::CppSharp::CppParser::AST::OverloadExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::UnresolvedMemberExpr::~UnresolvedMemberExpr()
 {
 }
@@ -7806,6 +8195,10 @@ CppSharp::Parser::AST::CXXNoexceptExpr^ CppSharp::Parser::AST::CXXNoexceptExpr::
     return gcnew ::CppSharp::Parser::AST::CXXNoexceptExpr((::CppSharp::CppParser::AST::CXXNoexceptExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXNoexceptExpr::CXXNoexceptExpr(::CppSharp::CppParser::AST::CXXNoexceptExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXNoexceptExpr::~CXXNoexceptExpr()
 {
 }
@@ -7857,6 +8250,10 @@ CppSharp::Parser::AST::PackExpansionExpr^ CppSharp::Parser::AST::PackExpansionEx
     return gcnew ::CppSharp::Parser::AST::PackExpansionExpr((::CppSharp::CppParser::AST::PackExpansionExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::PackExpansionExpr::PackExpansionExpr(::CppSharp::CppParser::AST::PackExpansionExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::PackExpansionExpr::~PackExpansionExpr()
 {
 }
@@ -7910,6 +8307,10 @@ CppSharp::Parser::AST::SizeOfPackExpr^ CppSharp::Parser::AST::SizeOfPackExpr::__
     return gcnew ::CppSharp::Parser::AST::SizeOfPackExpr((::CppSharp::CppParser::AST::SizeOfPackExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::SizeOfPackExpr::SizeOfPackExpr(::CppSharp::CppParser::AST::SizeOfPackExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::SizeOfPackExpr::~SizeOfPackExpr()
 {
 }
@@ -8007,6 +8408,10 @@ CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr^ CppSharp::Parser::AST::Subs
     return gcnew ::CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr((::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::SubstNonTypeTemplateParmExpr(::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::~SubstNonTypeTemplateParmExpr()
 {
 }
@@ -8060,6 +8465,10 @@ CppSharp::Parser::AST::SubstNonTypeTemplateParmPackExpr^ CppSharp::Parser::AST::
     return gcnew ::CppSharp::Parser::AST::SubstNonTypeTemplateParmPackExpr((::CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::SubstNonTypeTemplateParmPackExpr::SubstNonTypeTemplateParmPackExpr(::CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::SubstNonTypeTemplateParmPackExpr::~SubstNonTypeTemplateParmPackExpr()
 {
 }
@@ -8115,6 +8524,10 @@ CppSharp::Parser::AST::FunctionParmPackExpr^ CppSharp::Parser::AST::FunctionParm
     return gcnew ::CppSharp::Parser::AST::FunctionParmPackExpr((::CppSharp::CppParser::AST::FunctionParmPackExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::FunctionParmPackExpr::FunctionParmPackExpr(::CppSharp::CppParser::AST::FunctionParmPackExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::FunctionParmPackExpr::~FunctionParmPackExpr()
 {
 }
@@ -8169,6 +8582,11 @@ CppSharp::Parser::AST::MaterializeTemporaryExpr::ExtraState^ CppSharp::Parser::A
     return gcnew ::CppSharp::Parser::AST::MaterializeTemporaryExpr::ExtraState((::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::MaterializeTemporaryExpr::ExtraState::ExtraState(::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native, const bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
 CppSharp::Parser::AST::MaterializeTemporaryExpr::ExtraState::~ExtraState()
 {
     delete NativePtr;
@@ -8208,6 +8626,10 @@ CppSharp::Parser::AST::MaterializeTemporaryExpr^ CppSharp::Parser::AST::Material
     return gcnew ::CppSharp::Parser::AST::MaterializeTemporaryExpr((::CppSharp::CppParser::AST::MaterializeTemporaryExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::MaterializeTemporaryExpr::MaterializeTemporaryExpr(::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::MaterializeTemporaryExpr::~MaterializeTemporaryExpr()
 {
 }
@@ -8279,6 +8701,10 @@ CppSharp::Parser::AST::CXXFoldExpr^ CppSharp::Parser::AST::CXXFoldExpr::__Create
     return gcnew ::CppSharp::Parser::AST::CXXFoldExpr((::CppSharp::CppParser::AST::CXXFoldExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CXXFoldExpr::CXXFoldExpr(::CppSharp::CppParser::AST::CXXFoldExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CXXFoldExpr::~CXXFoldExpr()
 {
 }
@@ -8392,6 +8818,10 @@ CppSharp::Parser::AST::CoroutineSuspendExpr^ CppSharp::Parser::AST::CoroutineSus
     return gcnew ::CppSharp::Parser::AST::CoroutineSuspendExpr((::CppSharp::CppParser::AST::CoroutineSuspendExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CoroutineSuspendExpr::CoroutineSuspendExpr(::CppSharp::CppParser::AST::CoroutineSuspendExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CoroutineSuspendExpr::~CoroutineSuspendExpr()
 {
 }
@@ -8426,7 +8856,7 @@ CppSharp::Parser::AST::CoroutineSuspendExpr::operator CppSharp::Parser::AST::Cor
     auto __arg0 = (::CppSharp::CppParser::AST::StmtClass)klass;
     auto __ret = (::CppSharp::CppParser::AST::CoroutineSuspendExpr) __arg0;
     auto ____ret = new ::CppSharp::CppParser::AST::CoroutineSuspendExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CoroutineSuspendExpr((::CppSharp::CppParser::AST::CoroutineSuspendExpr*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::CoroutineSuspendExpr((::CppSharp::CppParser::AST::CoroutineSuspendExpr*)____ret, true);
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::CoroutineSuspendExpr::KeywordLoc::get()
@@ -8501,6 +8931,10 @@ CppSharp::Parser::AST::CoawaitExpr^ CppSharp::Parser::AST::CoawaitExpr::__Create
     return gcnew ::CppSharp::Parser::AST::CoawaitExpr((::CppSharp::CppParser::AST::CoawaitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CoawaitExpr::CoawaitExpr(::CppSharp::CppParser::AST::CoawaitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CoroutineSuspendExpr((::CppSharp::CppParser::AST::CoroutineSuspendExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CoawaitExpr::~CoawaitExpr()
 {
 }
@@ -8552,6 +8986,10 @@ CppSharp::Parser::AST::DependentCoawaitExpr^ CppSharp::Parser::AST::DependentCoa
     return gcnew ::CppSharp::Parser::AST::DependentCoawaitExpr((::CppSharp::CppParser::AST::DependentCoawaitExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::DependentCoawaitExpr::DependentCoawaitExpr(::CppSharp::CppParser::AST::DependentCoawaitExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::DependentCoawaitExpr::~DependentCoawaitExpr()
 {
 }
@@ -8615,6 +9053,10 @@ CppSharp::Parser::AST::CoyieldExpr^ CppSharp::Parser::AST::CoyieldExpr::__Create
     return gcnew ::CppSharp::Parser::AST::CoyieldExpr((::CppSharp::CppParser::AST::CoyieldExpr*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::CoyieldExpr::CoyieldExpr(::CppSharp::CppParser::AST::CoyieldExpr* native, const bool ownNativeInstance)
+    : CppSharp::Parser::AST::CoroutineSuspendExpr((::CppSharp::CppParser::AST::CoroutineSuspendExpr*)native, ownNativeInstance)
+{
+}
 CppSharp::Parser::AST::CoyieldExpr::~CoyieldExpr()
 {
 }

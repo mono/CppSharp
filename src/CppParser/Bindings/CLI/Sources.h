@@ -27,6 +27,7 @@ namespace CppSharp
         public:
 
             SourceLocation(::CppSharp::CppParser::SourceLocation* native);
+            SourceLocation(::CppSharp::CppParser::SourceLocation* native, bool ownNativeInstance);
             static SourceLocation^ __CreateInstance(::System::IntPtr native);
             SourceLocation(unsigned int ID);
 
@@ -54,6 +55,7 @@ namespace CppSharp
             }
 
             SourceRange(::CppSharp::CppParser::SourceRange* native);
+            SourceRange(::CppSharp::CppParser::SourceRange* native, bool ownNativeInstance);
             static SourceRange^ __CreateInstance(::System::IntPtr native);
             SourceRange(CppSharp::Parser::SourceRange^ _0);
 

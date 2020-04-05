@@ -13,9 +13,9 @@ namespace CppSharp
 {
     namespace Parser
     {
-        enum struct ParserDiagnosticLevel;
-        enum struct ParserResultKind;
-        enum struct SourceLocationKind;
+        enum class ParserDiagnosticLevel;
+        enum class ParserResultKind;
+        enum class SourceLocationKind;
         ref class ClangParser;
         ref class CppParserOptions;
         ref class Parser;
@@ -34,7 +34,7 @@ namespace CppSharp
 {
     namespace Parser
     {
-        public enum struct ParserDiagnosticLevel
+        public enum class ParserDiagnosticLevel
         {
             Ignored = 0,
             Note = 1,
@@ -43,14 +43,14 @@ namespace CppSharp
             Fatal = 4
         };
 
-        public enum struct ParserResultKind
+        public enum class ParserResultKind
         {
             Success = 0,
             Error = 1,
             FileNotFound = 2
         };
 
-        public enum struct SourceLocationKind
+        public enum class SourceLocationKind
         {
             Invalid = 0,
             Builtin = 1,
@@ -71,6 +71,7 @@ namespace CppSharp
             }
 
             CppParserOptions(::CppSharp::CppParser::CppParserOptions* native);
+            CppParserOptions(::CppSharp::CppParser::CppParserOptions* native, bool ownNativeInstance);
             static CppParserOptions^ __CreateInstance(::System::IntPtr native);
             CppParserOptions();
 
@@ -307,6 +308,7 @@ namespace CppSharp
             }
 
             ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native);
+            ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native, bool ownNativeInstance);
             static ParserDiagnostic^ __CreateInstance(::System::IntPtr native);
             ParserDiagnostic();
 
@@ -360,6 +362,7 @@ namespace CppSharp
             }
 
             ParserResult(::CppSharp::CppParser::ParserResult* native);
+            ParserResult(::CppSharp::CppParser::ParserResult* native, bool ownNativeInstance);
             static ParserResult^ __CreateInstance(::System::IntPtr native);
             ParserResult();
 
@@ -418,6 +421,7 @@ namespace CppSharp
             }
 
             ClangParser(::CppSharp::CppParser::ClangParser* native);
+            ClangParser(::CppSharp::CppParser::ClangParser* native, bool ownNativeInstance);
             static ClangParser^ __CreateInstance(::System::IntPtr native);
             ClangParser();
 

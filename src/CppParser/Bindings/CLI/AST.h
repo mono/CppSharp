@@ -15,9 +15,9 @@ namespace CppSharp
     {
         namespace AST
         {
-            enum struct ArchType;
-            enum struct CommentKind;
-            enum struct RawCommentKind;
+            enum class ArchType;
+            enum class CommentKind;
+            enum class RawCommentKind;
             ref class BlockCommandComment;
             ref class BlockContentComment;
             ref class Comment;
@@ -46,7 +46,7 @@ namespace CppSharp
     {
         namespace AST
         {
-            public enum struct RawCommentKind
+            public enum class RawCommentKind
             {
                 Invalid = 0,
                 OrdinaryBCPL = 1,
@@ -58,7 +58,7 @@ namespace CppSharp
                 Merged = 7
             };
 
-            public enum struct CommentKind
+            public enum class CommentKind
             {
                 FullComment = 0,
                 BlockContentComment = 1,
@@ -77,7 +77,7 @@ namespace CppSharp
                 VerbatimBlockLineComment = 14
             };
 
-            public enum struct ArchType
+            public enum class ArchType
             {
                 UnknownArch = 0,
                 X86 = 1,
@@ -96,6 +96,7 @@ namespace CppSharp
                 }
 
                 NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native);
+                NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native, bool ownNativeInstance);
                 static NativeLibrary^ __CreateInstance(::System::IntPtr native);
                 NativeLibrary();
 
@@ -165,6 +166,7 @@ namespace CppSharp
                 }
 
                 Comment(::CppSharp::CppParser::AST::Comment* native);
+                Comment(::CppSharp::CppParser::AST::Comment* native, bool ownNativeInstance);
                 static Comment^ __CreateInstance(::System::IntPtr native);
                 Comment(CppSharp::Parser::AST::CommentKind kind);
 
@@ -189,6 +191,7 @@ namespace CppSharp
             public:
 
                 BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native);
+                BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native, bool ownNativeInstance);
                 static BlockContentComment^ __CreateInstance(::System::IntPtr native);
                 BlockContentComment();
 
@@ -206,6 +209,7 @@ namespace CppSharp
             public:
 
                 FullComment(::CppSharp::CppParser::AST::FullComment* native);
+                FullComment(::CppSharp::CppParser::AST::FullComment* native, bool ownNativeInstance);
                 static FullComment^ __CreateInstance(::System::IntPtr native);
                 FullComment();
 
@@ -236,6 +240,7 @@ namespace CppSharp
             public:
 
                 InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native);
+                InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native, bool ownNativeInstance);
                 static InlineContentComment^ __CreateInstance(::System::IntPtr native);
                 InlineContentComment();
 
@@ -259,6 +264,7 @@ namespace CppSharp
             public:
 
                 ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native);
+                ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native, bool ownNativeInstance);
                 static ParagraphComment^ __CreateInstance(::System::IntPtr native);
                 ParagraphComment();
 
@@ -306,6 +312,7 @@ namespace CppSharp
                     }
 
                     Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native);
+                    Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native, bool ownNativeInstance);
                     static Argument^ __CreateInstance(::System::IntPtr native);
                     Argument();
 
@@ -324,6 +331,7 @@ namespace CppSharp
                 };
 
                 BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native);
+                BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native, bool ownNativeInstance);
                 static BlockCommandComment^ __CreateInstance(::System::IntPtr native);
                 BlockCommandComment();
 
@@ -369,7 +377,7 @@ namespace CppSharp
             {
             public:
 
-                enum struct PassDirection
+                enum class PassDirection
                 {
                     In = 0,
                     Out = 1,
@@ -377,6 +385,7 @@ namespace CppSharp
                 };
 
                 ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native);
+                ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native, bool ownNativeInstance);
                 static ParamCommandComment^ __CreateInstance(::System::IntPtr native);
                 ParamCommandComment();
 
@@ -402,6 +411,7 @@ namespace CppSharp
             public:
 
                 TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native);
+                TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native, bool ownNativeInstance);
                 static TParamCommandComment^ __CreateInstance(::System::IntPtr native);
                 TParamCommandComment();
 
@@ -432,6 +442,7 @@ namespace CppSharp
             public:
 
                 VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native);
+                VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native, bool ownNativeInstance);
                 static VerbatimBlockLineComment^ __CreateInstance(::System::IntPtr native);
                 VerbatimBlockLineComment();
 
@@ -451,6 +462,7 @@ namespace CppSharp
             public:
 
                 VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native);
+                VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native, bool ownNativeInstance);
                 static VerbatimBlockComment^ __CreateInstance(::System::IntPtr native);
                 VerbatimBlockComment();
 
@@ -481,6 +493,7 @@ namespace CppSharp
             public:
 
                 VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native);
+                VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native, bool ownNativeInstance);
                 static VerbatimLineComment^ __CreateInstance(::System::IntPtr native);
                 VerbatimLineComment();
 
@@ -499,7 +512,7 @@ namespace CppSharp
             {
             public:
 
-                enum struct RenderKind
+                enum class RenderKind
                 {
                     RenderNormal = 0,
                     RenderBold = 1,
@@ -519,6 +532,7 @@ namespace CppSharp
                     }
 
                     Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native);
+                    Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native, bool ownNativeInstance);
                     static Argument^ __CreateInstance(::System::IntPtr native);
                     Argument();
 
@@ -537,6 +551,7 @@ namespace CppSharp
                 };
 
                 InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native);
+                InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native, bool ownNativeInstance);
                 static InlineCommandComment^ __CreateInstance(::System::IntPtr native);
                 InlineCommandComment();
 
@@ -579,6 +594,7 @@ namespace CppSharp
             public:
 
                 HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native);
+                HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native, bool ownNativeInstance);
                 static HTMLTagComment^ __CreateInstance(::System::IntPtr native);
                 HTMLTagComment();
 
@@ -607,6 +623,7 @@ namespace CppSharp
                     }
 
                     Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native);
+                    Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native, bool ownNativeInstance);
                     static Attribute^ __CreateInstance(::System::IntPtr native);
                     Attribute();
 
@@ -631,6 +648,7 @@ namespace CppSharp
                 };
 
                 HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native);
+                HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native, bool ownNativeInstance);
                 static HTMLStartTagComment^ __CreateInstance(::System::IntPtr native);
                 HTMLStartTagComment();
 
@@ -667,6 +685,7 @@ namespace CppSharp
             public:
 
                 HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native);
+                HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native, bool ownNativeInstance);
                 static HTMLEndTagComment^ __CreateInstance(::System::IntPtr native);
                 HTMLEndTagComment();
 
@@ -686,6 +705,7 @@ namespace CppSharp
             public:
 
                 TextComment(::CppSharp::CppParser::AST::TextComment* native);
+                TextComment(::CppSharp::CppParser::AST::TextComment* native, bool ownNativeInstance);
                 static TextComment^ __CreateInstance(::System::IntPtr native);
                 TextComment();
 
@@ -712,6 +732,7 @@ namespace CppSharp
                 }
 
                 RawComment(::CppSharp::CppParser::AST::RawComment* native);
+                RawComment(::CppSharp::CppParser::AST::RawComment* native, bool ownNativeInstance);
                 static RawComment^ __CreateInstance(::System::IntPtr native);
                 RawComment();
 
