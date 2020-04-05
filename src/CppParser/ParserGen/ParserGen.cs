@@ -101,6 +101,12 @@ namespace CppSharp
 
         private static void SetupMacOptions(ParserOptions options)
         {
+            if (Platform.IsMacOS)
+            {
+                options.SetupXcode();
+                return;
+            }
+
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
