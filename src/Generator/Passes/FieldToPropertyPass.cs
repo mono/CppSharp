@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
@@ -37,6 +38,12 @@ namespace CppSharp.Passes
 
             if (ASTUtils.CheckIgnoreField(field))
                 return false;
+
+            if (Options.GeneratorKind == GeneratorKind.CPlusPlus)
+            {
+                if (field.Access != AccessSpecifier.Public)
+                    return false;
+            }
 
             var @class = field.Namespace as Class;
             if (@class == null)
@@ -91,31 +98,35 @@ namespace CppSharp.Passes
                 SynthKind = FunctionSynthKind.FieldAcessor
             };
 
-            var setter = new Method
-            {
-                Name = $"set_{field.Name}",
-                Namespace = @class,
-                ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Void)),
-                Access = field.Access,
-                AssociatedDeclaration = property,
-                IsStatic = field.IsStatic,
-                SynthKind = FunctionSynthKind.FieldAcessor
-            };
-
-            var param = new Parameter
-            {
-                Name = "value",
-                QualifiedType = field.QualifiedType,
-                Namespace = setter
-            };
-
-            setter.Parameters.Add(param);
-
             property.GetMethod = getter;
-            property.SetMethod = setter;
-
             @class.Methods.Add(getter);
-            @class.Methods.Add(setter);
+
+            var isSetterInvalid = field.QualifiedType.IsConstRef();
+            if (!isSetterInvalid)
+            {
+                var setter = new Method
+                {
+                    Name = $"set_{field.Name}",
+                    Namespace = @class,
+                    ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Void)),
+                    Access = field.Access,
+                    AssociatedDeclaration = property,
+                    IsStatic = field.IsStatic,
+                    SynthKind = FunctionSynthKind.FieldAcessor
+                };
+
+                var param = new Parameter
+                {
+                    Name = "value",
+                    QualifiedType = field.QualifiedType,
+                    Namespace = setter
+                };
+
+                setter.Parameters.Add(param);
+
+                property.SetMethod = setter;
+                @class.Methods.Add(setter);
+            }
         }
     }
 }
