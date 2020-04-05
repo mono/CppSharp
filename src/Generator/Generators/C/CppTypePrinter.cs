@@ -38,17 +38,46 @@ namespace CppSharp.Generators.C
         public bool ResolveTypeMaps { get; set; } = true;
         public bool ResolveTypedefs { get; set; }
 
+        public bool FindTypeMap(CppSharp.AST.Type type, out TypePrinterResult result)
+        {
+            result = null;
+
+            if (!ResolveTypeMaps)
+                return false;
+
+            TypeMap typeMap;
+            if (!TypeMapDatabase.FindTypeMap(type, out typeMap) || typeMap.IsIgnored)
+                return false;
+
+            var typePrinterContext = new TypePrinterContext
+            {
+                Type = type,
+                Kind = Kind,
+                MarshalKind = MarshalKind
+            };
+
+            var typePrinter = new CppTypePrinter(Context)
+            {
+                PrintFlavorKind = PrintFlavorKind,
+                ScopeKind = ScopeKind,
+                PrintTypeQualifiers = PrintTypeQualifiers,
+                PrintTypeModifiers = PrintTypeModifiers,
+                ResolveTypeMaps = false
+            };
+            typePrinter.PushContext(ContextKind);
+
+            var typeName = typeMap.CppSignatureType(typePrinterContext).Visit(typePrinter);
+            result = new TypePrinterResult(typeName) { TypeMap = typeMap };
+
+            return true;
+        }
+
         public override TypePrinterResult VisitTagType(TagType tag,
             TypeQualifiers quals)
         {
-            TypeMap typeMap;
-            if (ResolveTypeMaps && TypeMapDatabase.FindTypeMap(tag, out typeMap) &&
-                !typeMap.IsIgnored)
-            {
-                var typePrinterContext = new TypePrinterContext { Type = tag };
-                var type = typeMap.CppSignatureType(typePrinterContext).ToString();
-                return new TypePrinterResult(type) { TypeMap = typeMap };
-            }
+            TypePrinterResult result;
+            if (FindTypeMap(tag, out result))
+                return result;
 
             var qual = GetStringQuals(quals);
             return $"{qual}{tag.Declaration.Visit(this)}";
