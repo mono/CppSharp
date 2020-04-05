@@ -464,11 +464,12 @@ namespace CppSharp.Generators.Cpp
             case PrimitiveType.ULongLong:
             case PrimitiveType.Float:
             case PrimitiveType.Double:
+            case PrimitiveType.WideChar:
                 Context.Return.Write(Context.Parameter.Name);
                 return true;
+            default:
+                throw new NotImplementedException();
             }
-
-            return false;
         }
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
