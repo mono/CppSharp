@@ -75,6 +75,7 @@ namespace CppSharp.Passes
             {
                 Field nestedField = fieldType.Fields[j];
                 nestedField.Namespace = @class;
+                nestedField.Access = fieldType.Access;
                 @class.Fields.Insert(i + j, nestedField);
             }
         }

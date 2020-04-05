@@ -232,5 +232,23 @@ namespace CppSharp.Generator.Tests.Passes
             var @class = AstContext.FindDecl<Class>("ClassWithAbstractOperator").First();
             Assert.AreEqual(@class.Operators.First().GenerationKind, GenerationKind.None);
         }
+
+        [Test]
+        public void TestFlattenAnonymousTypesToFields()
+        {
+            passBuilder.AddPass(new FlattenAnonymousTypesToFields());
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
+
+            var @class = AstContext.FindDecl<Class>("TestFlattenAnonymousTypesToFields").First();
+
+            /* TODO: Enable this test and fix the parsing bug
+            var @public = @class.Fields.Where(f => f.Name == "Public").FirstOrDefault();
+            Assert.IsNotNull(@public);
+            Assert.AreEqual(AccessSpecifier.Public, @public.Access); */
+
+            var @protected = @class.Fields.Where(f => f.Name == "Protected").FirstOrDefault();
+            Assert.IsNotNull(@protected);
+            Assert.AreEqual(AccessSpecifier.Protected, @protected.Access);
+        }
     }
 }

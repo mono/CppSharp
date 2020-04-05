@@ -84,3 +84,19 @@ enum ConnectionRole
 };
 
 bool ConnectionRoleToString(const ConnectionRole& role, const char* role_str);
+
+class TestFlattenAnonymousTypesToFields
+{
+/* TODO: Enable this code (and respective test in TestPasses).
+public:
+    union
+    {
+        int Public;
+    };
+*/
+protected:
+    union
+    {
+        int Protected;
+    };
+};
