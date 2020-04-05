@@ -226,10 +226,10 @@ namespace CppSharp.Generators.Cpp
             if (property.HasGetter)
                 GeneratePropertyGetter(property.GetMethod);
 
-            if (property.HasSetter)
+            if (property.HasSetter && property.SetMethod != null)
                 GeneratePropertySetter(property.SetMethod);
 
-            PopBlock();
+            PopBlock(NewLineKind.Never);
 
             return true;
         }
@@ -447,11 +447,18 @@ namespace CppSharp.Generators.Cpp
             var method = function as Method;
             var @class = function.Namespace as Class;
 
-            var field = (method?.AssociatedDeclaration as Property)?.Field;
+            var property = method?.AssociatedDeclaration as Property;
+            var field = property?.Field;
             if (field != null)
             {
                 Write($"((::{@class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
-                WriteLine ($"{field.OriginalName};");
+                Write($"{field.OriginalName}");
+
+                var isGetter = property.GetMethod == method;
+                if (isGetter)
+                    WriteLine(";");
+                else
+                    WriteLine($" = {@params[0].Name};");
             }
             else
             {
