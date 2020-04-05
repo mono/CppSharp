@@ -238,7 +238,6 @@ namespace CppSharp.Generators.Cpp
         {
             PushBlock(BlockKind.Method, method);
 
-            var property = method.AssociatedDeclaration as Property;
             GeneratePropertyAccessorSpecifier(method);
             NewLine();
 
@@ -256,7 +255,6 @@ namespace CppSharp.Generators.Cpp
         {
             PushBlock(BlockKind.Method, method);
 
-            var property = method.AssociatedDeclaration as Property;
             GeneratePropertyAccessorSpecifier(method);
             NewLine();
 
@@ -507,8 +505,6 @@ namespace CppSharp.Generators.Cpp
 
             if (needsReturn)
             {
-                var retTypeName = function.ReturnType.Visit(CTypePrinter).ToString();
-
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
                     ArgName = Helpers.ReturnIdentifier,
