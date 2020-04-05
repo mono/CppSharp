@@ -36,7 +36,6 @@ namespace Std
     {
         public global::System.IntPtr __Instance { get; protected set; }
 
-        protected int __PointerAdjustment;
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>>();
         protected internal void*[] __OriginalVTables;
 
@@ -81,7 +80,7 @@ namespace Std
                 __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                global::Std.Allocator.__Internal.ctorc__N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                global::Std.Allocator.__Internal.ctorc__N_std_S_allocator__C(__Instance);
                 return;
             }
             throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
@@ -103,7 +102,7 @@ namespace Std
                 var ___Tp = typeof(_Tp);
                 if (___Tp.IsAssignableFrom(typeof(sbyte)))
                 {
-                    global::Std.Allocator.__Internal.dtorc__N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                    global::Std.Allocator.__Internal.dtorc__N_std_S_allocator__C(__Instance);
                     return;
                 }
                 throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
@@ -682,6 +681,23 @@ namespace Std
                 [FieldOffset(16)]
                 internal global::System.IntPtr _M_end_of_storage;
             }
+
+        }
+
+        namespace VectorImplData
+        {
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            public unsafe partial struct __Internal
+            {
+                [FieldOffset(0)]
+                internal global::System.IntPtr _M_start;
+
+                [FieldOffset(8)]
+                internal global::System.IntPtr _M_finish;
+
+                [FieldOffset(16)]
+                internal global::System.IntPtr _M_end_of_storage;
+            }
         }
 
     }
@@ -785,7 +801,6 @@ namespace Std
     {
         public global::System.IntPtr __Instance { get; protected set; }
 
-        protected int __PointerAdjustment;
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>>();
         protected internal void*[] __OriginalVTables;
 
@@ -900,7 +915,6 @@ namespace Std
     {
         public global::System.IntPtr __Instance { get; protected set; }
 
-        protected int __PointerAdjustment;
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Alloc>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Alloc>>();
         protected internal void*[] __OriginalVTables;
 
@@ -947,7 +961,7 @@ namespace Std
                 __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.ctorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.ctorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__Instance);
                 return;
             }
             throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
@@ -971,7 +985,7 @@ namespace Std
                 var ___Alloc = typeof(_Alloc);
                 if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Alloc.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
                 {
-                    global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.dtorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C((__Instance + __PointerAdjustment));
+                    global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C.dtorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__Instance);
                     return;
                 }
                 throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
@@ -1022,6 +1036,10 @@ namespace Std
             return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
         }
     }
+}
+
+namespace Std
+{
 }
 
 namespace Std
