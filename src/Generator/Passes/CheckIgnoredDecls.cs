@@ -85,6 +85,13 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            if (decl.IsDeprecated && !Options.GenerateDeprecatedDeclarations)
+            {
+                Diagnostics.Debug("Decl '{0}' was ignored due to being deprecated", decl.Name);
+                decl.ExplicitlyIgnore();
+                return true;
+            }
+
             if (!CheckDeclarationAccess(decl))
             {
                 Diagnostics.Debug("Decl '{0}' was ignored due to invalid access",

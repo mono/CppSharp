@@ -144,6 +144,13 @@ namespace CppSharp
         /// </summary>
         public bool GenerateDefaultValuesForArguments { get; set; }
 
+        /// <summary>
+        /// If set to false, then deprecated C/C++ declarations (those that have
+        /// the `__attribute__((deprecated))` or equivalent attribute) will not be
+        /// generated.
+        /// </summary>
+        public bool GenerateDeprecatedDeclarations { get; set; } = true;
+
         public bool StripLibPrefix { get; set; }
 
         /// <summary>
