@@ -245,3 +245,6 @@ private:
     HasPrivateCCtorCopyAssignment(const HasPrivateCCtorCopyAssignment&) = delete;
     HasPrivateCCtorCopyAssignment& operator=(const HasPrivateCCtorCopyAssignment&) = delete;
 };
+
+__attribute__((deprecated)) int deprecated_func(int num);
+int non_deprecated_func(int num);

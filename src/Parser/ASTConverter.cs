@@ -985,6 +985,7 @@ namespace CppSharp
             _decl.IsInvalid = decl.IsInvalid;
             _decl.DefinitionOrder = decl.DefinitionOrder;
             _decl.MaxFieldAlignment = decl.MaxFieldAlignment;
+            _decl.IsDeprecated = decl.IsDeprecated;
 
             if (decl.CompleteDeclaration != null)
                 _decl.CompleteDeclaration = Visit(decl.CompleteDeclaration);
