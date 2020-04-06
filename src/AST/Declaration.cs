@@ -294,6 +294,9 @@ namespace CppSharp.AST
         // True if the declaration is dependent.
         public bool IsDependent;
 
+        // True if the declaration is deprecated.
+        public bool IsDeprecated;
+
         // Keeps a reference to the complete version of this declaration.
         public Declaration CompleteDeclaration;
 

@@ -84,6 +84,7 @@ public:
     bool isDependent;
     bool isImplicit;
     bool isInvalid;
+    bool isDeprecated;
     Declaration* completeDeclaration;
     unsigned definitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)

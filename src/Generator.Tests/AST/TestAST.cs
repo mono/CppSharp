@@ -309,6 +309,18 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
+        public void TestDeprecatedAttrs()
+        {
+            var deprecated_func = AstContext.FindFunction("deprecated_func");
+            Assert.IsNotNull(deprecated_func);
+            Assert.IsTrue(deprecated_func.First().IsDeprecated);
+
+            var non_deprecated_func = AstContext.FindFunction("non_deprecated_func");
+            Assert.IsNotNull(non_deprecated_func);
+            Assert.IsFalse(non_deprecated_func.First().IsDeprecated);
+        }
+
+        [Test]
         public void TestFindClassInNamespace()
         {
             Assert.IsNotNull(AstContext.FindClass("HiddenInNamespace").FirstOrDefault());

@@ -4080,10 +4080,20 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         for (auto it = D->attr_begin(); it != D->attr_end(); ++it)
         {
             Attr* Attr = (*it);
-            if (Attr->getKind() == clang::attr::Kind::MaxFieldAlignment)
+            switch(Attr->getKind())
             {
-                auto MFA = cast<clang::MaxFieldAlignmentAttr>(Attr);
-                Decl->maxFieldAlignment = MFA->getAlignment() / 8; // bits to bytes.
+                case clang::attr::Kind::MaxFieldAlignment:
+                {
+                    auto MFA = cast<clang::MaxFieldAlignmentAttr>(Attr);
+                    Decl->maxFieldAlignment = MFA->getAlignment() / 8; // bits to bytes.
+                    break;
+                }
+                case clang::attr::Kind::Deprecated:
+                {
+                    auto DA = cast<clang::DeprecatedAttr>(Attr);
+                    Decl->isDeprecated = true;
+                    break;
+                }
             }
         }
     }
