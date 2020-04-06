@@ -48,6 +48,11 @@ src/generator/generator
 /deps/llvm
 /deps/NUnit*
 /extra
+/include/include
+/include/libc
+/include/libcxx
+/include/libunwind
+/include/linux
 /site
 /wip
 /.vs
