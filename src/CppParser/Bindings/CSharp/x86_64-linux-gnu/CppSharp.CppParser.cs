@@ -6417,6 +6417,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -6811,6 +6814,19 @@ namespace CppSharp
                     }
                 }
 
+                public bool IsDeprecated
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->isDeprecated != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->isDeprecated = (byte) (value ? 1 : 0);
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.Declaration CompleteDeclaration
                 {
                     get
@@ -6938,6 +6954,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -7624,6 +7643,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -7795,6 +7817,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -7945,6 +7970,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -8117,6 +8145,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -9029,6 +9060,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -9284,6 +9318,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -9849,6 +9886,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -10309,6 +10349,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -10467,6 +10510,9 @@ namespace CppSharp
 
                         [FieldOffset(67)]
                         internal byte isInvalid;
+
+                        [FieldOffset(68)]
+                        internal byte isDeprecated;
 
                         [FieldOffset(72)]
                         internal global::System.IntPtr completeDeclaration;
@@ -10814,6 +10860,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -11153,6 +11202,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -11371,6 +11423,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -12652,6 +12707,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -13242,6 +13300,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -13487,6 +13548,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -13640,6 +13704,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -13841,6 +13908,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -14044,6 +14114,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -14218,6 +14291,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -14465,6 +14541,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -14716,6 +14795,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -15032,6 +15114,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -15266,6 +15351,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -15705,6 +15793,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -15956,6 +16047,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -16199,6 +16293,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -16362,6 +16459,9 @@ namespace CppSharp
                     [FieldOffset(67)]
                     internal byte isInvalid;
 
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
+
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
 
@@ -16509,6 +16609,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
@@ -17156,6 +17259,9 @@ namespace CppSharp
 
                     [FieldOffset(67)]
                     internal byte isInvalid;
+
+                    [FieldOffset(68)]
+                    internal byte isDeprecated;
 
                     [FieldOffset(72)]
                     internal global::System.IntPtr completeDeclaration;
