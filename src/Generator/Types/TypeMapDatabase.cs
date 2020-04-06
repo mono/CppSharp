@@ -83,35 +83,31 @@ namespace CppSharp.Types
                 }
             }
 
-            Type desugared = type.Desugar();
-            desugared = (desugared.GetFinalPointee() ?? desugared).Desugar();
-
-            bool printExtra = desugared.IsPrimitiveType() ||
-                (desugared.GetFinalPointee() ?? desugared).Desugar().IsPrimitiveType();
-
             var typePrinter = new CppTypePrinter(Context)
             {
                 ResolveTypeMaps = false,
-                PrintTypeQualifiers = printExtra,
-                PrintTypeModifiers = printExtra,
                 PrintLogicalNames = true
             };
 
             typePrinter.PushContext(TypePrinterContextKind.Native);
 
-            foreach (var resolveTypeDefs in new[] { false, true })
+            foreach (var printExtra in new[] { true, false })
             {
-                foreach (var typePrintScopeKind in
-                    new[] { TypePrintScopeKind.Local, TypePrintScopeKind.Qualified })
+                foreach (var resolveTypeDefs in new[] { false, true })
                 {
-                    typePrinter.ResolveTypedefs = resolveTypeDefs;
-                    typePrinter.ScopeKind = typePrintScopeKind;
-                    var typeName = type.Visit(typePrinter);
-                    if (FindTypeMap(typeName, out typeMap))
+                    foreach (var typePrintScopeKind in
+                        new[] { TypePrintScopeKind.Local, TypePrintScopeKind.Qualified })
                     {
-                        typeMap.Type = type;
-                        typeMaps[type] = typeMap;
-                        return true;
+                        typePrinter.PrintTypeQualifiers = typePrinter.PrintTypeModifiers = printExtra;
+                        typePrinter.ResolveTypedefs = resolveTypeDefs;
+                        typePrinter.ScopeKind = typePrintScopeKind;
+                        var typeName = type.Visit(typePrinter);
+                        if (FindTypeMap(typeName, out typeMap))
+                        {
+                            typeMap.Type = type;
+                            typeMaps[type] = typeMap;
+                            return true;
+                        }
                     }
                 }
             }
