@@ -117,8 +117,7 @@ namespace CppSharp.Types
             }
 
             typeMap = null;
-            var typedef = type as TypedefType;
-            return typedef != null && FindTypeMap(typedef.Declaration.Type, out typeMap);
+            return false;
         }
 
         public bool FindTypeMap(Declaration declaration, out TypeMap typeMap) =>

@@ -201,6 +201,7 @@ class ForwardedTemplate;
 
 typedef ForwardedTemplate<int> i;
 typedef ForwardedTemplate<long> l;
+typedef TestTemplateClass<double> forceInSpecializations;
 
 template class TestSpecializationArguments<const TestASTEnumItemByName>;
 
@@ -248,3 +249,5 @@ private:
 
 __attribute__((deprecated)) int deprecated_func(int num);
 int non_deprecated_func(int num);
+
+TestTemplateClass<double> returnIncompleteTemplateSpecialization();

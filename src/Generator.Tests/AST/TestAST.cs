@@ -293,10 +293,10 @@ namespace CppSharp.Generator.Tests.AST
             var paramType = ctor.Parameters[0].Type as TemplateParameterType;
             Assert.IsNotNull(paramType);
             Assert.AreEqual(templateTypeParameter, paramType.Parameter);
-            Assert.AreEqual(5, template.Specializations.Count);
+            Assert.AreEqual(6, template.Specializations.Count);
             Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[0].SpecializationKind);
-            Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[3].SpecializationKind);
-            Assert.AreEqual(TemplateSpecializationKind.Undeclared, template.Specializations[4].SpecializationKind);
+            Assert.AreEqual(TemplateSpecializationKind.ExplicitInstantiationDefinition, template.Specializations[4].SpecializationKind);
+            Assert.AreEqual(TemplateSpecializationKind.Undeclared, template.Specializations[5].SpecializationKind);
             var typeDef = AstContext.FindTypedef("TestTemplateClassInt").FirstOrDefault();
             Assert.IsNotNull(typeDef, "Couldn't find TestTemplateClassInt typedef.");
             var integerInst = typeDef.Type as TemplateSpecializationType;
@@ -574,7 +574,7 @@ namespace CppSharp.Generator.Tests.AST
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestTemplateClass").First();
             var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
-            Assert.That(template.Specializations[3].Classes.First().Visit(cppTypePrinter).Type,
+            Assert.That(template.Specializations[4].Classes.First().Visit(cppTypePrinter).Type,
                 Is.EqualTo("TestTemplateClass<Math::Complex>::NestedInTemplate"));
         }
 
@@ -628,6 +628,14 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(@class.Constructors.Any(c => c.Parameters.Count == 0), Is.True);
             Assert.That(@class.Constructors.Any(c => c.IsCopyConstructor), Is.True);
             Assert.That(@class.Methods.Any(o => o.OperatorKind == CXXOperatorKind.Equal), Is.True);
+        }
+
+        [Test]
+        public void TestCompletionSpecializationInFunction()
+        {
+            Function function = AstContext.FindFunction("returnIncompleteTemplateSpecialization").First();
+            function.ReturnType.Type.TryGetClass(out Class specialization);
+            Assert.That(specialization.IsIncomplete, Is.False);
         }
     }
 }
