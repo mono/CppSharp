@@ -1,7 +1,5 @@
 ﻿using CppSharp.AST;
-using CppSharp.AST.Extensions;
 using CppSharp.Generators;
-using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Utils;
 
@@ -21,38 +19,6 @@ namespace CppSharp.Tests
         }
     }
 
-    public class CompleteIgnoredClassTemplateForEmployeeTypedefPass : TranslationUnitPass
-    {
-        public override bool VisitTypedefDecl(TypedefDecl typedef)
-        {
-            var templateType = GetDesugaredFinalPointeeElseType(typedef?.Type?.Desugar()) as TemplateSpecializationType;
-            bool isTemplateTypedef = IsTemplateTypedef(templateType?.Template?.OriginalName);
-            if (isTemplateTypedef)
-            {
-                Class @class;
-                if (templateType.TryGetClass(out @class))
-                {
-                    @class.IsIncomplete = false;
-                    return true;
-                }
-            }
-
-            return base.VisitTypedefDecl(typedef);
-        }
-
-        private bool IsTemplateTypedef(string templateName)
-        {
-            return !string.IsNullOrEmpty(templateName) && "IgnoredClassTemplateForEmployee" == templateName;
-        }
-
-        public Type GetDesugaredFinalPointeeElseType(Type t)
-        {
-            Type finalPointee = t.GetFinalPointee();
-
-            return finalPointee != null ? finalPointee.Desugar() : t;
-        }
-    }
-
     public class CLITestsGenerator : GeneratorTest
     {
         public CLITestsGenerator(GeneratorKind kind)
@@ -65,15 +31,6 @@ namespace CppSharp.Tests
             driver.Options.GenerateFinalizers = true;
             driver.Options.GenerateObjectOverrides = true;
             base.Setup(driver);
-        }
-
-        public override void Preprocess(Driver driver, ASTContext ctx)
-        {
-        }
-
-        public override void SetupPasses(Driver driver)
-        {
-            driver.AddTranslationUnitPass(new CompleteIgnoredClassTemplateForEmployeeTypedefPass());
         }
 
         public static void Main(string[] args)

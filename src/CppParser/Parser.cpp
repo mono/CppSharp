@@ -2999,13 +2999,22 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
 
     auto existingClient = c->getSema().getDiagnostics().getClient();
     std::unique_ptr<::DiagnosticConsumer> SemaDiagnostics(new ::DiagnosticConsumer());
-    SemaDiagnostics-> Decl = CTS;
+    SemaDiagnostics->Decl = CTS;
     c->getSema().getDiagnostics().setClient(SemaDiagnostics.get(), false);
 
     c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
         CTS, TSK_ImplicitInstantiation, false);
 
     c->getSema().getDiagnostics().setClient(existingClient, false);
+
+    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
+    auto USR = GetDeclUSR(CTS);
+    auto TS = CT->FindSpecialization(USR);
+    if (TS != nullptr && TS->isIncomplete)
+    {
+        TS->isIncomplete = false;
+        WalkRecordCXX(CTS, TS);
+    }
 }
 
 Parameter* Parser::WalkParameter(const clang::ParmVarDecl* PVD,

@@ -663,7 +663,7 @@ public:
     ClassTemplate();
     ~ClassTemplate();
     VECTOR(ClassTemplateSpecialization*, Specializations)
-        ClassTemplateSpecialization* FindSpecialization(const std::string& usr);
+    ClassTemplateSpecialization* FindSpecialization(const std::string& usr);
     ClassTemplatePartialSpecialization* FindPartialSpecialization(const std::string& usr);
 };
 
