@@ -363,7 +363,7 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitUnsupportedType(UnsupportedType type,
             TypeQualifiers quals)
         {
-            return string.Empty;
+            return type.Description;
         }
 
         public override TypePrinterResult VisitDeclaration(Declaration decl,
