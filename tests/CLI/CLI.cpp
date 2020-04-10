@@ -31,3 +31,20 @@ EnumParam TestByRefEnumParam::GetPassedEnumParam(EnumParam & e)
 {
     return e;
 }
+
+TestMappedTypeNonConstRefParam::TestMappedTypeNonConstRefParam(const std::string str)
+{
+    m_str = str;
+}
+
+const TestMappedTypeNonConstRefParam & TestMappedTypeNonConstRefParam::operator=(const std::string str)
+{
+    m_str = str;
+
+    return *this;
+}
+
+void TestMappedTypeNonConstRefParamConsumer::ChangePassedMappedTypeNonConstRefParam(TestMappedTypeNonConstRefParam & v)
+{
+    v = "ChangePassedMappedTypeNonConstRefParam";
+}

@@ -74,3 +74,18 @@ class DLL_API TestByRefEnumParam
 public:
     EnumParam GetPassedEnumParam(EnumParam& e);
 };
+
+class DLL_API TestMappedTypeNonConstRefParam
+{
+public:
+    TestMappedTypeNonConstRefParam(const std::string);
+    const TestMappedTypeNonConstRefParam& operator=(const std::string);
+
+    std::string m_str;
+};
+
+class DLL_API TestMappedTypeNonConstRefParamConsumer
+{
+public:
+    void ChangePassedMappedTypeNonConstRefParam(TestMappedTypeNonConstRefParam&);
+};
