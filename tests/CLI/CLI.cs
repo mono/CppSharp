@@ -73,7 +73,7 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
-            LibraryHelpers.SetMethodParameterUsage(driver.Context.ASTContext, "TestMappedTypeNonConstRefParamConsumer",
+            LibraryHelpers.SetMethodParameterUsage(ctx, "TestMappedTypeNonConstRefParamConsumer",
                 "ChangePassedMappedTypeNonConstRefParam", 1, ParameterUsage.InOut);
         }
 
