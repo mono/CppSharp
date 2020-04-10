@@ -57,20 +57,6 @@ namespace CppSharp.Tests
         }
     }
 
-    public class TestMappedTypeNonConstRefParamToOutParamPass : TranslationUnitPass
-    {
-        public override bool VisitMethodDecl(Method method)
-        {
-            if(method.Name == "ChangePassedMappedTypeNonConstRefParam")
-            {
-                method.Parameters[0].Usage = ParameterUsage.InOut;
-                return true;
-            }
-
-            return base.VisitMethodDecl(method);
-        }
-    }
-
     public class CLITestsGenerator : GeneratorTest
     {
         public CLITestsGenerator(GeneratorKind kind)
@@ -85,9 +71,10 @@ namespace CppSharp.Tests
             base.Setup(driver);
         }
 
-        public override void SetupPasses(Driver driver)
-        {           
-            driver.AddTranslationUnitPass(new TestMappedTypeNonConstRefParamToOutParamPass());
+        public override void Preprocess(Driver driver, ASTContext ctx)
+        {
+            LibraryHelpers.SetMethodParameterUsage(driver.Context.ASTContext, "TestMappedTypeNonConstRefParamConsumer",
+                "ChangePassedMappedTypeNonConstRefParam", 1, ParameterUsage.InOut);
         }
 
         public static void Main(string[] args)
