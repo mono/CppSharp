@@ -44,4 +44,16 @@ public class CLITests : GeneratorTestFixture
             Assert.AreEqual(ClassWithNestedEnum.NestedEnum.E1, consumer.GetPassedEnum(ClassWithNestedEnum.NestedEnum.E1));
         }
     }
+
+    [Test]
+    public void TestChangePassedMappedTypeNonConstRefParam()
+    {
+        using (TestMappedTypeNonConstRefParamConsumer consumer = new TestMappedTypeNonConstRefParamConsumer())
+        {
+            string val = "Initial";
+            consumer.ChangePassedMappedTypeNonConstRefParam(ref val);
+
+            Assert.AreEqual("ChangePassedMappedTypeNonConstRefParam", val);
+        }
+    }
 }
