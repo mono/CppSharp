@@ -563,7 +563,7 @@ public class CommonTests : GeneratorTestFixture
     public unsafe void TestArraysPointers()
     {
         var values = MyEnum.A;
-        var arrays = new TestArraysPointers(&values, 1);
+        var arrays = new TestArraysPointers(ref values, 1);
         Assert.That(arrays.Value, Is.EqualTo(MyEnum.A));
     }
 

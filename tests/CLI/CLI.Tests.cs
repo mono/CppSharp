@@ -19,15 +19,6 @@ public class CLITests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestByRefEnumParam()
-    {
-        using (var byRefEnumParam = new TestByRefEnumParam())
-        {
-            Assert.AreEqual(EnumParam.E1, byRefEnumParam.GetPassedEnumParam(EnumParam.E1));
-        }
-    }
-
-    [Test]
     public void GetEmployeeNameFromOrgTest()
     {
         using (EmployeeOrg org = new EmployeeOrg())
