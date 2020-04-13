@@ -1952,7 +1952,8 @@ namespace CppSharp
                     RenderNormal = 0,
                     RenderBold = 1,
                     RenderMonospaced = 2,
-                    RenderEmphasized = 3
+                    RenderEmphasized = 3,
+                    RenderAnchor = 4
                 }
 
                 public unsafe partial class Argument : IDisposable

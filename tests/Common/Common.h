@@ -234,14 +234,14 @@ public:
     bool TestPrimitiveOut(CS_OUT float* f);
     bool TestPrimitiveOutRef(CS_OUT float& f);
 
-    bool TestPrimitiveInOut(CS_IN_OUT int* i);
-    bool TestPrimitiveInOutRef(CS_IN_OUT int& i);
+    bool TestPrimitiveInOut(int* i);
+    bool TestPrimitiveInOutRef(int& i);
 
     void EnumOut(int value, CS_OUT Enum* e);
     void EnumOutRef(int value, CS_OUT Enum& e);
 
-    void EnumInOut(CS_IN_OUT Enum* e);
-    void EnumInOutRef(CS_IN_OUT Enum& e);
+    void EnumInOut(Enum* e);
+    void EnumInOutRef(Enum& e);
 
     void StringOut(CS_OUT const char** str);
     void StringOutRef(CS_OUT const char*& str);
@@ -274,6 +274,7 @@ class DLL_API ReturnsAbstractFoo
 {
 public:
     ReturnsAbstractFoo();
+    ~ReturnsAbstractFoo();
     const AbstractFoo& getFoo();
 
 private:

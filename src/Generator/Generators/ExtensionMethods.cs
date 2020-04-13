@@ -44,8 +44,9 @@ namespace CppSharp.Generators
                 PrimitiveType.ULongLong,
                 PrimitiveType.UShort
             };
-            return type.IsPointerToPrimitiveType() &&
-                allowedToHaveDefaultPtrVals.Any(type.IsPointerToPrimitiveType);
+            return (type.IsPointerToPrimitiveType() &&
+                allowedToHaveDefaultPtrVals.Any(type.IsPointerToPrimitiveType)) ||
+                (type.IsAddress() && type.GetPointee().IsEnum());
         }
 
         public static Type GetMappedType(this Type type, TypeMapDatabase typeMaps,

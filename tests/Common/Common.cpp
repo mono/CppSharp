@@ -260,13 +260,13 @@ bool Hello::TestPrimitiveOutRef(CS_OUT float& f)
     return true;
 }
 
-bool Hello::TestPrimitiveInOut(CS_IN_OUT int* i)
+bool Hello::TestPrimitiveInOut(int* i)
 {
     *i += 10;
     return true;
 }
 
-bool Hello::TestPrimitiveInOutRef(CS_IN_OUT int& i)
+bool Hello::TestPrimitiveInOutRef(int& i)
 {
     i += 10;
     return true;
@@ -282,16 +282,16 @@ void Hello::EnumOutRef(int value, CS_OUT Enum& e)
     e = (Enum)value;
 }
 
-void Hello::EnumInOut(CS_IN_OUT Enum* e)
+void Hello::EnumInOut(Enum* e)
 {
-        if (*e == Enum::E)
-                *e = Enum::F;
+    if (*e == Enum::E)
+        *e = Enum::F;
 }
 
-void Hello::EnumInOutRef(CS_IN_OUT Enum& e)
+void Hello::EnumInOutRef(Enum& e)
 {
-        if (e == Enum::E)
-                e = Enum::F;
+    if (e == Enum::E)
+        e = Enum::F;
 }
 
 void Hello::StringOut(CS_OUT const char** str)
@@ -379,6 +379,8 @@ int ImplementsAbstractFoo::pureFunction2(bool* ok)
 }
 
 ReturnsAbstractFoo::ReturnsAbstractFoo() {}
+
+ReturnsAbstractFoo::~ReturnsAbstractFoo() {}
 
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {

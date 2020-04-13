@@ -27,11 +27,6 @@ DLL_API void useIncompleteStruct(IncompleteStruct * a)
     return;
 }
 
-EnumParam TestByRefEnumParam::GetPassedEnumParam(EnumParam & e)
-{
-    return e;
-}
-
 TestMappedTypeNonConstRefParam::TestMappedTypeNonConstRefParam(const std::string str)
 {
     m_str = str;

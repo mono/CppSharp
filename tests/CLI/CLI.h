@@ -64,18 +64,6 @@ typedef struct IncompleteStruct IncompleteStruct;
 DLL_API IncompleteStruct* createIncompleteStruct();
 DLL_API void useIncompleteStruct(IncompleteStruct* a);
 
-enum EnumParam
-{
-    E1,
-    E2
-};
-
-class DLL_API TestByRefEnumParam
-{
-public:
-    EnumParam GetPassedEnumParam(EnumParam& e);
-};
-
 class DLL_API TestMappedTypeNonConstRefParam
 {
 public:

@@ -307,7 +307,7 @@ namespace CppSharp.Generators.C
                 if (method.OperatorKind == CXXOperatorKind.Star)
                 {
                     CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                    var conversionType = method.ReturnType.Visit(CTypePrinter);
+                    method.ReturnType.Visit(CTypePrinter);
                     CTypePrinter.PopContext();
                 }
 

@@ -419,7 +419,6 @@ namespace CppSharp.Generators.Cpp
 
             GenerateDeclarationCommon(field);
 
-            var @class = field.Namespace as Class;
             var fieldType = field.Type.Visit(CTypePrinter);
             WriteLine($"{fieldType} {field.Name};");
 

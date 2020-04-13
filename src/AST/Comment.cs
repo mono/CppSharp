@@ -480,8 +480,9 @@ namespace CppSharp.AST
         {
             RenderNormal,
             RenderBold,
-            RenderMonospaced, 
-            RenderEmphasized
+            RenderMonospaced,
+            RenderEmphasized,
+            RenderAnchor
         }
 
         public uint CommandId { get; set; }

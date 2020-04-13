@@ -10,29 +10,26 @@ public class CLITests : GeneratorTestFixture
     public void TestTypes()
     {
         // Attributed types
-        var sum = new Types().AttributedSum(3, 4);
-        Assert.That(sum, Is.EqualTo(7));
+        using (var types = new Types())
+        {
+            var sum = types.AttributedSum(3, 4);
+            Assert.That(sum, Is.EqualTo(7));
+        }
     }
 
     [Test]
     public void TestStdString()
     {
-        Assert.AreEqual("test_test", new Date(0, 0, 0).TestStdString("test"));
-    }
-
-    [Test]
-    public void TestByRefEnumParam()
-    {
-        using (var byRefEnumParam = new TestByRefEnumParam())
+        using (var date = new Date(0, 0, 0))
         {
-            Assert.AreEqual(EnumParam.E1, byRefEnumParam.GetPassedEnumParam(EnumParam.E1));
+            Assert.AreEqual("test_test", date.TestStdString("test"));
         }
     }
 
     [Test]
     public void GetEmployeeNameFromOrgTest()
     {
-        using (EmployeeOrg org = new EmployeeOrg())
+        using (var org = new EmployeeOrg())
         {
             Assert.AreEqual("Employee", org.Employee.Name);
         }
@@ -41,7 +38,7 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestConsumerOfEnumNestedInClass()
     {
-        using (NestedEnumConsumer consumer = new NestedEnumConsumer())
+        using (var consumer = new NestedEnumConsumer())
         {
             Assert.AreEqual(ClassWithNestedEnum.NestedEnum.E1, consumer.GetPassedEnum(ClassWithNestedEnum.NestedEnum.E1));
         }
@@ -50,7 +47,7 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestChangePassedMappedTypeNonConstRefParam()
     {
-        using (TestMappedTypeNonConstRefParamConsumer consumer = new TestMappedTypeNonConstRefParamConsumer())
+        using (var consumer = new TestMappedTypeNonConstRefParamConsumer())
         {
             string val = "Initial";
             consumer.ChangePassedMappedTypeNonConstRefParam(ref val);
@@ -85,7 +82,7 @@ public class CLITests : GeneratorTestFixture
     public void TestPointerToTypedefPointerTestMethod()
     {
         int a = 50;
-        using (PointerToTypedefPointerTest lp = new PointerToTypedefPointerTest())
+        using (var lp = new PointerToTypedefPointerTest())
         {
             CLI.CLI.PointerToTypedefPointerTestMethod(lp, 100);
             Assert.AreEqual(100, lp.Val);
@@ -103,7 +100,7 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestStructWithNestedUnionTestMethod()
     {
-        using (StructWithNestedUnion val = new StructWithNestedUnion())
+        using (var val = new StructWithNestedUnion())
         {
             byte[] bytes = Encoding.ASCII.GetBytes("TestUnions");
             sbyte[] sbytes = Array.ConvertAll(bytes, q => Convert.ToSByte(q));
@@ -128,7 +125,7 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestStructWithNestedUnionLongerSourceArray()
     {
-        using (StructWithNestedUnion val = new StructWithNestedUnion())
+        using (var val = new StructWithNestedUnion())
         {
             byte[] bytes = Encoding.ASCII.GetBytes("TestStructWithNestedUnionLongerSourceArray");
             sbyte[] sbytes = Array.ConvertAll(bytes, q => Convert.ToSByte(q));
@@ -143,7 +140,7 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestUnionWithNestedStructTestMethod()
     {
-        using (StructNestedInsideUnion val = new StructNestedInsideUnion())
+        using (var val = new StructNestedInsideUnion())
         {
             byte[] bytes = Encoding.ASCII.GetBytes("TestUnions");
             sbyte[] sbytes = Array.ConvertAll(bytes, q => Convert.ToSByte(q));
@@ -164,9 +161,9 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestUnionWithNestedStructArrayTestMethod()
     {
-        using (StructNestedInsideUnion val = new StructNestedInsideUnion())
+        using (var val = new StructNestedInsideUnion())
         {
-            using (StructNestedInsideUnion val2 = new StructNestedInsideUnion())
+            using (var val2 = new StructNestedInsideUnion())
             {
                 byte[] bytes = Encoding.ASCII.GetBytes("TestUnion1");
                 sbyte[] sbytes = Array.ConvertAll(bytes, q => Convert.ToSByte(q));
@@ -191,7 +188,7 @@ public class CLITests : GeneratorTestFixture
     [Test]
     public void TestVectorPointerGetter()
     {
-        using (VectorPointerGetter v = new VectorPointerGetter())
+        using (var v = new VectorPointerGetter())
         {
             var list = v.VecPtr;
 

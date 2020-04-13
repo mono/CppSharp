@@ -342,18 +342,10 @@ void Parser::Setup()
     clang::driver::ToolChain *TC = nullptr;
     llvm::Triple Target(TO->Triple);
 
-    switch (Target.getOS()) {
-    case llvm::Triple::Linux:
-      TC = new clang::driver::toolchains::Linux(D, Target, Args);
-      break;
-    case llvm::Triple::Win32:
-        switch (Target.getEnvironment()) {
-        case llvm::Triple::MSVC:
-            TC = new clang::driver::toolchains::MSVCToolChain(D, Target, Args);
-            break;
-        }
-        break;
-    }
+    if (Target.getOS() == llvm::Triple::Linux)
+        TC = new clang::driver::toolchains::Linux(D, Target, Args);
+    else if (Target.getEnvironment() == llvm::Triple::EnvironmentType::MSVC)
+        TC = new clang::driver::toolchains::MSVCToolChain(D, Target, Args);
 
     if (TC && !opts->noStandardIncludes) {
         llvm::opt::ArgStringList Includes;
@@ -927,12 +919,12 @@ static RecordArgABI GetRecordArgABI(
     using namespace clang::CodeGen;
     switch (argAbi)
     {
-    case CGCXXABI::RecordArgABI::RAA_Default:
-        return RecordArgABI::Default;
     case CGCXXABI::RecordArgABI::RAA_DirectInMemory:
         return RecordArgABI::DirectInMemory;
     case CGCXXABI::RecordArgABI::RAA_Indirect:
         return RecordArgABI::Indirect;
+    default:
+        return RecordArgABI::Default;
     }
 }
 
@@ -1007,6 +999,8 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
                         WalkDeclaration(MD);
                     break;
                 }
+                default:
+                    break;
                 }
             }
         }
@@ -3093,6 +3087,8 @@ static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodie
     case clang::Stmt::StmtClass::MemberExprClass:
         D = cast<clang::MemberExpr>(Body)->getMemberDecl();
         break;
+    default:
+        break;
     }
     if (D)
     {
@@ -3286,8 +3282,8 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
 
     const CXXMethodDecl* MD;
     if (FD->isDependentContext() ||
-        (MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
-        !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext())) ||
+        ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
+         !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext()))) ||
         !CanCheckCodeGenInfo(c->getSema(), FD->getReturnType().getTypePtr()) ||
         std::any_of(FD->parameters().begin(), FD->parameters().end(),
             [this](auto* P) { return !CanCheckCodeGenInfo(c->getSema(), P->getType().getTypePtr()); }))
@@ -4103,6 +4099,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
                     Decl->isDeprecated = true;
                     break;
                 }
+                default:
+                    break;
             }
         }
     }
@@ -4412,17 +4410,12 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         // see https://bugs.llvm.org/show_bug.cgi?id=44433
         for (const auto& Symbol : MachOObjectFile->symbols())
         {
-            if (Symbol.getName())
-            {
-                if ((Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
-                    !(Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
-                    NativeLib->Symbols.push_back(Symbol.getName().get().str());
-            }
-            else
-            {
-                Symbol.getName().takeError();
+            if (Symbol.getName().takeError())
                 return ParserResultKind::Error;
-            }
+
+            if ((Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
+                !(Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
+                NativeLib->Symbols.push_back(Symbol.getName().get().str());
         }
         return ParserResultKind::Success;
     }

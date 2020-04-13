@@ -61,6 +61,8 @@ ConvertRenderKind(clang::comments::InlineCommandComment::RenderKind Kind)
         return CppSharp::CppParser::AST::InlineCommandComment::RenderKind::RenderMonospaced;
     case clang::comments::InlineCommandComment::RenderEmphasized:
         return CppSharp::CppParser::AST::InlineCommandComment::RenderKind::RenderEmphasized;
+    case clang::comments::InlineCommandComment::RenderAnchor:
+        return CppSharp::CppParser::AST::InlineCommandComment::RenderKind::RenderAnchor;
     }
     llvm_unreachable("Unknown render kind");
 }

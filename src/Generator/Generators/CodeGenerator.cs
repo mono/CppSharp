@@ -96,11 +96,8 @@ namespace CppSharp.Generators
         public virtual void GenerateDebug(Declaration decl)
         {
             if (Options.GenerateDebugOutput && !string.IsNullOrWhiteSpace(decl.DebugText))
-            {
-                var debugText = decl.DebugText;
-                debugText = Regex.Replace(debugText.Trim(), "\r?\n", "\n// DEBUG: ");
-                WriteLine($"// DEBUG: {debugText}");
-            }
+                foreach (var line in Regex.Split(decl.DebugText.Trim(), "\r?\n"))
+                    WriteLine($"// DEBUG: {line}");
         }
 
         #endregion
