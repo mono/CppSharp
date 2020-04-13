@@ -2173,6 +2173,24 @@ namespace CppSharp
             var inlineCommandComment = new AST.InlineCommandComment();
             inlineCommandComment.HasTrailingNewline = comment.HasTrailingNewline;
             inlineCommandComment.CommandId = comment.CommandId;
+            switch (comment.CommentRenderKind)
+            {
+                case InlineCommandComment.RenderKind.RenderNormal:
+                    inlineCommandComment.CommentRenderKind = AST.InlineCommandComment.RenderKind.RenderNormal;
+                    break;
+                case InlineCommandComment.RenderKind.RenderBold:
+                    inlineCommandComment.CommentRenderKind = AST.InlineCommandComment.RenderKind.RenderBold;
+                    break;
+                case InlineCommandComment.RenderKind.RenderMonospaced:
+                    inlineCommandComment.CommentRenderKind = AST.InlineCommandComment.RenderKind.RenderMonospaced;
+                    break;
+                case InlineCommandComment.RenderKind.RenderEmphasized:
+                    inlineCommandComment.CommentRenderKind = AST.InlineCommandComment.RenderKind.RenderEmphasized;
+                    break;
+                case InlineCommandComment.RenderKind.RenderAnchor:
+                    inlineCommandComment.CommentRenderKind = AST.InlineCommandComment.RenderKind.RenderAnchor;
+                    break;
+            }
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
                 var argument = new AST.InlineCommandComment.Argument { Text = comment.GetArguments(i).Text };

@@ -168,7 +168,8 @@ public:
         RenderNormal,
         RenderBold,
         RenderMonospaced,
-        RenderEmphasized
+        RenderEmphasized,
+        RenderAnchor
     };
     class CS_API Argument
     {
