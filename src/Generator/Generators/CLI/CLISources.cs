@@ -1173,10 +1173,23 @@ namespace CppSharp.Generators.CLI
             var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
 
             var isRef = param.IsOut || param.IsInOut;
+
+            var paramType = param.Type;
+
+            // Get actual type if the param type is a typedef but not a function type because function types have to be typedef.
+            // We need to get the actual type this early before we visit any marshalling code to ensure we hit the marshalling
+            // logic for the actual type and not the typedef.
+            // This fixes issues where typedefs to primitive pointers are involved.
+            FunctionType functionType;
+            var paramTypeAsTypedef = paramType as TypedefType;
+            if(paramTypeAsTypedef != null && !paramTypeAsTypedef.Declaration.Type.IsPointerTo(out functionType))
+            {
+                paramType = param.Type.Desugar();
+            }
+
             // Since both pointers and references to types are wrapped as CLI
             // tracking references when using in/out, we normalize them here to be able
-            // to use the same code for marshaling.
-            var paramType = param.Type;
+            // to use the same code for marshaling.            
             if (paramType is PointerType && isRef)
             {
                 if (!paramType.IsReference())

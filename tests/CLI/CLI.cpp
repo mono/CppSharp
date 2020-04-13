@@ -48,3 +48,55 @@ void TestMappedTypeNonConstRefParamConsumer::ChangePassedMappedTypeNonConstRefPa
 {
     v = "ChangePassedMappedTypeNonConstRefParam";
 }
+
+std::string DLL_API MultipleConstantArraysParamsTestMethod(char arr1[9], char arr2[10])
+{
+    return std::string(arr1, arr1 + 9) + std::string(arr2, arr2 + 10);
+}
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
+{
+    (*(*lp)).val = valToSet;
+}
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet)
+{
+    *lp = valToSet;
+}
+
+std::string DLL_API StructWithNestedUnionTestMethod(StructWithNestedUnion val)
+{   
+    return std::string(val.nestedUnion.szText, val.nestedUnion.szText + 10);
+}
+
+std::string DLL_API UnionWithNestedStructTestMethod(UnionWithNestedStruct val)
+{
+    return std::string(val.nestedStruct.szText, val.nestedStruct.szText + 10);
+}
+
+std::string DLL_API UnionWithNestedStructArrayTestMethod(UnionWithNestedStructArray arr)
+{
+    return std::string(arr.nestedStructs[0].szText, arr.nestedStructs[0].szText + 10)
+        + std::string(arr.nestedStructs[1].szText, arr.nestedStructs[1].szText + 10);
+}
+
+VectorPointerGetter::VectorPointerGetter()
+{
+    vecPtr = new std::vector<std::string>();
+    vecPtr->push_back("VectorPointerGetter");
+}
+
+VectorPointerGetter::~VectorPointerGetter()
+{
+    if (vecPtr)
+    {
+        auto tempVec = vecPtr;
+        delete vecPtr;
+        tempVec = nullptr;
+    }
+}
+
+std::vector<std::string>* VectorPointerGetter::GetVecPtr()
+{
+    return vecPtr;
+}

@@ -7,6 +7,7 @@
 #include "NestedEnumInClassTest/NestedEnumConsumer.h"
 
 #include <ostream>
+#include <vector>
 
 // Tests for C++ types
 struct DLL_API Types
@@ -88,4 +89,61 @@ class DLL_API TestMappedTypeNonConstRefParamConsumer
 {
 public:
     void ChangePassedMappedTypeNonConstRefParam(TestMappedTypeNonConstRefParam&);
+};
+
+std::string DLL_API MultipleConstantArraysParamsTestMethod(char arr1[9], char arr2[10]);
+
+struct DLL_API PointerToTypedefPointerTest
+{
+    int val;
+};
+typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
+
+typedef long *LPLONG;
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet);
+
+union DLL_API UnionNestedInsideStruct
+{
+    char szText[10];
+};
+
+struct DLL_API StructWithNestedUnion
+{
+    UnionNestedInsideStruct nestedUnion;
+};
+
+std::string DLL_API StructWithNestedUnionTestMethod(StructWithNestedUnion val);
+
+struct DLL_API StructNestedInsideUnion
+{
+    char szText[10];
+};
+
+union DLL_API UnionWithNestedStruct
+{
+    StructNestedInsideUnion nestedStruct;
+};
+
+std::string DLL_API UnionWithNestedStructTestMethod(UnionWithNestedStruct val);
+
+union DLL_API UnionWithNestedStructArray
+{
+    StructNestedInsideUnion nestedStructs[2];
+};
+
+std::string DLL_API UnionWithNestedStructArrayTestMethod(UnionWithNestedStructArray val);
+
+class DLL_API VectorPointerGetter
+{
+public:
+    VectorPointerGetter();
+    ~VectorPointerGetter();
+
+    std::vector<std::string>* GetVecPtr();
+
+private:
+    std::vector<std::string>* vecPtr;
 };
