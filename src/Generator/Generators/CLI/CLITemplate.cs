@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Generators.C;
@@ -12,33 +11,14 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public abstract class CLITemplate : CCodeGenerator
     {
-        public ISet<CInclude> Includes;
-
         protected CLITemplate(BindingContext context, IEnumerable<TranslationUnit> units)
-            : base(context, units)
-        {
-            typePrinter = new CLITypePrinter(context);
-            Includes = new HashSet<CInclude>();
-        }
+            : base(context, units) => typePrinter = new CLITypePrinter(context);
 
         public abstract override string FileExtension { get; }
 
         public abstract override void Process();
 
         #region Helpers
-
-        public string QualifiedIdentifier(Declaration decl)
-        {
-            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
-            {
-                if (string.IsNullOrEmpty(decl.QualifiedName))
-                    return $"{decl.TranslationUnit.Module.OutputNamespace}";
-
-                return $"{decl.TranslationUnit.Module.OutputNamespace}::{decl.QualifiedName}";
-            }
-                
-            return decl.QualifiedName;
-        }
 
         public string GetMethodName(Method method)
         {
