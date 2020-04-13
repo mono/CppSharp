@@ -380,6 +380,8 @@ int ImplementsAbstractFoo::pureFunction2(bool* ok)
 
 ReturnsAbstractFoo::ReturnsAbstractFoo() {}
 
+ReturnsAbstractFoo::~ReturnsAbstractFoo() {}
+
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {
     return i;

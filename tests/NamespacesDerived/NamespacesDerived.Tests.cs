@@ -13,9 +13,11 @@ public class NamespaceDerivedTests
     [Test]
     public void TestNonRenamedMethod()
     {
-        var derived = new Derived();
-        var parent = derived.Parent;
-        derived.parent(0);
+        using (var derived = new Derived())
+        {
+            var parent = derived.Parent;
+            derived.parent(0);
+        }
     }
 
     [Test]

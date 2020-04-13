@@ -274,6 +274,7 @@ class DLL_API ReturnsAbstractFoo
 {
 public:
     ReturnsAbstractFoo();
+    ~ReturnsAbstractFoo();
     const AbstractFoo& getFoo();
 
 private:

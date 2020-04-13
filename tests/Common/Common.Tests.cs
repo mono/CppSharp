@@ -74,165 +74,179 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestHello()
     {
-        var hello = new Hello();
-        hello.PrintHello("Hello world");
-
-        Assert.That(hello.Add(1, 1), Is.EqualTo(2));
-        Assert.That(hello.Add(5, 5), Is.EqualTo(10));
-
-        Assert.IsTrue(hello.Test1(3, 3.0f));
-        Assert.IsFalse(hello.Test1(2, 3.0f));
-
-        var foo = new Foo { A = 4, B = 7 };
-        Assert.That(hello.AddFoo(foo), Is.EqualTo(11));
-        Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
-        Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
-        Assert.That(hello.AddFooRef(foo), Is.EqualTo(11));
-        unsafe
+        using (var hello = new Hello())
         {
-            var pointer = foo.SomePointer;
-            var pointerPointer = foo.SomePointerPointer;
-            for (int i = 0; i < 4; i++)
+            hello.PrintHello("Hello world");
+
+            Assert.That(hello.Add(1, 1), Is.EqualTo(2));
+            Assert.That(hello.Add(5, 5), Is.EqualTo(10));
+
+            Assert.IsTrue(hello.Test1(3, 3.0f));
+            Assert.IsFalse(hello.Test1(2, 3.0f));
+
+            var foo = new Foo { A = 4, B = 7 };
+            Assert.That(hello.AddFoo(foo), Is.EqualTo(11));
+            Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
+            Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
+            Assert.That(hello.AddFooRef(foo), Is.EqualTo(11));
+            unsafe
             {
-                Assert.AreEqual(i, pointer[i]);
-                Assert.AreEqual(i, (*pointerPointer)[i]);
+                var pointer = foo.SomePointer;
+                var pointerPointer = foo.SomePointerPointer;
+                for (int i = 0; i < 4; i++)
+                {
+                    Assert.AreEqual(i, pointer[i]);
+                    Assert.AreEqual(i, (*pointerPointer)[i]);
+                }
             }
+
+            var bar = new Bar { A = 4, B = 7 };
+            Assert.That(hello.AddBar(bar), Is.EqualTo(11));
+            Assert.That(bar.RetItem1(), Is.EqualTo(Bar.Item.Item1));
+
+            using (var retFoo = hello.RetFoo(7, 2.0f))
+            {
+                Assert.That(retFoo.A, Is.EqualTo(7));
+                Assert.That(retFoo.B, Is.EqualTo(2.0));
+            }
+
+            using (var foo2 = new Foo2 { A = 4, B = 2, C = 3 })
+            {
+                Assert.That(hello.AddFoo(foo2), Is.EqualTo(6));
+                Assert.That(hello.AddFoo2(foo2), Is.EqualTo(9));
+            }
+
+            var bar2 = new Bar2 { A = 4, B = 7, C = 3 };
+            Assert.That(hello.AddBar2(bar2), Is.EqualTo(14));
+
+            Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
+            Assert.That(hello.RetEnum(Enum.B), Is.EqualTo(2));
+            Assert.That(hello.RetEnum(Enum.C), Is.EqualTo(5));
+            //Assert.That(hello.RetEnum(Enum.D), Is.EqualTo(-2147483648));
+            Assert.That(hello.RetEnum(Enum.E), Is.EqualTo(1));
+            Assert.That(hello.RetEnum(Enum.F), Is.EqualTo(-9));
         }
-
-        var bar = new Bar { A = 4, B = 7 };
-        Assert.That(hello.AddBar(bar), Is.EqualTo(11));
-        Assert.That(bar.RetItem1(), Is.EqualTo(Bar.Item.Item1));
-
-        var retFoo = hello.RetFoo(7, 2.0f);
-        Assert.That(retFoo.A, Is.EqualTo(7));
-        Assert.That(retFoo.B, Is.EqualTo(2.0));
-
-        var foo2 = new Foo2 { A = 4, B = 2, C = 3 };
-        Assert.That(hello.AddFoo(foo2), Is.EqualTo(6));
-        Assert.That(hello.AddFoo2(foo2), Is.EqualTo(9));
-
-        var bar2 = new Bar2 { A = 4, B = 7, C = 3 };
-        Assert.That(hello.AddBar2(bar2), Is.EqualTo(14));
-
-        Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
-        Assert.That(hello.RetEnum(Enum.B), Is.EqualTo(2));
-        Assert.That(hello.RetEnum(Enum.C), Is.EqualTo(5));
-        //Assert.That(hello.RetEnum(Enum.D), Is.EqualTo(-2147483648));
-        Assert.That(hello.RetEnum(Enum.E), Is.EqualTo(1));
-        Assert.That(hello.RetEnum(Enum.F), Is.EqualTo(-9));
     }
 
     [Test]
     public void TestPrimitiveConstCharStringInOut()
     {
-        var hello = new Hello();
-
-        string str;
-        hello.StringOut(out str);
-        Assert.That(str, Is.EqualTo("HelloStringOut"));
-        hello.StringOutRef(out str);
-        Assert.That(str, Is.EqualTo("HelloStringOutRef"));
-        str = "Hello";
-        hello.StringInOut(ref str);
-        Assert.That(str, Is.EqualTo("StringInOut"));
-        str = "Hello";
-        hello.StringInOutRef(ref str);
-        Assert.That(str, Is.EqualTo("StringInOutRef"));
-        hello.StringTypedef(str);
+        using (var hello = new Hello())
+        {
+            hello.StringOut(out string str);
+            Assert.That(str, Is.EqualTo("HelloStringOut"));
+            hello.StringOutRef(out str);
+            Assert.That(str, Is.EqualTo("HelloStringOutRef"));
+            str = "Hello";
+            hello.StringInOut(ref str);
+            Assert.That(str, Is.EqualTo("StringInOut"));
+            str = "Hello";
+            hello.StringInOutRef(ref str);
+            Assert.That(str, Is.EqualTo("StringInOutRef"));
+            hello.StringTypedef(str);
+        }
     }
 
     [Test]
     public void TestPrimitiveOutParameters()
     {
-        var hello = new Hello();
-
-        float f;
-        Assert.That(hello.TestPrimitiveOut(out f), Is.True);
-        Assert.That(f, Is.EqualTo(10.0f));
+        using (var hello = new Hello())
+        {
+            Assert.That(hello.TestPrimitiveOut(out float f), Is.True);
+            Assert.That(f, Is.EqualTo(10.0f));
+        }
     }
 
     [Test]
     public void TestPrimitiveOutRefParameters()
     {
-        var hello = new Hello();
-
-        float f;
-        Assert.That(hello.TestPrimitiveOutRef(out f), Is.True);
-        Assert.That(f, Is.EqualTo(10.0f));
+        using (var hello = new Hello())
+        {
+            Assert.That(hello.TestPrimitiveOutRef(out float f), Is.True);
+            Assert.That(f, Is.EqualTo(10.0f));
+        }
     }
 
     public void TestPrimitiveInOutParameters()
     {
-        var hello = new Hello();
-
-        int i = 10;
-        Assert.That(hello.TestPrimitiveInOut(ref i), Is.True);
-        Assert.That(i, Is.EqualTo(20));
+        using (var hello = new Hello())
+        {
+            int i = 10;
+            Assert.That(hello.TestPrimitiveInOut(ref i), Is.True);
+            Assert.That(i, Is.EqualTo(20));
+        }
     }
 
     [Test]
     public void TestPrimitiveInOutRefParameters()
     {
-        var hello = new Hello();
-
-        int i = 10;
-        Assert.That(hello.TestPrimitiveInOutRef(ref i), Is.True);
-        Assert.That(i, Is.EqualTo(20));
+        using (var hello = new Hello())
+        {
+            int i = 10;
+            Assert.That(hello.TestPrimitiveInOutRef(ref i), Is.True);
+            Assert.That(i, Is.EqualTo(20));
+        }
     }
 
     [Test]
     public void TestEnumOut()
     {
-        var hello = new Hello();
-
-        Enum e;
-        hello.EnumOut((int) Enum.C, out e);
-        Assert.That(e, Is.EqualTo(Enum.C));
+        using (var hello = new Hello())
+        {
+            hello.EnumOut((int) Enum.C, out Enum e);
+            Assert.That(e, Is.EqualTo(Enum.C));
+        }
     }
 
     [Test]
     public void TestEnumOutRef()
     {
-        var hello = new Hello();
-
-        Enum e;
-        hello.EnumOutRef((int) Enum.C, out e);
-        Assert.That(e, Is.EqualTo(Enum.C));
+        using (var hello = new Hello())
+        {
+            hello.EnumOutRef((int) Enum.C, out Enum e);
+            Assert.That(e, Is.EqualTo(Enum.C));
+        }
     }
 
     [Test]
     public void TestEnumInOut()
     {
-        var hello = new Hello();
-
-        var e = Enum.E;
-        hello.EnumInOut(ref e);
-        Assert.That(e, Is.EqualTo(Enum.F));
+        using (var hello = new Hello())
+        {
+            var e = Enum.E;
+            hello.EnumInOut(ref e);
+            Assert.That(e, Is.EqualTo(Enum.F));
+        }
     }
 
     [Test]
     public void TestEnumInOutRef()
     {
-        var hello = new Hello();
-
-        var e = Enum.E;
-        hello.EnumInOut(ref e);
-        Assert.That(e, Is.EqualTo(Enum.F));
+        using (var hello = new Hello())
+        {
+            var e = Enum.E;
+            hello.EnumInOut(ref e);
+            Assert.That(e, Is.EqualTo(Enum.F));
+        }
     }
 
     [Test]
     public void TestNullRef()
     {
-        var hello = new Hello();
-        Assert.That(hello.RetNull(), Is.Null);
+        using (var hello = new Hello())
+        {
+            Assert.That(hello.RetNull(), Is.Null);
+        }
     }
 
     [Test]
     public void TestAmbiguous()
     {
-        var def = new DefaultParameters();
-        def.Foo(1, 2);
-        def.Bar();
+        using (var def = new DefaultParameters())
+        {
+            def.Foo(1, 2);
+            def.Bar();
+        }
         using (Foo foo = new Foo())
         {
             Common.HasPointerParam(foo, 0);
@@ -243,52 +257,66 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestLeftShiftOperator()
     {
-        var foo2 = new Foo2 { C = 2 };
-        Foo2 result = foo2 << 3;
-        foo2.TestKeywordParam(IntPtr.Zero, Bar.Item.Item1, 1);
-        Assert.That(result.C, Is.EqualTo(16));
+        using (var foo2 = new Foo2 { C = 2 })
+        {
+            Foo2 result = foo2 << 3;
+            foo2.TestKeywordParam(IntPtr.Zero, Bar.Item.Item1, 1);
+            Assert.That(result.C, Is.EqualTo(16));
+        }
     }
 
     [Test]
     public void TestAbstractReturnType()
     {
-        var returnsAbstractFoo = new ReturnsAbstractFoo();
-        var abstractFoo = returnsAbstractFoo.Foo;
-        Assert.AreEqual(abstractFoo.PureFunction(1), 5);
-        Assert.AreEqual(abstractFoo.PureFunction1, 10);
-        var ok = false;
-        Assert.AreEqual(abstractFoo.PureFunction2(ref ok), 15);
+        using (var returnsAbstractFoo = new ReturnsAbstractFoo())
+        {
+            var abstractFoo = returnsAbstractFoo.Foo;
+            Assert.AreEqual(abstractFoo.PureFunction(1), 5);
+            Assert.AreEqual(abstractFoo.PureFunction1, 10);
+            var ok = false;
+            Assert.AreEqual(abstractFoo.PureFunction2(ref ok), 15);
+        }
     }
 
     [Test]
     public void TestANSI()
     {
-        var foo = new Foo();
-        Assert.That(foo.ANSI, Is.EqualTo("ANSI"));
+        using (var foo = new Foo())
+        {
+            Assert.That(foo.ANSI, Is.EqualTo("ANSI"));
+        }
     }
 
     [Test]
     public void TestMoveOperatorToClass()
     {
         // Unary operator
-        var unary = new TestMoveOperatorToClass() { A = 4, B = 7 };
-        var unaryMinus = -unary;
+        using (var unary = new TestMoveOperatorToClass() { A = 4, B = 7 })
+        {
+            var unaryMinus = -unary;
 
-        Assert.That(unaryMinus.A, Is.EqualTo(-unary.A));
-        Assert.That(unaryMinus.B, Is.EqualTo(-unary.B));
+            Assert.That(unaryMinus.A, Is.EqualTo(-unary.A));
+            Assert.That(unaryMinus.B, Is.EqualTo(-unary.B));
+        }
 
         // Binary operator
-        var bin = new TestMoveOperatorToClass { A = 4, B = 7 };
-        var bin1 = new TestMoveOperatorToClass { A = 5, B = 10 };
-        var binSum = bin + bin1;
+        using (var bin = new TestMoveOperatorToClass { A = 4, B = 7 })
+        {
+            using (var bin1 = new TestMoveOperatorToClass { A = 5, B = 10 })
+            {
+                var binSum = bin + bin1;
 
-        Assert.That(binSum.A, Is.EqualTo(bin.A + bin1.A));
-        Assert.That(binSum.B, Is.EqualTo(bin.B + bin1.B));
+                Assert.That(binSum.A, Is.EqualTo(bin.A + bin1.A));
+                Assert.That(binSum.B, Is.EqualTo(bin.B + bin1.B));
+            }
+        }
 
         // Multiple argument operator
-        var multiArg = new TestMoveOperatorToClass { A = 4, B = 7 };
-        var multiArgStar = multiArg * 2;
-        Assert.That(multiArgStar, Is.EqualTo(8));
+        using (var multiArg = new TestMoveOperatorToClass { A = 4, B = 7 })
+        {
+            var multiArgStar = multiArg * 2;
+            Assert.That(multiArgStar, Is.EqualTo(8));
+        }
     }
 
     [Test]
@@ -302,10 +330,12 @@ public class CommonTests : GeneratorTestFixture
     public void TestMethodWithFixedInstance()
     {
         var bar = new Bar2 { A = 1, B = 2, C = 3 };
-        Foo2 foo = bar.NeedFixedInstance;
-        Assert.AreEqual(foo.A, 1);
-        Assert.AreEqual(foo.B, 2);
-        Assert.AreEqual(foo.C, 3);
+        using (Foo2 foo = bar.NeedFixedInstance)
+        {
+            Assert.AreEqual(foo.A, 1);
+            Assert.AreEqual(foo.B, 2);
+            Assert.AreEqual(foo.C, 3);
+        }
     }
 
     [Test]
@@ -331,18 +361,20 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestDelegates()
     {
-        var delegates = new TestDelegates();
-        var doubleSum = delegates.A(2) + delegates.B(2);
-        Assert.AreEqual(8, doubleSum);
+        using (var delegates = new TestDelegates())
+        {
+            var doubleSum = delegates.A(2) + delegates.B(2);
+            Assert.AreEqual(8, doubleSum);
 
-        var stdcall = delegates.StdCall(i => i);
-        Assert.AreEqual(1, stdcall);
+            var stdcall = delegates.StdCall(i => i);
+            Assert.AreEqual(1, stdcall);
 
-        var cdecl = delegates.CDecl(i => i);
-        Assert.AreEqual(1, cdecl);
+            var cdecl = delegates.CDecl(i => i);
+            Assert.AreEqual(1, cdecl);
 
-        var emptydelegeate = delegates.MarshalNullDelegate;
-        Assert.AreEqual(emptydelegeate, null);
+            var emptydelegeate = delegates.MarshalNullDelegate;
+            Assert.AreEqual(emptydelegeate, null);
+        }
     }
 
     [Test]
@@ -423,10 +455,12 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestCharMarshalling()
     {
-        Foo2 foo2 = new Foo2();
-        for (char c = char.MinValue; c <= sbyte.MaxValue; c++)
-            Assert.That(foo2.TestCharMarshalling(c), Is.EqualTo(c));
-        Assert.Catch<OverflowException>(() => foo2.TestCharMarshalling('ж'));
+        using (Foo2 foo2 = new Foo2())
+        {
+            for (char c = char.MinValue; c <= sbyte.MaxValue; c++)
+                Assert.That(foo2.TestCharMarshalling(c), Is.EqualTo(c));
+            Assert.Catch<OverflowException>(() => foo2.TestCharMarshalling('ж'));
+        }
     }
 
     [Test]
@@ -545,66 +579,78 @@ public class CommonTests : GeneratorTestFixture
     public void TestVariable()
     {
         // Test field property
-        var @var = new TestVariables();
-        @var.SetValue(10);
+        using (var @var = new TestVariables())
+        {
+            @var.SetValue(10);
+        }
         Assert.That(TestVariables.VALUE, Is.EqualTo(10));
     }
 
     [Test]
     public void TestWideStrings()
     {
-        var ws = new TestWideStrings();
-        var s = ws.WidePointer;
-        Assert.That(ws.WidePointer, Is.EqualTo("Hello"));
-        Assert.That(ws.WideNullPointer, Is.EqualTo(null));
+        using (var ws = new TestWideStrings())
+        {
+            var s = ws.WidePointer;
+            Assert.That(ws.WidePointer, Is.EqualTo("Hello"));
+            Assert.That(ws.WideNullPointer, Is.EqualTo(null));
+        }
     }
 
     [Test]
     public unsafe void TestArraysPointers()
     {
         var values = MyEnum.A;
-        var arrays = new TestArraysPointers(ref values, 1);
-        Assert.That(arrays.Value, Is.EqualTo(MyEnum.A));
+        using (var arrays = new TestArraysPointers(ref values, 1))
+        {
+            Assert.That(arrays.Value, Is.EqualTo(MyEnum.A));
+        }
     }
 
     [Test]
     public unsafe void TestGetterSetterToProperties()
     {
-        var @class = new TestGetterSetterToProperties();
-        Assert.That(@class.Width, Is.EqualTo(640));
-        Assert.That(@class.Height, Is.EqualTo(480));
+        using (var @class = new TestGetterSetterToProperties())
+        {
+            Assert.That(@class.Width, Is.EqualTo(640));
+            Assert.That(@class.Height, Is.EqualTo(480));
+        }
     }
 
     [Test]
     public unsafe void TestSingleArgumentCtorToCastOperator()
     {
-        var classA = new ClassA(10);
-        ClassB classB = classA;
-        Assert.AreEqual(classA.Value, classB.Value);
-        ClassC classC = (ClassC) classB;
-        Assert.AreEqual(classB.Value, classC.Value);
+        using (var classA = new ClassA(10))
+        {
+            ClassB classB = classA;
+            Assert.AreEqual(classA.Value, classB.Value);
+            ClassC classC = (ClassC) classB;
+            Assert.AreEqual(classB.Value, classC.Value);
+        }
     }
 
     [Test]
     public unsafe void TestFieldRef()
     {
-        var classD = new ClassD(10);
-        var fieldRef = classD.Field;
-        fieldRef.Value = 20;
-        Assert.AreEqual(20, classD.Field.Value);
+        using (var classD = new ClassD(10))
+        {
+            var fieldRef = classD.Field;
+            fieldRef.Value = 20;
+            Assert.AreEqual(20, classD.Field.Value);
+        }
     }
 
     [Test]
     public unsafe void TestDecltype()
     {
-        var ret = Common.TestDecltype;
+        int ret = Common.TestDecltype;
         Assert.AreEqual(0, ret);
     }
 
     [Test]
     public unsafe void TestNullPtrType()
     {
-        var ret = Common.TestNullPtrTypeRet;
+        void* ret = Common.TestNullPtrTypeRet;
         Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
     }
 
@@ -612,54 +658,68 @@ public class CommonTests : GeneratorTestFixture
     public void TestCtorByValue()
     {
         var bar = new Bar { A = 4, B = 5.5f };
-        var foo2 = new Foo2 { C = 4, ValueTypeField = bar };
-        var result = foo2 << 2;
-        Assert.AreEqual(foo2.C << 2, result.C);
-        Assert.AreEqual(bar.A << 2, result.ValueTypeField.A);
-        Assert.AreEqual(bar.B, result.ValueTypeField.B);
+        using (var foo2 = new Foo2 { C = 4, ValueTypeField = bar })
+        {
+            var result = foo2 << 2;
+            Assert.AreEqual(foo2.C << 2, result.C);
+            Assert.AreEqual(bar.A << 2, result.ValueTypeField.A);
+            Assert.AreEqual(bar.B, result.ValueTypeField.B);
+        }
     }
 
     [Test]
     public void TestMarshalUnattributedDelegate()
     {
-        new TestDelegates().MarshalUnattributedDelegate(i => i);
+        using (TestDelegates testDelegates = new TestDelegates())
+        {
+            testDelegates.MarshalUnattributedDelegate(i => i);
+        }
     }
 
     [Test]
     public void TestPassAnonymousDelegate()
     {
-        var testDelegates = new TestDelegates();
-        int value = testDelegates.MarshalAnonymousDelegate(i => i * 2);
-        Assert.AreEqual(2, value);
-        int value5 = testDelegates.MarshalAnonymousDelegate5(i => i * 2);
-        Assert.AreEqual(4, value5);
-        int value6 = testDelegates.MarshalAnonymousDelegate6(i => i * 2);
-        Assert.AreEqual(6, value6);
+        using (var testDelegates = new TestDelegates())
+        {
+            int value = testDelegates.MarshalAnonymousDelegate(i => i * 2);
+            Assert.AreEqual(2, value);
+            int value5 = testDelegates.MarshalAnonymousDelegate5(i => i * 2);
+            Assert.AreEqual(4, value5);
+            int value6 = testDelegates.MarshalAnonymousDelegate6(i => i * 2);
+            Assert.AreEqual(6, value6);
+        }
     }
 
     [Test]
     public void TestGetAnonymousDelegate()
     {
-        var testDelegates = new TestDelegates();
-        var @delegate = testDelegates.MarshalAnonymousDelegate4;
-        int value = @delegate.Invoke(1);
-        Assert.AreEqual(2, value);
+        using (var testDelegates = new TestDelegates())
+        {
+            var @delegate = testDelegates.MarshalAnonymousDelegate4;
+            int value = @delegate.Invoke(1);
+            Assert.AreEqual(2, value);
+        }
     }
 
     [Test]
     public void TestFixedArrays()
     {
-        var foo = new Foo();
-        var array = new[] { 1, 2, 3 };
-        foo.FixedArray = array;
-        for (int i = 0; i < foo.FixedArray.Length; i++)
-            Assert.That(array[i], Is.EqualTo(foo.FixedArray[i]));
+        using (var foo = new Foo())
+        {
+            var array = new[] { 1, 2, 3 };
+            foo.FixedArray = array;
+            for (int i = 0; i < foo.FixedArray.Length; i++)
+                Assert.That(array[i], Is.EqualTo(foo.FixedArray[i]));
+        }
     }
 
     [Test]
     public void TestInternalCtorAmbiguity()
     {
-        new InvokesInternalCtorAmbiguity().InvokeInternalCtor();
+        using (var invokesInternalCtorAmbiguity = new InvokesInternalCtorAmbiguity())
+        {
+            invokesInternalCtorAmbiguity.InvokeInternalCtor();
+        }
     }
 
     [Test]
@@ -693,21 +753,30 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestFriendOperator()
     {
-        HasFriend h1 = 5;
-        HasFriend h2 = 10;
-        Assert.AreEqual(15, (h1 + h2).M);
-        Assert.AreEqual(-5, (h1 - h2).M);
+        using (HasFriend h1 = 5)
+        {
+            using (HasFriend h2 = 10)
+            {
+                Assert.AreEqual(15, (h1 + h2).M);
+                Assert.AreEqual(-5, (h1 - h2).M);
+            }
+        }
     }
 
     [Test]
     public void TestOperatorOverloads()
     {
         var differentConstOverloads = new DifferentConstOverloads();
-        Assert.IsTrue(differentConstOverloads == new DifferentConstOverloads());
+        var differentConstOverloads1 = new DifferentConstOverloads();
+        Assert.IsTrue(differentConstOverloads == differentConstOverloads1);
+        // HACK: don't replace with a using because it triggers a bug in the Mono compiler
+        // https://travis-ci.org/github/mono/CppSharp/jobs/674224017#L997
+        differentConstOverloads1.Dispose();
         Assert.IsTrue(differentConstOverloads == 5);
         Assert.IsFalse(differentConstOverloads == 4);
         Assert.IsTrue(differentConstOverloads == "abcde");
         Assert.IsFalse(differentConstOverloads == "abcd");
+        differentConstOverloads.Dispose();
     }
 
     [Test]
@@ -736,7 +805,10 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestMarshallingEmptyType()
     {
-        var empty = new ReturnsEmpty().Empty;
+        using (ReturnsEmpty returnsEmpty = new ReturnsEmpty())
+        {
+            returnsEmpty.Empty.Dispose();
+        }
     }
 
     [Test]

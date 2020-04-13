@@ -113,18 +113,24 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestIndexer()
     {
-        var foo = new Foo();
+        using (var foo = new Foo())
+        {
+            Assert.That(foo[0], Is.EqualTo(50));
+            foo[0] = 250;
+            Assert.That(foo[0], Is.EqualTo(250));
 
-        Assert.That(foo[0], Is.EqualTo(50));
-        foo[0] = 250;
-        Assert.That(foo[0], Is.EqualTo(250));
+            Assert.That(foo[(uint) 0], Is.EqualTo(15));
+        }
 
-        Assert.That(foo[(uint) 0], Is.EqualTo(15));
-
-        var bar = new Bar();
-        Assert.That(bar[0].A, Is.EqualTo(10));
-        bar[0] = new Foo { A = 25 };
-        Assert.That(bar[0].A, Is.EqualTo(25));
+        using (var bar = new Bar())
+        {
+            Assert.That(bar[0].A, Is.EqualTo(10));
+            using (Foo foo = new Foo { A = 25 })
+            {
+                bar[0] = foo;
+                Assert.That(bar[0].A, Is.EqualTo(25));
+            }
+        }
     }
 
     [Test]
@@ -143,8 +149,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
             var bar = (IBar) baz;
             Assert.That(bar.Method, Is.EqualTo(2));
             Assert.That(baz[0], Is.EqualTo(50));
-            bar[0] = new Foo { A = 1000 };
-            Assert.That(bar[0].A, Is.EqualTo(1000));
+            using (Foo foo = new Foo { A = 1000 })
+            {
+                bar[0] = foo;
+                Assert.That(bar[0].A, Is.EqualTo(1000));
+            }
             Assert.That(baz.FarAwayFunc, Is.EqualTo(20));
             Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
             Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
@@ -160,12 +169,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestProperties()
     {
-        var proprietor = new Proprietor();
-        Assert.That(proprietor.Parent, Is.EqualTo(0));
-        proprietor.Value = 20;
-        Assert.That(proprietor.Value, Is.EqualTo(20));
-        proprietor.Prop = 50;
-        Assert.That(proprietor.Prop, Is.EqualTo(50));
+        using (var proprietor = new Proprietor())
+        {
+            Assert.That(proprietor.Parent, Is.EqualTo(0));
+            proprietor.Value = 20;
+            Assert.That(proprietor.Value, Is.EqualTo(20));
+            proprietor.Prop = 50;
+            Assert.That(proprietor.Prop, Is.EqualTo(50));
+        }
         using (var qux = new Qux())
         {
             using (var p = new P((IQux) qux) { Value = 20 })
@@ -200,21 +211,25 @@ public unsafe class CSharpTests : GeneratorTestFixture
         CSharp.TestDestructors.InitMarker();
         Assert.AreEqual(0, CSharp.TestDestructors.Marker);
 
-        var dtors = new TestDestructors();
-        Assert.AreEqual(0xf00d, CSharp.TestDestructors.Marker);
-        dtors.Dispose();
+        using (var dtors = new TestDestructors())
+        {
+            Assert.AreEqual(0xf00d, CSharp.TestDestructors.Marker);
+            dtors.Dispose();
+        }
         Assert.AreEqual(0xcafe, CSharp.TestDestructors.Marker);
     }
 
     [Test]
     public unsafe void TestArrayOfPointersToPrimitives()
     {
-        var bar = new Bar();
-        var array = new IntPtr[1];
-        int i = 5;
-        array[0] = new IntPtr(&i);
-        bar.ArrayOfPrimitivePointers = array;
-        Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
+        using (var bar = new Bar())
+        {
+            var array = new IntPtr[1];
+            int i = 5;
+            array[0] = new IntPtr(&i);
+            bar.ArrayOfPrimitivePointers = array;
+            Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
+        }
     }
 
     [Test]
@@ -229,9 +244,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestPropertiesConflictingWithMethod()
     {
-        var p = new P((IQux) new Qux()) { Test = true };
-        Assert.That(p.Test, Is.True);
-        p.GetTest();
+        using (var p = new P((IQux) new Qux()) { Test = true })
+        {
+            Assert.That(p.Test, Is.True);
+            p.GetTest();
+        }
     }
 
     [Test]
@@ -310,43 +327,51 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestCopyCtor()
     {
-        Qux q1 = new Qux();
-        for (int i = 0; i < q1.Array.Length; i++)
+        using (Qux q1 = new Qux())
         {
-            q1.Array[i] = i;
-        }
-        Qux q2 = new Qux(q1);
-        for (int i = 0; i < q2.Array.Length; i++)
-        {
-            Assert.AreEqual(q1.Array[i], q2.Array[i]);
+            for (int i = 0; i < q1.Array.Length; i++)
+            {
+                q1.Array[i] = i;
+            }
+            using (Qux q2 = new Qux(q1))
+            {
+                for (int i = 0; i < q2.Array.Length; i++)
+                {
+                    Assert.AreEqual(q1.Array[i], q2.Array[i]);
+                }
+            }
         }
     }
 
     [Test]
     public void TestBooleanArray()
     {
-        Foo foo = new Foo { A = 10 };
-        var new_values = new bool[5];
-        for(int i = 0; i < new_values.Length; ++i)
+        using (Foo foo = new Foo { A = 10 })
         {
-            new_values[i] = i % 2 == 0;
+            var new_values = new bool[5];
+            for (int i = 0; i < new_values.Length; ++i)
+            {
+                new_values[i] = i % 2 == 0;
+            }
+            foo.Btest = new_values;
+            Assert.AreEqual(true, foo.Btest[0]);
+            Assert.AreEqual(false, foo.Btest[1]);
+            Assert.AreEqual(true, foo.Btest[2]);
+            Assert.AreEqual(false, foo.Btest[3]);
+            Assert.AreEqual(true, foo.Btest[4]);
         }
-        foo.Btest = new_values;
-        Assert.AreEqual(true, foo.Btest[0]);
-        Assert.AreEqual(false, foo.Btest[1]);
-        Assert.AreEqual(true, foo.Btest[2]);
-        Assert.AreEqual(false, foo.Btest[3]);
-        Assert.AreEqual(true, foo.Btest[4]);
     }
 
 
     [Test]
     public void TestImplicitCtor()
     {
-        Foo foo = new Foo { A = 10 };
-        using (MethodsWithDefaultValues m = foo)
+        using (Foo foo = new Foo { A = 10 })
         {
-            Assert.AreEqual(foo.A, m.A);
+            using (MethodsWithDefaultValues m = foo)
+            {
+                Assert.AreEqual(foo.A, m.A);
+            }
         }
         using (MethodsWithDefaultValues m1 = 5)
         {
@@ -431,9 +456,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestCallingVirtualDtor()
     {
-        var callDtorVirtually = new CallDtorVirtually();
-        var hasVirtualDtor1 = CallDtorVirtually.GetHasVirtualDtor1(callDtorVirtually);
-        hasVirtualDtor1.Dispose();
+        using (var callDtorVirtually = new CallDtorVirtually())
+        {
+            var hasVirtualDtor1 = CallDtorVirtually.GetHasVirtualDtor1(callDtorVirtually);
+            hasVirtualDtor1.Dispose();
+        }
         Assert.That(CallDtorVirtually.Destroyed, Is.True);
     }
 
@@ -451,43 +478,46 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.AreEqual(dervClass.M, 2);
         dervClass = new TestParamToInterfacePass(dervClass + baseInterface);
         Assert.AreEqual(dervClass.M, 2);
+        baseClass.Dispose();
     }
-    
+
     [Test]
     public unsafe void TestMultiOverLoadPtrToRef()
     {
         var r = 0;
         MultiOverloadPtrToRef m = &r;
         m.Dispose();
-        var obj = new MultiOverloadPtrToRef(ref r);
-        var p = obj.ReturnPrimTypePtr();
-        Assert.AreEqual(0, p[0]);
-        Assert.AreEqual(0, p[1]);
-        Assert.AreEqual(0, p[2]);
-
-        obj.TakePrimTypePtr(ref *p);
-        Assert.AreEqual(100, p[0]);
-        Assert.AreEqual(200, p[1]);
-        Assert.AreEqual(300, p[2]);
-
-        int[] array = { 1, 2, 3 };
-        fixed (int* p1 = array)
+        using (var obj = new MultiOverloadPtrToRef(ref r))
         {
-            obj.TakePrimTypePtr(ref *p1);
-            Assert.AreEqual(100, p1[0]);
-            Assert.AreEqual(200, p1[1]);
-            Assert.AreEqual(300, p1[2]);
+            var p = obj.ReturnPrimTypePtr();
+            Assert.AreEqual(0, p[0]);
+            Assert.AreEqual(0, p[1]);
+            Assert.AreEqual(0, p[2]);
+
+            obj.TakePrimTypePtr(ref *p);
+            Assert.AreEqual(100, p[0]);
+            Assert.AreEqual(200, p[1]);
+            Assert.AreEqual(300, p[2]);
+
+            int[] array = { 1, 2, 3 };
+            fixed (int* p1 = array)
+            {
+                obj.TakePrimTypePtr(ref *p1);
+                Assert.AreEqual(100, p1[0]);
+                Assert.AreEqual(200, p1[1]);
+                Assert.AreEqual(300, p1[2]);
+            }
+
+            Assert.AreEqual(100, array[0]);
+            Assert.AreEqual(200, array[1]);
+            Assert.AreEqual(300, array[2]);
+
+            float pThree = 0;
+            var refInt = 0;
+            obj.FuncPrimitivePtrToRef(ref refInt, null, ref pThree);
+            obj.FuncPrimitivePtrToRefWithDefVal(ref refInt, null, null, ref refInt);
+            obj.FuncPrimitivePtrToRefWithMultiOverload(ref refInt, null, null, ref refInt);
         }
-
-        Assert.AreEqual(100, array[0]);
-        Assert.AreEqual(200, array[1]);
-        Assert.AreEqual(300, array[2]);
-
-        float pThree = 0;
-        var refInt = 0;
-        obj.FuncPrimitivePtrToRef(ref refInt, null, ref pThree);
-        obj.FuncPrimitivePtrToRefWithDefVal(ref refInt, null, null, ref refInt);
-        obj.FuncPrimitivePtrToRefWithMultiOverload(ref refInt, null, null, ref refInt);
     }
 
     [Test]
@@ -506,23 +536,37 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.AreEqual(7, retFoos[2].A);
         Assert.AreEqual(8, retFoos[3].A);
 
+        foreach (Foo foo in foos)
+        {
+            foo.Dispose();
+        }
+
         Foo[] foosMore = new Foo[2];
         foosMore[0] = new Foo();
         foosMore[1] = new Foo();
         var ex = Assert.Throws<ArgumentOutOfRangeException>(() => bar.Foos = foosMore);
         Assert.AreEqual("value", ex.ParamName);
         Assert.AreEqual("The dimensions of the provided array don't match the required size." + Environment.NewLine + "Parameter name: value", ex.Message);
+
+        foreach (Foo foo in foosMore)
+        {
+            foo.Dispose();
+        }
     }
 
     [Test]
     public void TestOutTypeInterfacePassTry()
     {
-        var interfaceClassObj = new TestParamToInterfacePassBaseTwo();
-        ITestParamToInterfacePassBaseTwo interfaceType = interfaceClassObj;
-        var obj = new TestOutTypeInterfaces();
-        obj.FuncTryInterfaceTypeOut(out interfaceType);
-        ITestParamToInterfacePassBaseTwo interfaceTypePtr;
-        obj.FuncTryInterfaceTypePtrOut(out interfaceTypePtr);
+        using (var interfaceClassObj = new TestParamToInterfacePassBaseTwo())
+        {
+            ITestParamToInterfacePassBaseTwo interfaceType = interfaceClassObj;
+            using (var obj = new TestOutTypeInterfaces())
+            {
+                obj.FuncTryInterfaceTypeOut(out interfaceType);
+                ITestParamToInterfacePassBaseTwo interfaceTypePtr;
+                obj.FuncTryInterfaceTypePtrOut(out interfaceTypePtr);
+            }
+        }
     }
 
     [Test]
@@ -1030,9 +1074,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestForwardDeclaredStruct()
     {
-        var forwardDeclaredStruct = CSharp.CSharp.CreateForwardDeclaredStruct(10);
-        var i = CSharp.CSharp.UseForwardDeclaredStruct(forwardDeclaredStruct);
-        Assert.AreEqual(forwardDeclaredStruct.I, i);
+        using (var forwardDeclaredStruct = CSharp.CSharp.CreateForwardDeclaredStruct(10))
+        {
+            var i = CSharp.CSharp.UseForwardDeclaredStruct(forwardDeclaredStruct);
+            Assert.AreEqual(forwardDeclaredStruct.I, i);
+        }
     }
 
     [Test]
