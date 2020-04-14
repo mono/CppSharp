@@ -721,6 +721,21 @@ HasCtorWithMappedToEnum<T>::HasCtorWithMappedToEnum(QFlags<T> t)
 {
 }
 
+template <typename T>
+class AbstractTemplate
+{
+public:
+    virtual int property() = 0;
+    virtual int callFunction() = 0;
+};
+
+class ImplementAbstractTemplate : public AbstractTemplate<int>
+{
+public:
+    int property() override;
+    int callFunction() override;
+};
+
 enum class TestFlag
 {
     Flag1,

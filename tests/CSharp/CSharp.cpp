@@ -88,6 +88,11 @@ const int& Foo::returnConstRef()
     return rename;
 }
 
+AbstractTemplate<int>* Foo::getAbstractTemplate()
+{
+    return new ImplementAbstractTemplate();
+}
+
 const int Foo::rename;
 
 int Foo::makeFunctionCall()

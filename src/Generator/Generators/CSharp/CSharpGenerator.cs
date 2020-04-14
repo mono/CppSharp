@@ -43,7 +43,7 @@ namespace CppSharp.Generators.CSharp
 
         protected override string TypePrinterDelegate(Type type)
         {
-            return type.Visit(typePrinter).Type;
+            return type.Visit(typePrinter);
         }
     }
 }

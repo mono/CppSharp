@@ -374,12 +374,12 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            if (!@class.IsDependent)
+            if (!@class.IsDependent && !@class.IsAbstractImpl)
                 foreach (var nestedTemplate in @class.Classes.Where(
                     c => !c.IsIncomplete && c.IsDependent))
                     GenerateClassTemplateSpecializationInternal(nestedTemplate);
 
-            if (@class.IsTemplate)
+            if (@class.IsTemplate && !@class.IsAbstractImpl)
             {
                 if (!(@class.Namespace is Class))
                     GenerateClassTemplateSpecializationInternal(@class);
@@ -1206,7 +1206,8 @@ namespace CppSharp.Generators.CSharp
             if (!(c is ClassTemplateSpecialization))
                 return property;
             return c.Properties.SingleOrDefault(p => p.GetMethod != null &&
-                p.GetMethod.InstantiatedFrom == property.GetMethod);
+                p.GetMethod.InstantiatedFrom ==
+                (property.GetMethod.OriginalFunction ?? property.GetMethod));
         }
 
         private void GenerateFunctionInProperty(Class @class, Method constituent,
@@ -1487,6 +1488,9 @@ namespace CppSharp.Generators.CSharp
 
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
         {
+            if (@class.IsDependent)
+                @class = @class.Specializations[0];
+
             var uniqueEntries = new OrderedSet<VTableComponent>();
             var vTableMethodEntries = VTables.GatherVTableMethodEntries(@class);
             foreach (var entry in vTableMethodEntries.Where(e => !e.IsIgnored() && !e.Method.IsOperator))
@@ -1603,6 +1607,9 @@ namespace CppSharp.Generators.CSharp
 
         private void SaveOriginalVTablePointers(Class @class)
         {
+            if (@class.IsDependent)
+                @class = @class.Specializations[0];
+
             if (Context.ParserOptions.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
                     string.Join(", ",
@@ -2086,13 +2093,14 @@ namespace CppSharp.Generators.CSharp
                 var classInternal = TypePrinter.PrintNative(@class);
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
+                    ClassLayout layout = (@class.IsDependent ? @class.Specializations[0] : @class).Layout;
                     if (Context.ParserOptions.IsMicrosoftAbi)
-                        for (var i = 0; i < @class.Layout.VTablePointers.Count; i++)
+                        for (var i = 0; i < layout.VTablePointers.Count; i++)
                             WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                                @class.Layout.VTablePointers[i].Name} = new global::System.IntPtr(__OriginalVTables[{i}]);");
+                                layout.VTablePointers[i].Name} = new global::System.IntPtr(__OriginalVTables[{i}]);");
                     else
                         WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                            @class.Layout.VTablePointers[0].Name} = new global::System.IntPtr(__OriginalVTables[0]);");
+                            layout.VTablePointers[0].Name} = new global::System.IntPtr(__OriginalVTables[0]);");
                 }
             }
 
@@ -2157,13 +2165,13 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(BlockKind.Method);
-                var printedClass = @class.Visit(TypePrinter);
+                TypePrinterResult printedClass = @class.Visit(TypePrinter);
                 WriteLine("internal static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     printedClass, Helpers.CreateInstanceIdentifier);
                 WriteOpenBraceAndIndent();
                 var suffix = @class.IsAbstract ? "Internal" : string.Empty;
-                var ctorCall = $"{printedClass}{suffix}";
+                var ctorCall = $"{printedClass.Type}{suffix}{printedClass.NameSuffix}";
                 WriteLine("return new {0}(native.ToPointer(), skipVTables);", ctorCall);
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2196,7 +2204,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
                 var dtor = @class.Destructors.FirstOrDefault();
                 var hasVTables = @class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count > 0;
-                var setupVTables = !@class.IsAbstractImpl && hasVTables && dtor != null && dtor.IsVirtual;
+                var setupVTables = !@class.IsAbstractImpl && hasVTables && dtor?.IsVirtual == true;
                 if (setupVTables)
                 {
                     WriteLine("if (skipVTables)");
@@ -2224,7 +2232,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        public void GenerateNativeConstructorByValue(Class @class, string returnType)
+        public void GenerateNativeConstructorByValue(Class @class, TypePrinterResult returnType)
         {
             var @internal = TypePrinter.PrintNative(@class.IsAbstractImpl ? @class.BaseClass : @class);
 
@@ -2235,7 +2243,7 @@ namespace CppSharp.Generators.CSharp
                     returnType, Helpers.CreateInstanceIdentifier, @internal);
                 WriteOpenBraceAndIndent();
                 var suffix = @class.IsAbstract ? "Internal" : "";
-                WriteLine($"return new {returnType}{suffix}(native, skipVTables);");
+                WriteLine($"return new {returnType.Type}{suffix}{returnType.NameSuffix}(native, skipVTables);");
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -2451,7 +2459,7 @@ namespace CppSharp.Generators.CSharp
             if (specialization != null)
             {
                 var specializedMethod = @class.Methods.FirstOrDefault(
-                    m => m.InstantiatedFrom == method);
+                    m => m.InstantiatedFrom == (method.OriginalFunction ?? method));
                 if (specializedMethod == null)
                 {
                     WriteLine($@"throw new MissingMethodException(""Method {
@@ -2478,10 +2486,6 @@ namespace CppSharp.Generators.CSharp
                 else if (method.IsOperator)
                 {
                     GenerateOperator(method, returnType);
-                }
-                else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
-                {
-                    GenerateVirtualFunctionCall(method);
                 }
                 else if (method.IsVirtual)
                 {
@@ -2752,12 +2756,6 @@ namespace CppSharp.Generators.CSharp
         public void GenerateFunctionCall(string functionName, Function function,
             QualifiedType returnType = default(QualifiedType))
         {
-            if (function.IsPure)
-            {
-                WriteLine("throw new System.NotImplementedException();");
-                return;
-            }
-
             // ignored functions may get here from interfaces for secondary bases
             if (function.Ignore)
             {

@@ -57,7 +57,7 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            if (@class.IsAbstract && !@class.IsTemplate)
+            if (@class.IsAbstract && (!@class.IsTemplate || Options.GenerateClassTemplates))
             {
                 foreach (var ctor in from ctor in @class.Constructors
                                      where ctor.Access == AccessSpecifier.Public
@@ -69,7 +69,7 @@ namespace CppSharp.Passes
             return @class.IsAbstract;
         }
 
-        private static Class AddInternalImplementation(Class @class)
+        private static T AddInternalImplementation<T>(T @class) where T : Class, new()
         {
             var internalImpl = GetInternalImpl(@class);
 
@@ -94,14 +94,26 @@ namespace CppSharp.Passes
             return internalImpl;
         }
 
-        private static Class GetInternalImpl(Declaration @class)
+        private static T GetInternalImpl<T>(T @class) where T : Class, new()
         {
-            var internalImpl = new Class
+            var internalImpl = new T
                                 {
                                     Name = @class.Name + "Internal",
                                     Access = AccessSpecifier.Private,
                                     Namespace = @class.Namespace
                                 };
+            if (@class.IsDependent)
+            {
+                internalImpl.IsDependent = true;
+                internalImpl.TemplateParameters.AddRange(@class.TemplateParameters);
+                foreach (var specialization in @class.Specializations)
+                {
+                    var specializationImpl = AddInternalImplementation(specialization);
+                    specializationImpl.Arguments.AddRange(specialization.Arguments);
+                    specializationImpl.TemplatedDecl = specialization.TemplatedDecl;
+                    internalImpl.Specializations.Add(specializationImpl);
+                }
+            }
 
             var @base = new BaseClassSpecifier { Type = new TagType(@class) };
             internalImpl.Bases.Add(@base);
