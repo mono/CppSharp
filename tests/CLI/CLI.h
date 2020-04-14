@@ -77,3 +77,11 @@ class DLL_API TestMappedTypeNonConstRefParamConsumer
 public:
     void ChangePassedMappedTypeNonConstRefParam(TestMappedTypeNonConstRefParam&);
 };
+
+struct DLL_API PointerToTypedefPointerTest
+{
+    int val;
+};
+typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
