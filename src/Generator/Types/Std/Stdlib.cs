@@ -564,8 +564,10 @@ namespace CppSharp.Types.Std
             ctx.Before.WriteLine(
                 "auto {0} = gcnew System::Collections::Generic::List<{1}>();",
                 tmpVarName, managedType);
+
+            string retVarName = ctx.ReturnType.Type.Desugar().IsPointer() ? $"*{ctx.ReturnVarName}" : ctx.ReturnVarName;
             ctx.Before.WriteLine("for(auto _element : {0})",
-                ctx.ReturnVarName);
+                retVarName);
             ctx.Before.WriteOpenBraceAndIndent();
             {
                 var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)

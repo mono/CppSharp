@@ -53,4 +53,17 @@ public class CLITests : GeneratorTestFixture
             Assert.AreEqual("ChangePassedMappedTypeNonConstRefParam", val);
         }
     }
+
+    [Test]
+    public void TestVectorPointerGetter()
+    {
+        using (VectorPointerGetter v = new VectorPointerGetter())
+        {
+            var list = v.VecPtr;
+
+            Assert.AreEqual(1, list.Count);
+
+            Assert.AreEqual("VectorPointerGetter", list[0]);
+        }
+    }
 }
