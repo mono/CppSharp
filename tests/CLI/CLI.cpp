@@ -43,3 +43,8 @@ void TestMappedTypeNonConstRefParamConsumer::ChangePassedMappedTypeNonConstRefPa
 {
     v = "ChangePassedMappedTypeNonConstRefParam";
 }
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet)
+{
+    *lp = valToSet;
+}

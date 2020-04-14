@@ -77,3 +77,7 @@ class DLL_API TestMappedTypeNonConstRefParamConsumer
 public:
     void ChangePassedMappedTypeNonConstRefParam(TestMappedTypeNonConstRefParam&);
 };
+
+typedef long *LPLONG;
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet);

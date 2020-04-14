@@ -53,4 +53,12 @@ public class CLITests : GeneratorTestFixture
             Assert.AreEqual("ChangePassedMappedTypeNonConstRefParam", val);
         }
     }
+
+    [Test]
+    public void TestPointerToPrimitiveTypedefPointerTestMethod()
+    {
+        int a = 50;
+        CLI.CLI.PointerToPrimitiveTypedefPointerTestMethod(ref a, 100);
+        Assert.AreEqual(100, a);
+    }
 }
