@@ -1596,3 +1596,11 @@ class TemplateClass : TemplateClassBase<A,B> {
     using Func = std::function<B(XType)>;
     explicit TemplateClass(Func function) {}
 };
+
+struct DLL_API PointerToTypedefPointerTest
+{
+    int val;
+};
+typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);

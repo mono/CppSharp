@@ -44,11 +44,6 @@ void TestMappedTypeNonConstRefParamConsumer::ChangePassedMappedTypeNonConstRefPa
     v = "ChangePassedMappedTypeNonConstRefParam";
 }
 
-void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
-{
-    (*(*lp)).val = valToSet;
-}
-
 VectorPointerGetter::VectorPointerGetter()
 {
     vecPtr = new std::vector<std::string>();
