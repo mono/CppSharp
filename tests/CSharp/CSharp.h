@@ -32,6 +32,7 @@ public:
     int width();
     void set_width(int value);
     const int& returnConstRef();
+    AbstractTemplate<int>* getAbstractTemplate();
 
     static const int rename = 5;
     static int makeFunctionCall();

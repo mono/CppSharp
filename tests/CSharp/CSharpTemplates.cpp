@@ -145,6 +145,16 @@ void RegularDynamic::virtualFunction()
 {
 }
 
+int ImplementAbstractTemplate::property()
+{
+    return 55;
+}
+
+int ImplementAbstractTemplate::callFunction()
+{
+    return 65;
+}
+
 void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
                              IndependentFields<T1> _3, IndependentFields<std::string> _4,
                              DependentValueFields<int> _5,

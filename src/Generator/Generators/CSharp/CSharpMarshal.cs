@@ -288,7 +288,7 @@ namespace CppSharp.Generators.CSharp
                 Context.Return.Write($"({returnType.Visit(typePrinter)}) (object) ");
 
             if (returnType.IsAddress())
-                Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass.Type));
+                Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass));
             else
                 Context.Return.Write($"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName})");
 

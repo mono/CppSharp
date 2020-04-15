@@ -48,3 +48,24 @@ void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp
 {
     (*(*lp)).val = valToSet;
 }
+
+VectorPointerGetter::VectorPointerGetter()
+{
+    vecPtr = new std::vector<std::string>();
+    vecPtr->push_back("VectorPointerGetter");
+}
+
+VectorPointerGetter::~VectorPointerGetter()
+{
+    if (vecPtr)
+    {
+        auto tempVec = vecPtr;
+        delete vecPtr;
+        tempVec = nullptr;
+    }
+}
+
+std::vector<std::string>* VectorPointerGetter::GetVecPtr()
+{
+    return vecPtr;
+}

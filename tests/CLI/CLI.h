@@ -7,6 +7,7 @@
 #include "NestedEnumInClassTest/NestedEnumConsumer.h"
 
 #include <ostream>
+#include <vector>
 
 // Tests for C++ types
 struct DLL_API Types
@@ -85,3 +86,15 @@ struct DLL_API PointerToTypedefPointerTest
 typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
+
+class DLL_API VectorPointerGetter
+{
+public:
+    VectorPointerGetter();
+    ~VectorPointerGetter();
+
+    std::vector<std::string>* GetVecPtr();
+
+private:
+    std::vector<std::string>* vecPtr;
+};

@@ -64,4 +64,17 @@ public class CLITests : GeneratorTestFixture
             Assert.AreEqual(100, lp.Val);
         }
     }
+
+    [Test]
+    public void TestVectorPointerGetter()
+    {
+        using (VectorPointerGetter v = new VectorPointerGetter())
+        {
+            var list = v.VecPtr;
+
+            Assert.AreEqual(1, list.Count);
+
+            Assert.AreEqual("VectorPointerGetter", list[0]);
+        }
+    }
 }
