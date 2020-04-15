@@ -1073,4 +1073,23 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.AreEqual(3, nonPrimitiveFixedArray.NonPrimitiveTypeArray[2].Foo);
         }
     }
+
+    [Test]
+    public void TestPointerToTypedefPointerTestMethod()
+    {
+        using (PointerToTypedefPointerTest lp = new PointerToTypedefPointerTest())
+        {
+            lp.Val = 50;
+            Common.PointerToTypedefPointerTestMethod(lp, 100);
+            Assert.AreEqual(100, lp.Val);
+        }
+    }
+
+    [Test]
+    public void TestPointerToPrimitiveTypedefPointerTestMethod()
+    {
+        int a = 50;
+        Common.PointerToPrimitiveTypedefPointerTestMethod(ref a, 100);
+        Assert.AreEqual(100, a);
+    }
 }

@@ -7,6 +7,7 @@
 #include "NestedEnumInClassTest/NestedEnumConsumer.h"
 
 #include <ostream>
+#include <vector>
 
 // Tests for C++ types
 struct DLL_API Types
@@ -78,6 +79,14 @@ public:
     void ChangePassedMappedTypeNonConstRefParam(TestMappedTypeNonConstRefParam&);
 };
 
-typedef long *LPLONG;
+class DLL_API VectorPointerGetter
+{
+public:
+    VectorPointerGetter();
+    ~VectorPointerGetter();
 
-void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet);
+    std::vector<std::string>* GetVecPtr();
+
+private:
+    std::vector<std::string>* vecPtr;
+};

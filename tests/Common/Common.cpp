@@ -1192,3 +1192,13 @@ int NonPrimitiveType::GetFoo()
 TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() 
 {
 }
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
+{
+    (*(*lp)).val = valToSet;
+}
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet)
+{
+    *lp = valToSet;
+}

@@ -55,10 +55,15 @@ public class CLITests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestPointerToPrimitiveTypedefPointerTestMethod()
+    public void TestVectorPointerGetter()
     {
-        int a = 50;
-        CLI.CLI.PointerToPrimitiveTypedefPointerTestMethod(ref a, 100);
-        Assert.AreEqual(100, a);
+        using (VectorPointerGetter v = new VectorPointerGetter())
+        {
+            var list = v.VecPtr;
+
+            Assert.AreEqual(1, list.Count);
+
+            Assert.AreEqual("VectorPointerGetter", list[0]);
+        }
     }
 }

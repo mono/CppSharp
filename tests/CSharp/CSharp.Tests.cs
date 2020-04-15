@@ -993,6 +993,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestAbstractTemplate()
+    {
+        using (Foo foo = new Foo())
+        using (AbstractTemplate<int> abstractTemplate = foo.AbstractTemplate)
+        {
+            Assert.That(abstractTemplate.Property, Is.EqualTo(55));
+            Assert.That(abstractTemplate.CallFunction(), Is.EqualTo(65));
+        }
+    }
+
+    [Test]
     public void TestSpecializationForSecondaryBase()
     {
         using (var hasSpecializationForSecondaryBase = new HasSpecializationForSecondaryBase())
