@@ -566,10 +566,16 @@ namespace CppSharp.Generators.CSharp
                     return true;
                 }
 
+                bool isConst = quals.IsConst || pointer.QualifiedPointee.Qualifiers.IsConst ||
+                     pointer.GetFinalQualifiedPointee().Qualifiers.IsConst;
+
                 if (Context.Context.Options.MarshalCharAsManagedChar &&
                     primitive == PrimitiveType.Char)
                 {
-                    Context.Return.Write($"({typePrinter.PrintNative(pointer)}) &{param.Name}");
+                    Context.Return.Write($"({typePrinter.PrintNative(pointer)})");
+                    if (isConst)
+                        Context.Return.Write("&");
+                    Context.Return.Write(param.Name);
                     return true;
                 }
 
@@ -577,13 +583,8 @@ namespace CppSharp.Generators.CSharp
 
                 if (Context.Parameter.IsIndirect)
                     Context.ArgumentPrefix.Write("&");
-
-                bool isVoid = primitive == PrimitiveType.Void &&
-                    pointee.IsAddress() && pointer.IsReference() &&
-                    (quals.IsConst || pointer.QualifiedPointee.Qualifiers.IsConst ||
-                     pointer.GetFinalQualifiedPointee().Qualifiers.IsConst);
-                if (pointer.Pointee.Desugar(false) is TemplateParameterSubstitutionType ||
-                    isVoid)
+                bool isVoid = primitive == PrimitiveType.Void && pointer.IsReference() && isConst;
+                if (pointer.Pointee.Desugar(false) is TemplateParameterSubstitutionType || isVoid)
                 {
                     var local = Generator.GeneratedIdentifier($@"{
                         param.Name}{Context.ParameterIndex}");

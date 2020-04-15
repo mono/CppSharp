@@ -111,6 +111,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestTakeCharPointer()
+    {
+        char c = 'c';
+        Assert.That(*CSharp.CSharp.TakeCharPointer(&c), Is.EqualTo(c));
+    }
+
+    [Test]
     public void TestIndexer()
     {
         using (var foo = new Foo())
