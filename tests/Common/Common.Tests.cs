@@ -19,7 +19,7 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(changedAccessOfInheritedProperty.Property, Is.EqualTo(2));
         }
         Foo.NestedAbstract a;
-        var renamedEmptyEnum = Foo.RenamedEmptyEnum.EmptyEnum1;
+        Foo.RenamedEmptyEnum.EmptyEnum1.GetHashCode();
         using (var foo = new Foo())
         {
             Bar bar = foo;
@@ -1083,5 +1083,12 @@ This is a very long string. This is a very long string. This is a very long stri
             Common.PointerToTypedefPointerTestMethod(lp, 100);
             Assert.AreEqual(100, lp.Val);
         }
+    }
+
+    [Test]
+    public void TestTakeTypedefedMappedType()
+    {
+        string @string = "string";
+        Assert.That(Common.TakeTypedefedMappedType(@string), Is.EqualTo(@string));
     }
 }
