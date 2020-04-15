@@ -1605,6 +1605,6 @@ typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
 
-typedef long *LPLONG;
+typedef int *LPINT;
 
-void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet);
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet);

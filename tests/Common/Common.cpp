@@ -1198,7 +1198,7 @@ void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp
     (*(*lp)).val = valToSet;
 }
 
-void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPLONG lp, long valToSet)
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet)
 {
     *lp = valToSet;
 }
