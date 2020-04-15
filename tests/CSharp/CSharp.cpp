@@ -1645,6 +1645,11 @@ char* returnCharPointer()
     return 0;
 }
 
+char* takeCharPointer(char* c)
+{
+    return c;
+}
+
 char* takeConstCharRef(const char& c)
 {
     return const_cast<char*>(&c);

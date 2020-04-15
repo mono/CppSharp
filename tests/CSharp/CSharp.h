@@ -1362,6 +1362,7 @@ public:
 
 DLL_API void va_listFunction(va_list v);
 DLL_API char* returnCharPointer();
+DLL_API char* takeCharPointer(char* c);
 DLL_API char* takeConstCharRef(const char& c);
 DLL_API const char*& takeConstCharStarRef(const char*& c);
 DLL_API const void*& rValueReferenceToPointer(void*&& v);

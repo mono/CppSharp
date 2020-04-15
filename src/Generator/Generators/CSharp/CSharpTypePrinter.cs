@@ -252,7 +252,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     Kind = ContextKind,
                     MarshalKind = MarshalKind,
-                    Type = typedef
+                    Type = typedef,
+                    Parameter = Parameter
                 };
 
                 return typeMap.CSharpSignatureType(typePrinterContext).ToString();
