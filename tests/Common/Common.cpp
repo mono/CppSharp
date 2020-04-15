@@ -1168,6 +1168,12 @@ const char* takeReturnUTF8(const char* utf8)
     return UTF8.data();
 }
 
+LPCSTR TakeTypedefedMappedType(LPCSTR string)
+{
+    UTF8 = string;
+    return UTF8.data();
+}
+
 StructWithCopyCtor::StructWithCopyCtor() {}
 StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
 
