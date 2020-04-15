@@ -1088,7 +1088,7 @@ This is a very long string. This is a very long string. This is a very long stri
     [Test]
     public void TestTakeTypedefedMappedType()
     {
-        const string @string = "string";
+        string @string = "string";
         Assert.That(Common.TakeTypedefedMappedType(@string), Is.EqualTo(@string));
     }
 
