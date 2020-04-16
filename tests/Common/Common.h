@@ -590,6 +590,12 @@ public:
         Value2
     };
 
+    enum class Conflict
+    {
+        Value1,
+        Value2
+    };
+
     TestProperties();
     TestProperties(const TestProperties& other);
     int Field;
@@ -636,12 +642,16 @@ public:
     bool contains(char c);
     bool contains(const char* str);
 
+    Conflict GetConflict();
+    void SetConflict(Conflict _conflict);
+
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
     int _getterAndSetterWithTheSameName;
     int _setterReturnsBoolean;
     int _virtualSetterReturnsBoolean;
+    Conflict _conflict;
 };
 
 class DLL_API HasOverridenSetter : public TestProperties
