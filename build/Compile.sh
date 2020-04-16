@@ -2,6 +2,19 @@
 set -e
 
 CUR_DIR=$(cd "$(dirname "$0")"; pwd)
+DEBUG=false
+
+for i in "$@"
+do
+case $i in
+    -debug|--debug)
+    DEBUG=true
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+done
 
 if [ "$(uname)" == "Darwin" ]; then
 	PREMAKE=$CUR_DIR/premake5-osx;
@@ -25,6 +38,10 @@ fi
 export PATH=$PATH:$MONO_PATH
 
 $PREMAKE --file=$CUR_DIR/premake5.lua gmake "$@"
+
+if $DEBUG; then
+	BUILD_CONF=debug_x64;
+fi
 config=$BUILD_CONF make -C $CUR_DIR/gmake/
 
 BUILD_CONF_DIR="$(tr '[:lower:]' '[:upper:]' <<< ${BUILD_CONF:0:1})${BUILD_CONF:1}"

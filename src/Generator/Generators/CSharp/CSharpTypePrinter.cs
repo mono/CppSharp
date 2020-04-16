@@ -252,7 +252,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     Kind = ContextKind,
                     MarshalKind = MarshalKind,
-                    Type = typedef
+                    Type = typedef,
+                    Parameter = Parameter
                 };
 
                 return typeMap.CSharpSignatureType(typePrinterContext).ToString();
@@ -293,9 +294,11 @@ namespace CppSharp.Generators.CSharp
                     List<TemplateArgument> args = template.Arguments;
                     var @class = (Class) template.Template.TemplatedDecl;
                     TemplateArgument lastArg = args.Last();
-                    return $@"{VisitDeclaration(decl)}<{string.Join(", ",
+                    TypePrinterResult typePrinterResult = VisitDeclaration(decl);
+                    typePrinterResult.NameSuffix.Append($@"<{string.Join(", ",
                        args.Concat(Enumerable.Range(0, @class.TemplateParameters.Count - args.Count).Select(
-                           i => lastArg)).Select(this.VisitTemplateArgument))}>";
+                           i => lastArg)).Select(this.VisitTemplateArgument))}>");
+                    return typePrinterResult;
                 }
 
                 if (ContextKind == TypePrinterContextKind.Native)
@@ -529,20 +532,21 @@ namespace CppSharp.Generators.CSharp
                 return $@"{VisitDeclaration(@class.OriginalClass ?? @class)}.{
                     Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
 
-            var printed = VisitDeclaration(@class).Type;
-            if (!@class.IsTemplate)
-                return printed;
-            return $@"{printed}<{string.Join(", ",
-                @class.TemplateParameters.Select(p => p.Name))}>";
+            TypePrinterResult printed = VisitDeclaration(@class);
+            if (@class.IsTemplate)
+                printed.NameSuffix.Append($@"<{string.Join(", ",
+                    @class.TemplateParameters.Select(p => p.Name))}>");
+            return printed;
         }
 
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
             ClassTemplateSpecialization specialization)
         {
-            if (ContextKind == TypePrinterContextKind.Native)
-                return $"{VisitClassDecl(specialization)}";
-            var args = string.Join(", ", specialization.Arguments.Select(VisitTemplateArgument));
-            return $"{VisitClassDecl(specialization)}<{args}>";
+            TypePrinterResult typePrinterResult = VisitClassDecl(specialization);
+            if (ContextKind != TypePrinterContextKind.Native)
+                typePrinterResult.NameSuffix.Append($@"<{string.Join(", ",
+                    specialization.Arguments.Select(VisitTemplateArgument))}>");
+            return typePrinterResult;
         }
 
         public TypePrinterResult VisitTemplateArgument(TemplateArgument a)
@@ -556,7 +560,8 @@ namespace CppSharp.Generators.CSharp
                 return $@"CppSharp.Runtime.Pointer<{(pointee == PrimitiveType.Void ? IntPtrType :
                     VisitPrimitiveType(pointee, new TypeQualifiers()).Type)}>";
             }
-            return type.IsPrimitiveType(PrimitiveType.Void) ? "object" : type.Visit(this).Type;
+            return type.IsPrimitiveType(PrimitiveType.Void) ?
+                new TypePrinterResult("object") : type.Visit(this);
         }
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)

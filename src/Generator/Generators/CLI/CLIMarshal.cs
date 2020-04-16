@@ -553,6 +553,12 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
+            // Pass address of argument if the parameter is a pointer to the pointer itself.
+            if (pointee is PointerType && !Context.Parameter.Type.IsReference())
+            {
+                ArgumentPrefix.Write("&");
+            }
+
             return pointer.QualifiedPointee.Visit(this);
         }
 

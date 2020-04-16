@@ -32,6 +32,7 @@ public:
     int width();
     void set_width(int value);
     const int& returnConstRef();
+    AbstractTemplate<int>* getAbstractTemplate();
 
     static const int rename = 5;
     static int makeFunctionCall();
@@ -1361,6 +1362,7 @@ public:
 
 DLL_API void va_listFunction(va_list v);
 DLL_API char* returnCharPointer();
+DLL_API char* takeCharPointer(char* c);
 DLL_API char* takeConstCharRef(const char& c);
 DLL_API const char*& takeConstCharStarRef(const char*& c);
 DLL_API const void*& rValueReferenceToPointer(void*&& v);

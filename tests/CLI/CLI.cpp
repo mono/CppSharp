@@ -44,6 +44,27 @@ void TestMappedTypeNonConstRefParamConsumer::ChangePassedMappedTypeNonConstRefPa
     v = "ChangePassedMappedTypeNonConstRefParam";
 }
 
+VectorPointerGetter::VectorPointerGetter()
+{
+    vecPtr = new std::vector<std::string>();
+    vecPtr->push_back("VectorPointerGetter");
+}
+
+VectorPointerGetter::~VectorPointerGetter()
+{
+    if (vecPtr)
+    {
+        auto tempVec = vecPtr;
+        delete vecPtr;
+        tempVec = nullptr;
+    }
+}
+
+std::vector<std::string>* VectorPointerGetter::GetVecPtr()
+{
+    return vecPtr;
+}
+
 std::string DLL_API MultipleConstantArraysParamsTestMethod(char arr1[9], char arr2[10])
 {
     return std::string(arr1, arr1 + 9) + std::string(arr2, arr2 + 10);

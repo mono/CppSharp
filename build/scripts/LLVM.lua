@@ -124,6 +124,7 @@ function get_llvm_package_name(rev, conf, arch)
 end
 
 function get_llvm_configuration_name(debug)
+	debug = _OPTIONS["debug"]
 	if debug == true then
 		return "Debug"
 	end

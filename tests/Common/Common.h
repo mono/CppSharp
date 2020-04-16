@@ -590,6 +590,12 @@ public:
         Value2
     };
 
+    enum class Conflict
+    {
+        Value1,
+        Value2
+    };
+
     TestProperties();
     TestProperties(const TestProperties& other);
     int Field;
@@ -636,12 +642,16 @@ public:
     bool contains(char c);
     bool contains(const char* str);
 
+    Conflict GetConflict();
+    void SetConflict(Conflict _conflict);
+
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
     int _getterAndSetterWithTheSameName;
     int _setterReturnsBoolean;
     int _virtualSetterReturnsBoolean;
+    Conflict _conflict;
 };
 
 class DLL_API HasOverridenSetter : public TestProperties
@@ -1541,6 +1551,8 @@ DLL_API void takeVoidStarStar(void** p);
 DLL_API void overloadPointer(void* p, int i = 0);
 DLL_API void overloadPointer(const void* p, int i = 0);
 DLL_API const char* takeReturnUTF8(const char* utf8);
+typedef const char* LPCSTR;
+DLL_API LPCSTR TakeTypedefedMappedType(LPCSTR string);
 DLL_API std::string UTF8;
 
 struct DLL_API StructWithCopyCtor
@@ -1596,3 +1608,15 @@ class TemplateClass : TemplateClassBase<A,B> {
     using Func = std::function<B(XType)>;
     explicit TemplateClass(Func function) {}
 };
+
+struct DLL_API PointerToTypedefPointerTest
+{
+    int val;
+};
+typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
+
+typedef int *LPINT;
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet);

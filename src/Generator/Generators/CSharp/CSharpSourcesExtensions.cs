@@ -29,11 +29,11 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsTemplate)
                     specializations = specializations.KeepSingleAllPointersSpecialization();
                 foreach (var specialization in specializations)
-                    gen.GenerateNativeConstructorByValue(specialization, printedClass.Type);
+                    gen.GenerateNativeConstructorByValue(specialization, printedClass);
             }
             else
             {
-                gen.GenerateNativeConstructorByValue(@class, printedClass.Type);
+                gen.GenerateNativeConstructorByValue(@class, printedClass);
             }
         }
 

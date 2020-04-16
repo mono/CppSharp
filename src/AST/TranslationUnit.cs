@@ -83,5 +83,7 @@ namespace CppSharp.AST
         {
             return visitor.VisitTranslationUnit(this);
         }
+
+        public override string ToString() => FileName;
     }
 }

@@ -19,7 +19,7 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(changedAccessOfInheritedProperty.Property, Is.EqualTo(2));
         }
         Foo.NestedAbstract a;
-        var renamedEmptyEnum = Foo.RenamedEmptyEnum.EmptyEnum1;
+        Foo.RenamedEmptyEnum.EmptyEnum1.GetHashCode();
         using (var foo = new Foo())
         {
             Bar bar = foo;
@@ -567,6 +567,10 @@ public class CommonTests : GeneratorTestFixture
             prop.StartWithVerb = 5;
 
             Assert.That(prop.Contains('a'), Is.EqualTo(prop.Contains("a")));
+
+            Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value1));
+            prop.conflict = CommonTest.TestProperties.Conflict.Value2;
+            Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value2));
         }
         using (var prop = new HasOverridenSetter())
         {
@@ -1072,5 +1076,31 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.AreEqual(2, nonPrimitiveFixedArray.NonPrimitiveTypeArray[1].Foo);
             Assert.AreEqual(3, nonPrimitiveFixedArray.NonPrimitiveTypeArray[2].Foo);
         }
+    }
+
+    [Test]
+    public void TestPointerToTypedefPointerTestMethod()
+    {
+        using (PointerToTypedefPointerTest lp = new PointerToTypedefPointerTest())
+        {
+            lp.Val = 50;
+            Common.PointerToTypedefPointerTestMethod(lp, 100);
+            Assert.AreEqual(100, lp.Val);
+        }
+    }
+
+    [Test]
+    public void TestTakeTypedefedMappedType()
+    {
+        const string @string = "string";
+        Assert.That(Common.TakeTypedefedMappedType(@string), Is.EqualTo(@string));
+    }
+
+    [Test]
+    public void TestPointerToPrimitiveTypedefPointerTestMethod()
+    {
+        int a = 50;
+        Common.PointerToPrimitiveTypedefPointerTestMethod(ref a, 100);
+        Assert.AreEqual(100, a);
     }
 }

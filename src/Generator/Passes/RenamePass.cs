@@ -47,12 +47,10 @@ namespace CppSharp.Passes
 
         public virtual bool Rename(Declaration decl, out string newName)
         {
-            var method = decl as Method;
-            if (method != null && !method.IsStatic)
+            if (decl is Method method && !method.IsStatic)
             {
                 Method rootBaseMethod;
-                var @class = method.OriginalNamespace as Class;
-                if (@class != null && @class.IsInterface)
+                if (method.OriginalNamespace is Class @class && @class.IsInterface)
                     rootBaseMethod = (Method) method.OriginalFunction;
                 else
                     rootBaseMethod = method.GetRootBaseMethod();
@@ -63,8 +61,7 @@ namespace CppSharp.Passes
                 }
             }
 
-            var property = decl as Property;
-            if (property != null && !property.IsStatic)
+            if (decl is Property property && !property.IsStatic)
             {
                 var rootBaseProperty = ((Class) property.Namespace).GetBasePropertyByName(property);
                 if (rootBaseProperty != null && rootBaseProperty != property)
@@ -72,6 +69,16 @@ namespace CppSharp.Passes
                     newName = rootBaseProperty.Name;
                     return true;
                 }
+            }
+
+            if (!(decl is Class) &&
+                !string.IsNullOrEmpty(decl.Name) && AreThereConflicts(decl, decl.Name))
+            {
+                char initialLetter = char.IsUpper(decl.Name[0]) ?
+                    char.ToLowerInvariant(decl.Name[0]) :
+                    char.ToUpperInvariant(decl.Name[0]);
+                newName = initialLetter + decl.Name.Substring(1);
+                return true;
             }
 
             newName = decl.Name;

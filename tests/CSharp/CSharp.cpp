@@ -88,6 +88,11 @@ const int& Foo::returnConstRef()
     return rename;
 }
 
+AbstractTemplate<int>* Foo::getAbstractTemplate()
+{
+    return new ImplementAbstractTemplate();
+}
+
 const int Foo::rename;
 
 int Foo::makeFunctionCall()
@@ -1638,6 +1643,11 @@ void va_listFunction(va_list v)
 char* returnCharPointer()
 {
     return 0;
+}
+
+char* takeCharPointer(char* c)
+{
+    return c;
 }
 
 char* takeConstCharRef(const char& c)

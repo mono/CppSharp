@@ -541,7 +541,8 @@ SomeNamespace::AbstractClass::~AbstractClass()
 }
 
 TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0),
-    _getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0), _virtualSetterReturnsBoolean(0)
+    _getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0),
+    _virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1)
 {
 }
 
@@ -550,7 +551,8 @@ TestProperties::TestProperties(const TestProperties& other) : Field(other.Field)
     _refToPrimitiveInSetter(other._refToPrimitiveInSetter),
     _getterAndSetterWithTheSameName(other._getterAndSetterWithTheSameName),
     _setterReturnsBoolean(other._setterReturnsBoolean),
-    _virtualSetterReturnsBoolean(other._virtualSetterReturnsBoolean)
+    _virtualSetterReturnsBoolean(other._virtualSetterReturnsBoolean),
+    _conflict(other._conflict)
 {
 }
 
@@ -691,6 +693,16 @@ bool TestProperties::contains(char c)
 bool TestProperties::contains(const char* str)
 {
     return true;
+}
+
+TestProperties::Conflict TestProperties::GetConflict()
+{
+    return _conflict;
+}
+
+void TestProperties::SetConflict(Conflict conflict)
+{
+    _conflict = conflict;
 }
 
 HasOverridenSetter::HasOverridenSetter()
@@ -1168,6 +1180,12 @@ const char* takeReturnUTF8(const char* utf8)
     return UTF8.data();
 }
 
+LPCSTR TakeTypedefedMappedType(LPCSTR string)
+{
+    UTF8 = string;
+    return UTF8.data();
+}
+
 StructWithCopyCtor::StructWithCopyCtor() {}
 StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
 
@@ -1191,4 +1209,14 @@ int NonPrimitiveType::GetFoo()
 
 TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() 
 {
+}
+
+void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
+{
+    (*(*lp)).val = valToSet;
+}
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet)
+{
+    *lp = valToSet;
 }

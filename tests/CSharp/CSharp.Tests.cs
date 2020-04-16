@@ -111,6 +111,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestTakeCharPointer()
+    {
+        char c = 'c';
+        Assert.That(*CSharp.CSharp.TakeCharPointer(&c), Is.EqualTo(c));
+    }
+
+    [Test]
     public void TestIndexer()
     {
         using (var foo = new Foo())
@@ -989,6 +996,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
                 virtualTemplate.FieldWithSpecializationType = dependentValueFields;
                 Assert.That(virtualTemplate.FieldWithSpecializationType.DependentValue, Is.EqualTo(15));
             }
+        }
+    }
+
+    [Test]
+    public void TestAbstractTemplate()
+    {
+        using (Foo foo = new Foo())
+        using (AbstractTemplate<int> abstractTemplate = foo.AbstractTemplate)
+        {
+            Assert.That(abstractTemplate.Property, Is.EqualTo(55));
+            Assert.That(abstractTemplate.CallFunction(), Is.EqualTo(65));
         }
     }
 

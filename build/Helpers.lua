@@ -25,6 +25,11 @@ newoption {
     description = "disable examples from being included"
  }
 
+newoption {
+  trigger = "debug",
+  description = "enable debug mode"
+}
+
 explicit_target_architecture = _OPTIONS["arch"]
 
 function get_mono_path()
