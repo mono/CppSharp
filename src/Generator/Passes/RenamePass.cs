@@ -71,7 +71,7 @@ namespace CppSharp.Passes
                 }
             }
 
-            if (!(decl is ClassTemplateSpecialization) &&
+            if (!(decl is Class) &&
                 !string.IsNullOrEmpty(decl.Name) && AreThereConflicts(decl, decl.Name))
             {
                 char initialLetter = char.IsUpper(decl.Name[0]) ?
