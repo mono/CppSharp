@@ -1,5 +1,7 @@
 #define Q_SIGNALS protected
 
+#define MACRO(x, y, z) x##y##z
+
 // Tests assignment of AST.Parameter properties
 void TestParameterProperties(bool a, const short& b, int* c = nullptr) {};
 
