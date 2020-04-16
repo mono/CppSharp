@@ -567,6 +567,10 @@ public class CommonTests : GeneratorTestFixture
             prop.StartWithVerb = 5;
 
             Assert.That(prop.Contains('a'), Is.EqualTo(prop.Contains("a")));
+
+            Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value1));
+            prop.conflict = CommonTest.TestProperties.Conflict.Value2;
+            Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value2));
         }
         using (var prop = new HasOverridenSetter())
         {
