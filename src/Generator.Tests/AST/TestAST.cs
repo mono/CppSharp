@@ -637,5 +637,15 @@ namespace CppSharp.Generator.Tests.AST
             function.ReturnType.Type.TryGetClass(out Class specialization);
             Assert.That(specialization.IsIncomplete, Is.False);
         }
+
+        [Test]
+        public void TestPreprocessedEntities()
+        {
+            var unit = AstContext.TranslationUnits.First(u => u.FileName == "AST.h");
+            var macro = unit.PreprocessedEntities.OfType<MacroDefinition>()
+                .FirstOrDefault(exp => exp.Name == "MACRO");
+            Assert.NotNull(macro);
+            Assert.AreEqual("(x, y, z) x##y##z", macro.Expression);
+        }
     }
 }
