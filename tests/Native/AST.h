@@ -251,3 +251,5 @@ __attribute__((deprecated)) int deprecated_func(int num);
 int non_deprecated_func(int num);
 
 TestTemplateClass<double> returnIncompleteTemplateSpecialization();
+
+#define MACRO(x, y, z) x##y##z

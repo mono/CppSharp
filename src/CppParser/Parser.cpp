@@ -3509,7 +3509,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
 
         MacroInfo* MI = P.getMacroInfo((IdentifierInfo*)II);
 
-        if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
+        if (!MI || MI->isBuiltinMacro())
             break;
 
         clang::SourceManager& SM = c->getSourceManager();
