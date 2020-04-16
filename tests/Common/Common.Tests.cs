@@ -1095,4 +1095,12 @@ This is a very long string. This is a very long string. This is a very long stri
         const string @string = "string";
         Assert.That(Common.TakeTypedefedMappedType(@string), Is.EqualTo(@string));
     }
+
+    [Test]
+    public void TestPointerToPrimitiveTypedefPointerTestMethod()
+    {
+        int a = 50;
+        Common.PointerToPrimitiveTypedefPointerTestMethod(ref a, 100);
+        Assert.AreEqual(100, a);
+    }
 }

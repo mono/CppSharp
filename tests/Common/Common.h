@@ -1616,3 +1616,7 @@ struct DLL_API PointerToTypedefPointerTest
 typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
+
+typedef int *LPINT;
+
+void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet);
