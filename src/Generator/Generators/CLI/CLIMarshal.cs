@@ -305,7 +305,7 @@ namespace CppSharp.Generators.CLI
                 Context.Return.Write("({0} == nullptr) ? nullptr : gcnew ",
                     instance);
 
-            Context.Return.Write("{0}(", QualifiedIdentifier(@class));
+            Context.Return.Write("::{0}(", QualifiedIdentifier(@class));
             Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
             Context.Return.Write("{0}{1})", instance, ownNativeInstance ? ", true" : "");
         }
@@ -433,39 +433,42 @@ namespace CppSharp.Generators.CLI
                 case ArrayType.ArraySize.Constant:
                     if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
-                        const string pinnedPtr = "__pinnedPtr";
-                        Context.Before.WriteLine("cli::pin_ptr<{0}> {1} = &{2}[0];",
-                            array.Type, pinnedPtr, Context.Parameter.Name);
-                        const string arrayPtr = "__arrayPtr";
-                        Context.Before.WriteLine("{0}* {1} = {2};", array.Type, arrayPtr, pinnedPtr);
-                        Context.Return.Write("({0} (&)[{1}]) {2}", array.Type, array.Size, arrayPtr);
+                        string arrayPtrRet = $"__{Context.ParameterIndex}ArrayPtr";
+                        Context.Before.WriteLine($"{array.Type} {arrayPtrRet}[{array.Size}];");
+
+                        Context.ReturnVarName = arrayPtrRet;
+
+                        Context.Return.Write(arrayPtrRet);
                     }
-                    else
+
+                    bool isPointerToPrimitive = array.Type.IsPointerToPrimitiveType(PrimitiveType.Void);
+                    bool isPrimitive = array.Type.IsPrimitiveType();
+                    var supportBefore = Context.Before;
+                    supportBefore.WriteLine("if ({0} != nullptr)", Context.Parameter.Name);
+                    supportBefore.WriteOpenBraceAndIndent();
+
+                    supportBefore.WriteLine($"if ({Context.Parameter.Name}->Length != {array.Size})");
+                    supportBefore.WriteOpenBraceAndIndent();
+                    supportBefore.WriteLine($"throw gcnew System::InvalidOperationException(\"Source array size must equal destination array size.\");");
+                    supportBefore.UnindentAndWriteCloseBrace();
+
+                    string nativeVal = string.Empty;
+                    if (isPointerToPrimitive)
                     {
-                        bool isPointerToPrimitive = array.Type.IsPointerToPrimitiveType(PrimitiveType.Void);
-                        bool isPrimitive = array.Type.IsPrimitiveType();
-                        var supportBefore = Context.Before;
-                        supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
-                        supportBefore.WriteOpenBraceAndIndent();
-
-                        string nativeVal = string.Empty;
-                        if (isPointerToPrimitive)
-                        {
-                            nativeVal = ".ToPointer()";
-                        }
-                        else if (!isPrimitive)
-                        {
-                            nativeVal = "->NativePtr";
-                        }
-
-                        supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                        supportBefore.WriteLineIndent("{0}[i] = {1}{2}[i]{3};",
-                            Context.ReturnVarName,
-                            isPointerToPrimitive || isPrimitive ? string.Empty : "*",
-                            Context.ArgName,
-                            nativeVal);
-                        supportBefore.UnindentAndWriteCloseBrace();   
+                        nativeVal = ".ToPointer()";
                     }
+                    else if (!isPrimitive)
+                    {
+                        nativeVal = "->NativePtr";
+                    }
+
+                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                    supportBefore.WriteLineIndent("{0}[i] = {1}{2}[i]{3};",
+                        Context.ReturnVarName,
+                        isPointerToPrimitive || isPrimitive ? string.Empty : "*",
+                        Context.Parameter.Name,
+                        nativeVal);
+                    supportBefore.UnindentAndWriteCloseBrace();                       
                     break;
                 default:
                     Context.Return.Write("null");
@@ -778,7 +781,8 @@ namespace CppSharp.Generators.CLI
                                  {
                                      ArgName = fieldRef,
                                      ParameterIndex = Context.ParameterIndex++,
-                                     MarshalVarPrefix = Context.MarshalVarPrefix
+                                     MarshalVarPrefix = Context.MarshalVarPrefix,
+                                     ReturnVarName = $"{marshalVar}.{property.Field.OriginalName}"
                                  };
 
             var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);
@@ -789,23 +793,26 @@ namespace CppSharp.Generators.CLI
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 Context.Before.Write(marshal.Context.Before);
 
-            Type type;
-            Class @class;
-            var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.TryGetClass(out @class) && @class.IsValueType) &&
-                !type.IsPrimitiveType();
-
-            if (isRef)
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Return))
             {
-                Context.Before.WriteLine("if ({0} != nullptr)", fieldRef);
-                Context.Before.Indent();
+                Type type;
+                Class @class;
+                var isRef = property.Type.IsPointerTo(out type) &&
+                    !(type.TryGetClass(out @class) && @class.IsValueType) &&
+                    !type.IsPrimitiveType();
+
+                if (isRef)
+                {
+                    Context.Before.WriteLine("if ({0} != nullptr)", fieldRef);
+                    Context.Before.Indent();
+                }
+
+                Context.Before.WriteLine("{0}.{1} = {2};", marshalVar,
+                    property.Field.OriginalName, marshal.Context.Return);
+
+                if (isRef)
+                    Context.Before.Unindent();
             }
-
-            Context.Before.WriteLine("{0}.{1} = {2};", marshalVar,
-                property.Field.OriginalName, marshal.Context.Return);
-
-            if (isRef)
-                Context.Before.Unindent();
         }
 
         public override bool VisitFieldDecl(Field field)
