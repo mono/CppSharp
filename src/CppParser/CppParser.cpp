@@ -42,7 +42,6 @@ DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 ParserResult::ParserResult()
     : library(0)
     , targetInfo(0)
-    , codeParser(0)
 {
 }
 
@@ -51,13 +50,10 @@ ParserResult::ParserResult(const ParserResult& rhs)
     , Diagnostics(rhs.Diagnostics)
     , library(rhs.library)
     , targetInfo(rhs.targetInfo)
-    , codeParser(rhs.codeParser)
 {}
 
 ParserResult::~ParserResult()
 {
-    if (codeParser)
-        delete codeParser;
     if (library)
         delete library;
 }

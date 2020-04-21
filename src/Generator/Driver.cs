@@ -131,35 +131,15 @@ namespace CppSharp
 
             var sourceFiles = Options.Modules.SelectMany(m => m.Headers);
 
-            if (ParserOptions.UnityBuild)
+            using (ParserOptions parserOptions = ParserOptions.BuildForSourceFile(
+                Options.Modules))
             {
-                using (var parserOptions = ParserOptions.BuildForSourceFile(
-                    Options.Modules))
-                {
-                    using (var result = parser.ParseSourceFiles(
-                        sourceFiles, parserOptions))
-                        Context.TargetInfo = result.TargetInfo;
-                    if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
-                        ParserOptions.TargetTriple = parserOptions.TargetTriple;
-                }
-            }
-            else
-            {
-                foreach (var sourceFile in sourceFiles)
-                {
-                    using (var parserOptions = ParserOptions.BuildForSourceFile(
-                        Options.Modules, sourceFile))
-                    {
-                        using (ParserResult result = parser.ParseSourceFile(
-                            sourceFile, parserOptions))
-                            if (Context.TargetInfo == null)
-                                Context.TargetInfo = result.TargetInfo;
-                            else if (result.TargetInfo != null)
-                                result.TargetInfo.Dispose();
-                        if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
-                            ParserOptions.TargetTriple = parserOptions.TargetTriple;
-                    }
-                }
+                using (ParserResult result = parser.ParseSourceFiles(
+                    sourceFiles, parserOptions))
+                    Context.TargetInfo = result.TargetInfo;
+
+                if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
+                    ParserOptions.TargetTriple = parserOptions.TargetTriple;
             }
 
             Context.ASTContext = ClangParser.ConvertASTContext(astContext);

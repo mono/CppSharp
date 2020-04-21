@@ -3292,7 +3292,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
         return;
     }
 
-    auto& CGInfo = GetCodeGenFunctionInfo(codeGenTypes, FD);
+    auto& CGInfo = GetCodeGenFunctionInfo(codeGenTypes.get(), FD);
     F->isReturnIndirect = CGInfo.getReturnInfo().isIndirect() ||
         CGInfo.getReturnInfo().isInAlloca();
 
@@ -4173,9 +4173,7 @@ void Parser::SetupLLVMCodegen()
         c->getHeaderSearchOpts(), c->getPreprocessorOpts(),
         c->getCodeGenOpts(), *LLVMModule, c->getDiagnostics()));
 
-    CGT.reset(new clang::CodeGen::CodeGenTypes(*CGM.get()));
-
-    codeGenTypes = CGT.get();
+    codeGenTypes.reset(new clang::CodeGen::CodeGenTypes(*CGM.get()));
 }
 
 bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
@@ -4241,7 +4239,7 @@ void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
     Parser.WalkAST(TU);
 }
 
-ParserResult* Parser::ParseHeader(const std::vector<std::string>& SourceFiles)
+ParserResult* Parser::Parse(const std::vector<std::string>& SourceFiles)
 {
     assert(opts->ASTContext && "Expected a valid ASTContext");
 
@@ -4507,9 +4505,30 @@ ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
     if (!Opts)
         return nullptr;
 
-    auto res = new ParserResult();
-    res->codeParser = new Parser(Opts);
-    return res->codeParser->ParseHeader(Opts->SourceFiles);
+    auto& Headers = Opts->SourceFiles;
+    if (Opts->unityBuild)
+    {
+        Parser parser(Opts);
+        return parser.Parse(Headers);
+    }
+
+    ParserResult* res = 0;
+    std::vector<Parser*> parsers;
+    for (size_t i = 0; i < Headers.size(); i++)
+    {
+        auto parser = new Parser(Opts);
+        parsers.push_back(parser);
+        std::vector<std::string> Header(&Headers[i], &Headers[i + 1]);
+        if (i < Headers.size() - 1)
+            delete parser->Parse(Header);
+        else
+            res = parser->Parse(Header);
+    }
+
+    for (auto parser : parsers)
+        delete parser;
+
+    return res;
 }
 
 ParserResult* ClangParser::ParseLibrary(CppParserOptions* Opts)

@@ -53,7 +53,7 @@ public:
     Parser(CppParserOptions* Opts);
 
     void Setup();
-    ParserResult* ParseHeader(const std::vector<std::string>& SourceFiles);
+    ParserResult* Parse(const std::vector<std::string>& SourceFiles);
     ParserResult* ParseLibrary(const std::string& File);
 
     void WalkAST(clang::TranslationUnitDecl* TU);
@@ -172,8 +172,7 @@ private:
     llvm::LLVMContext LLVMCtx;
     std::unique_ptr<llvm::Module> LLVMModule;
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM;
-    std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT;
-    clang::CodeGen::CodeGenTypes* codeGenTypes;
+    std::unique_ptr<clang::CodeGen::CodeGenTypes> codeGenTypes;
     std::unordered_map<const clang::TemplateTypeParmDecl*, TypeTemplateParameter*> walkedTypeTemplateParameters;
     std::unordered_map<const clang::TemplateTemplateParmDecl*, TemplateTemplateParameter*> walkedTemplateTemplateParameters;
     std::unordered_map<const clang::NonTypeTemplateParmDecl*, NonTypeTemplateParameter*> walkedNonTypeTemplateParameters;
