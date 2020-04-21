@@ -96,7 +96,6 @@ struct CS_API ParserResult
 
     NativeLibrary* library;
     ParserTargetInfo* targetInfo;
-    Parser* codeParser;
 };
 
 enum class SourceLocationKind
