@@ -1571,8 +1571,7 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
         Function = WalkMethodCXX(MD);
     else
-        Function = WalkFunction(TemplatedDecl, /*IsDependent=*/true,
-                                            /*AddToNamespace=*/false);
+        Function = WalkFunction(TemplatedDecl, /*AddToNamespace=*/false);
 
     FT = new FunctionTemplate();
     HandleDeclaration(TD, FT);
@@ -3157,12 +3156,11 @@ void Parser::MarkValidity(Function* F)
     c->getSema().getDiagnostics().setClient(existingClient, false);
 }
 
-void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
-                          bool IsDependent)
+void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
 {
     using namespace clang;
 
-    assert (FD->getBuiltinID() == 0);
+    assert(FD->getBuiltinID() == 0);
     auto FT = FD->getType()->getAs<clang::FunctionType>();
 
     auto NS = GetNamespace(FD);
@@ -3206,7 +3204,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
             HandlePreprocessedEntities(F, FTL.getParensRange(), MacroLocation::FunctionParameters);
         }
     }
-    
+
     auto ReturnType = FD->getReturnType();
     if (FD->isExternallyVisible())
         CompleteIfSpecializationType(ReturnType);
@@ -3232,7 +3230,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
         if (FTL)
         {
             auto FTInfo = FTL.castAs<FunctionTypeLoc>();
-            assert (!FTInfo.isNull());
+            assert(!FTInfo.isNull());
 
             ParamStartLoc = FTInfo.getLParenLoc();
             ResultLoc = FTInfo.getReturnLoc().getBeginLoc();
@@ -3283,7 +3281,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     const CXXMethodDecl* MD;
     if (FD->isDependentContext() ||
         ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
-         !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext()))) ||
+            !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext()))) ||
         !CanCheckCodeGenInfo(c->getSema(), FD->getReturnType().getTypePtr()) ||
         std::any_of(FD->parameters().begin(), FD->parameters().end(),
             [this](auto* P) { return !CanCheckCodeGenInfo(c->getSema(), P->getType().getTypePtr()); }))
@@ -3307,8 +3305,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F,
     F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
 }
 
-Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool IsDependent,
-                                     bool AddToNamespace)
+Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool AddToNamespace)
 {
     using namespace clang;
 
@@ -3328,7 +3325,7 @@ Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool IsDependent,
     if (AddToNamespace)
         NS->Functions.push_back(F);
 
-    WalkFunction(FD, F, IsDependent);
+    WalkFunction(FD, F);
 
     return F;
 }

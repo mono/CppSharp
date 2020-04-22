@@ -73,8 +73,7 @@ private:
     Declaration* WalkDeclarationDef(clang::Decl* D);
     Enumeration* WalkEnum(const clang::EnumDecl* ED);
 	Enumeration::Item* WalkEnumItem(clang::EnumConstantDecl* ECD);
-    Function* WalkFunction(const clang::FunctionDecl* FD, bool IsDependent = false,
-        bool AddToNamespace = true);
+    Function* WalkFunction(const clang::FunctionDecl* FD, bool AddToNamespace = true);
     void EnsureCompleteRecord(const clang::RecordDecl* Record, DeclarationContext* NS, Class* RC);
     Class* GetRecord(const clang::RecordDecl* Record, bool& IsComplete);
     Class* WalkRecord(const clang::RecordDecl* Record);
@@ -137,8 +136,7 @@ private:
     void SetBody(const clang::FunctionDecl* FD, Function* F);
     std::stack<clang::Scope> GetScopesFor(clang::FunctionDecl* FD);
     void MarkValidity(Function* F);
-    void WalkFunction(const clang::FunctionDecl* FD, Function* F,
-        bool IsDependent = false);
+    void WalkFunction(const clang::FunctionDecl* FD, Function* F);
     void HandlePreprocessedEntities(Declaration* Decl);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
                                     MacroLocation macroLocation = MacroLocation::Unknown);
