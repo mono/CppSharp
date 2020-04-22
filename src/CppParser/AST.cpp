@@ -57,6 +57,29 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
+static void deleteExpression(ExpressionObsolete* expression)
+{
+    if (expression)
+    {
+        // HACK: see https://github.com/mono/CppSharp/issues/598
+        switch (expression->_class)
+        {
+        case StatementClassObsolete::BinaryOperator:
+            delete static_cast<BinaryOperatorObsolete*>(expression);
+            break;
+        case StatementClassObsolete::CallExprClass:
+            delete static_cast<CallExprObsolete*>(expression);
+            break;
+        case StatementClassObsolete::CXXConstructExprClass:
+            delete static_cast<CXXConstructExprObsolete*>(expression);
+            break;
+        default:
+            delete expression;
+            break;
+        }
+    }
+}
+
 Type::Type(TypeKind kind) : kind(kind) {}
 Type::Type(const Type& rhs) : kind(rhs.kind), isDependent(rhs.isDependent) {}
 
@@ -144,7 +167,10 @@ NonTypeTemplateParameter::NonTypeTemplateParameter(const NonTypeTemplateParamete
 {
 }
 
-NonTypeTemplateParameter::~NonTypeTemplateParameter() {}
+NonTypeTemplateParameter::~NonTypeTemplateParameter()
+{
+    deleteExpression(defaultArgument);
+}
 
 TemplateArgument::TemplateArgument() : declaration(0), integral(0) {}
 
@@ -578,8 +604,8 @@ BinaryOperatorObsolete::BinaryOperatorObsolete(const std::string& str, Expressio
 
 BinaryOperatorObsolete::~BinaryOperatorObsolete()
 {
-    delete LHS;
-    delete RHS;
+    deleteExpression(LHS);
+    deleteExpression(RHS);
 }
 
 
@@ -589,7 +615,7 @@ CallExprObsolete::CallExprObsolete(const std::string& str, Declaration* decl)
 CallExprObsolete::~CallExprObsolete()
 {
     for (auto& arg : Arguments)
-        delete arg;
+        deleteExpression(arg);
 }
 
 DEF_VECTOR(CallExprObsolete, ExpressionObsolete*, Arguments)
@@ -600,7 +626,7 @@ CXXConstructExprObsolete::CXXConstructExprObsolete(const std::string& str, Decla
 CXXConstructExprObsolete::~CXXConstructExprObsolete()
 {
     for (auto& arg : Arguments)
-        delete arg;
+        deleteExpression(arg);
 }
 
 DEF_VECTOR(CXXConstructExprObsolete, ExpressionObsolete*, Arguments)
@@ -616,25 +642,7 @@ Parameter::Parameter()
 
 Parameter::~Parameter()
 {
-    if (defaultArgument)
-    {
-        // HACK: see https://github.com/mono/CppSharp/issues/598
-        switch (defaultArgument->_class)
-        {
-        case StatementClassObsolete::BinaryOperator:
-            delete static_cast<BinaryOperatorObsolete*>(defaultArgument);
-            break;
-        case StatementClassObsolete::CallExprClass:
-            delete static_cast<CallExprObsolete*>(defaultArgument);
-            break;
-        case StatementClassObsolete::CXXConstructExprClass:
-            delete static_cast<CXXConstructExprObsolete*>(defaultArgument);
-            break;
-        default:
-            delete defaultArgument;
-            break;
-        }
-    }
+    deleteExpression(defaultArgument);
 }
 
 Function::Function() 
