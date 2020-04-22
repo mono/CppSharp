@@ -1571,7 +1571,7 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
         Function = WalkMethodCXX(MD);
     else
-        Function = WalkFunction(TemplatedDecl, /*AddToNamespace=*/false);
+        Function = WalkFunction(TemplatedDecl);
 
     FT = new FunctionTemplate();
     HandleDeclaration(TD, FT);
@@ -3304,7 +3304,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
     F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
 }
 
-Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool AddToNamespace)
+Function* Parser::WalkFunction(const clang::FunctionDecl* FD)
 {
     using namespace clang;
 
@@ -3320,10 +3320,7 @@ Function* Parser::WalkFunction(const clang::FunctionDecl* FD, bool AddToNamespac
 
     F = new Function();
     HandleDeclaration(FD, F);
-
-    if (AddToNamespace)
-        NS->Functions.push_back(F);
-
+    NS->Functions.push_back(F);
     WalkFunction(FD, F);
 
     return F;
