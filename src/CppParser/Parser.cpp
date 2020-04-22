@@ -1539,10 +1539,10 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
     HandleDeclaration(TD, TA);
 
     TA->name = GetDeclName(TD);
+    NS->Templates.push_back(TA);
+
     TA->TemplatedDecl = WalkDeclaration(TD->getTemplatedDecl());
     TA->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
-
-    NS->Templates.push_back(TA);
 
     return TA;
 }
