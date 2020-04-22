@@ -3209,7 +3209,6 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
     if (FD->isExternallyVisible())
         CompleteIfSpecializationType(ReturnType);
     F->returnType = GetQualifiedType(ReturnType, &RTL);
-    F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
 
     const auto& Mangled = GetDeclMangledName(FD);
     F->mangled = Mangled;
