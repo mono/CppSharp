@@ -232,7 +232,46 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            if (method.IsCopyConstructor)
+            {
+                if (!CheckNonDeletedCopyConstructor(method))
+                    return false;
+            }
+
             return base.VisitMethodDecl(method);
+        }
+
+        private static bool CheckNonDeletedCopyConstructor(Method method)
+        {
+            if (method.IsDeleted)
+            {
+                method.ExplicitlyIgnore();
+
+                Diagnostics.Debug(
+                    "Copy constructor '{0}' was ignored due to being deleted",
+                    method.QualifiedOriginalName);
+
+                return false;
+            }
+
+            //Check if base class has an implicitly deleted copy constructor
+            var baseClass = (method.Namespace as Class).Bases.FirstOrDefault()?.Class;
+            if (baseClass != null)
+            {
+                var baseCopyCtor = baseClass.Methods.Find(m => m.IsCopyConstructor);
+                if (baseCopyCtor == null || baseCopyCtor.IsDeleted)
+                {
+                    method.ExplicitlyIgnore();
+
+                    Diagnostics.Debug(
+                        "Copy constructor '{0}' was ignored due to implicitly deleted base copy constructor '{1}'",
+                        method.QualifiedOriginalName, baseClass.Name);
+
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         bool CheckIgnoredBaseOverridenMethod(Method method)
