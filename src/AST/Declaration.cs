@@ -60,7 +60,11 @@ namespace CppSharp.AST
 
                 return GenerationKind.Generate;
             }
-            set { generationKind = value; }
+
+            set
+            {
+                generationKind = value;
+            }
         }
 
         /// <summary>
