@@ -2363,20 +2363,20 @@ namespace CppSharp.Generators.CSharp
 
             var functionName = GetMethodIdentifier(method);
 
+            var printedType = method.OriginalReturnType.Visit(TypePrinter);
+
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
             else if (method.ExplicitInterfaceImpl != null)
-                Write("{0} {1}.{2}(", method.OriginalReturnType,
+                Write("{0} {1}.{2}(", printedType,
                     method.ExplicitInterfaceImpl.Name, functionName);
             else if (method.OperatorKind == CXXOperatorKind.Conversion ||
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
-                var printedType = method.OriginalReturnType.Visit(TypePrinter);
                 Write($"{functionName} {printedType}(");
             }
             else
-                Write("{0} {1}(", method.OriginalReturnType, functionName);
-
+                Write("{0} {1}(", printedType, functionName);
 
             Write(FormatMethodParameters(method.Parameters));
 
