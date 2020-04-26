@@ -13,6 +13,9 @@ namespace CppSharp.Passes
 
         public bool CheckDeclarationAccess(Declaration decl)
         {
+            if (decl.IsExplicitlyGenerated)
+                return true;
+
             switch (decl.Access)
             {
                 case AccessSpecifier.Public:
