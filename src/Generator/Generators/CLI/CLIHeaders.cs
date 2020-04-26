@@ -676,7 +676,8 @@ namespace CppSharp.Generators.CLI
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        public override void GenerateMethodSpecifier(Method method, Class @class)
+        public override void GenerateMethodSpecifier(Method method,
+            MethodSpecifierKind? kind = null)
         {
             if ((method.IsVirtual || method.IsOverride) && !method.IsOperator)
                 Write("virtual ");
@@ -712,7 +713,7 @@ namespace CppSharp.Generators.CLI
             PushBlock(BlockKind.Method, method);
             GenerateDeclarationCommon(method);
 
-            GenerateMethodSpecifier(method, method.Namespace as Class);
+            GenerateMethodSpecifier(method);
             WriteLine(";");
 
             if (method.OperatorKind == CXXOperatorKind.EqualEqual)

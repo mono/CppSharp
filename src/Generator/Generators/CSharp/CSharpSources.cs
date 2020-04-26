@@ -2340,7 +2340,8 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        public override void GenerateMethodSpecifier(Method method, Class @class)
+        public override void GenerateMethodSpecifier(Method method,
+            MethodSpecifierKind? kind = null)
         {
             bool isTemplateMethod = method.Parameters.Any(
                 p => p.Kind == ParameterKind.Extension);
@@ -2392,7 +2393,7 @@ namespace CppSharp.Generators.CSharp
                 Write(Helpers.GetAccess(method.Access));
             }
 
-            GenerateMethodSpecifier(method, @class);
+            GenerateMethodSpecifier(method);
 
             if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor && !method.IsPure)
             {
