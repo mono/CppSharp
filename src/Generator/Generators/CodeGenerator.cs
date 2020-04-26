@@ -222,7 +222,14 @@ namespace CppSharp.Generators
 
         #region Method generation
 
-        public virtual void GenerateMethodSpecifier(Method method, Class @class)
+        public enum MethodSpecifierKind
+        {
+            Declaration,
+            Definition
+        }
+
+        public virtual void GenerateMethodSpecifier(Method method,
+            MethodSpecifierKind? kind = null)
         {
         }
 

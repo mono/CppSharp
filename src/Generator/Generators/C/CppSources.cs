@@ -348,7 +348,7 @@ namespace CppSharp.Generators.Cpp
 
             PushBlock(BlockKind.Method, method);
 
-            GenerateMethodSpecifier(method, method.Namespace as Class);
+            GenerateMethodSpecifier(method);
             NewLine();
 
             var @class = method.Namespace as Class;

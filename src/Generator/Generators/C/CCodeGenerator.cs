@@ -332,10 +332,16 @@ namespace CppSharp.Generators.C
                 function.Name : function.OriginalName;
         }
 
-        public override void GenerateMethodSpecifier(Method method, Class @class)
+        public override void GenerateMethodSpecifier(Method method,
+            MethodSpecifierKind? kind = null)
         {
-            var isHeaderFile = FileExtension == "h";
-            if (isHeaderFile)
+            bool isDeclaration;
+            if (kind.HasValue)
+                isDeclaration = kind == MethodSpecifierKind.Declaration;
+            else
+                isDeclaration = FileExtension == "h";
+
+            if (isDeclaration)
             {
                 if (method.IsVirtual || method.IsOverride)
                     Write("virtual ");
@@ -363,7 +369,7 @@ namespace CppSharp.Generators.C
 
             Write(")");
 
-            if (method.IsOverride && isHeaderFile)
+            if (method.IsOverride && isDeclaration)
                 Write(" override");
         }
 
@@ -376,7 +382,7 @@ namespace CppSharp.Generators.C
         {
             PushBlock(BlockKind.Method, method);
 
-            GenerateMethodSpecifier(method, method.Namespace as Class);
+            GenerateMethodSpecifier(method);
             Write(";");
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -406,7 +412,7 @@ namespace CppSharp.Generators.C
 
         public virtual void GeneratePropertyAccessorSpecifier(Method method)
         {
-            GenerateMethodSpecifier(method, method.Namespace as Class);
+            GenerateMethodSpecifier(method);
         }
 
         public virtual void GeneratePropertyGetter(Method method)

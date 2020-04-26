@@ -546,7 +546,7 @@ namespace CppSharp.Generators.Cpp
             PushBlock(BlockKind.Method, method);
             GenerateDeclarationCommon(method);
 
-            GenerateMethodSpecifier(method, method.Namespace as Class);
+            GenerateMethodSpecifier(method);
             WriteLine(";");
 
             PopBlock(NewLineKind.BeforeNextBlock);
