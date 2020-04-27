@@ -19,7 +19,8 @@ namespace CppSharp.Passes
             cppTypePrinter = new CppTypePrinter(Context)
             {
                 ScopeKind = TypePrintScopeKind.Qualified,
-                ResolveTypedefs = true
+                ResolveTypedefs = true,
+                ResolveTypeMaps = false
             };
 
             cppTypePrinter.PushContext(TypePrinterContextKind.Native);
