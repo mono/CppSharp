@@ -32,7 +32,7 @@ CppSharp::Parser::SourceLocation::SourceLocation(unsigned int ID)
 CppSharp::Parser::SourceLocation::operator CppSharp::Parser::SourceLocation(unsigned int ID)
 {
     auto __ret = (::CppSharp::CppParser::SourceLocation) ID;
-    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&__ret);
+    return ::CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&__ret);
 }
 
 unsigned int CppSharp::Parser::SourceLocation::ID::get()
@@ -93,7 +93,7 @@ void CppSharp::Parser::SourceRange::__Instance::set(System::IntPtr object)
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::SourceRange::BeginLoc::get()
 {
-    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::SourceRange*)NativePtr)->beginLoc);
+    return ::CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::SourceRange*)NativePtr)->beginLoc);
 }
 
 void CppSharp::Parser::SourceRange::BeginLoc::set(CppSharp::Parser::SourceLocation value)
@@ -105,7 +105,7 @@ void CppSharp::Parser::SourceRange::BeginLoc::set(CppSharp::Parser::SourceLocati
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::SourceRange::EndLoc::get()
 {
-    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::SourceRange*)NativePtr)->endLoc);
+    return ::CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::SourceRange*)NativePtr)->endLoc);
 }
 
 void CppSharp::Parser::SourceRange::EndLoc::set(CppSharp::Parser::SourceLocation value)

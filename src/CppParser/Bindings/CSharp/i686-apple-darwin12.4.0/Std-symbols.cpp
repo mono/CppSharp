@@ -2,6 +2,7 @@
 #define _LIBCPP_HIDE_FROM_ABI
 
 #include <string>
+#include <new>
 
 template std::allocator<char>::allocator() noexcept;
 template std::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string();
