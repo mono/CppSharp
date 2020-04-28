@@ -1218,7 +1218,7 @@ namespace CppSharp.Generators.CLI
 
             if (isRef)
             {
-                var typePrinter = new CppTypePrinter(Context);
+                var typePrinter = new CppTypePrinter(Context) { ResolveTypeMaps = false };
                 var type = paramType.Visit(typePrinter);
 
                 if (param.IsInOut)
