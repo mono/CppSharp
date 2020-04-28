@@ -491,7 +491,11 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestPrintingConstPointerWithConstType()
         {
-            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
+            var cppTypePrinter = new CppTypePrinter(Context)
+            {
+                ScopeKind = TypePrintScopeKind.Qualified,
+                ResolveTypeMaps = false
+            };
             var builtin = new BuiltinType(PrimitiveType.Char);
             var pointee = new QualifiedType(builtin, new TypeQualifiers { IsConst = true });
             var pointer = new QualifiedType(new PointerType(pointee), new TypeQualifiers { IsConst = true });

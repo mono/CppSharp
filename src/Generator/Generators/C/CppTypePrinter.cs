@@ -127,6 +127,9 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
         {
+            if (FindTypeMap(pointer, out TypePrinterResult result))
+                return result;
+
             var pointeeType = pointer.Pointee.Visit(this, pointer.QualifiedPointee.Qualifiers);
             if (pointeeType.TypeMap != null)
                 return pointeeType;
