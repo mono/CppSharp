@@ -1609,10 +1609,7 @@ namespace CppSharp.Generators.CSharp
 
         private void AssignNewVTableEntries(Class @class, string table)
         {
-            int size = Context.ParserOptions.IsMicrosoftAbi ?
-                @class.Layout.VTablePointers.Count : 1;
-
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
             {
                 var offset = @class.Layout.VTablePointers[i].Offset;
                 WriteLine($"*(void**) ({Helpers.InstanceIdentifier} + {offset}) = {table}[{i}];");
@@ -1625,14 +1622,8 @@ namespace CppSharp.Generators.CSharp
                 @class = @class.Specializations[0];
 
             Write("new void*[] { ");
-
-            if (Context.ParserOptions.IsMicrosoftAbi)
-                Write(string.Join(", ", @class.Layout.VTablePointers.Select(
-                    v => $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})")));
-            else
-                Write($@"*(void**) ({Helpers.InstanceIdentifier} + {
-                    @class.Layout.VTablePointers[0].Offset})");
-
+            Write(string.Join(", ", @class.Layout.VTablePointers.Select(
+                v => $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})")));
             WriteLine(" };");
         }
 
@@ -1660,19 +1651,25 @@ namespace CppSharp.Generators.CSharp
             bool destructorOnly)
         {
             var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
-            WriteLine($"{managedVTables} = new void*[1];");
+            WriteLine($"{managedVTables} = new void*[{@class.Layout.VTablePointers.Count}];");
 
             string suffix = destructorOnly ? "_dtor" : string.Empty;
             int size = @class.Layout.Layout.Components.Count;
             uint pointerSize = Context.TargetInfo.PointerWidth / 8;
             WriteLine($"var vtptr{suffix} = Marshal.AllocHGlobal({size} * {pointerSize});");
 
-            WriteLine($@"var vfptr{suffix}0 = vtptr{suffix} + {
-                VTables.ItaniumOffsetToTopAndRTTI} * {pointerSize};");
-            WriteLine($"{managedVTables}[0] = vfptr{suffix}0.ToPointer();");
+            for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
+            {
+                WriteLine($@"var vfptr{suffix}{i} = vtptr{suffix} + {
+                    VTables.ItaniumOffsetToTopAndRTTI} * {pointerSize};");
+                WriteLine($"{managedVTables}[{i}] = vfptr{suffix}{i}.ToPointer();");
+            }
 
-            AllocateNewVTableEntries(@class.Layout.Layout.Components,
-                wrappedEntries, @class.Layout.VTablePointers[0].Offset, 0, destructorOnly);
+            for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
+            {
+                AllocateNewVTableEntries(@class.Layout.Layout.Components,
+                    wrappedEntries, @class.Layout.VTablePointers[i].Offset, i, destructorOnly);
+            }
         }
 
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
@@ -2098,13 +2095,9 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
                     ClassLayout layout = (@class.IsDependent ? @class.Specializations[0] : @class).Layout;
-                    if (Context.ParserOptions.IsMicrosoftAbi)
-                        for (var i = 0; i < layout.VTablePointers.Count; i++)
-                            WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                                layout.VTablePointers[i].Name} = new global::System.IntPtr(__OriginalVTables[{i}]);");
-                    else
+                    for (var i = 0; i < layout.VTablePointers.Count; i++)
                         WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                            layout.VTablePointers[0].Name} = new global::System.IntPtr(__OriginalVTables[0]);");
+                            layout.VTablePointers[i].Name} = new global::System.IntPtr(__OriginalVTables[{i}]);");
                 }
             }
 
