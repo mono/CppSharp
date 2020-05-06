@@ -380,6 +380,8 @@ namespace CppSharp.Generators.CLI
             WriteLine("static {0}^ {1}(::System::IntPtr native);",
                 @class.Name, Helpers.CreateInstanceIdentifier);
 
+            WriteLine($"static {@class.Name}^ {Helpers.CreateInstanceIdentifier}(::System::IntPtr native, bool {Helpers.OwnsNativeInstanceIdentifier});");
+
             foreach (var ctor in @class.Constructors)
             {
                 if (ASTUtils.CheckIgnoreMethod(ctor) || FunctionIgnored(ctor))

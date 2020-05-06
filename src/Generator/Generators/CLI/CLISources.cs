@@ -670,18 +670,21 @@ namespace CppSharp.Generators.CLI
 
             UnindentAndWriteCloseBrace();
 
+            string createInstanceParams = withOwnNativeInstanceParam ? $"::System::IntPtr native, bool {Helpers.OwnsNativeInstanceIdentifier}" : "::System::IntPtr native";
+            string createInstanceParamsValues = withOwnNativeInstanceParam ? $"({nativeType}) native.ToPointer(), {Helpers.OwnsNativeInstanceIdentifier}" : $"({nativeType}) native.ToPointer()";
+
+            NewLine();
+            WriteLine($"{qualifiedIdentifier}^ {qualifiedIdentifier}::{Helpers.CreateInstanceIdentifier}({createInstanceParams})");
+
+            WriteOpenBraceAndIndent();
+
+            WriteLine($"return gcnew ::{qualifiedIdentifier}({createInstanceParamsValues});");
+
+            UnindentAndWriteCloseBrace();
+            NewLine();
+
             if (!withOwnNativeInstanceParam)
             {
-                NewLine();
-                WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
-
-                WriteOpenBraceAndIndent();
-
-                WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
-
-                UnindentAndWriteCloseBrace();
-                NewLine();
-
                 GenerateClassConstructor(@class, true);
             }
         }
