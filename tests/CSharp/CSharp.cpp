@@ -865,6 +865,50 @@ AbstractWithProperty::~AbstractWithProperty()
 {
 }
 
+SB::SB()
+{
+}
+
+SB::~SB()
+{
+}
+
+int SB::f()
+{
+    return 5;
+}
+
+Der::Der()
+{
+}
+
+Der::~Der()
+{
+}
+
+int Der::derf()
+{
+    return 55;
+}
+
+HasDer::HasDer()
+{
+}
+
+HasDer::~HasDer()
+{
+}
+
+void HasDer::setDer(Der* value)
+{
+    der = value;
+}
+
+int HasDer::callDer()
+{
+    return der->f();
+}
+
 IgnoredType PropertyWithIgnoredType::ignoredType()
 {
     return _ignoredType;

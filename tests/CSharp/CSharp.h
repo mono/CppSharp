@@ -537,6 +537,33 @@ class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 {
 };
 
+class DLL_API SB
+{
+public:
+    SB();
+    ~SB();
+    virtual int f();
+};
+
+class DLL_API Der : public Foo, public SB
+{
+public:
+    Der();
+    ~Der();
+    virtual int derf();
+};
+
+class DLL_API HasDer
+{
+public:
+    HasDer();
+    ~HasDer();
+    void setDer(Der* value);
+    int callDer();
+private:
+    Der* der = 0;
+};
+
 class DLL_API PropertyWithIgnoredType
 {
 public:

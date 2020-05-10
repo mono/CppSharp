@@ -102,6 +102,24 @@ public unsafe class CSharpTests : GeneratorTestFixture
 #pragma warning restore 0219
     }
 
+    class MyClass : Der
+    {
+        public override int F => 10;
+    }
+
+    [Test]
+    public void TestDer()
+    {
+        using (var der = new MyClass())
+        {
+            using (var hasDer = new HasDer())
+            {
+                hasDer.SetDer(der);
+                Assert.That(hasDer.CallDer(), Is.EqualTo(10));
+            }
+        }
+    }
+
     [Test]
     public void TestReturnCharPointer()
     {
