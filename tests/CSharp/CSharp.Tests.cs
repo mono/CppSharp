@@ -102,6 +102,24 @@ public unsafe class CSharpTests : GeneratorTestFixture
 #pragma warning restore 0219
     }
 
+    private class OverriddenInManaged : Baz
+    {
+        public override int Type => 10;
+    }
+
+    [Test]
+    public void TestDer()
+    {
+        using (var der = new OverriddenInManaged())
+        {
+            using (var hasDer = new HasOverriddenInManaged())
+            {
+                hasDer.SetOverriddenInManaged(der);
+                Assert.That(hasDer.CallOverriddenInManaged(), Is.EqualTo(10));
+            }
+        }
+    }
+
     [Test]
     public void TestReturnCharPointer()
     {

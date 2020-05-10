@@ -161,6 +161,7 @@ public:
     int takesQux(const Qux& qux);
     Qux returnQux();
     void setMethod(ProtectedNestedEnum value);
+    int type() const override;
 
     typedef bool (*FunctionTypedef)(const void *);
     FunctionTypedef functionTypedef;
@@ -535,6 +536,17 @@ class DLL_API IgnoredType
 
 class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 {
+};
+
+class DLL_API HasOverriddenInManaged
+{
+public:
+    HasOverriddenInManaged();
+    ~HasOverriddenInManaged();
+    void setOverriddenInManaged(Baz *value);
+    int callOverriddenInManaged();
+private:
+    Baz* overriddenInManaged = 0;
 };
 
 class DLL_API PropertyWithIgnoredType

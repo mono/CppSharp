@@ -329,6 +329,11 @@ void Baz::setMethod(ProtectedNestedEnum value)
 {
 }
 
+int Baz::type() const
+{
+    return -1;
+}
+
 AbstractProprietor::~AbstractProprietor()
 {
 }
@@ -863,6 +868,24 @@ void HasOverridesWithIncreasedAccess::differentIncreasedAccessOverride()
 
 AbstractWithProperty::~AbstractWithProperty()
 {
+}
+
+HasOverriddenInManaged::HasOverriddenInManaged()
+{
+}
+
+HasOverriddenInManaged::~HasOverriddenInManaged()
+{
+}
+
+void HasOverriddenInManaged::setOverriddenInManaged(Baz* value)
+{
+    overriddenInManaged = value;
+}
+
+int HasOverriddenInManaged::callOverriddenInManaged()
+{
+    return overriddenInManaged->type();
 }
 
 IgnoredType PropertyWithIgnoredType::ignoredType()
