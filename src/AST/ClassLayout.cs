@@ -165,7 +165,9 @@ namespace CppSharp.AST
             {
                 if (vTablePointers == null)
                 {
-                    vTablePointers = new List<LayoutField>(Fields.Where(f => f.IsVTablePtr));
+                    vTablePointers = ABI == CppAbi.Microsoft ?
+                        new List<LayoutField>(Fields.Where(f => f.IsVTablePtr)) :
+                        new List<LayoutField> { Fields.First(f => f.IsVTablePtr) };
                 }
                 return vTablePointers;
             }

@@ -1609,10 +1609,7 @@ namespace CppSharp.Generators.CSharp
 
         private void AssignNewVTableEntries(Class @class, string table)
         {
-            int size = Context.ParserOptions.IsMicrosoftAbi ?
-                @class.Layout.VTablePointers.Count : 1;
-
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
             {
                 var offset = @class.Layout.VTablePointers[i].Offset;
                 WriteLine($"*(void**) ({Helpers.InstanceIdentifier} + {offset}) = {table}[{i}];");
@@ -1624,16 +1621,8 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsDependent)
                 @class = @class.Specializations[0];
 
-            Write("new void*[] { ");
-
-            if (Context.ParserOptions.IsMicrosoftAbi)
-                Write(string.Join(", ", @class.Layout.VTablePointers.Select(
-                    v => $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})")));
-            else
-                Write($@"*(void**) ({Helpers.InstanceIdentifier} + {
-                    @class.Layout.VTablePointers[0].Offset})");
-
-            WriteLine(" };");
+            Write($@"new void*[] {{ {string.Join(", ", @class.Layout.VTablePointers.Select(
+                v => $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})"))} }};");
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -2098,13 +2087,9 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
                     ClassLayout layout = (@class.IsDependent ? @class.Specializations[0] : @class).Layout;
-                    if (Context.ParserOptions.IsMicrosoftAbi)
-                        for (var i = 0; i < layout.VTablePointers.Count; i++)
-                            WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                                layout.VTablePointers[i].Name} = new global::System.IntPtr(__OriginalVTables[{i}]);");
-                    else
+                    for (var i = 0; i < layout.VTablePointers.Count; i++)
                         WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                            layout.VTablePointers[0].Name} = new global::System.IntPtr(__OriginalVTables[0]);");
+                            layout.VTablePointers[i].Name} = new global::System.IntPtr(__OriginalVTables[{i}]);");
                 }
             }
 
