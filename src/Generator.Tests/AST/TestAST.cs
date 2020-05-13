@@ -500,6 +500,18 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
+        public void TestPrintingConstPointerTypedef()
+        {
+            var cppTypePrinter = new CppTypePrinter(Context) { ScopeKind = TypePrintScopeKind.Qualified };
+            cppTypePrinter.PushContext(TypePrinterContextKind.Native);
+
+            var method = Context.ASTContext.FindCompleteClass("TestTypePrinting").FindMethod("ConstPointerTypedef");
+            var result = method.Parameters[0].Visit(cppTypePrinter);
+            var type = result.ToString();
+            Assert.That(type, Is.EqualTo("const MyChar*"));
+        }
+
+        [Test]
         public void TestPrintingSpecializationWithConstValue()
         {
             var template = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").First();

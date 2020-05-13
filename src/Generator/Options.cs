@@ -8,6 +8,12 @@ using CppSharp.Generators;
 
 namespace CppSharp
 {
+    public enum GenerationOutputMode
+    {
+        FilePerModule,
+        FilePerUnit
+    }
+
     public class DriverOptions
     {
         public DriverOptions()
@@ -137,7 +143,11 @@ namespace CppSharp
         /// <summary>
         /// Generates a single C# file.
         /// </summary>
+        [Obsolete("Use the more general GenerationOutputMode property instead.")]
         public bool GenerateSingleCSharpFile { get; set; } = true;
+
+        public GenerationOutputMode GenerationOutputMode { get; set; } =
+            GenerationOutputMode.FilePerUnit;
 
         /// <summary>
         /// Generates default values of arguments in the C# code.

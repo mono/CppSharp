@@ -14,6 +14,7 @@ using CppSharp.Utils;
 using Microsoft.CSharp;
 using CppSharp.Types;
 using CppSharp.Generators.Cpp;
+using CppSharp.Generators.C;
 
 namespace CppSharp
 {
@@ -36,12 +37,16 @@ namespace CppSharp
         {
             switch (kind)
             {
+                case GeneratorKind.C:
+                    return new CGenerator(Context);
                 case GeneratorKind.CPlusPlus:
                     return new CppGenerator(Context);
                 case GeneratorKind.CLI:
                     return new CLIGenerator(Context);
                 case GeneratorKind.CSharp:
                     return new CSharpGenerator(Context);
+                case GeneratorKind.NAPI:
+                    return new NAPIGenerator(Context);
             }
 
             throw new NotImplementedException();
@@ -76,6 +81,9 @@ namespace CppSharp
 
         public void SetupTypeMaps() =>
             Context.TypeMaps = new TypeMapDatabase(Context);
+
+        public void SetupDeclMaps() =>
+            Context.DeclMaps = new DeclMapDatabase(Context);
 
         void OnSourceFileParsed(IEnumerable<string> files, ParserResult result)
         {
@@ -458,6 +466,7 @@ namespace CppSharp
 
             driver.SetupPasses(library);
             driver.SetupTypeMaps();
+            driver.SetupDeclMaps();
 
             library.Preprocess(driver, driver.Context.ASTContext);
 

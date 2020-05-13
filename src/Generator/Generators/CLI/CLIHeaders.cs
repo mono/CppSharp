@@ -467,6 +467,7 @@ namespace CppSharp.Generators.CLI
                 if (!@event.IsGenerated) continue;
 
                 var cppTypePrinter = new CppTypePrinter(Context);
+                cppTypePrinter.PushContext(TypePrinterContextKind.Native);
                 var cppArgs = cppTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
                 WriteLine("private:");
@@ -804,7 +805,7 @@ namespace CppSharp.Generators.CLI
             var desugared = type.Desugar();
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
             Class @class;
-            return finalType.TryGetClass(out @class) && @class.IsIncomplete;
+            return finalType.TryGetClass(out @class) && (@class.CompleteDeclaration == null && @class.IsIncomplete); ;
         }
     }
 }

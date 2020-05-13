@@ -13,9 +13,6 @@ namespace CppSharp.Passes
 
         public bool CheckDeclarationAccess(Declaration decl)
         {
-            if (decl.IsExplicitlyGenerated)
-                return true;
-
             switch (decl.Access)
             {
                 case AccessSpecifier.Public:
@@ -78,6 +75,9 @@ namespace CppSharp.Passes
         {
             if (AlreadyVisited(decl))
                 return false;
+
+            if (decl.HasExplicitGenerationKind)
+                return true;
 
             if (decl.GenerationKind == GenerationKind.None)
                 return true;
@@ -292,8 +292,9 @@ namespace CppSharp.Passes
                 "Virtual method '{0}' was ignored due to ignored base '{1}'",
                 method.QualifiedOriginalName, ignoredBase.Name);
 
-            method.ExplicitlyIgnore();
-            return false;
+            //method.ExplicitlyIgnore();
+            //return false;
+            return true;
         }
 
         static bool HasIgnoredBaseClass(INamedDecl @override, Class @class,
@@ -541,11 +542,19 @@ namespace CppSharp.Passes
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
 
+            var isCompleteDecl = !decl.IsIncomplete || decl.CompleteDeclaration != null;
             var @class = (decl as Class);
-            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
-                !(@class is ClassTemplateSpecialization))
-                return true;
-            return !decl.IsIncomplete || decl.CompleteDeclaration != null;
+            if (@class != null && @class.IsOpaque)
+            {
+                var isPointerType = type.Desugar().IsPointer();
+                if (!isPointerType)
+                    return isCompleteDecl;
+
+                if (!@class.IsDependent && !(@class is ClassTemplateSpecialization))
+                    return true;
+            }
+
+            return isCompleteDecl;
         }
 
         private bool IsTypeIgnored(Type type)

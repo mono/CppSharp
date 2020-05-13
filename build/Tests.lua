@@ -195,6 +195,8 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 end
 
 function SetupTestProjectsCLI(name, extraFiles, suffix)
+  SetupTestGeneratorBuildEvent(name)
+
   if (not os.ishost("windows")) or (_ACTION == "netcore") then
     return
   end
@@ -207,7 +209,6 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
     clr "On"
 
     dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
-    SetupTestGeneratorBuildEvent(name)
 
     if (suffix ~= nil) then 
       nm = name .. suffix

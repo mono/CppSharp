@@ -23,6 +23,23 @@ namespace CppSharp.Generators.CSharp
             return outputs;
         }
 
+        public override GeneratorOutput GenerateModule(Module module)
+        {
+            var output = new GeneratorOutput
+            {
+                TranslationUnit = new TranslationUnit
+                {
+                    FilePath = $"{module.LibraryName}.cs",
+                    Module = module
+                },
+                Outputs = Generate(module.Units.GetGenerated())
+            };
+
+            output.Outputs[0].Process();
+
+            return output;
+        }
+
         public override bool SetupPasses()
         {
             if (Context.Options.GenerateDefaultValuesForArguments)

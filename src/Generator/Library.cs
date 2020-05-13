@@ -146,8 +146,8 @@ namespace CppSharp
         {
             var @enum = new Enumeration { Name = name };
 
-            var pattern = string.Join("|", macros);
-            var regex = new Regex(pattern);
+            var regexPattern = string.Join("|", macros.Select(pattern => $"{pattern}$"));
+            var regex = new Regex(regexPattern);
 
             int maxItems = 0;
             TranslationUnit unitToAttach = null;
@@ -186,11 +186,37 @@ namespace CppSharp
 
             if (@enum.Items.Count > 0)
             {
+                @enum.BuiltinType = new BuiltinType(GetUnderlyingTypeForEnumValue(maxValue));
+                @enum.Type = @enum.BuiltinType;
                 @enum.Namespace = unitToAttach;
+
                 unitToAttach.Declarations.Add(@enum);
             }
 
             return @enum;
+        }
+
+        private static PrimitiveType GetUnderlyingTypeForEnumValue(ulong maxValue)
+        {
+            if (maxValue < (byte)sbyte.MaxValue)
+                return PrimitiveType.Char;
+
+            if (maxValue < byte.MaxValue)
+                return PrimitiveType.Char;
+
+            if (maxValue < (ushort)short.MaxValue)
+                return PrimitiveType.Short;
+
+            if (maxValue < ushort.MaxValue)
+                return PrimitiveType.UShort;
+
+            if (maxValue < int.MaxValue)
+                return PrimitiveType.Int;
+
+            if (maxValue < uint.MaxValue)
+                return PrimitiveType.UInt;
+
+            throw new NotImplementedException();
         }
 
         #endregion

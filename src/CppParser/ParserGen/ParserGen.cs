@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Parser;
-using CppSharp.Passes;
-using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
@@ -18,6 +14,8 @@ namespace CppSharp
         internal readonly GeneratorKind Kind;
         internal readonly string Triple;
         internal readonly bool IsGnuCpp11Abi;
+
+        public static string IncludesDir => GetSourceDirectory("include");
 
         public ParserGen(GeneratorKind kind, string triple,
             bool isGnuCpp11Abi = false)
@@ -92,10 +90,32 @@ namespace CppSharp
         {
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
+            options.NoStandardIncludes = true;
 
-            var headersPath = Platform.IsLinux ? string.Empty :
-                Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
-            options.SetupLinux(headersPath);
+            if (Platform.IsLinux)
+            {
+                options.SetupLinux();
+            }
+            else
+            {
+                /*
+                options.AddDefines("_ISOMAC");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libcxx/include");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libc/include/x86_64-linux-gnu");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libc/include/x86_64-linux-any");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libc/include/any-linux-any");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libc/include/generic-glibc");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libc/glibc/include");
+                options.AddSystemIncludeDirs($"{IncludesDir}/libc/glibc");
+                options.AddSystemIncludeDirs(options.BuiltinsDir);
+                //options.AddSystemIncludeDirs($"{IncludesDir}/include");
+
+                options.AddArguments("-fgnuc-version=6.0.0");
+                options.AddArguments("-stdlib=libc++");*/
+
+                options.SetupLinux($"{IncludesDir}/linux");
+            }
+
             options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
 
@@ -103,8 +123,8 @@ namespace CppSharp
         {
             if (Platform.IsMacOS)
             {
-                options.SetupXcode();
-                return;
+                //options.SetupXcode();
+                //return;
             }
 
             options.MicrosoftMode = false;
@@ -113,10 +133,13 @@ namespace CppSharp
             var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
                 "osx");
 
-            options.AddSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
+            //IncludesDir
+
+            options.AddSystemIncludeDirs(Path.Combine(headersPath, "include", "c++", "v1"));
             options.AddSystemIncludeDirs(options.BuiltinsDir);
             options.AddSystemIncludeDirs(Path.Combine(headersPath, "include"));
             options.AddArguments("-stdlib=libc++");
+            options.Verbose = true;
         }
 
         public void SetupPasses(Driver driver)
@@ -153,6 +176,10 @@ namespace CppSharp
 
         public static void Main(string[] args)
         {
+            var useCrossHeaders = true;
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
+
             if (Platform.IsWindows)
             {
                 Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
@@ -168,20 +195,18 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
-            if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
+            if (Platform.IsMacOS || useCrossHeaders)
             {
                 Console.WriteLine("Generating the C# parser bindings for OSX...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0"));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for OSX...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0"));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin"));
                 Console.WriteLine();
             }
 
-            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
-            if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
+            if (Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu"));

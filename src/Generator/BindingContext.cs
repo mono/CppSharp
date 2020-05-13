@@ -14,7 +14,9 @@ namespace CppSharp.Generators
         public ParserTargetInfo TargetInfo { get; set; }
 
         public SymbolContext Symbols { get; }
+
         public TypeMapDatabase TypeMaps { get; set; }
+        public DeclMapDatabase DeclMaps { get; set; }
 
         public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; }
         public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; }

@@ -63,6 +63,9 @@ namespace CppSharp.AST
 
             set
             {
+                //if (this is Declaration && (this as Declaration).Name == "TryBefore")
+                  //System.Diagnostics.Debugger.Break();
+
                 generationKind = value;
             }
         }
@@ -71,6 +74,11 @@ namespace CppSharp.AST
         /// Whether the declaration should be generated.
         /// </summary>
         public virtual bool IsGenerated => GenerationKind == GenerationKind.Generate;
+
+        /// <summary>
+        /// Whether the declaration has an explicit set generation kind.
+        /// </summary>
+        public bool HasExplicitGenerationKind => generationKind.HasValue;
 
         /// <summary>
         /// Whether the declaration was explicitly set to be generated via

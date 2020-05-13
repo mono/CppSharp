@@ -1,4 +1,5 @@
 ﻿using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,9 +36,12 @@ namespace CppSharp.Generators.C
             typePrinter = new CppTypePrinter(context);
         }
 
-        public abstract override string FileExtension { get; }
+        public override string FileExtension { get; } = "h";
 
-        public abstract override void Process();
+        public override void Process()
+        {
+
+        }
 
         public ISet<CInclude> Includes = new HashSet<CInclude>();
 
@@ -369,8 +373,17 @@ namespace CppSharp.Generators.C
 
             Write(")");
 
-            if (method.IsOverride && isDeclaration)
-                Write(" override");
+            if (method.IsConst)
+                Write(" const");
+
+            if (isDeclaration)
+            {
+                if (method.IsOverride)
+                    Write(" override");
+
+                //if (method.IsPure)
+                //Write(" = 0");
+            }
         }
 
         public virtual void GenerateMethodParameters(Function function)

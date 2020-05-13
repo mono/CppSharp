@@ -163,7 +163,7 @@ namespace CppSharp.Passes
             string newName;
             if (!Rename(decl, out newName) || AreThereConflicts(decl, newName))
                 return false;
-            
+
             decl.Name = newName;
             return true;
         }
@@ -262,6 +262,16 @@ namespace CppSharp.Passes
 
             foreach (var @event in @class.Events)
                 VisitEvent(@event);
+
+            return true;
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            VisitDeclaration(@enum);
+
+            foreach (var item in @enum.Items)
+                VisitEnumItemDecl(item);
 
             return true;
         }

@@ -253,3 +253,10 @@ int non_deprecated_func(int num);
 TestTemplateClass<double> returnIncompleteTemplateSpecialization();
 
 #define MACRO(x, y, z) x##y##z
+
+typedef char MyChar;
+
+class TestTypePrinting
+{
+    void ConstPointerTypedef(const MyChar*);
+};
