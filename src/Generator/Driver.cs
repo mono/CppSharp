@@ -316,12 +316,21 @@ namespace CppSharp
                     var fileRelativePath = $"{fileBase}.{template.FileExtension}";
 
                     var file = Path.Combine(outputPath, fileRelativePath);
-                    File.WriteAllText(file, template.Generate());
+                    WriteGeneratedCodeToFile(file, template.Generate());
                     output.TranslationUnit.Module.CodeFiles.Add(file);
 
                     Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
             }
+        }
+
+        private void WriteGeneratedCodeToFile(string file, string generatedCode)
+        {
+            var fi = new FileInfo(file);
+            
+            if (!fi.Exists || fi.Length != generatedCode.Length ||
+                File.ReadAllText(file) != generatedCode)
+                File.WriteAllText(file, generatedCode);
         }
 
         private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
