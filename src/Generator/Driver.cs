@@ -330,19 +330,9 @@ namespace CppSharp
 
             // We only compare contents if the generated code length is the same as the length of the existing file. If their lengths are different then they are
             // definitely no the same so we should overwrite.
-            if (fi.Exists && fi.Length == generatedCode.Length)
-            {
-                var existingFileContent = File.ReadAllText(file);
-
-                if(!existingFileContent.Equals(generatedCode))
-                {
-                    File.WriteAllText(file, generatedCode);
-                }
-            }            
-            else
-            {
+            if (!fi.Exists || fi.Length != generatedCode.Length ||
+                File.ReadAllText(file) != generatedCode)
                 File.WriteAllText(file, generatedCode);
-            }
         }
 
         private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
