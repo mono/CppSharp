@@ -160,6 +160,13 @@ namespace CppSharp
 
         public bool UsePropertyDetectionHeuristics { get; set; } = true;
 
+        /// <summary>
+        /// Flag to indicate if we should overwrite unchanged generated code files in the <see cref="OutputDir"/>. When set to false this flag
+        /// allows incremental builds for the generated code (i.e. Visual Studio won't need to compile files if they don't change).
+        /// Defaults to true to keep existing behaviour.
+        /// </summary>
+        public bool OverwriteUnchangedOutputDirFiles { get; set; } = true;
+
         #endregion
     }
 

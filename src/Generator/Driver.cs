@@ -316,11 +316,37 @@ namespace CppSharp
                     var fileRelativePath = $"{fileBase}.{template.FileExtension}";
 
                     var file = Path.Combine(outputPath, fileRelativePath);
-                    File.WriteAllText(file, template.Generate());
+                    WriteGeneratedCodeToFile(file, template.Generate());
                     output.TranslationUnit.Module.CodeFiles.Add(file);
 
                     Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
+            }
+        }
+
+        private void WriteGeneratedCodeToFile(string file, string generatedCode)
+        {
+            var writeGeneratedCodeToFile = true;
+
+            // If caller does not want to overwrite unchanged files, then we check existing file content against the generated code and if they are the same
+            // then we don't overwrite the file.
+            if (!Options.OverwriteUnchangedOutputDirFiles)
+            {
+                var fi = new FileInfo(file);
+
+                // We only compare contents if the generated code length is the same as the length of the existing file. If their lengths are different then they are
+                // definitely no the same so we should overwrite.
+                if (fi.Exists && fi.Length == generatedCode.Length)
+                {
+                    var existingFileContent = File.ReadAllText(file);
+
+                    writeGeneratedCodeToFile = !existingFileContent.Equals(generatedCode);
+                }
+            }
+
+            if(writeGeneratedCodeToFile)
+            {
+                File.WriteAllText(file, generatedCode);
             }
         }
 
