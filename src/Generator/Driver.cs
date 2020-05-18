@@ -327,9 +327,7 @@ namespace CppSharp
         private void WriteGeneratedCodeToFile(string file, string generatedCode)
         {
             var fi = new FileInfo(file);
-
-            // We only compare contents if the generated code length is the same as the length of the existing file. If their lengths are different then they are
-            // definitely no the same so we should overwrite.
+            
             if (!fi.Exists || fi.Length != generatedCode.Length ||
                 File.ReadAllText(file) != generatedCode)
                 File.WriteAllText(file, generatedCode);
