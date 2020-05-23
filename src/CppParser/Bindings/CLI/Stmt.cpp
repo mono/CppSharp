@@ -29,6 +29,12 @@ CppSharp::Parser::AST::Stmt::Stmt(::CppSharp::CppParser::AST::Stmt* native, cons
 {
     NativePtr = native;
 }
+
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::Stmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::Stmt::~Stmt()
 {
     delete NativePtr;
@@ -134,6 +140,12 @@ CppSharp::Parser::AST::DeclStmt::DeclStmt(::CppSharp::CppParser::AST::DeclStmt* 
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::DeclStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::DeclStmt((::CppSharp::CppParser::AST::DeclStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::DeclStmt::~DeclStmt()
 {
     if (NativePtr)
@@ -243,6 +255,12 @@ CppSharp::Parser::AST::NullStmt::NullStmt(::CppSharp::CppParser::AST::NullStmt* 
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::NullStmt^ CppSharp::Parser::AST::NullStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::NullStmt((::CppSharp::CppParser::AST::NullStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::NullStmt::~NullStmt()
 {
 }
@@ -300,6 +318,12 @@ CppSharp::Parser::AST::CompoundStmt::CompoundStmt(::CppSharp::CppParser::AST::Co
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CompoundStmt^ CppSharp::Parser::AST::CompoundStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CompoundStmt((::CppSharp::CppParser::AST::CompoundStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CompoundStmt::~CompoundStmt()
 {
     if (NativePtr)
@@ -453,6 +477,12 @@ CppSharp::Parser::AST::SwitchCase::SwitchCase(::CppSharp::CppParser::AST::Switch
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::SwitchCase^ CppSharp::Parser::AST::SwitchCase::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::SwitchCase((::CppSharp::CppParser::AST::SwitchCase*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::SwitchCase::~SwitchCase()
 {
 }
@@ -538,6 +568,12 @@ CppSharp::Parser::AST::CaseStmt::CaseStmt(::CppSharp::CppParser::AST::CaseStmt* 
     : CppSharp::Parser::AST::SwitchCase((::CppSharp::CppParser::AST::SwitchCase*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CaseStmt^ CppSharp::Parser::AST::CaseStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CaseStmt((::CppSharp::CppParser::AST::CaseStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CaseStmt::~CaseStmt()
 {
 }
@@ -627,6 +663,12 @@ CppSharp::Parser::AST::DefaultStmt::DefaultStmt(::CppSharp::CppParser::AST::Defa
     : CppSharp::Parser::AST::SwitchCase((::CppSharp::CppParser::AST::SwitchCase*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::DefaultStmt^ CppSharp::Parser::AST::DefaultStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::DefaultStmt((::CppSharp::CppParser::AST::DefaultStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::DefaultStmt::~DefaultStmt()
 {
 }
@@ -674,6 +716,12 @@ CppSharp::Parser::AST::LabelStmt::LabelStmt(::CppSharp::CppParser::AST::LabelStm
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::LabelStmt^ CppSharp::Parser::AST::LabelStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::LabelStmt((::CppSharp::CppParser::AST::LabelStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::LabelStmt::~LabelStmt()
 {
 }
@@ -742,6 +790,12 @@ CppSharp::Parser::AST::AttributedStmt::AttributedStmt(::CppSharp::CppParser::AST
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::AttributedStmt^ CppSharp::Parser::AST::AttributedStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::AttributedStmt((::CppSharp::CppParser::AST::AttributedStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::AttributedStmt::~AttributedStmt()
 {
 }
@@ -799,6 +853,12 @@ CppSharp::Parser::AST::IfStmt::IfStmt(::CppSharp::CppParser::AST::IfStmt* native
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::IfStmt^ CppSharp::Parser::AST::IfStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::IfStmt((::CppSharp::CppParser::AST::IfStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::IfStmt::~IfStmt()
 {
 }
@@ -958,6 +1018,12 @@ CppSharp::Parser::AST::SwitchStmt::SwitchStmt(::CppSharp::CppParser::AST::Switch
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::SwitchStmt^ CppSharp::Parser::AST::SwitchStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::SwitchStmt((::CppSharp::CppParser::AST::SwitchStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::SwitchStmt::~SwitchStmt()
 {
 }
@@ -1075,6 +1141,12 @@ CppSharp::Parser::AST::WhileStmt::WhileStmt(::CppSharp::CppParser::AST::WhileStm
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::WhileStmt^ CppSharp::Parser::AST::WhileStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::WhileStmt((::CppSharp::CppParser::AST::WhileStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::WhileStmt::~WhileStmt()
 {
 }
@@ -1162,6 +1234,12 @@ CppSharp::Parser::AST::DoStmt::DoStmt(::CppSharp::CppParser::AST::DoStmt* native
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::DoStmt^ CppSharp::Parser::AST::DoStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::DoStmt((::CppSharp::CppParser::AST::DoStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::DoStmt::~DoStmt()
 {
 }
@@ -1253,6 +1331,12 @@ CppSharp::Parser::AST::ForStmt::ForStmt(::CppSharp::CppParser::AST::ForStmt* nat
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::ForStmt^ CppSharp::Parser::AST::ForStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::ForStmt((::CppSharp::CppParser::AST::ForStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::ForStmt::~ForStmt()
 {
 }
@@ -1374,6 +1458,12 @@ CppSharp::Parser::AST::GotoStmt::GotoStmt(::CppSharp::CppParser::AST::GotoStmt* 
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::GotoStmt^ CppSharp::Parser::AST::GotoStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::GotoStmt((::CppSharp::CppParser::AST::GotoStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::GotoStmt::~GotoStmt()
 {
 }
@@ -1433,6 +1523,12 @@ CppSharp::Parser::AST::IndirectGotoStmt::IndirectGotoStmt(::CppSharp::CppParser:
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::IndirectGotoStmt^ CppSharp::Parser::AST::IndirectGotoStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::IndirectGotoStmt((::CppSharp::CppParser::AST::IndirectGotoStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::IndirectGotoStmt::~IndirectGotoStmt()
 {
 }
@@ -1502,6 +1598,12 @@ CppSharp::Parser::AST::ContinueStmt::ContinueStmt(::CppSharp::CppParser::AST::Co
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::ContinueStmt^ CppSharp::Parser::AST::ContinueStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::ContinueStmt((::CppSharp::CppParser::AST::ContinueStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::ContinueStmt::~ContinueStmt()
 {
 }
@@ -1549,6 +1651,12 @@ CppSharp::Parser::AST::BreakStmt::BreakStmt(::CppSharp::CppParser::AST::BreakStm
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::BreakStmt^ CppSharp::Parser::AST::BreakStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::BreakStmt((::CppSharp::CppParser::AST::BreakStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::BreakStmt::~BreakStmt()
 {
 }
@@ -1596,6 +1704,12 @@ CppSharp::Parser::AST::ReturnStmt::ReturnStmt(::CppSharp::CppParser::AST::Return
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::ReturnStmt^ CppSharp::Parser::AST::ReturnStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::ReturnStmt((::CppSharp::CppParser::AST::ReturnStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::ReturnStmt::~ReturnStmt()
 {
 }
@@ -1653,6 +1767,12 @@ CppSharp::Parser::AST::AsmStmt::AsmStmt(::CppSharp::CppParser::AST::AsmStmt* nat
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::AsmStmt^ CppSharp::Parser::AST::AsmStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::AsmStmt((::CppSharp::CppParser::AST::AsmStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::AsmStmt::~AsmStmt()
 {
     if (NativePtr)
@@ -1880,6 +2000,12 @@ CppSharp::Parser::AST::GCCAsmStmt::AsmStringPiece::AsmStringPiece(::CppSharp::Cp
 {
     NativePtr = native;
 }
+
+CppSharp::Parser::AST::GCCAsmStmt::AsmStringPiece^ CppSharp::Parser::AST::GCCAsmStmt::AsmStringPiece::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::GCCAsmStmt::AsmStringPiece((::CppSharp::CppParser::AST::GCCAsmStmt::AsmStringPiece*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::GCCAsmStmt::AsmStringPiece::~AsmStringPiece()
 {
     delete NativePtr;
@@ -1974,6 +2100,12 @@ CppSharp::Parser::AST::GCCAsmStmt::GCCAsmStmt(::CppSharp::CppParser::AST::GCCAsm
     : CppSharp::Parser::AST::AsmStmt((::CppSharp::CppParser::AST::AsmStmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::GCCAsmStmt^ CppSharp::Parser::AST::GCCAsmStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::GCCAsmStmt((::CppSharp::CppParser::AST::GCCAsmStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::GCCAsmStmt::~GCCAsmStmt()
 {
     if (NativePtr)
@@ -2027,6 +2159,12 @@ CppSharp::Parser::AST::MSAsmStmt::MSAsmStmt(::CppSharp::CppParser::AST::MSAsmStm
     : CppSharp::Parser::AST::AsmStmt((::CppSharp::CppParser::AST::AsmStmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::MSAsmStmt^ CppSharp::Parser::AST::MSAsmStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::MSAsmStmt((::CppSharp::CppParser::AST::MSAsmStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::MSAsmStmt::~MSAsmStmt()
 {
     if (NativePtr)
@@ -2110,6 +2248,12 @@ CppSharp::Parser::AST::SEHExceptStmt::SEHExceptStmt(::CppSharp::CppParser::AST::
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::SEHExceptStmt^ CppSharp::Parser::AST::SEHExceptStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::SEHExceptStmt((::CppSharp::CppParser::AST::SEHExceptStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::SEHExceptStmt::~SEHExceptStmt()
 {
 }
@@ -2177,6 +2321,12 @@ CppSharp::Parser::AST::SEHFinallyStmt::SEHFinallyStmt(::CppSharp::CppParser::AST
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::SEHFinallyStmt^ CppSharp::Parser::AST::SEHFinallyStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::SEHFinallyStmt((::CppSharp::CppParser::AST::SEHFinallyStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::SEHFinallyStmt::~SEHFinallyStmt()
 {
 }
@@ -2234,6 +2384,12 @@ CppSharp::Parser::AST::SEHTryStmt::SEHTryStmt(::CppSharp::CppParser::AST::SEHTry
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::SEHTryStmt^ CppSharp::Parser::AST::SEHTryStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::SEHTryStmt((::CppSharp::CppParser::AST::SEHTryStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::SEHTryStmt::~SEHTryStmt()
 {
 }
@@ -2331,6 +2487,12 @@ CppSharp::Parser::AST::SEHLeaveStmt::SEHLeaveStmt(::CppSharp::CppParser::AST::SE
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::SEHLeaveStmt^ CppSharp::Parser::AST::SEHLeaveStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::SEHLeaveStmt((::CppSharp::CppParser::AST::SEHLeaveStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::SEHLeaveStmt::~SEHLeaveStmt()
 {
 }
@@ -2380,6 +2542,12 @@ CppSharp::Parser::AST::CapturedStmt::Capture::Capture(::CppSharp::CppParser::AST
 {
     NativePtr = native;
 }
+
+CppSharp::Parser::AST::CapturedStmt::Capture^ CppSharp::Parser::AST::CapturedStmt::Capture::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CapturedStmt::Capture((::CppSharp::CppParser::AST::CapturedStmt::Capture*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CapturedStmt::Capture::~Capture()
 {
     delete NativePtr;
@@ -2486,6 +2654,12 @@ CppSharp::Parser::AST::CapturedStmt::CapturedStmt(::CppSharp::CppParser::AST::Ca
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CapturedStmt^ CppSharp::Parser::AST::CapturedStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CapturedStmt((::CppSharp::CppParser::AST::CapturedStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CapturedStmt::~CapturedStmt()
 {
     if (NativePtr)
@@ -2595,6 +2769,12 @@ CppSharp::Parser::AST::CXXCatchStmt::CXXCatchStmt(::CppSharp::CppParser::AST::CX
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CXXCatchStmt^ CppSharp::Parser::AST::CXXCatchStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CXXCatchStmt((::CppSharp::CppParser::AST::CXXCatchStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CXXCatchStmt::~CXXCatchStmt()
 {
 }
@@ -2664,6 +2844,12 @@ CppSharp::Parser::AST::CXXTryStmt::CXXTryStmt(::CppSharp::CppParser::AST::CXXTry
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CXXTryStmt^ CppSharp::Parser::AST::CXXTryStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CXXTryStmt((::CppSharp::CppParser::AST::CXXTryStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CXXTryStmt::~CXXTryStmt()
 {
 }
@@ -2731,6 +2917,12 @@ CppSharp::Parser::AST::CXXForRangeStmt::CXXForRangeStmt(::CppSharp::CppParser::A
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CXXForRangeStmt^ CppSharp::Parser::AST::CXXForRangeStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CXXForRangeStmt((::CppSharp::CppParser::AST::CXXForRangeStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CXXForRangeStmt::~CXXForRangeStmt()
 {
 }
@@ -2904,6 +3096,12 @@ CppSharp::Parser::AST::MSDependentExistsStmt::MSDependentExistsStmt(::CppSharp::
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::MSDependentExistsStmt^ CppSharp::Parser::AST::MSDependentExistsStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::MSDependentExistsStmt((::CppSharp::CppParser::AST::MSDependentExistsStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::MSDependentExistsStmt::~MSDependentExistsStmt()
 {
 }
@@ -2983,6 +3181,12 @@ CppSharp::Parser::AST::CoroutineBodyStmt::CtorArgs::CtorArgs(::CppSharp::CppPars
 {
     NativePtr = native;
 }
+
+CppSharp::Parser::AST::CoroutineBodyStmt::CtorArgs^ CppSharp::Parser::AST::CoroutineBodyStmt::CtorArgs::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CoroutineBodyStmt::CtorArgs((::CppSharp::CppParser::AST::CoroutineBodyStmt::CtorArgs*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CoroutineBodyStmt::CtorArgs::~CtorArgs()
 {
     delete NativePtr;
@@ -3026,6 +3230,12 @@ CppSharp::Parser::AST::CoroutineBodyStmt::CoroutineBodyStmt(::CppSharp::CppParse
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CoroutineBodyStmt^ CppSharp::Parser::AST::CoroutineBodyStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CoroutineBodyStmt((::CppSharp::CppParser::AST::CoroutineBodyStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CoroutineBodyStmt::~CoroutineBodyStmt()
 {
 }
@@ -3191,6 +3401,12 @@ CppSharp::Parser::AST::CoreturnStmt::CoreturnStmt(::CppSharp::CppParser::AST::Co
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
 {
 }
+
+CppSharp::Parser::AST::CoreturnStmt^ CppSharp::Parser::AST::CoreturnStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::CoreturnStmt((::CppSharp::CppParser::AST::CoreturnStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::AST::CoreturnStmt::~CoreturnStmt()
 {
 }

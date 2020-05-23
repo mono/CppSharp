@@ -131,7 +131,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.NativeLibrary> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.NativeLibrary>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -313,7 +312,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Comment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Comment>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -448,11 +446,8 @@ namespace CppSharp
                 }
 
                 protected BlockContentComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BlockContentComment()
@@ -560,11 +555,8 @@ namespace CppSharp
                 }
 
                 protected FullComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FullComment()
@@ -688,11 +680,8 @@ namespace CppSharp
                 }
 
                 protected InlineContentComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public InlineContentComment()
@@ -816,11 +805,8 @@ namespace CppSharp
                 }
 
                 protected ParagraphComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ParagraphComment()
@@ -990,7 +976,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BlockCommandComment.Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BlockCommandComment.Argument>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -1102,11 +1087,8 @@ namespace CppSharp
                 }
 
                 protected BlockCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BlockCommandComment()
@@ -1289,11 +1271,8 @@ namespace CppSharp
                 }
 
                 protected ParamCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ParamCommandComment()
@@ -1438,11 +1417,8 @@ namespace CppSharp
                 }
 
                 protected TParamCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TParamCommandComment()
@@ -1561,11 +1537,8 @@ namespace CppSharp
                 }
 
                 protected VerbatimBlockLineComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VerbatimBlockLineComment()
@@ -1698,11 +1671,8 @@ namespace CppSharp
                 }
 
                 protected VerbatimBlockComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VerbatimBlockComment()
@@ -1835,11 +1805,8 @@ namespace CppSharp
                 }
 
                 protected VerbatimLineComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VerbatimLineComment()
@@ -1983,7 +1950,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.InlineCommandComment.Argument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.InlineCommandComment.Argument>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -2095,11 +2061,8 @@ namespace CppSharp
                 }
 
                 protected InlineCommandComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public InlineCommandComment()
@@ -2244,11 +2207,8 @@ namespace CppSharp
                 }
 
                 protected HTMLTagComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public HTMLTagComment()
@@ -2367,7 +2327,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -2493,11 +2452,8 @@ namespace CppSharp
                 }
 
                 protected HTMLStartTagComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public HTMLStartTagComment()
@@ -2633,11 +2589,8 @@ namespace CppSharp
                 }
 
                 protected HTMLEndTagComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public HTMLEndTagComment()
@@ -2744,11 +2697,8 @@ namespace CppSharp
                 }
 
                 protected TextComment(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TextComment()
@@ -2836,7 +2786,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.RawComment> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.RawComment>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -3087,7 +3036,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.SourceRange> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.SourceRange>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
@@ -3291,7 +3239,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Type> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Type>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -3416,7 +3363,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.TypeQualifiers> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.TypeQualifiers>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -3547,7 +3493,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.QualifiedType> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.QualifiedType>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -3698,11 +3643,8 @@ namespace CppSharp
                 }
 
                 protected TagType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TagType()
@@ -3812,11 +3754,8 @@ namespace CppSharp
                 }
 
                 protected ArrayType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ArrayType()
@@ -3979,11 +3918,8 @@ namespace CppSharp
                 }
 
                 protected FunctionType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FunctionType()
@@ -4157,11 +4093,8 @@ namespace CppSharp
                 }
 
                 protected PointerType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public PointerType()
@@ -4264,11 +4197,8 @@ namespace CppSharp
                 }
 
                 protected MemberPointerType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MemberPointerType()
@@ -4358,11 +4288,8 @@ namespace CppSharp
                 }
 
                 protected TypedefType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypedefType()
@@ -4458,11 +4385,8 @@ namespace CppSharp
                 }
 
                 protected AttributedType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AttributedType()
@@ -4573,11 +4497,8 @@ namespace CppSharp
                 }
 
                 protected DecayedType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DecayedType()
@@ -4690,7 +4611,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.TemplateArgument> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.TemplateArgument>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -4898,11 +4818,8 @@ namespace CppSharp
                 }
 
                 protected TemplateSpecializationType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateSpecializationType()
@@ -5080,11 +4997,8 @@ namespace CppSharp
                 }
 
                 protected DependentTemplateSpecializationType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DependentTemplateSpecializationType()
@@ -5230,11 +5144,8 @@ namespace CppSharp
                 }
 
                 protected TemplateParameterType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateParameterType()
@@ -5382,11 +5293,8 @@ namespace CppSharp
                 }
 
                 protected TemplateParameterSubstitutionType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateParameterSubstitutionType()
@@ -5497,11 +5405,8 @@ namespace CppSharp
                 }
 
                 protected InjectedClassNameType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public InjectedClassNameType()
@@ -5617,11 +5522,8 @@ namespace CppSharp
                 }
 
                 protected DependentNameType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DependentNameType()
@@ -5735,11 +5637,8 @@ namespace CppSharp
                 }
 
                 protected PackExpansionType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public PackExpansionType()
@@ -5817,11 +5716,8 @@ namespace CppSharp
                 }
 
                 protected UnaryTransformType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnaryTransformType()
@@ -5926,11 +5822,8 @@ namespace CppSharp
                 }
 
                 protected UnresolvedUsingType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnresolvedUsingType()
@@ -6026,11 +5919,8 @@ namespace CppSharp
                 }
 
                 protected VectorType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VectorType()
@@ -6133,11 +6023,8 @@ namespace CppSharp
                 }
 
                 protected BuiltinType(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BuiltinType()
@@ -6498,7 +6385,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Declaration> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Declaration>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -7231,11 +7117,8 @@ namespace CppSharp
                 }
 
                 protected DeclarationContext(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DeclarationContext(global::CppSharp.Parser.AST.DeclarationKind kind)
@@ -7709,11 +7592,8 @@ namespace CppSharp
                 }
 
                 protected TypedefNameDecl(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypedefNameDecl(global::CppSharp.Parser.AST.DeclarationKind kind)
@@ -7883,11 +7763,8 @@ namespace CppSharp
                 }
 
                 protected TypedefDecl(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypedefDecl()
@@ -8040,11 +7917,8 @@ namespace CppSharp
                 }
 
                 protected TypeAlias(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypeAlias()
@@ -8212,11 +8086,8 @@ namespace CppSharp
                 }
 
                 protected Friend(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Friend()
@@ -8305,7 +8176,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.StatementObsolete> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.StatementObsolete>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -8483,11 +8353,8 @@ namespace CppSharp
                 }
 
                 protected ExpressionObsolete(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ExpressionObsolete(string str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::CppSharp.Parser.AST.Declaration decl)
@@ -8594,11 +8461,8 @@ namespace CppSharp
                 }
 
                 protected BinaryOperatorObsolete(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BinaryOperatorObsolete(string str, global::CppSharp.Parser.AST.ExpressionObsolete lhs, global::CppSharp.Parser.AST.ExpressionObsolete rhs, string opcodeStr)
@@ -8774,11 +8638,8 @@ namespace CppSharp
                 }
 
                 protected CallExprObsolete(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CallExprObsolete(string str, global::CppSharp.Parser.AST.Declaration decl)
@@ -8933,11 +8794,8 @@ namespace CppSharp
                 }
 
                 protected CXXConstructExprObsolete(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXConstructExprObsolete(string str, global::CppSharp.Parser.AST.Declaration decl)
@@ -9141,11 +8999,8 @@ namespace CppSharp
                 }
 
                 protected Parameter(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Parameter()
@@ -9495,11 +9350,8 @@ namespace CppSharp
                 }
 
                 protected Function(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Function()
@@ -10095,11 +9947,8 @@ namespace CppSharp
                 }
 
                 protected Method(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Method()
@@ -10580,11 +10429,8 @@ namespace CppSharp
                     }
 
                     protected Item(void* native, bool skipVTables = false)
-                        : base((void*) null)
+                        : base((void*) native)
                     {
-                        if (native == null)
-                            return;
-                        __Instance = new global::System.IntPtr(native);
                     }
 
                     public Item()
@@ -10674,11 +10520,8 @@ namespace CppSharp
                 }
 
                 protected Enumeration(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Enumeration()
@@ -10929,11 +10772,8 @@ namespace CppSharp
                 }
 
                 protected Variable(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Variable()
@@ -11031,7 +10871,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BaseClassSpecifier> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.BaseClassSpecifier>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -11277,11 +11116,8 @@ namespace CppSharp
                 }
 
                 protected Field(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Field()
@@ -11487,11 +11323,8 @@ namespace CppSharp
                 }
 
                 protected AccessSpecifierDecl(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AccessSpecifierDecl()
@@ -11557,7 +11390,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableComponent> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableComponent>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -11716,7 +11548,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VTableLayout>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -11854,7 +11685,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VFTableInfo> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.VFTableInfo>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -12017,7 +11847,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutField> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutField>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -12175,7 +12004,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutBase> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.LayoutBase>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -12396,7 +12224,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ClassLayout> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ClassLayout>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -12929,11 +12756,8 @@ namespace CppSharp
                 }
 
                 protected Class(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Class()
@@ -13395,11 +13219,8 @@ namespace CppSharp
                 }
 
                 protected Template(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Template(global::CppSharp.Parser.AST.DeclarationKind kind)
@@ -13618,11 +13439,8 @@ namespace CppSharp
                 }
 
                 protected TypeAliasTemplate(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypeAliasTemplate()
@@ -13778,11 +13596,8 @@ namespace CppSharp
                 }
 
                 protected TemplateParameter(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateParameter(global::CppSharp.Parser.AST.DeclarationKind kind)
@@ -13988,11 +13803,8 @@ namespace CppSharp
                 }
 
                 protected TemplateTemplateParameter(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateTemplateParameter()
@@ -14190,11 +14002,8 @@ namespace CppSharp
                 }
 
                 protected TypeTemplateParameter(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypeTemplateParameter()
@@ -14380,11 +14189,8 @@ namespace CppSharp
                 }
 
                 protected NonTypeTemplateParameter(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public NonTypeTemplateParameter()
@@ -14645,11 +14451,8 @@ namespace CppSharp
                 }
 
                 protected ClassTemplate(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ClassTemplate()
@@ -14967,11 +14770,8 @@ namespace CppSharp
                 }
 
                 protected ClassTemplateSpecialization(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ClassTemplateSpecialization()
@@ -15265,11 +15065,8 @@ namespace CppSharp
                 }
 
                 protected ClassTemplatePartialSpecialization(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ClassTemplatePartialSpecialization()
@@ -15450,11 +15247,8 @@ namespace CppSharp
                 }
 
                 protected FunctionTemplate(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FunctionTemplate()
@@ -15597,7 +15391,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.FunctionTemplateSpecialization> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.FunctionTemplateSpecialization>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -15896,11 +15689,8 @@ namespace CppSharp
                 }
 
                 protected VarTemplate(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VarTemplate()
@@ -16146,11 +15936,8 @@ namespace CppSharp
                 }
 
                 protected VarTemplateSpecialization(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VarTemplateSpecialization()
@@ -16372,11 +16159,8 @@ namespace CppSharp
                 }
 
                 protected VarTemplatePartialSpecialization(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VarTemplatePartialSpecialization()
@@ -16523,11 +16307,8 @@ namespace CppSharp
                 }
 
                 protected UnresolvedUsingTypename(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnresolvedUsingTypename()
@@ -16710,11 +16491,8 @@ namespace CppSharp
                 }
 
                 protected Namespace(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Namespace()
@@ -16793,7 +16571,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.PreprocessedEntity> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.PreprocessedEntity>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -16967,11 +16744,8 @@ namespace CppSharp
                 }
 
                 protected MacroDefinition(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MacroDefinition()
@@ -17127,11 +16901,8 @@ namespace CppSharp
                 }
 
                 protected MacroExpansion(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MacroExpansion()
@@ -17389,11 +17160,8 @@ namespace CppSharp
                 }
 
                 protected TranslationUnit(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TranslationUnit()
@@ -17544,7 +17312,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ASTContext> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.ASTContext>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -17841,7 +17608,6 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
 
                 internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Stmt> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Stmt>();
-                protected internal void*[] __OriginalVTables;
 
                 protected bool __ownsNativeInstance;
 
@@ -18063,11 +17829,8 @@ namespace CppSharp
                 }
 
                 protected DeclStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DeclStmt()
@@ -18229,11 +17992,8 @@ namespace CppSharp
                 }
 
                 protected NullStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public NullStmt()
@@ -18380,11 +18140,8 @@ namespace CppSharp
                 }
 
                 protected CompoundStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CompoundStmt()
@@ -18611,11 +18368,8 @@ namespace CppSharp
                 }
 
                 protected SwitchCase(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SwitchCase()
@@ -18772,11 +18526,8 @@ namespace CppSharp
                 }
 
                 protected CaseStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CaseStmt()
@@ -18938,11 +18689,8 @@ namespace CppSharp
                 }
 
                 protected DefaultStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DefaultStmt()
@@ -19039,11 +18787,8 @@ namespace CppSharp
                 }
 
                 protected LabelStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public LabelStmt()
@@ -19177,11 +18922,8 @@ namespace CppSharp
                 }
 
                 protected AttributedStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AttributedStmt()
@@ -19323,11 +19065,8 @@ namespace CppSharp
                 }
 
                 protected IfStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public IfStmt()
@@ -19607,11 +19346,8 @@ namespace CppSharp
                 }
 
                 protected SwitchStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SwitchStmt()
@@ -19825,11 +19561,8 @@ namespace CppSharp
                 }
 
                 protected WhileStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public WhileStmt()
@@ -19999,11 +19732,8 @@ namespace CppSharp
                 }
 
                 protected DoStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DoStmt()
@@ -20177,11 +19907,8 @@ namespace CppSharp
                 }
 
                 protected ForStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ForStmt()
@@ -20391,11 +20118,8 @@ namespace CppSharp
                 }
 
                 protected GotoStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public GotoStmt()
@@ -20505,11 +20229,8 @@ namespace CppSharp
                 }
 
                 protected IndirectGotoStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public IndirectGotoStmt()
@@ -20631,11 +20352,8 @@ namespace CppSharp
                 }
 
                 protected ContinueStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ContinueStmt()
@@ -20726,11 +20444,8 @@ namespace CppSharp
                 }
 
                 protected BreakStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BreakStmt()
@@ -20824,11 +20539,8 @@ namespace CppSharp
                 }
 
                 protected ReturnStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ReturnStmt()
@@ -21011,11 +20723,8 @@ namespace CppSharp
                 }
 
                 protected AsmStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AsmStmt()
@@ -21334,7 +21043,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -21498,11 +21206,8 @@ namespace CppSharp
                 }
 
                 protected GCCAsmStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public GCCAsmStmt()
@@ -21650,11 +21355,8 @@ namespace CppSharp
                 }
 
                 protected MSAsmStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MSAsmStmt()
@@ -21807,11 +21509,8 @@ namespace CppSharp
                 }
 
                 protected SEHExceptStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SEHExceptStmt()
@@ -21941,11 +21640,8 @@ namespace CppSharp
                 }
 
                 protected SEHFinallyStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SEHFinallyStmt()
@@ -22069,11 +21765,8 @@ namespace CppSharp
                 }
 
                 protected SEHTryStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SEHTryStmt()
@@ -22249,11 +21942,8 @@ namespace CppSharp
                 }
 
                 protected SEHLeaveStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SEHLeaveStmt()
@@ -22395,7 +22085,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.CapturedStmt.Capture> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.CapturedStmt.Capture>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -22566,11 +22255,8 @@ namespace CppSharp
                 }
 
                 protected CapturedStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CapturedStmt()
@@ -22735,11 +22421,8 @@ namespace CppSharp
                 }
 
                 protected CXXCatchStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXCatchStmt()
@@ -22869,11 +22552,8 @@ namespace CppSharp
                 }
 
                 protected CXXTryStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXTryStmt()
@@ -23031,11 +22711,8 @@ namespace CppSharp
                 }
 
                 protected CXXForRangeStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXForRangeStmt()
@@ -23336,11 +23013,8 @@ namespace CppSharp
                 }
 
                 protected MSDependentExistsStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MSDependentExistsStmt()
@@ -23522,7 +23196,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -23615,11 +23288,8 @@ namespace CppSharp
                 }
 
                 protected CoroutineBodyStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CoroutineBodyStmt()
@@ -23942,11 +23612,8 @@ namespace CppSharp
                 }
 
                 protected CoreturnStmt(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CoreturnStmt()
@@ -24436,7 +24103,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Expr.Classification> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.Expr.Classification>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -24633,11 +24299,8 @@ namespace CppSharp
                 }
 
                 protected Expr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Expr()
@@ -24970,11 +24633,8 @@ namespace CppSharp
                 }
 
                 protected FullExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FullExpr()
@@ -25126,11 +24786,8 @@ namespace CppSharp
                 }
 
                 protected ConstantExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ConstantExpr()
@@ -25256,11 +24913,8 @@ namespace CppSharp
                 }
 
                 protected OpaqueValueExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public OpaqueValueExpr()
@@ -25457,11 +25111,8 @@ namespace CppSharp
                 }
 
                 protected DeclRefExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DeclRefExpr()
@@ -25745,11 +25396,8 @@ namespace CppSharp
                 }
 
                 protected IntegerLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public IntegerLiteral()
@@ -25898,11 +25546,8 @@ namespace CppSharp
                 }
 
                 protected FixedPointLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FixedPointLiteral()
@@ -26063,11 +25708,8 @@ namespace CppSharp
                 }
 
                 protected CharacterLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CharacterLiteral()
@@ -26232,11 +25874,8 @@ namespace CppSharp
                 }
 
                 protected FloatingLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FloatingLiteral()
@@ -26395,11 +26034,8 @@ namespace CppSharp
                 }
 
                 protected ImaginaryLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ImaginaryLiteral()
@@ -26593,11 +26229,8 @@ namespace CppSharp
                 }
 
                 protected StringLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public StringLiteral()
@@ -26945,11 +26578,8 @@ namespace CppSharp
                 }
 
                 protected PredefinedExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public PredefinedExpr()
@@ -27101,11 +26731,8 @@ namespace CppSharp
                 }
 
                 protected ParenExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ParenExpr()
@@ -27296,11 +26923,8 @@ namespace CppSharp
                 }
 
                 protected UnaryOperator(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnaryOperator()
@@ -27564,11 +27188,8 @@ namespace CppSharp
                 }
 
                 protected OffsetOfExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public OffsetOfExpr()
@@ -27758,11 +27379,8 @@ namespace CppSharp
                 }
 
                 protected UnaryExprOrTypeTraitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnaryExprOrTypeTraitExpr()
@@ -27994,11 +27612,8 @@ namespace CppSharp
                 }
 
                 protected ArraySubscriptExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ArraySubscriptExpr()
@@ -28257,11 +27872,8 @@ namespace CppSharp
                 }
 
                 protected CallExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CallExpr()
@@ -28600,11 +28212,8 @@ namespace CppSharp
                 }
 
                 protected MemberExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MemberExpr()
@@ -28904,11 +28513,8 @@ namespace CppSharp
                 }
 
                 protected CompoundLiteralExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CompoundLiteralExpr()
@@ -29095,11 +28701,8 @@ namespace CppSharp
                 }
 
                 protected CastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CastExpr()
@@ -29374,11 +28977,8 @@ namespace CppSharp
                 }
 
                 protected ImplicitCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ImplicitCastExpr()
@@ -29537,11 +29137,8 @@ namespace CppSharp
                 }
 
                 protected ExplicitCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ExplicitCastExpr()
@@ -29717,11 +29314,8 @@ namespace CppSharp
                 }
 
                 protected CStyleCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CStyleCastExpr()
@@ -29931,11 +29525,8 @@ namespace CppSharp
                 }
 
                 protected BinaryOperator(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BinaryOperator()
@@ -30408,11 +29999,8 @@ namespace CppSharp
                 }
 
                 protected CompoundAssignOperator(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CompoundAssignOperator()
@@ -30595,11 +30183,8 @@ namespace CppSharp
                 }
 
                 protected AbstractConditionalOperator(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AbstractConditionalOperator()
@@ -30831,11 +30416,8 @@ namespace CppSharp
                 }
 
                 protected ConditionalOperator(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ConditionalOperator()
@@ -31009,11 +30591,8 @@ namespace CppSharp
                 }
 
                 protected BinaryConditionalOperator(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BinaryConditionalOperator()
@@ -31172,11 +30751,8 @@ namespace CppSharp
                 }
 
                 protected AddrLabelExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AddrLabelExpr()
@@ -31328,11 +30904,8 @@ namespace CppSharp
                 }
 
                 protected StmtExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public StmtExpr()
@@ -31502,11 +31075,8 @@ namespace CppSharp
                 }
 
                 protected ShuffleVectorExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ShuffleVectorExpr()
@@ -31671,11 +31241,8 @@ namespace CppSharp
                 }
 
                 protected ConvertVectorExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ConvertVectorExpr()
@@ -31860,11 +31427,8 @@ namespace CppSharp
                 }
 
                 protected ChooseExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ChooseExpr()
@@ -32108,11 +31672,8 @@ namespace CppSharp
                 }
 
                 protected GNUNullExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public GNUNullExpr()
@@ -32254,11 +31815,8 @@ namespace CppSharp
                 }
 
                 protected VAArgExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VAArgExpr()
@@ -32468,11 +32026,8 @@ namespace CppSharp
                 }
 
                 protected InitListExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public InitListExpr()
@@ -32805,7 +32360,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.DesignatedInitExpr.Designator> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.DesignatedInitExpr.Designator>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -33042,7 +32596,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -33129,7 +32682,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -33222,11 +32774,8 @@ namespace CppSharp
                 }
 
                 protected DesignatedInitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DesignatedInitExpr()
@@ -33428,11 +32977,8 @@ namespace CppSharp
                 }
 
                 protected NoInitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public NoInitExpr()
@@ -33555,11 +33101,8 @@ namespace CppSharp
                 }
 
                 protected DesignatedInitUpdateExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DesignatedInitUpdateExpr()
@@ -33718,11 +33261,8 @@ namespace CppSharp
                 }
 
                 protected ArrayInitLoopExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ArrayInitLoopExpr()
@@ -33875,11 +33415,8 @@ namespace CppSharp
                 }
 
                 protected ArrayInitIndexExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ArrayInitIndexExpr()
@@ -33996,11 +33533,8 @@ namespace CppSharp
                 }
 
                 protected ImplicitValueInitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ImplicitValueInitExpr()
@@ -34126,11 +33660,8 @@ namespace CppSharp
                 }
 
                 protected ParenListExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ParenListExpr()
@@ -34310,11 +33841,8 @@ namespace CppSharp
                 }
 
                 protected GenericSelectionExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public GenericSelectionExpr()
@@ -34560,11 +34088,8 @@ namespace CppSharp
                 }
 
                 protected ExtVectorElementExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ExtVectorElementExpr()
@@ -34757,11 +34282,8 @@ namespace CppSharp
                 }
 
                 protected BlockExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BlockExpr()
@@ -34918,11 +34440,8 @@ namespace CppSharp
                 }
 
                 protected AsTypeExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AsTypeExpr()
@@ -35095,11 +34614,8 @@ namespace CppSharp
                 }
 
                 protected PseudoObjectExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public PseudoObjectExpr()
@@ -35373,11 +34889,8 @@ namespace CppSharp
                 }
 
                 protected AtomicExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public AtomicExpr()
@@ -35726,11 +35239,8 @@ namespace CppSharp
                 }
 
                 protected TypoExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypoExpr()
@@ -35894,11 +35404,8 @@ namespace CppSharp
                 }
 
                 protected CXXOperatorCallExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXOperatorCallExpr()
@@ -36134,11 +35641,8 @@ namespace CppSharp
                 }
 
                 protected CXXMemberCallExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXMemberCallExpr()
@@ -36342,11 +35846,8 @@ namespace CppSharp
                 }
 
                 protected CUDAKernelCallExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CUDAKernelCallExpr()
@@ -36538,11 +36039,8 @@ namespace CppSharp
                 }
 
                 protected CXXNamedCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXNamedCastExpr()
@@ -36772,11 +36270,8 @@ namespace CppSharp
                 }
 
                 protected CXXStaticCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXStaticCastExpr()
@@ -36932,11 +36427,8 @@ namespace CppSharp
                 }
 
                 protected CXXDynamicCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXDynamicCastExpr()
@@ -37102,11 +36594,8 @@ namespace CppSharp
                 }
 
                 protected CXXReinterpretCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXReinterpretCastExpr()
@@ -37259,11 +36748,8 @@ namespace CppSharp
                 }
 
                 protected CXXConstCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXConstCastExpr()
@@ -37431,11 +36917,8 @@ namespace CppSharp
                 }
 
                 protected UserDefinedLiteral(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UserDefinedLiteral()
@@ -37618,11 +37101,8 @@ namespace CppSharp
                 }
 
                 protected CXXBoolLiteralExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXBoolLiteralExpr()
@@ -37768,11 +37248,8 @@ namespace CppSharp
                 }
 
                 protected CXXNullPtrLiteralExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXNullPtrLiteralExpr()
@@ -37905,11 +37382,8 @@ namespace CppSharp
                 }
 
                 protected CXXStdInitializerListExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXStdInitializerListExpr()
@@ -38053,11 +37527,8 @@ namespace CppSharp
                 }
 
                 protected CXXTypeidExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXTypeidExpr()
@@ -38230,11 +37701,8 @@ namespace CppSharp
                 }
 
                 protected MSPropertyRefExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MSPropertyRefExpr()
@@ -38417,11 +37885,8 @@ namespace CppSharp
                 }
 
                 protected MSPropertySubscriptExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MSPropertySubscriptExpr()
@@ -38601,11 +38066,8 @@ namespace CppSharp
                 }
 
                 protected CXXUuidofExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXUuidofExpr()
@@ -38789,11 +38251,8 @@ namespace CppSharp
                 }
 
                 protected CXXThisExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXThisExpr()
@@ -38945,11 +38404,8 @@ namespace CppSharp
                 }
 
                 protected CXXThrowExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXThrowExpr()
@@ -39116,11 +38572,8 @@ namespace CppSharp
                 }
 
                 protected CXXDefaultArgExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXDefaultArgExpr()
@@ -39274,11 +38727,8 @@ namespace CppSharp
                 }
 
                 protected CXXDefaultInitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXDefaultInitExpr()
@@ -39434,11 +38884,8 @@ namespace CppSharp
                 }
 
                 protected CXXBindTemporaryExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXBindTemporaryExpr()
@@ -39638,11 +39085,8 @@ namespace CppSharp
                 }
 
                 protected CXXConstructExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXConstructExpr()
@@ -39938,11 +39382,8 @@ namespace CppSharp
                 }
 
                 protected CXXInheritedCtorInitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXInheritedCtorInitExpr()
@@ -40131,11 +39572,8 @@ namespace CppSharp
                 }
 
                 protected CXXFunctionalCastExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXFunctionalCastExpr()
@@ -40323,11 +39761,8 @@ namespace CppSharp
                 }
 
                 protected CXXTemporaryObjectExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXTemporaryObjectExpr()
@@ -40515,11 +39950,8 @@ namespace CppSharp
                 }
 
                 protected LambdaExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public LambdaExpr()
@@ -40818,11 +40250,8 @@ namespace CppSharp
                 }
 
                 protected CXXScalarValueInitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXScalarValueInitExpr()
@@ -41029,11 +40458,8 @@ namespace CppSharp
                 }
 
                 protected CXXNewExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXNewExpr()
@@ -41431,11 +40857,8 @@ namespace CppSharp
                 }
 
                 protected CXXDeleteExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXDeleteExpr()
@@ -41666,11 +41089,8 @@ namespace CppSharp
                 }
 
                 protected CXXPseudoDestructorExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXPseudoDestructorExpr()
@@ -41904,11 +41324,8 @@ namespace CppSharp
                 }
 
                 protected TypeTraitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypeTraitExpr()
@@ -42060,11 +41477,8 @@ namespace CppSharp
                 }
 
                 protected ArrayTypeTraitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ArrayTypeTraitExpr()
@@ -42233,11 +41647,8 @@ namespace CppSharp
                 }
 
                 protected ExpressionTraitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ExpressionTraitExpr()
@@ -42408,7 +41819,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.OverloadExpr.FindResult> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.OverloadExpr.FindResult>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -42501,11 +41911,8 @@ namespace CppSharp
                 }
 
                 protected OverloadExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public OverloadExpr()
@@ -42770,11 +42177,8 @@ namespace CppSharp
                 }
 
                 protected UnresolvedLookupExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnresolvedLookupExpr()
@@ -42938,11 +42342,8 @@ namespace CppSharp
                 }
 
                 protected DependentScopeDeclRefExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DependentScopeDeclRefExpr()
@@ -43159,11 +42560,8 @@ namespace CppSharp
                 }
 
                 protected ExprWithCleanups(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ExprWithCleanups()
@@ -43349,11 +42747,8 @@ namespace CppSharp
                 }
 
                 protected CXXUnresolvedConstructExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXUnresolvedConstructExpr()
@@ -43626,11 +43021,8 @@ namespace CppSharp
                 }
 
                 protected CXXDependentScopeMemberExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXDependentScopeMemberExpr()
@@ -43973,11 +43365,8 @@ namespace CppSharp
                 }
 
                 protected UnresolvedMemberExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public UnresolvedMemberExpr()
@@ -44198,11 +43587,8 @@ namespace CppSharp
                 }
 
                 protected CXXNoexceptExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXNoexceptExpr()
@@ -44356,11 +43742,8 @@ namespace CppSharp
                 }
 
                 protected PackExpansionExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public PackExpansionExpr()
@@ -44526,11 +43909,8 @@ namespace CppSharp
                 }
 
                 protected SizeOfPackExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SizeOfPackExpr()
@@ -44736,11 +44116,8 @@ namespace CppSharp
                 }
 
                 protected SubstNonTypeTemplateParmExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SubstNonTypeTemplateParmExpr()
@@ -44894,11 +44271,8 @@ namespace CppSharp
                 }
 
                 protected SubstNonTypeTemplateParmPackExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public SubstNonTypeTemplateParmPackExpr()
@@ -45049,11 +44423,8 @@ namespace CppSharp
                 }
 
                 protected FunctionParmPackExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FunctionParmPackExpr()
@@ -45202,7 +44573,6 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
 
                     internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState>();
-                    protected internal void*[] __OriginalVTables;
 
                     protected bool __ownsNativeInstance;
 
@@ -45295,11 +44665,8 @@ namespace CppSharp
                 }
 
                 protected MaterializeTemporaryExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public MaterializeTemporaryExpr()
@@ -45502,11 +44869,8 @@ namespace CppSharp
                 }
 
                 protected CXXFoldExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CXXFoldExpr()
@@ -45779,11 +45143,8 @@ namespace CppSharp
                 }
 
                 protected CoroutineSuspendExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CoroutineSuspendExpr()
@@ -46041,11 +45402,8 @@ namespace CppSharp
                 }
 
                 protected CoawaitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CoawaitExpr()
@@ -46202,11 +45560,8 @@ namespace CppSharp
                 }
 
                 protected DependentCoawaitExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public DependentCoawaitExpr()
@@ -46393,11 +45748,8 @@ namespace CppSharp
                 }
 
                 protected CoyieldExpr(void* native, bool skipVTables = false)
-                    : base((void*) null)
+                    : base((void*) native)
                 {
-                    if (native == null)
-                        return;
-                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public CoyieldExpr()
@@ -46606,7 +45958,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ParserTargetInfo> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ParserTargetInfo>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
@@ -47254,7 +46605,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.Parser> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.Parser>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
@@ -47542,7 +46892,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.CppParserOptions> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.CppParserOptions>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
@@ -48070,7 +47419,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ParserDiagnostic> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ParserDiagnostic>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
@@ -48266,7 +47614,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ParserResult> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ParserResult>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 
@@ -48441,7 +47788,6 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
 
             internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ClangParser> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.ClangParser>();
-            protected internal void*[] __OriginalVTables;
 
             protected bool __ownsNativeInstance;
 

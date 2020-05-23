@@ -624,7 +624,6 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Ty>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Ty>>();
-        protected internal void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
@@ -751,7 +750,6 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_Elem, _Traits, _Alloc>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_Elem, _Traits, _Alloc>>();
-        protected internal void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 
@@ -877,7 +875,6 @@ namespace Std
         public global::System.IntPtr __Instance { get; protected set; }
 
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_Elem>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_Elem>>();
-        protected internal void*[] __OriginalVTables;
 
         protected bool __ownsNativeInstance;
 

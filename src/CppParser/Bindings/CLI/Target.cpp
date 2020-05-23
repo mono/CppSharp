@@ -25,6 +25,12 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
 {
     NativePtr = native;
 }
+
+CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer(), __ownsNativeInstance);
+}
+
 CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
 {
     delete NativePtr;

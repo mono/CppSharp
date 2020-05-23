@@ -73,6 +73,7 @@ namespace CppSharp
             CppParserOptions(::CppSharp::CppParser::CppParserOptions* native);
             CppParserOptions(::CppSharp::CppParser::CppParserOptions* native, bool ownNativeInstance);
             static CppParserOptions^ __CreateInstance(::System::IntPtr native);
+            static CppParserOptions^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             CppParserOptions();
 
             CppParserOptions(CppSharp::Parser::CppParserOptions^ _0);
@@ -310,6 +311,7 @@ namespace CppSharp
             ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native);
             ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native, bool ownNativeInstance);
             static ParserDiagnostic^ __CreateInstance(::System::IntPtr native);
+            static ParserDiagnostic^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserDiagnostic();
 
             ParserDiagnostic(CppSharp::Parser::ParserDiagnostic^ _0);
@@ -364,6 +366,7 @@ namespace CppSharp
             ParserResult(::CppSharp::CppParser::ParserResult* native);
             ParserResult(::CppSharp::CppParser::ParserResult* native, bool ownNativeInstance);
             static ParserResult^ __CreateInstance(::System::IntPtr native);
+            static ParserResult^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserResult();
 
             ParserResult(CppSharp::Parser::ParserResult^ _0);
@@ -423,6 +426,7 @@ namespace CppSharp
             ClangParser(::CppSharp::CppParser::ClangParser* native);
             ClangParser(::CppSharp::CppParser::ClangParser* native, bool ownNativeInstance);
             static ClangParser^ __CreateInstance(::System::IntPtr native);
+            static ClangParser^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ClangParser();
 
             ClangParser(CppSharp::Parser::ClangParser^ _0);
