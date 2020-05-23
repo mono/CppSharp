@@ -97,14 +97,14 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_
+        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_
         {
             [FieldOffset(0)]
             internal global::Std.TreeEndNode.__Internal_Ptr __value_;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1
+        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_U___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1
         {
             [FieldOffset(0)]
             internal uint __value_;
@@ -929,16 +929,16 @@ namespace Std
     namespace Tree
     {
         [StructLayout(LayoutKind.Explicit, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___tree____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_
+        public unsafe partial struct __Internalc__N_std_N___1_S___tree____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
             internal global::System.IntPtr __begin_node_;
 
             [FieldOffset(4)]
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_ __pair1_;
+            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_ __pair1_;
 
             [FieldOffset(8)]
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1 __pair3_;
+            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_U___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1 __pair3_;
         }
     }
 
@@ -961,7 +961,7 @@ namespace Std
         public unsafe partial struct __Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_
         {
             [FieldOffset(0)]
-            internal global::Std.Tree.__Internalc__N_std_N___1_S___tree____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_ __tree_;
+            internal global::Std.Tree.__Internalc__N_std_N___1_S___tree____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_ __tree_;
         }
     }
 }

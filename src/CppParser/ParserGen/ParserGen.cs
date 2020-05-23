@@ -113,7 +113,7 @@ namespace CppSharp
             var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
                 "osx");
 
-            options.AddSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
+            options.AddSystemIncludeDirs(Path.Combine(headersPath, "include", "c++", "v1"));
             options.AddSystemIncludeDirs(options.BuiltinsDir);
             options.AddSystemIncludeDirs(Path.Combine(headersPath, "include"));
             options.AddArguments("-stdlib=libc++");
