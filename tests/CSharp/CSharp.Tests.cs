@@ -553,7 +553,9 @@ public unsafe class CSharpTests : GeneratorTestFixture
         foosMore[1] = new Foo();
         var ex = Assert.Throws<ArgumentOutOfRangeException>(() => bar.Foos = foosMore);
         Assert.AreEqual("value", ex.ParamName);
-        Assert.AreEqual("The dimensions of the provided array don't match the required size." + Environment.NewLine + "Parameter name: value", ex.Message);
+        string[] message = ex.Message.Split(
+            Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        Assert.AreEqual("The dimensions of the provided array don't match the required size.", message[0]);
 
         foreach (Foo foo in foosMore)
         {
