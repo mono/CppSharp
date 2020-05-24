@@ -1497,6 +1497,16 @@ void CppSharp::Parser::AST::UnaryOperator::IsArithmeticOp::set(bool value)
     ((::CppSharp::CppParser::AST::UnaryOperator*)NativePtr)->isArithmeticOp = value;
 }
 
+bool CppSharp::Parser::AST::UnaryOperator::IsFPContractableWithinStatement::get()
+{
+    return ((::CppSharp::CppParser::AST::UnaryOperator*)NativePtr)->isFPContractableWithinStatement;
+}
+
+void CppSharp::Parser::AST::UnaryOperator::IsFPContractableWithinStatement::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::UnaryOperator*)NativePtr)->isFPContractableWithinStatement = value;
+}
+
 CppSharp::Parser::AST::OffsetOfExpr::OffsetOfExpr(::CppSharp::CppParser::AST::OffsetOfExpr* native)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native)
 {
@@ -5296,16 +5306,6 @@ void CppSharp::Parser::AST::CXXOperatorCallExpr::OperatorLoc::set(CppSharp::Pars
     auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
     _marshal0.ID = value.ID;
     ((::CppSharp::CppParser::AST::CXXOperatorCallExpr*)NativePtr)->operatorLoc = _marshal0;
-}
-
-bool CppSharp::Parser::AST::CXXOperatorCallExpr::IsFPContractableWithinStatement::get()
-{
-    return ((::CppSharp::CppParser::AST::CXXOperatorCallExpr*)NativePtr)->isFPContractableWithinStatement;
-}
-
-void CppSharp::Parser::AST::CXXOperatorCallExpr::IsFPContractableWithinStatement::set(bool value)
-{
-    ((::CppSharp::CppParser::AST::CXXOperatorCallExpr*)NativePtr)->isFPContractableWithinStatement = value;
 }
 
 CppSharp::Parser::AST::CXXMemberCallExpr::CXXMemberCallExpr(::CppSharp::CppParser::AST::CXXMemberCallExpr* native)

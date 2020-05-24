@@ -303,6 +303,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isDecrementOp = S->isDecrementOp();
         _S->isIncrementDecrementOp = S->isIncrementDecrementOp();
         _S->isArithmeticOp = S->isArithmeticOp();
+        _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement(c->getLangOpts());
         _Expr = _S;
         break;
     }
@@ -549,8 +550,8 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isAssignmentOp = S->isAssignmentOp();
         _S->isCompoundAssignmentOp = S->isCompoundAssignmentOp();
         _S->isShiftAssignOp = S->isShiftAssignOp();
-        _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement();
-        _S->isFEnvAccessOn = S->isFEnvAccessOn();
+        _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement(c->getLangOpts());
+        _S->isFEnvAccessOn = S->isFEnvAccessOn(c->getLangOpts());
         _Expr = _S;
         break;
     }
@@ -587,8 +588,8 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isAssignmentOp = S->isAssignmentOp();
         _S->isCompoundAssignmentOp = S->isCompoundAssignmentOp();
         _S->isShiftAssignOp = S->isShiftAssignOp();
-        _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement();
-        _S->isFEnvAccessOn = S->isFEnvAccessOn();
+        _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement(c->getLangOpts());
+        _S->isFEnvAccessOn = S->isFEnvAccessOn(c->getLangOpts());
         _S->computationLHSType = GetQualifiedType(S->getComputationLHSType());
         _S->computationResultType = GetQualifiedType(S->getComputationResultType());
         _Expr = _S;
@@ -1182,7 +1183,6 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->_operator = (OverloadedOperatorKind) S->getOperator();
         _S->isAssignmentOp = S->isAssignmentOp();
         _S->isInfixBinaryOp = S->isInfixBinaryOp();
-        _S->isFPContractableWithinStatement = S->isFPContractableWithinStatement();
         _Expr = _S;
         break;
     }
@@ -1552,7 +1552,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->referencedDeclOfCallee = static_cast<AST::Declaration*>(WalkDeclaration(S->getReferencedDeclOfCallee()));
         _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->exprOperand = static_cast<AST::Expr*>(WalkExpression(S->getExprOperand()));
-        _S->uuidStr = S->getUuidStr().str();
+        _S->uuidStr = S->getGuidDecl()->getNameAsString();
         _S->isTypeOperand = S->isTypeOperand();
         _Expr = _S;
         break;

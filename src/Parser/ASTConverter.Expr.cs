@@ -931,6 +931,7 @@ namespace CppSharp
             _expr.IsDecrementOp = expr.IsDecrementOp;
             _expr.IsIncrementDecrementOp = expr.IsIncrementDecrementOp;
             _expr.IsArithmeticOp = expr.IsArithmeticOp;
+            _expr.IsFPContractableWithinStatement = expr.IsFPContractableWithinStatement;
             return _expr;
         }
 
@@ -1956,7 +1957,6 @@ namespace CppSharp
             _expr.IsAssignmentOp = expr.IsAssignmentOp;
             _expr.IsInfixBinaryOp = expr.IsInfixBinaryOp;
             _expr.OperatorLoc = VisitSourceLocation(expr.OperatorLoc);
-            _expr.IsFPContractableWithinStatement = expr.IsFPContractableWithinStatement;
             return _expr;
         }
 

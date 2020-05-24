@@ -26899,6 +26899,9 @@ namespace CppSharp
                     [FieldOffset(106)]
                     internal byte isArithmeticOp;
 
+                    [FieldOffset(107)]
+                    internal byte isFPContractableWithinStatement;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0UnaryOperator@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -27089,6 +27092,19 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isArithmeticOp = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsFPContractableWithinStatement
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance)->isFPContractableWithinStatement != 0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.UnaryOperator.__Internal*)__Instance)->isFPContractableWithinStatement = (byte) (value ? 1 : 0);
                     }
                 }
             }
@@ -35367,9 +35383,6 @@ namespace CppSharp
                     [FieldOffset(160)]
                     internal global::CppSharp.Parser.SourceLocation.__Internal operatorLoc;
 
-                    [FieldOffset(164)]
-                    internal byte isFPContractableWithinStatement;
-
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="??0CXXOperatorCallExpr@AST@CppParser@CppSharp@@QEAA@XZ")]
@@ -35498,19 +35511,6 @@ namespace CppSharp
                     set
                     {
                         ((global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal*)__Instance)->operatorLoc = value.__Instance;
-                    }
-                }
-
-                public bool IsFPContractableWithinStatement
-                {
-                    get
-                    {
-                        return ((global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal*) __Instance)->isFPContractableWithinStatement != 0;
-                    }
-
-                    set
-                    {
-                        ((global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal*)__Instance)->isFPContractableWithinStatement = (byte) (value ? 1 : 0);
                     }
                 }
             }

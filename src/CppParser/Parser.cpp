@@ -419,12 +419,14 @@ std::string Parser::GetDeclMangledName(const clang::Decl* D)
     if (!MC->shouldMangleDeclName(ND) || IsDependent)
         return ND->getDeclName().getAsString();
 
+    GlobalDecl GD;
     if (const CXXConstructorDecl *CD = dyn_cast<CXXConstructorDecl>(ND))
-        MC->mangleCXXCtor(CD, Ctor_Base, Out);
+        GD = GlobalDecl(CD, Ctor_Base);
     else if (const CXXDestructorDecl *DD = dyn_cast<CXXDestructorDecl>(ND))
-        MC->mangleCXXDtor(DD, Dtor_Base, Out);
+        GD = GlobalDecl(DD, Dtor_Base);
     else
-        MC->mangleName(ND, Out);
+        GD = GlobalDecl(ND);
+    MC->mangleName(GD, Out);
 
     Out.flush();
 
@@ -4486,11 +4488,11 @@ ParserResultKind Parser::ParseSharedLib(const std::string& File,
         // see https://bugs.llvm.org/show_bug.cgi?id=44433
         for (const auto& Symbol : MachOObjectFile->symbols())
         {
-            if (Symbol.getName().takeError())
+            if (Symbol.getName().takeError() || Symbol.getFlags().takeError())
                 return ParserResultKind::Error;
 
-            if ((Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
-                !(Symbol.getFlags() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
+            if ((Symbol.getFlags().get() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
+                !(Symbol.getFlags().get() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
                 NativeLib->Symbols.push_back(Symbol.getName().get().str());
         }
         return ParserResultKind::Success;
