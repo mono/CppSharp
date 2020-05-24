@@ -1,7 +1,7 @@
 -- Tests/examples helpers
 
 require('vstudio')
-	  
+  
 function disableFastUpToDateCheck(prj, cfg)
   premake.vstudio.vc2010.element("DisableFastUpToDateCheck", nil, "true")
 end
@@ -10,24 +10,80 @@ premake.override(premake.vstudio.cs2005.elements, "projectProperties",
   function(oldfn, prj)
     local elements = oldfn(prj)
     if (string.endswith(prj.filename, ".CSharp") and
-    	not string.endswith(prj.filename, ".Tests.CSharp") and
-    	not string.endswith(prj.filename, ".Parser.CSharp")) then 
+        not string.endswith(prj.filename, ".Tests.CSharp") and
+        not string.endswith(prj.filename, ".Parser.CSharp")) then 
       elements = table.join(elements, {disableFastUpToDateCheck})
     end
     return elements
   end)
-  
+
 premake.override(premake.vstudio.vc2010.elements, "globals",
   function(oldfn, prj, cfg)
     local elements = oldfn(prj, cfg)
     if (string.endswith(prj.filename, ".CLI") and
-    	not string.endswith(prj.filename, ".Tests.CLI") and
-    	not string.endswith(prj.filename, ".Parser.CLI") and
-    	prj.filename ~= "CppSharp.CLI") then 
+        not string.endswith(prj.filename, ".Tests.CLI") and
+        not string.endswith(prj.filename, ".Parser.CLI") and
+        prj.filename ~= "CppSharp.CLI") then 
       elements = table.join(elements, {disableFastUpToDateCheck})
     end
     return elements
   end)
+
+-- HACK: work around gmake(2) ignoring tokens such as %{cfg.buildcfg}
+-- https://github.com/premake/premake-core/issues/1557
+if not os.istarget("windows") then
+
+  premake.override(premake.modules.gmake2, "csSources",
+    function(_, prj)
+      for cfg in premake.project.eachconfig(prj) do
+        _x('ifeq ($(config),%s)', cfg.shortname)
+        _p('SOURCES += \\')
+        premake.modules.gmake2.cs.listsources(prj, function(node)
+          local fcfg = premake.fileconfig.getconfig(node, cfg)
+          local info = premake.tools.dotnet.fileinfo(fcfg)
+          if info.action == "Compile" then
+            return node.relpath
+          end
+        end)
+        _p('')
+        _p('endif')
+        _p('')
+      end
+    end)
+
+  premake.override(premake.modules.gmake2, "csResponseRules",
+    function(_, prj)
+      local toolset = premake.tools.dotnet
+      local ext = premake.modules.gmake2.getmakefilename(prj, true)
+      local makefile = path.getname(premake.filename(prj, ext))
+      local response = premake.modules.gmake2.cs.getresponsefilename(prj)
+
+      _p('$(RESPONSE): %s', makefile)
+      _p('\t@echo Generating response file', prj.name)
+
+      _p('ifeq (posix,$(SHELLTYPE))')
+          _x('\t$(SILENT) rm -f $(RESPONSE)')
+      _p('else')
+          _x('\t$(SILENT) if exist $(RESPONSE) del %s', path.translate(response, '\\'))
+      _p('endif')
+       _p('')
+
+      local sep = os.istarget("windows") and "\\" or "/"
+      for cfg in premake.project.eachconfig(prj) do
+        _x('ifeq ($(config),%s)', cfg.shortname)
+        premake.modules.gmake2.cs.listsources(prj, function(node)
+          local fcfg = premake.fileconfig.getconfig(node, cfg)
+          local info = premake.tools.dotnet.fileinfo(fcfg)
+          if info.action == "Compile" then
+            _x('\t@echo %s >> $(RESPONSE)', path.translate(node.relpath, sep))
+          end
+        end)
+        _p('endif')
+        _p('')
+      end
+    end)
+
+end
 
 function SetupExampleProject()
   kind "ConsoleApp"
@@ -202,8 +258,8 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 
     files
     {
-      path.join(gendir, name, nm .. ".cs"),
-      path.join(gendir, name, str .. ".cs")
+      path.join(gendir, nm .. ".cs"),
+      path.join(gendir, str .. ".cs")
     }
     vpaths { ["*"] = "*" }
 
@@ -253,16 +309,16 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
 
     files
     {
-      path.join(gendir, name, nm .. ".cpp"),
-      path.join(gendir, name, nm .. ".h")
+      path.join(gendir, nm .. ".cpp"),
+      path.join(gendir, nm .. ".h")
     }
     if extraFiles ~= nil then
       for _, file in pairs(extraFiles) do
         if suffix ~= nil then
           file = file .. suffix  
         end
-        files { path.join(gendir, name, file .. ".cpp") }
-        files { path.join(gendir, name, file .. ".h") }
+        files { path.join(gendir, file .. ".cpp") }
+        files { path.join(gendir, file .. ".h") }
       end
     end
     vpaths { ["*"] = "*" }
