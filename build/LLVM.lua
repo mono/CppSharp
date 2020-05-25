@@ -186,7 +186,14 @@ function SetupLLVMLibs()
       "LLVMCFGuard",
       "LLVMBitstreamReader",
       "LLVMTextAPI",
-      "LLVMFrontendOpenMP"
+      "LLVMFrontendOpenMP",
+      "LLVMLTO",
+      "LLVMCoroutines",
+      "LLVMPasses",
+      "LLVMAggressiveInstCombine",
+      "LLVMObjCARCOpts",
+      "LLVMAsmPrinter",
+      "LLVMDebugInfoDWARF"
     }
     
   filter(c)
