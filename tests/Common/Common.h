@@ -1555,6 +1555,27 @@ typedef const char* LPCSTR;
 DLL_API LPCSTR TakeTypedefedMappedType(LPCSTR string);
 DLL_API std::string UTF8;
 
+typedef enum SE4IpAddr_Tag {
+    V4,
+    V6,
+} SE4IpAddr_Tag;
+
+typedef struct {
+    uint8_t _0[4];
+} SE4V4_Body;
+
+typedef struct {
+    uint8_t _0[16];
+} SE4V6_Body;
+
+typedef struct {
+    SE4IpAddr_Tag tag;
+    union {
+        SE4V4_Body v4;
+        SE4V6_Body v6;
+    };
+} SE4IpAddr;
+
 struct DLL_API StructWithCopyCtor
 {
     StructWithCopyCtor();
