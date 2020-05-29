@@ -327,7 +327,7 @@ namespace CppSharp
         private void WriteGeneratedCodeToFile(string file, string generatedCode)
         {
             var fi = new FileInfo(file);
-            
+
             if (!fi.Exists || fi.Length != generatedCode.Length ||
                 File.ReadAllText(file) != generatedCode)
                 File.WriteAllText(file, generatedCode);

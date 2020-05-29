@@ -140,7 +140,8 @@ namespace CppSharp.Generators.CLI
                     return "::System::IntPtr";
 
                 var result = pointer.QualifiedPointee.Visit(this).ToString();
-                return !isRefParam && result == "::System::IntPtr" ? "void**" : result + "*";
+                return !isRefParam && result == "::System::IntPtr" ? "void**" :
+                    result + (pointer.IsReference ? "" : "*");
             }
 
             Enumeration @enum;

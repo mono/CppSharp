@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
@@ -86,7 +87,8 @@ namespace CppSharp.AST
                 return (SetMethod != null && 
                         SetMethod.GenerationKind != GenerationKind.None) ||
                        (Field != null && 
-                        !Field.QualifiedType.Qualifiers.IsConst && 
+                        (!Field.QualifiedType.IsConst() ||
+                         Field.Type.IsConstCharString()) &&
                         Field.GenerationKind != GenerationKind.None);
             }
         }

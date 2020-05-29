@@ -349,8 +349,6 @@
         public static bool IsConstRef(this QualifiedType type)
         {
             Type desugared = type.Type.Desugar();
-            Type pointee = desugared.GetFinalPointee().Desugar();
-            pointee = (pointee.GetFinalPointee() ?? pointee).Desugar();
             return desugared.IsReference() && type.IsConst();
         }
 
@@ -363,7 +361,7 @@
                 (pointee.IsPrimitiveType() || pointee.IsEnum()) && type.IsConst();
         }
 
-        private static bool IsConst(this QualifiedType type)
+        public static bool IsConst(this QualifiedType type)
         {
             return type.Type != null && (type.Qualifiers.IsConst ||
                 type.Type.GetQualifiedPointee().IsConst());

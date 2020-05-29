@@ -598,7 +598,9 @@ public:
 
     TestProperties();
     TestProperties(const TestProperties& other);
+    TestProperties& operator=(const TestProperties& other);
     int Field;
+    const int& ConstRefField;
 
     int getFieldValue();
     void setFieldValue(int Value);

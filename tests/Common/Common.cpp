@@ -542,7 +542,8 @@ SomeNamespace::AbstractClass::~AbstractClass()
 
 TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0),
     _getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0),
-    _virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1)
+    _virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1),
+    ConstRefField(Field)
 {
 }
 
@@ -552,8 +553,20 @@ TestProperties::TestProperties(const TestProperties& other) : Field(other.Field)
     _getterAndSetterWithTheSameName(other._getterAndSetterWithTheSameName),
     _setterReturnsBoolean(other._setterReturnsBoolean),
     _virtualSetterReturnsBoolean(other._virtualSetterReturnsBoolean),
-    _conflict(other._conflict)
+    _conflict(other._conflict), ConstRefField(other.ConstRefField)
 {
+}
+
+TestProperties& TestProperties::operator=(const TestProperties& other)
+{
+    Field = other.Field;
+    FieldValue = other.FieldValue;
+    _refToPrimitiveInSetter = other._refToPrimitiveInSetter;
+    _getterAndSetterWithTheSameName = other._getterAndSetterWithTheSameName;
+    _setterReturnsBoolean = other._setterReturnsBoolean;
+    _virtualSetterReturnsBoolean = other._virtualSetterReturnsBoolean;
+    _conflict = other._conflict;
+    return *this;
 }
 
 int TestProperties::getFieldValue()

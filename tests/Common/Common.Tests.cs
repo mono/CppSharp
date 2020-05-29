@@ -559,6 +559,7 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(prop.nestedEnum(55), Is.EqualTo(55));
 
             Assert.That(prop.Get32Bit, Is.EqualTo(10));
+            Assert.That(prop.ConstRefField, Is.EqualTo(prop.Field));
             Assert.That(prop.IsEmpty, Is.EqualTo(prop.Empty));
 
             Assert.That(prop.VirtualGetter, Is.EqualTo(15));
