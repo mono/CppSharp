@@ -51,14 +51,14 @@ public class CommonTests : GeneratorTestFixture
         {
             hasPropertyNamedAsParent.hasPropertyNamedAsParent.GetHashCode();
         }
-        EnumWithUnderscores e = EnumWithUnderscores.lOWER_BEFORE_CAPITAL;
-        e = EnumWithUnderscores.UnderscoreAtEnd;
-        e = EnumWithUnderscores.CAPITALS_More;
-        e = EnumWithUnderscores.UsesDigits1_0;
-        e.GetHashCode();
-        ItemsDifferByCase itemsDifferByCase = ItemsDifferByCase.Case_a;
-        itemsDifferByCase = ItemsDifferByCase.CaseA;
-        itemsDifferByCase.GetHashCode();
+        EnumWithUnderscores.lOWER_BEFORE_CAPITAL.GetHashCode();
+        EnumWithUnderscores.UnderscoreAtEnd.GetHashCode();
+        EnumWithUnderscores.CAPITALS_More.GetHashCode();
+        EnumWithUnderscores.UsesDigits1_0.GetHashCode();
+        ItemsDifferByCase.Case_a.GetHashCode();
+        ItemsDifferByCase.CaseA.GetHashCode();
+        Enum.NAME_A.GetHashCode();
+        Enum.NAME__A.GetHashCode();
         new AmbiguousParamNames(0, 0).Dispose();
         Common.SMallFollowedByCapital();
         Common.IntegerOverload(0);

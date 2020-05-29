@@ -215,8 +215,13 @@ namespace CppSharp.Passes
 
             var property = decl as Property;
             if (property != null && property.Field != null)
-                return ((Class) decl.Namespace).Properties.FirstOrDefault(
+                return ((Class) decl.Namespace).Properties.Find(
                     p => p != decl && p.Name == newName) != null;
+
+            var enumItem = decl as Enumeration.Item;
+            if (enumItem != null)
+                return ((Enumeration) enumItem.Namespace).Items.Any(
+                    i => i != decl && i.Name == newName);
 
             return false;
         }
