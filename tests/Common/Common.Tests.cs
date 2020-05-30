@@ -551,9 +551,13 @@ public class CommonTests : GeneratorTestFixture
 
             prop.SetterReturnsBoolean = 35;
             Assert.That(prop.SetterReturnsBoolean, Is.EqualTo(35));
+            Assert.That(prop.SetSetterReturnsBoolean(35), Is.False);
+            Assert.That(prop.SetSetterReturnsBoolean(40), Is.True);
 
             prop.VirtualSetterReturnsBoolean = 45;
             Assert.That(prop.VirtualSetterReturnsBoolean, Is.EqualTo(45));
+            Assert.That(prop.SetVirtualSetterReturnsBoolean(45), Is.False);
+            Assert.That(prop.SetVirtualSetterReturnsBoolean(50), Is.True);
 
             Assert.That(prop.nestedEnum(), Is.EqualTo(5));
             Assert.That(prop.nestedEnum(55), Is.EqualTo(55));

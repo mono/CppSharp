@@ -631,7 +631,7 @@ int TestProperties::setterReturnsBoolean()
     return _setterReturnsBoolean;
 }
 
-bool TestProperties::setterReturnsBoolean(int value)
+bool TestProperties::setSetterReturnsBoolean(int value)
 {
     bool changed = _setterReturnsBoolean != value;
     _setterReturnsBoolean = value;

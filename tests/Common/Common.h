@@ -623,7 +623,7 @@ public:
     void set(int value);
 
     int setterReturnsBoolean();
-    bool setterReturnsBoolean(int value);
+    bool setSetterReturnsBoolean(int value);
 
     virtual int virtualSetterReturnsBoolean();
     virtual bool setVirtualSetterReturnsBoolean(int value);

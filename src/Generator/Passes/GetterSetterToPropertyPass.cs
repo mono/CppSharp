@@ -214,7 +214,8 @@ namespace CppSharp.Passes
                     conflict.GetMethod = null;
 
                 property.GetMethod.GenerationKind = GenerationKind.Internal;
-                if (property.SetMethod != null)
+                if (property.SetMethod != null &&
+                    property.SetMethod.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void))
                     property.SetMethod.GenerationKind = GenerationKind.Internal;
                 property.Namespace = @class;
                 @class.Properties.Add(property);
