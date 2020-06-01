@@ -576,6 +576,9 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value1));
             prop.conflict = CommonTest.TestProperties.Conflict.Value2;
             Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value2));
+
+            prop.Callback = x => 4 * x;
+            Assert.That(prop.Callback(5), Is.EqualTo(20));
         }
         using (var prop = new HasOverridenSetter())
         {

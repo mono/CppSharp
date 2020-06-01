@@ -718,6 +718,16 @@ void TestProperties::SetConflict(Conflict conflict)
     _conflict = conflict;
 }
 
+int(*TestProperties::getCallback())(int)
+{
+    return _callback;
+}
+
+void TestProperties::setCallback(int(*value)(int))
+{
+    _callback = value;
+}
+
 HasOverridenSetter::HasOverridenSetter()
 {
 }

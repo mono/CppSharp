@@ -649,6 +649,9 @@ public:
     Conflict GetConflict();
     void SetConflict(Conflict _conflict);
 
+    virtual int(*getCallback())(int);
+    virtual void setCallback(int(*value)(int));
+
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;
@@ -656,6 +659,7 @@ private:
     int _setterReturnsBoolean;
     int _virtualSetterReturnsBoolean;
     Conflict _conflict;
+    int(*_callback)(int);
 };
 
 class DLL_API HasOverridenSetter : public TestProperties

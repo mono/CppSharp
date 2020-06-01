@@ -1835,7 +1835,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             TypePrinterResult retType;
-            TypePrinter.PushMarshalKind(MarshalKind.GenericDelegate);
+            TypePrinter.PushMarshalKind(MarshalKind.VTableReturnValue);
             var @params = GatherInternalParams(method, out retType);
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);

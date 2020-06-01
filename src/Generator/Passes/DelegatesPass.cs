@@ -73,11 +73,13 @@ namespace CppSharp.Passes
                     ReturnType = method.ReturnType
                 };
 
+            TypePrinter.PushMarshalKind(MarshalKind.VTableReturnValue);
             functionType.Parameters.AddRange(
                 method.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi, true));
 
             method.FunctionType = CheckForDelegate(new QualifiedType(functionType),
                 method.Namespace, @private: true);
+            TypePrinter.PopMarshalKind();
 
             return true;
         }

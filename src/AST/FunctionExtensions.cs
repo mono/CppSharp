@@ -33,7 +33,9 @@ namespace CppSharp.AST
             {
                 @params.Add(new Parameter
                     {
-                        QualifiedType = universalDelegate && param.Kind == ParameterKind.IndirectReturnType ?
+                        QualifiedType = universalDelegate &&
+                            (param.Kind == ParameterKind.IndirectReturnType ||
+                             param.Type.Desugar().IsPointerTo(out FunctionType functionType)) ?
                             pointer : param.QualifiedType,
                         Kind = param.Kind,
                         Usage = param.Usage,
