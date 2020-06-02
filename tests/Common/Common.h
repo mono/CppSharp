@@ -85,6 +85,7 @@ public:
 
     Foo();
     Foo(Private p);
+    Foo(const float& f);
     int A;
     float B;
     IgnoredType ignoredType;

@@ -20,8 +20,9 @@ public class CommonTests : GeneratorTestFixture
         }
         Foo.NestedAbstract a;
         Foo.RenamedEmptyEnum.EmptyEnum1.GetHashCode();
-        using (var foo = new Foo())
+        using (var foo = new Foo(5))
         {
+            Assert.That(foo.B, Is.EqualTo(5));
             Bar bar = foo;
             Assert.IsTrue(Bar.Item.Item1 == bar);
 

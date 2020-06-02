@@ -2640,10 +2640,11 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.SynthKind == FunctionSynthKind.ComplementOperator)
             {
+                Parameter parameter = method.Parameters[0];
                 if (method.Kind == CXXMethodKind.Conversion)
                 {
                     // To avoid ambiguity when having the multiple inheritance pass enabled
-                    var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    var paramType = parameter.Type.SkipPointerRefs().Desugar();
                     paramType = (paramType.GetPointee() ?? paramType).Desugar();
                     Class paramClass;
                     Class @interface = null;
@@ -2651,9 +2652,10 @@ namespace CppSharp.Generators.CSharp
                         @interface = paramClass.GetInterface();
 
                     var paramName = string.Format("{0}{1}",
-                        method.Parameters[0].Type.IsPrimitiveTypeConvertibleToRef() ?
+                        !parameter.QualifiedType.IsConstRefToPrimitive() &&
+                        parameter.Type.IsPrimitiveTypeConvertibleToRef() ?
                         "ref *" : string.Empty,
-                        method.Parameters[0].Name);
+                        parameter.Name);
                     var printedType = method.ConversionType.Visit(TypePrinter);
                     if (@interface != null)
                     {
@@ -2667,8 +2669,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     var @operator = Operators.GetOperatorOverloadPair(method.OperatorKind);
 
-                    WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
-                              @operator, method.Parameters[1].Name);
+                    WriteLine("return !({0} {1} {2});", parameter.Name,
+                        @operator, method.Parameters[1].Name);
                 }
                 return;
             }

@@ -54,6 +54,11 @@ Foo::Foo(Private p)
 {
 }
 
+Foo::Foo(const float& f)
+{
+    B = f;
+}
+
 const char* Foo::GetANSI()
 {
     return "ANSI";
