@@ -2939,7 +2939,8 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
         return false;
 
     if (auto RT = FinalType->getAs<clang::RecordType>())
-        return HasLayout(RT->getDecl());
+        if (!HasLayout(RT->getDecl()))
+            return false;
 
     // Lock in the MS inheritance model if we have a member pointer to a class,
     // else we get an assertion error inside Clang's codegen machinery.

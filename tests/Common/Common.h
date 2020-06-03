@@ -1639,6 +1639,21 @@ class TemplateClass : TemplateClassBase<A,B> {
     explicit TemplateClass(Func function) {}
 };
 
+template <typename T>
+class QScopedPointer
+{
+public:
+    typedef T* QScopedPointer::* RestrictedBool;
+    operator RestrictedBool()
+    {
+    }
+};
+
+class QObjectData {
+};
+
+QScopedPointer<QObjectData> d_ptr;
+
 struct DLL_API PointerToTypedefPointerTest
 {
     int val;
