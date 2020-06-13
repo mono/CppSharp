@@ -1528,6 +1528,11 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             GenerateVTableClassSetup(@class, wrappedEntries);
+            WriteLine("private static readonly global::System.Collections.Generic.List<" +
+                "global::CppSharp.Runtime.SafeUnmanagedMemoryHandle> __handleManagedVTables" +
+                " = new global::System.Collections.Generic.List<" +
+                "global::CppSharp.Runtime.SafeUnmanagedMemoryHandle>();");
+            NewLine();
 
             WriteLine("#endregion");
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1638,6 +1643,7 @@ namespace CppSharp.Generators.CSharp
                 string vfptr = $"vfptr{(destructorOnly ? "_dtor" : string.Empty)}{i}";
                 WriteLine($@"var {vfptr} = Marshal.AllocHGlobal({size} * {
                     Context.TargetInfo.PointerWidth / 8});");
+                WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vfptr}, true));");
                 WriteLine($"{managedVTables}[{i}] = {vfptr}.ToPointer();");
 
                 AllocateNewVTableEntries(vftable.Layout.Components, wrappedEntries,
@@ -1655,6 +1661,7 @@ namespace CppSharp.Generators.CSharp
             int size = @class.Layout.Layout.Components.Count;
             uint pointerSize = Context.TargetInfo.PointerWidth / 8;
             WriteLine($"var vtptr{suffix} = Marshal.AllocHGlobal({size} * {pointerSize});");
+            WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle(vtptr{suffix}, true));");
 
             WriteLine($@"var vfptr{suffix}0 = vtptr{suffix} + {
                 VTables.ItaniumOffsetToTopAndRTTI} * {pointerSize};");
