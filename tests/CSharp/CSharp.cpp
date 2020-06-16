@@ -1693,6 +1693,12 @@ const Foo*& takeReturnReferenceToPointer(const Foo*& foo)
     return foo;
 }
 
+const wchar_t* takeReturnWideString(const wchar_t* wideString)
+{
+    WideString = wideString;
+    return WideString.data();
+}
+
 boolean_t takeTypemapTypedefParam(boolean_t b)
 {
     return b;

@@ -149,19 +149,22 @@ namespace CppSharp.Types.Std
             if (ctx.Kind == TypePrinterContextKind.Managed)
                 return new CILType(typeof(string));
 
-            if (ctx.Parameter == null || ctx.Parameter.Name == Helpers.ReturnIdentifier)
+            bool isWStr;
+            if (ctx.Parameter == null || ctx.Parameter.Name == Helpers.ReturnIdentifier ||
+                (isWStr = ctx.Parameter.Type.Desugar().IsPointerToPrimitiveType(PrimitiveType.WideChar) &&
+                 Context.TargetInfo.WCharWidth > 16))
             {
                 var typePrinter = new CSharpTypePrinter(Context);
                 return new CustomType(typePrinter.IntPtrType);
             }
 
+            if (Context.Options.Encoding == Encoding.Unicode ||
+                Context.Options.Encoding == Encoding.BigEndianUnicode || isWStr)
+                return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
+
             if (Context.Options.Encoding == Encoding.ASCII ||
                 Context.Options.Encoding == Encoding.UTF8)
                 return new CustomType("[MarshalAs(UnmanagedType.LPUTF8Str)] string");
-
-            if (Context.Options.Encoding == Encoding.Unicode ||
-                Context.Options.Encoding == Encoding.BigEndianUnicode)
-                return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
 
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
@@ -170,12 +173,15 @@ namespace CppSharp.Types.Std
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             string param = ctx.Parameter.Name;
+            Type type = ctx.Parameter.Type.Desugar(resolveTemplateSubstitution: false);
             if (ctx.Parameter.Usage == ParameterUsage.Unknown &&
-                !ctx.Parameter.Type.IsReference() &&
-                !(ctx.Parameter.Type is TemplateParameterSubstitutionType) &&
+                !type.IsReference() &&
+                !(type is TemplateParameterSubstitutionType) &&
                 ctx.MarshalKind != MarshalKind.NativeField &&
                 ctx.MarshalKind != MarshalKind.VTableReturnValue &&
-                ctx.MarshalKind != MarshalKind.Variable)
+                ctx.MarshalKind != MarshalKind.Variable &&
+                (!type.IsPointerToPrimitiveType(PrimitiveType.WideChar) ||
+                 Context.TargetInfo.WCharWidth == 16))
             {
                 ctx.Return.Write(param);
                 return;

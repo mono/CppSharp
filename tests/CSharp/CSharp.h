@@ -1379,6 +1379,8 @@ DLL_API char* takeConstCharRef(const char& c);
 DLL_API const char*& takeConstCharStarRef(const char*& c);
 DLL_API const void*& rValueReferenceToPointer(void*&& v);
 DLL_API const Foo*& takeReturnReferenceToPointer(const Foo*& foo);
+DLL_API const wchar_t* takeReturnWideString(const wchar_t* wideString);
+DLL_API std::wstring WideString;
 
 struct {
     struct {
