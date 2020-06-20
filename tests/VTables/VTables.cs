@@ -12,6 +12,13 @@ namespace CppSharp.Tests
         {
         }
 
+        public override void Setup(Driver driver)
+        {
+            base.Setup(driver);
+
+            driver.ParserOptions.EnableRTTI = true;
+        }
+
         public override void SetupPasses(Driver driver)
         {
             driver.Context.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());

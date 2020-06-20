@@ -1641,9 +1641,17 @@ namespace CppSharp.Generators.CSharp
                 VFTableInfo vftable = @class.Layout.VFTables[i];
                 int size = vftable.Layout.Components.Count;
                 string vfptr = $"vfptr{(destructorOnly ? "_dtor" : string.Empty)}{i}";
-                WriteLine($@"var {vfptr} = Marshal.AllocHGlobal({size} * {
-                    Context.TargetInfo.PointerWidth / 8});");
-                WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vfptr}, true));");
+                Write($@"var {vfptr} = Marshal.AllocHGlobal(");
+                if (vftable.Layout.Components.Any(c => c.Kind == VTableComponentKind.RTTI))
+                    Write($"({size} + 1)");
+                else
+                    Write($"{size}");
+                uint pointerSize = Context.TargetInfo.PointerWidth / 8;
+                WriteLine($" * {pointerSize});");
+                Write($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vfptr}");
+                if (vftable.Layout.Components.Any(c => c.Kind == VTableComponentKind.RTTI))
+                    Write($" - {pointerSize}");
+                WriteLine(", true));");
                 WriteLine($"{managedVTables}[{i}] = {vfptr}.ToPointer();");
 
                 AllocateNewVTableEntries(vftable.Layout.Components, wrappedEntries,
@@ -1679,7 +1687,9 @@ namespace CppSharp.Generators.CSharp
             {
                 var entry = entries[i];
                 var offset = pointerSize
-                    * (i - (Context.ParserOptions.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
+                    * (i - (Context.ParserOptions.IsMicrosoftAbi ?
+                            (entries.Any(c => c.Kind == VTableComponentKind.RTTI) ? 1 : 0) :
+                            VTables.ItaniumOffsetToTopAndRTTI));
 
                 var nativeVftableEntry = $@"*(void**) (new IntPtr(*(void**) {
                     Helpers.InstanceIdentifier}) + {vptrOffset} + {offset})";
@@ -2620,8 +2630,8 @@ namespace CppSharp.Generators.CSharp
                 @class = (Class) method.OriginalFunction.Namespace;
 
             if (Context.ParserOptions.IsMicrosoftAbi)
-                vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
-                    v => v.Layout.Components.Any(c => c.Method == @virtual)).First());
+                vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.First(
+                    v => v.Layout.Components.Any(c => c.Method == @virtual)));
 
             WriteLine($@"var {Helpers.SlotIdentifier} = *(void**) ((IntPtr) {
                 (thisParam != null ? $"{thisParam.Name}."

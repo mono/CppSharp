@@ -102,4 +102,8 @@ public class VTablesTests : GeneratorTestFixture
             Assert.That(foo.S, Is.EqualTo("test"));
         }
     }
+
+    [Test]
+    public void TestTypeNameRTTI() =>
+        Assert.That(BaseClassVirtual.TypeName, Does.EndWith(nameof(BaseClassVirtual)));
 }
