@@ -1,4 +1,5 @@
 #include "VTables.h"
+#include <typeinfo>
 
 Foo::Foo()
 {
@@ -64,6 +65,11 @@ BaseClassVirtual BaseClassVirtual::getBase()
 BaseClassVirtual* BaseClassVirtual::getBasePtr()
 {
     return new DerivedClassVirtual();
+}
+
+const char* BaseClassVirtual::getTypeName()
+{
+    return typeid(BaseClassVirtual).name();
 }
 
 DerivedClassVirtual::DerivedClassVirtual()

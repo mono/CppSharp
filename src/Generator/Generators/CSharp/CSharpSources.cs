@@ -1639,15 +1639,11 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < @class.Layout.VFTables.Count; i++)
             {
                 VFTableInfo vftable = @class.Layout.VFTables[i];
-                int size = vftable.Layout.Components.Count;
-                string vfptr = $"vfptr{(destructorOnly ? "_dtor" : string.Empty)}{i}";
-                WriteLine($@"var {vfptr} = Marshal.AllocHGlobal({size} * {
-                    Context.TargetInfo.PointerWidth / 8});");
-                WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vfptr}, true));");
-                WriteLine($"{managedVTables}[{i}] = {vfptr}.ToPointer();");
 
                 AllocateNewVTableEntries(vftable.Layout.Components, wrappedEntries,
-                    @class.Layout.VTablePointers[i].Offset, i, destructorOnly);
+                    @class.Layout.VTablePointers[i].Offset, i,
+                    vftable.Layout.Components.Any(c => c.Kind == VTableComponentKind.RTTI) ? 1 : 0,
+                    destructorOnly);
             }
         }
 
@@ -1657,33 +1653,39 @@ namespace CppSharp.Generators.CSharp
             var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
             WriteLine($"{managedVTables} = new void*[1];");
 
-            string suffix = destructorOnly ? "_dtor" : string.Empty;
-            int size = @class.Layout.Layout.Components.Count;
-            uint pointerSize = Context.TargetInfo.PointerWidth / 8;
-            WriteLine($"var vtptr{suffix} = Marshal.AllocHGlobal({size} * {pointerSize});");
-            WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle(vtptr{suffix}, true));");
-
-            WriteLine($@"var vfptr{suffix}0 = vtptr{suffix} + {
-                VTables.ItaniumOffsetToTopAndRTTI} * {pointerSize};");
-            WriteLine($"{managedVTables}[0] = vfptr{suffix}0.ToPointer();");
-
             AllocateNewVTableEntries(@class.Layout.Layout.Components,
-                wrappedEntries, @class.Layout.VTablePointers[0].Offset, 0, destructorOnly);
+                wrappedEntries, @class.Layout.VTablePointers[0].Offset, 0,
+                VTables.ItaniumOffsetToTopAndRTTI, destructorOnly);
         }
 
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
-            IList<VTableComponent> wrappedEntries, uint vptrOffset, int tableIndex, bool destructorOnly)
+            IList<VTableComponent> wrappedEntries, uint vptrOffset, int tableIndex,
+            int offsetRTTI, bool destructorOnly)
         {
-            var pointerSize = Context.TargetInfo.PointerWidth / 8;
+            string suffix = (destructorOnly ? "_dtor" : string.Empty) +
+                (tableIndex == 0 ? string.Empty : tableIndex.ToString(CultureInfo.InvariantCulture));
+            int size = entries.Count;
+            uint pointerSize = Context.TargetInfo.PointerWidth / 8;
+            string vtptr = $"vtptr{suffix}";
+            // allocate memory for the new v-table
+            WriteLine($"var {vtptr} = Marshal.AllocHGlobal({size} * {pointerSize});");
+            // ensure it's automatically freed when no longer needed
+            WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vtptr}, true));");
+
+            string vfptr = $"vfptr{suffix}";
+            // obtain a pointer in the table to the start of virtual functions
+            WriteLine($"var {vfptr} = {vtptr} + {offsetRTTI} * {pointerSize};");
+            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
+            WriteLine($"{managedVTables}[{tableIndex}] = {vfptr}.ToPointer();");
+
+            // fill the newly allocated v-table
             for (var i = 0; i < entries.Count; i++)
             {
                 var entry = entries[i];
-                var offset = pointerSize
-                    * (i - (Context.ParserOptions.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
+                var offset = pointerSize * (i - offsetRTTI);
 
                 var nativeVftableEntry = $@"*(void**) (new IntPtr(*(void**) {
                     Helpers.InstanceIdentifier}) + {vptrOffset} + {offset})";
-                string vfptr = $"vfptr{(destructorOnly ? "_dtor" : string.Empty)}{tableIndex}";
                 var managedVftableEntry = $"*(void**) ({vfptr} + {offset})";
 
                 if ((entry.Kind == VTableComponentKind.FunctionPointer ||
@@ -1691,8 +1693,10 @@ namespace CppSharp.Generators.CSharp
                     !entry.IsIgnored() &&
                     (!destructorOnly || entry.Method.IsDestructor ||
                      Context.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.QualifiedOriginalName)))
+                    // patch with pointers to managed code where needed
                     WriteLine("{0} = _Thunks[{1}];", managedVftableEntry, wrappedEntries.IndexOf(entry));
                 else
+                    // and simply copy the rest
                     WriteLine("{0} = {1};", managedVftableEntry, nativeVftableEntry);
             }
         }
@@ -2620,8 +2624,8 @@ namespace CppSharp.Generators.CSharp
                 @class = (Class) method.OriginalFunction.Namespace;
 
             if (Context.ParserOptions.IsMicrosoftAbi)
-                vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.Where(
-                    v => v.Layout.Components.Any(c => c.Method == @virtual)).First());
+                vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.First(
+                    v => v.Layout.Components.Any(c => c.Method == @virtual)));
 
             WriteLine($@"var {Helpers.SlotIdentifier} = *(void**) ((IntPtr) {
                 (thisParam != null ? $"{thisParam.Name}."

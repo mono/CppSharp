@@ -31,6 +31,7 @@ public:
     virtual int retInt();
     static BaseClassVirtual getBase();
     static BaseClassVirtual* getBasePtr();
+    static const char* getTypeName();
 };
 
 class DLL_API DerivedClassVirtual : public BaseClassVirtual

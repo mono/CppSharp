@@ -62,7 +62,8 @@ namespace CppSharp.AST
             {
                 case CppAbi.Microsoft:
                     return (from table in @class.Layout.VFTables
-                            let j = table.Layout.Components.FindIndex(m => m.Method == function)
+                            let j = table.Layout.Components.FindIndex(m => m.Method == function) -
+                                (table.Layout.Components.Any(c => c.Kind == VTableComponentKind.RTTI) ? 1 : 0)
                             where j >= 0
                             select j).First();
                 default:
