@@ -36,7 +36,7 @@ namespace CppSharp.Passes
             }
 
             var count = Count++;
-            if (count == 0)
+            if (count <= 1)
                 return false;
 
             decl.Name += count.ToString(CultureInfo.InvariantCulture);

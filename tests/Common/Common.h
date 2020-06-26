@@ -653,6 +653,11 @@ public:
     virtual int(*getCallback())(int);
     virtual void setCallback(int(*value)(int));
 
+    int GetArchiveName() const;
+
+protected:
+    const int ArchiveName;
+
 private:
     int FieldValue;
     double _refToPrimitiveInSetter;

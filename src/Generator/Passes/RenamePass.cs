@@ -71,16 +71,6 @@ namespace CppSharp.Passes
                 }
             }
 
-            if (!(decl is Class) &&
-                !string.IsNullOrEmpty(decl.Name) && AreThereConflicts(decl, decl.Name))
-            {
-                char initialLetter = char.IsUpper(decl.Name[0]) ?
-                    char.ToLowerInvariant(decl.Name[0]) :
-                    char.ToUpperInvariant(decl.Name[0]);
-                newName = initialLetter + decl.Name.Substring(1);
-                return true;
-            }
-
             newName = decl.Name;
             return false;
         }
@@ -214,9 +204,19 @@ namespace CppSharp.Passes
                 return @class.GetPropertyByName(newName) != null;
 
             var property = decl as Property;
-            if (property != null && property.Field != null)
-                return ((Class) decl.Namespace).Properties.Find(
-                    p => p != decl && p.Name == newName) != null;
+            if (property != null)
+            {
+                Property existingProperty = @class.Properties.Find(
+                    p => p != decl && p.Name == newName);
+                if (existingProperty != null)
+                {
+                    if (property.Access <= existingProperty.Access &&
+                        (property.Field != null || existingProperty.Field == null))
+                        return true;
+
+                    existingProperty.Name = property.Name;
+                }
+            }
 
             var enumItem = decl as Enumeration.Item;
             if (enumItem != null)

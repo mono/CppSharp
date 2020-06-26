@@ -580,6 +580,8 @@ public class CommonTests : GeneratorTestFixture
 
             prop.Callback = x => 4 * x;
             Assert.That(prop.Callback(5), Is.EqualTo(20));
+
+            Assert.That(prop.ArchiveName, Is.EqualTo(20));
         }
         using (var prop = new HasOverridenSetter())
         {

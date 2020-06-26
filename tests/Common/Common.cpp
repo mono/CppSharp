@@ -545,14 +545,16 @@ SomeNamespace::AbstractClass::~AbstractClass()
 {
 }
 
-TestProperties::TestProperties() : Field(0), _refToPrimitiveInSetter(0),
+TestProperties::TestProperties() : Field(0), ArchiveName(0),
+    FieldValue(0), _refToPrimitiveInSetter(0),
     _getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0),
     _virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1),
     ConstRefField(Field)
 {
 }
 
-TestProperties::TestProperties(const TestProperties& other) : Field(other.Field),
+TestProperties::TestProperties(const TestProperties& other) :
+    Field(other.Field), ArchiveName(other.ArchiveName),
     FieldValue(other.FieldValue),
     _refToPrimitiveInSetter(other._refToPrimitiveInSetter),
     _getterAndSetterWithTheSameName(other._getterAndSetterWithTheSameName),
@@ -731,6 +733,11 @@ int(*TestProperties::getCallback())(int)
 void TestProperties::setCallback(int(*value)(int))
 {
     _callback = value;
+}
+
+int TestProperties::GetArchiveName() const
+{
+    return 20;
 }
 
 HasOverridenSetter::HasOverridenSetter()
