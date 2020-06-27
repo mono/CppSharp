@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Passes;
+using CppSharp.Parser;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -36,7 +37,8 @@ namespace CppSharp.Generators.CSharp
             // CheckAbiParameters runs last because hidden structure parameters
             // should always occur first.
 
-            Context.TranslationUnitPasses.AddPass(new CheckAbiParameters());
+            if (Context.ParserOptions.LanguageVersion > LanguageVersion.C99_GNU)
+                Context.TranslationUnitPasses.AddPass(new CheckAbiParameters());
 
             return true;
         }
