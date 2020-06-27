@@ -1,4 +1,4 @@
-# CppSharp 0.9.4 25.6.2019
+# CppSharp 0.10.0 25.6.2019
 
 * Generate valid C# when passing a const ref to char
 

@@ -1,4 +1,4 @@
-# CppSharp 0.8.20 25.5.2018
+# CppSharp 0.8.20 22.5.2018
 
 Fixed generation support for pointers to enums in C#.
 Fixed a case of functions converted to methods.

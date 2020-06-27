@@ -1,4 +1,4 @@
-# CppSharp 0.10.4 25.3.2019
+# CppSharp 0.10.4 23.5.2020
 
 * Simplify the required headers for macOS bindings
 

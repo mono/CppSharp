@@ -1,4 +1,4 @@
-# CppSharp 0.10.3 9.4.2019
+# CppSharp 0.10.3 9.4.2020
 
 * Ensure complete template specializations in AST
 

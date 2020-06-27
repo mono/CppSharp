@@ -1,4 +1,4 @@
-# CppSharp 0.10.2 28.3.2019
+# CppSharp 0.10.2 28.3.2020
 
 * Associate getter/setter methods with their associated property in GetterSetterToProperty pass
 

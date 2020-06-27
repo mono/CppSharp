@@ -1,4 +1,4 @@
-# CppSharp 0.10.1 7.4.2019
+# CppSharp 0.10.1 4.7.2019
 
 * Fix the getting of references to pointers in C#
 
