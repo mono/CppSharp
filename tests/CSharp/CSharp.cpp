@@ -1315,6 +1315,56 @@ void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
 {
 }
 
+HasPrivateVirtualProperty::~HasPrivateVirtualProperty()
+{
+}
+
+int HasPrivateVirtualProperty::property()
+{
+    return 0;
+}
+
+void HasPrivateVirtualProperty::protectedMethod()
+{
+}
+
+int HasPrivateOverriddenProperty::property()
+{
+    return 0;
+}
+
+void HasPrivateOverriddenProperty::protectedAbstractMethod()
+{
+}
+
+void HasPrivateOverriddenProperty::protectedMethod()
+{
+}
+
+int HasPrivateOverriddenProperty::protectedProperty()
+{
+    return 5;
+}
+
+int HasConflictWithProperty::conflictWithProperty()
+{
+    return 0;
+}
+
+int HasConflictWithProperty::getConflictWithProperty()
+{
+    return 0;
+}
+
+HasConflictWithAbstractProperty::~HasConflictWithAbstractProperty()
+{
+}
+
+int HasConflictWithAbstractProperty::conflictWithProperty()
+{
+    return 0;
+}
+
 HasVirtualTakesReturnsProblematicTypes::HasVirtualTakesReturnsProblematicTypes()
 {
 }

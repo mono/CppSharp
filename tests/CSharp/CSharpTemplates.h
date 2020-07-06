@@ -729,7 +729,7 @@ public:
     virtual int callFunction() = 0;
 };
 
-class ImplementAbstractTemplate : public AbstractTemplate<int>
+class DLL_API ImplementAbstractTemplate : public AbstractTemplate<int>
 {
 public:
     int property() override;

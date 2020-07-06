@@ -1029,7 +1029,7 @@ namespace NamespaceB
 	};
 }
 
-class HasPrivateVirtualProperty
+class DLL_API HasPrivateVirtualProperty
 {
 public:
     virtual ~HasPrivateVirtualProperty();
@@ -1040,7 +1040,7 @@ private:
     virtual int protectedProperty() = 0;
 };
 
-class HasPrivateOverriddenProperty : public HasPrivateVirtualProperty
+class DLL_API HasPrivateOverriddenProperty : public HasPrivateVirtualProperty
 {
 protected:
     virtual void protectedAbstractMethod();
@@ -1050,7 +1050,7 @@ private:
     virtual int property();
 };
 
-class HasConflictWithProperty
+class DLL_API HasConflictWithProperty
 {
 public:
     int conflictWithProperty();
@@ -1063,7 +1063,7 @@ struct iterator_category_with_traversal : Category, Traversal
 };
 
 
-class HasConflictWithAbstractProperty
+class DLL_API HasConflictWithAbstractProperty
 {
 public:
     virtual ~HasConflictWithAbstractProperty();
