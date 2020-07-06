@@ -118,6 +118,7 @@ function SetupTestNativeProject(name, depends)
 
     files { "**.h", "**.cpp" }
     vpaths { ["*"] = "*" }
+    defines { "DLL_EXPORT" }
 
     if depends ~= nil then
       links { depends .. ".Native" }

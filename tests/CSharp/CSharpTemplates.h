@@ -30,7 +30,7 @@ class DLL_API Ignored
 };
 
 template <typename T>
-class DLL_API IndependentFields : public T1
+class IndependentFields : public T1
 {
     typedef T Type;
 public:
@@ -135,12 +135,12 @@ private:
 };
 
 template <typename T>
-class DLL_API Base
+class Base
 {
 };
 
 template <typename T>
-class DLL_API DependentValueFields : public Base<T>
+class DependentValueFields : public Base<T>
 {
 public:
     class Nested;
@@ -245,7 +245,7 @@ public:
 };
 
 template <typename T>
-class DLL_API DependentPointerFields
+class DependentPointerFields
 {
 public:
     DependentPointerFields(T t = 0);
@@ -284,8 +284,8 @@ public:
     class iterator
     {
     public:
-        iterator() {}
-        ~iterator() {}
+        iterator();
+        ~iterator();
     };
     void takeDependentPtrToFirstTemplateArg(iterator i, const K& k);
     void takeDependentPtrToSecondTemplateArg(const V& v);
@@ -293,6 +293,16 @@ private:
     K key;
     V value;
 };
+
+template <typename K, typename V>
+TwoTemplateArgs<K, V>::iterator::iterator()
+{
+}
+
+template <typename K, typename V>
+TwoTemplateArgs<K, V>::iterator::~iterator()
+{
+}
 
 template <typename K, typename V>
 void TwoTemplateArgs<K, V>::takeDependentPtrToFirstTemplateArg(iterator i, const K& k)
@@ -305,7 +315,7 @@ void TwoTemplateArgs<K, V>::takeDependentPtrToSecondTemplateArg(const V& v)
 }
 
 template <typename T, typename D = IndependentFields<T>>
-class DLL_API HasDefaultTemplateArgument
+class HasDefaultTemplateArgument
 {
 public:
     HasDefaultTemplateArgument();
@@ -638,7 +648,7 @@ public:
 };
 
 template<typename T>
-class DLL_API TemplateDerivedFromRegularDynamic : public RegularDynamic
+class TemplateDerivedFromRegularDynamic : public RegularDynamic
 {
 public:
     TemplateDerivedFromRegularDynamic();
@@ -675,7 +685,7 @@ enum class UsedInTemplatedIndexer
 };
 
 template <typename T>
-class DLL_API QFlags
+class QFlags
 {
     typedef int Int;
     typedef int (*Zero);
@@ -792,6 +802,9 @@ template class DLL_API TemplateWithIndexer<float>;
 template class DLL_API TemplateWithIndexer<const char*>;
 template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
 template class DLL_API HasCtorWithMappedToEnum<TestFlag>;
+template class DLL_API TwoTemplateArgs<int*, int*>;
+template class DLL_API TwoTemplateArgs<int*, int>;
+template class DLL_API TwoTemplateArgs<int*, float>;
 template class DLL_API TwoTemplateArgs<const char*, int>;
 template class DLL_API TwoTemplateArgs<QString, int>;
 

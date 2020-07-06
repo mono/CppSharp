@@ -14,6 +14,7 @@ project "CppSharp.CppParser"
   language "C++"
   SetupNativeProject()
   rtti "Off"
+  defines { "DLL_EXPORT" }
 
   filter "action:vs*"
     buildoptions { clang_msvc_flags }
@@ -44,6 +45,7 @@ project "Std-symbols"
   language "C++"
   SetupNativeProject()
   rtti "Off"
+  defines { "DLL_EXPORT" }
 
   filter { "action:vs*" }
     buildoptions { clang_msvc_flags }

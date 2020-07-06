@@ -42,6 +42,7 @@ namespace CppSharp.Utils
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
             parserOptions.AddIncludeDirs(path);
+            parserOptions.AddDefines("DLL_EXPORT");
 
             Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");

@@ -1,7 +1,12 @@
 #pragma once
 
 #if defined(_MSC_VER)
+
+#if defined(DLL_EXPORT)
 #define DLL_API __declspec(dllexport)
+#else
+#define DLL_API __declspec(dllimport)
+#endif
 
 #ifndef STDCALL
 #define STDCALL __stdcall

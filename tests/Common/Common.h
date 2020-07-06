@@ -115,11 +115,6 @@ public:
     char16_t returnChar16();
 };
 
-// HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp
-const int Foo::unsafe = 10;
-int Foo::readWrite = 15;
-const char Foo::charArray[] = "abc";
-
 struct DLL_API Bar
 {
     enum Item
@@ -346,33 +341,15 @@ struct DLL_API TestMoveOperatorToClass
 
 TestMoveOperatorToClass::TestMoveOperatorToClass() {}
 
-DLL_API int operator *(TestMoveOperatorToClass klass, int b)
-{
-    return klass.A * b;
-}
+DLL_API int operator *(TestMoveOperatorToClass klass, int b);
 
-DLL_API TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b)
-{
-    TestMoveOperatorToClass nb;
-    nb.A = -b.A;
-    nb.B = -b.B;
-    return nb;
-}
+DLL_API TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b);
 
 DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
-                                          const TestMoveOperatorToClass& b2)
-{
-    TestMoveOperatorToClass b;
-    b.A = b1.A + b2.A;
-    b.B = b1.B + b2.B;
-    return b;
-}
+    const TestMoveOperatorToClass& b2);
 
 // Not a valid operator overload for Foo2 in managed code - comparison operators need to return bool.
-DLL_API int operator==(const Foo2& a, const Foo2& b)
-{
-        return 0;
-}
+DLL_API int operator==(const Foo2& a, const Foo2& b);
 
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
@@ -578,10 +555,7 @@ bool ClassWithOverloadedOperators::
 }
 
 // Tests global static function generation
-DLL_API int Function()
-{
-    return 5;
-}
+DLL_API int Function();
 
 // Tests properties
 struct DLL_API TestProperties
@@ -754,9 +728,6 @@ struct DLL_API TestVariables
     void SetValue(int value = VALUE);
 };
 
-int TestVariables::VALUE;
-void TestVariables::SetValue(int value) { VALUE = value; }
-
 typedef const wchar_t * LPCWSTR;
 struct DLL_API TestWideStrings
 {
@@ -861,19 +832,11 @@ public:
 
 // Test decltype
 int Expr = 0;
-DLL_API decltype(Expr) TestDecltype()
-{
-    return Expr;
-}
+DLL_API decltype(Expr) TestDecltype();
 
-DLL_API void TestNullPtrType(decltype(nullptr))
-{
-}
+DLL_API void TestNullPtrType(decltype(nullptr));
 
-DLL_API decltype(nullptr) TestNullPtrTypeRet()
-{
-    return nullptr;
-}
+DLL_API decltype(nullptr) TestNullPtrTypeRet();
 
 // Tests dependent name types
 template<typename T> struct DependentType
@@ -1193,19 +1156,6 @@ private:
     static bool dtorCalled;
 };
 
-// HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp
-bool NonTrivialDtor::dtorCalled = false;
-
-bool NonTrivialDtor::getDtorCalled()
-{
-    return true;
-}
-
-void NonTrivialDtor::setDtorCalled(bool value)
-{
-    dtorCalled = true;
-}
-
 template <class T> class ForwardedTemplate;
 
 ForwardedTemplate<int> returnsForwardedTemplate();
@@ -1255,10 +1205,7 @@ typedef union
     int c;
 } union_t;
 
-int DLL_API func_union(union_t u)
-{
-    return u.c;
-}
+int DLL_API func_union(union_t u);
 
 class DLL_API HasProtectedEnum
 {

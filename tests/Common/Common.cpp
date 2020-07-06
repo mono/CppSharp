@@ -59,6 +59,10 @@ Foo::Foo(const float& f)
     B = f;
 }
 
+const int Foo::unsafe = 10;
+const char Foo::charArray[] = "abc";
+int Foo::readWrite = 15;
+
 const char* Foo::GetANSI()
 {
     return "ANSI";
@@ -422,6 +426,33 @@ int test(common& s)
     return 5;
 }
 
+int operator *(TestMoveOperatorToClass klass, int b)
+{
+    return klass.A * b;
+}
+
+TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b)
+{
+    TestMoveOperatorToClass nb;
+    nb.A = -b.A;
+    nb.B = -b.B;
+    return nb;
+}
+
+TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
+    const TestMoveOperatorToClass& b2)
+{
+    TestMoveOperatorToClass b;
+    b.A = b1.A + b2.A;
+    b.B = b1.B + b2.B;
+    return b;
+}
+
+int operator==(const Foo2& a, const Foo2& b)
+{
+    return 0;
+}
+
 Bar::Item operator |(Bar::Item left, Bar::Item right)
 {
     return left | right;
@@ -501,6 +532,20 @@ ClassD::ClassD(int value)
 {
 }
 
+decltype(Expr) TestDecltype()
+{
+    return Expr;
+}
+
+void TestNullPtrType(decltype(nullptr))
+{
+}
+
+decltype(nullptr) TestNullPtrTypeRet()
+{
+    return nullptr;
+}
+
 void DelegateNamespace::Nested::f1(void (*)())
 {
 }
@@ -543,6 +588,11 @@ std::string& HasStdString::getStdString()
 
 SomeNamespace::AbstractClass::~AbstractClass()
 {
+}
+
+int Function()
+{
+    return 5;
 }
 
 TestProperties::TestProperties() : Field(0), ArchiveName(0),
@@ -776,6 +826,9 @@ Bar& TestIndexedProperties::operator[](const Foo& key)
     return bar;
 }
 
+int TestVariables::VALUE;
+void TestVariables::SetValue(int value) { VALUE = value; }
+
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
     // cause a crash to indicate this is the incorrect ctor to invoke
@@ -986,8 +1039,25 @@ NonTrivialDtor::~NonTrivialDtor()
     dtorCalled = true;
 }
 
+bool NonTrivialDtor::getDtorCalled()
+{
+    return true;
+}
+
+void NonTrivialDtor::setDtorCalled(bool value)
+{
+    dtorCalled = true;
+}
+
+bool NonTrivialDtor::dtorCalled = false;
+
 DerivedFromTemplateInstantiationWithVirtual::DerivedFromTemplateInstantiationWithVirtual()
 {
+}
+
+int func_union(union_t u)
+{
+    return u.c;
 }
 
 HasProtectedEnum::HasProtectedEnum()
