@@ -387,6 +387,7 @@ function package_llvm(conf, llvm_base, llvm_build)
 	os.mkdir(out)
 
 	os.copydir(llvm_base .. "/llvm/include", out .. "/include")
+	os.copydir(llvm_base .. "/lld/include", out .. "/lld/include")
 	os.copydir(llvm_build .. "/include", out .. "/build/include")
 
 	local llvm_msbuild_libdir = "/" .. conf .. "/lib"
