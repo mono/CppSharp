@@ -72,8 +72,8 @@ namespace CppSharp
                 SetupLinuxOptions(parserOptions);
 
             var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
-            parserOptions.AddIncludeDirs(basePath);
-            parserOptions.AddLibraryDirs(".");
+            parserModule.IncludeDirs.Add(basePath);
+            parserModule.LibraryDirs.Add(".");
 
             options.OutputDir = Path.Combine(GetSourceDirectory("src"), "CppParser",
                 "Bindings", Kind.ToString());

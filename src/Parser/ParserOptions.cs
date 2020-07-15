@@ -56,30 +56,10 @@ namespace CppSharp.Parser
 
     public class ParserOptions : CppParserOptions
     {
-        public ParserOptions()
-        {
-            MicrosoftMode = !Platform.IsUnixPlatform;
-        }
-
-        public ParserOptions(ParserOptions options)
-        {
-            ToolSetToUse = options.ToolSetToUse;
-            TargetTriple = options.TargetTriple;
-            NoStandardIncludes = options.NoStandardIncludes;
-            NoBuiltinIncludes = options.NoBuiltinIncludes;
-            MicrosoftMode = options.MicrosoftMode;
-            Verbose = options.Verbose;
-            EnableRTTI = options.EnableRTTI;
-            LanguageVersion = options.LanguageVersion;
-            UnityBuild = options.UnityBuild;
-            SkipPrivateDeclarations = options.SkipPrivateDeclarations;
-            SkipFunctionBodies = options.SkipFunctionBodies;
-            SkipLayoutInfo = options.SkipLayoutInfo;
-            ForceClangToolchainLookup = options.ForceClangToolchainLookup;
-        }
+        public ParserOptions() => MicrosoftMode = !Platform.IsUnixPlatform;
 
         public bool IsItaniumLikeAbi => !IsMicrosoftAbi;
-        public bool IsMicrosoftAbi => TargetTriple.Contains("win32") || 
+        public bool IsMicrosoftAbi => TargetTriple.Contains("win32") ||
             TargetTriple.Contains("windows") || TargetTriple.Contains("msvc");
 
         public bool EnableRTTI { get; set; }
@@ -93,11 +73,9 @@ namespace CppSharp.Parser
         /// </summary>
         public bool ForceClangToolchainLookup = true;
 
-        public ParserOptions BuildForSourceFile(
+        public void BuildForSourceFile(
             IEnumerable<CppSharp.AST.Module> modules, string file = null)
         {
-            var options = new ParserOptions(this);
-
             // This eventually gets passed to Clang's MSCompatibilityVersion, which
             // is in turn used to derive the value of the built-in define _MSC_VER.
             // It used to receive a 4-digit based identifier but now expects a full
@@ -107,59 +85,21 @@ namespace CppSharp.Parser
             if (ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
                 ToolSetToUse *= 100000;
 
-            for (uint i = 0; i < ArgumentsCount; ++i)
-            {
-                var arg = GetArguments(i);
-                options.AddArguments(arg);
-            }
-
-            for (uint i = 0; i < IncludeDirsCount; ++i)
-            {
-                var include = GetIncludeDirs(i);
-                options.AddIncludeDirs(include);
-            }
-
-            for (uint i = 0; i < SystemIncludeDirsCount; ++i)
-            {
-                var include = GetSystemIncludeDirs(i);
-                options.AddSystemIncludeDirs(include);
-            }
-
-            for (uint i = 0; i < DefinesCount; ++i)
-            {
-                var define = GetDefines(i);
-                options.AddDefines(define);
-            }
-
-            for (uint i = 0; i < UndefinesCount; ++i)
-            {
-                var define = GetUndefines(i);
-                options.AddUndefines(define);
-            }
-
-            for (uint i = 0; i < LibraryDirsCount; ++i)
-            {
-                var lib = GetLibraryDirs(i);
-                options.AddLibraryDirs(lib);
-            }
-
             foreach (var module in modules.Where(
                 m => file == null || m.Headers.Contains(file)))
             {
                 foreach (var include in module.IncludeDirs)
-                    options.AddIncludeDirs(include);
+                    AddIncludeDirs(include);
 
                 foreach (var define in module.Defines)
-                    options.AddDefines(define);
+                    AddDefines(define);
 
                 foreach (var undefine in module.Undefines)
-                    options.AddUndefines(undefine);
+                    AddUndefines(undefine);
 
                 foreach (var libraryDir in module.LibraryDirs)
-                    options.AddLibraryDirs(libraryDir);
+                    AddLibraryDirs(libraryDir);
             }
-
-            return options;
         }
 
         public void SetupMSVC()

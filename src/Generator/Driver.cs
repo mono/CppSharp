@@ -131,16 +131,10 @@ namespace CppSharp
 
             var sourceFiles = Options.Modules.SelectMany(m => m.Headers);
 
-            using (ParserOptions parserOptions = ParserOptions.BuildForSourceFile(
-                Options.Modules))
-            {
-                using (ParserResult result = parser.ParseSourceFiles(
-                    sourceFiles, parserOptions))
-                    Context.TargetInfo = result.TargetInfo;
-
-                if (string.IsNullOrEmpty(ParserOptions.TargetTriple))
-                    ParserOptions.TargetTriple = parserOptions.TargetTriple;
-            }
+            ParserOptions.BuildForSourceFile(Options.Modules);
+            using (ParserResult result = parser.ParseSourceFiles(
+                sourceFiles, ParserOptions))
+                Context.TargetInfo = result.TargetInfo;
 
             Context.ASTContext = ClangParser.ConvertASTContext(astContext);
 

@@ -36,13 +36,13 @@ namespace CppSharp.Utils
             Diagnostics.Message("Generating bindings for {0} ({1})",
                 testModule.LibraryName, options.GeneratorKind.ToString());
 
-            var parserOptions = driver.ParserOptions;
             if (Platform.IsMacOS)
-                parserOptions.TargetTriple = Environment.Is64BitProcess ? "x86_64-apple-darwin" : "i686-apple-darwin";
+                driver.ParserOptions.TargetTriple = Environment.Is64BitProcess ?
+                    "x86_64-apple-darwin" : "i686-apple-darwin";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
-            parserOptions.AddIncludeDirs(path);
-            parserOptions.AddDefines("DLL_EXPORT");
+            testModule.IncludeDirs.Add(path);
+            testModule.Defines.Add("DLL_EXPORT");
 
             Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
