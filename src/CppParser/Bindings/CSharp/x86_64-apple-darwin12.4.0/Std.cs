@@ -326,6 +326,13 @@ namespace Std
             [FieldOffset(0)]
             internal global::System.IntPtr __value_;
         }
+
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S1_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __value_;
+        }
     }
 
     namespace Allocator
@@ -920,6 +927,19 @@ namespace Std
 
             [FieldOffset(16)]
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S1_ __end_cap_;
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S0_
+        {
+            [FieldOffset(0)]
+            internal global::System.IntPtr __begin_;
+
+            [FieldOffset(8)]
+            internal global::System.IntPtr __end_;
+
+            [FieldOffset(16)]
+            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S1_ __end_cap_;
         }
     }
 }

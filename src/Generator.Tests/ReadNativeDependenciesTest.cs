@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using CppSharp.Utils;
 using NUnit.Framework;
-using CppSharp.Parser;
+using CppSharp.AST;
 
 namespace CppSharp.Generator.Tests
 {
@@ -11,7 +11,7 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesWindows()
         {
-            var dependencies = GetDependencies("libexpat-windows");
+            IList<string> dependencies = GetDependencies("libexpat-windows");
             Assert.AreEqual("KERNEL32.dll", dependencies[0]);
             Assert.AreEqual("msvcrt.dll", dependencies[1]);
             Assert.AreEqual("USER32.dll", dependencies[2]);
@@ -20,26 +20,25 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadDependenciesLinux()
         {
-            var dependencies = GetDependencies("libexpat-linux");
+            IList<string> dependencies = GetDependencies("libexpat-linux");
             Assert.AreEqual("libc.so.6", dependencies[0]);
         }
 
         [Test]
         public void TestReadDependenciesOSX()
         {
-            var dependencies = GetDependencies("libexpat-osx");
+            IList<string> dependencies = GetDependencies("libexpat-osx");
             Assert.AreEqual("libexpat.1.dylib", dependencies[0]);
             Assert.AreEqual("libSystem.B.dylib", dependencies[1]);
         }
 
         private static IList<string> GetDependencies(string library)
         {
-            var parserOptions = new ParserOptions();
-            parserOptions.AddLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
-            var module = driverOptions.AddModule("Test");
+            Module module = driverOptions.AddModule("Test");
+            module.LibraryDirs.Add(GeneratorTest.GetTestsDirectory("Native"));
             module.Libraries.Add(library);
-            using (var driver = new Driver(driverOptions) { ParserOptions = parserOptions })
+            using (var driver = new Driver(driverOptions))
             {
                 driver.Setup();
                 Assert.IsTrue(driver.ParseLibraries());

@@ -18,6 +18,7 @@ namespace CppSharp
         enum class SourceLocationKind;
         ref class ClangParser;
         ref class CppParserOptions;
+        ref class LinkerOptions;
         ref class Parser;
         ref class ParserDiagnostic;
         ref class ParserResult;
@@ -86,12 +87,6 @@ namespace CppSharp
                 void set(System::Collections::Generic::List<System::String^>^);
             }
 
-            property System::String^ LibraryFile
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
-
             property System::Collections::Generic::List<System::String^>^ SourceFiles
             {
                 System::Collections::Generic::List<System::String^>^ get();
@@ -117,12 +112,6 @@ namespace CppSharp
             }
 
             property System::Collections::Generic::List<System::String^>^ Undefines
-            {
-                System::Collections::Generic::List<System::String^>^ get();
-                void set(System::Collections::Generic::List<System::String^>^);
-            }
-
-            property System::Collections::Generic::List<System::String^>^ LibraryDirs
             {
                 System::Collections::Generic::List<System::String^>^ get();
                 void set(System::Collections::Generic::List<System::String^>^);
@@ -235,11 +224,6 @@ namespace CppSharp
                 unsigned int get();
             }
 
-            property unsigned int LibraryDirsCount
-            {
-                unsigned int get();
-            }
-
             property unsigned int SupportedStdTypesCount
             {
                 unsigned int get();
@@ -281,17 +265,87 @@ namespace CppSharp
 
             void ClearUndefines();
 
+            System::String^ GetSupportedStdTypes(unsigned int i);
+
+            void AddSupportedStdTypes(System::String^ s);
+
+            void ClearSupportedStdTypes();
+
+        protected:
+            bool __ownsNativeInstance;
+        };
+
+        public ref class LinkerOptions : ICppInstance
+        {
+        public:
+
+            property ::CppSharp::CppParser::LinkerOptions* NativePtr;
+            property System::IntPtr __Instance
+            {
+                virtual System::IntPtr get();
+                virtual void set(System::IntPtr instance);
+            }
+
+            LinkerOptions(::CppSharp::CppParser::LinkerOptions* native);
+            LinkerOptions(::CppSharp::CppParser::LinkerOptions* native, bool ownNativeInstance);
+            static LinkerOptions^ __CreateInstance(::System::IntPtr native);
+            static LinkerOptions^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+            LinkerOptions();
+
+            LinkerOptions(CppSharp::Parser::LinkerOptions^ _0);
+
+            ~LinkerOptions();
+
+            property System::Collections::Generic::List<System::String^>^ Arguments
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ LibraryDirs
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property System::Collections::Generic::List<System::String^>^ Libraries
+            {
+                System::Collections::Generic::List<System::String^>^ get();
+                void set(System::Collections::Generic::List<System::String^>^);
+            }
+
+            property unsigned int ArgumentsCount
+            {
+                unsigned int get();
+            }
+
+            property unsigned int LibraryDirsCount
+            {
+                unsigned int get();
+            }
+
+            property unsigned int LibrariesCount
+            {
+                unsigned int get();
+            }
+
+            System::String^ GetArguments(unsigned int i);
+
+            void AddArguments(System::String^ s);
+
+            void ClearArguments();
+
             System::String^ GetLibraryDirs(unsigned int i);
 
             void AddLibraryDirs(System::String^ s);
 
             void ClearLibraryDirs();
 
-            System::String^ GetSupportedStdTypes(unsigned int i);
+            System::String^ GetLibraries(unsigned int i);
 
-            void AddSupportedStdTypes(System::String^ s);
+            void AddLibraries(System::String^ s);
 
-            void ClearSupportedStdTypes();
+            void ClearLibraries();
 
         protected:
             bool __ownsNativeInstance;
@@ -385,10 +439,10 @@ namespace CppSharp
                 void set(System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^);
             }
 
-            property CppSharp::Parser::AST::NativeLibrary^ Library
+            property System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ Libraries
             {
-                CppSharp::Parser::AST::NativeLibrary^ get();
-                void set(CppSharp::Parser::AST::NativeLibrary^);
+                System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ get();
+                void set(System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^);
             }
 
             property CppSharp::Parser::ParserTargetInfo^ TargetInfo
@@ -402,11 +456,22 @@ namespace CppSharp
                 unsigned int get();
             }
 
+            property unsigned int LibrariesCount
+            {
+                unsigned int get();
+            }
+
             CppSharp::Parser::ParserDiagnostic^ GetDiagnostics(unsigned int i);
 
             void AddDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
 
             void ClearDiagnostics();
+
+            CppSharp::Parser::AST::NativeLibrary^ GetLibraries(unsigned int i);
+
+            void AddLibraries(CppSharp::Parser::AST::NativeLibrary^ s);
+
+            void ClearLibraries();
 
         protected:
             bool __ownsNativeInstance;
@@ -435,7 +500,7 @@ namespace CppSharp
 
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::CppParserOptions^ Opts);
 
-            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::CppParserOptions^ Opts);
+            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::LinkerOptions^ Opts);
 
         protected:
             bool __ownsNativeInstance;

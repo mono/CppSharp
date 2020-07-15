@@ -36,27 +36,37 @@ DEF_VECTOR_STRING(CppParserOptions, IncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, SystemIncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, Defines)
 DEF_VECTOR_STRING(CppParserOptions, Undefines)
-DEF_VECTOR_STRING(CppParserOptions, LibraryDirs)
 DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 
 ParserResult::ParserResult()
-    : library(0)
-    , targetInfo(0)
+    : targetInfo(0)
 {
 }
 
 ParserResult::ParserResult(const ParserResult& rhs)
     : kind(rhs.kind)
     , Diagnostics(rhs.Diagnostics)
-    , library(rhs.library)
+    , Libraries(rhs.Libraries)
     , targetInfo(rhs.targetInfo)
 {}
 
 ParserResult::~ParserResult()
 {
-    if (library)
-        delete library;
+    for (auto Library : Libraries)
+    {
+        delete Library;
+    }
 }
+
+DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
+DEF_VECTOR(ParserResult, NativeLibrary*, Libraries)
+
+LinkerOptions::LinkerOptions() {}
+LinkerOptions::~LinkerOptions() {}
+
+DEF_VECTOR_STRING(LinkerOptions, Arguments)
+DEF_VECTOR_STRING(LinkerOptions, LibraryDirs)
+DEF_VECTOR_STRING(LinkerOptions, Libraries)
 
 ParserDiagnostic::ParserDiagnostic() {}
 
@@ -67,5 +77,5 @@ ParserDiagnostic::ParserDiagnostic(const ParserDiagnostic& rhs)
     , lineNumber(rhs.lineNumber)
     , columnNumber(rhs.columnNumber)
 {}
-DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
+
 } }

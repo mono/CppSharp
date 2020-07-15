@@ -894,13 +894,9 @@ TranslationUnit::~TranslationUnit() {}
 DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 
 NativeLibrary::NativeLibrary()
-    : archType(AST::ArchType::UnknownArch)
-{
-}
+    : archType(AST::ArchType::UnknownArch) {}
 
-NativeLibrary::~NativeLibrary()
-{
-}
+NativeLibrary::~NativeLibrary() {}
 
 // NativeLibrary
 DEF_VECTOR_STRING(NativeLibrary, Symbols)

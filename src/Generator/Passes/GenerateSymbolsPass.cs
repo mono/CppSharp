@@ -220,20 +220,23 @@ namespace CppSharp.Passes
 
         private void CollectSymbols(string outputDir, string library)
         {
-            using (var parserOptions = new ParserOptions())
+            using (var linkerOptions = new LinkerOptions())
             {
-                parserOptions.AddLibraryDirs(outputDir);
+                linkerOptions.AddLibraryDirs(outputDir);
                 var output = GetOutputFile(library);
-                parserOptions.LibraryFile = output;
-                using (var parserResult = Parser.ClangParser.ParseLibrary(parserOptions))
+                linkerOptions.AddLibraries(output);
+                using (var parserResult = Parser.ClangParser.ParseLibrary(linkerOptions))
                 {
                     if (parserResult.Kind == ParserResultKind.Success)
                     {
-                        var nativeLibrary = ClangParser.ConvertLibrary(parserResult.Library);
                         lock (@lock)
                         {
-                            Context.Symbols.Libraries.Add(nativeLibrary);
-                            Context.Symbols.IndexSymbols();
+                            for (uint i = 0; i < parserResult.LibrariesCount; i++)
+                            {
+                                var nativeLibrary = ClangParser.ConvertLibrary(parserResult.GetLibraries(i));
+                                Context.Symbols.Libraries.Add(nativeLibrary);
+                                Context.Symbols.IndexSymbols();
+                            }
                         }
                     }
                     else

@@ -54,7 +54,7 @@ public:
 
     void Setup();
     ParserResult* Parse(const std::vector<std::string>& SourceFiles);
-    ParserResult* ParseLibrary(const std::string& File);
+    static ParserResult* ParseLibrary(const LinkerOptions* Opts);
 
     void WalkAST(clang::TranslationUnitDecl* TU);
     void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
@@ -159,10 +159,10 @@ private:
                                  llvm::object::basic_symbol_iterator End,
                                  CppSharp::CppParser::NativeLibrary*& NativeLib);
     Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
-    ParserResultKind ParseArchive(llvm::StringRef File,
-        llvm::object::Archive* Archive, CppSharp::CppParser::NativeLibrary*& NativeLib);
-    ParserResultKind ParseSharedLib(llvm::StringRef File,
-        llvm::object::ObjectFile* ObjectFile, CppSharp::CppParser::NativeLibrary*& NativeLib);
+    static ParserResultKind ParseArchive(llvm::StringRef File,
+        llvm::object::Archive* Archive, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
+    static ParserResultKind ParseSharedLib(llvm::StringRef File,
+        llvm::object::ObjectFile* ObjectFile, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
     ParserTargetInfo* GetTargetInfo();
 
     int index;

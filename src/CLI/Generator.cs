@@ -163,9 +163,6 @@ namespace CppSharp
             foreach (string s in options.IncludeDirs)
                 parserOptions.AddIncludeDirs(s);
 
-            foreach (string s in options.LibraryDirs)
-                parserOptions.AddLibraryDirs(s);
-
             foreach (KeyValuePair<string, string> d in options.Defines)
             {
                 if(string.IsNullOrEmpty(d.Value))

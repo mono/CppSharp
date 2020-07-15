@@ -26,7 +26,6 @@ struct CS_API CppParserOptions
     std::string getClangVersion();
 
     VECTOR_STRING(Arguments)
-    std::string libraryFile;
     // C/C++ header file names.
     VECTOR_STRING(SourceFiles)
 
@@ -35,7 +34,6 @@ struct CS_API CppParserOptions
     VECTOR_STRING(SystemIncludeDirs)
     VECTOR_STRING(Defines)
     VECTOR_STRING(Undefines)
-    VECTOR_STRING(LibraryDirs)
     VECTOR_STRING(SupportedStdTypes)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
@@ -54,6 +52,16 @@ struct CS_API CppParserOptions
 
 private:
     std::string clangVersion;
+};
+
+struct CS_API LinkerOptions
+{
+    LinkerOptions();
+    ~LinkerOptions();
+
+    VECTOR_STRING(Arguments)
+    VECTOR_STRING(LibraryDirs)
+    VECTOR_STRING(Libraries)
 };
 
 enum class ParserDiagnosticLevel
@@ -93,8 +101,7 @@ struct CS_API ParserResult
 
     ParserResultKind kind;
     VECTOR(ParserDiagnostic, Diagnostics)
-
-    NativeLibrary* library;
+    VECTOR(NativeLibrary*, Libraries)
     ParserTargetInfo* targetInfo;
 };
 
@@ -112,7 +119,7 @@ class CS_API ClangParser
 public:
 
     static ParserResult* ParseHeader(CppParserOptions* Opts);
-    static ParserResult* ParseLibrary(CppParserOptions* Opts);
+    static ParserResult* ParseLibrary(LinkerOptions* Opts);
 };
 
 } }

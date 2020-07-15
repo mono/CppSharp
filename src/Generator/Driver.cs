@@ -163,20 +163,25 @@ namespace CppSharp
             ClangParser.LibraryParsed += OnFileParsed;
             foreach (var module in Options.Modules)
             {
-                foreach (var libraryDir in module.LibraryDirs)
-                    ParserOptions.AddLibraryDirs(libraryDir);
-
-                foreach (var library in module.Libraries)
+                using (var linkerOptions = new LinkerOptions())
                 {
-                    if (Context.Symbols.Libraries.Any(l => l.FileName == library))
-                        continue;
+                    foreach (var libraryDir in module.LibraryDirs)
+                        linkerOptions.AddLibraryDirs(libraryDir);
 
-                    using (var res = ClangParser.ParseLibrary(library, ParserOptions))
+                    foreach (string library in module.Libraries)
+                    {
+                        if (Context.Symbols.Libraries.Any(l => l.FileName == library))
+                            continue;
+                        linkerOptions.AddLibraries(library);
+                    }
+
+                    using (var res = ClangParser.ParseLibrary(linkerOptions))
                     {
                         if (res.Kind != ParserResultKind.Success)
                             continue;
 
-                        Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+                        for (uint i = 0; i < res.LibrariesCount; i++)
+                            Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.GetLibraries(i)));
                     }
                 }
             }

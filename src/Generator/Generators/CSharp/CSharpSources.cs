@@ -3257,9 +3257,8 @@ namespace CppSharp.Generators.CSharp
                 targetTriple.Contains("osx"))
             {
                 var framework = libName + ".framework";
-                for (uint i = 0; i < Context.ParserOptions.LibraryDirsCount; i++)
+                foreach (var libDir in declaration.TranslationUnit.Module.LibraryDirs)
                 {
-                    var libDir = Context.ParserOptions.GetLibraryDirs(i);
                     if (Path.GetFileName(libDir) == framework && File.Exists(Path.Combine(libDir, libName)))
                         return $"@executable_path/../Frameworks/{framework}/{libName}";
                 }

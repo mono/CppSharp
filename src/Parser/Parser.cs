@@ -47,12 +47,11 @@ namespace CppSharp
         /// <summary>
         /// Parses a library file with symbols.
         /// </summary>
-        public static ParserResult ParseLibrary(string file, ParserOptions options)
+        public static ParserResult ParseLibrary(LinkerOptions options)
         {
-            options.LibraryFile = file;
-
             var result = Parser.ClangParser.ParseLibrary(options);
-            LibraryParsed(file, result);
+            for (uint i = 0; i < options.LibrariesCount; i++)
+                LibraryParsed(options.GetLibraries(i), result);
 
             return result;
         }

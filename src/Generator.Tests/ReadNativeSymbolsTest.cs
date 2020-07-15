@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using CppSharp.Utils;
 using NUnit.Framework;
-using CppSharp.Parser;
+using CppSharp.AST;
 
 namespace CppSharp.Generator.Tests
 {
@@ -306,12 +306,11 @@ namespace CppSharp.Generator.Tests
 
         private static IList<string> GetSymbols(string library)
         {
-            var parserOptions = new ParserOptions();
-            parserOptions.AddLibraryDirs(GeneratorTest.GetTestsDirectory("Native"));
             var driverOptions = new DriverOptions();
-            var module = driverOptions.AddModule("Test");
+            Module module = driverOptions.AddModule("Test");
+            module.LibraryDirs.Add(GeneratorTest.GetTestsDirectory("Native"));
             module.Libraries.Add(library);
-            using (var driver = new Driver(driverOptions) { ParserOptions = parserOptions })
+            using (var driver = new Driver(driverOptions))
             {
                 driver.Setup();
                 Assert.IsTrue(driver.ParseLibraries());

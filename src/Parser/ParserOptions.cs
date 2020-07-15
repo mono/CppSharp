@@ -96,9 +96,6 @@ namespace CppSharp.Parser
 
                 foreach (var undefine in module.Undefines)
                     AddUndefines(undefine);
-
-                foreach (var libraryDir in module.LibraryDirs)
-                    AddLibraryDirs(libraryDir);
             }
         }
 
