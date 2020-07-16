@@ -10,25 +10,23 @@ namespace CppSharp.Generator.Tests
     public class ASTTestFixture
     {
         protected Driver Driver;
-        protected DriverOptions Options;
-        protected ParserOptions ParserOptions;
         protected ASTContext AstContext;
 
         protected void ParseLibrary(params string[] files)
         {
-            Options = new DriverOptions { GeneratorKind = GeneratorKind.CSharp };
-            ParserOptions = new ParserOptions();
+            var options = new DriverOptions { GeneratorKind = GeneratorKind.CSharp };
+            var parserOptions = new ParserOptions();
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
-            ParserOptions.AddIncludeDirs(testsPath);
-            ParserOptions.SkipPrivateDeclarations = true;
+            parserOptions.AddIncludeDirs(testsPath);
+            parserOptions.SkipPrivateDeclarations = true;
 
-            var module = Options.AddModule("Test");
+            var module = options.AddModule("Test");
             module.Headers.AddRange(files);
 
-            Driver = new Driver(Options)
+            Driver = new Driver(options)
             {
-                ParserOptions = this.ParserOptions
+                ParserOptions = parserOptions
             };
 
             Driver.Setup();

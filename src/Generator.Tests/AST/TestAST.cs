@@ -32,7 +32,7 @@ namespace CppSharp.Generator.Tests.AST
         [OneTimeTearDown]
         public void CleanUp()
         {
-            ParserOptions.Dispose();
+            Driver.Dispose();
         }
 
         [Test]

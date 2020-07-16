@@ -17,7 +17,7 @@ using CppSharp.Generators.Cpp;
 
 namespace CppSharp
 {
-    public class Driver
+    public class Driver : IDisposable
     {
         public DriverOptions Options { get; private set; }
         public ParserOptions ParserOptions { get; set; }
@@ -399,6 +399,13 @@ namespace CppSharp
             Context.GeneratorOutputPasses.AddPass(pass);
         }
 
+        public void Dispose()
+        {
+            Generator.Dispose();
+            Context.TargetInfo?.Dispose();
+            ParserOptions.Dispose();
+        }
+
         private bool hasParsingErrors;
     }
 
@@ -407,72 +414,69 @@ namespace CppSharp
         public static void Run(ILibrary library)
         {
             var options = new DriverOptions();
-            var driver = new Driver(options);
-
-            library.Setup(driver);
-
-            driver.Setup();
-
-            if(driver.Options.Verbose)
-                Diagnostics.Level = DiagnosticKind.Debug;
-
-            if (!options.Quiet)
-                Diagnostics.Message("Parsing libraries...");
-
-            if (!driver.ParseLibraries())
-                return;
-
-            if (!options.Quiet)
-                Diagnostics.Message("Parsing code...");
-
-            if (!driver.ParseCode())
+            using (var driver = new Driver(options))
             {
-                Diagnostics.Error("CppSharp has encountered an error while parsing code.");
-                return;
-            }
+                library.Setup(driver);
 
-            new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
-            options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
+                driver.Setup();
 
-            if (!options.Quiet)
-                Diagnostics.Message("Processing code...");
+                if (driver.Options.Verbose)
+                    Diagnostics.Level = DiagnosticKind.Debug;
 
-            driver.SetupPasses(library);
-            driver.SetupTypeMaps();
+                if (!options.Quiet)
+                    Diagnostics.Message("Parsing libraries...");
 
-            library.Preprocess(driver, driver.Context.ASTContext);
+                if (!driver.ParseLibraries())
+                    return;
 
-            driver.ProcessCode();
-            library.Postprocess(driver, driver.Context.ASTContext);
+                if (!options.Quiet)
+                    Diagnostics.Message("Parsing code...");
 
-            if (!options.Quiet)
-                Diagnostics.Message("Generating code...");
-
-            if (!options.DryRun)
-            {
-                var outputs = driver.GenerateCode();
-
-                foreach (var output in outputs)
+                if (!driver.ParseCode())
                 {
-                    foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
-                    {
-                        pass.VisitGeneratorOutput(output);
-                    }
+                    Diagnostics.Error("CppSharp has encountered an error while parsing code.");
+                    return;
                 }
 
-                driver.SaveCode(outputs);
-                if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
-                    foreach (var module in driver.Options.Modules)
-                    {
-                        driver.CompileCode(module);
-                        if (driver.HasCompilationErrors)
-                            break;
-                    }
-            }
+                new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
+                options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
 
-            driver.Generator.Dispose();
-            driver.Context.TargetInfo.Dispose();
-            driver.ParserOptions.Dispose();
+                if (!options.Quiet)
+                    Diagnostics.Message("Processing code...");
+
+                driver.SetupPasses(library);
+                driver.SetupTypeMaps();
+
+                library.Preprocess(driver, driver.Context.ASTContext);
+
+                driver.ProcessCode();
+                library.Postprocess(driver, driver.Context.ASTContext);
+
+                if (!options.Quiet)
+                    Diagnostics.Message("Generating code...");
+
+                if (!options.DryRun)
+                {
+                    var outputs = driver.GenerateCode();
+
+                    foreach (var output in outputs)
+                    {
+                        foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
+                        {
+                            pass.VisitGeneratorOutput(output);
+                        }
+                    }
+
+                    driver.SaveCode(outputs);
+                    if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
+                        foreach (var module in driver.Options.Modules)
+                        {
+                            driver.CompileCode(module);
+                            if (driver.HasCompilationErrors)
+                                break;
+                        }
+                }
+            }
         }
     }
 }

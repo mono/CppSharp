@@ -311,14 +311,12 @@ namespace CppSharp.Generator.Tests
             var driverOptions = new DriverOptions();
             var module = driverOptions.AddModule("Test");
             module.Libraries.Add(library);
-            var driver = new Driver(driverOptions)
+            using (var driver = new Driver(driverOptions) { ParserOptions = parserOptions })
             {
-                ParserOptions = parserOptions
-            };
-            driver.Setup();
-            Assert.IsTrue(driver.ParseLibraries());
-            var symbols = driver.Context.Symbols.Libraries[0].Symbols;
-            return symbols;
+                driver.Setup();
+                Assert.IsTrue(driver.ParseLibraries());
+                return driver.Context.Symbols.Libraries[0].Symbols;
+            }
         }
     }
 }
