@@ -124,19 +124,18 @@ namespace CppSharp
 
         public bool ParseCode()
         {
-            var astContext = new Parser.AST.ASTContext();
-
-            var parser = new ClangParser(astContext);
-            parser.SourcesParsed += OnSourceFileParsed;
+            ClangParser.SourcesParsed += OnSourceFileParsed;
 
             var sourceFiles = Options.Modules.SelectMany(m => m.Headers);
 
             ParserOptions.BuildForSourceFile(Options.Modules);
-            using (ParserResult result = parser.ParseSourceFiles(
+            using (ParserResult result = ClangParser.ParseSourceFiles(
                 sourceFiles, ParserOptions))
                 Context.TargetInfo = result.TargetInfo;
 
-            Context.ASTContext = ClangParser.ConvertASTContext(astContext);
+            Context.ASTContext = ClangParser.ConvertASTContext(ParserOptions.ASTContext);
+
+            ClangParser.SourcesParsed -= OnSourceFileParsed;
 
             return !hasParsingErrors;
         }
@@ -161,6 +160,7 @@ namespace CppSharp
 
         public bool ParseLibraries()
         {
+            ClangParser.LibraryParsed += OnFileParsed;
             foreach (var module in Options.Modules)
             {
                 foreach (var libraryDir in module.LibraryDirs)
@@ -171,10 +171,7 @@ namespace CppSharp
                     if (Context.Symbols.Libraries.Any(l => l.FileName == library))
                         continue;
 
-                    var parser = new ClangParser();
-                    parser.LibraryParsed += OnFileParsed;
-
-                    using (var res = parser.ParseLibrary(library, ParserOptions))
+                    using (var res = ClangParser.ParseLibrary(library, ParserOptions))
                     {
                         if (res.Kind != ParserResultKind.Success)
                             continue;
@@ -183,6 +180,7 @@ namespace CppSharp
                     }
                 }
             }
+            ClangParser.LibraryParsed -= OnFileParsed;
 
             Context.Symbols.IndexSymbols();
             SortModulesByDependencies();
