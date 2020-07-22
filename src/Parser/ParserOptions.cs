@@ -237,7 +237,8 @@ namespace CppSharp.Parser
             AddSystemIncludeDirs(BuiltinsDir);
             AddArguments($"-fgnuc-version={longVersion}");
 
-            string[] versions = { longVersion, shortVersion };
+            string majorVersion = shortVersion.Split('.')[0];
+            string[] versions = { longVersion, shortVersion, majorVersion };
             string[] triples = { "x86_64-linux-gnu", "x86_64-pc-linux-gnu" };
             if (compiler == "gcc")
             {
