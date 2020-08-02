@@ -4286,13 +4286,12 @@ ParserResult* Parser::Parse(const std::vector<std::string>& SourceFiles)
     return res;
  }
 
-ParserResultKind Parser::ParseArchive(llvm::StringRef File,
+ParserResultKind Parser::ParseArchive(const std::string& File,
                                       llvm::object::Archive* Archive,
                                       std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs)
 {
-    auto LibName = File;
     auto NativeLib = new NativeLibrary();
-    NativeLib->fileName = LibName.str();
+    NativeLib->fileName = File;
 
     for (const auto& Symbol : Archive->symbols())
     {
@@ -4324,13 +4323,12 @@ static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppS
         NativeLib->Dependencies.push_back(Dependency.str());
 }
 
-ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
+ParserResultKind Parser::ParseSharedLib(const std::string& File,
                                         llvm::object::ObjectFile* ObjectFile,
                                         std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs)
 {
-    auto LibName = File;
     auto NativeLib = new NativeLibrary();
-    NativeLib->fileName = LibName.str();
+    NativeLib->fileName = File;
     NativeLib->archType = ConvertArchType(ObjectFile->getArch());
     NativeLibs.push_back(NativeLib);
 
@@ -4450,29 +4448,34 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
 {
     auto res = new ParserResult();
 
-    for (const auto& Library : Opts->Libraries)
+    for (const auto& Lib : Opts->Libraries)
     {
-        if (Library.empty())
+        if (Lib.empty())
         {
             res->kind = ParserResultKind::FileNotFound;
             return res;
         }
 
+        std::string PrefixedLib = "lib" + Lib;
+        std::string FileName;
         std::string FileEntry;
 
+        using namespace llvm::sys;
         for (const auto& LibDir : Opts->LibraryDirs)
         {
-            using namespace llvm::sys;
-
             std::error_code ErrorCode;
             fs::directory_iterator Dir(LibDir, ErrorCode);
             for (const auto& File = Dir;
                  Dir != fs::directory_iterator() && !ErrorCode;
                  Dir = Dir.increment(ErrorCode))
             {
-                if (path::filename(File->path()) == Library ||
-                    path::stem(File->path()) == Library ||
-                    path::stem(path::stem(File->path())) == Library)
+                FileName = path::filename(File->path()).str();
+                if (FileName == Lib ||
+                    FileName == PrefixedLib ||
+                    path::stem(FileName) == Lib ||
+                    path::stem(FileName) == PrefixedLib ||
+                    path::stem(path::stem(FileName)) == Lib ||
+                    path::stem(path::stem(FileName)) == PrefixedLib)
                 {
                     FileEntry = File->path();
                     goto found;
@@ -4498,14 +4501,14 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
         auto OwningBinary = std::move(BinaryOrErr.get());
         auto Bin = OwningBinary.getBinary();
         if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin)) {
-            res->kind = ParseArchive(Library, Archive, res->Libraries);
+            res->kind = ParseArchive(FileName, Archive, res->Libraries);
             if (res->kind == ParserResultKind::Error)
                 return res;
         }
 
         if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin))
         {
-            res->kind = ParseSharedLib(Library, ObjectFile, res->Libraries);
+            res->kind = ParseSharedLib(FileName, ObjectFile, res->Libraries);
             if (res->kind == ParserResultKind::Error)
                 return res;
         }

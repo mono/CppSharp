@@ -857,6 +857,7 @@ public:
 class DLL_API TestOutTypeInterfaces
 {
 public:
+    TestOutTypeInterfaces();
     void funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry);
     void funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry);
 };
@@ -1252,8 +1253,9 @@ struct StructTestArrayTypeFromTypedef
 #define MY_MACRO_TEST2_4     (1 << 3)
 #define MY_MACRO_TEST2_ALL   (1 << 4) - 1
 
-struct ComplexArrayElement
+struct DLL_API ComplexArrayElement
 {
+    ComplexArrayElement();
     bool BoolField;
     uint32_t IntField;
     float FloatField;
@@ -1261,14 +1263,16 @@ struct ComplexArrayElement
 
 #define ARRAY_LENGTH_MACRO 10
 
-struct HasComplexArray
+struct DLL_API HasComplexArray
 {
+    HasComplexArray();
     ComplexArrayElement complexArray[ARRAY_LENGTH_MACRO];
 };
 
 class DLL_API TestIndexedProperties
 {
 public:
+    TestIndexedProperties();
     mutable int field;
     int operator[](const int& key);
     void* operator[](size_t n) const;

@@ -1153,6 +1153,10 @@ int OverrideFromIndirectSecondaryBase::property()
     return 1;
 }
 
+TestOutTypeInterfaces::TestOutTypeInterfaces()
+{
+}
+
 void TestOutTypeInterfaces::funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry)
 {
 }
@@ -1576,6 +1580,18 @@ DLL_API DuplicateDeclaredStruct* createDuplicateDeclaredStruct(int i)
 DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s)
 {
     return s->i;
+}
+
+ComplexArrayElement::ComplexArrayElement() : BoolField(false), IntField(0), FloatField(0)
+{
+}
+
+HasComplexArray::HasComplexArray()
+{
+}
+
+TestIndexedProperties::TestIndexedProperties() : field(0)
+{
 }
 
 void useStdStringJustAsParameter(std::string s)

@@ -84,6 +84,7 @@ public:
     };
 
     Foo();
+    Foo(const Foo& other);
     Foo(Private p);
     Foo(const float& f);
     int A;
@@ -147,6 +148,7 @@ class DLL_API Foo2 : public Foo
 public:
 
     Foo2();
+    Foo2(const Foo2& other);
 
     int C;
 
@@ -165,6 +167,7 @@ struct DLL_API Bar2 : public Bar
 
     struct DLL_API Nested
     {
+        Nested();
         operator int() const;
     };
 
@@ -304,6 +307,7 @@ struct DLL_API DerivedException : public Exception
 // Tests for ambiguous call to native functions with default parameters
 struct DLL_API DefaultParameters
 {
+    DefaultParameters();
     void Foo(int a, int b = 0);
     void Foo(int a);
 
@@ -326,7 +330,8 @@ class Derived : public Base<Derived>
 // Tests the MoveFunctionToClassPass
 class DLL_API common
 {
-
+public:
+    common();
 };
 
 DLL_API int test(common& s);
@@ -724,6 +729,7 @@ int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
 // Tests variables
 struct DLL_API TestVariables
 {
+    TestVariables();
     static int VALUE;
     void SetValue(int value = VALUE);
 };
@@ -731,6 +737,7 @@ struct DLL_API TestVariables
 typedef const wchar_t * LPCWSTR;
 struct DLL_API TestWideStrings
 {
+    TestWideStrings();
     LPCWSTR GetWidePointer();
     LPCWSTR GetWideNullPointer();
 };
@@ -771,8 +778,8 @@ TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
 
 class DLL_API NonPrimitiveType
 {
-
 public:
+    NonPrimitiveType();
     int GetFoo();
 
     int foo;
@@ -787,6 +794,7 @@ public:
 
 struct DLL_API TestGetterSetterToProperties
 {
+    TestGetterSetterToProperties();
     int getWidth();
     int getHeight();
 };
@@ -951,7 +959,11 @@ public:
     } ct;
 };
 
-class DLL_API RefTypeClassPassTry { };
+class DLL_API RefTypeClassPassTry
+{
+public:
+    RefTypeClassPassTry();
+};
 
 void DLL_API funcTryRefTypePtrOut(CS_OUT RefTypeClassPassTry* classTry);
 void DLL_API funcTryRefTypeOut(CS_OUT RefTypeClassPassTry classTry);
@@ -994,6 +1006,7 @@ class DLL_API Empty
 class DLL_API ReturnsEmpty
 {
 public:
+    ReturnsEmpty();
     Empty getEmpty();
 };
 
@@ -1608,6 +1621,7 @@ QScopedPointer<QObjectData> d_ptr;
 
 struct DLL_API PointerToTypedefPointerTest
 {
+    PointerToTypedefPointerTest();
     int val;
 };
 typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;

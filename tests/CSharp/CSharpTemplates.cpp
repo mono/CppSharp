@@ -4,6 +4,10 @@ T1::T1()
 {
 }
 
+T1::T1(const T1& other) : field(other.field)
+{
+}
+
 T1::T1(int f)
 {
     field = f;
@@ -16,6 +20,10 @@ T1::~T1()
 int T1::getField() const
 {
     return field;
+}
+
+T2::T2()
+{
 }
 
 DerivedFromSpecializationOfUnsupportedTemplate::DerivedFromSpecializationOfUnsupportedTemplate()
