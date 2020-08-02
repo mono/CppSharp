@@ -4447,24 +4447,34 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
 {
     auto res = new ParserResult();
 
-    for (const auto& File : Opts->Libraries)
+    for (const auto& Library : Opts->Libraries)
     {
-        if (File.empty())
+        if (Library.empty())
         {
             res->kind = ParserResultKind::FileNotFound;
             return res;
         }
 
-        llvm::StringRef FileEntry("");
+        std::string FileEntry;
 
-        for (unsigned I = 0, E = Opts->LibraryDirs.size(); I != E; ++I)
+        for (const auto& LibDir : Opts->LibraryDirs)
         {
-            auto& LibDir = Opts->LibraryDirs[I];
-            llvm::SmallString<256> Path(LibDir);
-            llvm::sys::path::append(Path, File);
+            using namespace llvm::sys;
 
-            if (!(FileEntry = Path.str()).empty() && llvm::sys::fs::exists(FileEntry))
-                break;
+            std::error_code ErrorCode;
+            fs::directory_iterator Dir(LibDir, ErrorCode);
+            for (const auto& File = Dir;
+                 Dir != fs::directory_iterator() && !ErrorCode;
+                 Dir = Dir.increment(ErrorCode))
+            {
+                if (path::filename(File->path()) == Library ||
+                    path::stem(File->path()) == Library ||
+                    path::stem(path::stem(File->path())) == Library)
+                {
+                    FileEntry = File->path();
+                    goto found;
+                }
+            }
         }
 
         if (FileEntry.empty())
@@ -4473,6 +4483,7 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
             return res;
         }
 
+    found:
         auto BinaryOrErr = llvm::object::createBinary(FileEntry);
         if (!BinaryOrErr)
         {
@@ -4484,14 +4495,14 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
         auto OwningBinary = std::move(BinaryOrErr.get());
         auto Bin = OwningBinary.getBinary();
         if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin)) {
-            res->kind = ParseArchive(File, Archive, res->Libraries);
+            res->kind = ParseArchive(Library, Archive, res->Libraries);
             if (res->kind == ParserResultKind::Error)
                 return res;
         }
 
         if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin))
         {
-            res->kind = ParseSharedLib(File, ObjectFile, res->Libraries);
+            res->kind = ParseSharedLib(Library, ObjectFile, res->Libraries);
             if (res->kind == ParserResultKind::Error)
                 return res;
         }

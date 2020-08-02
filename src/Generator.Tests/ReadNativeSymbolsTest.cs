@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CppSharp.Utils;
 using NUnit.Framework;
 using CppSharp.AST;
+using System.IO;
 
 namespace CppSharp.Generator.Tests
 {
@@ -11,7 +12,7 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadSymbolsWindows()
         {
-            var symbols = GetSymbols("libexpat-windows");
+            var symbols = GetSymbols("windows", "libexpat");
             Assert.That(symbols, Is.EquivalentTo(
                 new[]
                 {
@@ -103,7 +104,7 @@ namespace CppSharp.Generator.Tests
         [Test]
         public void TestReadSymbolsLinux()
         {
-            var symbols = GetSymbols("libexpat-linux");
+            var symbols = GetSymbols("linux", "libexpat");
             Assert.That(symbols, Is.EquivalentTo(
                 new []
                 {
@@ -214,9 +215,9 @@ namespace CppSharp.Generator.Tests
         }
 
         [Test]
-        public void TestReadSymbolsOSX()
+        public void TestReadSymbolsMacOS()
         {
-            var symbols = GetSymbols("libexpat-osx");
+            var symbols = GetSymbols("macos", "libexpat");
             Assert.That(symbols, Is.EquivalentTo(
                 new[]
                 {
@@ -304,11 +305,11 @@ namespace CppSharp.Generator.Tests
                 }));
         }
 
-        private static IList<string> GetSymbols(string library)
+        private static IList<string> GetSymbols(string dir, string library)
         {
             var driverOptions = new DriverOptions();
             Module module = driverOptions.AddModule("Test");
-            module.LibraryDirs.Add(GeneratorTest.GetTestsDirectory("Native"));
+            module.LibraryDirs.Add(Path.Combine(GeneratorTest.GetTestsDirectory("Native"), dir));
             module.Libraries.Add(library);
             using (var driver = new Driver(driverOptions))
             {
