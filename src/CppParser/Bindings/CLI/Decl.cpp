@@ -144,6 +144,16 @@ void CppSharp::Parser::AST::Declaration::Access::set(CppSharp::Parser::AST::Acce
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->access = (::CppSharp::CppParser::AST::AccessSpecifier)value;
 }
 
+CppSharp::Parser::AST::Linkage CppSharp::Parser::AST::Declaration::Linkage::get()
+{
+    return (CppSharp::Parser::AST::Linkage)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->linkage;
+}
+
+void CppSharp::Parser::AST::Declaration::Linkage::set(CppSharp::Parser::AST::Linkage value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->linkage = (::CppSharp::CppParser::AST::Linkage)value;
+}
+
 CppSharp::Parser::AST::DeclarationContext^ CppSharp::Parser::AST::Declaration::Namespace::get()
 {
     return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_namespace == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_namespace);

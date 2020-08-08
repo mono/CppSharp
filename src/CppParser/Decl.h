@@ -59,6 +59,17 @@ enum class AccessSpecifier
     Public
 };
 
+enum class Linkage
+{
+    NoLinkage,
+    InternalLinkage,
+    UniqueExternalLinkage,
+    VisibleNoLinkage,
+    ModuleInternalLinkage,
+    ModuleLinkage,
+    ExternalLinkage
+};
+
 class DeclarationContext;
 class RawComment;
 class PreprocessedEntity;
@@ -73,6 +84,7 @@ public:
     DeclarationKind kind;
     int maxFieldAlignment;
     AccessSpecifier access;
+    Linkage linkage;
     DeclarationContext* _namespace;
     SourceLocation location;
     int lineNumberStart;

@@ -23,6 +23,7 @@ namespace CppSharp
             enum class CppAbi;
             enum class DeclarationKind;
             enum class FriendKind;
+            enum class Linkage;
             enum class MacroLocation;
             enum class RecordArgABI;
             enum class RefQualifierKind;
@@ -133,6 +134,17 @@ namespace CppSharp
                 Private = 0,
                 Protected = 1,
                 Public = 2
+            };
+
+            public enum class Linkage
+            {
+                NoLinkage = 0,
+                InternalLinkage = 1,
+                UniqueExternalLinkage = 2,
+                VisibleNoLinkage = 3,
+                ModuleInternalLinkage = 4,
+                ModuleLinkage = 5,
+                ExternalLinkage = 6
             };
 
             public enum class MacroLocation
@@ -317,6 +329,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::AccessSpecifier get();
                     void set(CppSharp::Parser::AST::AccessSpecifier);
+                }
+
+                property CppSharp::Parser::AST::Linkage Linkage
+                {
+                    CppSharp::Parser::AST::Linkage get();
+                    void set(CppSharp::Parser::AST::Linkage);
                 }
 
                 property CppSharp::Parser::AST::DeclarationContext^ Namespace

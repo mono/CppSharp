@@ -971,6 +971,7 @@ namespace CppSharp
             // already handled it and return the declaration.
             Declarations[originalPtr] = _decl;
 
+            _decl.Linkage = (AST.Linkage) decl.Linkage;
             _decl.Access = VisitAccessSpecifier(decl.Access);
             _decl.Name = decl.Name;
             _decl.USR = decl.USR;
@@ -1528,7 +1529,6 @@ namespace CppSharp
 
             _field.QualifiedType = typeConverter.VisitQualified(
                 decl.QualifiedType);
-            _field.Access = VisitAccessSpecifier(decl.Access);
             _field.Class = Visit(decl.Class) as AST.Class;
             _field.IsBitField = decl.IsBitField;
             _field.BitWidth = decl.BitWidth;

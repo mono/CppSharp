@@ -6113,6 +6113,17 @@ namespace CppSharp
                 Public = 2
             }
 
+            public enum Linkage
+            {
+                NoLinkage = 0,
+                InternalLinkage = 1,
+                UniqueExternalLinkage = 2,
+                VisibleNoLinkage = 3,
+                ModuleInternalLinkage = 4,
+                ModuleLinkage = 5,
+                ExternalLinkage = 6
+            }
+
             public enum MacroLocation
             {
                 Unknown = 0,
@@ -6271,6 +6282,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -6550,6 +6564,19 @@ namespace CppSharp
                     }
                 }
 
+                public global::CppSharp.Parser.AST.Linkage Linkage
+                {
+                    get
+                    {
+                        return ((global::CppSharp.Parser.AST.Declaration.__Internal*) __Instance)->linkage;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Declaration.__Internal*)__Instance)->linkage = value;
+                    }
+                }
+
                 public global::CppSharp.Parser.AST.DeclarationContext Namespace
                 {
                     get
@@ -6808,6 +6835,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -7494,6 +7524,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -7665,6 +7698,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -7815,6 +7851,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -7987,6 +8026,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -8886,6 +8928,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -9141,6 +9186,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -9706,6 +9754,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -10166,6 +10217,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -10327,6 +10381,9 @@ namespace CppSharp
 
                         [FieldOffset(8)]
                         internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                        [FieldOffset(12)]
+                        internal global::CppSharp.Parser.AST.Linkage linkage;
 
                         [FieldOffset(16)]
                         internal global::System.IntPtr _namespace;
@@ -10671,6 +10728,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -11009,6 +11069,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -11227,6 +11290,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -12502,6 +12568,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -13092,6 +13161,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -13337,6 +13409,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -13490,6 +13565,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -13691,6 +13769,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -13894,6 +13975,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -14068,6 +14152,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -14315,6 +14402,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -14566,6 +14656,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -14882,6 +14975,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -15116,6 +15212,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -15554,6 +15653,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -15805,6 +15907,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -16048,6 +16153,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -16211,6 +16319,9 @@ namespace CppSharp
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
+
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
 
@@ -16358,6 +16469,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;
@@ -16998,6 +17112,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
+
+                    [FieldOffset(12)]
+                    internal global::CppSharp.Parser.AST.Linkage linkage;
 
                     [FieldOffset(16)]
                     internal global::System.IntPtr _namespace;

@@ -3769,6 +3769,9 @@ void Parser::HandleDeclaration(const clang::Decl* D, Declaration* Decl)
         }
     }
 
+    if (auto ND = llvm::dyn_cast<clang::NamedDecl>(D))
+        Decl->linkage = (Linkage) ND->getLinkageAndVisibility().getLinkage();
+
     if (IsDeclExplicit)
         HandleOriginalText(D, Decl);
     HandleComments(D, Decl);
