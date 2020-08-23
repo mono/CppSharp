@@ -5,17 +5,6 @@ using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
-    public enum Linkage
-    {
-        NoLinkage,
-        InternalLinkage,
-        UniqueExternalLinkage,
-        VisibleNoLinkage,
-        ModuleInternalLinkage,
-        ModuleLinkage,
-        ExternalLinkage
-    }
-
     // A C++ access specifier.
     public enum AccessSpecifier
     {
