@@ -837,7 +837,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVariableSetter(Variable var)
         {
-            string ptr = GetPointerTo(var);
+            string ptr = GeneratePointerTo(var);
 
             var param = new Parameter
             {
@@ -869,7 +869,7 @@ namespace CppSharp.Generators.CSharp
                 UnindentAndWriteCloseBrace();
         }
 
-        private string GetPointerTo(Variable var)
+        private string GeneratePointerTo(Variable var)
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
@@ -1137,7 +1137,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVariableGetter(Variable var)
         {
-            string ptr = GetPointerTo(var);
+            string ptr = GeneratePointerTo(var);
 
             var ctx = new CSharpMarshalContext(Context, CurrentIndentation)
             {
