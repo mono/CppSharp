@@ -437,3 +437,16 @@ languages.
 Some internal functionalities are also implemented as passes like checking for
 invalid declaration names or resolving incomplete declarations. Please check the
 developer manual for more information about these.
+
+# 5. Advanced use cases
+
+## Windows
+
+If you're exposing C++ functions on Windows, you'll have to add the `__declspec(dllexport)` directive, otherwise the symbols won't be found when calling them from the managed world. You could also add the directive to a class directly, like this:
+
+```c++
+class __declspec(dllexport) ExposedClass
+{
+  // class definition
+}
+```
