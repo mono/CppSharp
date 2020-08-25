@@ -38,7 +38,7 @@ public interface ILibrary
 }
 ```
 
-Then you just need to call the `ConsoleDriver.Run` static method with your
+Then you just need to call the `ConsoleDriver.Run` static method with
 an instance of your class to start the generation process. Like this:
 
 ```csharp
