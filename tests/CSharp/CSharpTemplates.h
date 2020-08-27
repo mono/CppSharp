@@ -14,6 +14,7 @@ class DLL_API T1
 {
 public:
     T1();
+    T1(const T1& other);
     T1(int f);
     ~T1();
     int getField() const;
@@ -23,6 +24,8 @@ private:
 
 class DLL_API T2
 {
+public:
+    T2();
 };
 
 class DLL_API Ignored

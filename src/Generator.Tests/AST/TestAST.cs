@@ -651,12 +651,5 @@ namespace CppSharp.Generator.Tests.AST
             Assert.NotNull(macro);
             Assert.AreEqual("(x, y, z) x##y##z", macro.Expression);
         }
-
-        [Test]
-        public void TestLinkage()
-        {
-            var externConst = AstContext.FindDecl<Variable>("externConst").First();
-            Assert.That(externConst.Linkage, Is.EqualTo(Linkage.ExternalLinkage));
-        }
     }
 }

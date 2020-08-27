@@ -159,9 +159,9 @@ private:
                                  llvm::object::basic_symbol_iterator End,
                                  CppSharp::CppParser::NativeLibrary*& NativeLib);
     Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
-    static ParserResultKind ParseArchive(llvm::StringRef File,
+    static ParserResultKind ParseArchive(const std::string& File,
         llvm::object::Archive* Archive, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
-    static ParserResultKind ParseSharedLib(llvm::StringRef File,
+    static ParserResultKind ParseSharedLib(const std::string& File,
         llvm::object::ObjectFile* ObjectFile, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
     ParserTargetInfo* GetTargetInfo();
 

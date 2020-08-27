@@ -287,8 +287,6 @@ namespace CppSharp.AST
         // Comment associated with declaration.
         public RawComment Comment;
 
-        public Linkage Linkage { get; set; }
-
         public AccessSpecifier Access { get; set; }
 
         // Contains debug text about the declaration.

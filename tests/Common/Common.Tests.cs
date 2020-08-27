@@ -1075,10 +1075,10 @@ This is a very long string. This is a very long string. This is a very long stri
         using (var nonPrimitiveFixedArray = new TestFixedNonPrimitiveArrays())
         {
             nonPrimitiveFixedArray.NonPrimitiveTypeArray = new NonPrimitiveType[]
-            { 
-                new NonPrimitiveType{ foo = 1 },
-                new NonPrimitiveType{ foo = 2 },
-                new NonPrimitiveType{ foo = 3 }
+            {
+                new NonPrimitiveType { foo = 1 },
+                new NonPrimitiveType { foo = 2 },
+                new NonPrimitiveType { foo = 3 }
             };
 
             Assert.AreEqual(3, nonPrimitiveFixedArray.NonPrimitiveTypeArray.Length);

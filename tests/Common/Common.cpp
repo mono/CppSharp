@@ -50,6 +50,10 @@ Foo::Foo()
     SomePointerPointer = &SomePointer;
 }
 
+Foo::Foo(const Foo& other) : A(other.A), B(other.B)
+{
+}
+
 Foo::Foo(Private p)
 {
 }
@@ -93,6 +97,8 @@ char16_t Foo::returnChar16()
 }
 
 Foo2::Foo2() {}
+
+Foo2::Foo2(const Foo2& other) : Foo(other), C(other.C), valueTypeField(other.valueTypeField) {}
 
 Foo2 Foo2::operator<<(signed int i)
 {
@@ -147,6 +153,10 @@ bool Bar::operator ==(const Bar& arg1) const
 bool operator ==(Bar::Item item, const Bar& bar)
 {
     return item == bar.RetItem1();
+}
+
+Bar2::Nested::Nested()
+{
 }
 
 Bar2::Nested::operator int() const
@@ -405,6 +415,10 @@ Ex2* DerivedException::clone()
     return 0;
 }
 
+DefaultParameters::DefaultParameters()
+{
+}
+
 void DefaultParameters::Foo(int a, int b)
 {
 }
@@ -418,6 +432,10 @@ void DefaultParameters::Bar() const
 }
 
 void DefaultParameters::Bar()
+{
+}
+
+common::common()
 {
 }
 
@@ -826,8 +844,16 @@ Bar& TestIndexedProperties::operator[](const Foo& key)
     return bar;
 }
 
+TestVariables::TestVariables()
+{
+}
+
 int TestVariables::VALUE;
 void TestVariables::SetValue(int value) { VALUE = value; }
+
+TestWideStrings::TestWideStrings()
+{
+}
 
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
@@ -938,9 +964,17 @@ void ChangedAccessOfInheritedProperty::setProtectedProperty(int value)
 {
 }
 
+ReturnsEmpty::ReturnsEmpty()
+{
+}
+
 Empty ReturnsEmpty::getEmpty()
 {
     return Empty();
+}
+
+RefTypeClassPassTry::RefTypeClassPassTry()
+{
 }
 
 void funcTryRefTypePtrOut(CS_OUT RefTypeClassPassTry* classTry)
@@ -1307,12 +1341,24 @@ DerivedCovariant::~DerivedCovariant()
 {
 }
 
+NonPrimitiveType::NonPrimitiveType()
+{
+}
+
 int NonPrimitiveType::GetFoo()
 {
     return foo;
 }
 
 TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() 
+{
+}
+
+TestGetterSetterToProperties::TestGetterSetterToProperties()
+{
+}
+
+PointerToTypedefPointerTest::PointerToTypedefPointerTest()
 {
 }
 

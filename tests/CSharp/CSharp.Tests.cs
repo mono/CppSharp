@@ -804,7 +804,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestTemplateCopyConstructor()
     {
-        using (var original = new IndependentFields<int>(5))
+        using (var original = new IndependentFields<int>(5.0f))
         {
             using (var copy = new IndependentFields<int>(original))
             {
