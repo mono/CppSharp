@@ -245,6 +245,7 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
     dependson { name .. ".Native" }
 
     LinkNUnit()
+    links { "CppSharp.Runtime" }
 end
 
 function IncludeExamples()

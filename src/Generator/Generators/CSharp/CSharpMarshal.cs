@@ -105,9 +105,10 @@ namespace CppSharp.Generators.CSharp
                             if (arrayType.IsPrimitiveType(PrimitiveType.Bool))
                                 supportBefore.WriteLineIndent($@"{value}[i] = {
                                     Context.ReturnVarName}[i] != 0;");
-                            else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
-                                Context.Context.Options.MarshalCharAsManagedChar)
-                                supportBefore.WriteLineIndent($@"{value}[i] = global::System.Convert.ToChar({
+                            else if ((arrayType.IsPrimitiveType(PrimitiveType.Char) ||
+                                     arrayType.IsPrimitiveType(PrimitiveType.WideChar)) &&
+                                    Context.Context.Options.MarshalCharAsManagedChar)
+                                    supportBefore.WriteLineIndent($@"{value}[i] = global::System.Convert.ToChar({
                                     Context.ReturnVarName}[i]);");
                             else
                                 supportBefore.WriteLineIndent($@"{value}[i] = {
@@ -119,7 +120,8 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case ArrayType.ArraySize.Incomplete:
                     // const char* and const char[] are the same so we can use a string
-                    if (array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
+                    if ((array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) ||
+                         array.Type.Desugar().IsPrimitiveType(PrimitiveType.WideChar)) &&
                         array.QualifiedType.Qualifiers.IsConst)
                     {
                         var pointer = new PointerType { QualifiedPointee = array.QualifiedType };
@@ -215,6 +217,19 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Void:
                     return true;
+                case PrimitiveType.Char:
+                    // returned structs must be blittable and char isn't
+                    if (Context.Context.Options.MarshalCharAsManagedChar)
+                    {
+                        Context.Return.Write($"global::System.Convert.ToChar({Context.ReturnVarName})");
+                        return true;
+                    }
+                    goto default;
+                case PrimitiveType.WideChar:
+                    Context.Return.Write($"new CppSharp.Runtime.WideChar({Context.ReturnVarName})");
+                    return true;
+                case PrimitiveType.Char16:
+                    return false;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {
@@ -268,11 +283,10 @@ namespace CppSharp.Generators.CSharp
         {
             var ptrName = Generator.GeneratedIdentifier("ptr") + Context.ParameterIndex;
 
-            Context.Before.WriteLine("var {0} = {1};", ptrName,
-                Context.ReturnVarName);
+            Context.Before.WriteLine($"var {ptrName} = {Context.ReturnVarName};");
 
-            Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
-                ptrName, function.ToString());
+            Context.Return.Write($@"({function.ToString()
+                })Marshal.GetDelegateForFunctionPointer({ptrName}, typeof({function.ToString()}))");
             return true;
         }
 
@@ -299,7 +313,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write("{0}", Context.ReturnVarName);
+            Context.Return.Write($"{Context.ReturnVarName}");
             return true;
         }
 
@@ -323,8 +337,7 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(ctx.Return) &&
                 !parameter.Type.IsPrimitiveTypeConvertibleToRef())
             {
-                Context.Before.WriteLine("var _{0} = {1};", parameter.Name,
-                    ctx.Return);
+                Context.Before.WriteLine($"var _{parameter.Name} = {ctx.Return};");
             }
 
             Context.Return.Write("{0}{1}",
@@ -494,11 +507,17 @@ namespace CppSharp.Generators.CSharp
                             supportBefore.WriteLineIndent($@"{
                                 Context.ReturnVarName}[i] = (byte)({
                                 Context.ArgName}[i] ? 1 : 0);");
-                        else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
-                            Context.Context.Options.MarshalCharAsManagedChar)
-                            supportBefore.WriteLineIndent($@"{
-                                Context.ReturnVarName}[i] = global::System.Convert.ToSByte({
-                                Context.ArgName}[i]);");
+                        else if ((arrayType.IsPrimitiveType(PrimitiveType.Char) ||
+                                 arrayType.IsPrimitiveType(PrimitiveType.WideChar)) &&
+                                Context.Context.Options.MarshalCharAsManagedChar)
+                        {
+                            if(arrayType.IsPrimitiveType(PrimitiveType.Char))
+                                supportBefore.WriteLineIndent(
+                                    $"{Context.ReturnVarName}[i] = global::System.Convert.ToSByte({Context.ArgName}[i]);");
+                            else
+                                supportBefore.WriteLineIndent(
+                                    $"{Context.ReturnVarName}[i] = global::System.Convert.ToChar({Context.ArgName}[i]);");
+                        }
                         else
                             supportBefore.WriteLineIndent($@"{Context.ReturnVarName}[i] = {
                                 Context.ArgName}[i]{
@@ -632,14 +651,96 @@ namespace CppSharp.Generators.CSharp
                 Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
                 return true;
             }
+            
+            var marshalAsString = CSharpTypePrinter.IsConstCharString(pointer);
+            if (finalPointeeIsPrimitiveType || finalPointee.IsEnumType() ||
+                marshalAsString)
+            {
+                // From MSDN: "note that a ref or out parameter is classified as a moveable
+                // variable". This means we must create a local variable to hold the result
+                // and then assign this value to the parameter.
+
+                if (isRefParam)
+                {
+                    var typeName = Type.TypePrinterDelegate(finalPointee);
+                    if (Context.Function.OperatorKind == CXXOperatorKind.Subscript)
+                        Context.Return.Write(param.Name);
+                    else
+                    {
+                        if (param.IsInOut)
+                            Context.Before.WriteLine($"{typeName} _{param.Name} = {param.Name};");
+                        else
+                            Context.Before.WriteLine($"{typeName} _{param.Name};");
+
+                        Context.Return.Write($"&_{param.Name}");
+                    }
+                }
+                else
+                {
+                    if (!marshalAsString &&
+                        Context.Context.Options.MarshalCharAsManagedChar &&
+                        (primitive == PrimitiveType.Char || primitive == PrimitiveType.WideChar))
+                        Context.Return.Write($"({typePrinter.PrintNative(pointer)}) ");
+
+                    if (marshalAsString)
+                        Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name, primitive));
+                    else
+                        Context.Return.Write(Context.Parameter.Name);
+                }
+
+                return true;
+            }
 
             return pointer.QualifiedPointee.Visit(this);
+        }
+
+        private string MarshalStringToUnmanaged(string varName, PrimitiveType type)
+        {
+            if (type == PrimitiveType.WideChar)
+            {
+                // Looks like Marshal.StringToHGlobalUni is already able
+                // to handle both Unicode and MBCS charsets
+                return $"Marshal.StringToHGlobalUni({varName})";
+            }
+            
+            if (Equals(Context.Context.Options.Encoding, Encoding.ASCII))
+                return $"Marshal.StringToHGlobalAnsi({varName})";
+
+            if (Equals(Context.Context.Options.Encoding, Encoding.Unicode) ||
+                Equals(Context.Context.Options.Encoding, Encoding.BigEndianUnicode))
+            {
+                return $"Marshal.StringToHGlobalUni({varName})";
+            }
+            throw new NotSupportedException(
+                $"{Context.Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
         {
             switch (primitive)
             {
+                case PrimitiveType.Void:
+                    return true;
+                case PrimitiveType.Char:
+                    // returned structs must be blittable and char isn't
+                    if (Context.Context.Options.MarshalCharAsManagedChar)
+                    {
+                        Context.Return.Write("global::System.Convert.ToSByte({0})",
+                            Context.Parameter.Name);
+                        return true;
+                    }
+                    goto default;
+                case PrimitiveType.WideChar:
+                    // returned structs must be blittable and char isn't
+                    if (Context.Context.Options.MarshalCharAsManagedChar)
+                    {
+                        Context.Return.Write("global::System.Convert.ToChar({0})",
+                            Context.Parameter.Name);
+                        return true;
+                    }
+                    goto default;
+                case PrimitiveType.Char16:
+                    return false;
                 case PrimitiveType.Bool:
                     if (Context.MarshalKind == MarshalKind.NativeField)
                     {
