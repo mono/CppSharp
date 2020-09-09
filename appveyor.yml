@@ -24,7 +24,6 @@ matrix:
 os: Visual Studio 2019
 
 platform:
-  - x86
   - x64
 
 configuration:
@@ -35,8 +34,8 @@ environment:
   DEPS_PATH: '%APPVEYOR_BUILD_FOLDER%\deps'
   LLVM_PATH: '%APPVEYOR_BUILD_FOLDER%\deps\llvm'
   BUILD_PATH: '%APPVEYOR_BUILD_FOLDER%\build\vs%VS_VERSION%'
-  LIB_PATH: '%APPVEYOR_BUILD_FOLDER%\build\vs%VS_VERSION%\lib\%CONFIGURATION%_%PLATFORM%'
-  ARTIFACT_NAME: '%APPVEYOR_PROJECT_NAME%-%APPVEYOR_REPO_TAG_NAME%-vs%VS_VERSION%-%PLATFORM%.zip'
+  LIB_PATH: '%APPVEYOR_BUILD_FOLDER%\build\vs%VS_VERSION%\lib\%CONFIGURATION%_x64'
+  ARTIFACT_NAME: '%APPVEYOR_PROJECT_NAME%-%APPVEYOR_REPO_TAG_NAME%-vs%VS_VERSION%.zip'
   GITHUB_ACCESS_TOKEN:
     secure: CrxPDgxTKC9ZRvFjttpRPO+e1DT8s0Zkk9HrAmHOIzDkOfFbbu1iTm/yJjZ2eDcd
 
@@ -44,12 +43,21 @@ init:
   - git config --global core.autocrlf true
 
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Community\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
-  - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm --arch=%PLATFORM%
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Community\Common7\Tools\VsDevCmd.bat"
+  - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm
 
 build_script:
-  - build\premake5.exe --file=build\premake5.lua vs%VS_VERSION% --arch=%PLATFORM%
+  - build\premake5.exe --file=build\premake5.lua vs%VS_VERSION% --arch=x86
   - msbuild %BUILD_PATH%\CppSharp.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal
+  - nunit3-console %LIB_PATH%\CLI.Tests.CLI.dll %LIB_PATH%\Common.Tests.CLI.dll %LIB_PATH%\Common.Tests.CSharp.dll %LIB_PATH%\CppSharp.Generator.Tests.dll %LIB_PATH%\CSharp.Tests.CSharp.dll %LIB_PATH%\Encodings.Tests.CSharp.dll %LIB_PATH%\NamespacesDerived.Tests.CSharp.dll %LIB_PATH%\StandardLib.Tests.CLI.dll %LIB_PATH%\VTables.Tests.CSharp.dll --result=myresults.xml;format=AppVeyor
+  - build\premake5.exe --file=build\premake5.lua vs%VS_VERSION% --arch=x64
+  - msbuild %BUILD_PATH%\CppSharp.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal
+  - nunit3-console %LIB_PATH%\CLI.Tests.CLI.dll %LIB_PATH%\Common.Tests.CLI.dll %LIB_PATH%\Common.Tests.CSharp.dll %LIB_PATH%\CppSharp.Generator.Tests.dll %LIB_PATH%\CSharp.Tests.CSharp.dll %LIB_PATH%\Encodings.Tests.CSharp.dll %LIB_PATH%\NamespacesDerived.Tests.CSharp.dll %LIB_PATH%\StandardLib.Tests.CLI.dll %LIB_PATH%\VTables.Tests.CSharp.dll --result=myresults.xml;format=AppVeyor
+  
+test:
+  assemblies:
+    except:
+      - '*.dll'
 
 #---------------------------------#
 #    parser bindings generation   #

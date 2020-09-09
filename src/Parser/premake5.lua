@@ -7,6 +7,7 @@ local function GenerateBuildConfig()
   file:write("namespace CppSharp.Parser", "\n{\n    ")
   file:write("public static class BuildConfig", "\n    {\n        ")
   file:write("public const string Choice = \"" .. _ACTION .. "\";\n")
+  file:write("public const string Arch = \"" .. _OPTIONS["arch"] .. "\";\n")
   file:write("    }\n}")
   file:close()
 end

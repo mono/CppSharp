@@ -116,6 +116,7 @@ function SetupTestNativeProject(name, depends)
     kind "SharedLib"
     language "C++"
 
+    platforms { target_architecture() }
     files { "**.h", "**.cpp" }
     vpaths { ["*"] = "*" }
     defines { "DLL_EXPORT" }
