@@ -123,7 +123,7 @@ namespace CppSharp.Passes
 
         private static IEnumerable<Method> GetRelevantAbstractMethods(Class @class)
         {
-            var abstractMethods = GetAbstractMethods(@class);
+            var abstractMethods = @class.GetAbstractMethods();
             var overriddenMethods = GetOverriddenMethods(@class);
 
             for (var i = abstractMethods.Count - 1; i >= 0; i--)
@@ -153,21 +153,6 @@ namespace CppSharp.Passes
                         abstractMethods.RemoveAt(i);
                     }
                 }
-            }
-
-            return abstractMethods;
-        }
-
-        private static List<Method> GetAbstractMethods(Class @class)
-        {
-            var abstractMethods = @class.Methods.Where(m => m.IsPure).ToList();
-            var abstractOverrides = abstractMethods.Where(a => a.IsOverride).ToList();
-            foreach (var baseAbstractMethods in @class.Bases.Select(b => GetAbstractMethods(b.Class)))
-            {
-                for (var i = baseAbstractMethods.Count - 1; i >= 0; i--)
-                    if (abstractOverrides.Any(a => a.CanOverride(baseAbstractMethods[i])))
-                        baseAbstractMethods.RemoveAt(i);
-                abstractMethods.AddRange(baseAbstractMethods);
             }
 
             return abstractMethods;

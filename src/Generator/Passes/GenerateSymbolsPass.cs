@@ -22,7 +22,6 @@ namespace CppSharp.Passes
             VisitOptions.VisitNamespaceEvents = false;
             VisitOptions.VisitNamespaceTemplates = false;
             VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceVariables = false;
             VisitOptions.VisitTemplateArguments = false;
         }
 
@@ -81,8 +80,6 @@ namespace CppSharp.Passes
             if (!base.VisitFunctionDecl(function))
                 return false;
 
-            var module = function.TranslationUnit.Module;
-
             if (function.IsGenerated)
             {
                 ASTUtils.CheckTypeForSpecialization(function.OriginalReturnType.Type,
@@ -95,8 +92,19 @@ namespace CppSharp.Passes
             if (!NeedsSymbol(function))
                 return false;
 
-            var symbolsCodeGenerator = GetSymbolsCodeGenerator(module);
-            return function.Visit(symbolsCodeGenerator);
+            Module module = function.TranslationUnit.Module;
+            return function.Visit(GetSymbolsCodeGenerator(module));
+        }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!base.VisitVariableDecl(variable) ||
+                !(variable.Namespace is ClassTemplateSpecialization specialization) ||
+                specialization.SpecializationKind == TemplateSpecializationKind.ExplicitSpecialization)
+                return false;
+
+            Module module = variable.TranslationUnit.Module;
+            return variable.Visit(GetSymbolsCodeGenerator(module));
         }
 
         public class SymbolsCodeEventArgs : EventArgs
@@ -131,8 +139,7 @@ namespace CppSharp.Passes
                 (!string.IsNullOrEmpty(function.Body) ||
                  isInImplicitSpecialization || function.IsImplicit) &&
                 // we don't need symbols for virtual functions anyway
-                (method == null || (!method.IsVirtual && !method.IsSynthetized &&
-                 (!method.IsConstructor || !((Class) method.Namespace).IsAbstract))) &&
+                (method == null || (!method.IsVirtual && !method.IsSynthetized)) &&
                 // we cannot handle nested anonymous types
                 (!(function.Namespace is Class) || !string.IsNullOrEmpty(function.Namespace.OriginalName)) &&
                 !Context.Symbols.FindLibraryBySymbol(function.Mangled, out _);
