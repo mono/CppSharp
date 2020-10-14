@@ -21,6 +21,7 @@ namespace CppSharp.Generators.C
         public bool PrintTypeQualifiers { get; set; }
         public bool PrintTypeModifiers { get; set; }
         public bool PrintVariableArrayAsPointers { get; set; }
+        public TypePrintScopeKind MethodScopeKind = TypePrintScopeKind.Qualified;
 
         public CppTypePrinter(BindingContext context) : base(TypePrinterContextKind.Native)
         {
@@ -522,11 +523,13 @@ namespace CppSharp.Generators.C
             var functionType = method.FunctionType.Type.Desugar() as FunctionType;
             if (functionType == null)
                 return string.Empty;
-            var returnType = method.IsConstructor || method.IsDestructor ||
+
+            var @return = method.IsConstructor || method.IsDestructor ||
                 method.OperatorKind == CXXOperatorKind.Conversion ||
                 method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
-                string.Empty : $"{method.OriginalReturnType.Visit(this)} ";
-            var @class = method.Namespace.Visit(this);
+                new TypePrinterResult() : method.OriginalReturnType.Visit(this);
+
+            string @class = GetQualifier(method);
             var @params = string.Join(", ", method.Parameters.Select(p => p.Visit(this)));
             var @const = (method.IsConst ? " const" : string.Empty);
             var name = method.OperatorKind == CXXOperatorKind.Conversion ||
@@ -534,24 +537,13 @@ namespace CppSharp.Generators.C
                 $"operator {method.OriginalReturnType.Visit(this)}" :
                 method.OriginalName;
 
-            string exceptionType;
-            switch (functionType.ExceptionSpecType)
-            {
-                case ExceptionSpecType.BasicNoexcept:
-                    exceptionType = " noexcept";
-                    break;
-                case ExceptionSpecType.NoexceptFalse:
-                    exceptionType = " noexcept(false)";
-                    break;
-                case ExceptionSpecType.NoexceptTrue:
-                    exceptionType = " noexcept(true)";
-                    break;
-                // TODO: research and handle the remaining cases
-                default:
-                    exceptionType = string.Empty;
-                    break;
-            }
-            return $"{returnType}{@class}::{name}({@params}){@const}{exceptionType}";
+            string exceptionType = GetExceptionType(functionType);
+
+            if (!string.IsNullOrEmpty(@return.Type))
+                @return.NamePrefix.Append(' ');
+            @return.NamePrefix.Append(@class).Append(name).Append('(').Append(@params).Append(')');
+            @return.NameSuffix.Append(@const).Append(exceptionType);
+            return @return.ToString();
         }
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
@@ -588,10 +580,8 @@ namespace CppSharp.Generators.C
             return VisitDeclaration(item);
         }
 
-        public override TypePrinterResult VisitVariableDecl(Variable variable)
-        {
-            return VisitDeclaration(variable);
-        }
+        public override TypePrinterResult VisitVariableDecl(Variable variable) =>
+            $"{variable.Type.Visit(this)} {VisitDeclaration(variable)}";
 
         public override TypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
         {
@@ -697,6 +687,35 @@ namespace CppSharp.Generators.C
             if (stringQuals.Count == 0)
                 return string.Empty;
             return string.Join(" ", stringQuals) + (appendSpace ? " " : string.Empty);
+        }
+
+        private string GetQualifier(Method method)
+        {
+            switch (MethodScopeKind)
+            {
+                case TypePrintScopeKind.Qualified:
+                    return $"{method.Namespace.Visit(this)}::";
+                case TypePrintScopeKind.GlobalQualified:
+                    return $"::{method.Namespace.Visit(this)}::";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private static string GetExceptionType(FunctionType functionType)
+        {
+            switch (functionType.ExceptionSpecType)
+            {
+                case ExceptionSpecType.BasicNoexcept:
+                    return " noexcept";
+                case ExceptionSpecType.NoexceptFalse:
+                    return " noexcept(false)";
+                case ExceptionSpecType.NoexceptTrue:
+                    return " noexcept(true)";
+                // TODO: research and handle the remaining cases
+                default:
+                    return string.Empty;
+            }
         }
     }
 }
