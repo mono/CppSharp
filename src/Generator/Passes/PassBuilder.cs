@@ -37,7 +37,7 @@ namespace CppSharp
         /// </summary>
         public bool RemovePass(T pass)
         {
-            return pass is TranslationUnitPass && Passes.Remove(pass);
+            return Passes.Remove(pass);
         }
 
         /// <summary>
