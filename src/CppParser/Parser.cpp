@@ -906,7 +906,7 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
         (isa<CXXConstructorDecl>(MD) && MD->getNumParams() == 0) ||
         isa<CXXDestructorDecl>(MD) ||
         (MD->getDeclName().isIdentifier() &&
-         ((MD->getName() == "data" && MD->getNumParams() == 0) ||
+         ((MD->getName() == "data" && MD->getNumParams() == 0 && MD->isConst()) ||
           (MD->getName() == "assign" && MD->getNumParams() == 1 &&
            MD->parameters()[0]->getType()->isPointerType())) &&
          supportedStdTypes.find(MD->getParent()->getName().str()) !=
