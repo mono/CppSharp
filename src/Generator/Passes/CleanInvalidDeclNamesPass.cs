@@ -146,7 +146,14 @@ namespace CppSharp.Passes
         {
             var anonymousDecls = decls.Where(p => string.IsNullOrEmpty(p.Name)).ToList();
             for (int i = 0; i < anonymousDecls.Count; i++)
-                anonymousDecls[i].Name = $"_{i}";
+            {
+                var anonymousDecl = anonymousDecls[i];
+
+                if (anonymousDecl.Namespace != null && anonymousDecl.Namespace.Name == anonymousDecl.Name)
+                    anonymousDecl.Name = $"__{i}";
+                else
+                    anonymousDecl.Name = $"_{i}";
+            }
         }
     }
 }
