@@ -6,6 +6,7 @@
 #include <limits>
 #include <string>
 #include "AnotherUnit.h"
+#include "ExcludedUnit.hpp"
 #include "CSharpTemplates.h"
 
 class DLL_API Foo
@@ -1401,3 +1402,6 @@ struct {
 typedef int boolean_t;
 DLL_API boolean_t takeTypemapTypedefParam(boolean_t b);
 
+class DLL_API TestAnonymousMemberNameCollision : public ClassUsingUnion {
+
+};

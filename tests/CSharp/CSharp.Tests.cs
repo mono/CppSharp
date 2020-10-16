@@ -1429,4 +1429,10 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         Assert.That(CSharp.CSharp.TakeTypemapTypedefParam(false), Is.False);
     }
+
+    [Test]
+    public void TestAnonymousMemberNameCollision()
+    {
+        StringAssert.EndsWith(nameof(CSharp.TestAnonymousMemberNameCollision._0.__0), "__0");
+    }
 }
