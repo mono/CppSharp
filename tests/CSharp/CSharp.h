@@ -1405,3 +1405,15 @@ DLL_API boolean_t takeTypemapTypedefParam(boolean_t b);
 class DLL_API TestAnonymousMemberNameCollision : public ClassUsingUnion {
 
 };
+
+namespace CXXRecordDeclWithoutDefinition
+{
+    template<typename... T>
+    struct list;
+
+    template<typename T>
+    struct it;
+
+    template <> struct it<list<>> { };
+    template <> struct it<list<> const> { };
+}
