@@ -880,12 +880,12 @@ namespace CppSharp.Generators.CSharp
 
             var arrayType = var.Type as ArrayType;
             string ptr = Generator.GeneratedIdentifier("ptr");
-            if (arrayType != null && var.Namespace is Class @class && @class.IsRefType)
+            if (arrayType != null)
             {
-                WriteLine($@"var {ptr} = {
-                   (arrayType.Type.IsPrimitiveType(PrimitiveType.Char) &&
-                    arrayType.QualifiedType.Qualifiers.IsConst ?
-                       string.Empty : "(byte*)")}{location};");
+                if (arrayType.Type.IsPrimitiveType(PrimitiveType.Char) && arrayType.SizeType != ArrayType.ArraySize.Constant)
+                    WriteLine($@"var {ptr} = {location};");
+                else
+                    WriteLine($@"var {ptr} = ({arrayType.Type.Visit(TypePrinter)}*){location};");
             }
             else
             {
