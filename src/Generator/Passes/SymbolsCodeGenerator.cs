@@ -137,7 +137,7 @@ namespace CppSharp.Passes
                     p => cppTypePrinter.VisitParameter(p)))})");
                 WriteLine($": {@namespace}({@params}) {{}} }};");
                 Write($"extern \"C\" {{ void {wrapper}({signature}) ");
-                WriteLine($"{{ new ({Helpers.InstanceField}) {wrapper}{@namespace}({@params}); }} }}");
+                WriteLine($"{{ ::new ({Helpers.InstanceField}) {wrapper}{@namespace}({@params}); }} }}");
             }
             else
             {
@@ -146,7 +146,7 @@ namespace CppSharp.Passes
                     Write($@"{{ class {wrapper}{method.Namespace.Namespace.Name} : public {
                         method.Namespace.Namespace.Visit(cppTypePrinter)} ");
                 Write($"{{ void {wrapper}({signature}) ");
-                Write($"{{ new ({Helpers.InstanceField}) {@namespace}({@params}); }} }}");
+                Write($"{{ ::new ({Helpers.InstanceField}) {@namespace}({@params}); }} }}");
                 if (method.Namespace.Access == AccessSpecifier.Protected)
                     Write("; }");
                 NewLine();
