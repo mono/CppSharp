@@ -54,7 +54,7 @@ namespace CppSharp.Passes
 
                 var result = parameter.DefaultArgument.String;
                 if (PrintExpression(function, parameter.Type,
-                        parameter.OriginalDefaultArgument, allowDefaultLiteral: false, ref result) == null)
+                        parameter.OriginalDefaultArgument, allowDefaultLiteral: true, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                 if (string.IsNullOrEmpty(result))
                 {
