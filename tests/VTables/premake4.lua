@@ -1,5 +1,9 @@
 group "Tests/VTables"
   SetupTestCSharp("VTables")
   
-project("VTables.Native")
-  rtti "On"
+  if EnableNativeProjects() then
+
+    project("VTables.Native")
+      rtti "On"
+
+  end
