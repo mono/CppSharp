@@ -1430,3 +1430,15 @@ namespace CXXRecordDeclWithoutDefinition
     template <> struct it<list<>> { };
     template <> struct it<list<> const> { };
 }
+
+template<int... n>
+struct TestVariableWithoutType
+{
+    template<typename... Args>
+    static constexpr int create(Args... args)
+    {
+        return {};
+    }
+
+    static constexpr auto variable = create(n...);
+};

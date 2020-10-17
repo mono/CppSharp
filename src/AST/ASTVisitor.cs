@@ -470,6 +470,11 @@ namespace CppSharp.AST
             if (!VisitDeclaration(variable))
                 return false;
 
+            // TODO: Remove this null check once CppParser can properly handle auto types.
+            // This is workaround for https://github.com/mono/CppSharp/issues/1412.            
+            if (variable.Type == null)
+                return false;
+
             return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
         }
 
