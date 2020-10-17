@@ -407,6 +407,9 @@ enum class Empty : unsigned long long int
 {
 };
 
+class _ClassWithLeadingUnderscore {
+};
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -475,6 +478,7 @@ public:
     void defaultWithCharFromInt(char c = 32);
     void defaultWithFreeConstantInNameSpace(int c = HasFreeConstant::FREE_CONSTANT_IN_NAMESPACE);
     void defaultWithStdNumericLimits(double d = 1.0, int i = std::numeric_limits<double>::infinity());
+    void defaultWithParamRequiringRename(_ClassWithLeadingUnderscore* ptr = nullptr);
     int DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg = Foo());
     int getA();
 private:

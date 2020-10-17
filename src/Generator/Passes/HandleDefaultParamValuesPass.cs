@@ -54,7 +54,7 @@ namespace CppSharp.Passes
 
                 var result = parameter.DefaultArgument.String;
                 if (PrintExpression(function, parameter.Type,
-                        parameter.OriginalDefaultArgument, ref result) == null)
+                        parameter.OriginalDefaultArgument, allowDefaultLiteral: true, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                 if (string.IsNullOrEmpty(result))
                 {
@@ -71,7 +71,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool? PrintExpression(Function function, Type type, ExpressionObsolete expression, ref string result)
+        private bool? PrintExpression(Function function, Type type, ExpressionObsolete expression, bool allowDefaultLiteral, ref string result)
         {
             var desugared = type.Desugar();
 
@@ -79,7 +79,7 @@ namespace CppSharp.Passes
                 (expression.String == "0" || expression.String == "nullptr"))
             {
                 result = desugared.GetPointee()?.Desugar() is FunctionType ?
-                    "null" : $"default({desugared})";
+                    "null" : (allowDefaultLiteral ? "default" : $"default({desugared})");
                 return true;
             }
 
@@ -212,8 +212,9 @@ namespace CppSharp.Passes
                 {
                     var argument = ctor.Arguments[i];
                     var argResult = argument.String;
+              
                     expressionSupported &= PrintExpression(method,
-                        method.Parameters[i].Type.Desugar(), argument, ref argResult) ?? false;
+                        method.Parameters[i].Type.Desugar(), argument, allowDefaultLiteral: false, ref argResult) ?? false;
                     argsBuilder.Append(argResult);
                     if (i < ctor.Arguments.Count - 1)
                         argsBuilder.Append(", ");
