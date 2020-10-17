@@ -470,6 +470,9 @@ namespace CppSharp.AST
             if (!VisitDeclaration(variable))
                 return false;
 
+            if (variable.Type == null)
+                return false;
+
             return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
         }
 
