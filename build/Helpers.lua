@@ -164,6 +164,7 @@ end
 
 function SetupManagedProject()
   language "C#"
+  csversion "7.2"
   location ("%{wks.location}/projects")
   buildoptions {"/platform:".._OPTIONS["arch"]}
 
