@@ -1102,17 +1102,15 @@ DLL_API extern const unsigned int variableWithVariablePrimitiveArray[];
 
 class DLL_API StaticVariables {
 public:
-    static constexpr auto ConstexprBoolean = true;
-    static constexpr auto ConstexprChr = 'G';
-    static constexpr auto ConstexprUChr = (unsigned char)'G';
-    static constexpr auto ConstexprInt = 1020304050;
-    static constexpr auto ConstexprFloat = 0.5020f;
-    static constexpr char ConstexprChrArray[2] { 'A', 'B' };
-    static constexpr int ConstexprIntArray[2] { 1020304050, 1526374850 };
-    static constexpr float ConstexprFloatArray[2] { 0.5020f, 0.6020f };
-
-    static const std::string Str;
+    static const bool Boolean;
+    static const char Chr;
+    static const unsigned char UChr;
+    static const int Int;
+    static const float Float;
+    static const std::string String;
+    static const char ChrArray[2];
     static const int IntArray[2];
+    static const float FloatArray[2];
 };
 
 typedef void (*ALLCAPS_UNDERSCORES)(int i);

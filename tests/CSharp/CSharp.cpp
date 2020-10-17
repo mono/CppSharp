@@ -1400,8 +1400,15 @@ bool HasVirtualTakesReturnsProblematicTypes::callsVirtualToReturnBool(bool b)
 extern const unsigned char variableWithFixedPrimitiveArray[2] = { 5, 10 };
 extern const unsigned int variableWithVariablePrimitiveArray[] = { 15, 20 };
 
+const bool StaticVariables::Boolean = true;
+const char StaticVariables::Chr = 'G';
+const unsigned char StaticVariables::UChr = (unsigned char)'G';
+const int StaticVariables::Int = 1020304050;
+const float StaticVariables::Float = 0.5020f;
+const std::string StaticVariables::String = "Str";
+const char StaticVariables::ChrArray[2] { 'A', 'B' };
 const int StaticVariables::IntArray[2] { 1020304050, 1526374850 };
-const std::string StaticVariables::Str = "Str";
+const float StaticVariables::FloatArray[2] { 0.5020f, 0.6020f };
 
 TestString::TestString() : unicodeConst(L"ქართული ენა"), unicode(0)
 {
