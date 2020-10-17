@@ -54,7 +54,7 @@ namespace CppSharp.Passes
 
                 var result = parameter.DefaultArgument.String;
                 if (PrintExpression(function, parameter.Type,
-                        parameter.OriginalDefaultArgument, true, ref result) == null)
+                        parameter.OriginalDefaultArgument, allowDefaultLiteral: true, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                 if (string.IsNullOrEmpty(result))
                 {
@@ -214,7 +214,7 @@ namespace CppSharp.Passes
                     var argResult = argument.String;
               
                     expressionSupported &= PrintExpression(method,
-                        method.Parameters[i].Type.Desugar(), argument, false, ref argResult) ?? false;
+                        method.Parameters[i].Type.Desugar(), argument, allowDefaultLiteral: false, ref argResult) ?? false;
                     argsBuilder.Append(argResult);
                     if (i < ctor.Arguments.Count - 1)
                         argsBuilder.Append(", ");
