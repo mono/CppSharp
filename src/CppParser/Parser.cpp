@@ -1073,6 +1073,9 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
     Sema.ForceDeclarationOfImplicitMembers(const_cast<clang::CXXRecordDecl*>(Record));
 
     WalkRecord(Record, RC);
+    
+    if (!Record->hasDefinition())
+        return;
 
     RC->isPOD = Record->isPOD();
     RC->isAbstract = Record->isAbstract();
