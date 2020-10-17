@@ -804,6 +804,10 @@ void MethodsWithDefaultValues::defaultWithStdNumericLimits(double d, int i)
 {
 }
 
+void MethodsWithDefaultValues::defaultWithParamRequiringRename(_ClassWithLeadingUnderscore* ptr)
+{
+}
+
 int MethodsWithDefaultValues::DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg)
 {
     return 1;
