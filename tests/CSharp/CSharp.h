@@ -1101,6 +1101,19 @@ public:
 DLL_API extern const unsigned char variableWithFixedPrimitiveArray[2];
 DLL_API extern const unsigned int variableWithVariablePrimitiveArray[];
 
+class DLL_API StaticVariables {
+public:
+    static const bool Boolean;
+    static const char Chr;
+    static const unsigned char UChr;
+    static const int Int;
+    static const float Float;
+    static const std::string String;
+    static const char ChrArray[2];
+    static const int IntArray[2];
+    static const float FloatArray[2];
+};
+
 typedef void (*ALLCAPS_UNDERSCORES)(int i);
 
 class DLL_API TestString

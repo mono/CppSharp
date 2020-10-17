@@ -735,6 +735,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestStaticVariables()
+    {
+        Assert.That(StaticVariables.Boolean, Is.EqualTo(true));
+        Assert.That(StaticVariables.Chr, Is.EqualTo('G'));
+        Assert.That(StaticVariables.UChr, Is.EqualTo('G'));
+        Assert.That(StaticVariables.Int, Is.EqualTo(1020304050));
+        Assert.That(StaticVariables.Float, Is.EqualTo(0.5020f));
+        Assert.That(StaticVariables.String, Is.EqualTo("Str"));
+        Assert.That(StaticVariables.ChrArray, Is.EqualTo(new[] { 'A', 'B'}));
+        Assert.That(StaticVariables.IntArray, Is.EqualTo(new[] { 1020304050 , 1526374850 }));
+        Assert.That(StaticVariables.FloatArray, Is.EqualTo(new[] { 0.5020f, 0.6020f }));
+    }
+  
+    [Test]
     public void TestPointerPassedAsItsSecondaryBase()
     {
         using (QApplication application = new QApplication())
