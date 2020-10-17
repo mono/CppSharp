@@ -48,7 +48,8 @@ install:
   - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm --arch=%PLATFORM%
 
 build_script:
-  - build\premake5.exe --file=build\premake5.lua vs%VS_VERSION% --arch=%PLATFORM%
+  - build\premake5.exe --netcore=true --file=build\premake5.lua vs%VS_VERSION% --arch=%PLATFORM%
+  - nuget restore ./build/vs%VS_VERSION%/CppSharp.sln
   - msbuild %BUILD_PATH%\CppSharp.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal
 
 #---------------------------------#

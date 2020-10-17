@@ -59,7 +59,9 @@ function SetupTestGeneratorProject(name, depends)
       "CppSharp.AST",
       "CppSharp.Generator",
       "CppSharp.Generator.Tests",
-      "CppSharp.Parser"
+      "CppSharp.Parser",
+      "System",
+      "System.Core"
     }
 
     if depends ~= nil then
@@ -70,15 +72,11 @@ function SetupTestGeneratorProject(name, depends)
 
     SetupParser()
 
-    filter { "action:netcore" }
-      dotnetframework "netcoreapp2.0"
-
-    filter { "action:not netcore" }
-      links
-      {
-        "System",
-        "System.Core"
-      }
+    if _OPTIONS.netcore then
+      dotnetframework "netcoreapp3.1"
+    else
+      dotnetframework "4.7.2"
+    end
 end
 
 local function get_mono_exe()
@@ -128,25 +126,11 @@ end
 function LinkNUnit()
   local c = filter()
   
-  filter { "action:not netcore"}
-    libdirs
-    {
-      depsdir .. "/NUnit",
-      depsdir .. "/NSubstitute"
-    }
-
-    links
-    {
-      "nunit.framework",
-      "NSubstitute"
-    }
-
-  filter { "action:netcore"}
-    nuget
-    {
-      "NUnit:3.11.0",
-      "NSubstitute:4.0.0-rc1"
-    }
+  nuget
+  {
+    "NUnit:3.12.0",
+    "NSubstitute:4.2.2"
+  }
 
   filter(c)
 end
@@ -191,8 +175,11 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 
     LinkNUnit()
 
-    filter { "action:netcore" }
-      dotnetframework "netcoreapp2.0"
+    if _OPTIONS.netcore then
+      dotnetframework "netcoreapp3.1"
+    else
+      dotnetframework "4.7.2"
+    end
 end
 
 function SetupTestProjectsCLI(name, extraFiles, suffix)

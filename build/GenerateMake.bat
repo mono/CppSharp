@@ -1,5 +1,5 @@
 @echo off
 
-premake5 --file=premake5.lua gmake
+premake5 --netcore=true --file=premake5.lua gmake
 
 pause

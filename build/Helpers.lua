@@ -11,6 +11,11 @@ newoption {
 }
 
 newoption {
+   trigger     = "netcore",
+   description = "enable .NET Core"
+}
+
+newoption {
    trigger     = "no-cxx11-abi",
    description = "disable C++-11 ABI on GCC 4.9+"
 }
@@ -168,22 +173,23 @@ function SetupManagedProject()
   buildoptions {"/langversion:7.2"}
   buildoptions {"/platform:".._OPTIONS["arch"]}
 
-  dotnetframework "4.7.2"
+  if _OPTIONS.netcore then
+    dotnetframework "netcoreapp3.1"
+  else
+    dotnetframework "4.7.2"
+  end
+  
+  nuget
+  {
+      "System.CodeDom:4.7.0",
+      "Microsoft.Win32.Registry:4.7.0"
+  }
 
   if not os.istarget("macosx") then
     filter { "action:vs* or netcore" }
       location "."
     filter {}
   end
-
-  filter { "action:netcore" }
-    dotnetframework "netstandard2.0"
-
-  filter { "action:vs2013" }
-    dotnetframework "4.5"
-
-  filter { "action:vs2012" }
-    dotnetframework "4.5"
 
   filter {}
 end

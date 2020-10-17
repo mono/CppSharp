@@ -25,5 +25,8 @@ project "CppSharp.CLI"
       "System.Core"
     }
 
-  filter { "action:netcore" }
-    dotnetframework "netcoreapp2.0"
+  if _OPTIONS.netcore then
+    dotnetframework "netcoreapp3.1"
+  else
+    dotnetframework "4.7.2"
+  end

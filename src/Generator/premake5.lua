@@ -20,20 +20,11 @@ project "CppSharp.Generator"
 
   SetupParser()
 
-  filter { "action:netcore"}
-    nuget
-    {
-      "System.CodeDom:4.5.0",
-      "Microsoft.CSharp:4.5.0"
-    }
-
-  filter { "action:not netcore"}
-    links
-    {
-      "System",
-      "System.Core",
-      "Microsoft.CSharp"
-    }
+  nuget
+  {
+    "System.CodeDom:4.7.0",
+    "Microsoft.CSharp:4.7.0"
+  }
 
   filter { 'files:**verbs.txt' }
     buildaction "Embed"

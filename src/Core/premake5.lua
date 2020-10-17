@@ -14,8 +14,4 @@ project "CppSharp"
     depsdir .. "/vs2017/Microsoft.VisualStudio.Setup.Configuration.Interop"
   }
 
-  filter { "action:netcore" }
-    nuget { "Microsoft.Win32.Registry:4.5.0" }
-
-  filter { "action:not netcore"}
-    links { "System", "System.Core" }
+  nuget { "Microsoft.Win32.Registry:4.7.0" }
