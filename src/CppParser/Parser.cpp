@@ -3654,13 +3654,30 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
         break;
     }
 
-    clang::Expr::EvalResult integer;
-    if (Expr->getStmtClass() != clang::Stmt::CharacterLiteralClass &&
-        Expr->getStmtClass() != clang::Stmt::CXXBoolLiteralExprClass &&
-        Expr->getStmtClass() != clang::Stmt::UnaryExprOrTypeTraitExprClass &&
-        !Expr->isValueDependent() &&
-        Expr->EvaluateAsInt(integer, c->getASTContext()))
-        return new AST::ExpressionObsolete(integer.Val.getInt().toString(10));
+    if (!Expr->isValueDependent())
+    {
+        clang::Expr::EvalResult integer;
+        if (Expr->getStmtClass() == clang::Stmt::CharacterLiteralClass)
+        {
+            auto result = GetStringFromStatement(Expr);
+            if (!result.empty() && 
+                result.front() != '\'' && 
+                Expr->EvaluateAsInt(integer, c->getASTContext()))
+            {
+                result = integer.Val.getInt().toString(10);
+            }
+
+            return new AST::ExpressionObsolete(result);
+        }
+        else if (Expr->getStmtClass() != clang::Stmt::CXXBoolLiteralExprClass &&
+            Expr->getStmtClass() != clang::Stmt::UnaryExprOrTypeTraitExprClass &&
+            Expr->EvaluateAsInt(integer, c->getASTContext())
+            )
+        {
+            return new AST::ExpressionObsolete(integer.Val.getInt().toString(10));
+        }
+    }
+
     return new AST::ExpressionObsolete(GetStringFromStatement(Expr));
 }
 

@@ -433,7 +433,7 @@ public:
     void defaultVoidStar(void* ptr = 0);
     void defaultFunctionPointer(void(*functionPtr)(int p) = nullptr);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());
-    void defaultChar(char c = 'a');
+    void defaultChar(char c = 'a', char uc = u'u', char Uc = U'U', char Lc = L'L');
     void defaultEmptyChar(char c = 0);
     void defaultEmptyEnum(Empty e = Empty(-1));
     void defaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);

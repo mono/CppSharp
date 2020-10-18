@@ -638,7 +638,7 @@ void MethodsWithDefaultValues::defaultValueType(QGenericArgument valueType)
 {
 }
 
-void MethodsWithDefaultValues::defaultChar(char c)
+void MethodsWithDefaultValues::defaultChar(char c, char uc, char Uc, char Lc)
 {
 }
 
