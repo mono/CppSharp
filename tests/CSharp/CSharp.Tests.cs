@@ -747,7 +747,37 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(StaticVariables.IntArray, Is.EqualTo(new[] { 1020304050 , 1526374850 }));
         Assert.That(StaticVariables.FloatArray, Is.EqualTo(new[] { 0.5020f, 0.6020f }));
     }
-  
+
+    [Test]
+    public void TestVariableInitializer()
+    {
+        Assert.That(VariablesWithInitializer.Boolean, Is.EqualTo(true));
+        Assert.That(VariablesWithInitializer.Chr, Is.EqualTo('G'));
+        Assert.That(VariablesWithInitializer.UChr, Is.EqualTo('G'));
+        Assert.That(VariablesWithInitializer.Int, Is.EqualTo(1020304050));
+        Assert.That(VariablesWithInitializer.IntSum, Is.EqualTo(VariablesWithInitializer.Int + 500));
+        Assert.That(VariablesWithInitializer.Float, Is.EqualTo(0.5020f));
+        Assert.That(VariablesWithInitializer.Double, Is.EqualTo(0.700020235));
+        Assert.That(VariablesWithInitializer.DoubleSum, Is.EqualTo(0.700020235 + 23.17376));
+        Assert.That(VariablesWithInitializer.DoubleFromConstexprFunction, Is.EqualTo(0.700020235 + 23.17376));
+        Assert.That(VariablesWithInitializer.Int64, Is.EqualTo(602030405045));
+        Assert.That(VariablesWithInitializer.UInt64, Is.EqualTo(9602030405045));
+        Assert.That(VariablesWithInitializer.String, Is.EqualTo("Str"));
+        Assert.That(VariablesWithInitializer.WideString, Is.EqualTo("Str"));
+        Assert.That(VariablesWithInitializer.StringArray1, Is.EqualTo(new[] { "StrF,\"or" }));
+        Assert.That(VariablesWithInitializer.StringArray3, Is.EqualTo(new[] { "StrF,\"or", "C#", VariablesWithInitializer.String }));
+        Assert.That(VariablesWithInitializer.StringArray30, Is.EqualTo(new[] { 
+            "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
+            "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
+            "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str"}));
+        Assert.That(VariablesWithInitializer.StringArray3EmptyInitList, Is.EqualTo(new[] { "", "", "" }));
+        Assert.That(VariablesWithInitializer.WideStringArray, Is.EqualTo(new[] { "Str", "C#" }));
+        Assert.That(VariablesWithInitializer.ChrArray, Is.EqualTo(new[] { 'A', 'B' }));
+        Assert.That(VariablesWithInitializer.IntArray, Is.EqualTo(new[] { 1020304050, 1526374850 }));
+        Assert.That(VariablesWithInitializer.IntArray3, Is.EqualTo(new[] { 1020304050, 1526374850, default }));
+        Assert.That(VariablesWithInitializer.FloatArray, Is.EqualTo(new[] { 0.5020f, 0.6020f }));
+    }
+
     [Test]
     public void TestPointerPassedAsItsSecondaryBase()
     {

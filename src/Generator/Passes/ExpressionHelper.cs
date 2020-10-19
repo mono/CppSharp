@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -5,7 +6,10 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
+using CppSharp.Parser;
 using CppSharp.Types;
+
+using TypeCode = System.TypeCode;
 
 namespace CppSharp.Internal
 {
@@ -62,6 +66,134 @@ namespace CppSharp.Internal
                 return defaultConstruct;
 
             return CheckForSimpleExpressions(context, expression, ref result, desugared);
+        }
+
+        public static System.Type GetSystemType(BindingContext context, Type type)
+        {
+            if (context.TypeMaps.FindTypeMap(type, out TypeMap typeMap))
+            {
+                var cilType = typeMap.CSharpSignatureType(new TypePrinterContext { Type = type, Kind = TypePrinterContextKind.Managed }) as CILType;
+                if (cilType != null)
+                    return cilType.Type;
+            }
+
+            if (type is BuiltinType builtInType)
+            {
+                if (builtInType.Type == PrimitiveType.Float)
+                    return typeof(float);
+                else if (builtInType.Type == PrimitiveType.Double)
+                    return typeof(double);
+
+                try
+                {
+                    CSharpTypePrinter.GetPrimitiveTypeWidth(builtInType.Type, context.TargetInfo, out var w, out var signed);
+                    var cilType = (signed ? CSharpTypePrinter.GetSignedType(w) : CSharpTypePrinter.GetUnsignedType(w)) as CILType;
+                    if (cilType != null)
+                        return cilType.Type;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public static List<string> SplitInitListExpr(string expression)
+        {
+            if (expression.StartsWith("{") && expression.EndsWith("}"))
+                expression = expression.Substring(1, expression.Length - 2);
+
+            List<string> elements = new List<string>();
+            var elementContent = new StringBuilder();
+            var insideString = false;
+            bool escape = false;
+
+            for (int i = 0; i < expression.Length; ++i)
+            {
+                var c = expression[i];
+
+                if (escape)
+                    escape = false;
+                else
+                {
+                    if (c == '\"')
+                        insideString = !insideString;
+                    else if (c == ',')
+                    {
+                        if (!insideString && elementContent.Length > 0)
+                        {
+                            elements.Add(elementContent.ToString());
+                            elementContent.Clear();
+                            continue;
+                        }
+                    }
+                    else if (c == '\\')
+                        escape = true;
+                }
+
+                elementContent.Append(c);
+            }
+
+            if (elementContent.ToString().Length > 0)
+                elements.Add(elementContent.ToString());
+            return elements;
+        }
+
+        public static bool TryParseExactLiteralExpression(ref string expression, System.Type type)
+        {
+            if (type == null || expression.Length == 0)
+                return false;
+
+            if (type != typeof(string))
+                expression = expression.Replace("::", ".");
+
+            switch (System.Type.GetTypeCode(type))
+            {
+                case TypeCode.Boolean:
+                    return bool.TryParse(expression, out _);
+                case TypeCode.Char:
+                    if (expression.StartsWith("'"))
+                        return true;
+                    return char.TryParse(expression, out _);
+                case TypeCode.Byte:
+                    return byte.TryParse(expression, out _);
+                case TypeCode.SByte:
+                    return sbyte.TryParse(expression, out _);
+                case TypeCode.Int16:
+                    return short.TryParse(expression, out _);
+                case TypeCode.Int32:
+                    return int.TryParse(expression, out _);
+                case TypeCode.Int64:
+                    return long.TryParse(expression, out _);
+                case TypeCode.UInt16:
+                    return ushort.TryParse(expression, out _);
+                case TypeCode.UInt32:
+                    return uint.TryParse(expression, out _);
+                case TypeCode.UInt64:
+                    return ulong.TryParse(expression, out _);
+                case TypeCode.Single:
+                    {
+                        if (expression.EndsWith("F"))
+                            expression = expression.Substring(0, expression.Length - 1);
+                        var result = float.TryParse(expression, out _);
+                        expression += "f";
+                        return result;
+                    }
+                case TypeCode.Double:
+                    return double.TryParse(expression, out _);
+                case TypeCode.Decimal:
+                    return decimal.TryParse(expression, out _);
+                case TypeCode.String:
+                    int start = expression.IndexOf('\"');
+                    int end = expression.LastIndexOf('\"');
+                    if (start != -1 && start != end)
+                        expression = expression.Substring(start, end - start + 1);
+                    return expression.StartsWith("\"");
+            }
+
+            return false;
         }
 
         private static bool CheckForSimpleExpressions(BindingContext context, ExpressionObsolete expression, ref string result, Type desugared)

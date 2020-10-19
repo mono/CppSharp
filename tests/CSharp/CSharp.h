@@ -1118,6 +1118,48 @@ public:
     static const float FloatArray[2];
 };
 
+class DLL_API VariablesWithInitialize1r {
+public:
+    static constexpr int HELLO_INT = 1020304050;
+};
+
+static constexpr double ConstexprCreateDoubleValue(double value) {
+    return value;
+}
+
+class DLL_API VariablesWithInitializer {
+public:
+
+   static constexpr const char* String = "Str";
+   static constexpr const wchar_t* WideString = L"Str";
+   static constexpr bool Boolean = true;
+   static constexpr char Chr = 'G';
+   static constexpr unsigned char UChr = (unsigned char)'G';
+   static constexpr int Int = 1020304050;
+   static constexpr int hELLO_INT = 1020304050 + VariablesWithInitialize1r::HELLO_INT;
+   static constexpr int IntSum = Int + 500;
+   static constexpr float Float = 0.5020f;
+   static constexpr double Double = 0.700020235;
+   static constexpr double DoubleSum = 0.700020235 + 23.17376;
+   static constexpr double DoubleFromConstexprFunction = ConstexprCreateDoubleValue(0.700020235 + 23.17376);
+   static constexpr int64_t Int64 = 602030405045;
+   static constexpr uint64_t UInt64 = 9602030405045;
+   static constexpr const char* StringArray1[1] { "Str" "F,\"or" };
+   static constexpr const char* StringArray3[3] { "Str" "F,\"or", "C#", String };
+   static constexpr const char* StringArray30[30] {
+       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", 
+       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", 
+       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", 
+   };
+   static constexpr const char* StringArray3EmptyInitList[3] { };
+   static constexpr const wchar_t* WideStringArray[2] { L"Str", L"C#" };
+   static constexpr char ChrArray[2] { 'A', 'B' };
+   static constexpr unsigned char ByteArray[2] { 'A', 10 };
+   static constexpr int IntArray[2] = { 1020304050, 1526374850 };
+   static constexpr int IntArray3[3] = { 1020304050, 1526374850 };
+   static constexpr float FloatArray[2] { 0.5020f, 0.6020f };
+};
+
 typedef void (*ALLCAPS_UNDERSCORES)(int i);
 
 class DLL_API TestString

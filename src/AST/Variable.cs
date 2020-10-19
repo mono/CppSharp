@@ -10,6 +10,7 @@ namespace CppSharp.AST
 
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
+        public ExpressionObsolete Initializer { get; set; }
 
         public string Mangled { get; set; }
     }

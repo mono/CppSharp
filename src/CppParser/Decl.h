@@ -63,6 +63,7 @@ class DeclarationContext;
 class RawComment;
 class PreprocessedEntity;
 
+class ExpressionObsolete;
 class CS_API Declaration
 {
 public:
@@ -422,6 +423,7 @@ public:
     ~Variable();
     std::string mangled;
     QualifiedType qualifiedType;
+    ExpressionObsolete* initializer;
 };
 
 class PreprocessedEntity;

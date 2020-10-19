@@ -1078,6 +1078,51 @@ namespace CppSharp.Generators.CSharp
                 UnindentAndWriteCloseBrace();
         }
 
+        private void GeneratePropertyGetterForVariableWithInitializer(Variable variable, string signature)
+        {
+            var initializerString = variable.Initializer.String;
+            Write($"{signature} {{ get; }} = ");
+
+            if (variable.Type.Desugar() is ArrayType arrayType)
+            {
+                var systemType = Internal.ExpressionHelper.GetSystemType(Context, arrayType.Type.Desugar());
+                Write($"new {arrayType.Type}[{arrayType.Size}] ");
+                Write("{ ");
+  
+                List<string> elements = Internal.ExpressionHelper.SplitInitListExpr(initializerString);
+
+                while (elements.Count < arrayType.Size)
+                    elements.Add(systemType == typeof(string) ? "\"\"" : null);                
+
+                for (int i = 0; i < elements.Count; ++i)
+                {
+                    var e = elements[i];
+
+                    if (e == null)
+                        Write("default");
+                    else { 
+                        if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref e, systemType))
+                            Write($"({arrayType.Type})");
+                        Write(e);
+                    }
+
+                    if (i + 1 != elements.Count)
+                        Write(", ");
+                }
+
+                Write(" }");
+            }
+            else
+            {
+                var systemType = Internal.ExpressionHelper.GetSystemType(Context, variable.Type.Desugar());
+                if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref initializerString, systemType))
+                    Write($"({variable.Type})");
+                Write(initializerString);
+            }
+
+            WriteLine(";");
+        }
+
         private void GeneratePropertyGetter<T>(T decl, Class @class,
             bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
@@ -1458,16 +1503,24 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PushMarshalKind(MarshalKind.ReturnVariableArray);
             var variableType = variable.Type.Visit(TypePrinter);
             TypePrinter.PopMarshalKind();
-            WriteLine($"public static {variableType} {variable.Name}");
-            WriteOpenBraceAndIndent();
 
-            GeneratePropertyGetter(variable, @class);
+            var signature = $"public static {variableType} {variable.Name}";
 
-            if (!variable.QualifiedType.Qualifiers.IsConst &&
-                !(variable.Type.Desugar() is ArrayType))
-                GeneratePropertySetter(variable, @class);
+            if (variable.Initializer != null && !string.IsNullOrWhiteSpace(variable.Initializer.String))
+                GeneratePropertyGetterForVariableWithInitializer(variable, signature);
+            else {
+                WriteLine(signature);
+                WriteOpenBraceAndIndent();
 
-            UnindentAndWriteCloseBrace();
+                GeneratePropertyGetter(variable, @class);
+
+                if (!variable.QualifiedType.Qualifiers.IsConst &&
+                    !(variable.Type.Desugar() is ArrayType))
+                    GeneratePropertySetter(variable, @class);
+
+                UnindentAndWriteCloseBrace();
+            }
+
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
