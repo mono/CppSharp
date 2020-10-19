@@ -1118,25 +1118,18 @@ public:
     static const float FloatArray[2];
 };
 
-class DLL_API VariablesWithInitialize1r {
-public:
-    static constexpr int HELLO_INT = 1020304050;
-};
-
 static constexpr double ConstexprCreateDoubleValue(double value) {
     return value;
 }
 
 class DLL_API VariablesWithInitializer {
 public:
-
    static constexpr const char* String = "Str";
    static constexpr const wchar_t* WideString = L"Str";
    static constexpr bool Boolean = true;
    static constexpr char Chr = 'G';
    static constexpr unsigned char UChr = (unsigned char)'G';
    static constexpr int Int = 1020304050;
-   static constexpr int hELLO_INT = 1020304050 + VariablesWithInitialize1r::HELLO_INT;
    static constexpr int IntSum = Int + 500;
    static constexpr float Float = 0.5020f;
    static constexpr double Double = 0.700020235;

@@ -3683,12 +3683,12 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
     return new AST::ExpressionObsolete(GetStringFromStatement(Expr));
 }
 
-AST::ExpressionObsolete* Parser::WalkVariableInitializerExpression(const clang::Expr* Expr, const clang::VarDecl* decl)
+AST::ExpressionObsolete* Parser::WalkVariableInitializerExpression(const clang::Expr* Expr)
 {
     using namespace clang;
 
     if (IsCastStmt(Expr->getStmtClass()))
-        return WalkVariableInitializerExpression(cast<clang::CastExpr>(Expr)->getSubExprAsWritten(), decl);
+        return WalkVariableInitializerExpression(cast<clang::CastExpr>(Expr)->getSubExprAsWritten());
 
     if (IsLiteralStmt(Expr->getStmtClass()))
       return WalkExpressionObsolete(Expr);
@@ -3711,16 +3711,16 @@ bool Parser::IsCastStmt(clang::Stmt::StmtClass stmt)
 {
     switch (stmt)
     {
-        case clang::Stmt::CStyleCastExprClass:
-        case clang::Stmt::CXXConstCastExprClass:
-        case clang::Stmt::CXXDynamicCastExprClass:
-        case clang::Stmt::CXXFunctionalCastExprClass:
-        case clang::Stmt::CXXReinterpretCastExprClass:
-        case clang::Stmt::CXXStaticCastExprClass:
-        case clang::Stmt::ImplicitCastExprClass:
-            return true;
-        default:
-            return false;
+    case clang::Stmt::CStyleCastExprClass:
+    case clang::Stmt::CXXConstCastExprClass:
+    case clang::Stmt::CXXDynamicCastExprClass:
+    case clang::Stmt::CXXFunctionalCastExprClass:
+    case clang::Stmt::CXXReinterpretCastExprClass:
+    case clang::Stmt::CXXStaticCastExprClass:
+    case clang::Stmt::ImplicitCastExprClass:
+        return true;
+    default:
+        return false;
     }
 }
 
@@ -3728,18 +3728,18 @@ bool Parser::IsLiteralStmt(clang::Stmt::StmtClass stmt)
 {
     switch (stmt)
     {
-        case clang::Stmt::CharacterLiteralClass:
-        case clang::Stmt::FixedPointLiteralClass:
-        case clang::Stmt::FloatingLiteralClass:
-        case clang::Stmt::IntegerLiteralClass:
-        case clang::Stmt::StringLiteralClass:
-        case clang::Stmt::ImaginaryLiteralClass:
-        case clang::Stmt::UserDefinedLiteralClass:
-        case clang::Stmt::CXXNullPtrLiteralExprClass:
-        case clang::Stmt::CXXBoolLiteralExprClass:
-            return true;
-        default:
-            return false;
+    case clang::Stmt::CharacterLiteralClass:
+    case clang::Stmt::FixedPointLiteralClass:
+    case clang::Stmt::FloatingLiteralClass:
+    case clang::Stmt::IntegerLiteralClass:
+    case clang::Stmt::StringLiteralClass:
+    case clang::Stmt::ImaginaryLiteralClass:
+    case clang::Stmt::UserDefinedLiteralClass:
+    case clang::Stmt::CXXNullPtrLiteralExprClass:
+    case clang::Stmt::CXXBoolLiteralExprClass:
+        return true;
+    default:
+        return false;
     }
 }
 

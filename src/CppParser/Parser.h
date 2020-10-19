@@ -118,7 +118,7 @@ private:
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
-    AST::ExpressionObsolete* WalkVariableInitializerExpression(const clang::Expr* Expression, const clang::VarDecl* decl);
+    AST::ExpressionObsolete* WalkVariableInitializerExpression(const clang::Expr* Expression);
     AST::ExpressionObsolete* WalkExpressionObsolete(const clang::Expr* Expression);
     AST::Stmt* WalkStatement(const clang::Stmt* Stmt);
     AST::Expr* WalkExpression(const clang::Expr* Stmt);
