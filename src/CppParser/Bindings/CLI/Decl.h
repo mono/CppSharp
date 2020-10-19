@@ -145,6 +145,18 @@ namespace CppSharp
                 FunctionBody = 5
             };
 
+            public enum class StatementClassObsolete
+            {
+                Any = 0,
+                BinaryOperator = 1,
+                CallExprClass = 2,
+                DeclRefExprClass = 3,
+                CXXConstructExprClass = 4,
+                CXXOperatorCallExpr = 5,
+                ImplicitCastExpr = 6,
+                ExplicitCastExpr = 7
+            };
+
             public enum class FriendKind
             {
                 None = 0,
@@ -200,18 +212,6 @@ namespace CppSharp
                 Subscript = 43,
                 Conditional = 44,
                 Coawait = 45
-            };
-
-            public enum class StatementClassObsolete
-            {
-                Any = 0,
-                BinaryOperator = 1,
-                CallExprClass = 2,
-                DeclRefExprClass = 3,
-                CXXConstructExprClass = 4,
-                CXXOperatorCallExpr = 5,
-                ImplicitCastExpr = 6,
-                ExplicitCastExpr = 7
             };
 
             public enum class TemplateSpecializationKind
@@ -1266,6 +1266,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
+                property CppSharp::Parser::AST::ExpressionObsolete^ Initializer
+                {
+                    CppSharp::Parser::AST::ExpressionObsolete^ get();
+                    void set(CppSharp::Parser::AST::ExpressionObsolete^);
                 }
             };
 

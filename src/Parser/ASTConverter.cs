@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SourceLocation = CppSharp.AST.SourceLocation;
 using CppSharp.Parser.AST;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp
 {
@@ -1502,6 +1503,7 @@ namespace CppSharp
             _variable.Mangled = decl.Mangled;
             _variable.QualifiedType = typeConverter.VisitQualified(
                 decl.QualifiedType);
+            _variable.Initializer = VisitStatement(decl.Initializer);
         }
 
         public override AST.Declaration VisitVariable(Variable decl)

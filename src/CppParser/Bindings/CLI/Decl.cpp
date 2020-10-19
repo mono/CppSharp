@@ -2363,6 +2363,16 @@ void CppSharp::Parser::AST::Variable::QualifiedType::set(CppSharp::Parser::AST::
     ((::CppSharp::CppParser::AST::Variable*)NativePtr)->qualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::ExpressionObsolete^ CppSharp::Parser::AST::Variable::Initializer::get()
+{
+    return (((::CppSharp::CppParser::AST::Variable*)NativePtr)->initializer == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ExpressionObsolete((::CppSharp::CppParser::AST::ExpressionObsolete*)((::CppSharp::CppParser::AST::Variable*)NativePtr)->initializer);
+}
+
+void CppSharp::Parser::AST::Variable::Initializer::set(CppSharp::Parser::AST::ExpressionObsolete^ value)
+{
+    ((::CppSharp::CppParser::AST::Variable*)NativePtr)->initializer = (::CppSharp::CppParser::AST::ExpressionObsolete*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier(::CppSharp::CppParser::AST::BaseClassSpecifier* native)
     : __ownsNativeInstance(false)
 {

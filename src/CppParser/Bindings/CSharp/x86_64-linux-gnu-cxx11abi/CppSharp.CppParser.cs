@@ -6123,6 +6123,18 @@ namespace CppSharp
                 FunctionBody = 5
             }
 
+            public enum StatementClassObsolete
+            {
+                Any = 0,
+                BinaryOperator = 1,
+                CallExprClass = 2,
+                DeclRefExprClass = 3,
+                CXXConstructExprClass = 4,
+                CXXOperatorCallExpr = 5,
+                ImplicitCastExpr = 6,
+                ExplicitCastExpr = 7
+            }
+
             public enum FriendKind
             {
                 None = 0,
@@ -6178,18 +6190,6 @@ namespace CppSharp
                 Subscript = 43,
                 Conditional = 44,
                 Coawait = 45
-            }
-
-            public enum StatementClassObsolete
-            {
-                Any = 0,
-                BinaryOperator = 1,
-                CallExprClass = 2,
-                DeclRefExprClass = 3,
-                CXXConstructExprClass = 4,
-                CXXOperatorCallExpr = 5,
-                ImplicitCastExpr = 6,
-                ExplicitCastExpr = 7
             }
 
             public enum TemplateSpecializationKind
@@ -10659,7 +10659,7 @@ namespace CppSharp
 
             public unsafe partial class Variable : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 272)]
+                [StructLayout(LayoutKind.Explicit, Size = 280)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -10730,6 +10730,9 @@ namespace CppSharp
 
                     [FieldOffset(256)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
+
+                    [FieldOffset(272)]
+                    internal global::System.IntPtr initializer;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -10836,6 +10839,24 @@ namespace CppSharp
                         if (ReferenceEquals(value, null))
                             throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
                         ((global::CppSharp.Parser.AST.Variable.__Internal*)__Instance)->qualifiedType = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.ExpressionObsolete Initializer
+                {
+                    get
+                    {
+                        global::CppSharp.Parser.AST.ExpressionObsolete __result0;
+                        if (((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->initializer == IntPtr.Zero) __result0 = null;
+                        else if (global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap.ContainsKey(((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->initializer))
+                            __result0 = (global::CppSharp.Parser.AST.ExpressionObsolete) global::CppSharp.Parser.AST.ExpressionObsolete.NativeToManagedMap[((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->initializer];
+                        else __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__CreateInstance(((global::CppSharp.Parser.AST.Variable.__Internal*) __Instance)->initializer);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((global::CppSharp.Parser.AST.Variable.__Internal*)__Instance)->initializer = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -15793,7 +15814,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplateSpecialization : global::CppSharp.Parser.AST.Variable, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 312)]
+                [StructLayout(LayoutKind.Explicit, Size = 320)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -15866,12 +15887,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [FieldOffset(272)]
-                    internal global::System.IntPtr templatedDecl;
+                    internal global::System.IntPtr initializer;
 
                     [FieldOffset(280)]
+                    internal global::System.IntPtr templatedDecl;
+
+                    [FieldOffset(288)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;
 
-                    [FieldOffset(304)]
+                    [FieldOffset(312)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -16036,7 +16060,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplatePartialSpecialization : global::CppSharp.Parser.AST.VarTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 312)]
+                [StructLayout(LayoutKind.Explicit, Size = 320)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -16109,12 +16133,15 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
                     [FieldOffset(272)]
-                    internal global::System.IntPtr templatedDecl;
+                    internal global::System.IntPtr initializer;
 
                     [FieldOffset(280)]
+                    internal global::System.IntPtr templatedDecl;
+
+                    [FieldOffset(288)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;
 
-                    [FieldOffset(304)]
+                    [FieldOffset(312)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity]

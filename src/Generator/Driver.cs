@@ -274,6 +274,8 @@ namespace CppSharp
                 TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any & ~RenameTargets.Parameter);
                 TranslationUnitPasses.AddPass(new CheckKeywordNamesPass());
             }
+
+            Context.TranslationUnitPasses.AddPass(new HandleVariableInitializerPass());
         }
 
         public void ProcessCode()

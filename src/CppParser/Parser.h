@@ -118,11 +118,14 @@ private:
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
+    AST::ExpressionObsolete* WalkVariableInitializerExpression(const clang::Expr* Expression);
     AST::ExpressionObsolete* WalkExpressionObsolete(const clang::Expr* Expression);
     AST::Stmt* WalkStatement(const clang::Stmt* Stmt);
     AST::Expr* WalkExpression(const clang::Expr* Stmt);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
     std::string GetFunctionBody(const clang::FunctionDecl* FD);
+    static bool IsCastStmt(clang::Stmt::StmtClass stmt);
+    static bool IsLiteralStmt(clang::Stmt::StmtClass stmt);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);

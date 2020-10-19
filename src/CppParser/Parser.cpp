@@ -11,6 +11,7 @@
 
 #include "Parser.h"
 #include "ELFDumper.h"
+#include "APValuePrinter.h"
 
 #include <llvm/Support/Host.h>
 #include <llvm/Support/Path.h>
@@ -3383,6 +3384,7 @@ void Parser::WalkVariable(const clang::VarDecl* VD, Variable* Var)
 
     Var->name = VD->getName().str();
     Var->access = ConvertToAccess(VD->getAccess());
+    Var->initializer = VD->getAnyInitializer() ? WalkVariableInitializerExpression(VD->getAnyInitializer(), VD) : nullptr;
 
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
     Var->qualifiedType = GetQualifiedType(VD->getType(), &TL);
@@ -3679,6 +3681,66 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
     }
 
     return new AST::ExpressionObsolete(GetStringFromStatement(Expr));
+}
+
+AST::ExpressionObsolete* Parser::WalkVariableInitializerExpression(const clang::Expr* Expr)
+{
+    using namespace clang;
+
+    if (IsCastStmt(Expr->getStmtClass()))
+        return WalkVariableInitializerExpression(cast<clang::CastExpr>(Expr)->getSubExprAsWritten());
+
+    if (IsLiteralStmt(Expr->getStmtClass()))
+      return WalkExpressionObsolete(Expr);
+
+    clang::Expr::EvalResult result;
+    if (Expr->EvaluateAsConstantExpr(result, clang::Expr::ConstExprUsage::EvaluateForCodeGen, c->getASTContext(), false))
+    {
+        std::string s;
+        llvm::raw_string_ostream out(s);
+        APValuePrinter printer{c->getASTContext(), out};
+
+        if (printer.Print(result.Val, Expr->getType()))
+            return new AST::ExpressionObsolete(out.str());
+    }
+    
+    return WalkExpressionObsolete(Expr);
+}
+
+bool Parser::IsCastStmt(clang::Stmt::StmtClass stmt) 
+{
+    switch (stmt)
+    {
+    case clang::Stmt::CStyleCastExprClass:
+    case clang::Stmt::CXXConstCastExprClass:
+    case clang::Stmt::CXXDynamicCastExprClass:
+    case clang::Stmt::CXXFunctionalCastExprClass:
+    case clang::Stmt::CXXReinterpretCastExprClass:
+    case clang::Stmt::CXXStaticCastExprClass:
+    case clang::Stmt::ImplicitCastExprClass:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool Parser::IsLiteralStmt(clang::Stmt::StmtClass stmt) 
+{
+    switch (stmt)
+    {
+    case clang::Stmt::CharacterLiteralClass:
+    case clang::Stmt::FixedPointLiteralClass:
+    case clang::Stmt::FloatingLiteralClass:
+    case clang::Stmt::IntegerLiteralClass:
+    case clang::Stmt::StringLiteralClass:
+    case clang::Stmt::ImaginaryLiteralClass:
+    case clang::Stmt::UserDefinedLiteralClass:
+    case clang::Stmt::CXXNullPtrLiteralExprClass:
+    case clang::Stmt::CXXBoolLiteralExprClass:
+        return true;
+    default:
+        return false;
+    }
 }
 
 std::string Parser::GetStringFromStatement(const clang::Stmt* Statement)
