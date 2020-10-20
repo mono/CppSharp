@@ -1777,3 +1777,13 @@ boolean_t takeTypemapTypedefParam(boolean_t b)
 {
     return b;
 }
+
+bool StringMarshall::CSharpString8(const char* in)
+{
+    return in[0] == 'C' && in[1] == '#';
+}
+
+bool StringMarshall::CSharpString16(const char16_t* in)
+{
+    return in[0] == 'C' && in[1] == '#';
+}

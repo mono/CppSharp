@@ -155,16 +155,52 @@ namespace CppSharp.Types.Std
                 return new CustomType(typePrinter.IntPtrType);
             }
 
-            if (Context.Options.Encoding == Encoding.ASCII ||
-                Context.Options.Encoding == Encoding.UTF8)
+            Type type = Type.Desugar();
+
+            uint charWidth = 0;
+            if (type is PointerType pointerType)
+                charWidth = GetCharPtrWidth(pointerType);
+            else if (type.GetPointee()?.Desugar() is PointerType pointeePointerType)
+                charWidth = GetCharPtrWidth(pointeePointerType);
+
+            if (charWidth == 8)
+            { 
+                if (Context.Options.Encoding == Encoding.ASCII)
+                    return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
                 return new CustomType("[MarshalAs(UnmanagedType.LPUTF8Str)] string");
+            }
 
             if (Context.Options.Encoding == Encoding.Unicode ||
                 Context.Options.Encoding == Encoding.BigEndianUnicode)
+            {
+                // NOTE: This will break if charWidth is not 16 bit which may
+                // happen if someone uses wchar_t on platforms where it's size is 32 bit.
+                // TODO: Create a custom marshaller to support that scenario.
+                // Once that's done consider supporting char32_t as well
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
+            }
+
+            if (Context.Options.Encoding == Encoding.UTF8 && charWidth == 16)
+                return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string"); // fallback;
 
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
+        }
+
+        public uint GetCharPtrWidth(PointerType pointer)
+        {
+            var pointee = pointer?.Pointee?.Desugar();
+            if (pointee != null)
+            {
+                if (pointee.IsPrimitiveType(PrimitiveType.Char))
+                    return Context.TargetInfo.CharWidth;
+                if (pointee.IsPrimitiveType(PrimitiveType.WideChar))
+                    return Context.TargetInfo.WCharWidth;
+                if (pointee.IsPrimitiveType(PrimitiveType.Char16))
+                    return Context.TargetInfo.Char16Width;
+            }
+
+            return 0;
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
