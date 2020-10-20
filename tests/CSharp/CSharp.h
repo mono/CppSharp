@@ -1481,3 +1481,11 @@ struct TestVariableWithoutType
 
     static constexpr auto variable = create(n...);
 };
+
+class DLL_API StringMarshall
+{
+public:
+    static constexpr const char* CSharpString = "C#";
+    static bool CSharpString8(const char* in);
+    static bool CSharpString16(const char16_t* in);
+};

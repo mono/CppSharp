@@ -1479,4 +1479,11 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         StringAssert.EndsWith(nameof(CSharp.TestAnonymousMemberNameCollision._0.__0), "__0");
     }
+
+    [Test]
+    public void TestStringMarshall()
+    {
+        Assert.IsTrue(StringMarshall.CSharpString8(StringMarshall.CSharpString));
+        Assert.IsTrue(StringMarshall.CSharpString16(StringMarshall.CSharpString));
+    }
 }
