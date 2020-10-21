@@ -435,5 +435,10 @@
 
             return declaration.TranslationUnit.Module;
         }
+
+        public static long GetSizeInBytes(this ArrayType array)
+        {
+            return array.Size * (array.ElementSize / 8);
+        }
     }
 }
