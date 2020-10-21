@@ -746,6 +746,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.That(StaticVariables.ChrArray, Is.EqualTo(new[] { 'A', 'B'}));
         Assert.That(StaticVariables.IntArray, Is.EqualTo(new[] { 1020304050 , 1526374850 }));
         Assert.That(StaticVariables.FloatArray, Is.EqualTo(new[] { 0.5020f, 0.6020f }));
+        Assert.That(StaticVariables.BoolArray, Is.EqualTo(new[] { false, true }));
     }
 
     [Test]

@@ -1413,6 +1413,7 @@ const std::string StaticVariables::String = "Str";
 const char StaticVariables::ChrArray[2] { 'A', 'B' };
 const int StaticVariables::IntArray[2] { 1020304050, 1526374850 };
 const float StaticVariables::FloatArray[2] { 0.5020f, 0.6020f };
+const bool StaticVariables::BoolArray[2] { false, true };
 
 TestString::TestString() : unicodeConst(L"ქართული ენა"), unicode(0)
 {

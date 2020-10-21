@@ -102,7 +102,7 @@ namespace CppSharp.Generators.CSharp
                         }
                         else
                         {
-                            if (arrayType.IsPrimitiveType(PrimitiveType.Bool))
+                            if (arrayType.IsPrimitiveType(PrimitiveType.Bool) && Context.MarshalKind == MarshalKind.NativeField)
                                 supportBefore.WriteLineIndent($@"{value}[i] = {
                                     Context.ReturnVarName}[i] != 0;");
                             else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&

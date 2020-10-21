@@ -1116,6 +1116,7 @@ public:
     static const char ChrArray[2];
     static const int IntArray[2];
     static const float FloatArray[2];
+    static const bool BoolArray[2];
 };
 
 static constexpr double ConstexprCreateDoubleValue(double value) {
