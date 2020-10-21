@@ -1116,6 +1116,7 @@ public:
     static const char ChrArray[2];
     static const int IntArray[2];
     static const float FloatArray[2];
+    static const bool BoolArray[2];
 };
 
 static constexpr double ConstexprCreateDoubleValue(double value) {
@@ -1150,6 +1151,7 @@ public:
    static constexpr unsigned char ByteArray[2] { 'A', 10 };
    static constexpr int IntArray[2] = { 1020304050, 1526374850 };
    static constexpr int IntArray3[3] = { 1020304050, 1526374850 };
+   static constexpr bool BoolArray[2] { false, true };
    static constexpr float FloatArray[2] { 0.5020f, 0.6020f };
 };
 
