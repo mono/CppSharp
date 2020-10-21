@@ -68,11 +68,7 @@ function get_vs_version()
   return map_msvc_to_vs_version(major, minor)
 end
 
-function get_toolset_configuration_name(arch)
-  if not arch then
-    arch = target_architecture()
-  end
-
+function get_toolset_configuration_name()
   if os.istarget("windows") then
     local vsver = _ACTION
 
@@ -80,15 +76,15 @@ function get_toolset_configuration_name(arch)
       vsver = get_vs_version()
     end
 
-    return table.concat({vsver, arch}, "-")
+    return table.concat({vsver, "x64"}, "-")
   end
   -- FIXME: Implement for non-Windows platforms
-  return table.concat({arch}, "-")
+  return table.concat({"x64"}, "-")
 end
 
 -- Returns a string describing the package configuration.
 -- Example: llvm-f79c5c-windows-vs2015-x86-Debug
-function get_llvm_package_name(rev, conf, arch)
+function get_llvm_package_name(rev, conf)
   if not rev then
   	rev = get_llvm_rev()
   end
@@ -96,7 +92,7 @@ function get_llvm_package_name(rev, conf, arch)
 
   local components = {"llvm", rev, os.target()}
 
-  local toolset = get_toolset_configuration_name(arch)
+  local toolset = get_toolset_configuration_name()
   table.insert(components, toolset)
 
 	if os.istarget("linux") then

@@ -137,6 +137,9 @@ namespace CppSharp.Parser
         /// <param name="vsVersion">The version of Visual Studio to look for.</param>
         public void SetupMSVC(VisualStudioVersion vsVersion)
         {
+            if (BuildConfig.Arch == "x86")
+                TargetTriple = "i686-pc-windows-msvc";
+
             MicrosoftMode = true;
 
             var clVersion = MSVCToolchain.GetCLVersion(vsVersion);

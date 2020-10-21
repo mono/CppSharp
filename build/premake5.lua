@@ -10,7 +10,7 @@ include "LLVM.lua"
 workspace "CppSharp"
 
   configurations { "Debug", "Release" }
-  platforms { target_architecture() }
+  platforms { "x64" }
 
   characterset "Unicode"
   symbols "On"
