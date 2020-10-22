@@ -242,45 +242,18 @@ namespace CppSharp.Types.Std
             }
 
             string returnVarName = ctx.ReturnVarName;
-            string nullPtr = "global::System.IntPtr.Zero";
             if (ctx.Function != null)
             {
                 Type returnType = ctx.Function.ReturnType.Type.Desugar();
                 if (returnType.IsAddress() &&
                     returnType.GetPointee().Desugar().IsAddress())
                 {
-                    returnVarName = $"*{returnVarName}";
-                    nullPtr = "null";
+                    returnVarName = $"new global::System.IntPtr(*{returnVarName})";
                 }
             }
 
-            TextGenerator textGenerator;
-            if (ctx.Parameter == null)
-            {
-                textGenerator = ctx.Before;
-                textGenerator.WriteLine($"if ({ctx.ReturnVarName} == {nullPtr})");
-                textGenerator.WriteLineIndent($"return default({ctx.ReturnType});");
-            }
-            else
-            {
-                textGenerator = ctx.Cleanup;
-                textGenerator.WriteLine($"if ({ctx.ReturnVarName} == {nullPtr})");
-                textGenerator.WriteOpenBraceAndIndent();
-                textGenerator.WriteLine($"{ctx.Parameter.Name} = default({Type.Desugar()});");
-                textGenerator.WriteLine($"return{(ctx.Function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void) ? "" : " default")};");
-                textGenerator.UnindentAndWriteCloseBrace();
-            }
-
-            string encoding = GetEncoding().Name;
-            string type = GetTypeForCodePoint(encoding);
-            var retPtr = Generator.GeneratedIdentifier($"retPtr{ctx.ParameterIndex}");
-            var length = Generator.GeneratedIdentifier($"length{ctx.ParameterIndex}");
-            textGenerator.WriteLine($"var {retPtr} = ({type}*) {returnVarName};");
-            textGenerator.WriteLine($"int {length} = 0;");
-            textGenerator.WriteLine($"while (*({retPtr}++) != 0) {length} += sizeof({type});");
-
-            ctx.Return.Write($@"global::System.Text.Encoding.{
-                encoding}.GetString((byte*) {returnVarName}, {length})");
+            var encoding = $"global::System.Text.Encoding.{GetEncoding().Name}";
+            ctx.Return.Write($@"CppSharp.Runtime.MarshalUtil.GetString({encoding}, {returnVarName})");
         }
 
         private (Encoding Encoding, string Name) GetEncoding()
@@ -309,20 +282,6 @@ namespace CppSharp.Types.Std
 
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
-        }
-
-        private static string GetTypeForCodePoint(string encoding)
-        {
-            switch (encoding)
-            {
-                case nameof(Encoding.UTF32):
-                    return "int";
-                case nameof(Encoding.Unicode):
-                case nameof(Encoding.BigEndianUnicode):
-                    return "short";
-                default:
-                    return "byte";
-            }
         }
     }
 
