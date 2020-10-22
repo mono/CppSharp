@@ -1779,30 +1779,34 @@ boolean_t takeTypemapTypedefParam(boolean_t b)
     return b;
 }
 
-const char* StringMarshall::TestCSharpString(const char* in, const char** out)
+const char* TestCSharpString(const char* in, const char** out)
 {
-    static constexpr char ret[] = "C#";
-    *out = ret;
-    return strcmp(in, ret) == 0 ? ret : nullptr;
+    static std::string ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
 }
 
-const wchar_t* StringMarshall::TestCSharpStringWide(const wchar_t* in, const wchar_t** out)
+const wchar_t* TestCSharpStringWide(const wchar_t* in, const wchar_t** out)
 {
-    static constexpr wchar_t ret[] = L"C#";
-    *out = ret;
-    return wcscmp(in, ret) == 0 ? ret : nullptr;
+    static std::wstring ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
 }
 
-const char16_t* StringMarshall::TestCSharpString16(const char16_t* in, const char16_t** out)
+const char16_t* TestCSharpString16(const char16_t* in, const char16_t** out)
 {
-    static constexpr char16_t ret[] = { 'C', '#', '\0' };
-    *out = ret;
-    return in[0] == ret[0] && in[1] == ret[1] && in[2] == ret[2] ? ret : nullptr;
+    static std::u16string ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
 }
 
-const char32_t* StringMarshall::TestCSharpString32(const char32_t* in, const char32_t** out)
+const char32_t* TestCSharpString32(const char32_t* in, const char32_t** out)
 {
-    static constexpr char32_t ret[] = { 'C', '#', '\0' };
-    *out = ret;
-    return in[0] == ret[0] && in[1] == ret[1] && in[2] == ret[2] ? ret : nullptr;
+    static std::u32string ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
 }

@@ -186,16 +186,19 @@ namespace CppSharp.Types.Std
         public uint GetCharPtrWidth(PointerType pointer)
         {
             var pointee = pointer?.Pointee?.Desugar();
-            if (pointee != null)
+            if (pointee != null && pointee.IsPrimitiveType(out var primitiveType))
             {
-                if (pointee.IsPrimitiveType(PrimitiveType.Char))
-                    return Context.TargetInfo.CharWidth;
-                if (pointee.IsPrimitiveType(PrimitiveType.WideChar))
-                    return Context.TargetInfo.WCharWidth;
-                if (pointee.IsPrimitiveType(PrimitiveType.Char16))
-                    return Context.TargetInfo.Char16Width;
-                if (pointee.IsPrimitiveType(PrimitiveType.Char32))
-                    return Context.TargetInfo.Char32Width;
+                switch (primitiveType)
+                {
+                    case PrimitiveType.Char:
+                        return Context.TargetInfo.CharWidth;
+                    case PrimitiveType.WideChar:
+                        return Context.TargetInfo.WCharWidth;
+                    case PrimitiveType.Char16:
+                        return Context.TargetInfo.Char16Width;
+                    case PrimitiveType.Char32:
+                        return Context.TargetInfo.Char32Width;
+                }
             }
 
             return 0;
