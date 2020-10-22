@@ -406,6 +406,7 @@
 
             return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
                     pointee.IsPrimitiveType(PrimitiveType.Char16) ||
+                    pointee.IsPrimitiveType(PrimitiveType.Char32) ||
                     pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
                     pointer.QualifiedPointee.Qualifiers.IsConst;
         }

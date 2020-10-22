@@ -1779,12 +1779,34 @@ boolean_t takeTypemapTypedefParam(boolean_t b)
     return b;
 }
 
-bool StringMarshall::CSharpString8(const char* in)
+const char* TestCSharpString(const char* in, const char** out)
 {
-    return in[0] == 'C' && in[1] == '#';
+    static std::string ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
 }
 
-bool StringMarshall::CSharpString16(const char16_t* in)
+const wchar_t* TestCSharpStringWide(const wchar_t* in, const wchar_t** out)
 {
-    return in[0] == 'C' && in[1] == '#';
+    static std::wstring ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
+}
+
+const char16_t* TestCSharpString16(const char16_t* in, const char16_t** out)
+{
+    static std::u16string ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
+}
+
+const char32_t* TestCSharpString32(const char32_t* in, const char32_t** out)
+{
+    static std::u32string ret;
+    ret = in;
+    *out = ret.data();
+    return ret.data();
 }

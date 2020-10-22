@@ -155,49 +155,50 @@ namespace CppSharp.Types.Std
                 return new CustomType(typePrinter.IntPtrType);
             }
 
-            Type type = Type.Desugar();
+            var (enconding, _) = GetEncoding();
 
-            uint charWidth = 0;
-            if (type is PointerType pointerType)
-                charWidth = GetCharPtrWidth(pointerType);
-            else if (type.GetPointee()?.Desugar() is PointerType pointeePointerType)
-                charWidth = GetCharPtrWidth(pointeePointerType);
-
-            if (charWidth == 8)
-            { 
-                if (Context.Options.Encoding == Encoding.ASCII)
-                    return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
+            if (enconding == Encoding.ASCII)
+                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
+            else if (enconding == Encoding.UTF8)
                 return new CustomType("[MarshalAs(UnmanagedType.LPUTF8Str)] string");
-            }
-
-            if (Context.Options.Encoding == Encoding.Unicode ||
-                Context.Options.Encoding == Encoding.BigEndianUnicode)
-            {
-                // NOTE: This will break if charWidth is not 16 bit which may
-                // happen if someone uses wchar_t on platforms where it's size is 32 bit.
-                // TODO: Create a custom marshaller to support that scenario.
-                // Once that's done consider supporting char32_t as well
+            else if (enconding == Encoding.Unicode || enconding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
-            }
-
-            if (Context.Options.Encoding == Encoding.UTF8 && charWidth == 16)
-                return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string"); // fallback;
+            else if (enconding == Encoding.UTF32)
+                return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF32Marshaller))] string");
 
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
+        public uint GetCharWidth()
+        {
+            Type type = Type.Desugar();
+
+            if (type is PointerType pointerType)
+                return GetCharPtrWidth(pointerType);
+
+            if (type.GetPointee()?.Desugar() is PointerType pointeePointerType)
+                return GetCharPtrWidth(pointeePointerType);
+
+            return 0;
+        }
+
         public uint GetCharPtrWidth(PointerType pointer)
         {
             var pointee = pointer?.Pointee?.Desugar();
-            if (pointee != null)
+            if (pointee != null && pointee.IsPrimitiveType(out var primitiveType))
             {
-                if (pointee.IsPrimitiveType(PrimitiveType.Char))
-                    return Context.TargetInfo.CharWidth;
-                if (pointee.IsPrimitiveType(PrimitiveType.WideChar))
-                    return Context.TargetInfo.WCharWidth;
-                if (pointee.IsPrimitiveType(PrimitiveType.Char16))
-                    return Context.TargetInfo.Char16Width;
+                switch (primitiveType)
+                {
+                    case PrimitiveType.Char:
+                        return Context.TargetInfo.CharWidth;
+                    case PrimitiveType.WideChar:
+                        return Context.TargetInfo.WCharWidth;
+                    case PrimitiveType.Char16:
+                        return Context.TargetInfo.Char16Width;
+                    case PrimitiveType.Char32:
+                        return Context.TargetInfo.Char32Width;
+                }
             }
 
             return 0;
@@ -224,7 +225,7 @@ namespace CppSharp.Types.Std
             string bytes = $"__bytes{ctx.ParameterIndex}";
             string bytePtr = $"__bytePtr{ctx.ParameterIndex}";
             ctx.Before.WriteLine($@"byte[] {bytes} = global::System.Text.Encoding.{
-                GetEncodingClass(ctx.Parameter)}.GetBytes({param});");
+                GetEncoding().Name}.GetBytes({param});");
             ctx.Before.WriteLine($"fixed (byte* {bytePtr} = {bytes})");
             ctx.HasCodeBlock = true;
             ctx.Before.WriteOpenBraceAndIndent();
@@ -266,50 +267,45 @@ namespace CppSharp.Types.Std
                 textGenerator.WriteLine($"if ({ctx.ReturnVarName} == {nullPtr})");
                 textGenerator.WriteOpenBraceAndIndent();
                 textGenerator.WriteLine($"{ctx.Parameter.Name} = default({Type.Desugar()});");
-                textGenerator.WriteLine("return;");
+                textGenerator.WriteLine($"return{(ctx.Function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void) ? "" : " default")};");
                 textGenerator.UnindentAndWriteCloseBrace();
             }
 
-            string encoding = GetEncodingClass(ctx.Parameter);
+            string encoding = GetEncoding().Name;
             string type = GetTypeForCodePoint(encoding);
-            textGenerator.WriteLine($"var __retPtr = ({type}*) {returnVarName};");
-            textGenerator.WriteLine("int __length = 0;");
-            textGenerator.WriteLine($"while (*(__retPtr++) != 0) __length += sizeof({type});");
+            var retPtr = Generator.GeneratedIdentifier($"retPtr{ctx.ParameterIndex}");
+            var length = Generator.GeneratedIdentifier($"length{ctx.ParameterIndex}");
+            textGenerator.WriteLine($"var {retPtr} = ({type}*) {returnVarName};");
+            textGenerator.WriteLine($"int {length} = 0;");
+            textGenerator.WriteLine($"while (*({retPtr}++) != 0) {length} += sizeof({type});");
 
             ctx.Return.Write($@"global::System.Text.Encoding.{
-                encoding}.GetString((byte*) {returnVarName}, __length)");
+                encoding}.GetString((byte*) {returnVarName}, {length})");
         }
 
-        private string GetEncodingClass(Parameter parameter)
+        private (Encoding Encoding, string Name) GetEncoding()
         {
-            Type type = Type.Desugar();
-            Type pointee = type.GetPointee().Desugar();
-            var isChar = type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
-                (pointee.IsPointerToPrimitiveType(PrimitiveType.Char) &&
-                 parameter != null &&
-                 (parameter.IsInOut || parameter.IsOut));
-
-            if (!isChar)
-                return (Context.TargetInfo.WCharWidth == 16) ?
-                    nameof(Encoding.Unicode) : nameof(Encoding.UTF32);
-
-            if (Context.Options.Encoding == Encoding.ASCII)
-                return nameof(Encoding.ASCII);
-
-            if (Context.Options.Encoding == Encoding.BigEndianUnicode)
-                return nameof(Encoding.BigEndianUnicode);
-
-            if (Context.Options.Encoding == Encoding.Unicode)
-                return nameof(Encoding.Unicode);
-
-            if (Context.Options.Encoding == Encoding.UTF32)
-                return nameof(Encoding.UTF32);
-
-            if (Context.Options.Encoding == Encoding.UTF7)
-                return nameof(Encoding.UTF7);
-
-            if (Context.Options.Encoding == Encoding.UTF8)
-                return nameof(Encoding.UTF8);
+            switch (GetCharWidth())
+            {
+                case 8:
+                    if (Context.Options.Encoding == Encoding.ASCII)
+                        return (Context.Options.Encoding, nameof(Encoding.ASCII));
+                    if (Context.Options.Encoding == Encoding.UTF8)
+                        return (Context.Options.Encoding, nameof(Encoding.UTF8));
+                    if (Context.Options.Encoding == Encoding.UTF7)
+                        return (Context.Options.Encoding, nameof(Encoding.UTF7));
+                    if (Context.Options.Encoding == Encoding.BigEndianUnicode)
+                        return (Context.Options.Encoding, nameof(Encoding.BigEndianUnicode));
+                    if (Context.Options.Encoding == Encoding.Unicode)
+                        return (Context.Options.Encoding, nameof(Encoding.Unicode));
+                    if (Context.Options.Encoding == Encoding.UTF32)
+                        return (Context.Options.Encoding, nameof(Encoding.UTF32));
+                    break;
+                case 16:
+                    return (Encoding.Unicode, nameof(Encoding.Unicode));
+                case 32:
+                    return (Encoding.UTF32, nameof(Encoding.UTF32));
+            }
 
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
@@ -345,6 +341,12 @@ namespace CppSharp.Types.Std
     [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CSharp)]
     [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CLI)]
     public class ConstChar16TPointer : ConstCharPointer
+    {
+    }
+
+    [TypeMap("const char32_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char32_t*", GeneratorKind = GeneratorKind.CLI)]
+    public class ConstChar32TPointer : ConstCharPointer
     {
     }
 
