@@ -80,38 +80,50 @@ namespace CppSharp.Generators.CSharp
                     supportBefore.WriteLine($"if ({Context.ReturnVarName} != null)");
                     supportBefore.WriteOpenBraceAndIndent();
                     supportBefore.WriteLine($"{value} = new {arrayType}[{array.Size}];");
-                    supportBefore.WriteLine($"for (int i = 0; i < {array.Size}; i++)");
-                    if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
-                        supportBefore.WriteLineIndent($@"{value}[i] = new global::System.IntPtr({
-                            Context.ReturnVarName}[i]);");
-                    else
+
+                    if (CheckIfArrayCanBeCopiedUsingMemoryCopy(array))
                     {
-                        var finalArrayType = arrayType.GetPointee() ?? arrayType;
-                        Class @class;
-                        if ((finalArrayType.TryGetClass(out @class)) && @class.IsRefType)
-                        {
-                            if (arrayType == finalArrayType)
-                                supportBefore.WriteLineIndent(
-                                    "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
-                                    value, array.Type, Helpers.CreateInstanceIdentifier,
-                                    Helpers.InternalStruct, Context.ReturnVarName);
-                            else
-                                supportBefore.WriteLineIndent(
-                                    $@"{value}[i] = {finalArrayType}.{Helpers.CreateInstanceIdentifier}(({
-                                        typePrinter.IntPtrType}) {Context.ReturnVarName}[i]);");
-                        }
+                        var arraySizeInBytes = array.GetSizeInBytes();
+                        var fixedArray = Generator.GeneratedIdentifier($"{value}fixed");
+                        supportBefore.WriteLine($"fixed (void* {fixedArray} = {value})");
+                        supportBefore.WriteLineIndent(
+                            $"System.Buffer.MemoryCopy((void*){Context.ReturnVarName}, {fixedArray}, {arraySizeInBytes}, {arraySizeInBytes});");
+                    }
+                    else { 
+                        supportBefore.WriteLine($"for (int i = 0; i < {array.Size}; i++)");
+                        if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
+                            supportBefore.WriteLineIndent($@"{value}[i] = new global::System.IntPtr({
+                                Context.ReturnVarName}[i]);");
                         else
                         {
-                            if (arrayType.IsPrimitiveType(PrimitiveType.Bool) && Context.MarshalKind == MarshalKind.NativeField)
-                                supportBefore.WriteLineIndent($@"{value}[i] = {
-                                    Context.ReturnVarName}[i] != 0;");
-                            else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
-                                Context.Context.Options.MarshalCharAsManagedChar)
-                                supportBefore.WriteLineIndent($@"{value}[i] = global::System.Convert.ToChar({
-                                    Context.ReturnVarName}[i]);");
+                          
+                            var finalArrayType = arrayType.GetPointee() ?? arrayType;
+                            Class @class;
+                            if ((finalArrayType.TryGetClass(out @class)) && @class.IsRefType)
+                            {
+                                if (arrayType == finalArrayType)
+                                    supportBefore.WriteLineIndent(
+                                        "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
+                                        value, array.Type, Helpers.CreateInstanceIdentifier,
+                                        Helpers.InternalStruct, Context.ReturnVarName);
+                                else
+                                    supportBefore.WriteLineIndent(
+                                        $@"{value}[i] = {finalArrayType}.{Helpers.CreateInstanceIdentifier}(({
+                                            typePrinter.IntPtrType}) {Context.ReturnVarName}[i]);");
+                            }
                             else
-                                supportBefore.WriteLineIndent($@"{value}[i] = {
-                                    Context.ReturnVarName}[i];");
+                            {
+                                if (arrayType.IsPrimitiveType(PrimitiveType.Bool) && Context.MarshalKind == MarshalKind.NativeField)
+                                    supportBefore.WriteLineIndent($@"{value}[i] = {
+                                        Context.ReturnVarName}[i] != 0;");
+                                else if (arrayType.IsPrimitiveType(PrimitiveType.Char) &&
+                                    Context.Context.Options.MarshalCharAsManagedChar)
+                                    supportBefore.WriteLineIndent($@"{value}[i] = global::System.Convert.ToChar({
+                                        Context.ReturnVarName}[i]);");
+                                else
+                                    supportBefore.WriteLineIndent($@"{value}[i] = {
+                                        Context.ReturnVarName}[i];");
+                            }
                         }
                     }
                     supportBefore.UnindentAndWriteCloseBrace();
@@ -426,6 +438,12 @@ namespace CppSharp.Generators.CSharp
             Context.Before.UnindentAndWriteCloseBrace();
 
             Context.Return.Write(intermediateArray);
+        }
+
+        public bool CheckIfArrayCanBeCopiedUsingMemoryCopy(ArrayType array)
+        {
+            return array.Type.IsPrimitiveType(out var primitive) &&
+                (!Context.Context.Options.MarshalCharAsManagedChar || primitive != PrimitiveType.Char);
         }
 
         private readonly CSharpTypePrinter typePrinter;
