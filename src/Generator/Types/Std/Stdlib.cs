@@ -155,7 +155,7 @@ namespace CppSharp.Types.Std
                 return new CustomType(typePrinter.IntPtrType);
             }
 
-            var (enconding, _) = GetEncoding();
+            Encoding enconding = GetEncoding();
 
             if (enconding == Encoding.ASCII)
                 return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
@@ -225,7 +225,8 @@ namespace CppSharp.Types.Std
             string bytes = $"__bytes{ctx.ParameterIndex}";
             string bytePtr = $"__bytePtr{ctx.ParameterIndex}";
             ctx.Before.WriteLine($@"byte[] {bytes} = global::System.Text.Encoding.{
-                GetEncoding().Name}.GetBytes({param});");
+                GetEncoding().GetType().Name.Replace(
+                    nameof(Encoding), string.Empty)}.GetBytes({param});");
             ctx.Before.WriteLine($"fixed (byte* {bytePtr} = {bytes})");
             ctx.HasCodeBlock = true;
             ctx.Before.WriteOpenBraceAndIndent();
@@ -271,7 +272,7 @@ namespace CppSharp.Types.Std
                 textGenerator.UnindentAndWriteCloseBrace();
             }
 
-            string encoding = GetEncoding().Name;
+            Encoding encoding = GetEncoding();
             string type = GetTypeForCodePoint(encoding);
             var retPtr = Generator.GeneratedIdentifier($"retPtr{ctx.ParameterIndex}");
             var length = Generator.GeneratedIdentifier($"length{ctx.ParameterIndex}");
@@ -280,49 +281,31 @@ namespace CppSharp.Types.Std
             textGenerator.WriteLine($"while (*({retPtr}++) != 0) {length} += sizeof({type});");
 
             ctx.Return.Write($@"global::System.Text.Encoding.{
-                encoding}.GetString((byte*) {returnVarName}, {length})");
+                encoding.GetType().Name.Replace(
+                    nameof(Encoding), string.Empty)}.GetString((byte*) {returnVarName}, {length})");
         }
 
-        private (Encoding Encoding, string Name) GetEncoding()
+        private Encoding GetEncoding()
         {
             switch (GetCharWidth())
             {
                 case 8:
-                    if (Context.Options.Encoding == Encoding.ASCII)
-                        return (Context.Options.Encoding, nameof(Encoding.ASCII));
-                    if (Context.Options.Encoding == Encoding.UTF8)
-                        return (Context.Options.Encoding, nameof(Encoding.UTF8));
-                    if (Context.Options.Encoding == Encoding.UTF7)
-                        return (Context.Options.Encoding, nameof(Encoding.UTF7));
-                    if (Context.Options.Encoding == Encoding.BigEndianUnicode)
-                        return (Context.Options.Encoding, nameof(Encoding.BigEndianUnicode));
-                    if (Context.Options.Encoding == Encoding.Unicode)
-                        return (Context.Options.Encoding, nameof(Encoding.Unicode));
-                    if (Context.Options.Encoding == Encoding.UTF32)
-                        return (Context.Options.Encoding, nameof(Encoding.UTF32));
-                    break;
+                    return Context.Options.Encoding;
                 case 16:
-                    return (Encoding.Unicode, nameof(Encoding.Unicode));
+                    return Encoding.Unicode;
                 case 32:
-                    return (Encoding.UTF32, nameof(Encoding.UTF32));
+                    return Encoding.UTF32;
             }
 
             throw new System.NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
-        private static string GetTypeForCodePoint(string encoding)
+        private static string GetTypeForCodePoint(Encoding encoding)
         {
-            switch (encoding)
-            {
-                case nameof(Encoding.UTF32):
-                    return "int";
-                case nameof(Encoding.Unicode):
-                case nameof(Encoding.BigEndianUnicode):
-                    return "short";
-                default:
-                    return "byte";
-            }
+            return encoding == Encoding.UTF32 ? "int" :
+                encoding == Encoding.Unicode || encoding == Encoding.BigEndianUnicode ?
+                "short" : "byte";
         }
     }
 
