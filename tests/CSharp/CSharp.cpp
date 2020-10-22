@@ -1779,12 +1779,30 @@ boolean_t takeTypemapTypedefParam(boolean_t b)
     return b;
 }
 
-bool StringMarshall::CSharpString8(const char* in)
+const char* StringMarshall::TestCSharpString(const char* in, const char** out)
 {
-    return in[0] == 'C' && in[1] == '#';
+    static constexpr char ret[] = "C#";
+    *out = ret;
+    return strcmp(in, ret) == 0 ? ret : nullptr;
 }
 
-bool StringMarshall::CSharpString16(const char16_t* in)
+const wchar_t* StringMarshall::TestCSharpStringWide(const wchar_t* in, const wchar_t** out)
 {
-    return in[0] == 'C' && in[1] == '#';
+    static constexpr wchar_t ret[] = L"C#";
+    *out = ret;
+    return wcscmp(in, ret) == 0 ? ret : nullptr;
+}
+
+const char16_t* StringMarshall::TestCSharpString16(const char16_t* in, const char16_t** out)
+{
+    static constexpr char16_t ret[] = { 'C', '#', '\0' };
+    *out = ret;
+    return in[0] == ret[0] && in[1] == ret[1] && in[2] == ret[2] ? ret : nullptr;
+}
+
+const char32_t* StringMarshall::TestCSharpString32(const char32_t* in, const char32_t** out)
+{
+    static constexpr char32_t ret[] = { 'C', '#', '\0' };
+    *out = ret;
+    return in[0] == ret[0] && in[1] == ret[1] && in[2] == ret[2] ? ret : nullptr;
 }

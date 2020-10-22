@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
@@ -1485,7 +1486,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestStringMarshall()
     {
-        Assert.IsTrue(StringMarshall.CSharpString8(StringMarshall.CSharpString));
-        Assert.IsTrue(StringMarshall.CSharpString16(StringMarshall.CSharpString));
+        const string cs = "C#";
+        Assert.That(StringMarshall.TestCSharpString(cs, out var @out), Is.EqualTo(cs));
+        Assert.That(@out, Is.EqualTo(cs));
+        Assert.That(StringMarshall.TestCSharpStringWide(cs, out var outWide), Is.EqualTo(cs));
+        Assert.That(outWide, Is.EqualTo(cs));
+        Assert.That(StringMarshall.TestCSharpString16(cs, out var out16), Is.EqualTo(cs));
+        Assert.That(out16, Is.EqualTo(cs));
+        Assert.That(StringMarshall.TestCSharpString32(cs, out var out32), Is.EqualTo(cs));
+        Assert.That(out32, Is.EqualTo(cs));
     }
 }
