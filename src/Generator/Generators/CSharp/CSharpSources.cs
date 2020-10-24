@@ -3335,7 +3335,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        class LibrarySymbolInfo
+        class LibrarySymbolInfo : TextGenerator
         {
             private static readonly Regex identifierCleanerRegex = new Regex(@"[^\w]", RegexOptions.Compiled);
             private Dictionary<string, string> symbols = new Dictionary<string, string>();
@@ -3354,47 +3354,46 @@ namespace CppSharp.Generators.CSharp
 
             public string Generate()
             {
-                var output = new TextGenerator();
-                output.WriteLine($"namespace {@namespace}");
+                WriteLine($"namespace {@namespace}");
                 {
-                    output.WriteOpenBraceAndIndent();
-                    output.WriteLine($"internal class {@class}");
+                    WriteOpenBraceAndIndent();
+                    WriteLine($"internal class {@class}");
                     {
-                        output.WriteOpenBraceAndIndent();
-                        GenerateStaticVariables(output);
-                        output.WriteLine($"static {@class}()");
+                        WriteOpenBraceAndIndent();
+                        GenerateStaticVariables();
+                        WriteLine($"static {@class}()");
                         {
-                            output.WriteOpenBraceAndIndent();
-                            GenerateStaticConstructorBody(output);
-                            output.UnindentAndWriteCloseBrace();
+                            WriteOpenBraceAndIndent();
+                            GenerateStaticConstructorBody();
+                            UnindentAndWriteCloseBrace();
                         }
-                        output.UnindentAndWriteCloseBrace();
+                        UnindentAndWriteCloseBrace();
                     }
-                    output.UnindentAndWriteCloseBrace();
+                    UnindentAndWriteCloseBrace();
                 }
-                return output.ToString();
+                return ToString();
             }
 
-            public void GenerateStaticVariables(TextGenerator output)
+            public void GenerateStaticVariables()
             {
                 foreach (var symbol in symbols)
                 {
                     var variableIdentifier = symbol.Value;
-                    output.WriteLine($"public static IntPtr {variableIdentifier} {{ get; }}");
+                    WriteLine($"public static IntPtr {variableIdentifier} {{ get; }}");
                 }
             }
 
-            public void GenerateStaticConstructorBody(TextGenerator output)
+            public void GenerateStaticConstructorBody()
             {
-                output.WriteLine($"var path = \"{path}\";");
-                output.WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
-                output.WriteLine("if (image == IntPtr.Zero) throw new System.DllNotFoundException(path);");
+                WriteLine($"var path = \"{path}\";");
+                WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
+                WriteLine("if (image == IntPtr.Zero) throw new System.DllNotFoundException(path);");
 
                 foreach (var symbol in symbols)
                 {
                     var mangled = symbol.Key;
                     var variableIdentifier = symbol.Value;
-                    output.WriteLine($"{variableIdentifier} = CppSharp.SymbolResolver.ResolveSymbol(image, \"{mangled}\");");
+                    WriteLine($"{variableIdentifier} = CppSharp.SymbolResolver.ResolveSymbol(image, \"{mangled}\");");
                 }
             }
 
