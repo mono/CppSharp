@@ -9,6 +9,13 @@
 #include "ExcludedUnit.hpp"
 #include "CSharpTemplates.h"
 
+
+struct SmallPOD
+{
+    int a;
+    int b;
+};
+
 class DLL_API Foo
 {
 public:
@@ -39,6 +46,7 @@ public:
     static int makeFunctionCall();
     static int propertyCall();
     static int getGetPropertyCall();
+    SmallPOD getSmallPod();
 
     int operator ++();
     int operator --();
