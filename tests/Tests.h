@@ -40,8 +40,6 @@
 #define THISCALL
 #endif
 
-#define 
-
 #endif
 
 #define CS_OUT
