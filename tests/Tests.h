@@ -16,16 +16,8 @@
 #define CDECL __cdecl
 #endif
 
-#ifndef FASTCALL
-#define FASTCALL __fastcall
-#endif
-
 #ifndef THISCALL
 #define THISCALL __thiscall
-#endif
-
-#ifndef VECTORCALL
-#define VECTORCALL __vectorcall
 #endif
 
 #else
@@ -44,16 +36,8 @@
 #define CDECL __attribute__((cdecl))
 #endif
 
-#ifndef FASTCALL
-#define FASTCALL
-#endif
-
 #ifndef THISCALL
 #define THISCALL
-#endif
-
-#ifndef VECTORCALL
-#define VECTORCALL
 #endif
 
 #define 

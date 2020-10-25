@@ -164,7 +164,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     {
         using (var f = new Foo())
         {
-            foreach(var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodFastcall, f.SmallPodThiscall, f.SmallPodVectorcall })
+            foreach(var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodThiscall })
             {
                 Assert.That(pod.A, Is.EqualTo(10000));
                 Assert.That(pod.B, Is.EqualTo(40000));
