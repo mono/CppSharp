@@ -130,7 +130,6 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
-
 Quux::Quux() : _setterWithDefaultOverload(0)
 {
 

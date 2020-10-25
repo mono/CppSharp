@@ -160,6 +160,19 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestReturnSmallPOD()
+    {
+        using (var f = new Foo())
+        {
+            foreach(var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodFastcall, f.SmallPodThiscall, f.SmallPodVectorcall })
+            {
+                Assert.That(pod.A, Is.EqualTo(10000));
+                Assert.That(pod.B, Is.EqualTo(40000));
+            }
+        }
+    }
+
+    [Test]
     public void TestPropertyAccessModifier()
     {
         Assert.That(typeof(Foo).GetProperty("P",
