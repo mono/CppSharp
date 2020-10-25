@@ -46,11 +46,9 @@ public:
     static int propertyCall();
     static int getGetPropertyCall();
 
-    SmallPOD CDECL getSmallPod_cdecl() { return { 10000, 40000 }; }
-    SmallPOD STDCALL getSmallPod_stdcall() { return { 10000, 40000 }; }
-    SmallPOD FASTCALL getSmallPod_fastcall() { return { 10000, 40000 }; }
-    SmallPOD THISCALL getSmallPod_thiscall() { return { 10000, 40000 }; }
-    SmallPOD VECTORCALL getSmallPod_vectorcall() { return { 10000, 40000 }; }
+    SmallPOD CDECL getSmallPod_cdecl();
+    SmallPOD STDCALL getSmallPod_stdcall();
+    SmallPOD THISCALL getSmallPod_thiscall();
 
     int operator ++();
     int operator --();

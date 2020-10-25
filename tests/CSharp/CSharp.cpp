@@ -110,6 +110,10 @@ int Foo::getGetPropertyCall()
     return 1;
 }
 
+SmallPOD Foo::getSmallPod_cdecl() { return { 10000, 40000 }; }
+SmallPOD Foo::getSmallPod_stdcall() { return { 10000, 40000 }; }
+SmallPOD Foo::getSmallPod_thiscall() { return { 10000, 40000 }; }
+
 int Foo::operator ++()
 {
     return 5;
