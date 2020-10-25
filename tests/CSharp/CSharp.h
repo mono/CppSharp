@@ -9,7 +9,6 @@
 #include "ExcludedUnit.hpp"
 #include "CSharpTemplates.h"
 
-
 struct SmallPOD
 {
     int a;
@@ -46,7 +45,12 @@ public:
     static int makeFunctionCall();
     static int propertyCall();
     static int getGetPropertyCall();
-    SmallPOD getSmallPod();
+
+    SmallPOD CDECL getSmallPod_cdecl() { return { 10000, 40000 }; }
+    SmallPOD STDCALL getSmallPod_stdcall() { return { 10000, 40000 }; }
+    SmallPOD FASTCALL getSmallPod_fastcall() { return { 10000, 40000 }; }
+    SmallPOD THISCALL getSmallPod_thiscall() { return { 10000, 40000 }; }
+    SmallPOD VECTORCALL getSmallPod_vectorcall() { return { 10000, 40000 }; }
 
     int operator ++();
     int operator --();

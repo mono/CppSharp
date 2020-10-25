@@ -130,10 +130,6 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
-SmallPOD Foo::getSmallPod() {
-    return { 10000, 40000 };
-}
-
 Quux::Quux() : _setterWithDefaultOverload(0)
 {
 

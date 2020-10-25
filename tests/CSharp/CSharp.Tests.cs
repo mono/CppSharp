@@ -162,10 +162,13 @@ public unsafe class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestReturnSmallPOD()
     {
-        using (var foo = new Foo())
+        using (var f = new Foo())
         {
-            Assert.That(foo.SmallPod.A, Is.EqualTo(10000));
-            Assert.That(foo.SmallPod.B, Is.EqualTo(40000));
+            foreach(var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodFastcall, f.SmallPodThiscall, f.SmallPodVectorcall })
+            {
+                Assert.That(pod.A, Is.EqualTo(10000));
+                Assert.That(pod.B, Is.EqualTo(40000));
+            }
         }
     }
 
