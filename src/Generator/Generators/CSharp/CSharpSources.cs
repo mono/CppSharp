@@ -20,6 +20,8 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinter TypePrinter { get; set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; protected set; }
 
+        Dictionary<string, LibrarySymbolInfo> LibrarySymbols = new Dictionary<string, LibrarySymbolInfo>();
+
         public override string FileExtension => "cs";
 
         public CSharpSources(BindingContext context)
@@ -95,6 +97,9 @@ namespace CppSharp.Generators.CSharp
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+
+            foreach (var lib in LibrarySymbols)
+                WriteLine(lib.Value.Generate());
 
             GenerateExternalClassTemplateSpecializations();
         }
@@ -874,9 +879,12 @@ namespace CppSharp.Generators.CSharp
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
             string mangled = var.GetMangled(Context.ParserOptions.TargetTriple);
+            var libraryPath = GetLibraryOf(var);
 
-            var location = $@"CppSharp.SymbolResolver.ResolveSymbol(""{
-                GetLibraryOf(var)}"", ""{mangled}"")";
+            if (!LibrarySymbols.TryGetValue(libraryPath, out var lib))
+                LibrarySymbols[libraryPath] = lib = new LibrarySymbolInfo(libraryPath, Module.OutputNamespace + ".__Symbols");
+
+            var location = lib.GetFullVariablePath(mangled);
 
             var arrayType = var.Type as ArrayType;
             string ptr = Generator.GeneratedIdentifier("ptr");
@@ -3324,6 +3332,95 @@ namespace CppSharp.Generators.CSharp
             public int GetHashCode(Parameter obj)
             {
                 return obj.Type.Desugar().GetHashCode();
+            }
+        }
+
+        class LibrarySymbolInfo : TextGenerator
+        {
+            private static readonly Regex identifierCleanerRegex = new Regex(@"[^\w]", RegexOptions.Compiled);
+            private Dictionary<string, string> symbols = new Dictionary<string, string>();
+            private HashSet<string> uniqueVariableNames = new HashSet<string>();
+            private string path = "";
+            private int counter = 0;
+            private string @class;
+            private string @namespace = "";
+
+            public LibrarySymbolInfo(string path, string @namespace)
+            {
+                this.path = path;                
+                this.@namespace = @namespace;
+                @class = identifierCleanerRegex.Replace(path, "_");
+            }
+
+            public string Generate()
+            {
+                WriteLine($"namespace {@namespace}");
+                {
+                    WriteOpenBraceAndIndent();
+                    WriteLine($"internal class {@class}");
+                    {
+                        WriteOpenBraceAndIndent();
+                        GenerateStaticVariables();
+                        WriteLine($"static {@class}()");
+                        {
+                            WriteOpenBraceAndIndent();
+                            GenerateStaticConstructorBody();
+                            UnindentAndWriteCloseBrace();
+                        }
+                        UnindentAndWriteCloseBrace();
+                    }
+                    UnindentAndWriteCloseBrace();
+                }
+                return ToString();
+            }
+
+            public void GenerateStaticVariables()
+            {
+                foreach (var symbol in symbols)
+                {
+                    var variableIdentifier = symbol.Value;
+                    WriteLine($"public static IntPtr {variableIdentifier} {{ get; }}");
+                }
+            }
+
+            public void GenerateStaticConstructorBody()
+            {
+                WriteLine($"var path = \"{path}\";");
+                WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
+                WriteLine("if (image == IntPtr.Zero) throw new System.DllNotFoundException(path);");
+
+                foreach (var symbol in symbols)
+                {
+                    var mangled = symbol.Key;
+                    var variableIdentifier = symbol.Value;
+                    WriteLine($"{variableIdentifier} = CppSharp.SymbolResolver.ResolveSymbol(image, \"{mangled}\");");
+                }
+            }
+
+            public string GetFullVariablePath(string mangled)
+            {
+                return $"global::{@namespace}.{@class}." + GenerateUniqueVariableIdentifier(mangled);
+            }
+
+            public string GenerateUniqueVariableIdentifier(string mangled)
+            {
+                if (!symbols.TryGetValue(mangled, out string result))
+                {
+                    result = identifierCleanerRegex.Replace(mangled, "_");
+                    if (!result.StartsWith("_"))
+                        result = "_" + result;
+
+                    if (!uniqueVariableNames.Add(result))
+                    {
+                        result += "_v";
+                        while (!uniqueVariableNames.Add(result))
+                            result += counter++;
+                    }
+
+                    symbols[mangled] = result;
+                }
+
+                return result;
             }
         }
     }
