@@ -937,12 +937,6 @@ This is a very long string. This is a very long string. This is a very long stri
     [Test]
     public void TestStdStringPassedByValue()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !Environment.Is64BitProcess)
-        {
-            Assert.Ignore(); // TODO: Remove me once issue #1441 is fixed.
-            return;
-        }
-
         // when C++ memory is deleted, it's only marked as free but not immediadely freed
         // this can hide memory bugs while marshalling
         // so let's use a long string to increase the chance of a crash right away
