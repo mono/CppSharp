@@ -22,6 +22,10 @@ project "CppSharp.CppParser"
   if os.getenv("APPVEYOR") then
     linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
   end
+  
+  if os.istarget("linux") then
+    linkgroups "On"
+  end
 
   filter {}
   
