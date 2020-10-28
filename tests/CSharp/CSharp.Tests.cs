@@ -1538,4 +1538,14 @@ public unsafe class CSharpTests : GeneratorTestFixture
             Assert.That(out32, Is.EqualTo(cs));
         }
     }
+
+    [Test]
+    public void TestConversionFunction()
+    {
+        using (var c = new ConversionFunctions())
+        {
+            Assert.That(*(short*)c, Is.EqualTo(100));
+            Assert.That((short)c, Is.EqualTo(100));
+        }
+    }
 }
