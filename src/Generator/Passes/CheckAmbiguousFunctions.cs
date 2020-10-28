@@ -180,7 +180,20 @@ namespace CppSharp.Passes
             if (method1 == null || method2 == null)
                 return false;
 
-            if (method1.ReturnType.Type.ToString() == method2.ReturnType.Type.ToString())
+            var type1 = method1.ReturnType.Type.Desugar();
+            var type2 = method2.ReturnType.Type.Desugar();
+
+            if (type1 is PointerType pointerType1 && 
+                type2 is PointerType pointerType2)
+            {
+                type1 = pointerType1.GetPointee();
+                type2 = pointerType2.GetPointee();
+            }
+
+            var mappedType1 = type1.GetMappedType(TypeMaps, Options.GeneratorKind);
+            var mappedType2 = type2.GetMappedType(TypeMaps, Options.GeneratorKind);
+
+            if (mappedType1.Equals(mappedType2))
             {
                 method2.ExplicitlyIgnore();
                 return true;
