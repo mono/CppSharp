@@ -42,18 +42,19 @@ namespace CppSharp.Passes
 
             foreach (var overload in overloads)
             {
-                if (function.OperatorKind == CXXOperatorKind.Conversion)
-                    continue;
-                if (function.OperatorKind == CXXOperatorKind.ExplicitConversion)
-                    continue;
-
                 if (overload == function) continue;
 
                 if (!overload.IsGenerated) continue;
 
-                if (CheckConstnessForAmbiguity(function, overload) ||
-                    CheckDefaultParametersForAmbiguity(function, overload) ||
-                    CheckParametersPointerConstnessForAmbiguity(function, overload))
+                var ambiguous = 
+                    function.OperatorKind == CXXOperatorKind.Conversion ||
+                    function.OperatorKind == CXXOperatorKind.ExplicitConversion
+                    ? CheckConversionAmbiguity(function, overload)
+                    : CheckConstnessForAmbiguity(function, overload) ||
+                      CheckDefaultParametersForAmbiguity(function, overload) ||
+                      CheckParametersPointerConstnessForAmbiguity(function, overload);
+
+                if (ambiguous)
                 {
                     function.IsAmbiguous = true;
                     overload.IsAmbiguous = true;
@@ -164,6 +165,35 @@ namespace CppSharp.Passes
             }
 
             if (method2.IsConst && !method1.IsConst && sameParams)
+            {
+                method2.ExplicitlyIgnore();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckConversionAmbiguity(Function function, Function overload)
+        {
+            var method1 = function as Method;
+            var method2 = overload as Method;
+            if (method1 == null || method2 == null)
+                return false;
+
+            var type1 = method1.ReturnType.Type.Desugar();
+            var type2 = method2.ReturnType.Type.Desugar();
+
+            if (type1 is PointerType pointerType1 && 
+                type2 is PointerType pointerType2)
+            {
+                type1 = pointerType1.GetPointee();
+                type2 = pointerType2.GetPointee();
+            }
+
+            var mappedType1 = type1.GetMappedType(TypeMaps, Options.GeneratorKind);
+            var mappedType2 = type2.GetMappedType(TypeMaps, Options.GeneratorKind);
+
+            if (mappedType1.Equals(mappedType2))
             {
                 method2.ExplicitlyIgnore();
                 return true;

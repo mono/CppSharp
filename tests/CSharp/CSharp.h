@@ -1495,6 +1495,19 @@ struct TestVariableWithoutType
     static constexpr auto variable = create(n...);
 };
 
+struct DLL_API ConversionFunctions
+{
+    ConversionFunctions();
+    operator short* ();
+    operator short& ();
+    operator short();
+    operator const short*() const;
+    operator const short&() const;
+    operator const short() const;
+
+    short field = 100;
+};
+
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
 DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);    
