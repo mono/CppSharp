@@ -1497,6 +1497,7 @@ struct TestVariableWithoutType
 
 struct DLL_API ConversionFunctions
 {
+    ConversionFunctions();
     operator short* ();
     operator short& ();
     operator short();
