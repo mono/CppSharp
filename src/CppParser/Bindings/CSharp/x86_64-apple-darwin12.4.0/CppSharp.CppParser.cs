@@ -205,12 +205,7 @@ namespace CppSharp
                 public string GetSymbols(uint i)
                 {
                     var __ret = __Internal.GetSymbols(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero)
-                        return default(string);
-                    var __retPtr = (byte*) __ret;
-                    int __length = 0;
-                    while (*(__retPtr++) != 0) __length += sizeof(byte);
-                    return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
                 }
 
                 public void AddSymbols(string s)
@@ -226,12 +221,7 @@ namespace CppSharp
                 public string GetDependencies(uint i)
                 {
                     var __ret = __Internal.GetDependencies(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero)
-                        return default(string);
-                    var __retPtr = (byte*) __ret;
-                    int __length = 0;
-                    while (*(__retPtr++) != 0) __length += sizeof(byte);
-                    return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
                 }
 
                 public void AddDependencies(string s)
@@ -17415,7 +17405,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, File);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindOrCreateModule(__Instance, __arg0);
-                    __basicString0.Dispose();
+                    __basicString0.Dispose(false);
                     global::CppSharp.Parser.AST.TranslationUnit __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (global::CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap.ContainsKey(__ret))
@@ -18870,12 +18860,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        if (((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name == global::System.IntPtr.Zero)
-                            return default(string);
-                        var __retPtr = (byte*) ((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name;
-                        int __length = 0;
-                        while (*(__retPtr++) != 0) __length += sizeof(byte);
-                        return global::System.Text.Encoding.UTF8.GetString((byte*) ((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name, __length);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance)->name);
                     }
 
                     set
@@ -28798,12 +28783,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        if (((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName == global::System.IntPtr.Zero)
-                            return default(string);
-                        var __retPtr = (byte*) ((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName;
-                        int __length = 0;
-                        while (*(__retPtr++) != 0) __length += sizeof(byte);
-                        return global::System.Text.Encoding.UTF8.GetString((byte*) ((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName, __length);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance)->castKindName);
                     }
 
                     set
@@ -36105,12 +36085,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        if (((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName == global::System.IntPtr.Zero)
-                            return default(string);
-                        var __retPtr = (byte*) ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName;
-                        int __length = 0;
-                        while (*(__retPtr++) != 0) __length += sizeof(byte);
-                        return global::System.Text.Encoding.UTF8.GetString((byte*) ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName, __length);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance)->castName);
                     }
 
                     set
@@ -46966,12 +46941,7 @@ namespace CppSharp
             public string GetArguments(uint i)
             {
                 var __ret = __Internal.GetArguments(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddArguments(string s)
@@ -46987,12 +46957,7 @@ namespace CppSharp
             public string GetSourceFiles(uint i)
             {
                 var __ret = __Internal.GetSourceFiles(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddSourceFiles(string s)
@@ -47008,12 +46973,7 @@ namespace CppSharp
             public string GetIncludeDirs(uint i)
             {
                 var __ret = __Internal.GetIncludeDirs(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddIncludeDirs(string s)
@@ -47029,12 +46989,7 @@ namespace CppSharp
             public string GetSystemIncludeDirs(uint i)
             {
                 var __ret = __Internal.GetSystemIncludeDirs(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddSystemIncludeDirs(string s)
@@ -47050,12 +47005,7 @@ namespace CppSharp
             public string GetDefines(uint i)
             {
                 var __ret = __Internal.GetDefines(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddDefines(string s)
@@ -47071,12 +47021,7 @@ namespace CppSharp
             public string GetUndefines(uint i)
             {
                 var __ret = __Internal.GetUndefines(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddUndefines(string s)
@@ -47092,12 +47037,7 @@ namespace CppSharp
             public string GetSupportedStdTypes(uint i)
             {
                 var __ret = __Internal.GetSupportedStdTypes(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddSupportedStdTypes(string s)
@@ -47503,12 +47443,7 @@ namespace CppSharp
             public string GetArguments(uint i)
             {
                 var __ret = __Internal.GetArguments(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddArguments(string s)
@@ -47524,12 +47459,7 @@ namespace CppSharp
             public string GetLibraryDirs(uint i)
             {
                 var __ret = __Internal.GetLibraryDirs(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddLibraryDirs(string s)
@@ -47545,12 +47475,7 @@ namespace CppSharp
             public string GetLibraries(uint i)
             {
                 var __ret = __Internal.GetLibraries(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero)
-                    return default(string);
-                var __retPtr = (byte*) __ret;
-                int __length = 0;
-                while (*(__retPtr++) != 0) __length += sizeof(byte);
-                return global::System.Text.Encoding.UTF8.GetString((byte*) __ret, __length);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
             }
 
             public void AddLibraries(string s)
