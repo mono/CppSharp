@@ -3011,6 +3011,7 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
     if (TS != nullptr && TS->isIncomplete)
     {
         TS->isIncomplete = false;
+        TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
         WalkRecordCXX(CTS, TS);
     }
 }
