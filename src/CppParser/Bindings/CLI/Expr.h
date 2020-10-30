@@ -1169,6 +1169,12 @@ namespace CppSharp
                     bool get();
                     void set(bool);
                 }
+
+                property bool IsFPContractableWithinStatement
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class OffsetOfExpr : CppSharp::Parser::AST::Expr
@@ -2997,12 +3003,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property bool IsFPContractableWithinStatement
-                {
-                    bool get();
-                    void set(bool);
                 }
             };
 

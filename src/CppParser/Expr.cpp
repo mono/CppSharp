@@ -176,6 +176,7 @@ UnaryOperator::UnaryOperator()
     , isDecrementOp(0)
     , isIncrementDecrementOp(0)
     , isArithmeticOp(0)
+    , isFPContractableWithinStatement(0)
 {
 }
 
@@ -614,7 +615,6 @@ CXXOperatorCallExpr::CXXOperatorCallExpr()
     , isAssignmentOp(0)
     , isInfixBinaryOp(0)
     , operatorLoc(SourceLocation())
-    , isFPContractableWithinStatement(0)
 {
 }
 

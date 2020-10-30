@@ -498,6 +498,7 @@ public:
     bool isDecrementOp;
     bool isIncrementDecrementOp;
     bool isArithmeticOp;
+    bool isFPContractableWithinStatement;
 };
 
 class CS_API OffsetOfExpr : public Expr
@@ -988,7 +989,6 @@ public:
     bool isAssignmentOp;
     bool isInfixBinaryOp;
     SourceLocation operatorLoc;
-    bool isFPContractableWithinStatement;
 };
 
 class CS_API CXXMemberCallExpr : public CallExpr

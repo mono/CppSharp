@@ -878,13 +878,12 @@ namespace CppSharp.Generators.CSharp
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-            string mangled = var.GetMangled(Context.ParserOptions.TargetTriple);
             var libraryPath = GetLibraryOf(var);
 
             if (!LibrarySymbols.TryGetValue(libraryPath, out var lib))
                 LibrarySymbols[libraryPath] = lib = new LibrarySymbolInfo(libraryPath, Module.OutputNamespace + ".__Symbols");
 
-            var location = lib.GetFullVariablePath(mangled);
+            var location = lib.GetFullVariablePath(var.Mangled);
 
             var arrayType = var.Type as ArrayType;
             string ptr = Generator.GeneratedIdentifier("ptr");
@@ -3284,6 +3283,12 @@ namespace CppSharp.Generators.CSharp
             NativeLibrary library;
             Context.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
 
+            var targetTriple = Context.ParserOptions.TargetTriple;
+            if (library == null && targetTriple.IsMacOS())
+                // the symbol name passed to dlsym() must NOT be prepended with an underscore
+                // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dlsym.3.html
+                Context.Symbols.FindLibraryBySymbol('_' + ((IMangledDecl) declaration).Mangled, out library);
+
             if (library != null)
                 libName = Path.GetFileNameWithoutExtension(library.FileName);
 
@@ -3294,15 +3299,13 @@ namespace CppSharp.Generators.CSharp
             if (libName == null)
                 libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
-            var targetTriple = Context.ParserOptions.TargetTriple;
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
             else if (targetTriple.IsWindows() &&
                 libName.Contains('.') && Path.GetExtension(libName) != ".dll")
                 libName += ".dll";
 
-            if (targetTriple.Contains("apple") || targetTriple.Contains("darwin") ||
-                targetTriple.Contains("osx"))
+            if (targetTriple.IsMacOS())
             {
                 var framework = libName + ".framework";
                 foreach (var libDir in declaration.TranslationUnit.Module.LibraryDirs)

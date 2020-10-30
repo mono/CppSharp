@@ -609,6 +609,7 @@ namespace CppSharp.AST
         public bool IsDecrementOp { get; set; }
         public bool IsIncrementDecrementOp { get; set; }
         public bool IsArithmeticOp { get; set; }
+        public bool IsFPContractableWithinStatement { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitUnaryOperator(this);
