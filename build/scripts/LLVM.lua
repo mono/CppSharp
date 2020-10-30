@@ -209,7 +209,7 @@ function cmake(gen, conf, builddir, options)
     end
 
 	if os.ishost("windows") then
-		options = options .. "-Thost=x64"
+		options = options .. " -Thost=x64"
 	end
 
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
