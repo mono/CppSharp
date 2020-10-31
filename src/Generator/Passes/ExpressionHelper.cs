@@ -175,10 +175,12 @@ namespace CppSharp.Internal
                     return ulong.TryParse(expression, out _);
                 case TypeCode.Single:
                     {
-                        if (expression.EndsWith("F"))
-                            expression = expression.Substring(0, expression.Length - 1);
-                        var result = float.TryParse(expression, out _);
-                        expression += "f";
+                        var expr = expression;
+                        if (expr.EndsWith("F"))
+                            expr = expr.Substring(0, expr.Length - 1);
+                        var result = float.TryParse(expr, out _);
+                        if (result)
+                            expression = expr + "f";
                         return result;
                     }
                 case TypeCode.Double:
