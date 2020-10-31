@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CppSharp.Runtime
@@ -54,6 +55,12 @@ namespace CppSharp.Runtime
         public static IntPtr[] GetIntPtrArray(IntPtr* array, int size)
         {
             return GetArray<IntPtr>(array, size);
+        }
+
+        public static T GetDelegate<T>(void*[] vtables, short table, int i) where T : class
+        {
+            var slot = *(void**)((IntPtr)vtables[table] + i * sizeof(IntPtr));
+            return Marshal.GetDelegateForFunctionPointer<T>(new IntPtr(slot));
         }
     }
 }

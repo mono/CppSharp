@@ -20,6 +20,13 @@ namespace CppSharp.Generators
             NameSuffix.Append(nameSuffix);
         }
 
+        public void RemoveNamespace()
+        {
+            var index = Type.LastIndexOf('.');
+            if (index != -1)
+                Type = Type.Substring(index + 1);
+        }
+
         public static implicit operator TypePrinterResult(string type) =>
             new TypePrinterResult { Type = type };
 

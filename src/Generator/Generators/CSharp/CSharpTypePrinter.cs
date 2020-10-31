@@ -13,7 +13,7 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpTypePrinter : TypePrinter
     {
-        public string IntPtrType => QualifiedType("System.IntPtr");
+        public string IntPtrType => "__IntPtr";
 
         public BindingContext Context { get; set; }
 

@@ -239,6 +239,8 @@ namespace CppSharp
 
     public abstract class BlockGenerator : ITextGenerator
     {
+        private static string[] LineBreakSequences = new[] { "\r\n", "\r", "\n" };
+
         public Block RootBlock { get; }
         public Block ActiveBlock { get; private set; }
         public uint CurrentIndentation => ActiveBlock.Text.CurrentIndentation;
@@ -309,6 +311,12 @@ namespace CppSharp
         public void WriteLine(string msg, params object[] args)
         {
             ActiveBlock.WriteLine(msg, args);
+        }
+
+        public void WriteLines(string msg)
+        {
+            foreach(var line in msg.TrimStart().Split(LineBreakSequences, StringSplitOptions.None))
+                WriteLine(line);
         }
 
         public void WriteLineIndent(string msg, params object[] args)
