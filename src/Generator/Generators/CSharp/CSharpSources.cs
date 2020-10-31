@@ -1909,13 +1909,12 @@ namespace CppSharp.Generators.CSharp
                 string.Join(", ", @params));
             WriteOpenBraceAndIndent();
 
-            WriteLine($"if (!NativeToManagedMap.ContainsKey({Helpers.InstanceField}))");
+            WriteLine($"if (!NativeToManagedMap.TryGetValue({Helpers.InstanceField}, out var {Helpers.TargetIdentifier}Object))");
             WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
             var printedClass = @class.Visit(TypePrinter);
-            WriteLine($@"var {Helpers.TargetIdentifier} = ({
-                printedClass}) NativeToManagedMap[{Helpers.InstanceField}];");
+            WriteLine($@"var {Helpers.TargetIdentifier} = ({printedClass}){Helpers.TargetIdentifier}Object;");
             WriteLine("if ({0}.{1})", Helpers.TargetIdentifier, Helpers.OwnsNativeInstanceIdentifier);
             WriteLineIndent("{0}.SetupVTables();", Helpers.TargetIdentifier);
             GenerateVTableManagedCall(method);
