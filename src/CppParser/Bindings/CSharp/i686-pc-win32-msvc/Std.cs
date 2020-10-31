@@ -8,6 +8,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Runtime.CompilerServices;
+using __CallingConvention = System.Runtime.InteropServices.CallingConvention;
+using __IntPtr = System.IntPtr;
 
 [assembly:InternalsVisibleTo("CppSharp.Parser.CSharp")]
 
@@ -304,13 +306,13 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::System.IntPtr _Myfirst;
+            internal __IntPtr _Myfirst;
 
             [FieldOffset(4)]
-            internal global::System.IntPtr _Mylast;
+            internal __IntPtr _Mylast;
 
             [FieldOffset(8)]
-            internal global::System.IntPtr _Myend;
+            internal __IntPtr _Myend;
         }
     }
 }
@@ -626,29 +628,39 @@ namespace Std
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                EntryPoint="??0?$allocator@D@std@@QAE@XZ")]
-            internal static extern global::System.IntPtr ctorc__N_std_S_allocator__C(global::System.IntPtr __instance);
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$allocator@D@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern __IntPtr ctorc__N_std_S_allocator__C(__IntPtr __instance);
         }
     }
 
     public unsafe partial class Allocator<_Ty> : IDisposable
     {
-        public global::System.IntPtr __Instance { get; protected set; }
+        public __IntPtr __Instance { get; protected set; }
 
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Ty>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Ty>>();
 
         protected bool __ownsNativeInstance;
 
-        internal static global::Std.Allocator<_Ty> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static Allocator<_Ty> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
-            return new global::Std.Allocator<_Ty>(native.ToPointer(), skipVTables);
+            return new Allocator<_Ty>(native.ToPointer(), skipVTables);
         }
 
-        internal static global::Std.Allocator<_Ty> __CreateInstance(global::Std.Allocator.__Internal native, bool skipVTables = false)
+        internal static Allocator<_Ty> __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
         {
-            return new global::Std.Allocator<_Ty>(native, skipVTables);
+            if (native == __IntPtr.Zero)
+                return null;
+            if (NativeToManagedMap.TryGetValue(native, out var managed))
+                return (Allocator<_Ty>)managed;
+            var result = __CreateInstance(native, skipVTables);
+            if (saveInstance)
+                NativeToManagedMap[native] = result;
+            return result;
+        }
+
+        internal static Allocator<_Ty> __CreateInstance(global::Std.Allocator.__Internal native, bool skipVTables = false)
+        {
+            return new Allocator<_Ty>(native, skipVTables);
         }
 
         private static void* __CopyValue(global::Std.Allocator.__Internal native)
@@ -669,7 +681,7 @@ namespace Std
         {
             if (native == null)
                 return;
-            __Instance = new global::System.IntPtr(native);
+            __Instance = new __IntPtr(native);
         }
 
         public Allocator()
@@ -729,7 +741,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [FieldOffset(0)]
-            internal global::System.IntPtr _Myhead;
+            internal __IntPtr _Myhead;
 
             [FieldOffset(4)]
             internal uint _Mysize;
@@ -747,34 +759,42 @@ namespace Std
             [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
 
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                EntryPoint="??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ")]
-            internal static extern global::System.IntPtr ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern __IntPtr ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__IntPtr __instance);
 
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                EntryPoint="??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ")]
-            internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(global::System.IntPtr __instance);
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__IntPtr __instance);
         }
     }
 
     public unsafe partial class BasicString<_Elem, _Traits, _Alloc> : IDisposable
     {
-        public global::System.IntPtr __Instance { get; protected set; }
+        public __IntPtr __Instance { get; protected set; }
 
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_Elem, _Traits, _Alloc>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_Elem, _Traits, _Alloc>>();
 
         protected bool __ownsNativeInstance;
 
-        internal static global::Std.BasicString<_Elem, _Traits, _Alloc> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static BasicString<_Elem, _Traits, _Alloc> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
-            return new global::Std.BasicString<_Elem, _Traits, _Alloc>(native.ToPointer(), skipVTables);
+            return new BasicString<_Elem, _Traits, _Alloc>(native.ToPointer(), skipVTables);
         }
 
-        internal static global::Std.BasicString<_Elem, _Traits, _Alloc> __CreateInstance(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native, bool skipVTables = false)
+        internal static BasicString<_Elem, _Traits, _Alloc> __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
         {
-            return new global::Std.BasicString<_Elem, _Traits, _Alloc>(native, skipVTables);
+            if (native == __IntPtr.Zero)
+                return null;
+            if (NativeToManagedMap.TryGetValue(native, out var managed))
+                return (BasicString<_Elem, _Traits, _Alloc>)managed;
+            var result = __CreateInstance(native, skipVTables);
+            if (saveInstance)
+                NativeToManagedMap[native] = result;
+            return result;
+        }
+
+        internal static BasicString<_Elem, _Traits, _Alloc> __CreateInstance(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native, bool skipVTables = false)
+        {
+            return new BasicString<_Elem, _Traits, _Alloc>(native, skipVTables);
         }
 
         private static void* __CopyValue(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C native)
@@ -795,7 +815,7 @@ namespace Std
         {
             if (native == null)
                 return;
-            __Instance = new global::System.IntPtr(native);
+            __Instance = new __IntPtr(native);
         }
 
         public BasicString()
@@ -867,7 +887,7 @@ namespace Std
                 internal fixed sbyte _Buf[16];
 
                 [FieldOffset(0)]
-                internal global::System.IntPtr _Ptr;
+                internal __IntPtr _Ptr;
 
                 [FieldOffset(0)]
                 internal fixed sbyte _Alias[16];
@@ -886,20 +906,32 @@ namespace Std
 
     public unsafe partial class CharTraits<_Elem> : IDisposable
     {
-        public global::System.IntPtr __Instance { get; protected set; }
+        public __IntPtr __Instance { get; protected set; }
 
         internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_Elem>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_Elem>>();
 
         protected bool __ownsNativeInstance;
 
-        internal static global::Std.CharTraits<_Elem> __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
+        internal static CharTraits<_Elem> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
-            return new global::Std.CharTraits<_Elem>(native.ToPointer(), skipVTables);
+            return new CharTraits<_Elem>(native.ToPointer(), skipVTables);
         }
 
-        internal static global::Std.CharTraits<_Elem> __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+        internal static CharTraits<_Elem> __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
         {
-            return new global::Std.CharTraits<_Elem>(native, skipVTables);
+            if (native == __IntPtr.Zero)
+                return null;
+            if (NativeToManagedMap.TryGetValue(native, out var managed))
+                return (CharTraits<_Elem>)managed;
+            var result = __CreateInstance(native, skipVTables);
+            if (saveInstance)
+                NativeToManagedMap[native] = result;
+            return result;
+        }
+
+        internal static CharTraits<_Elem> __CreateInstance(global::Std.CharTraits.__Internal native, bool skipVTables = false)
+        {
+            return new CharTraits<_Elem>(native, skipVTables);
         }
 
         private static void* __CopyValue(global::Std.CharTraits.__Internal native)
@@ -920,7 +952,7 @@ namespace Std
         {
             if (native == null)
                 return;
-            __Instance = new global::System.IntPtr(native);
+            __Instance = new __IntPtr(native);
         }
 
         public void Dispose()
@@ -945,32 +977,24 @@ namespace Std
         [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                EntryPoint="?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAEAAV12@QBD@Z")]
-            internal static extern global::System.IntPtr Assign(global::System.IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string _Ptr);
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAEAAV12@QBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string _Ptr);
 
-            [SuppressUnmanagedCodeSecurity]
-            [DllImport("Std-symbols", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                EntryPoint="?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ")]
-            internal static extern global::System.IntPtr Data(global::System.IntPtr __instance);
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern __IntPtr Data(__IntPtr __instance);
         }
 
         public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> Assign(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this, string _Ptr)
         {
-            var __arg0 = ReferenceEquals(@this, null) ? global::System.IntPtr.Zero : @this.__Instance;
+            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
             var __ret = __Internal.Assign(__arg0, _Ptr);
-            global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> __result0;
-            if (__ret == IntPtr.Zero) __result0 = null;
-            else if (global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.NativeToManagedMap.ContainsKey(__ret))
-                __result0 = (global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>) global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.NativeToManagedMap[__ret];
-            else __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(__ret);
+            var __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__GetOrCreateInstance(__ret, false);
             return __result0;
         }
 
         public static string Data(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
         {
-            var __arg0 = ReferenceEquals(@this, null) ? global::System.IntPtr.Zero : @this.__Instance;
+            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
             var __ret = __Internal.Data(__arg0);
             return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
         }

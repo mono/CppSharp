@@ -344,34 +344,22 @@ namespace CppSharp.Generators.CSharp
         {
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
-            var qualifiedIdentifier = @class.Visit(typePrinter);
-            Context.Before.WriteLine("{0} {1};", qualifiedIdentifier, ret);
-            Context.Before.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
-                originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
+        
             if (originalClass.IsRefType)
             {
-                Context.Before.WriteLine(
-                    "else if ({0}.NativeToManagedMap.TryGetValue({1}, out var {2}))", qualifiedClass, Context.ReturnVarName, ret + "Object");
-                Context.Before.WriteLineIndent("{0} = ({1}) {2};",
-                    ret, qualifiedIdentifier, ret + "Object");
                 var dtor = originalClass.Destructors.FirstOrDefault();
-                if (dtor != null && dtor.IsVirtual)
-                {
-                    Context.Before.WriteLine("else {0}{1} = ({2}) {3}.{4}({5}{6});",
-                        Context.Parameter != null
-                            ? string.Empty
-                            : string.Format("{0}.NativeToManagedMap[{1}] = ", qualifiedClass, Context.ReturnVarName),
-                        ret, qualifiedIdentifier, qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName,
-                        Context.Parameter != null ? ", skipVTables: true" : string.Empty);
-                }
-                else
-                {
-                    Context.Before.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
-                        Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
-                }
+                var dtorVirtual = (dtor != null && dtor.IsVirtual);
+                var cache = dtorVirtual && Context.Parameter == null;
+                var skipVTables = dtorVirtual && Context.Parameter != null;
+                Context.Before.WriteLine("var {0} = {1}.__GetOrCreateInstance({2}, {3}{4});",
+                    ret, qualifiedClass, Context.ReturnVarName, cache ? "true" : "false", skipVTables ? ", skipVTables: true" : string.Empty);
             }
             else
             {
+                var qualifiedIdentifier = @class.Visit(typePrinter);
+                Context.Before.WriteLine("{0} {1};", qualifiedIdentifier, ret);
+                Context.Before.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
+                    originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
                 Context.Before.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
                     Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
             }
@@ -394,7 +382,7 @@ namespace CppSharp.Generators.CSharp
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
 
-            Context.Before.WriteLine($"if (ReferenceEquals({Context.ReturnVarName}, null))");
+            Context.Before.WriteLine($"if ({Context.ReturnVarName} is null)");
             Context.Before.WriteLineIndent($"{intermediateArray} = null;");
             Context.Before.WriteLine("else");
 
@@ -764,7 +752,7 @@ namespace CppSharp.Generators.CSharp
                     Context.Return.Write("{0}{1}",
                         method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
                             ? string.Empty
-                            : $"ReferenceEquals({param}, null) ? global::System.IntPtr.Zero : ",
+                            : $"{param} is null ? {typePrinter.IntPtrType}.Zero : ",
                         paramInstance);
                 }
                 return;
@@ -872,7 +860,7 @@ namespace CppSharp.Generators.CSharp
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
 
-            Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
+            Context.Before.WriteLine($"if ({Context.Parameter.Name} is null)");
                 Context.Before.WriteLineIndent($"{intermediateArray} = null;");
             Context.Before.WriteLine("else");
 
@@ -887,12 +875,12 @@ namespace CppSharp.Generators.CSharp
             if (elementType.IsAddress())
             {
                 var intPtrZero = $"{typePrinter.IntPtrType}.Zero";
-                Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
-                    element}, null) ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
+                Context.Before.WriteLine($@"{intermediateArray}[i] = {
+                    element} is null ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
             }
             else
-                Context.Before.WriteLine($@"{intermediateArray}[i] = ReferenceEquals({
-                    element}, null) ? new {intermediateArrayType}() : *({
+                Context.Before.WriteLine($@"{intermediateArray}[i] = {
+                    element} is null ? new {intermediateArrayType}() : *({
                     intermediateArrayType}*) {element}.{Helpers.InstanceIdentifier};");
             Context.Before.UnindentAndWriteCloseBrace();
 
