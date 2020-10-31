@@ -60,7 +60,7 @@ namespace CppSharp.Runtime
         public static T GetDelegate<T>(void*[] vtables, short table, int i) where T : class
         {
             var slot = *(void**)((IntPtr)vtables[table] + i * sizeof(IntPtr));
-            return slot != null ? Marshal.GetDelegateForFunctionPointer<T>(new IntPtr(slot)) : null;
+            return Marshal.GetDelegateForFunctionPointer<T>(new IntPtr(slot));
         }
     }
 }

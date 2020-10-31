@@ -2272,6 +2272,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         result.SetupVTables();
     return result;
 }}");
+                        NewLine();
                     }
                 }
             }
