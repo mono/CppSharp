@@ -7,8 +7,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using __CallingConvention = System.Runtime.InteropServices.CallingConvention;
-using __IntPtr = System.IntPtr;
+using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;
+using __IntPtr = global::System.IntPtr;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.Parser")]

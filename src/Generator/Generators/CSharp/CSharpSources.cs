@@ -165,8 +165,8 @@ namespace CppSharp.Generators.CSharp
             foreach (var customUsingStatement in Options.DependentNameSpaces)
                 WriteLine("using {0};", customUsingStatement);
 
-            WriteLine("using __CallingConvention = System.Runtime.InteropServices.CallingConvention;");
-            WriteLine("using __IntPtr = System.IntPtr;");
+            WriteLine("using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;");
+            WriteLine("using __IntPtr = global::System.IntPtr;");
 
             PopBlock(NewLineKind.BeforeNextBlock);
 
