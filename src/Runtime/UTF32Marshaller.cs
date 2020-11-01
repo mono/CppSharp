@@ -22,14 +22,13 @@ namespace CppSharp.Runtime
             if (!(ManagedObj is string @string))
                 return IntPtr.Zero;
 
+            var capacity = @string.Length * 4 + 4;
+            var result = Marshal.AllocCoTaskMem(capacity);
+            var byteCount = 0;
             fixed (char* stringPtr = @string)
-            {
-                var byteCount = Encoding.UTF32.GetByteCount(stringPtr, @string.Length);
-                var result = Marshal.AllocCoTaskMem(byteCount + 4);
-                Encoding.UTF32.GetBytes(stringPtr, @string.Length, (byte*)result, byteCount);
-                *(Int32*)(result + byteCount) = 0;
-                return result;
-            }
+                byteCount = Encoding.UTF32.GetBytes(stringPtr, @string.Length, (byte*)result, capacity);
+            *(Int32*)(result + byteCount) = 0;
+            return result;
         }
 
         public void CleanUpNativeData(IntPtr pNativeData)
