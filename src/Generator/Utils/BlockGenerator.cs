@@ -313,10 +313,38 @@ namespace CppSharp
             ActiveBlock.WriteLine(msg, args);
         }
 
-        public void WriteLines(string msg)
+        public void WriteLines(string msg, bool trimIndentation = false)
         {
-            foreach(var line in msg.TrimStart().Split(LineBreakSequences, StringSplitOptions.None))
-                WriteLine(line);
+            var lines = msg.Split(LineBreakSequences, StringSplitOptions.None);
+            int indentation = int.MaxValue;
+
+            if (trimIndentation)
+            {
+                foreach(var line in lines)
+                { 
+                    for (int i = 0; i < line.Length; ++i)
+                    {
+                        if (char.IsWhiteSpace(line[i]))
+                            continue;
+                        
+                        if (i < indentation)
+                        { 
+                            indentation = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            bool foundNonEmptyLine = false;
+            foreach (var line in lines)
+            {
+                if (!foundNonEmptyLine && string.IsNullOrEmpty(line))
+                    continue;
+
+                WriteLine(line.Length >= indentation ? line.Substring(indentation) : line);
+                foundNonEmptyLine = true;
+            }
         }
 
         public void WriteLineIndent(string msg, params object[] args)
