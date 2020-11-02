@@ -1580,98 +1580,127 @@ namespace CppSharp.Generators.CSharp
                 GenerateVTableMethodDelegates(containingClass, method.Namespace.IsDependent ?
                    (Method) method.InstantiatedFrom : method);
 
-            WriteLine("private static void*[] __ManagedVTables;");
-            if (wrappedEntries.Any(e => e.Method.IsDestructor))
-                WriteLine("private static void*[] __ManagedVTablesDtorOnly;");
-            WriteLine("private static void*[] _Thunks;");
-            WriteLine("private static void*[] __originalVTables;");
+            var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
             bool hasDynamicBase = @class.NeedsBase && @class.BaseClass.IsDynamic;
-            Write($@"protected internal {(hasDynamicBase ? "override" : "virtual"
-                )} void*[] __OriginalVTables => __originalVTables ?? ");
-            SaveOriginalVTablePointers(@class);
+            var originalTableClass = @class.IsDependent ? @class.Specializations[0] : @class;
+            var originalTablePointers = $"new IntPtr[] {{ {string.Join(", ", originalTableClass.Layout.VTablePointers.Select(v => $"*(IntPtr*)({Helpers.InstanceIdentifier} + {v.Offset})"))} }}";
+            var destructorOnly = "destructorOnly";
+
+            WriteLine("internal static class VTableLoader");
+            { 
+                WriteOpenBraceAndIndent();
+                WriteLine("private static bool initialized;");
+                WriteLine("private static IntPtr[] ManagedVTables;");
+                WriteLine("private static IntPtr[] Thunks;");
+                WriteLine("public static CppSharp.Runtime.VTables VTables;");
+                if (hasVirtualDtor)
+                    WriteLine($"private static IntPtr[] ManagedVTablesDtorOnly;");
+                WriteLine("private static readonly global::System.Collections.Generic.List<global::CppSharp.Runtime.SafeUnmanagedMemoryHandle>");
+                WriteLineIndent("HandleManagedVTables = new global::System.Collections.Generic.List<global::CppSharp.Runtime.SafeUnmanagedMemoryHandle>();");
+
+                WriteLine($"public static CppSharp.Runtime.VTables SetupVTables(IntPtr __Instance, bool {destructorOnly} = false)");
+                {
+                    WriteOpenBraceAndIndent();
+                    WriteLine("if (!initialized)");
+                    {
+                        WriteOpenBraceAndIndent();
+                        WriteLine($"Thunks = new IntPtr[{wrappedEntries.Count}];");
+                        WriteLine($"var methodDelegates = new Delegate[{originalTableClass.Layout.VTablePointers.Count}][];");
+
+                        var uniqueEntries = new HashSet<VTableComponent>();
+
+                        for (var i = 0; i < wrappedEntries.Count; ++i)
+                        {
+                            var entry = wrappedEntries[i];
+                            var name = GetVTableMethodDelegateName(entry.Method);
+                            if (uniqueEntries.Add(entry))
+                                WriteLine($"{name + "Instance"} += {name}Hook;");
+
+                            WriteLine($"Thunks[{i}] = Marshal.GetFunctionPointerForDelegate({name + "Instance"});");
+                        }
+
+                        NewLine();
+                        WriteLine($"var originalVTables = {originalTablePointers};");
+
+                        if (hasVirtualDtor)
+                            AllocateNewVTables(@class, wrappedEntries, destructorOnly: true, "ManagedVTablesDtorOnly");
+
+                        AllocateNewVTables(@class, wrappedEntries, destructorOnly: false, "ManagedVTables");
+
+                        WriteLine($"initialized = true;");
+                        WriteLine($"VTables = new CppSharp.Runtime.VTables(originalVTables, methodDelegates);");
+
+                        if (!hasVirtualDtor)
+                        { 
+                            WriteLine($"if ({destructorOnly})");
+                            WriteLineIndent("return VTables;");
+                        }
+
+                        UnindentAndWriteCloseBrace();
+                    }
+                    NewLine();
+
+                    if (hasVirtualDtor)
+                    {
+                        WriteLine($"if ({destructorOnly})");
+                        {
+                            WriteOpenBraceAndIndent();
+                            AssignNewVTableEntries(@class, "ManagedVTablesDtorOnly");
+                            UnindentAndWriteCloseBrace();
+                        }
+                        WriteLine("else");
+                        {
+                            WriteOpenBraceAndIndent();
+                            AssignNewVTableEntries(@class, "ManagedVTables");
+                            UnindentAndWriteCloseBrace();
+                        }
+                    }
+                    else
+                    {
+                        AssignNewVTableEntries(@class, "ManagedVTables");
+                    }
+
+                    WriteLine("return VTables;");
+                    UnindentAndWriteCloseBrace();
+                }
+            }
+            UnindentAndWriteCloseBrace();
             NewLine();
 
-            GenerateVTableClassSetup(@class, wrappedEntries);
-            WriteLine("private static readonly global::System.Collections.Generic.List<" +
-                "global::CppSharp.Runtime.SafeUnmanagedMemoryHandle> __handleManagedVTables" +
-                " = new global::System.Collections.Generic.List<" +
-                "global::CppSharp.Runtime.SafeUnmanagedMemoryHandle>();");
-            NewLine();
+            if (!hasDynamicBase)
+                WriteLine("protected CppSharp.Runtime.VTables __vtables;");
+
+            WriteLines($@"
+            internal {(hasDynamicBase ? "override" : "virtual")} CppSharp.Runtime.VTables __VTables
+            {{ 
+                get {{
+                    if (__vtables.IsEmpty)
+                        __vtables = new CppSharp.Runtime.VTables({originalTablePointers});
+                    return __vtables;
+                }}
+
+                set {{        
+                    __vtables = value;
+                }}
+            }}
+
+            internal {(hasDynamicBase ? "override" : "virtual")} void SetupVTables(bool destructorOnly = false)
+            {{
+                if (__VTables.IsTransient)
+                    __VTables = VTableLoader.SetupVTables(__Instance, destructorOnly);
+            }}", trimIndentation : true);
 
             WriteLine("#endregion");
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVTableClassSetup(Class @class, IList<VTableComponent> wrappedEntries)
-        {
-            const string destructorOnly = "destructorOnly";
-            WriteLine("private void SetupVTables(bool {0} = false)", destructorOnly);
-            WriteOpenBraceAndIndent();
-
-            var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
-            if (!hasVirtualDtor)
-            {
-                WriteLine("if ({0})", destructorOnly);
-                WriteLineIndent("return;");
-            }
-
-            WriteLine("if (_Thunks == null)");
-            WriteOpenBraceAndIndent();
-            WriteLine("_Thunks = new void*[{0}];", wrappedEntries.Count);
-
-            var uniqueEntries = new HashSet<VTableComponent>();
-
-            for (int i = 0; i < wrappedEntries.Count; i++)
-            {
-                var entry = wrappedEntries[i];
-                var method = entry.Method;
-                var name = GetVTableMethodDelegateName(method);
-                var instance = name + "Instance";
-                if (uniqueEntries.Add(entry))
-                    WriteLine("{0} += {1}Hook;", instance, name);
-                WriteLine("_Thunks[{0}] = Marshal.GetFunctionPointerForDelegate({1}).ToPointer();",
-                    i, instance);
-            }
-
-            NewLine();
-
-            if (hasVirtualDtor)
-                AllocateNewVTables(@class, wrappedEntries, destructorOnly: true);
-
-            AllocateNewVTables(@class, wrappedEntries, destructorOnly: false);
-
-            Write("__originalVTables = ");
-            SaveOriginalVTablePointers(@class);
-            UnindentAndWriteCloseBrace();
-
-            NewLine();
-            if (hasVirtualDtor)
-            {
-                WriteLine($"if ({destructorOnly})");
-                WriteOpenBraceAndIndent();
-                AssignNewVTableEntries(@class, "__ManagedVTablesDtorOnly");
-                UnindentAndWriteCloseBrace();
-                WriteLine("else");
-                WriteOpenBraceAndIndent();
-                AssignNewVTableEntries(@class, "__ManagedVTables");
-                UnindentAndWriteCloseBrace();
-            }
-            else
-            {
-                AssignNewVTableEntries(@class, "__ManagedVTables");
-            }
-
-            UnindentAndWriteCloseBrace();
-            NewLine();
-        }
-
         private void AllocateNewVTables(Class @class, IList<VTableComponent> wrappedEntries,
-            bool destructorOnly)
+            bool destructorOnly, string table)
         {
             if (Context.ParserOptions.IsMicrosoftAbi)
-                AllocateNewVTablesMS(@class, wrappedEntries, destructorOnly);
+                AllocateNewVTablesMS(@class, wrappedEntries, destructorOnly, table);
             else
-                AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly);
+                AllocateNewVTablesItanium(@class, wrappedEntries, destructorOnly, table);
 
             NewLine();
         }
@@ -1681,24 +1710,14 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < @class.Layout.VTablePointers.Count; i++)
             {
                 var offset = @class.Layout.VTablePointers[i].Offset;
-                WriteLine($"*(void**) ({Helpers.InstanceIdentifier} + {offset}) = {table}[{i}];");
+                WriteLine($"*(IntPtr*) ({Helpers.InstanceIdentifier} + {offset}) = {table}[{i}];");
             }
         }
 
-        private void SaveOriginalVTablePointers(Class @class)
-        {
-            if (@class.IsDependent)
-                @class = @class.Specializations[0];
-
-            Write($@"new void*[] {{ {string.Join(", ", @class.Layout.VTablePointers.Select(
-                v => $"*(void**) ({Helpers.InstanceIdentifier} + {v.Offset})"))} }};");
-        }
-
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
-            bool destructorOnly)
+            bool destructorOnly, string table)
         {
-            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
-            WriteLine($"{managedVTables} = new void*[{@class.Layout.VFTables.Count}];");
+            WriteLine($"{table} = new IntPtr[{@class.Layout.VFTables.Count}];");
 
             for (int i = 0; i < @class.Layout.VFTables.Count; i++)
             {
@@ -1707,24 +1726,24 @@ namespace CppSharp.Generators.CSharp
                 AllocateNewVTableEntries(vftable.Layout.Components, wrappedEntries,
                     @class.Layout.VTablePointers[i].Offset, i,
                     vftable.Layout.Components.Any(c => c.Kind == VTableComponentKind.RTTI) ? 1 : 0,
-                    destructorOnly);
+                    destructorOnly,
+                    table);
             }
         }
 
         private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries,
-            bool destructorOnly)
+            bool destructorOnly, string table)
         {
-            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
-            WriteLine($"{managedVTables} = new void*[1];");
+            WriteLine($"{table} = new IntPtr[1];");
 
             AllocateNewVTableEntries(@class.Layout.Layout.Components,
                 wrappedEntries, @class.Layout.VTablePointers[0].Offset, 0,
-                VTables.ItaniumOffsetToTopAndRTTI, destructorOnly);
+                VTables.ItaniumOffsetToTopAndRTTI, destructorOnly, table);
         }
 
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
             IList<VTableComponent> wrappedEntries, uint vptrOffset, int tableIndex,
-            int offsetRTTI, bool destructorOnly)
+            int offsetRTTI, bool destructorOnly, string table)
         {
             string suffix = (destructorOnly ? "_dtor" : string.Empty) +
                 (tableIndex == 0 ? string.Empty : tableIndex.ToString(CultureInfo.InvariantCulture));
@@ -1734,13 +1753,15 @@ namespace CppSharp.Generators.CSharp
             // allocate memory for the new v-table
             WriteLine($"var {vtptr} = Marshal.AllocHGlobal({size} * {pointerSize});");
             // ensure it's automatically freed when no longer needed
-            WriteLine($"__handleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vtptr}, true));");
+            WriteLine($"HandleManagedVTables.Add(new global::CppSharp.Runtime.SafeUnmanagedMemoryHandle({vtptr}, true));");
 
             string vfptr = $"vfptr{suffix}";
             // obtain a pointer in the table to the start of virtual functions
             WriteLine($"var {vfptr} = {vtptr} + {offsetRTTI} * {pointerSize};");
-            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
-            WriteLine($"{managedVTables}[{tableIndex}] = {vfptr}.ToPointer();");
+            WriteLine($"{table}[{tableIndex}] = {vfptr};");
+
+            if (!destructorOnly)
+                WriteLine($"methodDelegates[{tableIndex}] = new Delegate[{entries.Count}];");
 
             // fill the newly allocated v-table
             for (var i = 0; i < entries.Count; i++)
@@ -1748,9 +1769,9 @@ namespace CppSharp.Generators.CSharp
                 var entry = entries[i];
                 var offset = pointerSize * (i - offsetRTTI);
 
-                var nativeVftableEntry = $@"*(void**) (new IntPtr(*(void**) {
+                var nativeVftableEntry = $@"*(IntPtr*) ((*(IntPtr*) {
                     Helpers.InstanceIdentifier}) + {vptrOffset} + {offset})";
-                var managedVftableEntry = $"*(void**) ({vfptr} + {offset})";
+                var managedVftableEntry = $"*(IntPtr*) ({vfptr} + {offset})";
 
                 if ((entry.Kind == VTableComponentKind.FunctionPointer ||
                      entry.Kind == VTableComponentKind.DeletingDtorPointer) &&
@@ -1758,7 +1779,7 @@ namespace CppSharp.Generators.CSharp
                     (!destructorOnly || entry.Method.IsDestructor ||
                      Context.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.QualifiedOriginalName)))
                     // patch with pointers to managed code where needed
-                    WriteLine("{0} = _Thunks[{1}];", managedVftableEntry, wrappedEntries.IndexOf(entry));
+                    WriteLine("{0} = Thunks[{1}];", managedVftableEntry, wrappedEntries.IndexOf(entry));
                 else
                     // and simply copy the rest
                     WriteLine("{0} = {1};", managedVftableEntry, nativeVftableEntry);
@@ -2162,7 +2183,7 @@ namespace CppSharp.Generators.CSharp
                     ClassLayout layout = (@class.IsDependent ? @class.Specializations[0] : @class).Layout;
                     for (var i = 0; i < layout.VTablePointers.Count; i++)
                         WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                            layout.VTablePointers[i].Name} = new {TypePrinter.IntPtrType}(__OriginalVTables[{i}]);");
+                            layout.VTablePointers[i].Name} = __VTables.Tables[{i}];");
                 }
             }
 
@@ -2260,7 +2281,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
 
                     if (HasVirtualTables(@class))
                     {
-                        @new = @class.HasBase;
+                        @new = @class.HasBase && HasVirtualTables(@class.Bases.First().Class);
 
                         WriteLines($@"
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({TypePrinter.IntPtrType} native)
@@ -2731,12 +2752,11 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.First(
                     v => v.Layout.Components.Any(c => c.Method == @virtual)));
 
-            var vtables = $@"{ (thisParam != null ? $"{thisParam.Name}." : string.Empty)}__OriginalVTables";
             var @delegate = GetVTableMethodDelegateName(@virtual);
             var delegateId = Generator.GeneratedIdentifier(@delegate);
 
-            WriteLine("var {0} = CppSharp.Runtime.MarshalUtil.GetDelegate<{1}>({2}, {3}, {4});",
-                delegateId, method.FunctionType.ToString(), vtables, vtableIndex, i);
+            int id = @class is ClassTemplateSpecialization specialization ? specialization.TemplatedDecl.Specializations.IndexOf(specialization) : 0;
+            WriteLine($"var {delegateId} = {(thisParam != null ? $"{thisParam.Name}." : "")}__VTables.GetMethodDelegate<{method.FunctionType}>({vtableIndex}, {i}{(id > 0 ? $", {id}" : string.Empty)});");
 
             if (method.IsDestructor && @class.IsAbstract)
             {

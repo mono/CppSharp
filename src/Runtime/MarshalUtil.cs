@@ -57,10 +57,10 @@ namespace CppSharp.Runtime
             return GetArray<IntPtr>(array, size);
         }
 
-        public static T GetDelegate<T>(void*[] vtables, short table, int i) where T : class
+        public static T GetDelegate<T>(IntPtr[] vtables, short table, int i) where T : class
         {
-            var slot = *(void**)((IntPtr)vtables[table] + i * sizeof(IntPtr));
-            return Marshal.GetDelegateForFunctionPointer<T>(new IntPtr(slot));
+            var slot = *(IntPtr*)(vtables[table] + i * sizeof(IntPtr));
+            return Marshal.GetDelegateForFunctionPointer<T>(slot);
         }
     }
 }
