@@ -27,7 +27,7 @@ namespace CppSharp.Runtime
                 var method = Methods[table][slot];
 
                 if (method == null)
-                    method = Methods[table][slot] = MarshalUtil.GetDelegate<T>(Tables, table, slot);
+                    Methods[table][slot] = method = MarshalUtil.GetDelegate<T>(Tables, table, slot);
 
                 return (T)method;
             }
@@ -39,7 +39,7 @@ namespace CppSharp.Runtime
                 var key = (specialiation, table, slot);
 
                 if (!Specializations.TryGetValue(key, out var method))
-                    method = Specializations[key] = MarshalUtil.GetDelegate<T>(Tables, table, slot);
+                    Specializations[key] = method = MarshalUtil.GetDelegate<T>(Tables, table, slot);
 
                 return (T)method;
             }
