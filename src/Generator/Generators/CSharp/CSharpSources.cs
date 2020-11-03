@@ -1589,10 +1589,10 @@ namespace CppSharp.Generators.CSharp
             {
                 WriteOpenBraceAndIndent();
                 WriteLine($"private static volatile bool initialized;");
-                WriteLine($"private static IntPtr*[] ManagedVTables = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
+                WriteLine($"private static readonly IntPtr*[] ManagedVTables = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
                 if (hasVirtualDtor)
-                    WriteLine($"private static IntPtr*[] ManagedVTablesDtorOnly = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
-                WriteLine($"private static IntPtr[] Thunks = new IntPtr[{wrappedEntries.Count}];");
+                    WriteLine($"private static readonly IntPtr*[] ManagedVTablesDtorOnly = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
+                WriteLine($"private static readonly IntPtr[] Thunks = new IntPtr[{wrappedEntries.Count}];");
                 WriteLine("private static CppSharp.Runtime.VTables VTables;");
                 WriteLine($"private static readonly global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>");
                 WriteLineIndent("SafeHandles = new global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>();");
