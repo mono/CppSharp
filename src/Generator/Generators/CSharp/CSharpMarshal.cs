@@ -356,12 +356,8 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                var qualifiedIdentifier = @class.Visit(typePrinter);
-                Context.Before.WriteLine("{0} {1};", qualifiedIdentifier, ret);
-                Context.Before.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
-                    originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
-                Context.Before.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
-                    Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                Context.Before.WriteLine("var {0} = {1} != IntPtr.Zero ? {2}.{3}({4}) : default;",
+                    ret, Context.ReturnVarName, qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
             }
             return ret;
         }
