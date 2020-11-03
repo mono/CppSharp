@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CppSharp.Runtime
 {
-    public unsafe struct VTables
+    public struct VTables
     {
-        public Delegate[][] Methods { get; }
-        public IntPtr[] Tables { get; }
-        private Dictionary<(short, short, int), Delegate> Specializations;
+        public Delegate[][] Methods { get; set; }
+        public IntPtr[] Tables { get; set; }
+        private ConcurrentDictionary<(short, short, int), Delegate> Specializations;
 
         public VTables(IntPtr[] tables, Delegate[][] methods = null)
         {
@@ -34,7 +35,7 @@ namespace CppSharp.Runtime
             else
             {
                 if (Specializations == null)
-                    Specializations = new Dictionary<(short, short, int), Delegate>();
+                    Specializations = new ConcurrentDictionary<(short, short, int), Delegate>();
 
                 var key = (specialiation, table, slot);
 
@@ -43,6 +44,17 @@ namespace CppSharp.Runtime
 
                 return (T)method;
             }
+        }
+
+        public unsafe static IntPtr* CloneTable(List<SafeUnmanagedMemoryHandle> cache, IntPtr instance, int offset, int size)
+        {
+            var sizeInBytes = size * sizeof(IntPtr);
+            var src = ((*(IntPtr*)instance) + offset).ToPointer();
+            var entries = (IntPtr*)Marshal.AllocHGlobal(sizeInBytes);
+
+            Buffer.MemoryCopy(src, entries, sizeInBytes, sizeInBytes);
+            cache.Add(new SafeUnmanagedMemoryHandle((IntPtr)entries, true));
+            return entries;
         }
     }
 }
