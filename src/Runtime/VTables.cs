@@ -46,22 +46,15 @@ namespace CppSharp.Runtime
             }
         }
 
-        public unsafe struct ManagedVTable
+        public unsafe static IntPtr* CloneTable(List<SafeUnmanagedMemoryHandle> cache, IntPtr instance, int offset, int size)
         {
-            private static readonly List<SafeUnmanagedMemoryHandle> cache = new List<SafeUnmanagedMemoryHandle>();
-            public IntPtr* Entries { get; }
+            var sizeInBytes = size * sizeof(IntPtr);
+            var src = ((*(IntPtr*)instance) + offset).ToPointer();
+            var entries = (IntPtr*)Marshal.AllocHGlobal(sizeInBytes);
 
-            public ManagedVTable(IntPtr instance, int offset, int size)
-            {
-                var sizeInBytes = size * sizeof(IntPtr);                
-                var src = ((*(IntPtr*)instance) + offset).ToPointer();
-                Entries = (IntPtr*)Marshal.AllocHGlobal(sizeInBytes);
-
-                Buffer.MemoryCopy(src, Entries, sizeInBytes, sizeInBytes);
-
-                lock (cache)
-                    cache.Add(new SafeUnmanagedMemoryHandle((IntPtr)Entries, true));
-            }
+            Buffer.MemoryCopy(src, entries, sizeInBytes, sizeInBytes);
+            cache.Add(new SafeUnmanagedMemoryHandle((IntPtr)entries, true));
+            return entries;
         }
     }
 }

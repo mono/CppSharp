@@ -1594,6 +1594,8 @@ namespace CppSharp.Generators.CSharp
                     WriteLine($"private static IntPtr*[] ManagedVTablesDtorOnly = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
                 WriteLine($"private static IntPtr[] Thunks = new IntPtr[{wrappedEntries.Count}];");
                 WriteLine("private static CppSharp.Runtime.VTables VTables;");
+                WriteLine($"private static readonly global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>");
+                WriteLineIndent("SafeHandles = new global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>();");
                 NewLine();
 
                 WriteLine($"static VTableLoader()");
@@ -1748,7 +1750,7 @@ namespace CppSharp.Generators.CSharp
             string suffix = (destructorOnly ? "_dtor" : string.Empty) +
                 (tableIndex == 0 ? string.Empty : tableIndex.ToString(CultureInfo.InvariantCulture));
      
-            WriteLine($"var vtable{suffix} = new CppSharp.Runtime.VTables.ManagedVTable(instance, {vptrOffset}, {entries.Count});");
+            WriteLine($"{table}[{tableIndex}] = CppSharp.Runtime.VTables.CloneTable(SafeHandles, instance, {vptrOffset}, {entries.Count});");
       
             // fill the newly allocated v-table
             for (var i = 0; i < entries.Count; i++)
@@ -1761,11 +1763,9 @@ namespace CppSharp.Generators.CSharp
                     (!destructorOnly || entry.Method.IsDestructor ||
                      Context.Options.ExplicitlyPatchedVirtualFunctions.Contains(entry.Method.QualifiedOriginalName)))
                     // patch with pointers to managed code where needed
-                    WriteLine("vtable{0}.Entries[{1}] = Thunks[{2}];", suffix, i - offsetRTTI, wrappedEntries.IndexOf(entry));
+                    WriteLine("{0}[{1}][{2}] = Thunks[{3}];", table, tableIndex, i - offsetRTTI, wrappedEntries.IndexOf(entry));
             }
-
-            WriteLine($"{table}[{tableIndex}] = vtable{suffix}.Entries;");
-
+       
             if (!destructorOnly)
                 WriteLine($"VTables.Methods[{tableIndex}] = new Delegate[{entries.Count}];");
         }
