@@ -51,7 +51,7 @@ namespace CppSharp.Runtime
             private static readonly List<SafeUnmanagedMemoryHandle> cache = new List<SafeUnmanagedMemoryHandle>();
             public IntPtr* Entries { get; }
 
-            public ManagedVTable(IntPtr instance, int offset, int size, bool useGlobalCache = true)
+            public ManagedVTable(IntPtr instance, int offset, int size)
             {
                 var sizeInBytes = size * sizeof(IntPtr);                
                 var src = ((*(IntPtr*)instance) + offset).ToPointer();
@@ -59,11 +59,8 @@ namespace CppSharp.Runtime
 
                 Buffer.MemoryCopy(src, Entries, sizeInBytes, sizeInBytes);
 
-                if (useGlobalCache)
-                { 
-                    lock (cache)
-                        cache.Add(new SafeUnmanagedMemoryHandle((IntPtr)Entries, true));
-                }
+                lock (cache)
+                    cache.Add(new SafeUnmanagedMemoryHandle((IntPtr)Entries, true));
             }
         }
     }
