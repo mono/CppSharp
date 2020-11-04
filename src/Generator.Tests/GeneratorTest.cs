@@ -29,6 +29,7 @@ namespace CppSharp.Utils
             options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
             options.Quiet = true;
             options.GenerateDebugOutput = true;
+            driver.Options.GenerateSequentialLayout = true;
             var testModule = options.AddModule(name);
             testModule.SharedLibraryName = $"{name}.Native";
 
