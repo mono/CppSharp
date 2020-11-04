@@ -531,19 +531,24 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassInternals(Class @class)
         {
+            var sequentialLayout = Options.GenerateSequentialLayout && CanUseSequentialLayout(@class);
+
             PushBlock(BlockKind.InternalsClass);
-            if (!Options.GenerateSequentialLayout || @class.IsUnion)
-                WriteLine($"[StructLayout(LayoutKind.Explicit, Size = {@class.Layout.GetSize()})]");
-            else if (@class.MaxFieldAlignment > 0)
-                WriteLine($"[StructLayout(LayoutKind.Sequential, Pack = {@class.MaxFieldAlignment})]");
+
+            if (@class.Layout.GetSize() > 0)
+            { 
+                var layout = sequentialLayout ? "Sequential" : "Explicit";
+                var pack = @class.MaxFieldAlignment > 0 ? $", Pack = {@class.MaxFieldAlignment}" : string.Empty;
+                WriteLine($"[StructLayout(LayoutKind.{layout}, Size = {@class.Layout.GetSize()}{pack})]");
+            }
 
             GenerateClassInternalHead(@class);
             WriteOpenBraceAndIndent();
 
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-            foreach (var field in @class.Layout.Fields)
-                GenerateClassInternalsField(field, @class);
+            GenerateClassInternalsFields(@class, sequentialLayout);
+
             if (@class.IsGenerated)
             {
                 var functions = GatherClassInternalFunctions(@class);
@@ -764,24 +769,71 @@ namespace CppSharp.Generators.CSharp
                 Write(" : {0}", string.Join(", ", bases));
         }
 
-        private void GenerateClassInternalsField(LayoutField field, Class @class)
+        private bool CanUseSequentialLayout(Class @class)
         {
-            TypePrinterResult retType = TypePrinter.VisitFieldDecl(
-                new Field { Name = field.Name, QualifiedType = field.QualifiedType });
+            if (@class.IsUnion)
+                return false;
 
-            PushBlock(BlockKind.Field);
+            var fields = @class.Layout.Fields;
 
-            if (!Options.GenerateSequentialLayout || @class.IsUnion)
-                WriteLine($"[FieldOffset({field.Offset})]");
-            Write($"internal {retType}");
-            if (field.Expression != null)
-            {
-                var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write($" = {fieldValuePrinted}");
+            if (fields.Count > 1)
+            { 
+                for (var i = 1; i < fields.Count; ++i)
+                {
+                    if (fields[i].Offset == fields[i - 1].Offset)
+                        return false;
+                }
             }
-            WriteLine(";");
 
-            PopBlock(NewLineKind.BeforeNextBlock);
+            return true;
+        }
+
+        private void GenerateClassInternalsFields(Class @class, bool sequentalLayout)
+        {
+            var fields = @class.Layout.Fields;
+
+            for (var i = 0; i < fields.Count; ++i)
+            {
+                var field = fields[i];
+
+                TypePrinterResult retType = TypePrinter.VisitFieldDecl(
+                    new Field { Name = field.Name, QualifiedType = field.QualifiedType });
+
+                PushBlock(BlockKind.Field);
+
+                if (!sequentalLayout)
+                    WriteLine($"[FieldOffset({field.Offset})]");
+
+                Write($"internal {retType}");
+                if (field.Expression != null)
+                {
+                    var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
+                    Write($" = {fieldValuePrinted}");
+                }
+                WriteLine(";");
+
+                // HACK: work around the lack of alignment in StructLayout
+                // it's been requested multiple times to no avail:
+                // https://github.com/dotnet/runtime/issues/5931, https://github.com/dotnet/runtime/issues/9089, https://github.com/dotnet/runtime/issues/22990
+                // Sometimes padding is needed due to aligment.
+                // The linux 32 bit target pads at the end the structure
+                // which is already handled by using [StructLayout(Size = n)].
+                // However the windows 32 bit target pads at the front,
+                // right after the vtable pointer, which is what we are handling here
+                if (sequentalLayout && fields[i].IsVTablePtr)
+                {
+                    var nativePointerSize = Context.TargetInfo.PointerWidth / 8;
+
+                    if (i + 1 < fields.Count)
+                    {
+                        var padding = fields[i + 1].Offset - field.Offset - nativePointerSize;
+                        if (padding > 0 && padding <= @class.Layout.Size)
+                            WriteLine($"internal fixed byte {field.Name}Padding[{padding}];");
+                    }
+                }
+
+                PopBlock(sequentalLayout && i + 1 != fields.Count ? NewLineKind.Never : NewLineKind.BeforeNextBlock);
+            }
         }
 
         private void GenerateClassField(Field field, bool @public = false)
