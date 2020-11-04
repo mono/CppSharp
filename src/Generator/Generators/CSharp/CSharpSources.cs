@@ -820,7 +820,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         var padding = fields[i + 1].Offset - field.Offset - nativePointerSize;
                         if (padding > 0 && padding <= @class.Layout.Size)
-                            WriteLine($"public fixed byte {field.Name}Padding[{padding}];");
+                            WriteLine($"internal fixed byte {field.Name}Padding[{padding}];");
                     }
                 }
 
