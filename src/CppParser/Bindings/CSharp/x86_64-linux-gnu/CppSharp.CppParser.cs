@@ -10637,7 +10637,7 @@ namespace CppSharp
 
             public unsafe partial class Variable : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 184)]
+                [StructLayout(LayoutKind.Explicit, Size = 192)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -10704,12 +10704,15 @@ namespace CppSharp
                     internal __IntPtr comment;
 
                     [FieldOffset(152)]
-                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+                    internal byte isConstExpr;
 
                     [FieldOffset(160)]
+                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+
+                    [FieldOffset(168)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(184)]
                     internal __IntPtr initializer;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8VariableC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -10795,6 +10798,19 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
+                }
+
+                public bool IsConstExpr
+                {
+                    get
+                    {
+                        return ((__Internal*)__Instance)->isConstExpr != 0;
+                    }
+
+                    set
+                    {
+                        ((__Internal*)__Instance)->isConstExpr = (byte) (value ? 1 : 0);
+                    }
                 }
 
                 public string Mangled
@@ -15710,7 +15726,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplateSpecialization : global::CppSharp.Parser.AST.Variable, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 224)]
+                [StructLayout(LayoutKind.Explicit, Size = 232)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -15777,21 +15793,24 @@ namespace CppSharp
                     internal __IntPtr comment;
 
                     [FieldOffset(152)]
-                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+                    internal byte isConstExpr;
 
                     [FieldOffset(160)]
+                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+
+                    [FieldOffset(168)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(184)]
                     internal __IntPtr initializer;
 
-                    [FieldOffset(184)]
+                    [FieldOffset(192)]
                     internal __IntPtr templatedDecl;
 
-                    [FieldOffset(192)]
+                    [FieldOffset(200)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;
 
-                    [FieldOffset(216)]
+                    [FieldOffset(224)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST25VarTemplateSpecializationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -15950,7 +15969,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplatePartialSpecialization : global::CppSharp.Parser.AST.VarTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 224)]
+                [StructLayout(LayoutKind.Explicit, Size = 232)]
                 public new partial struct __Internal
                 {
                     [FieldOffset(0)]
@@ -16017,21 +16036,24 @@ namespace CppSharp
                     internal __IntPtr comment;
 
                     [FieldOffset(152)]
-                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+                    internal byte isConstExpr;
 
                     [FieldOffset(160)]
+                    internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+
+                    [FieldOffset(168)]
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
 
-                    [FieldOffset(176)]
+                    [FieldOffset(184)]
                     internal __IntPtr initializer;
 
-                    [FieldOffset(184)]
+                    [FieldOffset(192)]
                     internal __IntPtr templatedDecl;
 
-                    [FieldOffset(192)]
+                    [FieldOffset(200)]
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;
 
-                    [FieldOffset(216)]
+                    [FieldOffset(224)]
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST32VarTemplatePartialSpecializationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -23090,7 +23112,6 @@ namespace CppSharp
 
                 public unsafe partial class CtorArgs : IDisposable
                 {
-                    [StructLayout(LayoutKind.Explicit, Size = 0)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17CoroutineBodyStmt8CtorArgsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -32583,7 +32604,6 @@ namespace CppSharp
 
                 public unsafe partial class FieldDesignator : IDisposable
                 {
-                    [StructLayout(LayoutKind.Explicit, Size = 0)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18DesignatedInitExpr15FieldDesignatorC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -32677,7 +32697,6 @@ namespace CppSharp
 
                 public unsafe partial class ArrayOrRangeDesignator : IDisposable
                 {
-                    [StructLayout(LayoutKind.Explicit, Size = 0)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18DesignatedInitExpr22ArrayOrRangeDesignatorC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -41933,7 +41952,6 @@ namespace CppSharp
 
                 public unsafe partial class FindResult : IDisposable
                 {
-                    [StructLayout(LayoutKind.Explicit, Size = 0)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST12OverloadExpr10FindResultC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -44757,7 +44775,6 @@ namespace CppSharp
 
                 public unsafe partial class ExtraState : IDisposable
                 {
-                    [StructLayout(LayoutKind.Explicit, Size = 0)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24MaterializeTemporaryExpr10ExtraStateC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -46802,7 +46819,6 @@ namespace CppSharp
 
         public unsafe partial class Parser
         {
-            [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct __Internal
             {
             }

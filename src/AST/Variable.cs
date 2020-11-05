@@ -8,6 +8,7 @@ namespace CppSharp.AST
             return visitor.VisitVariableDecl(this);
         }
 
+        public bool IsConstExpr { get; set; }
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
         public ExpressionObsolete Initializer { get; set; }

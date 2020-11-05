@@ -2341,6 +2341,16 @@ CppSharp::Parser::AST::Variable::Variable(CppSharp::Parser::AST::Variable^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::Variable(__arg0);
 }
 
+bool CppSharp::Parser::AST::Variable::IsConstExpr::get()
+{
+    return ((::CppSharp::CppParser::AST::Variable*)NativePtr)->isConstExpr;
+}
+
+void CppSharp::Parser::AST::Variable::IsConstExpr::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Variable*)NativePtr)->isConstExpr = value;
+}
+
 System::String^ CppSharp::Parser::AST::Variable::Mangled::get()
 {
     return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Variable*)NativePtr)->mangled);

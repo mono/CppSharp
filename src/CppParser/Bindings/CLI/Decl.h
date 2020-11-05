@@ -1256,6 +1256,12 @@ namespace CppSharp
 
                 ~Variable();
 
+                property bool IsConstExpr
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property System::String^ Mangled
                 {
                     System::String^ get();

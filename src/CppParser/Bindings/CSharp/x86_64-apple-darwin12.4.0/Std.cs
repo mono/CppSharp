@@ -339,7 +339,6 @@ namespace Std
 
     namespace Allocator
     {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__19allocatorIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -1277,7 +1276,6 @@ namespace Std
 
     public unsafe static partial class BasicStringExtensions
     {
-        [StructLayout(LayoutKind.Explicit, Size = 0)]
         public partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc", CallingConvention = __CallingConvention.Cdecl)]

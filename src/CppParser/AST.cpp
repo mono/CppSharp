@@ -709,7 +709,8 @@ Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
     return nullptr;
 }
 
-Variable::Variable() : Declaration(DeclarationKind::Variable), initializer(0) {}
+Variable::Variable() : Declaration(DeclarationKind::Variable),
+    isConstExpr(false), initializer(0) {}
 
 Variable::~Variable() {}
 

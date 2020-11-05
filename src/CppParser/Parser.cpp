@@ -3385,6 +3385,7 @@ void Parser::WalkVariable(const clang::VarDecl* VD, Variable* Var)
 {
     HandleDeclaration(VD, Var);
 
+    Var->isConstExpr = VD->isConstexpr();
     Var->name = VD->getName().str();
     Var->access = ConvertToAccess(VD->getAccess());
     Var->initializer = VD->getAnyInitializer() ? WalkVariableInitializerExpression(VD->getAnyInitializer()) : nullptr;

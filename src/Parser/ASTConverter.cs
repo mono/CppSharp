@@ -1500,6 +1500,7 @@ namespace CppSharp
         public void VisitVariable(Variable decl, AST.Variable _variable)
         {
             VisitDeclaration(decl, _variable);
+            _variable.IsConstExpr = decl.IsConstExpr;
             _variable.Mangled = decl.Mangled;
             _variable.QualifiedType = typeConverter.VisitQualified(
                 decl.QualifiedType);

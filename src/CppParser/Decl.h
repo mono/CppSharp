@@ -421,6 +421,7 @@ class CS_API Variable : public Declaration
 public:
     DECLARE_DECL_KIND(Variable, Variable)
     ~Variable();
+    bool isConstExpr;
     std::string mangled;
     QualifiedType qualifiedType;
     ExpressionObsolete* initializer;
