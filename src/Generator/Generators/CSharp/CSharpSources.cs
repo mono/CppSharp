@@ -535,11 +535,11 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(BlockKind.InternalsClass);
 
-            if (@class.Layout.GetSize() > 0)
+            if (@class.Layout.Size > 0)
             { 
                 var layout = sequentialLayout ? "Sequential" : "Explicit";
                 var pack = @class.MaxFieldAlignment > 0 ? $", Pack = {@class.MaxFieldAlignment}" : string.Empty;
-                WriteLine($"[StructLayout(LayoutKind.{layout}, Size = {@class.Layout.GetSize()}{pack})]");
+                WriteLine($"[StructLayout(LayoutKind.{layout}, Size = {@class.Layout.Size}{pack})]");
             }
 
             GenerateClassInternalHead(@class);
@@ -3035,7 +3035,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 ((Method) method.OriginalFunction).IsConstructor)
             {
                 WriteLine($@"Marshal.AllocHGlobal({
-                    ((Class) method.OriginalNamespace).Layout.GetSize()});");
+                    ((Class) method.OriginalNamespace).Layout.Size});");
                 names.Insert(0, Helpers.ReturnIdentifier);
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));

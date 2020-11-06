@@ -91,12 +91,8 @@ namespace CppSharp.Generators.CSharp
                         $"[{array.Size}]");
                 }
 
-                Class @class;
-                if (arrayType.TryGetClass(out @class))
-                {
-                    return new TypePrinterResult($"fixed byte",
-                        $"[{array.Size * @class.Layout.GetSize()}]");
-                }
+                if (arrayType.IsClass())
+                    return new TypePrinterResult($"fixed byte", $"[{array.GetSizeInBytes()}]");
 
                 TypePrinterResult arrayElemType = array.QualifiedType.Visit(this);
 
