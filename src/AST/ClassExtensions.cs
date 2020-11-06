@@ -214,11 +214,6 @@ namespace CppSharp.AST
                 b => b.Class).Any(HasDependentValueFieldInLayout);
         }
 
-        public static int GetSize(this ClassLayout layout) =>
-            /// There's at least one ABI (System V) that gives to empty structs
-            /// size 1 in C++ and size 0 in C. The former causes crashes in older versions of Mono.
-            layout.Size == 1 && layout.DataSize == 0 ? 0 : layout.Size;
-
         private static bool IsValueDependent(Type type)
         {
             var desugared = type.Desugar();
