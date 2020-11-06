@@ -749,10 +749,10 @@ namespace Std
         public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_
         {
             [FieldOffset(0)]
-            internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __begin_;
+            internal __IntPtr __begin_;
 
             [FieldOffset(8)]
-            internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __end_;
+            internal __IntPtr __end_;
 
             [FieldOffset(16)]
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S1_ __end_cap_;
