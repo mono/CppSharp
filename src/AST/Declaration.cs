@@ -121,7 +121,8 @@ namespace CppSharp.AST
         public int LineNumberStart { get; set; }
         public int LineNumberEnd { get; set; }
         public bool IsImplicit { get; set; }
-        public int MaxFieldAlignment { get; set; }
+        public int AlignAs { get; set; }
+        public int MaxFieldAlignment { get; set; }        
 
         private DeclarationContext @namespace;
         public DeclarationContext OriginalNamespace;

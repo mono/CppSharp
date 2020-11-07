@@ -1888,6 +1888,9 @@ Field* Parser::WalkFieldCXX(const clang::FieldDecl* FD, Class* Class)
     F->isBitField = FD->isBitField();
     if (F->isBitField && !F->isDependent && !FD->getBitWidth()->isInstantiationDependent())
         F->bitWidth = FD->getBitWidthValue(c->getASTContext());
+ 
+    if (auto alignedAttr = FD->getAttr<clang::AlignedAttr>())
+        F->alignAs = GetAlignAs(alignedAttr);
 
     Class->Fields.push_back(F);
 
@@ -4179,6 +4182,9 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
                     Decl->isDeprecated = true;
                     break;
                 }
+                case clang::attr::Kind::Aligned:
+                    Decl->alignAs = GetAlignAs(cast<clang::AlignedAttr>(Attr));
+                    break;
                 default:
                     break;
             }
@@ -4186,6 +4192,15 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     }
 
     return Decl;
+}
+
+int Parser::GetAlignAs(const clang::AlignedAttr* alignedAttr)
+{
+    return alignedAttr->isAlignas() &&
+        !alignedAttr->isAlignmentErrorDependent() &&
+        !alignedAttr->isAlignmentDependent()
+        ? alignedAttr->getAlignment(c->getASTContext())
+        : 0;
 }
 
 void Parser::HandleDiagnostics(ParserResult* res)

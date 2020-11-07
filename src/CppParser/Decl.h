@@ -72,6 +72,7 @@ public:
     ~Declaration();
 
     DeclarationKind kind;
+    int alignAs;
     int maxFieldAlignment;
     AccessSpecifier access;
     DeclarationContext* _namespace;

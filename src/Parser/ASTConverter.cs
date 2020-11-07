@@ -985,6 +985,7 @@ namespace CppSharp
             _decl.IsImplicit = decl.IsImplicit;
             _decl.IsInvalid = decl.IsInvalid;
             _decl.DefinitionOrder = decl.DefinitionOrder;
+            _decl.AlignAs = decl.AlignAs;
             _decl.MaxFieldAlignment = decl.MaxFieldAlignment;
             _decl.IsDeprecated = decl.IsDeprecated;
 

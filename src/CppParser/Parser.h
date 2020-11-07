@@ -140,6 +140,7 @@ private:
     std::stack<clang::Scope> GetScopesFor(clang::FunctionDecl* FD);
     void MarkValidity(Function* F);
     void WalkFunction(const clang::FunctionDecl* FD, Function* F);
+    int GetAlignAs(const clang::AlignedAttr* alignedAttr);
     void HandlePreprocessedEntities(Declaration* Decl);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
                                     MacroLocation macroLocation = MacroLocation::Unknown);

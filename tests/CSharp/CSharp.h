@@ -1508,6 +1508,41 @@ struct DLL_API ConversionFunctions
     short field = 100;
 };
 
+struct DLL_API ClassCustomTypeAlignment 
+{
+    struct alignas(1) Align1 { };    
+    struct alignas(8) Align8 { };
+    struct alignas(16) Align16 {
+        double a;
+        double b;
+    };
+
+    bool boolean;
+    Align16 align16;
+    Align1 align1;    
+    double dbl;
+    Align8 align8;
+};
+
+static constexpr const int ClassCustomTypeAlignmentOffsets[] { 
+    offsetof(ClassCustomTypeAlignment, boolean),
+    offsetof(ClassCustomTypeAlignment, align16),
+    offsetof(ClassCustomTypeAlignment, align1),
+    offsetof(ClassCustomTypeAlignment, dbl),
+    offsetof(ClassCustomTypeAlignment, align8),
+};
+
+struct DLL_API ClassCustomObjectAligment
+{
+    bool boolean;
+    alignas(alignof(ClassCustomTypeAlignment)) char charAligned8;
+};
+
+static constexpr const int ClassCustomObjectAligmentOffsets[] { 
+    offsetof(ClassCustomObjectAligment, boolean),
+    offsetof(ClassCustomObjectAligment, charAligned8),
+};
+
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
 DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);    

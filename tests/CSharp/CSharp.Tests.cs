@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using CppSharp.Utils;
 using CSharp;
@@ -707,7 +709,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestTemplateInternals()
+    public void TestAlignment()
     {
         foreach (var internalType in new[]
             {
@@ -724,6 +726,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
             if (fieldOffset != null)
                 Assert.That(fieldOffset.Value, Is.EqualTo(0));
             Assert.That((int)Marshal.OffsetOf(internalType, independentFields[0].Name), Is.EqualTo(0));
+            Assert.That(Marshal.SizeOf(internalType), Is.EqualTo(internalType.StructLayoutAttribute.Size));
         }
 
         foreach (var internalType in new Type[]
@@ -743,6 +746,20 @@ public unsafe class CSharpTests : GeneratorTestFixture
             if (fieldOffsetValue != null)
                 Assert.That(fieldOffsetValue.Value, Is.EqualTo(Marshal.SizeOf(IntPtr.Zero)));
             Assert.That((int)Marshal.OffsetOf(internalType, independentFields[1].Name), Is.EqualTo(Marshal.SizeOf(IntPtr.Zero)));
+            Assert.That(Marshal.SizeOf(internalType), Is.EqualTo(internalType.StructLayoutAttribute.Size));
+        }
+
+        foreach (var (type, offsets) in new (Type, int[])[] {
+            (typeof(ClassCustomTypeAlignment), CSharp.CSharp.ClassCustomTypeAlignmentOffsets),
+            (typeof(ClassCustomObjectAligment), CSharp.CSharp.ClassCustomObjectAligmentOffsets),
+        })
+        {
+            var internalType = type.GetNestedType("__Internal");
+            var managedOffsets = internalType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Select(field =>
+                (int)Marshal.OffsetOf(internalType, field.Name)
+            );
+            Assert.That(managedOffsets, Is.EqualTo(offsets));
+            Assert.That(Marshal.SizeOf(internalType), Is.EqualTo(internalType.StructLayoutAttribute.Size));
         }
     }
 
