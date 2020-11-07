@@ -92,48 +92,11 @@ namespace CppSharp.AST
             }
         }
 
-        public bool FindSymbol(ref string symbol)
-        {
-            if (FindLibraryBySymbol(symbol, out _))
-                return true;
-
-            string alternativeSymbol;
-
-            // Check for C symbols with a leading underscore.
-            alternativeSymbol = "_" + symbol;
-            if (FindLibraryBySymbol(alternativeSymbol, out _))
-            {
-                symbol = alternativeSymbol;
-                return true;
-            }
-
-            alternativeSymbol = symbol.TrimStart('_');
-            if (FindLibraryBySymbol(alternativeSymbol, out _))
-            {
-                symbol = alternativeSymbol;
-                return true;
-            }
-
-            alternativeSymbol = "_imp_" + symbol;
-            if (FindLibraryBySymbol(alternativeSymbol, out _))
-            {
-                symbol = alternativeSymbol;
-                return true;
-            }
-
-            alternativeSymbol = "__imp_" + symbol;
-            if (FindLibraryBySymbol("__imp_" + symbol, out _))
-            {
-                symbol = alternativeSymbol;
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool FindLibraryBySymbol(string symbol, out NativeLibrary library)
-        {
-            return Symbols.TryGetValue(symbol, out library);
-        }
+        public bool FindLibraryBySymbol(string symbol, out NativeLibrary library) =>
+            Symbols.TryGetValue(symbol, out library) ||
+            Symbols.TryGetValue("_" + symbol, out library) ||
+            Symbols.TryGetValue(symbol.TrimStart('_'), out library) ||
+            Symbols.TryGetValue("_imp_" + symbol, out library) ||
+            Symbols.TryGetValue("__imp_" + symbol, out library);
     }
 }

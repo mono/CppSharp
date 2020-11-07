@@ -3395,12 +3395,6 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             NativeLibrary library;
             Context.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
 
-            var targetTriple = Context.ParserOptions.TargetTriple;
-            if (library == null && targetTriple.IsMacOS())
-                // the symbol name passed to dlsym() must NOT be prepended with an underscore
-                // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dlsym.3.html
-                Context.Symbols.FindLibraryBySymbol('_' + ((IMangledDecl) declaration).Mangled, out library);
-
             if (library != null)
                 libName = Path.GetFileNameWithoutExtension(library.FileName);
 
@@ -3411,6 +3405,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             if (libName == null)
                 libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
+            var targetTriple = Context.ParserOptions.TargetTriple;
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
             else if (targetTriple.IsWindows() &&

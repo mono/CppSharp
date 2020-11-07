@@ -114,7 +114,6 @@ namespace CppSharp.Passes
 
         private bool NeedsSymbol(Function function)
         {
-            var mangled = function.Mangled;
             var method = function as Method;
             bool isInImplicitSpecialization;
             var declarationContext = function.Namespace;
@@ -136,7 +135,7 @@ namespace CppSharp.Passes
                  (!method.IsConstructor || !((Class) method.Namespace).IsAbstract))) &&
                 // we cannot handle nested anonymous types
                 (!(function.Namespace is Class) || !string.IsNullOrEmpty(function.Namespace.OriginalName)) &&
-                !Context.Symbols.FindSymbol(ref mangled);
+                !Context.Symbols.FindLibraryBySymbol(function.Mangled, out _);
         }
 
         private SymbolsCodeGenerator GetSymbolsCodeGenerator(Module module)
