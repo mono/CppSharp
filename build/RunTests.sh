@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
 
-BUILD_DIR=$(dirname -- $0)
 
 case "$(uname -s)" in
     Darwin|Linux)
@@ -15,5 +14,7 @@ case "$(uname -s)" in
         ;;
 esac
 
-cp $BUILD_DIR/../deps/NUnit/nunit.framework.* $BUILD_DIR/$ACTION/lib/Release_*/
-$MONO $BUILD_DIR/../deps/NUnit.Console-3.9.0/nunit3-console.exe -noresult $BUILD_DIR/$ACTION/lib/Release_*/*Tests*.dll
+DIR=$( cd "$( dirname "$0" )" && pwd )
+OUT_DIR=$(find $DIR/$ACTION/lib/* -type d -maxdepth 0)
+cp $DIR/../deps/NUnit/nunit.framework.* $OUT_DIR
+$MONO $DIR/../deps/NUnit.Console-3.9.0/nunit3-console.exe --result=$OUT_DIR/TestResult.xml $OUT_DIR/*Tests*.dll
