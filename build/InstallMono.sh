@@ -1,6 +1,6 @@
 OS=$(uname -s)
 if [ "$OS" == "Darwin" ]; then
-	wget -O mono.pkg https://download.mono-project.com/archive/6.10.0/macos-10-universal/MonoFramework-MDK-6.10.0.macos10.xamarin.universal.pkg
+	curl -o mono.pkg https://download.mono-project.com/archive/6.10.0/macos-10-universal/MonoFramework-MDK-6.10.0.macos10.xamarin.universal.pkg
 	sudo installer -pkg mono.pkg -target /
 	export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/bin
 elif [ "$OS" == "Linux" ]; then
