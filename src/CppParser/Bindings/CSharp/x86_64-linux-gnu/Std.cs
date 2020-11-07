@@ -19,6 +19,7 @@ namespace Std
 {
     namespace Allocator
     {
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -729,6 +730,7 @@ namespace Std
 {
     namespace Less
     {
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
