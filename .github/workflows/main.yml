@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-posix:
+  posix:
     strategy:
       matrix:
         config:
@@ -37,7 +37,7 @@ jobs:
           path: build/**/TestResult.xml
           access-token: ${{ secrets.GITHUB_TOKEN }}
 
-  build-windows:
+  windows:
     strategy:
       matrix:
         config:
