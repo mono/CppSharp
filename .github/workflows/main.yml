@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-linux:
+  build-posix:
     strategy:
       matrix:
         config:
