@@ -834,7 +834,8 @@ namespace CppSharp.Generators.CSharp
                 // The linux 32 bit target pads at the end the structure
                 // which is already handled by using [StructLayout(Size = n)].
                 // However the windows 32 bit target will add some of the padding at the front,
-                // right after the vtable pointer, which is what we are handling here
+                // right after the vtable pointer, which is what we are handling here.
+                // See https://github.com/dotnet/runtime/issues/44378 for more info.
                 if (sequentalLayout && fields[i].IsVTablePtr)
                 {
                     var nativePointerSize = Context.TargetInfo.PointerWidth / 8;
