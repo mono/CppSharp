@@ -625,6 +625,7 @@ namespace Std
 
     namespace Allocator
     {
+        [StructLayout(LayoutKind.Explicit, Size = 1, Pack = 8)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$allocator@D@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -897,6 +898,7 @@ namespace Std
 
     namespace CharTraits
     {
+        [StructLayout(LayoutKind.Explicit, Size = 1, Pack = 8)]
         public unsafe partial struct __Internal
         {
         }

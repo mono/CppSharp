@@ -23113,6 +23113,7 @@ namespace CppSharp
 
                 public unsafe partial class CtorArgs : IDisposable
                 {
+                    [StructLayout(LayoutKind.Explicit, Size = 1)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0CtorArgs@CoroutineBodyStmt@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -32605,6 +32606,7 @@ namespace CppSharp
 
                 public unsafe partial class FieldDesignator : IDisposable
                 {
+                    [StructLayout(LayoutKind.Explicit, Size = 1)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0FieldDesignator@DesignatedInitExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -32698,6 +32700,7 @@ namespace CppSharp
 
                 public unsafe partial class ArrayOrRangeDesignator : IDisposable
                 {
+                    [StructLayout(LayoutKind.Explicit, Size = 1)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0ArrayOrRangeDesignator@DesignatedInitExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -41953,6 +41956,7 @@ namespace CppSharp
 
                 public unsafe partial class FindResult : IDisposable
                 {
+                    [StructLayout(LayoutKind.Explicit, Size = 1)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0FindResult@OverloadExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -44776,6 +44780,7 @@ namespace CppSharp
 
                 public unsafe partial class ExtraState : IDisposable
                 {
+                    [StructLayout(LayoutKind.Explicit, Size = 1)]
                     public partial struct __Internal
                     {
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0ExtraState@MaterializeTemporaryExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -48085,6 +48090,7 @@ namespace CppSharp
 
         public unsafe partial class ClangParser : IDisposable
         {
+            [StructLayout(LayoutKind.Explicit, Size = 1)]
             public partial struct __Internal
             {
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0ClangParser@CppParser@CppSharp@@QAE@ABV012@@Z", CallingConvention = __CallingConvention.ThisCall)]

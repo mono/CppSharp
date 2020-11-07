@@ -339,6 +339,7 @@ namespace Std
 
     namespace Allocator
     {
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__19allocatorIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
