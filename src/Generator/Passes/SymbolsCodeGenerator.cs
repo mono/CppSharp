@@ -192,7 +192,7 @@ namespace CppSharp.Passes
 
             string instance = Helpers.InstanceField;
             string @class = isProtected ? wrapper : @namespace;
-            Write($@"({@class}* {instance}) {{ {instance}->~{method.Namespace.Name}(); }} }};");
+            Write($"({@class}* {instance}) {{ {instance}->~{method.Namespace.Name}(); }} }};");
             if (isProtected)
             {
                 NewLine();
