@@ -1,0 +1,32 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-posix:
+    strategy:
+      matrix:
+        config:
+          - { os: ubuntu-20.04, cc: "gcc-7", cxx: "g++-7" }
+          - { os: macos-10.15, cc: "clang", cxx: "clang++" }
+
+    runs-on: ${{ matrix.config.os }}
+
+    env:
+      CC: ${{ matrix.config.cc }}
+      CXX: ${{ matrix.config.cxx }}
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup
+        run: |
+          source build/InstallMono.sh &&
+          build/InstallNugets.sh &&
+          build/premake.sh --file=build/scripts/LLVM.lua download_llvm
+
+      - name: Build
+        run: build/Compile.sh
+
+      - name: Test
+        run: build/RunTests.sh
