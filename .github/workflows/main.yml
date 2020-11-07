@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         config:
-          - { os: ubuntu-20.04, cc: "gcc-7", cxx: "g++-7" }
+          - { os: ubuntu-20.04, cc: gcc-7, cxx: g++-7 }
           - { os: macos-10.15, cc: "clang", cxx: "clang++" }
 
     runs-on: ${{ matrix.config.os }}
@@ -30,3 +30,38 @@ jobs:
 
       - name: Test
         run: build/RunTests.sh
+
+  build-windows:
+    strategy:
+      matrix:
+        config:
+          - { os: windows-2019, vs: 2019, platform: x86 }
+          - { os: windows-2019, vs: 2019, platform: x64 }
+
+    runs-on: ${{ matrix.config.os }}
+
+    env:
+      VS_VERSION: ${{ matrix.config.vs }}
+      PLATFORM: ${{ matrix.config.platform }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+          build\premake5.exe --file=build\scripts\LLVM.lua download_llvm --arch=%PLATFORM%
+
+      - name: Build
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+          build\premake5.exe --file=build\premake5.lua vs%VS_VERSION% --arch=%PLATFORM%
+          msbuild build\vs%VS_VERSION%\CppSharp.sln /p:Configuration=Release /verbosity:minimal
+
+      - name: Test
+        shell: bash
+        run: |
+          build/InstallNugets.sh &&
+          build/RunTests.sh
