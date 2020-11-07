@@ -95,6 +95,9 @@ namespace CppSharp.Passes
         {
             if (!Context.Symbols.FindLibraryBySymbol(mangledDecl.Mangled, out _))
             {
+                if (mangledDecl is Variable variable && variable.IsConstExpr)
+                    return true;
+
                 Diagnostics.Warning("Symbol not found: {0}", mangledDecl.Mangled);
                 return false;
             }
