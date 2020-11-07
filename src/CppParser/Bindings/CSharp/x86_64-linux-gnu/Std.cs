@@ -19,7 +19,7 @@ namespace Std
 {
     namespace Allocator
     {
-        [StructLayout(LayoutKind.Explicit, Size = 1)]
+        [StructLayout(LayoutKind.Sequential, Size = 1)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -104,8 +104,7 @@ namespace Std
         {
             if (__Instance == IntPtr.Zero)
                 return;
-            global::Std.Allocator<_Tp> __dummy;
-            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            NativeToManagedMap.TryRemove(__Instance, out _);
             if (disposing)
             {
                 var ___Tp = typeof(_Tp);
@@ -127,581 +126,496 @@ namespace Std
 {
     namespace Vector
     {
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector__i___N_std_S_allocator__i
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
     }
 
     namespace VectorBase
     {
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base__i___N_std_S_allocator__i
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 24)]
+        [StructLayout(LayoutKind.Sequential, Size = 24)]
         public unsafe partial struct __Internalc__N_std_S__Vector_base_____N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_S_allocator__S0_
         {
-            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
         namespace VectorImpl
         {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            [StructLayout(LayoutKind.Sequential, Size = 24)]
             public unsafe partial struct __Internal
             {
-                [FieldOffset(0)]
                 internal __IntPtr _M_start;
-
-                [FieldOffset(8)]
                 internal __IntPtr _M_finish;
-
-                [FieldOffset(16)]
                 internal __IntPtr _M_end_of_storage;
             }
 
@@ -709,16 +623,11 @@ namespace Std
 
         namespace VectorImplData
         {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            [StructLayout(LayoutKind.Sequential, Size = 24)]
             public unsafe partial struct __Internal
             {
-                [FieldOffset(0)]
                 internal __IntPtr _M_start;
-
-                [FieldOffset(8)]
                 internal __IntPtr _M_finish;
-
-                [FieldOffset(16)]
                 internal __IntPtr _M_end_of_storage;
             }
         }
@@ -730,7 +639,7 @@ namespace Std
 {
     namespace Less
     {
-        [StructLayout(LayoutKind.Explicit, Size = 1)]
+        [StructLayout(LayoutKind.Sequential, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -747,43 +656,30 @@ namespace Std
     {
         namespace RbTreeImpl
         {
-            [StructLayout(LayoutKind.Explicit, Size = 48)]
+            [StructLayout(LayoutKind.Sequential, Size = 48)]
             public unsafe partial struct __Internal
             {
-                [FieldOffset(0)]
                 internal global::Std.Less.__Internal _M_key_compare;
-
-                [FieldOffset(8)]
                 internal global::Std.RbTreeNodeBase.__Internal _M_header;
-
-                [FieldOffset(40)]
                 internal ulong _M_node_count;
             }
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        [StructLayout(LayoutKind.Sequential, Size = 48)]
         public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_
         {
-            [FieldOffset(0)]
             internal global::Std.RbTree.RbTreeImpl.__Internal _M_impl;
         }
     }
 
     public unsafe partial class RbTreeNodeBase
     {
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
+        [StructLayout(LayoutKind.Sequential, Size = 32)]
         public partial struct __Internal
         {
-            [FieldOffset(0)]
             internal global::Std.RbTreeColor _M_color;
-
-            [FieldOffset(8)]
             internal __IntPtr _M_parent;
-
-            [FieldOffset(16)]
             internal __IntPtr _M_left;
-
-            [FieldOffset(24)]
             internal __IntPtr _M_right;
         }
     }
@@ -797,10 +693,9 @@ namespace Std
 {
     namespace Map
     {
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        [StructLayout(LayoutKind.Sequential, Size = 48)]
         public unsafe partial struct __Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_
         {
-            [FieldOffset(0)]
             internal global::Std.RbTree.__Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_ _M_t;
         }
     }
@@ -814,7 +709,7 @@ namespace Std
 {
     namespace CharTraits
     {
-        [StructLayout(LayoutKind.Explicit, Size = 1)]
+        [StructLayout(LayoutKind.Sequential, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -880,8 +775,7 @@ namespace Std
         {
             if (__Instance == IntPtr.Zero)
                 return;
-            global::Std.CharTraits<_CharT> __dummy;
-            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            NativeToManagedMap.TryRemove(__Instance, out _);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
@@ -893,10 +787,9 @@ namespace Std
 {
     namespace BasicString
     {
-        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 8)]
         public unsafe partial struct __Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C
         {
-            [FieldOffset(0)]
             internal global::Std.BasicString.AllocHider.__Internal _M_dataplus;
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -908,10 +801,9 @@ namespace Std
 
         namespace AllocHider
         {
-            [StructLayout(LayoutKind.Explicit, Size = 8)]
+            [StructLayout(LayoutKind.Sequential, Size = 8)]
             public unsafe partial struct __Internal
             {
-                [FieldOffset(0)]
                 internal __IntPtr _M_p;
             }
         }
@@ -994,8 +886,7 @@ namespace Std
         {
             if (__Instance == IntPtr.Zero)
                 return;
-            global::Std.BasicString<_CharT, _Traits, _Alloc> __dummy;
-            NativeToManagedMap.TryRemove(__Instance, out __dummy);
+            NativeToManagedMap.TryRemove(__Instance, out _);
             if (disposing)
             {
                 var ___CharT = typeof(_CharT);
