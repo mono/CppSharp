@@ -30,6 +30,7 @@ namespace CppSharp.Utils
             options.Quiet = true;
             options.GenerateDebugOutput = true;
             options.GenerateSequentialLayout = true;
+            options.CheckSymbols = true;
             var testModule = options.AddModule(name);
             testModule.SharedLibraryName = $"{name}.Native";
 
