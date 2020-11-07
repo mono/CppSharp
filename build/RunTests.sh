@@ -1,5 +1,19 @@
+#!/bin/sh
 set -e
+
 BUILD_DIR=$(dirname -- $0)
-MONO_PATH=$BUILD_DIR/../deps/NUnit.ConsoleRunner.3.6.1/tools \
-cp $BUILD_DIR/../deps/NUnit/nunit.framework.* $BUILD_DIR/gmake/lib/Release_*/
-mono $BUILD_DIR/../deps/NUnit.Console-3.9.0/nunit3-console.exe -noresult $BUILD_DIR/gmake/lib/Release_*/*Tests*.dll
+
+case "$(uname -s)" in
+    Darwin|Linux)
+        ACTION=gmake
+        MONO=mono
+        export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/bin
+        ;;
+
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+        ACTION=vs2019
+        ;;
+esac
+
+cp $BUILD_DIR/../deps/NUnit/nunit.framework.* $BUILD_DIR/$ACTION/lib/Release_*/
+$MONO $BUILD_DIR/../deps/NUnit.Console-3.9.0/nunit3-console.exe -noresult $BUILD_DIR/$ACTION/lib/Release_*/*Tests*.dll

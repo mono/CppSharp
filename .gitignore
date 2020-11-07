@@ -38,6 +38,8 @@ src/generator/generator
 /build/scripts/llvm**
 /build/scripts/*.tar.gz
 /build/scripts/.vagrant
+/build/*.zip
+/build/*.pkg
 /build/vs20*
 /build/gmake
 /build/headers
