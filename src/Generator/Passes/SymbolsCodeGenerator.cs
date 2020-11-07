@@ -28,12 +28,13 @@ namespace CppSharp.Passes
 
         public override void Process()
         {
-            WriteLine("#define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS");
-            WriteLine("#define _LIBCPP_HIDE_FROM_ABI");
-            NewLine();
-
             if (TranslationUnit.Module == Options.SystemModule)
+            {
+                WriteLine("#define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS");
+                WriteLine("#define _LIBCPP_HIDE_FROM_ABI");
+                NewLine();
                 WriteLine("#include <string>");
+            }
             else
                 foreach (var header in TranslationUnit.Module.Headers)
                     WriteLine($"#include <{header}>");
