@@ -2214,21 +2214,11 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                var @base = @class.GetNonIgnoredRootBase();
-
-                // Use interfaces if any - derived types with a this class as a secondary base, must be compatible with the map
-                var @interface = @base.Namespace.Classes.FirstOrDefault(
-                    c => c.IsInterface && c.OriginalClass == @base);
-
                 WriteLine("if ({0} == IntPtr.Zero)", Helpers.InstanceIdentifier);
                 WriteLineIndent("return;");
 
                 // The local var must be of the exact type in the object map because of TryRemove
-                var printedClass = (@interface ?? (
-                    @base.IsAbstractImpl ? @base.BaseClass : @base)).Visit(TypePrinter);
-                WriteLine($"{printedClass} {Helpers.DummyIdentifier};");
-                WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
-                    Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
+                WriteLine("NativeToManagedMap.TryRemove({0}, out _);", Helpers.InstanceIdentifier);
                 var classInternal = TypePrinter.PrintNative(@class);
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
