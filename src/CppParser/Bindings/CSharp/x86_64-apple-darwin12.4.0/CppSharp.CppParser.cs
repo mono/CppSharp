@@ -6407,9 +6407,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -6643,6 +6646,19 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->kind = value;
+                    }
+                }
+
+                public int AlignAs
+                {
+                    get
+                    {
+                        return ((__Internal*)__Instance)->alignAs;
+                    }
+
+                    set
+                    {
+                        ((__Internal*)__Instance)->alignAs = value;
                     }
                 }
 
@@ -6914,9 +6930,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -7497,9 +7516,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -7674,9 +7696,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -7831,9 +7856,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -8005,9 +8033,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -8899,9 +8930,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -9153,9 +9187,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -9699,9 +9736,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -10153,9 +10193,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -10299,9 +10342,12 @@ namespace CppSharp
                         internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                         [FieldOffset(4)]
-                        internal int maxFieldAlignment;
+                        internal int alignAs;
 
                         [FieldOffset(8)]
+                        internal int maxFieldAlignment;
+
+                        [FieldOffset(12)]
                         internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                         [FieldOffset(16)]
@@ -10644,9 +10690,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -11025,9 +11074,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -11246,9 +11298,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -12524,9 +12579,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -13068,9 +13126,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -13301,9 +13362,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -13461,9 +13525,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -13668,9 +13735,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -13876,9 +13946,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -14057,9 +14130,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -14302,9 +14378,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -14535,9 +14614,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -14844,9 +14926,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -15085,9 +15170,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -15500,9 +15588,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -15733,9 +15824,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -15976,9 +16070,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -16151,9 +16248,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -16305,9 +16405,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]
@@ -16967,9 +17070,12 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
 
                     [FieldOffset(4)]
-                    internal int maxFieldAlignment;
+                    internal int alignAs;
 
                     [FieldOffset(8)]
+                    internal int maxFieldAlignment;
+
+                    [FieldOffset(12)]
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
 
                     [FieldOffset(16)]

@@ -71,6 +71,12 @@ function SetupManagedTestProject()
     kind "SharedLib"
     language "C#"  
     clr "Unsafe"
+
+    filter { "action:not netcore" }
+      links
+      {
+        "System.Core"
+      }
 end
 
 function SetupTestGeneratorProject(name, depends)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
@@ -774,6 +775,15 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 return false;
 
+            foreach (var field in @class.Fields)
+            {
+                if (field.AlignAs != 0)
+                {
+                    // https://github.com/dotnet/runtime/issues/22990
+                    return false;
+                }
+            }
+
             var fields = @class.Layout.Fields;
 
             if (fields.Count > 1)
@@ -782,6 +792,14 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (fields[i].Offset == fields[i - 1].Offset)
                         return false;
+
+                    var type = fields[i].QualifiedType.Type.Desugar();
+
+                    if (type.TryGetDeclaration(out Declaration declaration) && declaration.AlignAs != 0)
+                    {
+                        // https://github.com/dotnet/runtime/issues/9089
+                        return false;
+                    }
                 }
             }
 
@@ -812,13 +830,10 @@ namespace CppSharp.Generators.CSharp
                 }
                 WriteLine(";");
 
-                // HACK: work around the lack of alignment in StructLayout
-                // it's been requested multiple times to no avail:
-                // https://github.com/dotnet/runtime/issues/5931, https://github.com/dotnet/runtime/issues/9089, https://github.com/dotnet/runtime/issues/22990
                 // Sometimes padding is needed due to aligment.
                 // The linux 32 bit target pads at the end the structure
                 // which is already handled by using [StructLayout(Size = n)].
-                // However the windows 32 bit target pads at the front,
+                // However the windows 32 bit target will add some of the padding at the front,
                 // right after the vtable pointer, which is what we are handling here
                 if (sequentalLayout && fields[i].IsVTablePtr)
                 {
