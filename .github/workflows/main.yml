@@ -19,10 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Build
+      - name: Setup
         run: |
           source build/InstallMono.sh &&
           build/InstallNugets.sh &&
-          build/premake.sh --file=build/scripts/LLVM.lua download_llvm &&
-          build/Compile.sh &&
-          build/RunTests.sh
+          build/premake.sh --file=build/scripts/LLVM.lua download_llvm
+
+      - name: Build
+        run: build/Compile.sh
+
+      - name: Test
+        run: build/RunTests.sh
