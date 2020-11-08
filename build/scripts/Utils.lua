@@ -81,17 +81,25 @@ function git.rev_parse(dir, rev)
   return outputof(cmd)
 end
 
-function http.progress (total, curr)
-  local ratio = curr / total;
-  ratio = math.min(math.max(ratio, 0), 1);
+function percentage(total, curr)
+  return math.floor(math.min(math.max(curr / total, 0), 1) * 100)
+end
 
-  local percent = math.floor(ratio * 100);
-  io.write("Download progress (" .. percent .. "%/100%)\r")
+function http.progress (total, prev, curr)
+  local prevPercent = percentage(total, prev)
+  local percent = percentage(total, curr)
+  if percent % 5 == 0 and prevPercent ~= percent then
+    io.write("Download progress (" .. percent .. "%/100%)\r")
+  end
 end
 
 function download(url, file)
   print("Downloading: " .. url)
-  local res = http.download(url, file, http.progress)
+  local prev = 0
+  local res = http.download(url, file, function(total, curr)
+    http.progress(total, prev, curr)
+    prev = curr
+  end)
 
   if res ~= "OK" then
     os.remove(file)
