@@ -23,9 +23,7 @@ project "CppSharp.CppParser"
   filter "action:vs*"
     buildoptions { clang_msvc_flags }
 
-  if os.getenv("APPVEYOR") then
-    linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
-  end
+  linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
 
   filter {}
   
