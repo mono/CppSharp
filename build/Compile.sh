@@ -16,12 +16,6 @@ case $i in
 esac
 done
 
-if [ "$(uname)" == "Darwin" ]; then
-	PREMAKE=$CUR_DIR/premake5-osx;
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-	PREMAKE=$CUR_DIR/premake5-linux;
-fi
-
 MONO=mono
 if [ "$(uname)" == "Darwin" ]; then
   MONO_PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin/
@@ -37,7 +31,7 @@ fi
 
 export PATH=$PATH:$MONO_PATH
 
-$PREMAKE --file=$CUR_DIR/premake5.lua gmake "$@"
+./premake.sh --file=$CUR_DIR/premake5.lua gmake "$@"
 
 if $DEBUG; then
 	BUILD_CONF=debug_x64;
