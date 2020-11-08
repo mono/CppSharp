@@ -56,16 +56,34 @@ function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
     if major == "19" and minor >= "20" then return "vs2019"
     elseif major == "19" and minor >= "10" then return "vs2017"
-    elseif major == "19" then return "vs2015"
-    elseif major == "18" then return "vs2013"
-    elseif major == "17" then return "vs2012"
-    else error("Unknown MSVC compiler version, run in VS command prompt.") end
+    end
   end
 
-  local out = outputof("cl")
-  local major, minor = string.match(out, '(%d+).(%d+).%d+.?%d*%s+')
-  
-  return map_msvc_to_vs_version(major, minor)
+  local function map_msbuild_to_vs_version(major, minor)
+    if major == "16" then return "vs2019"
+    elseif major == "15" then return "vs2017"
+	end
+  end
+
+  local out = outputof("cl")  
+  local major, minor = string.match(out, '(%d+).(%d+).%d+.?%d*%s+')  
+  local version = map_msvc_to_vs_version(major, minor)
+  if version ~= nil then
+    return version
+  end
+
+  out = outputof("msbuild -version -nologo")
+  major, minor = string.match(out, '(%d+).(%d+).') 
+  version = map_msbuild_to_vs_version(major, minor)
+  if version ~= nil then
+    return version
+  end
+
+  if major ~= nil then
+    error("Unsupported MSVC compiler version.") 
+  else
+    error("Unknown MSVC compiler version, run in VS command prompt.")
+  end
 end
 
 function get_toolset_configuration_name(arch)
