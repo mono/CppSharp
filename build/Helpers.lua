@@ -135,11 +135,15 @@ function SetupNativeProject()
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
 
+    if os.getenv("CI") then
+      toolset "clang"
+    end
+
   filter { "system:linux" }
     buildoptions { gcc_buildflags }
     links { "stdc++" }
 
-  filter { "toolset:clang", "system:not macosx" }
+  filter { "toolset:clang", "system:linux" }
     linkoptions { "-fuse-ld=/usr/bin/ld.lld" }
 
   filter { "system:macosx", "language:C++" }

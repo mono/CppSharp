@@ -13,6 +13,7 @@ project "CppSharp.Parser.CLI"
 
   filter "action:vs*"
     buildoptions { clang_msvc_flags }  
+    toolset "msc"
 
   filter {}
   
