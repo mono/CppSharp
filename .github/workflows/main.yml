@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request_target]
+on: [push, pull_request]
 
 jobs:
   posix:
@@ -30,12 +30,6 @@ jobs:
 
       - name: Test
         run: build/RunTests.sh
-
-      - uses: MirrorNG/nunit-reporter@v1.0.9
-        if: always()
-        with:
-          path: build/**/TestResult.xml
-          access-token: ${{ secrets.GITHUB_TOKEN }}
 
   windows:
     strategy:
@@ -71,9 +65,3 @@ jobs:
         run: |
           build/InstallNugets.sh &&
           build/RunTests.sh
-
-      - uses: MirrorNG/nunit-reporter@v1.0.9
-        if: always()
-        with:
-          path: build/**/TestResult.xml
-          access-token: ${{ secrets.GITHUB_TOKEN }}
