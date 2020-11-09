@@ -89,10 +89,15 @@ bindir = path.getabsolute("../bin");
 examplesdir = path.getabsolute("../examples");
 testsdir = path.getabsolute("../tests");
 
-builddir = path.getabsolute("./" .. _ACTION);
-if _ARGS[1] then
-    builddir = path.getabsolute("./" .. _ARGS[1]);
+local function get_build_dir()
+  if _ARGS[1] then
+    return  _ARGS[1]
+  end
+
+  return _ACTION == "gmake2" and "gmake" or _ACTION
 end
+
+builddir = path.getabsolute("./" .. get_build_dir());
 
 if _ACTION ~= "netcore" then
   objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}_%{cfg.platform}");

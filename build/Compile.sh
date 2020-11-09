@@ -31,7 +31,7 @@ fi
 
 export PATH=$PATH:$MONO_PATH
 
-./premake.sh --file=$CUR_DIR/premake5.lua gmake "$@"
+$CUR_DIR/premake.sh --file=$CUR_DIR/premake5.lua gmake2 "$@"
 
 if $DEBUG; then
 	BUILD_CONF=debug_x64;
