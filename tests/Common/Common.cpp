@@ -358,6 +358,10 @@ Bar indirectReturn()
     return Bar();
 }
 
+TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
+{
+}
+
 int TestDelegates::Double(int N)
 {
     return N * 2;
@@ -447,6 +451,10 @@ int test(common& s)
 int operator *(TestMoveOperatorToClass klass, int b)
 {
     return klass.A * b;
+}
+
+TestMoveOperatorToClass::TestMoveOperatorToClass() 
+{
 }
 
 TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b)
@@ -835,6 +843,32 @@ void HasOverridenSetter::setVirtualGetter(int value)
 {
 }
 
+TestIndexedProperties::TestIndexedProperties() : p(1), f()
+{
+}
+
+foo_t& TestIndexedProperties::operator[](int i) { return p; }
+const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
+foo_t TestIndexedProperties::operator[](const char* name) { return p; }
+foo_t* TestIndexedProperties::operator[](float f) { return &p; }
+TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
+Bar& TestIndexedProperties::operator[](unsigned long i)
+{
+    return bar;
+}
+Bar& TestIndexedProperties::operator[](const TypeMappedIndex& key)
+{
+    return bar;
+}
+
+const foo_t& TestIndexedProperties::operator[](double f) { return p; }
+foo_t TestIndexedProperties::operator[](TestProperties b) { return p; }
+
+int TestIndexedProperties::operator[](CS_OUT char key)
+{
+    return key;
+}
+
 TypeMappedIndex::TypeMappedIndex()
 {
 }
@@ -854,6 +888,12 @@ void TestVariables::SetValue(int value) { VALUE = value; }
 TestWideStrings::TestWideStrings()
 {
 }
+
+LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
+
+LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
+
+TestFixedArrays::TestFixedArrays() {}
 
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
@@ -1166,10 +1206,26 @@ void sMallFollowedByCapital()
 {
 }
 
+TestNotStaticClass::TestNotStaticClass()
+{
+}
+
+TestNotStaticClass TestNotStaticClass::StaticFunction()
+{
+    return TestNotStaticClass();
+}
+
+int TestStaticClass::Add(int a, int b) { return a + b; }
+int TestStaticClass::GetOneTwoThree() { return 123; }
+int TestStaticClass::_Mult(int a, int b) { return a * b; }
+int TestStaticClass::GetFourFiveSix() { return 456; }
+
 TestStaticClass& TestStaticClass::operator=(const TestStaticClass& oth)
 {
     return *this;
 }
+
+int TestStaticClassDerived::Foo() { return 0; }
 
 HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(int value)
 {
@@ -1358,6 +1414,9 @@ TestGetterSetterToProperties::TestGetterSetterToProperties()
 {
 }
 
+int TestGetterSetterToProperties::getWidth() { return 640; }
+int TestGetterSetterToProperties::getHeight() { return 480; }
+
 PointerToTypedefPointerTest::PointerToTypedefPointerTest()
 {
 }
@@ -1371,3 +1430,34 @@ void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet)
 {
     *lp = valToSet;
 }
+
+TestArraysPointers::TestArraysPointers(MyEnum* values, int count)
+{
+    if (values && count) Value = values[0];
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef()
+{
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
+{
+    A = other.A;
+    B = other.B;
+}
+
+
+SomeStruct::SomeStruct() : p(1) {}
+
+ClassWithOverloadedOperators::ClassWithOverloadedOperators() {
+
+}
+
+ClassWithOverloadedOperators::ClassWithOverloadedOperators::operator char() { return 1; }
+ClassWithOverloadedOperators::operator int() { return 2; }
+ClassWithOverloadedOperators::operator short() { return 3; }
+bool ClassWithOverloadedOperators::operator<(const ClassWithOverloadedOperators& other) const {
+    return true;
+}
+
+int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
