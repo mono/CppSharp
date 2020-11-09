@@ -480,8 +480,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateClassSpecifier(@class);
 
-            var inheritsFromIDisposable = !@class.HasBase;
-            if (inheritsFromIDisposable)
+            var shouldInheritFromIDisposable = !@class.HasBase;
+            if (shouldInheritFromIDisposable)
                 Write(" : IDisposable");
 
             NewLine();
@@ -491,7 +491,7 @@ namespace CppSharp.Generators.CSharp
                 (m.OriginalFunction == null ||
                  !ASTUtils.CheckIgnoreFunction(m.OriginalFunction)) &&
                 m.Access == AccessSpecifier.Public && 
-                (!inheritsFromIDisposable || !IsDisposeMethod(m))))
+                (!shouldInheritFromIDisposable || !IsDisposeMethod(m))))
             {
                 PushBlock(BlockKind.Method);
                 GenerateDeclarationCommon(method);
