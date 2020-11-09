@@ -33,7 +33,7 @@ class DLL_API Ignored
 };
 
 template <typename T>
-class IndependentFields : public T1
+class DLL_API IndependentFields : public T1
 {
     typedef T Type;
 public:
@@ -122,7 +122,7 @@ T IndependentFields<T>::staticDependent(const T& t)
 template <typename T>
 int IndependentFields<T>::getIndependent()
 {
-    return independent;
+    return static_cast<int>(independent);
 }
 
 template <typename X>
@@ -143,7 +143,7 @@ class Base
 };
 
 template <typename T>
-class DependentValueFields : public Base<T>
+class DLL_API DependentValueFields : public Base<T>
 {
 public:
     class Nested;
@@ -248,7 +248,7 @@ public:
 };
 
 template <typename T>
-class DependentPointerFields
+class DLL_API DependentPointerFields
 {
 public:
     DependentPointerFields(T t = 0);
@@ -318,7 +318,7 @@ void TwoTemplateArgs<K, V>::takeDependentPtrToSecondTemplateArg(const V& v)
 }
 
 template <typename T, typename D = IndependentFields<T>>
-class HasDefaultTemplateArgument
+class DLL_API HasDefaultTemplateArgument
 {
 public:
     HasDefaultTemplateArgument();
@@ -688,7 +688,7 @@ enum class UsedInTemplatedIndexer
 };
 
 template <typename T>
-class QFlags
+class DLL_API QFlags
 {
     typedef int Int;
     typedef int (*Zero);
