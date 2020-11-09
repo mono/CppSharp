@@ -184,12 +184,6 @@ function SetupManagedProject()
   filter { "action:netcore" }
     dotnetframework "netstandard2.0"
 
-  filter { "action:vs2013" }
-    dotnetframework "4.5"
-
-  filter { "action:vs2012" }
-    dotnetframework "4.5"
-
   filter {}
 end
 
