@@ -18,7 +18,7 @@ namespace CppSharp.Tests
             base.Setup(driver);
             driver.Options.GenerateDefaultValuesForArguments = true;
             driver.Options.GenerateClassTemplates = true;
-
+            driver.Options.DependentNameSpaces.Add("System.Runtime.CompilerServices");
             driver.Options.Modules[1].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
             var @base = "NamespacesBase";
             var module = driver.Options.AddModule(@base);
@@ -35,7 +35,6 @@ namespace CppSharp.Tests
             driver.Generator.OnUnitGenerated += o =>
             {
                 Block firstBlock = o.Outputs[0].RootBlock.Blocks[1];
-                firstBlock.WriteLine("using System.Runtime.CompilerServices;");
                 firstBlock.NewLine();
                 firstBlock.WriteLine("[assembly:InternalsVisibleTo(\"NamespacesDerived.CSharp\")]");
             };
