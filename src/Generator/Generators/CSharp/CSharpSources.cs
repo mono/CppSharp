@@ -480,7 +480,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateClassSpecifier(@class);
 
-            if (@class.Bases.Count == 0)
+            var shouldInheritFromIDisposable = !@class.HasBase;
+            if (shouldInheritFromIDisposable)
                 Write(" : IDisposable");
 
             NewLine();
@@ -489,7 +490,8 @@ namespace CppSharp.Generators.CSharp
             foreach (var method in @class.Methods.Where(m =>
                 (m.OriginalFunction == null ||
                  !ASTUtils.CheckIgnoreFunction(m.OriginalFunction)) &&
-                m.Access == AccessSpecifier.Public))
+                m.Access == AccessSpecifier.Public && 
+                (!shouldInheritFromIDisposable || !IsDisposeMethod(m))))
             {
                 PushBlock(BlockKind.Method);
                 GenerateDeclarationCommon(method);
@@ -528,6 +530,11 @@ namespace CppSharp.Generators.CSharp
 
             UnindentAndWriteCloseBrace();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        public static bool IsDisposeMethod(Method method)
+        {
+            return method.Name == "Dispose" && method.Parameters.Count == 0 && method.ReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void);
         }
 
         public void GenerateClassInternals(Class @class)
