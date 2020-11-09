@@ -32,8 +32,6 @@ class DLL_API TestProtectedDestructors
     ~TestProtectedDestructors();
 };
 
-TestProtectedDestructors::~TestProtectedDestructors() {}
-
 // Tests the insertion operator (<<) to ToString method pass
 class DLL_API Date
 {

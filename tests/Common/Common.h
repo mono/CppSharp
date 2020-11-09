@@ -344,8 +344,6 @@ struct DLL_API TestMoveOperatorToClass
     int B;
 };
 
-TestMoveOperatorToClass::TestMoveOperatorToClass() {}
-
 DLL_API int operator *(TestMoveOperatorToClass klass, int b);
 
 DLL_API TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b);
@@ -392,10 +390,6 @@ struct DLL_API TestDelegates
     MemberDelegate C;
 };
 
-TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
-{
-}
-
 namespace DelegateNamespace
 {
     namespace Nested
@@ -437,14 +431,6 @@ private:
     TestStaticClass();
 };
 
-int TestStaticClass::Add(int a, int b) { return a + b; }
-
-int TestStaticClass::GetOneTwoThree() { return 123; }
-
-int TestStaticClass::_Mult(int a, int b) { return a * b; }
-
-int TestStaticClass::GetFourFiveSix() { return 456; }
-
 struct DLL_API TestStaticClassDerived : TestStaticClass
 {
     static int Foo();
@@ -453,8 +439,6 @@ private:
     TestStaticClassDerived();
 };
 
-int TestStaticClassDerived::Foo() { return 0; }
-
 class DLL_API TestNotStaticClass
 {
 public:
@@ -462,15 +446,6 @@ public:
 private:
     TestNotStaticClass();
 };
-
-TestNotStaticClass::TestNotStaticClass()
-{
-}
-
-TestNotStaticClass TestNotStaticClass::StaticFunction()
-{
-    return TestNotStaticClass();
-}
 
 class HasIgnoredField
 {
@@ -498,16 +473,6 @@ public:
     float B;
 };
 
-TestCopyConstructorRef::TestCopyConstructorRef()
-{
-}
-
-TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
-{
-    A = other.A;
-    B = other.B;
-}
-
 template <class T>
 struct EmptyNamedNestedEnum
 {
@@ -520,8 +485,6 @@ typedef struct DLL_API SomeStruct
         SomeStruct();
         foo_t p;
 } SomeStruct;
-
-SomeStruct::SomeStruct() : p(1) {}
 
 class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 {
@@ -549,15 +512,6 @@ public:
 
     virtual bool operator<(const ClassWithOverloadedOperators &other) const;
 };
-
-ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
-ClassWithOverloadedOperators::operator char() { return 1; }
-ClassWithOverloadedOperators::operator int() { return 2; }
-ClassWithOverloadedOperators::operator short() { return 3; }
-bool ClassWithOverloadedOperators::
-     operator<(const ClassWithOverloadedOperators &other) const {
-     return true;
-}
 
 // Tests global static function generation
 DLL_API int Function();
@@ -696,35 +650,11 @@ private:
     Bar bar;
 };
 
-TestIndexedProperties::TestIndexedProperties() : p(1), f() {}
-foo_t& TestIndexedProperties::operator[](int i) { return p; }
-foo_t TestIndexedProperties::operator[](const char* name) { return p; }
-foo_t* TestIndexedProperties::operator[](float f) { return &p; }
-const foo_t& TestIndexedProperties::operator[](double f) { return p; }
-TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
-const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
-foo_t TestIndexedProperties::operator[](TestProperties b) { return p; }
-Bar& TestIndexedProperties::operator[](unsigned long i)
-{
-    return bar;
-}
-Bar& TestIndexedProperties::operator[](const TypeMappedIndex& key)
-{
-    return bar;
-}
-int TestIndexedProperties::operator[](CS_OUT char key)
-{
-    return key;
-}
-
-
 struct DLL_API TestIndexedPropertiesInValueType
 {
 public:
     int operator[](int i);
 };
-
-int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
 
 // Tests variables
 struct DLL_API TestVariables
@@ -742,9 +672,6 @@ struct DLL_API TestWideStrings
     LPCWSTR GetWideNullPointer();
 };
 
-LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
-LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
-
 enum struct MyEnum { A, B, C };
 
 typedef void (*VoidPtrRetFunctionTypedef) ();
@@ -761,8 +688,6 @@ public:
     int ZeroSizedArray[0];
 };
 
-TestFixedArrays::TestFixedArrays() {}
-
 class DLL_API TestArraysPointers
 {
 public:
@@ -770,11 +695,6 @@ public:
 
     MyEnum Value;
 };
-
-TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
-{
-    if (values && count) Value = values[0];
-}
 
 class DLL_API NonPrimitiveType
 {
@@ -798,9 +718,6 @@ struct DLL_API TestGetterSetterToProperties
     int getWidth();
     int getHeight();
 };
-
-int TestGetterSetterToProperties::getWidth() { return 640; }
-int TestGetterSetterToProperties::getHeight() { return 480; }
 
 // Tests conversion operators of classes
 class DLL_API ClassA
