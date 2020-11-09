@@ -172,6 +172,8 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;");
             WriteLine("using __IntPtr = global::System.IntPtr;");
 
+            break build
+
             PopBlock(NewLineKind.BeforeNextBlock);
 
             foreach (var library in internalsVisibleTo)
