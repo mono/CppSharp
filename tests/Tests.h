@@ -20,6 +20,12 @@
 #define THISCALL __thiscall
 #endif
 
+#define DISABLE_WARNING_ONCE(id, block) \
+__pragma(warning(push)) \
+__pragma(warning(disable: id)) \
+block \
+__pragma(warning(pop))
+
 #else
 #define DLL_API __attribute__ ((visibility ("default")))
 
@@ -39,6 +45,8 @@
 #ifndef THISCALL
 #define THISCALL
 #endif
+
+#define DISABLE_WARNING_ONCE(block) block
 
 #endif
 

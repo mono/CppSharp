@@ -60,7 +60,10 @@ public:
 protected:
     int P;
     TemplateInAnotherUnit<int> templateInAnotherUnit;
-    std::string _name;
+
+    DISABLE_WARNING_ONCE(4251,
+        std::string _name;
+    )
 };
 
 class DLL_API Quux
@@ -1121,13 +1124,16 @@ public:
     static const char Chr;
     static const unsigned char UChr;
     static const int Int;
-    static const float Float;
-    static const std::string String;
+    static const float Float;   
     static const char ChrArray[2];
     static const int IntArray[2];
     static const float FloatArray[2];
     static const bool BoolArray[2];
     static const void* VoidPtrArray[2];
+
+    DISABLE_WARNING_ONCE(4251,
+        static const std::string String;
+    )
 };
 
 static constexpr double ConstexprCreateDoubleValue(double value) {
