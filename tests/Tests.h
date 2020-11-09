@@ -46,7 +46,7 @@ __pragma(warning(pop))
 #define THISCALL
 #endif
 
-#define DISABLE_WARNING_ONCE(block) block
+#define DISABLE_WARNING_ONCE(id, block) block
 
 #endif
 
