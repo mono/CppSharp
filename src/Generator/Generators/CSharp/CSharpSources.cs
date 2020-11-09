@@ -153,18 +153,21 @@ namespace CppSharp.Generators.CSharp
         public virtual void GenerateUsings()
         {
             PushBlock(BlockKind.Usings);
-            WriteLine("using System;");
-            WriteLine("using System.Runtime.InteropServices;");
-            WriteLine("using System.Security;");
+            var requiredNameSpaces = new List<string> {
+                "System",
+                "System.Runtime.InteropServices",
+                "System.Security",
+            };
 
             var internalsVisibleTo = (from m in Options.Modules
                                       where m.Dependencies.Contains(Module)
                                       select m.LibraryName).ToList();
-            if (internalsVisibleTo.Any())
-                WriteLine("using System.Runtime.CompilerServices;");
 
-            foreach (var customUsingStatement in Options.DependentNameSpaces)
-                WriteLine("using {0};", customUsingStatement);
+            if (internalsVisibleTo.Any())
+                requiredNameSpaces.Add("System.Runtime.CompilerServices");
+
+            foreach (var @namespace in requiredNameSpaces.Union(Options.DependentNameSpaces).OrderBy(x => x))
+                WriteLine($"using {@namespace};");
 
             WriteLine("using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;");
             WriteLine("using __IntPtr = global::System.IntPtr;");
