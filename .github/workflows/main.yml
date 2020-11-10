@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   posix:
     strategy:
+      fail-fast: false
       matrix:
         config:
           - { os: ubuntu-20.04, cc: gcc-7, cxx: g++-7 }
@@ -33,6 +34,7 @@ jobs:
 
   windows:
     strategy:
+      fail-fast: false
       matrix:
         config:
           - { os: windows-2019, vs: 2019, platform: x86 }
