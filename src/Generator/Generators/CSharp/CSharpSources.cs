@@ -705,7 +705,7 @@ namespace CppSharp.Generators.CSharp
                 declContext = declContext.Namespace;
             }
             if (@class != null && @class.NeedsBase &&
-                !@class.BaseClass.IsInterface && !isSpecialization)
+                !@class.BaseClass.IsInterface && !(@class.BaseClass is ClassTemplateSpecialization) && !isSpecialization)
                 Write("new ");
 
             WriteLine($@"{(isSpecialization ? "unsafe " : string.Empty)}partial struct {
