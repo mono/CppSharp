@@ -17,6 +17,7 @@ namespace CppSharp
     public enum BlockKind
     {
         Unknown,
+        Block,
         BlockComment,
         InlineComment,
         Header,
@@ -36,6 +37,7 @@ namespace CppSharp
         Event,
         Variable,
         Property,
+        Unreachable,
         Field,
         VTableDelegate,
         Region,

@@ -105,11 +105,13 @@ namespace CppSharp.Generators.CSharp
                 foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                 {
                     WriteTemplateSpecializationCheck(gen, @class, specialization);
+                    gen.PushBlock(BlockKind.Block);
                     gen.WriteOpenBraceAndIndent();
                     generate(specialization);
-                    if (isVoid)
+                    if (isVoid && !gen.ActiveBlock.FindBlocks(BlockKind.Unreachable).Any())
                         gen.WriteLine("return;");
                     gen.UnindentAndWriteCloseBrace();
+                    gen.PopBlock();
                 }
                 ThrowException(gen, @class);
             }

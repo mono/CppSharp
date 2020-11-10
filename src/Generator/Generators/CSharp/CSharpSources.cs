@@ -996,6 +996,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine($@"throw new MissingMethodException(""Method {
                     property.Name} missing from explicit specialization {
                     @class.Visit(TypePrinter)}."");");
+
+                AddBlock(new Block(BlockKind.Unreachable));
                 return;
             }
             property = actualProperty;
@@ -1325,6 +1327,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine($@"throw new MissingMethodException(""Method {
                     property.Name} missing from explicit specialization {
                     @class.Visit(TypePrinter)}."");");
+
+                AddBlock(new Block(BlockKind.Unreachable));
                 return;
             }
             GenerateFunctionInProperty(@class, actualProperty.GetMethod, actualProperty,
@@ -2633,6 +2637,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     WriteLine($@"throw new MissingMethodException(""Method {
                         method.Name} missing from explicit specialization {
                         @class.Visit(TypePrinter)}."");");
+
+                    AddBlock(new Block(BlockKind.Unreachable));
                     return;
                 }
                 if (specializedMethod.Ignore)
@@ -2640,6 +2646,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     WriteLine($@"throw new MissingMethodException(""Method {
                         method.Name} ignored in specialization {
                         @class.Visit(TypePrinter)}."");");
+
+                    AddBlock(new Block(BlockKind.Unreachable));
                     return;
                 }
 
