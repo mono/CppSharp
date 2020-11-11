@@ -3,67 +3,40 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  posix:
+  job:
     strategy:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-20.04, cc: gcc-7, cxx: g++-7 }
-          - { os: macos-10.15, cc: "clang", cxx: "clang++" }
+          - { os: ubuntu-20.04, platform: x64, cxx: g++-7, cc: gcc-7 }
+          - { os: macos-10.15, platform: x64, cxx: "clang++", cc: "clang" }
+          - { os: windows-2019, platform: x86, vs: 2019 }
+          - { os: windows-2019, platform: x64, vs: 2019 }
 
     runs-on: ${{ matrix.config.os }}
 
     env:
       CC: ${{ matrix.config.cc }}
       CXX: ${{ matrix.config.cxx }}
-
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup
-        run: |
-          source build/InstallMono.sh &&
-          build/InstallNugets.sh &&
-          build/premake.sh --file=build/scripts/LLVM.lua download_llvm
-
-      - name: Build
-        run: build/Compile.sh
-
-      - name: Test
-        run: build/RunTests.sh
-
-  windows:
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - { os: windows-2019, vs: 2019, platform: x86 }
-          - { os: windows-2019, vs: 2019, platform: x64 }
-
-    runs-on: ${{ matrix.config.os }}
-
-    env:
       VS_VERSION: ${{ matrix.config.vs }}
       PLATFORM: ${{ matrix.config.platform }}
 
     steps:
-      - name: Environment
-        run: |
-          echo "C:\\Program Files (x86)\\Microsoft Visual Studio\\${{matrix.config.vs}}\\Enterprise\\MSBuild\\Current\\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - uses: actions/checkout@v2
-      - name: Setup
-        shell: cmd
-        run: |
-          build\premake5.exe --file=build\scripts\LLVM.lua download_llvm --arch=%PLATFORM%
 
+      - name: Environment
+        if: ${{ matrix.config.vs > 0 }}
+        shell: bash
+        run: echo "/c/Program Files (x86)/Microsoft Visual Studio/$VS_VERSION/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
+
+      - name: Setup
+        shell: bash
+        run: build/Setup.sh
+          
       - name: Build
-        shell: cmd
-        run: |
-          build\premake5.exe --file=build\premake5.lua vs%VS_VERSION% --arch=%PLATFORM%
-          msbuild build\vs%VS_VERSION%\CppSharp.sln /p:Configuration=Release /verbosity:minimal
+        shell: bash
+        run: build/Compile.sh
 
       - name: Test
         shell: bash
-        run: |
-          build/InstallNugets.sh &&
-          build/RunTests.sh
+        run: build/RunTests.sh
