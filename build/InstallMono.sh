@@ -1,4 +1,9 @@
 OS=$(uname -s)
+
+if [ "$(command -v mono)" ]; then
+	exit 0
+fi
+
 if [ "$OS" == "Darwin" ]; then
 	curl -o mono.pkg https://download.mono-project.com/archive/6.10.0/macos-10-universal/MonoFramework-MDK-6.10.0.macos10.xamarin.universal.pkg
 	sudo installer -pkg mono.pkg -target /
