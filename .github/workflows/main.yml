@@ -9,7 +9,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-20.04, platform: x64, cxx: g++-7, cc: gcc-7 }
-          - { os: macos-10.15, platform: x64, cxx: "clang++", cc: "clang" }
+          - { os: macos-10.15, platform: x64, cxx: clang++, cc: clang }
           - { os: windows-2019, platform: x86, vs: 2019 }
           - { os: windows-2019, platform: x64, vs: 2019 }
 
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Environment
-        if: ${{ matrix.config.vs > 0 }}
+        if: matrix.config.vs > 0
         shell: bash
         run: echo "/c/Program Files (x86)/Microsoft Visual Studio/$VS_VERSION/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
 
