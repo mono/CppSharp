@@ -4,6 +4,14 @@ set -e
 CUR_DIR=$(cd "$(dirname "$0")"; pwd)
 DEBUG=false
 
+case $(uname -s) in 
+  CYGWIN*|MINGW32*|MSYS*|MINGW*)
+  $CUR_DIR/premake5.exe --file=$CUR_DIR/premake5.lua vs$VS_VERSION --arch=$PLATFORM
+  MSBuild.exe $CUR_DIR/vs$VS_VERSION/CppSharp.sln //p:Configuration=Release //verbosity:minimal
+  exit 0
+  ;;
+esac
+
 for i in "$@"
 do
 case $i in
