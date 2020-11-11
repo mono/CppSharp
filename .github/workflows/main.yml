@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  job:
+  build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
