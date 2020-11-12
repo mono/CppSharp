@@ -5,7 +5,6 @@ on:
 
 jobs:
   build:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
       matrix:
@@ -25,7 +24,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: seanmiddleditch/gha-setup-ninja@master
+      - uses: lukka/get-cmake@latest
 
       - name: Environment
         if: matrix.config.vs > 0
