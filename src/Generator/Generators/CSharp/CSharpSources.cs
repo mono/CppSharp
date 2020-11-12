@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Extensions;
 using CppSharp.Parser;
 using CppSharp.Types;
 using CppSharp.Utils;
@@ -816,7 +817,7 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        private void GenerateClassInternalsFields(Class @class, bool sequentalLayout)
+        private void GenerateClassInternalsFields(Class @class, bool sequentialLayout)
         {
             var fields = @class.Layout.Fields;
 
@@ -829,7 +830,17 @@ namespace CppSharp.Generators.CSharp
 
                 PushBlock(BlockKind.Field);
 
-                if (!sequentalLayout)
+                if (sequentialLayout && i > 0)
+                {
+                    var padding = field.Offset - field.CalculateOffset(fields[i - 1], Context.TargetInfo);
+                        
+                    if (padding > 1)
+                        WriteLine($"internal fixed byte {field.Name}Padding[{padding}];");
+                    else if (padding > 0)
+                        WriteLine($"internal byte {field.Name}Padding;");
+                }
+
+                if (!sequentialLayout)
                     WriteLine($"[FieldOffset({field.Offset})]");
 
                 Write($"internal {retType}");
@@ -840,25 +851,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 WriteLine(";");
 
-                // Sometimes padding is needed due to aligment.
-                // The linux 32 bit target pads at the end the structure
-                // which is already handled by using [StructLayout(Size = n)].
-                // However the windows 32 bit target will add some of the padding at the front,
-                // right after the vtable pointer, which is what we are handling here.
-                // See https://github.com/dotnet/runtime/issues/44378 for more info.
-                if (sequentalLayout && fields[i].IsVTablePtr)
-                {
-                    var nativePointerSize = Context.TargetInfo.PointerWidth / 8;
-
-                    if (i + 1 < fields.Count)
-                    {
-                        var padding = fields[i + 1].Offset - field.Offset - nativePointerSize;
-                        if (padding > 0 && padding <= @class.Layout.Size)
-                            WriteLine($"internal fixed byte {field.Name}Padding[{padding}];");
-                    }
-                }
-
-                PopBlock(sequentalLayout && i + 1 != fields.Count ? NewLineKind.Never : NewLineKind.BeforeNextBlock);
+                PopBlock(sequentialLayout && i + 1 != fields.Count ? NewLineKind.Never : NewLineKind.BeforeNextBlock);
             }
         }
 

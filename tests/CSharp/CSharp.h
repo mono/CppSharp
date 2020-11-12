@@ -1549,6 +1549,27 @@ static constexpr const int ClassCustomObjectAligmentOffsets[] {
     offsetof(ClassCustomObjectAligment, charAligned8),
 };
 
+struct DLL_API ClassMicrosoftObjectAlignmentBase
+{
+    uint8_t u8;
+    double dbl;
+    int16_t i16;
+    virtual void Method() { }
+};
+
+struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
+{
+    bool boolean;
+};
+
+static constexpr const int ClassMicrosoftObjectAlignmentOffsets[]
+{
+    offsetof(ClassMicrosoftObjectAlignment, u8),
+    offsetof(ClassMicrosoftObjectAlignment, dbl),
+    offsetof(ClassMicrosoftObjectAlignment, i16),
+    offsetof(ClassMicrosoftObjectAlignment, boolean),
+};
+
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
 DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);    

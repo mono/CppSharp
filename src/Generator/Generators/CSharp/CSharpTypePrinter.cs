@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Extensions;
 using CppSharp.Types;
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
 using Type = CppSharp.AST.Type;
@@ -395,54 +396,9 @@ namespace CppSharp.Generators.CSharp
             return QualifiedType(type.Type.FullName);
         }
 
-        public static void GetPrimitiveTypeWidth(PrimitiveType primitive,
-            ParserTargetInfo targetInfo, out uint width, out bool signed)
+        public static void GetPrimitiveTypeWidth(PrimitiveType primitive, ParserTargetInfo targetInfo, out uint width, out bool signed)
         {
-            switch (primitive)
-            {
-                case PrimitiveType.Char:
-                    width = targetInfo?.CharWidth ?? 8;
-                    signed = true;
-                    break;
-                case PrimitiveType.UChar:
-                    width = targetInfo?.CharWidth ?? 8;
-                    signed = false;
-                    break;
-                case PrimitiveType.Short:
-                    width = targetInfo?.ShortWidth ?? 16;
-                    signed = true;
-                    break;
-                case PrimitiveType.UShort:
-                    width = targetInfo?.ShortWidth ?? 16;
-                    signed = false;
-                    break;
-                case PrimitiveType.Int:
-                    width = targetInfo?.IntWidth ?? 32;
-                    signed = true;
-                    break;
-                case PrimitiveType.UInt:
-                    width = targetInfo?.IntWidth ?? 32;
-                    signed = false;
-                    break;
-                case PrimitiveType.Long:
-                    width = targetInfo?.LongWidth ?? 32;
-                    signed = true;
-                    break;
-                case PrimitiveType.ULong:
-                    width = targetInfo?.LongWidth ?? 32;
-                    signed = false;
-                    break;
-                case PrimitiveType.LongLong:
-                    width = targetInfo?.LongLongWidth ?? 64;
-                    signed = true;
-                    break;
-                case PrimitiveType.ULongLong:
-                    width = targetInfo?.LongLongWidth ?? 64;
-                    signed = false;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            width = primitive.GetInfo(targetInfo, out signed).Width;
         }
 
         static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)

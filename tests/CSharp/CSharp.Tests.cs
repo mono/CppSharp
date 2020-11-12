@@ -752,12 +752,16 @@ public unsafe class CSharpTests : GeneratorTestFixture
         foreach (var (type, offsets) in new (Type, int[])[] {
             (typeof(ClassCustomTypeAlignment), CSharp.CSharp.ClassCustomTypeAlignmentOffsets),
             (typeof(ClassCustomObjectAligment), CSharp.CSharp.ClassCustomObjectAligmentOffsets),
+            (typeof(ClassMicrosoftObjectAlignment), CSharp.CSharp.ClassMicrosoftObjectAlignmentOffsets),
         })
         {
             var internalType = type.GetNestedType("__Internal");
-            var managedOffsets = internalType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Select(field =>
-                (int)Marshal.OffsetOf(internalType, field.Name)
-            );
+            var managedOffsets = internalType
+                .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                .SkipWhile(x => x.FieldType == typeof(IntPtr))
+                .Where(x => !x.Name.EndsWith("Padding"))
+                .Select(field => (int)Marshal.OffsetOf(internalType, field.Name));
+
             Assert.That(managedOffsets, Is.EqualTo(offsets));
             Assert.That(Marshal.SizeOf(internalType), Is.EqualTo(internalType.StructLayoutAttribute.Size));
         }
