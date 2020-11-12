@@ -29,7 +29,15 @@ jobs:
       - name: Environment
         if: matrix.config.vs > 0
         shell: cmd
-        run: call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+          :: Loop over all environment variables and make them global using set-env.
+          :: See: https://stackoverflow.com/a/39184941
+          setlocal
+          for /f "delims== tokens=1,2" %%a in ('set') do (
+            echo ::set-env name=%%a::%%b
+          )
+          endlocal
 
       - name: Clone LLVM
         shell: bash
