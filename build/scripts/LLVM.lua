@@ -214,15 +214,20 @@ end
 function cmake(gen, conf, builddir, options)
     local cwd = os.getcwd()
 	os.chdir(builddir)
-	local cmake = os.ishost("macosx") and "/Applications/CMake.app/Contents/bin/cmake"
-		or "cmake"
+
+	local cmake = "cmake"
+	result, error = os.outputof(cmake)
+	local found = error ~= 127 -- command not found
+
+	if not found and os.ishost("macosx") then
+		local cmake = "/Applications/CMake.app/Contents/bin/cmake"
+	end
 
 	if options == nil then
 		options = ""
 	end
 
 	if UseClang() then
-		local cmake = path.join(basedir, "scripts", "ClangToolset.cmake")
 		options = options .. " -DLLVM_USE_LINKER=/usr/bin/ld.lld"
     end
 
