@@ -25,6 +25,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Environment
         if: matrix.config.vs > 0
