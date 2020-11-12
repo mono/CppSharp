@@ -14,7 +14,10 @@ project "CppSharp.Parser.CSharp"
   links { "CppSharp.Runtime" }
 
   if os.istarget("windows") then
-      files { "i686-pc-win32-msvc/**.cs" }
+      filter { "action:vs*", "platforms:x86" }
+        files { "i686-pc-win32-msvc/**.cs" }
+      filter { "action:vs*", "platforms:x64" }
+        files { "x86_64-pc-win32-msvc/**.cs" }
   elseif os.istarget("macosx") then
       if is_64_bits_mono_runtime() or _OPTIONS["arch"] == "x64" then  
         files { "x86_64-apple-darwin12.4.0/**.cs" }
