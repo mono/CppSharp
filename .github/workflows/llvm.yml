@@ -28,8 +28,8 @@ jobs:
 
       - name: Environment
         if: matrix.config.vs > 0
-        shell: bash
-        run: echo "/c/Program Files (x86)/Microsoft Visual Studio/$VS_VERSION/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
+        shell: cmd
+        run: call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
 
       - name: Clone LLVM
         shell: bash
