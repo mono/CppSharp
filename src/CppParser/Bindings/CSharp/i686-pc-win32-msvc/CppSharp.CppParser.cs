@@ -14257,6 +14257,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
                     internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
+                    internal fixed byte isInlinePadding[3];
                     internal byte isInline;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0Namespace@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -14822,6 +14823,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
                     internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
+                    internal fixed byte isInlinePadding[3];
                     internal byte isInline;
                     internal global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C fileName;
                     internal byte isSystemHeader;
@@ -21788,6 +21790,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte isUniquePadding[3];
                     internal byte isUnique;
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal __IntPtr sourceExpr;
@@ -22562,6 +22565,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte exactPadding[3];
                     internal byte exact;
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal double valueAsApproximateDouble;
@@ -26936,6 +26940,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte isConditionTruePadding[3];
                     internal byte isConditionTrue;
                     internal __IntPtr cond;
                     internal __IntPtr lHS;
@@ -31372,6 +31377,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte valuePadding[3];
                     internal byte value;
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
 
@@ -31836,6 +31842,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte isImplicitAccessPadding[3];
                     internal byte isImplicitAccess;
                     internal __IntPtr baseExpr;
                     internal byte isArrow;
@@ -33163,6 +33170,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte constructsVBasePadding[3];
                     internal byte constructsVBase;
                     internal byte inheritedFromVBase;
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
@@ -34308,6 +34316,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte isGlobalDeletePadding[3];
                     internal byte isGlobalDelete;
                     internal byte isArrayForm;
                     internal byte isArrayFormAsWritten;
@@ -34693,6 +34702,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte valuePadding[3];
                     internal byte value;
                     internal uint numArgs;
 
@@ -36041,6 +36051,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
+                    internal fixed byte isImplicitAccessPadding[3];
                     internal byte isImplicitAccess;
                     internal __IntPtr @base;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal baseType;

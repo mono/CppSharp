@@ -439,7 +439,12 @@
 
         public static long GetSizeInBytes(this ArrayType array)
         {
-            return array.Size * (array.ElementSize / 8);
+            return GetSizeInBits(array) / 8;
+        }
+
+        public static long GetSizeInBits(this ArrayType array)
+        {
+            return array.Size * array.ElementSize;
         }
     }
 }
