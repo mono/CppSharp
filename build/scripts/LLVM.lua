@@ -227,7 +227,7 @@ function cmake(gen, conf, builddir, options)
 		options = ""
 	end
 
-	if UseClang() then
+	if UseClang() and not os.ishost("macosx") then
 		options = options .. " -DLLVM_USE_LINKER=/usr/bin/ld.lld"
     end
 
