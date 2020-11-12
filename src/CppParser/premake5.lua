@@ -55,7 +55,10 @@ project "Std-symbols"
   filter {}
 
   if os.istarget("windows") then
+    filter { "action:vs*", "platforms:x86" }
       files { "Bindings/CSharp/i686-pc-win32-msvc/Std-symbols.cpp" }
+    filter { "action:vs*", "platforms:x64" }
+      files { "Bindings/CSharp/x86_64-pc-win32-msvc/Std-symbols.cpp" }
   elseif os.istarget("macosx") then
       if is_64_bits_mono_runtime() or _OPTIONS["arch"] == "x64" then
         files { "Bindings/CSharp/x86_64-apple-darwin12.4.0/Std-symbols.cpp" }
