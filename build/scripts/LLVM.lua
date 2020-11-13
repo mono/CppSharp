@@ -383,7 +383,11 @@ function build_llvm(llvm_build)
 		local cmake_generator, options = get_cmake_generator()
 		cmake(cmake_generator, conf, llvm_build, options)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
-		msbuild('"' .. llvm_sln .. '"', conf)
+		platform = nil
+		if target_architecture() == "x86" then
+			platform = "Win32"
+		end
+		msbuild('"' .. llvm_sln .. '"', conf, platform)
 	else
 		local options = os.ishost("macosx") and
 			"-DLLVM_ENABLE_LIBCXX=true" or ""

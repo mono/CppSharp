@@ -13,13 +13,17 @@ function get_msbuild_path()
 	error("MSBuild path could not be found in Windows registry.")
 end
 
-function msbuild(sln, conf)
+function msbuild(sln, conf, platform)
 	local msbuild_path = "msbuild.exe"
 	local sln = path.normalize(sln)
 
 	local cmd = msbuild_path .. " " .. sln .. " /m"
 	if conf ~= nil then
 		cmd = cmd .. " /p:Configuration=" .. conf
+	end
+
+	if platform ~= nil then
+		cmd = cmd .. " /p:Platform=" .. platform
 	end
 
 	execute_or_die(cmd)
