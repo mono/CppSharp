@@ -45,11 +45,11 @@ jobs:
           
       - name: Build LLVM
         shell: bash
-        run: build/premake.sh --file=build/scripts/LLVM.lua build_llvm
+        run: build/premake.sh --file=build/scripts/LLVM.lua build_llvm --arch=$PLATFORM
 
       - name: Package LLVM
         shell: bash
-        run: build/premake.sh --file=build/scripts/LLVM.lua package_llvm
+        run: build/premake.sh --file=build/scripts/LLVM.lua package_llvm --arch=$PLATFORM
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
