@@ -50,3 +50,9 @@ jobs:
       - name: Package LLVM
         shell: bash
         run: build/premake.sh --file=build/scripts/LLVM.lua package_llvm
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: llvm
+          path: build/scripts/llvm-*-*.*
