@@ -239,6 +239,11 @@ function LinkNUnit()
       "NSubstitute:4.0.0-rc1"
     }
 
+  nuget
+  {
+    "NUnit3TestAdapter:3.17.0",
+  }
+    
   filter(c)
 end
 
