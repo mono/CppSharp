@@ -16,7 +16,8 @@ namespace CppSharp.Generators
         CPlusPlus,
         ObjectiveC,
         Java,
-        Swift
+        Swift,
+        QuickJS
     }
 
     /// <summary>

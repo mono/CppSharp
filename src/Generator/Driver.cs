@@ -45,6 +45,8 @@ namespace CppSharp
                     return new CLIGenerator(Context);
                 case GeneratorKind.CSharp:
                     return new CSharpGenerator(Context);
+                case GeneratorKind.QuickJS:
+                    return new QuickJSGenerator(Context);
             }
 
             throw new NotImplementedException();
