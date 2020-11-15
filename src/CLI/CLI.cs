@@ -219,6 +219,9 @@ namespace CppSharp
                 case "cpp":
                     options.Kind = CppSharp.Generators.GeneratorKind.CPlusPlus;
                     return;
+                case "qjs":
+                    options.Kind = CppSharp.Generators.GeneratorKind.QuickJS;
+                    return;
             }
 
             errorMessages.Add($"Unknown generator kind: {generator}. Defaulting to {options.Kind}");

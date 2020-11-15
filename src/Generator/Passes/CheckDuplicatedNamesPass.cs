@@ -218,6 +218,9 @@ namespace CppSharp.Passes
                     };
                     break;
                 case GeneratorKind.CPlusPlus:
+                case GeneratorKind.QuickJS:
+                    typePrinter = new CppTypePrinter(Context);
+                    break;
                 case GeneratorKind.CLI:
                     typePrinter = new CLITypePrinter(Context);
                     break;
