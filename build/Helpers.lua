@@ -94,6 +94,10 @@ local function get_build_dir()
     return  _ARGS[1]
   end
 
+  if not _ACTION then
+    return ""
+  end
+
   return _ACTION == "gmake2" and "gmake" or _ACTION
 end
 
