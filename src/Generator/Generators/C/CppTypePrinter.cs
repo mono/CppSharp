@@ -105,7 +105,7 @@ namespace CppSharp.Generators.C
 
             var result = new TypePrinterResult
             {
-                Type = array.Type.Visit(this),
+                Type = array.QualifiedType.Visit(this),
                 NameSuffix = new System.Text.StringBuilder(arraySuffix)
             };
 
@@ -232,18 +232,26 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {
-            FunctionType func;
-            var qual = GetStringQuals(quals);
-            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
-            {
-                TypePrinterResult type = typedef.Declaration.QualifiedType.Visit(this);
-                return new TypePrinterResult { Type = $"{qual}{type.Type}",
-                    NamePrefix = type.NamePrefix, NameSuffix = type.NameSuffix };
-            }
+            TypePrinterResult result;
 
-            var result = typedef.Declaration.Visit(this);
-            if (result.NamePrefix.Length > 0)
-                result.NamePrefix.Append($"{qual}");
+            FunctionType func;
+            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
+                result = typedef.Declaration.QualifiedType.Visit(this);
+            else
+                result = typedef.Declaration.Visit(this);
+
+            var qual = GetStringQuals(quals);
+
+            // In the case of const references to const typedefs, we could end up printing
+            // a double const.
+            //
+            // As an example, consider the following code:
+            //
+            //      typedef const T const_t;
+            //      foo(const const_t&p) { }
+            //
+            if (!result.Type.StartsWith("const "))
+                result.Type = $"{qual}{result.Type}";
 
             return result;
         }
