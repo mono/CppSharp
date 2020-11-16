@@ -884,7 +884,7 @@ bool Parser::HasLayout(const clang::RecordDecl* Record)
         return false;
 
     if (auto CXXRecord = llvm::dyn_cast<clang::CXXRecordDecl>(Record))
-        for (auto Base : CXXRecord->bases())
+        for (const clang::CXXBaseSpecifier& Base : CXXRecord->bases())
         {
             auto CXXBase = GetCXXRecordDeclFromBaseType(Base.getType());
             if (!CXXBase || !HasLayout(CXXBase))
@@ -1103,7 +1103,7 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
     }
 
     // Iterate through the record bases.
-    for (auto BS : Record->bases())
+    for (const CXXBaseSpecifier& BS : Record->bases())
     {
         BaseClassSpecifier* Base = new BaseClassSpecifier();
         Base->access = ConvertToAccess(BS.getAccessSpecifier());
@@ -1156,7 +1156,7 @@ struct Diagnostic
 {
     clang::SourceLocation Location;
     llvm::SmallString<100> Message;
-    clang::DiagnosticsEngine::Level Level;
+    clang::DiagnosticsEngine::Level Level = clang::DiagnosticsEngine::Level::Ignored;
 };
 
 struct DiagnosticConsumer : public clang::DiagnosticConsumer
@@ -1186,7 +1186,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
     }
 
     std::vector<Diagnostic> Diagnostics;
-    clang::Decl* Decl;
+    clang::Decl* Decl = 0;
 };
 
 ClassTemplateSpecialization*
@@ -1428,7 +1428,7 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
 
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
-        auto TA = TAL->get(i);
+        const clang::TemplateArgument& TA = TAL->get(i);
         TemplateArgumentLoc TArgLoc;
         TemplateArgumentLoc *ArgLoc = 0;
         if (i < typeLocNumArgs && e == typeLocNumArgs)
@@ -1455,7 +1455,7 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
 
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
-        auto TA = TAL->get(i);
+        const clang::TemplateArgument& TA = TAL->get(i);
         if (TALI)
         {
             auto ArgLoc = TALI->operator[](i);
@@ -1475,7 +1475,8 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
 //-----------------------------------//
 
 CppSharp::CppParser::TemplateArgument
-Parser::WalkTemplateArgument(clang::TemplateArgument TA, clang::TemplateArgumentLoc* ArgLoc)
+Parser::WalkTemplateArgument(const clang::TemplateArgument& TA,
+    clang::TemplateArgumentLoc* ArgLoc)
 {
     auto Arg = CppSharp::CppParser::TemplateArgument();
 
@@ -2781,8 +2782,14 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     {
         auto UT = Type->getAs<clang::UnaryTransformType>();
 
+        TypeLoc Loc;
+        if (LocValid)
+        {
+            clang::TypeSourceInfo* TSI = TL->getAs<UnaryTransformTypeLoc>().getUnderlyingTInfo();
+            Loc = TSI->getTypeLoc();
+        }
+
         auto UTT = new UnaryTransformType();
-        auto Loc = TL->getAs<UnaryTransformTypeLoc>().getUnderlyingTInfo()->getTypeLoc();
         UTT->desugared = GetQualifiedType(UT->isSugared() ? UT->getCanonicalTypeInternal() : UT->getBaseType(), &Loc);
         UTT->baseType = GetQualifiedType(UT->getBaseType(), &Loc);
 
@@ -4467,13 +4474,13 @@ ParserResultKind Parser::ParseSharedLib(const std::string& File,
     if (ObjectFile->isCOFF())
     {
         auto COFFObjectFile = static_cast<llvm::object::COFFObjectFile*>(ObjectFile);
-        for (auto ExportedSymbol : COFFObjectFile->export_directories())
+        for (const auto& ExportedSymbol : COFFObjectFile->export_directories())
         {
             llvm::StringRef Symbol;
             if (!ExportedSymbol.getSymbolName(Symbol))
                 NativeLib->Symbols.push_back(Symbol.str());
         }
-        for (auto ImportedSymbol : COFFObjectFile->import_directories())
+        for (const auto& ImportedSymbol : COFFObjectFile->import_directories())
         {
             llvm::StringRef Name;
             if (!ImportedSymbol.getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
