@@ -111,7 +111,7 @@ else
   libdir = path.join(builddir, "lib", "%{cfg.buildcfg}");
 end
 
-gendir = libdir;
+gendir = path.join(builddir, "gen");
 
 msvc_buildflags = { "/MP", "/wd4267" }
 
