@@ -66,7 +66,8 @@ namespace CppSharp.Passes
                 AssociatedDeclaration = field
             };
 
-            if (Options.GeneratorKind == GeneratorKind.CPlusPlus)
+            if (Options.GeneratorKind == GeneratorKind.C ||
+                Options.GeneratorKind == GeneratorKind.CPlusPlus)
                 GenerateAcessorMethods(field, prop);
 
             // do not rename value-class fields because they would be
