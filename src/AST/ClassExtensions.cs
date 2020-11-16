@@ -157,7 +157,7 @@ namespace CppSharp.AST
             Class @base = null;
 
             if (@class.HasBaseClass)
-                @base = @class.Bases[0].Class;
+                @base = @class.BaseClass;
 
             return @base?.IsRefType == true && @base.IsGenerated;
         }
