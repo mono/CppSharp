@@ -496,7 +496,7 @@ namespace CppSharp.Generators.Cpp
                 Write(" abstract sealed");
 
             if (!@class.IsStatic && @class.HasRefBase())
-                Write($" : public {QualifiedIdentifier(@class.Bases[0].Class)}");
+                Write($" : public {QualifiedIdentifier(@class.BaseClass)}");
         }
 
         public void GenerateClassProperties(Class @class)
