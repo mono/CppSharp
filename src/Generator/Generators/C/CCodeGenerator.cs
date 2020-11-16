@@ -35,9 +35,12 @@ namespace CppSharp.Generators.C
             typePrinter = new CppTypePrinter(context);
         }
 
-        public abstract override string FileExtension { get; }
+        public override string FileExtension { get; } = "h";
 
-        public abstract override void Process();
+        public override void Process()
+        {
+
+        }
 
         public ISet<CInclude> Includes = new HashSet<CInclude>();
 
