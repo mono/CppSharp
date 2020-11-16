@@ -13,9 +13,6 @@ namespace CppSharp.Passes
 
         public bool CheckDeclarationAccess(Declaration decl)
         {
-            if (decl.IsExplicitlyGenerated)
-                return true;
-
             switch (decl.Access)
             {
                 case AccessSpecifier.Public:
@@ -78,6 +75,9 @@ namespace CppSharp.Passes
         {
             if (AlreadyVisited(decl))
                 return false;
+
+            if (decl.HasExplicitGenerationKind)
+                return true;
 
             if (decl.GenerationKind == GenerationKind.None)
                 return true;
