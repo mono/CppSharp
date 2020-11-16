@@ -1,6 +1,7 @@
 -- Tests/examples helpers
 
 require('vstudio')
+require('gmake2')
   
 function disableFastUpToDateCheck(prj, cfg)
   premake.vstudio.vc2010.element("DisableFastUpToDateCheck", nil, "true")
