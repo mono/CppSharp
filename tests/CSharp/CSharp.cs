@@ -56,7 +56,7 @@ namespace CppSharp.Tests
                         select macro.Name).ToList();
             var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", list.ToArray());
 
-            ctx.GenerateEnumFromMacros("MyMacroTest2Enum", "MY_MACRO_TEST2_*");
+            ctx.GenerateEnumFromMacros("MyMacroTest2Enum", "MY_MACRO_TEST2_.*");
 
             enumTest.Namespace = new Namespace()
                 {
