@@ -88,6 +88,7 @@ namespace CppSharp.Passes
 
                 if (!funcType.Equals(functionParams[i].Type.Desugar()))
                     functionMappedParams++;
+
                 if (!overloadType.Equals(overloadParams[i].Type.Desugar()))
                     overloadMappedParams++;
 
