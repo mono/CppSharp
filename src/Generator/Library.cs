@@ -146,8 +146,8 @@ namespace CppSharp
         {
             var @enum = new Enumeration { Name = name };
 
-            var pattern = string.Join("|", macros);
-            var regex = new Regex(pattern);
+            var regexPattern = string.Join("|", macros.Select(pattern => $"{pattern}$"));
+            var regex = new Regex(regexPattern);
 
             int maxItems = 0;
             TranslationUnit unitToAttach = null;
