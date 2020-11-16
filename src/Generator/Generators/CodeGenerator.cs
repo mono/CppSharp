@@ -61,7 +61,8 @@ namespace CppSharp.Generators
         protected CodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
         {
             Context = context;
-            TranslationUnits = new List<TranslationUnit>(units);
+            if (units != null)
+                TranslationUnits = new List<TranslationUnit>(units);
         }
 
         public abstract void Process();
