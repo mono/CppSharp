@@ -77,6 +77,9 @@ namespace CppSharp
         public void SetupTypeMaps() =>
             Context.TypeMaps = new TypeMapDatabase(Context);
 
+        public void SetupDeclMaps() =>
+            Context.DeclMaps = new DeclMapDatabase(Context);
+
         void OnSourceFileParsed(IEnumerable<string> files, ParserResult result)
         {
             OnFileParsed(files, result);
@@ -453,6 +456,7 @@ namespace CppSharp
 
                 driver.SetupPasses(library);
                 driver.SetupTypeMaps();
+                driver.SetupDeclMaps();
 
                 library.Preprocess(driver, driver.Context.ASTContext);
 
