@@ -73,6 +73,11 @@ namespace CppSharp.AST
         public virtual bool IsGenerated => GenerationKind == GenerationKind.Generate;
 
         /// <summary>
+        /// Whether the declaration has an explicit set generation kind.
+        /// </summary>
+        public bool HasExplicitGenerationKind => generationKind.HasValue;
+
+        /// <summary>
         /// Whether the declaration was explicitly set to be generated via
         /// the GenerationKind propery as opposed to the default generated state.
         /// </summary>
