@@ -24,12 +24,15 @@ namespace CppSharp
             optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, errorMessages) );
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
 
+            optionSet.Add("m=|module=", "the name for the generated {MODULE}", a => { options.OutputFileName = a; });
+
             optionSet.Add("iln=|inputlibraryname=|inputlib=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
             optionSet.Add("d|debug", "enables debug mode which generates more verbose code to aid debugging", v => options.Debug = true);
             optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);
             optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'csharp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, errorMessages); } );
             optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, errorMessages); } );
             optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, errorMessages); } );
+            optionSet.Add("prefix=", "sets a string prefix to the names of generated files", a => { options.Prefix = a; });
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.EnableExceptions = true; });
             optionSet.Add("rtti", "enables support for C++ RTTI in the parser", v => { options.EnableRTTI = true; });
@@ -101,7 +104,7 @@ namespace CppSharp
             if (Directory.Exists(dir))
                 options.IncludeDirs.Add(dir);
             else
-                errorMessages.Add(string.Format("Directory '{0}' doesn't exist. Ignoring as include directory.", dir));
+                errorMessages.Add($"Directory '{dir}' doesn't exist. Ignoring as include directory.");
         }
 
         static void HandleOutputArg(string arg, List<string> errorMessages)
@@ -196,7 +199,7 @@ namespace CppSharp
             }
             catch (Exception)
             {
-                errorMessages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", path));
+                errorMessages.Add($"Error while looking for files inside path '{path}'. Ignoring.");
             }
         }
 
@@ -210,9 +213,18 @@ namespace CppSharp
                 case "cli":
                     options.Kind = CppSharp.Generators.GeneratorKind.CLI;
                     return;
+                case "c":
+                    options.Kind = CppSharp.Generators.GeneratorKind.C;
+                    return;
+                case "cpp":
+                    options.Kind = CppSharp.Generators.GeneratorKind.CPlusPlus;
+                    return;
+                case "qjs":
+                    options.Kind = CppSharp.Generators.GeneratorKind.QuickJS;
+                    return;
             }
 
-            errorMessages.Add(string.Format("Unknown generator kind: {0}. Defaulting to {1}", generator, options.Kind.ToString()));
+            errorMessages.Add($"Unknown generator kind: {generator}. Defaulting to {options.Kind}");
         }
 
         static void GetDestinationPlatform(string platform, List<string> errorMessages)
@@ -230,7 +242,7 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add(string.Format("Unknown target platform: {0}. Defaulting to {1}", platform, options.Platform.ToString()));
+            errorMessages.Add($"Unknown target platform: {platform}. Defaulting to {options.Platform}");
         }
 
         static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
@@ -245,7 +257,7 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add(string.Format("Unknown target architecture: {0}. Defaulting to {1}", architecture, options.Architecture.ToString()));
+            errorMessages.Add($"Unknown target architecture: {architecture}. Defaulting to {options.Architecture}");
         }
 
         static void PrintErrorMessages(List<string> errorMessages)
@@ -259,8 +271,8 @@ namespace CppSharp
             List<string> errorMessages = new List<string>();
             bool helpShown = false;
 
-            try
-            {
+            //try
+            //{
                 if (!ParseCommandLineArgs(args, errorMessages, ref helpShown))
                 {
                     PrintErrorMessages(errorMessages);
@@ -278,13 +290,13 @@ namespace CppSharp
                 if (validOptions)
                     gen.Run();
             }
-            catch (Exception ex)
-            {
-                PrintErrorMessages(errorMessages);
-                Console.Error.WriteLine();
+            //catch (Exception ex)
+            //{
+              //  PrintErrorMessages(errorMessages);
+              //  Console.Error.WriteLine();
 
-                throw ex;
-            }
-        }
+              //  throw ex;
+            //}
+        //}
     }
 }

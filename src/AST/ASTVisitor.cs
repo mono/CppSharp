@@ -304,6 +304,11 @@ namespace CppSharp.AST
             return true;
         }
 
+        public virtual bool VisitQualifiedType(QualifiedType type)
+        {
+            return type.Type.Visit(this, type.Qualifiers);
+        }
+
         #endregion
 
         #region Decl Visitors

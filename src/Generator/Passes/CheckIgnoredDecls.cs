@@ -137,8 +137,8 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate decl)
         {
-             if (!base.VisitFunctionTemplateDecl(decl))
-                 return false;
+            if (!base.VisitFunctionTemplateDecl(decl))
+                return false;
 
             if (decl.TemplatedFunction.IsDependent && !decl.IsExplicitlyGenerated)
             {
@@ -383,13 +383,13 @@ namespace CppSharp.Passes
 
             if (HasInvalidType(variable.Type, variable, out msg))
 
-            if (HasInvalidType(variable, out msg))
-            {
-                variable.ExplicitlyIgnore();
-                Diagnostics.Debug("Variable '{0}' was ignored due to {1} type",
-                    variable.Name, msg);
-                return false;
-            }
+                if (HasInvalidType(variable, out msg))
+                {
+                    variable.ExplicitlyIgnore();
+                    Diagnostics.Debug("Variable '{0}' was ignored due to {1} type",
+                        variable.Name, msg);
+                    return false;
+                }
 
             return true;
         }
@@ -420,13 +420,13 @@ namespace CppSharp.Passes
 
                 if (HasInvalidType(param.Type, param, out msg))
 
-                if (HasInvalidType(param, out msg))
-                {
-                    @event.ExplicitlyIgnore();
-                    Diagnostics.Debug("Event '{0}' was ignored due to {1} param",
-                        @event.Name, msg);
-                    return false;
-                }
+                    if (HasInvalidType(param, out msg))
+                    {
+                        @event.ExplicitlyIgnore();
+                        Diagnostics.Debug("Event '{0}' was ignored due to {1} param",
+                            @event.Name, msg);
+                        return false;
+                    }
             }
 
             return true;
@@ -451,7 +451,7 @@ namespace CppSharp.Passes
         /// </summary>
         private bool HasInvalidType(ITypedDecl decl, out string msg)
         {
-            return HasInvalidType(decl.Type, (Declaration) decl, out msg);
+            return HasInvalidType(decl.Type, (Declaration)decl, out msg);
         }
 
         private bool HasInvalidType(Type type, Declaration decl, out string msg)
@@ -503,7 +503,7 @@ namespace CppSharp.Passes
             }
 
             var @class = decl as Class;
-            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
+            if (@class != null && @class.IsOpaque && !@class.IsDependent &&
                 !(@class is ClassTemplateSpecialization))
             {
                 msg = null;

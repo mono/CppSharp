@@ -17,7 +17,8 @@ namespace CppSharp.Generators
         ObjectiveC,
         Java,
         Swift,
-        NAPI
+        NAPI,
+        QuickJS
     }
 
     /// <summary>
@@ -80,42 +81,26 @@ namespace CppSharp.Generators
         {
             var outputs = new List<GeneratorOutput>();
 
-            if (Context.Options.GenerationOutputMode == GenerationOutputMode.FilePerModule ||
-                Context.Options.GenerateSingleCSharpFile)
+            var units = Context.ASTContext.TranslationUnits.GetGenerated()
+                .Where(u => !u.IsSystemHeader).ToList();
+
+            foreach (var unit in units)
             {
-                foreach (var module in Context.Options.Modules)
+                var output = GenerateUnit(unit);
+                if (output != null)
                 {
-                    var output = GenerateModule(module);
-                    if (output != null)
-                    {
-                        OnUnitGenerated(output);
-                        outputs.Add(output);
-                    }
+                    outputs.Add(output);
+                    OnUnitGenerated(output);
                 }
             }
-            else
+
+            if (Context.Options.SystemModule != null)
             {
-                var units = Context.ASTContext.TranslationUnits.GetGenerated()
-                    .Where(u => !u.IsSystemHeader).ToList();
-
-                foreach (var unit in units)
+                var output = GenerateModule(Context.Options.SystemModule);
+                if (output != null)
                 {
-                    var output = GenerateUnit(unit);
-                    if (output != null)
-                    {
-                        outputs.Add(output);
-                        OnUnitGenerated(output);
-                    }
-                }
-
-                if (Context.Options.SystemModule != null)
-                {
-                    var output = GenerateModule(Context.Options.SystemModule);
-                    if (output != null)
-                    {
-                        OnUnitGenerated(output);
-                        outputs.Add(output);
-                    }
+                    outputs.Add(output);
+                    OnUnitGenerated(output);
                 }
             }
 
@@ -144,7 +129,7 @@ namespace CppSharp.Generators
 
         public virtual GeneratorOutput GenerateModule(Module module)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);

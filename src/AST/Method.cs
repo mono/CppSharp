@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {

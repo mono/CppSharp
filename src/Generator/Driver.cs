@@ -47,6 +47,8 @@ namespace CppSharp
                     return new CSharpGenerator(Context);
                 case GeneratorKind.NAPI:
                     return new NAPIGenerator(Context);
+                case GeneratorKind.QuickJS:
+                    return new QuickJSGenerator(Context);
             }
 
             throw new NotImplementedException();
@@ -108,7 +110,7 @@ namespace CppSharp
                     break;
                 case ParserResultKind.FileNotFound:
                     Diagnostics.Error("File{0} not found: '{1}'",
-                        (files.Count() > 1) ? "s" : "",  string.Join(",", files));
+                        (files.Count() > 1) ? "s" : "", string.Join(",", files));
                     hasParsingErrors = true;
                     break;
             }
@@ -345,7 +347,9 @@ namespace CppSharp
 
                     var file = Path.Combine(outputPath, fileRelativePath);
                     File.WriteAllText(file, template.Generate());
-                    output.TranslationUnit.Module.CodeFiles.Add(file);
+
+                    if (output.TranslationUnit.Module != null)
+                        output.TranslationUnit.Module.CodeFiles.Add(file);
 
                     Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
@@ -366,13 +370,13 @@ namespace CppSharp
             compilerOptions.Append(" /unsafe");
 
             var compilerParameters = new CompilerParameters
-                {
-                    GenerateExecutable = false,
-                    TreatWarningsAsErrors = false,
-                    OutputAssembly = assemblyFile,
-                    GenerateInMemory = false,
-                    CompilerOptions = compilerOptions.ToString()
-                };
+            {
+                GenerateExecutable = false,
+                TreatWarningsAsErrors = false,
+                OutputAssembly = assemblyFile,
+                GenerateInMemory = false,
+                CompilerOptions = compilerOptions.ToString()
+            };
 
             if (module != Options.SystemModule)
                 compilerParameters.ReferencedAssemblies.Add(
@@ -440,7 +444,7 @@ namespace CppSharp
 
             driver.Setup();
 
-            if(driver.Options.Verbose)
+            if (driver.Options.Verbose)
                 Diagnostics.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)
@@ -479,6 +483,8 @@ namespace CppSharp
             if (!options.DryRun)
             {
                 var outputs = driver.GenerateCode();
+
+                library.GenerateCode(driver, outputs);
 
                 foreach (var output in outputs)
                 {

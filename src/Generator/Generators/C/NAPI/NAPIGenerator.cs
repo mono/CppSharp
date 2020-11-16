@@ -14,6 +14,26 @@ namespace CppSharp.Generators.C
         {
         }
 
+        public override List<GeneratorOutput> Generate()
+        {
+            var outputs = base.Generate();
+
+            foreach (var module in Context.Options.Modules)
+            {
+                if (module == Context.Options.SystemModule)
+                    continue;
+
+                var output = GenerateModule(module);
+                if (output != null)
+                {
+                    OnUnitGenerated(output);
+                    outputs.Add(output);
+                }
+            }
+
+            return outputs;
+        }
+
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<CodeGenerator>();
@@ -21,7 +41,7 @@ namespace CppSharp.Generators.C
             var header = new NAPIHeaders(Context, units);
             outputs.Add(header);
 
-            var source = new CppSources(Context, units);
+            var source = new NAPISources(Context, units);
             outputs.Add(source);
 
             return outputs;
@@ -29,7 +49,24 @@ namespace CppSharp.Generators.C
 
         public override GeneratorOutput GenerateModule(Module module)
         {
-            return base.GenerateModule(module);
+            if (module == Context.Options.SystemModule)
+                return null;
+
+            var moduleGen = new NAPIModule(Context, module);
+
+            var output = new GeneratorOutput
+            {
+                TranslationUnit = new TranslationUnit
+                {
+                    FilePath = $"{module.LibraryName}.cpp",
+                    Module = module
+                },
+                Outputs = new List<CodeGenerator> { moduleGen }
+            };
+
+            output.Outputs[0].Process();
+
+            return output;
         }
     }
 }

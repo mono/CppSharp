@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Generators.C;
+using CppSharp.Passes;
 
 namespace CppSharp.Generators.Cpp
 {
@@ -8,7 +9,7 @@ namespace CppSharp.Generators.Cpp
     /// C++ generator responsible for driving the generation of source and
     /// header files.
     /// </summary>
-    public class CppGenerator : Generator
+    public class CppGenerator : CGenerator
     {
         private readonly CppTypePrinter typePrinter;
 
@@ -30,7 +31,11 @@ namespace CppSharp.Generators.Cpp
             return outputs;
         }
 
-        public override bool SetupPasses() => true;
+        public override bool SetupPasses()
+        {
+            new FixupPureMethodsPass().VisitASTContext(Context.ASTContext);
+            return true;
+        }
 
         public static bool ShouldGenerateClassNativeField(Class @class)
         {
@@ -43,6 +48,23 @@ namespace CppSharp.Generators.Cpp
         protected override string TypePrinterDelegate(Type type)
         {
             return type.Visit(typePrinter).ToString();
+        }
+    }
+
+    /// <summary>
+    /// Removes the pureness of virtual abstract methods in C++ classes since
+    /// the generated classes cannot have virtual pure methods, as they call
+    /// the original pure method.
+    /// This lets user code mark some methods as pure if needed, in that case
+    /// the generator can generate the necessary pure C++ code annotations safely
+    /// knowing the only pure functions were user-specified.
+    /// </summary>
+    public class FixupPureMethodsPass : TranslationUnitPass
+    {
+        public override bool VisitMethodDecl(Method method)
+        {
+            method.IsPure = false;
+            return base.VisitMethodDecl(method);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CppSharp.AST;
-using CppSharp.AST.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,7 +54,7 @@ namespace CppSharp.Generators.C
 
         public string QualifiedIdentifier(Declaration decl)
         {
-            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
+            if (!string.IsNullOrEmpty(TranslationUnit.Module?.OutputNamespace))
             {
                 if (string.IsNullOrEmpty(decl.QualifiedName))
                     return $"{decl.TranslationUnit.Module.OutputNamespace}";
@@ -145,8 +144,8 @@ namespace CppSharp.Generators.C
             else
                 Write($"{enumKind} {enumName}");
 
-            if (Options.GeneratorKind == GeneratorKind.CPlusPlus ||
-                Options.GeneratorKind == GeneratorKind.CLI)
+            if (!(Options.GeneratorKind == GeneratorKind.C ||
+                  Options.GeneratorKind == GeneratorKind.ObjectiveC))
             {
                 var typeName = CTypePrinter.VisitPrimitiveType(
                     @enum.BuiltinType.Type, new TypeQualifiers());
@@ -378,11 +377,10 @@ namespace CppSharp.Generators.C
 
             if (isDeclaration)
             {
-                if (method.IsOverride)
-                    Write(" override");
-
-                //if (method.IsPure)
-                //Write(" = 0");
+                if (method.IsPure)
+                  Write(" = 0");
+                else if (method.IsOverride)
+                  Write(" override");
             }
         }
 

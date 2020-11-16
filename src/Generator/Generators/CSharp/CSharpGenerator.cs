@@ -13,6 +13,29 @@ namespace CppSharp.Generators.CSharp
             typePrinter = new CSharpTypePrinter(context);
         }
 
+        public override List<GeneratorOutput> Generate()
+        {
+            if (Context.Options.GenerationOutputMode == GenerationOutputMode.FilePerModule ||
+                Context.Options.GenerateSingleCSharpFile)
+            {
+                var outputs = new List<GeneratorOutput>();
+
+                foreach (var module in Context.Options.Modules)
+                {
+                    var output = GenerateModule(module);
+                    if (output != null)
+                    {
+                        OnUnitGenerated(output);
+                        outputs.Add(output);
+                    }
+                }
+
+                return outputs;
+            }
+
+            return base.Generate();
+        }
+
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<CodeGenerator>();

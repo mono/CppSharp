@@ -23,6 +23,7 @@ namespace CppSharp
         Footer,
         Usings,
         Namespace,
+        TranslationUnit,
         Enum,
         EnumItem,
         Typedef,
@@ -50,6 +51,7 @@ namespace CppSharp
         Destructor,
         AccessSpecifier,
         Fields,
+        Constructor,
         ConstructorBody,
         DestructorBody,
         FinalizerBody
@@ -207,6 +209,12 @@ namespace CppSharp
             Text.NeedNewLine();
         }
 
+        public bool NeedsNewLine
+        {
+            get => Text.NeedsNewLine;
+            set => Text.NeedsNewLine = value;
+        }
+
         public void ResetNewLine()
         {
             Text.ResetNewLine();
@@ -329,6 +337,12 @@ namespace CppSharp
         public void NeedNewLine()
         {
             ActiveBlock.NeedNewLine();
+        }
+
+        public bool NeedsNewLine
+        {
+            get => ActiveBlock.NeedsNewLine;
+            set => ActiveBlock.NeedsNewLine = value;
         }
 
         public void ResetNewLine()

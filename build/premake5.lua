@@ -46,11 +46,10 @@ if not _OPTIONS["disable-tests"] then
       IncludeTests()
 end
 
-if not _OPTIONS["disable-tests"] then
-  if string.starts(action, "vs") then
-
+--if not _OPTIONS["disable-tests"] then
+  --if string.starts(action, "vs") then
   group "Examples"
     IncludeExamples()
   
-  end
-end
+  --end
+--end

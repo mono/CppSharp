@@ -403,6 +403,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public virtual TypePrinterResult VisitQualifiedType(QualifiedType type)
+        {
+            return type.Type.Visit(this, type.Qualifiers);
+        }
+
         #endregion
     }
 }

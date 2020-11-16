@@ -424,7 +424,7 @@ namespace CppSharp.Generators.C
             Parameter oldParam = Parameter;
             Parameter = param;
 
-            var result = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var result = param.QualifiedType.Visit(this);
 
             Parameter = oldParam;
 
@@ -444,6 +444,19 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitDelegate(FunctionType function)
         {
             throw new NotImplementedException();
+        }
+
+        public override TypePrinterResult VisitQualifiedType(QualifiedType type)
+        {
+            if (type.Qualifiers.Mode == TypeQualifiersMode.Native)
+            {
+                PushContext(TypePrinterContextKind.Native);
+                var result = base.VisitQualifiedType(type);
+                PopContext();
+                return result;
+            }
+
+            return base.VisitQualifiedType(type);
         }
 
         public TypePrinterResult GetDeclName(Declaration declaration,

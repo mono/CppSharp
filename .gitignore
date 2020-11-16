@@ -46,6 +46,7 @@ src/generator/generator
 /build/headers
 /build/netcore
 /deps/llvm
+/deps/llvm-download
 /deps/NUnit*
 /extra
 /include/include

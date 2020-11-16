@@ -36,6 +36,12 @@ namespace CppSharp.AST
         public abstract object Clone();
     }
 
+    public enum TypeQualifiersMode : byte
+    {
+        Default,
+        Native
+    }
+
     /// <summary>
     /// Represents C++ type qualifiers.
     /// </summary>
@@ -44,10 +50,11 @@ namespace CppSharp.AST
         public bool IsConst;
         public bool IsVolatile;
         public bool IsRestrict;
+        public TypeQualifiersMode Mode;
 
         public override int GetHashCode() =>
             IsConst.GetHashCode() ^ IsVolatile.GetHashCode() ^
-                IsRestrict.GetHashCode();
+                IsRestrict.GetHashCode() ^ Mode.GetHashCode();
     }
 
     /// <summary>
@@ -68,12 +75,12 @@ namespace CppSharp.AST
             Qualifiers = qualifiers;
         }
 
-        public Type Type { get; set; }
-        public TypeQualifiers Qualifiers { get; set; }
+        public Type Type;
+        public TypeQualifiers Qualifiers;
 
         public T Visit<T>(ITypeVisitor<T> visitor)
         {
-            return Type.Visit(visitor, Qualifiers);
+            return visitor.VisitQualifiedType(this);
         }
 
         public override string ToString()
@@ -1287,5 +1294,6 @@ namespace CppSharp.AST
         T VisitVectorType(VectorType vectorType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
         T VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals);
+        T VisitQualifiedType(QualifiedType type);
     }
 }

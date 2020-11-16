@@ -117,7 +117,7 @@ namespace CppSharp
             ExprClasses = exprSubclassVisitor.Classes;
 
             CodeGeneratorHelpers.CppTypePrinter = new CppTypePrinter(driver.Context)
-                { ScopeKind = TypePrintScopeKind.Local };
+            { ScopeKind = TypePrintScopeKind.Local };
 
             GenerateStmt(driver.Context);
             GenerateExpr(driver.Context);
@@ -810,7 +810,7 @@ namespace CppSharp
 
                 UnindentAndWriteCloseBrace();
             }
-            
+
             WriteLine($"default:");
             WriteLineIndent($"throw new System.NotImplementedException(" +
                 $"{ParamName}.StmtClass.ToString());");
@@ -1352,12 +1352,14 @@ namespace CppSharp
                 WriteLine($"_S->{fieldName} = WalkTemplateArgument(S->{methodName}());");
             else if (typeName.Contains("QualifiedType"))
                 WriteLine($"_S->{fieldName} = GetQualifiedType(S->{methodName}());");
-            else if (fieldName == "value" && @class.Bases.Exists(b => b.Class.Name.Contains("AP"))) {
+            else if (fieldName == "value" && @class.Bases.Exists(b => b.Class.Name.Contains("AP")))
+            {
                 // Use llvm::APInt or llvm::APFloat conversion methods
                 methodName = property.Type.IsPrimitiveType(PrimitiveType.ULongLong) ?
                     "getLimitedValue" : "convertToDouble";
                 WriteLine($"_S->{fieldName} = S->getValue().{methodName}();");
-            } else
+            }
+            else
                 WriteLine($"_S->{fieldName} = S->{methodName}();");
 
             if (validMethodExists)
@@ -1425,7 +1427,7 @@ namespace CppSharp
             "AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)";
     }
 
-    class NativeParserCodeGenerator : CCodeGenerator
+    class NativeParserCodeGenerator : Generators.C.CCodeGenerator
     {
         internal readonly IEnumerable<Declaration> Declarations;
 
@@ -1793,7 +1795,7 @@ namespace CppSharp
 
             if (kind == GeneratorKind.CPlusPlus)
             {
-                if (CCodeGenerator.IsReservedKeyword(name))
+                if (Generators.C.CCodeGenerator.IsReservedKeyword(name))
                     name = $"_{name}";
             }
             else if (kind == GeneratorKind.CSharp)

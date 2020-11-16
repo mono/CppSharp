@@ -37,11 +37,14 @@ namespace CppSharp.Generators.CLI
             get { return typeReferences.Values; }
         }
 
+        public HashSet<Declaration> GeneratedDeclarations;
+
         public CLITypeReferenceCollector(ITypeMapDatabase typeMapDatabase, DriverOptions driverOptions)
         {
             TypeMapDatabase = typeMapDatabase;
             DriverOptions = driverOptions;
             typeReferences = new Dictionary<Declaration, CLITypeReference>();
+            GeneratedDeclarations = new HashSet<Declaration>();
         }
 
         public CLITypeReference GetTypeReference(Declaration decl)
@@ -194,6 +197,9 @@ namespace CppSharp.Generators.CLI
 
             if (@class.IsIncomplete && @class.CompleteDeclaration != null)
                 @class = (Class) @class.CompleteDeclaration;
+
+            if (@class.TranslationUnit == TranslationUnit)
+                GeneratedDeclarations.Add(@class);
 
             string keywords;
             if (DriverOptions.IsCLIGenerator)

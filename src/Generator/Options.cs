@@ -146,6 +146,12 @@ namespace CppSharp
         [Obsolete("Use the more general GenerationOutputMode property instead.")]
         public bool GenerateSingleCSharpFile { get; set; } = true;
 
+        /// <summary>
+        /// Sets the generation output mode which affects how output files are
+        /// generated, either as one output file per binding module, or as one
+        /// output file for each input translation unit.
+        /// Note: Currently only available for C# generator.
+        /// </summary>
         public GenerationOutputMode GenerationOutputMode { get; set; } =
             GenerationOutputMode.FilePerUnit;
 

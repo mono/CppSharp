@@ -5,7 +5,7 @@ using CppSharp.Generators.Cpp;
 namespace CppSharp.Generators.C
 {
     /// <summary>
-    /// C++ generator responsible for driving the generation of source and
+    /// C generator responsible for driving the generation of source and
     /// header files.
     /// </summary>
     public class CGenerator : Generator

@@ -58,9 +58,78 @@ namespace CppSharp.Passes
     {
         public IDiagnostics Log { get; set; }
 
+        public virtual void HandleBlock(Block block)
+        {
+            switch(block.Kind)
+            {
+            case BlockKind.Class:
+                VisitClass(block);
+                break;
+            case BlockKind.Method:
+                VisitMethod(block);
+                break;
+            case BlockKind.Constructor:
+                VisitConstructor(block);
+                break;
+            case BlockKind.ConstructorBody:
+                VisitConstructorBody(block);
+                break;
+            case BlockKind.Namespace:
+                VisitNamespace(block);
+                break;
+            case BlockKind.Includes:
+                VisitIncludes(block);
+                break;
+            }
+
+            foreach (var childBlock in block.Blocks)
+                HandleBlock(childBlock);
+        }
+
+        public virtual void VisitCodeGenerator(CodeGenerator generator)
+        {
+            foreach (var block in generator.ActiveBlock.Blocks)
+            {
+                HandleBlock(block);
+            }
+        }
+
         public virtual void VisitGeneratorOutput(GeneratorOutput output)
         {
-            
+            foreach (var generator in output.Outputs)
+            {
+                VisitCodeGenerator(generator);
+            }
+        }
+
+        public virtual void VisitClass(Block block)
+        {
+
+        }
+
+        public virtual void VisitNamespace(Block block)
+        {
+
+        }
+
+        public virtual void VisitMethod(Block block)
+        {
+
+        }
+
+        public virtual void VisitConstructor(Block block)
+        {
+
+        }
+
+        public virtual void VisitConstructorBody(Block block)
+        {
+
+        }
+
+        public virtual void VisitIncludes(Block block)
+        {
+
         }
     }
 }

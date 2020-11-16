@@ -41,28 +41,38 @@ namespace CppSharp.Generators.Cpp
             NewLine();
             PopBlock();
 
-            VisitNamespace(TranslationUnit);
+            GenerateMain();
 
             PushBlock(BlockKind.Footer);
             PopBlock();
         }
 
-        public void GenerateForwardReferenceHeaders()
+        public virtual void GenerateMain()
+        {
+            VisitNamespace(TranslationUnit);
+        }
+
+        public virtual void GenerateForwardReferenceHeaders()
+        {
+            GenerateForwardReferenceHeaders(TranslationUnit);
+        }
+
+        public virtual void GenerateForwardReferenceHeaders(TranslationUnit unit)
         {
             PushBlock(BlockKind.IncludesForwardReferences);
 
             var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps, Context.Options);
-            typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
+            typeReferenceCollector.Process(unit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             foreach (var typeRef in typeReferenceCollector.TypeReferences)
             {
-                if (typeRef.Include.File == TranslationUnit.FileName)
+                if (typeRef.Include.File == unit.FileName)
                     continue;
 
                 var include = typeRef.Include;
-                if(!string.IsNullOrEmpty(include.File) && !include.InHeader)
+                if (!string.IsNullOrEmpty(include.File) && !include.InHeader)
                     includes.Add(include.ToString());
             }
 
@@ -71,6 +81,7 @@ namespace CppSharp.Generators.Cpp
 
             PopBlock();
         }
+
 
         public override bool VisitDeclContext(DeclarationContext context)
         {
@@ -118,16 +129,7 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (@class.IsDynamic)
-            {
-                PushBlock();
-                var overridesClassGen = new OverridesClassGenerator(Context);
-                overridesClassGen.VisitClassDecl(@class);
-                AddBlock(overridesClassGen.RootBlock);
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
-
-            PushBlock(BlockKind.Class);
+            PushBlock(BlockKind.Class, @class);
 
             VisitDeclContext(@class);
 
@@ -305,7 +307,11 @@ namespace CppSharp.Generators.Cpp
 
             WriteOpenBraceAndIndent();
 
+            PushBlock(BlockKind.ConstructorBody, @class);
+
             WriteLine($"{Helpers.InstanceIdentifier} = {ClassCtorInstanceParamIdentifier};");
+
+            PopBlock();
 
             UnindentAndWriteCloseBrace();
             NewLine();
@@ -357,6 +363,9 @@ namespace CppSharp.Generators.Cpp
             if (!method.IsGenerated || CppHeaders.FunctionIgnored(method))
                 return false;
 
+            if (method.IsPure)
+                return false;
+
             PushBlock(BlockKind.Method, method);
 
             GenerateMethodSpecifier(method);
@@ -370,6 +379,14 @@ namespace CppSharp.Generators.Cpp
 
             PushBlock(BlockKind.MethodBody, method);
 
+            if (Context.DeclMaps.FindDeclMap(method, out DeclMap declMap))
+            {
+                declMap.Declaration = method;
+                declMap.DeclarationContext = @class;
+                declMap.Generate(this);
+                goto SkipImpl;
+            }
+
             if (method.IsConstructor && @class.IsRefType)
                 WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
 
@@ -382,10 +399,14 @@ namespace CppSharp.Generators.Cpp
                 {
                     if (!@class.IsAbstract)
                     {
+                        PushBlock(BlockKind.ConstructorBody, @class);
+
                         var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
                         Write($"{Helpers.InstanceIdentifier} = new ::{method.Namespace.QualifiedOriginalName}(");
                         GenerateFunctionParams(@params);
                         WriteLine(");");
+
+                        PopBlock();
                     }
                 }
                 else
@@ -516,21 +537,26 @@ namespace CppSharp.Generators.Cpp
 
             if (needsReturn)
             {
-                var ctx = new MarshalContext(Context, CurrentIndentation)
-                {
-                    ArgName = Helpers.ReturnIdentifier,
-                    ReturnVarName = Helpers.ReturnIdentifier,
-                    ReturnType = function.ReturnType
-                };
-
-                var marshal = new CppMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Visit(marshal);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                    Write(marshal.Context.Before);
-
-                WriteLine($"return {marshal.Context.Return};");
+                GenerateFunctionCallReturnMarshal(function);
             }
+        }
+
+        public virtual void GenerateFunctionCallReturnMarshal(Function function)
+        {
+            var ctx = new MarshalContext(Context, CurrentIndentation)
+            {
+                ArgName = Helpers.ReturnIdentifier,
+                ReturnVarName = Helpers.ReturnIdentifier,
+                ReturnType = function.ReturnType
+            };
+
+            var marshal = new CppMarshalNativeToManagedPrinter(ctx);
+            function.ReturnType.Visit(marshal);
+
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                Write(marshal.Context.Before);
+
+            WriteLine($"return {marshal.Context.Return};");
         }
 
         public static bool IsNativeMethod(Function function)
@@ -580,7 +606,7 @@ namespace CppSharp.Generators.Cpp
             return marshals;
         }
 
-        private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
+        public virtual ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
             var paramMarshal = new ParamMarshal { Name = param.Name, Param = param };
@@ -647,9 +673,28 @@ namespace CppSharp.Generators.Cpp
 
     public class OverridesClassGenerator : CCodeGenerator
     {
-        public OverridesClassGenerator(BindingContext context)
+        public enum GenerationMode
+        {
+            Declaration,
+            Definition
+        }
+
+        HashSet<Method> UniqueMethods;
+        Class Class;
+        readonly Func<Method, bool> Filter;
+        GenerationMode Mode;
+
+        public OverridesClassGenerator(BindingContext context,
+            GenerationMode mode, Func<Method, bool> filter = null)
             : base(context)
         {
+            Mode = mode;
+            Filter = filter;
+        }
+
+        public virtual bool ShouldVisitMethod(Method method)
+        {
+            return Filter != null ? Filter(method) : true;
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -658,9 +703,13 @@ namespace CppSharp.Generators.Cpp
             var typeName = @class.Visit(CTypePrinter);
 
             WriteLine($"class _{@class.Name} : public {typeName}");
-            WriteOpenBraceAndIndent();
+            WriteLine("{");
+            WriteLine("public:");
+            NewLine();
+            Indent();
 
-            var uniqueMethods = new HashSet<Method>();
+            Class = @class;
+            UniqueMethods = new HashSet<Method>();
 
             foreach (var component in @class.Layout.Layout.Components)
             {
@@ -671,7 +720,10 @@ namespace CppSharp.Generators.Cpp
                 if (!method.IsVirtual || (method.GenerationKind == GenerationKind.None))
                     continue;
 
-                if (!uniqueMethods.Add(method))
+                if (!UniqueMethods.Add(method))
+                    continue;
+
+                if (!ShouldVisitMethod(method))
                     continue;
 
                 method = new Method(component.Method)
@@ -682,42 +734,65 @@ namespace CppSharp.Generators.Cpp
                 if (method.IsConstructor || method.IsDestructor)
                     continue;
 
-                uniqueMethods.Add(method);
+                UniqueMethods.Add(method);
 
-                PushBlock(BlockKind.Method, method);
-                GenerateMethodSpecifier(method, MethodSpecifierKind.Declaration);
-                NewLine();
-                WriteOpenBraceAndIndent();
-
-                DeclMap declMap;
-                if (Context.DeclMaps.FindDeclMap(method, out declMap))
-                {
-                    declMap.Declaration = method;
-                    declMap.DeclarationContext = @class;
-                    declMap.Generate(this);
-                }
-
-                var needsReturn = !method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
-                if (needsReturn)
-                {
-                    var returnType = method.ReturnType.Visit(CTypePrinter);
-                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
-                }
-
-                var parameters = string.Join(", ", method.Parameters.Select(p => p.Name));
-                WriteLine($"this->{method.OriginalName}({parameters});");
-
-                if (needsReturn)
-                    WriteLine($"return {Helpers.ReturnIdentifier};");
-
-                UnindentAndWriteCloseBrace();
-                PopBlock(NewLineKind.BeforeNextBlock);
+                method.Visit(this);
             }
 
             Unindent();
             WriteLine("};");
 
             CTypePrinter.PopContext();
+
+            Class = null;
+            UniqueMethods = null;
+
+            return true;
+        }
+
+        public override bool VisitMethodDecl(Method method)
+        {
+            PushBlock(BlockKind.Method, method);
+
+            var isDeclaration = Mode == GenerationMode.Declaration;
+            GenerateMethodSpecifier(method, isDeclaration ?
+                MethodSpecifierKind.Declaration : MethodSpecifierKind.Definition);
+
+            if (isDeclaration)
+            {
+                WriteLine(";");
+            }
+            else
+            {
+                NewLine();
+                WriteOpenBraceAndIndent();
+
+                if (Context.DeclMaps.FindDeclMap(method, out DeclMap declMap))
+                {
+                    declMap.Declaration = method;
+                    declMap.DeclarationContext = Class;
+                    declMap.Generate(this);
+                }
+                else
+                {
+                    var needsReturn = !method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
+                    if (needsReturn)
+                    {
+                        var returnType = method.ReturnType.Visit(CTypePrinter);
+                        Write($"{returnType} {Helpers.ReturnIdentifier} = ");
+                    }
+
+                    var parameters = string.Join(", ", method.Parameters.Select(p => p.Name));
+                    WriteLine($"this->{method.OriginalName}({parameters});");
+
+                    if (needsReturn)
+                        WriteLine($"return {Helpers.ReturnIdentifier};");
+                }
+
+                UnindentAndWriteCloseBrace();
+            }
+
+            PopBlock(NewLineKind.BeforeNextBlock);
 
             return true;
         }
