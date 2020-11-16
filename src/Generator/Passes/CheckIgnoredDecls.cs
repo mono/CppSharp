@@ -541,11 +541,19 @@ namespace CppSharp.Passes
             Declaration decl;
             if (!finalType.TryGetDeclaration(out decl)) return true;
 
+            var isCompleteDecl = !decl.IsIncomplete || decl.CompleteDeclaration != null;
             var @class = (decl as Class);
-            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
-                !(@class is ClassTemplateSpecialization))
-                return true;
-            return !decl.IsIncomplete || decl.CompleteDeclaration != null;
+            if (@class != null && @class.IsOpaque)
+            {
+                var isPointerType = type.Desugar().IsPointer();
+                if (!isPointerType)
+                    return isCompleteDecl;
+
+                if (!@class.IsDependent && !(@class is ClassTemplateSpecialization))
+                    return true;
+            }
+
+            return isCompleteDecl;
         }
 
         private bool IsTypeIgnored(Type type)
