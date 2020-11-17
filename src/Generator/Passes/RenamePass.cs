@@ -268,6 +268,9 @@ namespace CppSharp.Passes
             foreach (var @event in @class.Events)
                 VisitEvent(@event);
 
+            foreach (var @enum in @class.Enums)
+                VisitEnumDecl(@enum);
+
             return true;
         }
 
@@ -455,6 +458,13 @@ namespace CppSharp.Passes
         {
             builder.AddPass(new RegexRenamePass("^" + prefix, string.Empty,
                 targets));
+        }
+
+        public static void RemovePrefix(string prefix, Declaration decl,
+            RenameTargets targets = RenameTargets.Any)
+        {
+            var pass = new RegexRenamePass("^" + prefix, string.Empty, targets);
+            decl.Visit(pass);
         }
 
         public static void RenameDeclsCase(this PassBuilder<TranslationUnitPass> builder, 
