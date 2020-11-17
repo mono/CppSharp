@@ -6,7 +6,7 @@ project "CppSharp.Generator"
   language "C#"
 
   files   { "**.cs", "**verbs.txt" }
-  excludes { "Filter.cs" }
+  excludes { "obj/**/*", "Filter.cs" }
   vpaths { ["*"] = "*" }
 
   dependson { "Std-symbols" }

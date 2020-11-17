@@ -4,6 +4,7 @@ project "CppSharp.Generator.Tests"
   SetupManagedProject()
 
   files { "**.cs" }
+  excludes { "obj/**" }
   vpaths { ["*"] = "*" }
 
   libdirs

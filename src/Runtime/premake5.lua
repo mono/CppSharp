@@ -6,6 +6,7 @@ project "CppSharp.Runtime"
   clr "Unsafe"
 
   files   { "**.cs" }
+  excludes { "obj/**" }
   vpaths { ["*"] = "*" }
  
   filter { "action:not netcore"}

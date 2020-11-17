@@ -35,6 +35,7 @@ function SetupExampleProject()
   debugdir "."
   
   files { "**.cs", "./*.lua" }
+  excludes { "obj/**" }
   links
   {
     "CppSharp",
