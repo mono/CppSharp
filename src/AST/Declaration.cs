@@ -334,6 +334,9 @@ namespace CppSharp.AST
 
         public List<Declaration> Redeclarations { get; } = new List<Declaration>();
 
+        // Custom declaration map for custom code generation.
+        public object DeclMap { get; set; }
+
         protected Declaration()
         {
             Access = AccessSpecifier.Public;
@@ -372,6 +375,7 @@ namespace CppSharp.AST
             LineNumberEnd = declaration.LineNumberEnd;
             IsImplicit = declaration.IsImplicit;
             AssociatedDeclaration = declaration.AssociatedDeclaration;
+            DeclMap = declaration.DeclMap;
         }
 
         public override string ToString()
