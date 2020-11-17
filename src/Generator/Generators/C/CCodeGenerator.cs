@@ -372,8 +372,16 @@ namespace CppSharp.Generators.C
 
             Write(")");
 
-            if (method.IsOverride && isDeclaration)
-                Write(" override");
+            if (method.IsConst)
+                Write(" const");
+
+            if (isDeclaration)
+            {
+                if (method.IsPure)
+                  Write(" = 0");
+                else if (method.IsOverride)
+                  Write(" override");
+            }
         }
 
         public virtual void GenerateMethodParameters(Function function)
