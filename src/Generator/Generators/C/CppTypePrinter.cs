@@ -433,6 +433,19 @@ namespace CppSharp.Generators.C
             throw new NotImplementedException();
         }
 
+        public override TypePrinterResult VisitQualifiedType(QualifiedType type)
+        {
+            if (type.Qualifiers.Mode == TypeQualifiersMode.Native)
+            {
+                PushContext(TypePrinterContextKind.Native);
+                var result = base.VisitQualifiedType(type);
+                PopContext();
+                return result;
+            }
+
+            return base.VisitQualifiedType(type);
+        }
+
         public TypePrinterResult GetDeclName(Declaration declaration,
             TypePrintScopeKind scope)
         {
