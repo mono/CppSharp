@@ -24,6 +24,7 @@ namespace CppSharp
         Footer,
         Usings,
         Namespace,
+        TranslationUnit,
         Enum,
         EnumItem,
         Typedef,
@@ -52,6 +53,7 @@ namespace CppSharp
         Destructor,
         AccessSpecifier,
         Fields,
+        Constructor,
         ConstructorBody,
         DestructorBody,
         FinalizerBody
