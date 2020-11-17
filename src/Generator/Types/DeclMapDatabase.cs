@@ -60,6 +60,12 @@ namespace CppSharp.Types
 
         public bool FindDeclMap(Declaration decl, out DeclMap declMap)
         {
+            if (decl.DeclMap != null)
+            {
+                declMap = decl.DeclMap as DeclMap;
+                return true;
+            }
+
             // Looks up the decl in the cache map.
             if (declMaps.ContainsKey(decl))
             {
