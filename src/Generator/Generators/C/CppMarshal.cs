@@ -497,7 +497,9 @@ namespace CppSharp.Generators.Cpp
                 // Use the original typedef name if available, otherwise just use the function pointer type
                 string cppTypeName;
                 if (!decl.IsSynthetized)
+                {
                     cppTypeName = "::" + typedef.Declaration.QualifiedOriginalName;
+                }
                 else
                 {
                     cppTypeName = decl.Type.Visit(typePrinter, quals);

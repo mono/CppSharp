@@ -103,7 +103,7 @@ namespace CppSharp
                     break;
                 case ParserResultKind.FileNotFound:
                     Diagnostics.Error("File{0} not found: '{1}'",
-                        (files.Count() > 1) ? "s" : "",  string.Join(",", files));
+                        (files.Count() > 1) ? "s" : "", string.Join(",", files));
                     hasParsingErrors = true;
                     break;
             }
@@ -349,13 +349,13 @@ namespace CppSharp
             compilerOptions.Append(" /unsafe");
 
             var compilerParameters = new CompilerParameters
-                {
-                    GenerateExecutable = false,
-                    TreatWarningsAsErrors = false,
-                    OutputAssembly = assemblyFile,
-                    GenerateInMemory = false,
-                    CompilerOptions = compilerOptions.ToString()
-                };
+            {
+                GenerateExecutable = false,
+                TreatWarningsAsErrors = false,
+                OutputAssembly = assemblyFile,
+                GenerateInMemory = false,
+                CompilerOptions = compilerOptions.ToString()
+            };
 
             if (module != Options.SystemModule)
                 compilerParameters.ReferencedAssemblies.Add(

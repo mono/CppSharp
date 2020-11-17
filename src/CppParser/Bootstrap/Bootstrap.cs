@@ -1352,12 +1352,14 @@ namespace CppSharp
                 WriteLine($"_S->{fieldName} = WalkTemplateArgument(S->{methodName}());");
             else if (typeName.Contains("QualifiedType"))
                 WriteLine($"_S->{fieldName} = GetQualifiedType(S->{methodName}());");
-            else if (fieldName == "value" && @class.Bases.Exists(b => b.Class.Name.Contains("AP"))) {
+            else if (fieldName == "value" && @class.Bases.Exists(b => b.Class.Name.Contains("AP")))
+            {
                 // Use llvm::APInt or llvm::APFloat conversion methods
                 methodName = property.Type.IsPrimitiveType(PrimitiveType.ULongLong) ?
                     "getLimitedValue" : "convertToDouble";
                 WriteLine($"_S->{fieldName} = S->getValue().{methodName}();");
-            } else
+            }
+            else
                 WriteLine($"_S->{fieldName} = S->{methodName}();");
 
             if (validMethodExists)
