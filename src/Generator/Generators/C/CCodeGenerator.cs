@@ -144,8 +144,8 @@ namespace CppSharp.Generators.C
             else
                 Write($"{enumKind} {enumName}");
 
-            if (Options.GeneratorKind == GeneratorKind.CPlusPlus ||
-                Options.GeneratorKind == GeneratorKind.CLI)
+            if (!(Options.GeneratorKind == GeneratorKind.C ||
+                  Options.GeneratorKind == GeneratorKind.ObjectiveC))
             {
                 var typeName = CTypePrinter.VisitPrimitiveType(
                     @enum.BuiltinType.Type, new TypeQualifiers());
