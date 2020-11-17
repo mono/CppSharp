@@ -15,6 +15,20 @@ namespace CppSharp.AST
             return @class.Methods.Where(method => method.Name == function.Name);
         }
 
+        public static bool HasClassInHierarchy(this Class @class, string name)
+        {
+            return @class.FindHierarchy(c => c.OriginalName == name || c.Name == name);
+        }
+
+        public static bool FindHierarchy(this Class @class,
+            Func<Class, bool> func)
+        {
+            bool FindHierarchyImpl(Class c, Func<Class, bool> f) => func(c) ||
+                    c.Bases.Any(b => b.IsClass && FindHierarchyImpl(b.Class, f));
+
+            return @class.Bases.Any(b => b.IsClass && FindHierarchyImpl(b.Class, func));
+        }
+
         public static IEnumerable<T> FindHierarchy<T>(this Class @class,
             Func<Class, IEnumerable<T>> func)
             where T : Declaration
