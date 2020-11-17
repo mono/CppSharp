@@ -5,6 +5,7 @@ namespace CppSharp
 {
     public interface ITextGenerator
     {
+        bool NeedsNewLine { get; set; }
         void Write(string msg, params object[] args);
         void WriteLine(string msg, params object[] args);
         void WriteLineIndent(string msg, params object[] args);
