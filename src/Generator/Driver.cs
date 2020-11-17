@@ -319,7 +319,9 @@ namespace CppSharp
 
                     var file = Path.Combine(outputPath, fileRelativePath);
                     WriteGeneratedCodeToFile(file, template.Generate());
-                    output.TranslationUnit.Module.CodeFiles.Add(file);
+
+                    if (output.TranslationUnit.Module != null)
+                        output.TranslationUnit.Module.CodeFiles.Add(file);
 
                     Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
