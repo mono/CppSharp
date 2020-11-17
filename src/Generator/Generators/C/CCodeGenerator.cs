@@ -54,7 +54,7 @@ namespace CppSharp.Generators.C
 
         public string QualifiedIdentifier(Declaration decl)
         {
-            if (!string.IsNullOrEmpty(TranslationUnit.Module.OutputNamespace))
+            if (!string.IsNullOrEmpty(TranslationUnit.Module?.OutputNamespace))
             {
                 if (string.IsNullOrEmpty(decl.QualifiedName))
                     return $"{decl.TranslationUnit.Module.OutputNamespace}";
