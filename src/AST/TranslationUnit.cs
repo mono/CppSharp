@@ -19,6 +19,7 @@ namespace CppSharp.AST
         public TranslationUnit(string file) : this()
         {
             FilePath = file;
+            IncludePath = file;
         }
 
         /// Contains the macros present in the unit.
