@@ -380,8 +380,6 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            if (HasInvalidType(variable.Type, variable, out msg))
-
             if (HasInvalidType(variable, out msg))
             {
                 variable.ExplicitlyIgnore();
@@ -416,8 +414,6 @@ namespace CppSharp.Passes
                         @event.Name, msg);
                     return false;
                 }
-
-                if (HasInvalidType(param.Type, param, out msg))
 
                 if (HasInvalidType(param, out msg))
                 {
