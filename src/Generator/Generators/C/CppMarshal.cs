@@ -256,7 +256,13 @@ namespace CppSharp.Generators.Cpp
 
         public void WriteClassInstance(Class @class, string instance)
         {
-            if (!Context.ReturnType.Type.IsPointer())
+            if (@class.CompleteDeclaration != null)
+            {
+                WriteClassInstance(@class.CompleteDeclaration as Class, instance);
+                return;
+            }
+
+            if (!Context.ReturnType.Type.Desugar().IsPointer())
             {
                 Context.Return.Write($"{instance}");
                 return;
