@@ -524,6 +524,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public bool VisitQualifiedType(QualifiedType type)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitStmt(Stmt stmt)
         {
             throw new NotImplementedException();

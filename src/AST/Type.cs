@@ -73,7 +73,7 @@ namespace CppSharp.AST
 
         public T Visit<T>(ITypeVisitor<T> visitor)
         {
-            return Type.Visit(visitor, Qualifiers);
+            return visitor.VisitQualifiedType(this);
         }
 
         public override string ToString()
@@ -1287,5 +1287,6 @@ namespace CppSharp.AST
         T VisitVectorType(VectorType vectorType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
         T VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals);
+        T VisitQualifiedType(QualifiedType type);
     }
 }
