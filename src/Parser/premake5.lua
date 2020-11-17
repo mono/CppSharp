@@ -24,6 +24,7 @@ project "CppSharp.Parser"
   clr "Unsafe"
 
   files { "**.cs" }
+  excludes { "obj/**" }
   removefiles { "BuildConfig.cs" }
 
   if generate_build_config == true then

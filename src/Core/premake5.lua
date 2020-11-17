@@ -7,6 +7,7 @@ project "CppSharp"
   clr "Unsafe"
 
   files { "**.cs" }
+  excludes { "obj/**" }
   vpaths { ["*"] = "*" }
   
   links

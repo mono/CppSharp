@@ -6,6 +6,7 @@ project "CppSharp.CLI"
   language "C#"
 
   files { "**.cs" }
+  excludes { "obj/**" }
   vpaths { ["*"] = "*" }
 
   links
