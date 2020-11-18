@@ -14,6 +14,7 @@ using CppSharp.Utils;
 using Microsoft.CSharp;
 using CppSharp.Types;
 using CppSharp.Generators.Cpp;
+using CppSharp.Generators.C;
 
 namespace CppSharp
 {
@@ -36,6 +37,8 @@ namespace CppSharp
         {
             switch (kind)
             {
+                case GeneratorKind.C:
+                    return new CGenerator(Context);
                 case GeneratorKind.CPlusPlus:
                     return new CppGenerator(Context);
                 case GeneratorKind.CLI:
