@@ -423,7 +423,7 @@ DerivesFromTemplateWithExplicitSpecialization<T, D>::~DerivesFromTemplateWithExp
 {
 }
 
-class DerivesFromExplicitSpecialization : public DerivesFromTemplateWithExplicitSpecialization<bool, bool>
+class DLL_API DerivesFromExplicitSpecialization : public DerivesFromTemplateWithExplicitSpecialization<bool, bool>
 {
 public:
     DerivesFromExplicitSpecialization();

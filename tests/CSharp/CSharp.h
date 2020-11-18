@@ -893,7 +893,7 @@ TemplateWithDependentField<T>::TemplateWithDependentField()
 {
 }
 
-class DerivesFromTemplateInstantiation : public TemplateWithDependentField<int>
+class DLL_API DerivesFromTemplateInstantiation : public TemplateWithDependentField<int>
 {
 public:
     DerivesFromTemplateInstantiation();
