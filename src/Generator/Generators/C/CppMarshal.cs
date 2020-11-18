@@ -308,6 +308,7 @@ namespace CppSharp.Generators.Cpp
         public override bool VisitEnumDecl(Enumeration @enum)
         {
             var typePrinter = new CppTypePrinter(Context.Context);
+            typePrinter.PushContext(TypePrinterContextKind.Managed);
             var typeName = typePrinter.VisitDeclaration(@enum);
             Context.Return.Write($"({typeName}){Context.ReturnVarName}");
 
@@ -401,6 +402,7 @@ namespace CppSharp.Generators.Cpp
             if (pointee is FunctionType)
             {
                 var cppTypePrinter = new CppTypePrinter(Context.Context);
+                cppTypePrinter.PushContext(TypePrinterContextKind.Managed);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 return VisitDelegateType(cppTypeName);
@@ -494,6 +496,9 @@ namespace CppSharp.Generators.Cpp
             if (decl.Type.IsPointerTo(out func))
             {
                 var typePrinter = new CppTypePrinter(Context.Context);
+                typePrinter.PushContext(TypePrinterContextKind.Native);
+                var declName = decl.Visit(typePrinter);
+                typePrinter.PopContext();
                 // Use the original typedef name if available, otherwise just use the function pointer type
                 string cppTypeName;
                 if (!decl.IsSynthetized)

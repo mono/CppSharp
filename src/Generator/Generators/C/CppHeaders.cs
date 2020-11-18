@@ -16,7 +16,16 @@ namespace CppSharp.Generators.Cpp
         public CppHeaders(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
+            CTypePrinter.PushContext(TypePrinterContextKind.Managed);
         }
+
+        /// <summary>
+        /// Wether to generate includes or forward references for the native
+        /// library types.
+        /// </summary>
+        public bool GenerateNativeIncludes = true;
+
+        public virtual bool ShouldGenerateNamespaces => true;
 
         public override string FileExtension => "h";
 
@@ -24,51 +33,67 @@ namespace CppSharp.Generators.Cpp
         {
             GenerateFilePreamble(CommentKind.BCPL);
 
-            PushBlock(BlockKind.Includes);
             WriteLine("#pragma once");
             NewLine();
 
-            if (Options.OutputInteropIncludes)
-                WriteLine("#include \"CppSharp.h\"");
-
-            // Generate #include forward references.
-            PushBlock(BlockKind.IncludesForwardReferences);
-            WriteLine("#include <{0}>", TranslationUnit.IncludePath);
-            GenerateIncludeForwardRefs();
-            PopBlock(NewLineKind.BeforeNextBlock);
-            PopBlock(NewLineKind.Always);
+            GenerateIncludes();
 
             // Generate namespace for forward references.
-            PushBlock(BlockKind.ForwardReferences);
             GenerateForwardRefs();
-            PopBlock(NewLineKind.BeforeNextBlock);
 
-            VisitNamespace(TranslationUnit);
+            GenerateMain();
 
             PushBlock(BlockKind.Footer);
             PopBlock();
         }
 
-        public void GenerateIncludeForwardRefs()
+        public virtual void GenerateMain()
+        {
+            VisitNamespace(TranslationUnit);
+        }
+
+        public virtual void GenerateIncludes()
+        {
+            PushBlock(BlockKind.Includes);
+
+            PushBlock(BlockKind.IncludesForwardReferences);
+
+            if (Options.OutputInteropIncludes)
+            {
+                WriteLine("#include \"CppSharp.h\"");
+                WriteLine("#include \"FastDelegates.h\"");
+            }
+
+            if (GenerateNativeIncludes)
+                WriteLine("#include <{0}>", TranslationUnit.IncludePath);
+
+            GenerateIncludeForwardRefs(TranslationUnit);
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            PopBlock(NewLineKind.Always);
+        }
+
+        public void GenerateIncludeForwardRefs(TranslationUnit unit)
         {
             var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps,
                 Context.Options);
-            typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
+            typeReferenceCollector.Process(unit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             foreach (var typeRef in typeReferenceCollector.TypeReferences)
             {
-                if (typeRef.Include.TranslationUnit == TranslationUnit)
+                if (typeRef.Include.TranslationUnit == unit)
                     continue;
 
-                if (typeRef.Include.File == TranslationUnit.FileName)
+                if (typeRef.Include.File == unit.FileName)
                     continue;
 
                 var include = typeRef.Include;
-                var unit = include.TranslationUnit;
+                var typeRefUnit = include.TranslationUnit;
 
-                if (unit != null && !unit.IsDeclared)
+                if (typeRefUnit != null && !typeRefUnit.IsDeclared)
                     continue;
 
                 if(!string.IsNullOrEmpty(include.File) && include.InHeader)
@@ -97,8 +122,10 @@ namespace CppSharp.Generators.Cpp
             IEnumerable<CLITypeReference> typeReferences)
         {
             // Create a new tree of namespaces out of the type references found.
-            var rootNamespace = new TranslationUnit();
-            rootNamespace.Module = TranslationUnit.Module;
+            var rootNamespace = new TranslationUnit
+            {
+                Module = TranslationUnit.Module
+            };
 
             var sortedRefs = typeReferences.ToList();
             sortedRefs.Sort((ref1, ref2) =>
@@ -133,16 +160,49 @@ namespace CppSharp.Generators.Cpp
             return rootNamespace;
         }
 
-        public void GenerateForwardRefs()
+        public Namespace ConvertNativeForwardReferencesToNamespaces(
+            IEnumerable<Declaration> declReferences)
         {
+            var rootNamespace = new TranslationUnit
+            {
+                Module = new Module(string.Empty)
+            };
+
+            foreach (var declaration in declReferences)
+            {
+                var @namespace = FindCreateNamespace(rootNamespace, declaration);
+
+                var typeReference = new CLITypeReference()
+                {
+                    FowardReference = $"class {declaration.OriginalName};"
+                };
+
+                @namespace.TypeReferences.Add(typeReference);
+            }
+
+            return rootNamespace;
+        }
+
+        public virtual void GenerateForwardRefs()
+        {
+            PushBlock(BlockKind.ForwardReferences);
+
             var typeReferenceCollector = new CLITypeReferenceCollector(Context.TypeMaps,
                 Context.Options);
             typeReferenceCollector.Process(TranslationUnit);
 
+            if (!GenerateNativeIncludes)
+            {
+                var nativeForwardRefs = ConvertNativeForwardReferencesToNamespaces(
+                    typeReferenceCollector.GeneratedDeclarations);
+                nativeForwardRefs.Visit(this);
+            }
+
             var typeReferences = typeReferenceCollector.TypeReferences;
             var @namespace = ConvertForwardReferencesToNamespaces(typeReferences);
-
             @namespace.Visit(this);
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public override bool VisitDeclContext(DeclarationContext decl)
@@ -184,7 +244,8 @@ namespace CppSharp.Generators.Cpp
         {
             var isTopLevel = @namespace is TranslationUnit;
             var generateNamespace = !isTopLevel ||
-                !string.IsNullOrEmpty(@namespace.TranslationUnit.Module.OutputNamespace);
+                !string.IsNullOrEmpty(@namespace.TranslationUnit.Module?.OutputNamespace);
+            generateNamespace &= ShouldGenerateNamespaces;
 
             if (generateNamespace)
             {
@@ -429,15 +490,30 @@ namespace CppSharp.Generators.Cpp
 
         public void GenerateClassEvents(Class @class)
         {
+            Indent();
+
             foreach (var @event in @class.Events)
             {
                 if (!@event.IsGenerated) continue;
                 @event.Visit(this);
             }
+
+            Unindent();
         }
 
         public override bool VisitEvent(Event @event)
         {
+            PushBlock(BlockKind.Event, @event);
+
+            GenerateDeclarationCommon(@event);
+
+            var type = @event.Type.Visit(CTypePrinter);
+            type = type.ToString().Replace("()", string.Empty);
+
+            WriteLine($"fastdelegate::FastDelegate<{type}> {@event.Name};");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
             return true;
         }
 
@@ -607,7 +683,7 @@ namespace CppSharp.Generators.Cpp
             var desugared = type.Desugar();
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
             Class @class;
-            return finalType.TryGetClass(out @class) && @class.IsIncomplete;
+            return finalType.TryGetClass(out @class) && (@class.CompleteDeclaration == null && @class.IsIncomplete);
         }
     }
 }
