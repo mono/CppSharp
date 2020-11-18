@@ -1,34 +1,5 @@
 -- Tests/examples helpers
 
-require('vstudio')
-
-function disableFastUpToDateCheck(prj, cfg)
-  premake.vstudio.vc2010.element("DisableFastUpToDateCheck", nil, "true")
-end
-  
-premake.override(premake.vstudio.cs2005.elements, "projectProperties",
-  function(oldfn, prj)
-    local elements = oldfn(prj)
-    if (string.endswith(prj.filename, ".CSharp") and
-        not string.endswith(prj.filename, ".Tests.CSharp") and
-        not string.endswith(prj.filename, ".Parser.CSharp")) then 
-      elements = table.join(elements, {disableFastUpToDateCheck})
-    end
-    return elements
-  end)
-
-premake.override(premake.vstudio.vc2010.elements, "globals",
-  function(oldfn, prj, cfg)
-    local elements = oldfn(prj, cfg)
-    if (string.endswith(prj.filename, ".CLI") and
-        not string.endswith(prj.filename, ".Tests.CLI") and
-        not string.endswith(prj.filename, ".Parser.CLI") and
-        prj.filename ~= "CppSharp.CLI") then 
-      elements = table.join(elements, {disableFastUpToDateCheck})
-    end
-    return elements
-  end)
-
 function SetupExampleProject()
   kind "ConsoleApp"
   language "C#"  
@@ -159,6 +130,11 @@ function SetupTestNativeProject(name, depends)
     if depends ~= nil then
       links { depends .. ".Native" }
     end
+
+    if string.startswith(_ACTION, "vs") then
+      postbuildcommands { "type nul > " .. SafePath(path.join(libdir, name .. ".Native.timestamp.cs")) }
+      postbuildcommands { "type nul > " .. SafePath(path.join(libdir, name .. ".Native.timestamp.cpp")) }
+    end
 end
 
 function LinkNUnit()
@@ -221,6 +197,11 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 
     links(linktable)
 
+    if string.startswith(_ACTION, "vs") then
+      files { path.join(libdir, name .. ".Native.timestamp.cs") }
+      links { name .. ".Gen" }
+    end
+
   project(name .. ".Tests.CSharp")
     SetupManagedTestProject()
 
@@ -275,6 +256,11 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
 
     includedirs { path.join(testsdir, name), incdir }
     links { name .. ".Native" }    
+
+    if string.startswith(_ACTION, "vs") then
+      files { path.join(libdir, name .. ".Native.timestamp.cpp") }
+      links { name .. ".Gen" }
+    end
 
   project(name .. ".Tests.CLI")
     SetupManagedTestProject()
