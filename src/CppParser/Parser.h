@@ -169,6 +169,8 @@ private:
         llvm::object::ObjectFile* ObjectFile, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
     ParserTargetInfo* GetTargetInfo();
 
+    bool SaveAST(const char* File);
+
     int index;
     std::unique_ptr<clang::CompilerInstance> c;
     llvm::LLVMContext LLVMCtx;
