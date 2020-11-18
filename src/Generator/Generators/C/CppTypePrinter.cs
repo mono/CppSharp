@@ -511,6 +511,9 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             return VisitDeclaration(@class);
         }
 
