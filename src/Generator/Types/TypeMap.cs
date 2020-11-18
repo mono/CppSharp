@@ -2,6 +2,7 @@
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.AST;
+using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.Cpp;
 using CppSharp.Generators.CSharp;
@@ -54,6 +55,7 @@ namespace CppSharp.Types
         {
             switch (kind)
             {
+            case GeneratorKind.C:
             case GeneratorKind.CPlusPlus:
                 return CppSignatureType(ctx);
             case GeneratorKind.CLI:
@@ -69,6 +71,7 @@ namespace CppSharp.Types
         {
             switch (kind)
             {
+            case GeneratorKind.C:
             case GeneratorKind.CPlusPlus:
                 CppMarshalToNative(ctx);
                 return;
@@ -87,6 +90,7 @@ namespace CppSharp.Types
         {
             switch (kind)
             {
+            case GeneratorKind.C:
             case GeneratorKind.CPlusPlus:
                 CppMarshalToManaged(ctx);
                 return;

@@ -4,6 +4,7 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
+using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
@@ -198,20 +199,36 @@ namespace CppSharp.Passes
 
         public override bool VisitASTContext(ASTContext context)
         {
-            TypePrinter typePrinter = null;
-            switch (Options.GeneratorKind)
+            var typePrinter = GetTypePrinter(Options.GeneratorKind, Context);
+            DeclarationName.ParameterTypeComparer.TypePrinter = typePrinter;
+            DeclarationName.ParameterTypeComparer.TypeMaps = Context.TypeMaps;
+            DeclarationName.ParameterTypeComparer.GeneratorKind = Options.GeneratorKind;
+            return base.VisitASTContext(context);
+        }
+
+        private TypePrinter GetTypePrinter(GeneratorKind kind, BindingContext context)
+        {
+            TypePrinter typePrinter;
+            switch (kind)
             {
+                case GeneratorKind.C:
+                    typePrinter = new CppTypePrinter(Context)
+                    {
+                        PrintFlavorKind = CppTypePrintFlavorKind.C
+                    };
+                    break;
+                case GeneratorKind.CPlusPlus:
                 case GeneratorKind.CLI:
                     typePrinter = new CLITypePrinter(Context);
                     break;
                 case GeneratorKind.CSharp:
                     typePrinter = new CSharpTypePrinter(Context);
                     break;
+                default:
+                    throw new System.NotImplementedException();
             }
-            DeclarationName.ParameterTypeComparer.TypePrinter = typePrinter;
-            DeclarationName.ParameterTypeComparer.TypeMaps = Context.TypeMaps;
-            DeclarationName.ParameterTypeComparer.GeneratorKind = Options.GeneratorKind;
-            return base.VisitASTContext(context);
+
+            return typePrinter;
         }
 
         public override bool VisitProperty(Property decl)

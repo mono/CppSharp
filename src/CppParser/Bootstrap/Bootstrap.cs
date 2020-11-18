@@ -1427,7 +1427,7 @@ namespace CppSharp
             "AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)";
     }
 
-    class NativeParserCodeGenerator : CCodeGenerator
+    class NativeParserCodeGenerator : Generators.C.CCodeGenerator
     {
         internal readonly IEnumerable<Declaration> Declarations;
 
@@ -1795,7 +1795,7 @@ namespace CppSharp
 
             if (kind == GeneratorKind.CPlusPlus)
             {
-                if (CCodeGenerator.IsReservedKeyword(name))
+                if (Generators.C.CCodeGenerator.IsReservedKeyword(name))
                     name = $"_{name}";
             }
             else if (kind == GeneratorKind.CSharp)

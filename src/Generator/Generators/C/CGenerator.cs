@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using CppSharp.AST;
-using CppSharp.Generators.C;
+using CppSharp.Generators.Cpp;
 
-namespace CppSharp.Generators.Cpp
+namespace CppSharp.Generators.C
 {
     /// <summary>
-    /// C++ generator responsible for driving the generation of source and
+    /// C generator responsible for driving the generation of source and
     /// header files.
     /// </summary>
-    public class CppGenerator : CGenerator
+    public class CGenerator : Generator
     {
         private readonly CppTypePrinter typePrinter;
 
-        public CppGenerator(BindingContext context) : base(context)
+        public CGenerator(BindingContext context) : base(context)
         {
             typePrinter = new CppTypePrinter(Context);
         }
@@ -31,14 +31,6 @@ namespace CppSharp.Generators.Cpp
         }
 
         public override bool SetupPasses() => true;
-
-        public static bool ShouldGenerateClassNativeField(Class @class)
-        {
-            if (@class.IsStatic)
-                return false;
-
-            return @class.IsRefType && (!@class.HasBase || !@class.HasRefBase());
-        }
 
         protected override string TypePrinterDelegate(Type type)
         {
