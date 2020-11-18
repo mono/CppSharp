@@ -125,6 +125,7 @@ namespace CppSharp.Passes
             var method = function as Method;
             bool isInImplicitSpecialization;
             var declarationContext = function.Namespace;
+            var @class = declarationContext as Class;
             do
             {
                 isInImplicitSpecialization =
@@ -138,8 +139,7 @@ namespace CppSharp.Passes
                 !function.IsDependent && !function.IsPure && function.Namespace.IsGenerated &&
                 (!string.IsNullOrEmpty(function.Body) ||
                  isInImplicitSpecialization || function.IsImplicit) &&
-                // we don't need symbols for virtual functions anyway
-                (method == null || (!method.IsVirtual && !method.IsSynthetized)) &&
+                (method?.NeedsSymbol() != false) &&
                 // we cannot handle nested anonymous types
                 (!(function.Namespace is Class) || !string.IsNullOrEmpty(function.Namespace.OriginalName)) &&
                 !Context.Symbols.FindLibraryBySymbol(function.Mangled, out _);

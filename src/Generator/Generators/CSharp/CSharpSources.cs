@@ -655,7 +655,8 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (!method.IsGenerated || ASTUtils.CheckIgnoreMethod(method))
+                if (!method.IsGenerated || ASTUtils.CheckIgnoreMethod(method) ||
+                    (!method.NeedsSymbol() && !method.IsOperator))
                     continue;
 
                 if (method.IsConstructor)

@@ -92,5 +92,17 @@ namespace CppSharp.AST
                     ParameterTypeComparer.Instance)) ||
                 (@override.IsDestructor && method.IsDestructor && method.IsVirtual);
         }
+
+        public static bool NeedsSymbol(this Method method)
+        {
+            Class @class = (Class) method.Namespace;
+            // virtual functions cannot really be inlined and
+            // we don't need their symbols anyway as we call them through the v-table
+            return (!method.IsVirtual && !method.IsSynthetized &&
+                !method.IsDefaultConstructor && !method.IsCopyConstructor && !method.IsDestructor) ||
+                (method.IsDefaultConstructor && @class.HasNonTrivialDefaultConstructor) ||
+                (method.IsCopyConstructor && @class.HasNonTrivialCopyConstructor) ||
+                (method.IsDestructor && !method.IsVirtual && @class.HasNonTrivialDestructor);
+        }
     }
 }
