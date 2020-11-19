@@ -30,6 +30,8 @@ namespace CppSharp
         public string OutputFileName { get; set; }
 
         public string InputLibraryName { get; set; }
+
+        public string Prefix { get; set; }
         
         public TargetPlatform? Platform { get; set; }
 

@@ -187,6 +187,10 @@ namespace CppSharp
             driverOptions.OutputDir = options.OutputDir;
             driverOptions.CheckSymbols = options.CheckSymbols;
             driverOptions.Verbose = options.Verbose;
+
+            if (!string.IsNullOrEmpty(options.Prefix))
+                driverOptions.GenerateName = name =>
+                    options.Prefix + name.FileNameWithoutExtension;
         }
 
         private void SetupLinuxOptions(ParserOptions parserOptions)
