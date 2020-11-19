@@ -24,6 +24,8 @@ namespace CppSharp
             optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, errorMessages) );
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
 
+            optionSet.Add("m=|module=", "the name for the generated {MODULE}", a => { options.OutputFileName = a; });
+
             optionSet.Add("iln=|inputlibraryname=|inputlib=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
             optionSet.Add("d|debug", "enables debug mode which generates more verbose code to aid debugging", v => options.Debug = true);
             optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);

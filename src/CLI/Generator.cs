@@ -86,8 +86,16 @@ namespace CppSharp
                 options.OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "gen");
             }
 
-            var dir = Path.GetDirectoryName(options.HeaderFiles.First());
-            var moduleName = new DirectoryInfo(dir).Name;
+            string moduleName;
+            if (options.HeaderFiles.Count == 1)
+            {
+                moduleName = Path.GetFileNameWithoutExtension(options.HeaderFiles.First());
+            }
+            else
+            {
+                var dir = Path.GetDirectoryName(options.HeaderFiles.First());
+                moduleName = new DirectoryInfo(dir).Name;
+            }
 
             if (string.IsNullOrEmpty(options.OutputFileName))
                 options.OutputFileName = moduleName;
