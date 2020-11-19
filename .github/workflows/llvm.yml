@@ -40,6 +40,11 @@ jobs:
           )
           endlocal
 
+      - name: Fix intrin.h file
+        if: matrix.config.vs > 0
+        shell: powershell
+        run: build/intrin.ps1
+
       - name: Clone LLVM
         shell: bash
         run: build/premake.sh --file=build/scripts/LLVM.lua clone_llvm
