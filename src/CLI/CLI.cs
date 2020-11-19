@@ -210,6 +210,9 @@ namespace CppSharp
                 case "cli":
                     options.Kind = CppSharp.Generators.GeneratorKind.CLI;
                     return;
+                case "c":
+                    options.Kind = CppSharp.Generators.GeneratorKind.C;
+                    return;
             }
 
             errorMessages.Add($"Unknown generator kind: {generator}. Defaulting to {options.Kind}");
