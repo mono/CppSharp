@@ -47,6 +47,8 @@ namespace CppSharp
                     return new CSharpGenerator(Context);
                 case GeneratorKind.QuickJS:
                     return new QuickJSGenerator(Context);
+                case GeneratorKind.NAPI:
+                    return new NAPIGenerator(Context);
             }
 
             throw new NotImplementedException();
