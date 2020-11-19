@@ -216,6 +216,9 @@ namespace CppSharp
                 case "c":
                     options.Kind = CppSharp.Generators.GeneratorKind.C;
                     return;
+                case "cpp":
+                    options.Kind = CppSharp.Generators.GeneratorKind.CPlusPlus;
+                    return;
             }
 
             errorMessages.Add($"Unknown generator kind: {generator}. Defaulting to {options.Kind}");
