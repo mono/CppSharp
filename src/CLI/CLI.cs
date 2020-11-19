@@ -101,7 +101,7 @@ namespace CppSharp
             if (Directory.Exists(dir))
                 options.IncludeDirs.Add(dir);
             else
-                errorMessages.Add(string.Format("Directory '{0}' doesn't exist. Ignoring as include directory.", dir));
+                errorMessages.Add($"Directory '{dir}' doesn't exist. Ignoring as include directory.");
         }
 
         static void HandleOutputArg(string arg, List<string> errorMessages)
@@ -196,7 +196,7 @@ namespace CppSharp
             }
             catch (Exception)
             {
-                errorMessages.Add(string.Format("Error while looking for files inside path '{0}'. Ignoring.", path));
+                errorMessages.Add($"Error while looking for files inside path '{path}'. Ignoring.");
             }
         }
 
@@ -212,7 +212,7 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add(string.Format("Unknown generator kind: {0}. Defaulting to {1}", generator, options.Kind.ToString()));
+            errorMessages.Add($"Unknown generator kind: {generator}. Defaulting to {options.Kind}");
         }
 
         static void GetDestinationPlatform(string platform, List<string> errorMessages)
@@ -230,7 +230,7 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add(string.Format("Unknown target platform: {0}. Defaulting to {1}", platform, options.Platform.ToString()));
+            errorMessages.Add($"Unknown target platform: {platform}. Defaulting to {options.Platform}");
         }
 
         static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
@@ -245,7 +245,7 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add(string.Format("Unknown target architecture: {0}. Defaulting to {1}", architecture, options.Architecture.ToString()));
+            errorMessages.Add($"Unknown target architecture: {architecture}. Defaulting to {options.Architecture}");
         }
 
         static void PrintErrorMessages(List<string> errorMessages)
