@@ -188,5 +188,10 @@ namespace CppSharp.AST
         }
 
         private bool? isOverride;
+
+        public override string ToString()
+        {
+            return DebugText;
+        }
     }
 }
