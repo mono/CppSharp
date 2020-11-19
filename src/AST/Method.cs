@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
@@ -188,6 +188,11 @@ namespace CppSharp.AST
         }
 
         private bool? isOverride;
+
+        public bool HasSameSignature(Method other)
+        {
+            return Parameters.SequenceEqual(other.Parameters, ParameterTypeComparer.Instance);
+        }
 
         public override string ToString()
         {
