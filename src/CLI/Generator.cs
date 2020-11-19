@@ -103,36 +103,7 @@ namespace CppSharp
             if (string.IsNullOrEmpty(options.OutputNamespace))
                 options.OutputNamespace = moduleName;
 
-            if (Platform.IsWindows && options.Platform != TargetPlatform.Windows)
-            {
-                messages.Add("Cannot create bindings for a platform other that Windows from a Windows host.");
-                return false;
-            }
-            else if (Platform.IsMacOS && options.Platform != TargetPlatform.MacOS)
-            {
-                messages.Add("Cannot create bindings for a platform other that macOS from a macOS host.");
-                return false;
-            }
-            else if (Platform.IsLinux && options.Platform != TargetPlatform.Linux)
-            {
-                messages.Add("Cannot create bindings for a platform other that Linux from a Linux host.");
-                return false;
-            }
-
-            if (options.Platform != TargetPlatform.Windows && options.Kind != GeneratorKind.CSharp)
-            {
-                messages.Add("Cannot create bindings for languages other than C# from a non-Windows host.");
-                return false;
-            }
-
-            if (options.Platform == TargetPlatform.Linux && options.Architecture != TargetArchitecture.x64)
-            {
-                messages.Add("Cannot create bindings for architectures other than x64 for Linux targets.");
-                return false;
-            }
-
             SetupTargetTriple();
-
 
             return true;
         }
