@@ -216,55 +216,45 @@ namespace CppSharp
         public void Run()
         {
             StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.Append("Generating ");
+            messageBuilder.Append($"Generating {GetGeneratorKindName(options.Kind)}");
+            messageBuilder.Append($" bindings for {GetPlatformName(options.Platform)} {options.Architecture}");
 
-            switch(options.Kind)
-            {
-                case GeneratorKind.CLI:
-                    messageBuilder.Append("C++/CLI");
-                    break;
-                case GeneratorKind.CSharp:
-                    messageBuilder.Append("C#");
-                    break;
-            }
-
-            messageBuilder.Append(" bindings for ");
-            
-            switch (options.Platform)
-            {
-                case TargetPlatform.Linux:
-                    messageBuilder.Append("Linux");
-                    break;
-                case TargetPlatform.MacOS:
-                    messageBuilder.Append("OSX");
-                    break;
-                case TargetPlatform.Windows:
-                    messageBuilder.Append("Windows");
-                    break;
-            }
-
-            messageBuilder.Append(" ");
-
-            switch (options.Architecture)
-            {
-                case TargetArchitecture.x86:
-                    messageBuilder.Append("x86");
-                    break;
-                case TargetArchitecture.x64:
-                    messageBuilder.Append("x64");
-                    break;
-            }
-
-            if(options.Cpp11ABI)
+            if (options.Cpp11ABI)
                 messageBuilder.Append(" (GCC C++11 ABI)");
 
             messageBuilder.Append("...");
-
             Console.WriteLine(messageBuilder.ToString());
 
             ConsoleDriver.Run(this);
 
             Console.WriteLine();
+        }
+
+        private static string GetPlatformName(TargetPlatform? platform)
+        {
+            if (!platform.HasValue)
+                return string.Empty;
+
+            switch (platform.Value)
+            {
+                case TargetPlatform.MacOS:
+                    return "macOS";
+                default:
+                    return platform.ToString();
+            }
+        }
+
+        private static string GetGeneratorKindName(GeneratorKind kind)
+        {
+            switch (kind)
+            {
+                case GeneratorKind.CLI:
+                    return "C++/CLI";
+                case GeneratorKind.CSharp:
+                    return "C#";
+                default:
+                    return kind.ToString();
+            }
         }
     }
 }
