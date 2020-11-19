@@ -32,6 +32,7 @@ namespace CppSharp
             optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'csharp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, errorMessages); } );
             optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, errorMessages); } );
             optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, errorMessages); } );
+            optionSet.Add("prefix=", "sets a string prefix to the names of generated files", a => { options.Prefix = a; });
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.EnableExceptions = true; });
             optionSet.Add("rtti", "enables support for C++ RTTI in the parser", v => { options.EnableRTTI = true; });
