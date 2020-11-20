@@ -189,13 +189,7 @@ namespace CppSharp.Passes
 
     public class CheckDuplicatedNamesPass : TranslationUnitPass
     {
-        private readonly IDictionary<string, DeclarationName> names;
-
-        public CheckDuplicatedNamesPass()
-        {
-            ClearVisitedDeclarations = false;
-            names = new Dictionary<string, DeclarationName>();
-        }
+        private readonly IDictionary<string, DeclarationName> names = new Dictionary<string, DeclarationName>();
 
         public override bool VisitASTContext(ASTContext context)
         {

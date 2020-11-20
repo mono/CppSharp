@@ -186,21 +186,17 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsNotNull(@class);
             var overloads = @class.Methods.Where(m => m.Name == "Method");
             var constMethod = overloads
-                .Where(m => m.IsConst && m.Parameters.Count == 0)
-                .FirstOrDefault();
+                .FirstOrDefault(m => m.IsConst && m.Parameters.Count == 0);
             var nonConstMethod = overloads
-                .Where(m => !m.IsConst && m.Parameters.Count == 0)
-                .FirstOrDefault();
+                .FirstOrDefault(m => !m.IsConst && m.Parameters.Count == 0);
             Assert.IsNotNull(constMethod);
             Assert.IsNotNull(nonConstMethod);
             Assert.IsTrue(constMethod.GenerationKind == GenerationKind.None);
             Assert.IsTrue(nonConstMethod.GenerationKind == GenerationKind.Generate);
             var constMethodWithParam = overloads
-                .Where(m => m.IsConst && m.Parameters.Count == 1)
-                .FirstOrDefault();
+                .FirstOrDefault(m => m.IsConst && m.Parameters.Count == 1);
             var nonConstMethodWithParam = overloads
-                .Where(m => !m.IsConst && m.Parameters.Count == 1)
-                .FirstOrDefault();
+                .FirstOrDefault(m => !m.IsConst && m.Parameters.Count == 1);
             Assert.IsNotNull(constMethodWithParam);
             Assert.IsNotNull(nonConstMethodWithParam);
             Assert.IsTrue(constMethodWithParam.GenerationKind == GenerationKind.None);
@@ -226,7 +222,7 @@ namespace CppSharp.Generator.Tests.Passes
         [Test]
         public void TestAbstractOperator()
         {
-            passBuilder.AddPass(new CheckOperatorsOverloadsPass());
+            passBuilder.AddPass(new ValidateOperatorsPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             var @class = AstContext.FindDecl<Class>("ClassWithAbstractOperator").First();
@@ -246,7 +242,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsNotNull(@public);
             Assert.AreEqual(AccessSpecifier.Public, @public.Access); */
 
-            var @protected = @class.Fields.Where(f => f.Name == "Protected").FirstOrDefault();
+            var @protected = @class.Fields.Find(f => f.Name == "Protected");
             Assert.IsNotNull(@protected);
             Assert.AreEqual(AccessSpecifier.Protected, @protected.Access);
         }

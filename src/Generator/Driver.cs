@@ -223,16 +223,17 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             }
 
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
+            {
+                TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
+                TranslationUnitPasses.AddPass(new ValidateOperatorsPass());
+            }
+
             library.SetupPasses(this);
 
             TranslationUnitPasses.AddPass(new FindSymbolsPass());
             TranslationUnitPasses.AddPass(new CheckMacroPass());
             TranslationUnitPasses.AddPass(new CheckStaticClass());
-
-            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
-            {
-                TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
-            }
 
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
