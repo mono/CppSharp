@@ -469,6 +469,7 @@ namespace CppSharp.Generators.CLI
                 if (!@event.IsGenerated) continue;
 
                 var cppTypePrinter = new CppTypePrinter(Context);
+                cppTypePrinter.PushContext(TypePrinterContextKind.Native);
                 var cppArgs = cppTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
                 WriteLine("private:");
