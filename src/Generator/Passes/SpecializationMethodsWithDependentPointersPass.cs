@@ -26,22 +26,7 @@ namespace CppSharp.Passes
     public class SpecializationMethodsWithDependentPointersPass : TranslationUnitPass
     {
         public SpecializationMethodsWithDependentPointersPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitClassTemplateSpecializations = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.Default);
 
         public override bool VisitASTContext(ASTContext context)
         {

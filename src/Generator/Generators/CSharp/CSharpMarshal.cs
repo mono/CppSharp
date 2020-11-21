@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
@@ -28,8 +26,8 @@ namespace CppSharp.Generators.CSharp
         protected CSharpMarshalPrinter(CSharpMarshalContext context)
             : base(context)
         {
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitTemplateArguments = false;
+            VisitOptions.ClearFlags(VisitFlags.FunctionParameters |
+                VisitFlags.TemplateArguments);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,

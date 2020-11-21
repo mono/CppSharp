@@ -6,11 +6,8 @@ namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {
-        public ResolveIncompleteDeclsPass()
-        {
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitClassMethods = false;
-        }
+        public ResolveIncompleteDeclsPass() => VisitOptions.ClearFlags(
+            VisitFlags.FunctionParameters | VisitFlags.ClassMethods);
 
         public override bool VisitClassDecl(Class @class)
         {

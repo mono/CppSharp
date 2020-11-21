@@ -6,18 +6,8 @@ namespace CppSharp.Passes
 {
     public class FindSymbolsPass : TranslationUnitPass
     {
-        public FindSymbolsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassTemplateSpecializations = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitTemplateArguments = false;
-            VisitOptions.VisitClassFields = false;
-        }
+        public FindSymbolsPass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassMethods | VisitFlags.ClassProperties);
 
         public bool Wait
         {

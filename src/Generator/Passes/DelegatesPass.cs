@@ -9,14 +9,10 @@ namespace CppSharp.Passes
 {
     public class DelegatesPass : TranslationUnitPass
     {
-        public DelegatesPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public DelegatesPass() => VisitOptions.ClearFlags(
+            VisitFlags.ClassBases | VisitFlags.FunctionReturnType |
+            VisitFlags.NamespaceEnums | VisitFlags.NamespaceTemplates |
+            VisitFlags.TemplateArguments);
 
         public override bool VisitASTContext(ASTContext context)
         {

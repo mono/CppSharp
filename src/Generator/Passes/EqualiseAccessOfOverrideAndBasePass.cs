@@ -6,19 +6,8 @@ namespace CppSharp.Passes
 {
     public class EqualiseAccessOfOverrideAndBasePass : TranslationUnitPass
     {
-        public EqualiseAccessOfOverrideAndBasePass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public EqualiseAccessOfOverrideAndBasePass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassMethods | VisitFlags.ClassTemplateSpecializations);
 
         public override bool VisitASTContext(ASTContext context)
         {

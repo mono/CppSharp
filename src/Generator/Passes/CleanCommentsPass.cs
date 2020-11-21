@@ -7,12 +7,9 @@ namespace CppSharp.Passes
 {
     public class CleanCommentsPass : TranslationUnitPass, ICommentVisitor<bool>
     {
-        public CleanCommentsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public CleanCommentsPass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassBases | VisitFlags.FunctionReturnType |
+            VisitFlags.TemplateArguments);
 
         public bool VisitBlockCommand(BlockCommandComment comment) => true;
 

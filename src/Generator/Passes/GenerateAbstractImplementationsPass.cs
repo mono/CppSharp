@@ -13,21 +13,7 @@ namespace CppSharp.Passes
     public class GenerateAbstractImplementationsPass : TranslationUnitPass
     {
         public GenerateAbstractImplementationsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitClassTemplateSpecializations = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.Default);
 
         /// <summary>
         /// Collects all internal implementations in a unit to be added at

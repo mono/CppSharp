@@ -9,20 +9,9 @@ namespace CppSharp.Passes
     public class CheckFlagEnumsPass : TranslationUnitPass
     {
         public CheckFlagEnumsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.NamespaceEnums);
 
-        static bool IsFlagEnum(Enumeration @enum)
+        private static bool IsFlagEnum(Enumeration @enum)
         {
             // If the enumeration only has power of two values, assume it's
             // a flags enum.

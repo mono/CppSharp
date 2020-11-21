@@ -6,16 +6,7 @@ namespace CppSharp.Passes
     public class MoveFunctionToClassPass : TranslationUnitPass
     {
         public MoveFunctionToClassPass()
-        {
-            VisitOptions.VisitClassBases = VisitOptions.VisitClassFields =
-            VisitOptions.VisitClassMethods = VisitOptions.VisitClassProperties =
-            VisitOptions.VisitClassTemplateSpecializations = VisitOptions.VisitEventParameters =
-            VisitOptions.VisitFunctionParameters = VisitOptions.VisitFunctionReturnType =
-            VisitOptions.VisitNamespaceEnums = VisitOptions.VisitNamespaceEvents =
-            VisitOptions.VisitNamespaceTemplates = VisitOptions.VisitNamespaceTypedefs =
-            VisitOptions.VisitNamespaceVariables = VisitOptions.VisitPropertyAccessors =
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.Default);
 
         public override bool VisitFunctionDecl(Function function)
         {

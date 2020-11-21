@@ -7,19 +7,9 @@ namespace CppSharp.Passes
 {
     public class StripUnusedSystemTypesPass : TranslationUnitPass
     {
-        public StripUnusedSystemTypesPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public StripUnusedSystemTypesPass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassFields | VisitFlags.ClassTemplateSpecializations |
+            VisitFlags.NamespaceTemplates | VisitFlags.NamespaceTypedefs);
 
         public override bool VisitASTContext(ASTContext context)
         {

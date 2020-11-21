@@ -11,22 +11,8 @@ namespace CppSharp.Passes
     /// </summary>
     public class FlattenAnonymousTypesToFields : TranslationUnitPass
     {
-        public FlattenAnonymousTypesToFields()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitPropertyAccessors = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public FlattenAnonymousTypesToFields() =>
+            VisitOptions.ResetFlags(VisitFlags.ClassTemplateSpecializations);
 
         public override bool VisitClassDecl(Class @class)
         {

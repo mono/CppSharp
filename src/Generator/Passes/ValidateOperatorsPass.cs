@@ -10,19 +10,9 @@ namespace CppSharp.Passes
     /// </summary>
     public class ValidateOperatorsPass : TranslationUnitPass
     {
-        public ValidateOperatorsPass() =>
-            VisitOptions.VisitClassBases =
-            VisitOptions.VisitClassFields =
-            VisitOptions.VisitEventParameters =
-            VisitOptions.VisitFunctionParameters =
-            VisitOptions.VisitFunctionReturnType =
-            VisitOptions.VisitNamespaceEnums =
-            VisitOptions.VisitNamespaceEvents =
-            VisitOptions.VisitNamespaceTemplates =
-            VisitOptions.VisitNamespaceTypedefs =
-            VisitOptions.VisitNamespaceVariables =
-            VisitOptions.VisitPropertyAccessors =
-            VisitOptions.VisitTemplateArguments = false;
+        public ValidateOperatorsPass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassMethods | VisitFlags.ClassProperties |
+            VisitFlags.ClassTemplateSpecializations);
 
         public override bool VisitMethodDecl(Method method)
         {

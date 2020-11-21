@@ -16,21 +16,12 @@ namespace CppSharp.Passes
         private readonly HashSet<Class> interfaces = new HashSet<Class>();
 
         /// <summary>
-        /// Change and implement secondaryy bases at the end to avoid processing implementations.
+        /// Change and implement secondary bases at the end to avoid processing implementations.
         /// </summary>
         private readonly HashSet<Class> classesWithSecondaryBases = new HashSet<Class>();
 
         public MultipleInheritancePass()
-        {
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitFunctionParameters = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.Default);
 
         public override bool VisitASTContext(ASTContext context)
         {

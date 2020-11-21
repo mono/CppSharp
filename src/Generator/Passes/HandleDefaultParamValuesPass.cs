@@ -12,9 +12,7 @@ namespace CppSharp.Passes
             new Dictionary<DeclarationContext, List<Function>>();
 
         public HandleDefaultParamValuesPass()
-        {
-            VisitOptions.VisitFunctionParameters = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.ClassMethods);
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {

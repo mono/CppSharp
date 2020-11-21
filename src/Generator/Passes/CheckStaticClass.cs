@@ -10,9 +10,7 @@ namespace CppSharp.Passes
     public class CheckStaticClass : TranslationUnitPass
     {
         public CheckStaticClass()
-        {
-            VisitOptions.VisitClassBases = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.ClassMethods);
 
         public override bool VisitDeclaration(Declaration decl)
         {

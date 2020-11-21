@@ -43,19 +43,7 @@ namespace CppSharp.Passes
         }
 
         public GetterSetterToPropertyPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.ClassTemplateSpecializations);
 
         public override bool VisitClassDecl(Class @class)
         {

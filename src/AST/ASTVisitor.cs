@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CppSharp.AST
@@ -17,25 +18,68 @@ namespace CppSharp.AST
         AstVisitorOptions VisitOptions { get; }
     }
 
+    [Flags]
+    public enum VisitFlags
+    {
+        /// <summary>
+        /// We always visit classes, functions and declaration contexts.
+        /// </summary>
+        Default = 0,
+
+        ClassBases = 1 << 0,
+        ClassFields = 1 << 1,
+        ClassProperties = 1 << 2,
+        ClassMethods = 1 << 3,
+        ClassTemplateSpecializations = 1 << 4,
+        PropertyAccessors = 1 << 5,
+
+        NamespaceEnums = 1 << 6,
+        NamespaceTemplates = 1 << 7,
+        NamespaceTypedefs = 1 << 8,
+        NamespaceEvents = 1 << 9,
+        NamespaceVariables = 1 << 10,
+
+        FunctionReturnType = 1 << 11,
+        FunctionParameters = 1 << 12,
+        EventParameters = 1 << 13,
+        TemplateArguments = 1 << 14,
+
+        Any = ClassBases | ClassFields | ClassProperties | ClassMethods |
+            ClassTemplateSpecializations | PropertyAccessors |
+            NamespaceEnums | NamespaceTemplates | NamespaceTypedefs |
+            NamespaceEvents | NamespaceVariables |
+            FunctionReturnType | FunctionParameters |
+            EventParameters | TemplateArguments
+    }
+
     public class AstVisitorOptions
     {
-        public bool VisitClassBases = true;
-        public bool VisitClassFields = true;
-        public bool VisitClassProperties = true;
-        public bool VisitClassMethods = true;
-        public bool VisitClassTemplateSpecializations { get; set; } = true;
-        public bool VisitPropertyAccessors = false;
+        public AstVisitorOptions(VisitFlags flags)
+            => this.flags = flags;
 
-        public bool VisitNamespaceEnums = true;
-        public bool VisitNamespaceTemplates = true;
-        public bool VisitNamespaceTypedefs = true;
-        public bool VisitNamespaceEvents = true;
-        public bool VisitNamespaceVariables = true;
+        public bool VisitClassBases => (flags & VisitFlags.ClassBases) != 0;
+        public bool VisitClassFields => (flags & VisitFlags.ClassFields) != 0;
+        public bool VisitClassProperties => (flags & VisitFlags.ClassProperties) != 0;
+        public bool VisitClassMethods => (flags & VisitFlags.ClassMethods) != 0;
+        public bool VisitClassTemplateSpecializations => (flags & VisitFlags.ClassTemplateSpecializations) != 0;
+        public bool VisitPropertyAccessors => (flags & VisitFlags.PropertyAccessors) != 0;
 
-        public bool VisitFunctionReturnType = true;
-        public bool VisitFunctionParameters = true;
-        public bool VisitEventParameters = true;
-        public bool VisitTemplateArguments = true;
+        public bool VisitNamespaceEnums => (flags & VisitFlags.NamespaceEnums) != 0;
+        public bool VisitNamespaceTemplates => (flags & VisitFlags.NamespaceTemplates) != 0;
+        public bool VisitNamespaceTypedefs => (flags & VisitFlags.NamespaceTypedefs) != 0;
+        public bool VisitNamespaceEvents => (flags & VisitFlags.NamespaceEvents) != 0;
+        public bool VisitNamespaceVariables => (flags & VisitFlags.NamespaceVariables) != 0;
+
+        public bool VisitFunctionReturnType => (flags & VisitFlags.FunctionReturnType) != 0;
+        public bool VisitFunctionParameters => (flags & VisitFlags.FunctionParameters) != 0;
+        public bool VisitEventParameters => (flags & VisitFlags.EventParameters) != 0;
+        public bool VisitTemplateArguments => (flags & VisitFlags.TemplateArguments) != 0;
+
+        public void SetFlags(VisitFlags flags) => this.flags |= flags;
+        public void ResetFlags(VisitFlags flags) => this.flags = flags;
+        public void ClearFlags(VisitFlags flags) => this.flags &= ~flags;
+
+        private VisitFlags flags;
     }
 
     /// <summary>
@@ -46,14 +90,9 @@ namespace CppSharp.AST
     /// </summary>
     public abstract partial class AstVisitor : IAstVisitor<bool>, IAstVisited
     {
-        public ISet<object> Visited { get; private set; }
+        public ISet<object> Visited { get; private set; } = new HashSet<object>();
         public AstVisitorOptions VisitOptions { get; private set; }
-
-        protected AstVisitor()
-        {
-            Visited = new HashSet<object>();
-            VisitOptions = new AstVisitorOptions();
-        }
+            = new AstVisitorOptions(VisitFlags.Any & ~VisitFlags.PropertyAccessors);
 
         public bool AlreadyVisited(Type type)
         {

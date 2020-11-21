@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
@@ -8,19 +7,7 @@ namespace CppSharp.Passes
     public class IgnoreSystemDeclarationsPass : TranslationUnitPass
     {
         public IgnoreSystemDeclarationsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassTemplateSpecializations = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.NamespaceEnums);
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {

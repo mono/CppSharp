@@ -11,19 +11,9 @@ namespace CppSharp.Passes
 {
     public class GenerateSymbolsPass : TranslationUnitPass
     {
-        public GenerateSymbolsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public GenerateSymbolsPass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassMethods | VisitFlags.ClassProperties |
+            VisitFlags.ClassTemplateSpecializations | VisitFlags.NamespaceVariables);
 
         public override bool VisitASTContext(ASTContext context)
         {

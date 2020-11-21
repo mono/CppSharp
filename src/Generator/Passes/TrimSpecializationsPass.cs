@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using CppSharp.Types;
 using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
     public class TrimSpecializationsPass : TranslationUnitPass
     {
-        public TrimSpecializationsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassTemplateSpecializations = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceTypedefs = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+        public TrimSpecializationsPass() => VisitOptions.ResetFlags(
+            VisitFlags.ClassFields | VisitFlags.ClassMethods |
+            VisitFlags.ClassProperties | VisitFlags.NamespaceVariables);
 
         public override bool VisitASTContext(ASTContext context)
         {

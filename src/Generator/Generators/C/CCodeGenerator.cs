@@ -1,5 +1,4 @@
 ﻿using CppSharp.AST;
-using CppSharp.AST.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,7 +31,7 @@ namespace CppSharp.Generators.C
             IEnumerable<TranslationUnit> units = null)
             : base(context, units)
         {
-            VisitOptions.VisitPropertyAccessors = true;
+            VisitOptions.SetFlags(VisitFlags.PropertyAccessors);
             typePrinter = new CppTypePrinter(context);
         }
 

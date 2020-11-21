@@ -17,8 +17,7 @@ namespace CppSharp
             GeneratorKind generatorKind = GeneratorKind.CSharp)
         {
             TypeMapDatabase = database;
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitTemplateArguments = false;
+            VisitOptions.ClearFlags(VisitFlags.ClassBases | VisitFlags.TemplateArguments);
             this.generatorKind = generatorKind;
         }
 

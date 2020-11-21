@@ -45,8 +45,8 @@ namespace CppSharp.Generators
         public virtual CommentKind DocumentationCommentKind => CommentKind.BCPLSlash;
 
         public ISet<object> Visited { get; } = new HashSet<object>();
-
-        public AstVisitorOptions VisitOptions { get; } = new AstVisitorOptions();
+        public AstVisitorOptions VisitOptions { get; }
+            = new AstVisitorOptions(VisitFlags.Any & ~VisitFlags.PropertyAccessors);
 
         protected CodeGenerator(BindingContext context)
         {

@@ -28,16 +28,12 @@ namespace CppSharp.Passes
 
         public RenameTargets Targets = RenameTargets.Any;
 
-        protected RenamePass()
-        {
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitTemplateArguments = false;
+        protected RenamePass() => VisitOptions.ClearFlags(
+            VisitFlags.FunctionParameters | VisitFlags.FunctionReturnType |
+            VisitFlags.TemplateArguments |
             // these need to be visited but in a different order (see VisitClassDecl) so disable the default order
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitNamespaceEvents = false;
-        }
+            VisitFlags.ClassProperties | VisitFlags.ClassMethods |
+            VisitFlags.NamespaceEvents);
 
         protected RenamePass(RenameTargets targets)
             : this()

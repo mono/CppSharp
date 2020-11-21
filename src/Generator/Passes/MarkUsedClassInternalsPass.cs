@@ -8,20 +8,7 @@ namespace CppSharp.Passes
     public class MarkUsedClassInternalsPass : TranslationUnitPass
     {
         public MarkUsedClassInternalsPass()
-        {
-            VisitOptions.VisitClassBases = false;
-            VisitOptions.VisitClassFields = false;
-            VisitOptions.VisitClassMethods = false;
-            VisitOptions.VisitClassProperties = false;
-            VisitOptions.VisitEventParameters = false;
-            VisitOptions.VisitFunctionReturnType = false;
-            VisitOptions.VisitFunctionParameters = false;
-            VisitOptions.VisitNamespaceEnums = false;
-            VisitOptions.VisitNamespaceEvents = false;
-            VisitOptions.VisitNamespaceTemplates = false;
-            VisitOptions.VisitNamespaceVariables = false;
-            VisitOptions.VisitTemplateArguments = false;
-        }
+            => VisitOptions.ResetFlags(VisitFlags.ClassTemplateSpecializations);
 
         public override bool VisitClassDecl(Class @class)
         {
