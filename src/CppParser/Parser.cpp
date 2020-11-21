@@ -2954,6 +2954,25 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
         FinalType->isInstantiationDependentType() || FinalType->isUndeducedType())
         return false;
 
+    if (FinalType->isFunctionType())
+    {
+        auto FTy = FinalType->getAs<clang::FunctionType>();
+        auto CanCheck = CanCheckCodeGenInfo(S, FTy->getReturnType().getTypePtr());
+        if (!CanCheck)
+            return false;
+
+        if (FinalType->isFunctionProtoType())
+        {
+            auto FPTy = FinalType->getAs<clang::FunctionProtoType>();
+            for (const auto& ParamType : FPTy->getParamTypes())
+            {
+                auto CanCheck = CanCheckCodeGenInfo(S, ParamType.getTypePtr());
+                if (!CanCheck)
+                    return false;
+            }
+        }
+    }
+
     if (auto RT = FinalType->getAs<clang::RecordType>())
         if (!HasLayout(RT->getDecl()))
             return false;
