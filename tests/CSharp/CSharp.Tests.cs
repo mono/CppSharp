@@ -124,6 +124,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    [Ignore("https://github.com/mono/CppSharp/issues/1518")]
     public void TestReturnCharPointer()
     {
         Assert.That(new IntPtr(CSharp.CSharp.ReturnCharPointer()), Is.EqualTo(IntPtr.Zero));
