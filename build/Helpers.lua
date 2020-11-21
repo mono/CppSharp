@@ -151,7 +151,10 @@ function SetupNativeProject()
   filter { "toolset:clang", "system:not macosx" }
     linkoptions { "-fuse-ld=/usr/bin/ld.lld" }
 
-  filter { "system:macosx", "language:C++" }
+  filter { "toolset:clang" }
+    buildoptions { "-fstandalone-debug" }
+
+  filter { "toolset:clang", "language:C++", "system:macosx" }
     buildoptions { gcc_buildflags, "-stdlib=libc++" }
     links { "c++" }
 
@@ -238,8 +241,9 @@ function StaticLinksOpt(libnames)
 end
 
 function UseClang()
-  local compiler = os.getenv("CXX") or ""
-  return string.match(compiler, "clang")
+  local cc = _OPTIONS.cc or ""
+  local env = os.getenv("CXX") or ""
+  return string.match(cc, "clang") or string.match(env, "clang")
 end
 
 function GccVersion()
