@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using LanguageVersion = CppSharp.Parser.LanguageVersion;
 
@@ -149,9 +150,12 @@ namespace CppSharp.Parser
 
                 AddSystemIncludeDirs(BuiltinsDir);
 
-                vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
-                foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
-                    AddSystemIncludeDirs(include);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
+                    foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
+                        AddSystemIncludeDirs(include);
+                }
             }
 
             // do not remove the CppSharp prefix becase the Mono C# compiler breaks
