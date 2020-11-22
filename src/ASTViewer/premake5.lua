@@ -28,5 +28,5 @@ project "CppSharp.ASTViewer"
     SetupLLVMIncludes()
     SetupLLVMLibs()
 
-    filter { "action:vs*" }
+    filter { "toolset:msc*" }
         buildoptions { "/wd4141", "/wd4146", "/wd4996" }

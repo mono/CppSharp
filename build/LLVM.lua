@@ -104,13 +104,13 @@ end
 function SetupLLVMLibs()
   local c = filter()
 
-  filter { "action:not vs*" }
+  filter { "system:not msc*" }
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
 
   filter { "system:macosx" }
     links { "c++", "curses", "pthread", "z" }
 
-  filter { "action:vs*" }
+  filter { "toolset:msc*" }
     links { "version" }
 
   filter {}
@@ -125,10 +125,10 @@ function SetupLLVMLibs()
     local LLVMBuildDir = get_llvm_build_dir()
     libdirs { path.join(LLVMBuildDir, "lib") }
 
-    filter { "configurations:Debug", "action:vs*" }
+    filter { "configurations:Debug", "toolset:msc*" }
       libdirs { path.join(LLVMBuildDir, "Debug/lib") }
 
-    filter { "configurations:Release", "action:vs*" }
+    filter { "configurations:Release", "toolset:msc*" }
       libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
   end
 
