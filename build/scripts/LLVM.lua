@@ -178,7 +178,7 @@ function extract_tar_gz(archive, dest_dir)
 	return execute_or_die(string.format("tar xf %s -C %s", archive, dest_dir), true)
 end
 
-local use_7zip = os.ishost("windows")
+local use_7zip = os.istarget("windows")
 local archive_ext = use_7zip and ".7z" or ".tar.xz"
 
 function download_llvm()

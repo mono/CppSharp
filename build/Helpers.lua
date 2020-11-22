@@ -51,6 +51,7 @@ function is_64_bits_mono_runtime()
   local arch = string.match(result, "Architecture:%s*([%w]+)")
   return arch == "amd64"
 end
+default_gcc_version = "9.0.0"
 
 function target_architecture()
   if _ACTION == "netcore" then
@@ -252,6 +253,9 @@ function GccVersion()
     compiler = "gcc"
   end
   local out = os.outputof(compiler.." -v")
+  if out == nil then
+    return default_gcc_version
+  end
   local version = string.match(out, "gcc version [0-9\\.]+")
   if version == nil then
     version = string.match(out, "clang version [0-9\\.]+")
