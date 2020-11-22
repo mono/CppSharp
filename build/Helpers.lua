@@ -140,7 +140,7 @@ function SetupNativeProject()
     
   -- Compiler-specific options
   
-  filter { "action:vs*" }
+  filter { "toolset:msc*" }
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
 
@@ -158,7 +158,7 @@ function SetupNativeProject()
     buildoptions { gcc_buildflags, "-stdlib=libc++" }
     links { "c++" }
 
-  filter { "system:not windows", "language:C++" }
+  filter { "toolset:not msc*", "language:C++" }
     cppdialect "C++14"
     buildoptions { "-fpermissive" }
   
@@ -168,7 +168,7 @@ function SetupNativeProject()
     defines { "WIN32", "_WINDOWS" }
   
   -- For context: https://github.com/premake/premake-core/issues/935
-  filter {"system:windows", "action:vs*"}
+  filter {"system:windows", "toolset:msc*"}
     systemversion("latest")
 
   filter {}
@@ -276,4 +276,24 @@ function EnableNativeProjects()
   end
 
   return true
+end
+
+function AddPlatformSpecificFiles(folder, filename)
+
+  if os.istarget("windows") then
+    filter { "toolset:msc*", "architecture:x86_64" }
+      files { path.join(folder, "x86_64-pc-win32-msvc", filename) }
+    filter { "toolset:msc*", "architecture:x86" }
+      files { path.join(folder, "i686-pc-win32-msvc", filename) }
+  elseif os.istarget("macosx") then
+    filter { "architecture:x86_64" }
+      files { path.join(folder, "x86_64-apple-darwin12.4.0", filename) }
+    filter {"architecture:x86" }
+      files { path.join(folder, "i686-apple-darwin12.4.0", filename) }
+  elseif os.istarget("linux") then
+    filter { "architecture:x86_64" }
+      files { path.join(folder, "x86_64-linux-gnu" .. (UseCxx11ABI() and "-cxx11abi" or ""), filename) }
+  else
+    print "Unknown architecture"
+  end
 end

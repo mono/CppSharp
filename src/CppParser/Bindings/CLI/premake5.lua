@@ -11,7 +11,7 @@ project "CppSharp.Parser.CLI"
   flags { common_flags }
   clr "On"
 
-  filter "action:vs*"
+  filter "toolset:msc*"
     buildoptions { clang_msvc_flags }  
 
   filter {}

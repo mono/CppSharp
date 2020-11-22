@@ -20,7 +20,7 @@ project "CppSharp.CppParser"
     linkgroups "On"
   end
 
-  filter "action:vs*"
+  filter "toolset:msc*"
     buildoptions { clang_msvc_flags }
 
   linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
@@ -49,32 +49,10 @@ project "Std-symbols"
   rtti "Off"
   defines { "DLL_EXPORT" }
 
-  filter { "action:vs*" }
+  filter { "toolset:msc*" }
     buildoptions { clang_msvc_flags }
 
   filter {}
 
-  if os.istarget("windows") then
-    filter { "action:vs*", "platforms:x86" }
-      files { "Bindings/CSharp/i686-pc-win32-msvc/Std-symbols.cpp" }
-    filter { "action:vs*", "platforms:x64" }
-      files { "Bindings/CSharp/x86_64-pc-win32-msvc/Std-symbols.cpp" }
-  elseif os.istarget("macosx") then
-      if is_64_bits_mono_runtime() or _OPTIONS["arch"] == "x64" then
-        files { "Bindings/CSharp/x86_64-apple-darwin12.4.0/Std-symbols.cpp" }
-      else
-        files { "Bindings/CSharp/i686-apple-darwin12.4.0/Std-symbols.cpp" }
-      end
-  elseif os.istarget("linux") then
-      local abi = ""
-      if UseCxx11ABI() then
-          abi = "-cxx11abi"
-      end
-      files { "Bindings/CSharp/x86_64-linux-gnu"..abi.."/Std-symbols.cpp" }
-  else
-      print "Unknown architecture"
-  end
-
-  filter {}
-
+  AddPlatformSpecificFiles("Bindings/CSharp", "Std-symbols.cpp")
 end
