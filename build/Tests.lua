@@ -128,7 +128,8 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
     files
     {
       path.join(gendir, name, nm .. ".cs"),
-      path.join(gendir, name, str .. ".cs")
+      path.join(gendir, name, str .. ".cs"),
+      path.join(objsdir, name .. ".Native", "timestamp.cs")
     }
 
     links { "CppSharp.Runtime" }
