@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <RootDir>$(MSBuildThisFileDirectory)</RootDir>
+    <Platforms>x86;x64</Platforms>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <BaseIntermediateOutputPath>$(RootDir)build\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <TargetDir Condition="$(Configuration) != ''">$(RootDir)bin\$(Configuration)_$(Platform)</TargetDir>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+</Project>

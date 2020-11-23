@@ -4,19 +4,8 @@ project "CppSharp"
 
   kind "SharedLib"
   language "C#"
-  clr "Unsafe"
 
-  files { "**.cs" }
-  excludes { "obj/**" }
-  vpaths { ["*"] = "*" }
-  
-  links
-  {
-    depsdir .. "/vs2017/Microsoft.VisualStudio.Setup.Configuration.Interop"
+  nuget {
+    "Microsoft.Win32.Registry:4.7.0",
+    "Microsoft.VisualStudio.Setup.Configuration.Interop:2.3.2262-g94fae01e"
   }
-
-  filter { "action:netcore" }
-    nuget { "Microsoft.Win32.Registry:4.5.0" }
-
-  filter { "action:not netcore"}
-    links { "System", "System.Core" }

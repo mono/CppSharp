@@ -5,13 +5,6 @@ project "CppSharp.Runtime"
   kind "SharedLib"
   clr "Unsafe"
 
-  files   { "**.cs" }
-  excludes { "obj/**" }
-  vpaths { ["*"] = "*" }
- 
-  filter { "action:not netcore"}
-    links { "System" }
-
   filter { "toolset:msc*" }
   	defines { "MSVC" }
 

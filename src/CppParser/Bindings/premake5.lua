@@ -1,6 +1,6 @@
 include ("CSharp")
 
-if EnableNativeProjects() and os.ishost("windows") and not os.getenv("CI") then
+if EnabledCLIProjects() and not os.getenv("CI") then
 
 include ("CLI")
 

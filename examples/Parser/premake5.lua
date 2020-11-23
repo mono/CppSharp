@@ -5,7 +5,6 @@ project "Parser"
   language "C#"
   debugdir "."
   
-  files { "**.cs", "./*.lua" }
   links
   {
     "CppSharp",

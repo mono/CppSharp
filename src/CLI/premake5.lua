@@ -1,13 +1,10 @@
 project "CppSharp.CLI"
 
   SetupManagedProject()
+  SetupParser()
 
   kind "ConsoleApp"
   language "C#"
-
-  files { "**.cs" }
-  excludes { "obj/**" }
-  vpaths { ["*"] = "*" }
 
   links
   {
@@ -16,15 +13,3 @@ project "CppSharp.CLI"
     "CppSharp.Generator",
     "CppSharp.Parser"
   }
-
-  SetupParser()
-
-  filter { "action:not netcore"}
-    links
-    {
-      "System",
-      "System.Core"
-    }
-
-  filter { "action:netcore" }
-    dotnetframework "netcoreapp2.0"

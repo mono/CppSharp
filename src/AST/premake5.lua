@@ -4,9 +4,3 @@ project "CppSharp.AST"
   language "C#"
 
   SetupManagedProject()
-
-  files { "*.cs" }
-  vpaths { ["*"] = "*" }
-
-  filter { "action:not netcore"}
-    links { "System", "System.Core" }

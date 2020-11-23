@@ -1,12 +1,12 @@
 -- Tests/examples helpers
 
+require('vstudio')
+
 function SetupExampleProject()
   kind "ConsoleApp"
-  language "C#"  
+  language "C#"
   debugdir "."
-  
-  files { "**.cs", "./*.lua" }
-  excludes { "obj/**" }
+
   links
   {
     "CppSharp",
@@ -39,29 +39,28 @@ function SetupTestCLI(name, extraFiles, suffix)
 end
 
 function SetupManagedTestProject()
-    SetupManagedProject()
-    kind "SharedLib"
-    language "C#"  
-    clr "Unsafe"
-
-    filter { "action:not netcore" }
-      links
-      {
-        "System.Core"
-      }
+  SetupManagedProject()
+  enabledefaultcompileitems "false"
+  kind "SharedLib"
+  language "C#"
+  clr "Unsafe"
+  files { "*.lua" }
 end
 
 function SetupTestGeneratorProject(name, depends)
+  if not EnabledManagedProjects() then
+    return
+  end
   project(name .. ".Gen")
     SetupManagedTestProject()
+    SetupParser()
     kind "ConsoleApp"
-    
-    files { name .. ".cs" }
-    vpaths { ["*"] = "*" }
+    enabledefaultnoneitems "false"
 
+    files { name .. ".cs" }
     dependson { name .. ".Native" }
 
-    linktable = {
+    links {
       "CppSharp",
       "CppSharp.AST",
       "CppSharp.Generator",
@@ -70,45 +69,18 @@ function SetupTestGeneratorProject(name, depends)
     }
 
     if depends ~= nil then
-      table.insert(linktable, depends .. ".Gen")
+      links { depends .. ".Gen" }
     end
 
-    links(linktable)
-
-    SetupParser()
-
-    filter { "action:netcore" }
-      dotnetframework "netcoreapp2.0"
-
-    filter { "action:not netcore" }
-      links
-      {
-        "System",
-        "System.Core"
-      }
-end
-
-local function get_mono_exe()
-  if target_architecture() == "x64" then
-    local _, errorcode = os.outputof("mono64")
-    return errorcode ~= 127 and "mono64" or "mono"
-  end
-  return "mono"
+    local command = os.ishost("windows") and "type nul >" or "touch"
+    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cs")) }
+    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cpp")) }
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  if _ACTION == "netcore" then
-    return
-  end
-  local monoExe = get_mono_exe()
-  local runtimeExe = os.ishost("windows") and "" or monoExe .. " --debug "
-  if string.starts(action, "vs") then
-    local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
-    prebuildcommands { runtimeExe .. exePath }
-  else
-    local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
-    prebuildcommands { runtimeExe .. exePath }
-  end
+  local cmd = os.ishost("windows") and "" or "dotnet "
+  local ext = os.ishost("windows") and "exe" or "dll"
+  prebuildcommands { cmd .. SafePath(path.join("%{cfg.buildtarget.directory}", name .. ".Gen." .. ext)) }
 end
 
 function SetupTestNativeProject(name, depends)
@@ -124,51 +96,21 @@ function SetupTestNativeProject(name, depends)
     language "C++"
 
     files { "**.h", "**.cpp" }
-    vpaths { ["*"] = "*" }
     defines { "DLL_EXPORT" }
 
     if depends ~= nil then
       links { depends .. ".Native" }
     end
 
-    if string.startswith(_ACTION, "vs") then
-      postbuildcommands { "type nul > " .. SafePath(path.join(libdir, name .. ".Native.timestamp.cs")) }
-      postbuildcommands { "type nul > " .. SafePath(path.join(libdir, name .. ".Native.timestamp.cpp")) }
-    end
-end
-
-function LinkNUnit()
-  local c = filter()
-  
-  filter { "action:not netcore"}
-    libdirs
-    {
-      depsdir .. "/NUnit",
-      depsdir .. "/NSubstitute"
-    }
-
-    links
-    {
-      "nunit.framework",
-      "NSubstitute"
-    }
-
-  filter { "action:netcore"}
-    nuget
-    {
-      "NUnit:3.11.0",
-      "NSubstitute:4.0.0-rc1"
-    }
-
-  nuget
-  {
-    "NUnit3TestAdapter:3.17.0",
-  }
-    
-  filter(c)
+    local command = os.ishost("windows") and "type nul >" or "touch"
+    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cs")) }
+    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cpp")) }
 end
 
 function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
+  if not EnabledManagedProjects() then
+    return
+  end
     if suffix ~= nil then
       nm = name .. suffix 
       str = "Std" .. suffix
@@ -181,53 +123,44 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
 
     dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
     SetupTestGeneratorBuildEvent(name)
+    enabledefaultnoneitems "false"
 
     files
     {
       path.join(gendir, name, nm .. ".cs"),
       path.join(gendir, name, str .. ".cs")
     }
-    vpaths { ["*"] = "*" }
 
-    linktable = { "CppSharp.Runtime" }
+    links { "CppSharp.Runtime" }
 
     if depends ~= nil then
-      table.insert(linktable, depends .. ".CSharp")
-    end
-
-    links(linktable)
-
-    if string.startswith(_ACTION, "vs") then
-      files { path.join(libdir, name .. ".Native.timestamp.cs") }
-      links { name .. ".Gen" }
+      links { depends .. ".CSharp" }
     end
 
   project(name .. ".Tests.CSharp")
     SetupManagedTestProject()
 
+    enabledefaultnoneitems "false"
     files { name .. ".Tests.cs" }
-    vpaths { ["*"] = "*" }
 
     links { name .. ".CSharp", "CppSharp.Generator.Tests", "CppSharp.Runtime" }
+    nuget { "Microsoft.NET.Test.Sdk:16.8.0" }
     dependson { name .. ".Native" }
-
-    LinkNUnit()
-
-    filter { "action:netcore" }
-      dotnetframework "netcoreapp2.0"
 end
 
 function SetupTestProjectsCLI(name, extraFiles, suffix)
-  if (not os.ishost("windows")) or (_ACTION == "netcore") then
+  if not EnabledCLIProjects() then
     return
   end
 
   project(name .. ".CLI")
     SetupNativeProject()
 
+    enabledefaultcompileitems "false"
+    enabledefaultnoneitems "false"
     kind "SharedLib"
     language "C++"
-    clr "On"
+    clr "NetCore"
 
     dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
     SetupTestGeneratorBuildEvent(name)
@@ -252,26 +185,19 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
         files { path.join(gendir, name, file .. ".h") }
       end
     end
-    vpaths { ["*"] = "*" }
 
     includedirs { path.join(testsdir, name), incdir }
     links { name .. ".Native" }    
-
-    if string.startswith(_ACTION, "vs") then
-      files { path.join(libdir, name .. ".Native.timestamp.cpp") }
-      links { name .. ".Gen" }
-    end
+    files { path.join(objsdir, name .. ".Native", "timestamp.cpp") }
 
   project(name .. ".Tests.CLI")
     SetupManagedTestProject()
-
+    enabledefaultnoneitems "false"
     files { name .. ".Tests.cs" }
-    vpaths { ["*"] = "*" }
 
     links { name .. ".CLI", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
-
-    LinkNUnit()
+    nuget { "Microsoft.NET.Test.Sdk:16.8.0" }
 end
 
 function IncludeExamples()
