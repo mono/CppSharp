@@ -9,13 +9,13 @@ clang_msvc_flags =
 if EnableNativeProjects() then
 
 project "CppSharp.CppParser"
-  
+
   kind "SharedLib"
   language "C++"
   SetupNativeProject()
   rtti "Off"
   defines { "DLL_EXPORT" }
-  
+
   if os.istarget("linux") then
     linkgroups "On"
   end
@@ -26,7 +26,7 @@ project "CppSharp.CppParser"
   linkoptions { "/ignore:4099" } -- LNK4099: linking object as if no debug info
 
   filter {}
-  
+
   files
   {
     "*.h",
@@ -38,7 +38,7 @@ project "CppSharp.CppParser"
   SetupLLVMIncludes()
   SetupLLVMLibs()
   CopyClangIncludes()
-  
+
   filter {}
 
 project "Std-symbols"

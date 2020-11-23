@@ -134,13 +134,13 @@ function SetupNativeProject()
 
   filter { "configurations:Debug" }
     defines { "DEBUG" }
-    
+
   filter { "configurations:Release" }
     defines { "NDEBUG" }
     optimize "On"
-    
+
   -- Compiler-specific options
-  
+
   filter { "toolset:msc*" }
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
@@ -205,7 +205,7 @@ function IncludeDir(dir)
     if os.isfile(fp) then
       include(dep)
       return
-    end    
+    end
 
     fp = path.join(dep, "premake4.lua")
     fp = path.join(os.getcwd(), fp)
