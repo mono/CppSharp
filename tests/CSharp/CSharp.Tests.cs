@@ -590,7 +590,7 @@ public unsafe class CSharpTests : GeneratorTestFixture
         Assert.AreEqual("value", ex.ParamName);
         string[] message = ex.Message.Split(
             Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        Assert.AreEqual("The dimensions of the provided array don't match the required size.", message[0]);
+        Assert.AreEqual("The dimensions of the provided array don't match the required size. (Parameter 'value')", message[0]);
 
         foreach (Foo foo in foosMore)
         {

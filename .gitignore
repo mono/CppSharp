@@ -43,9 +43,8 @@ src/generator/generator
 /build/vs20*
 /build/gmake
 /build/headers
-/build/netcore
+/build/gen
 /deps/llvm
-/deps/NUnit*
 /extra
 /include/include
 /include/libc

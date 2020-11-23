@@ -1,6 +1,11 @@
 group "Tests/Namespaces"
-  SetupTestGeneratorProject("NamespacesDerived")
   SetupTestNativeProject("NamespacesDerived", "NamespacesBase")
+
+  if not EnabledManagedProjects() then
+    return
+  end
+
+  SetupTestGeneratorProject("NamespacesDerived")
   SetupTestProjectsCSharp("NamespacesDerived", "NamespacesBase")
 
   project("NamespacesDerived.Tests.CSharp")

@@ -2,8 +2,7 @@ require "Build"
 require "Utils"
 require "../Helpers"
 
-local basedir = path.getdirectory(_PREMAKE_COMMAND)
-local llvm = path.getabsolute(basedir .. "/../deps/llvm")
+local llvm = path.getabsolute(builddir .. "/../deps/llvm")
 
 -- Prevent premake from inserting /usr/lib64 search path on linux. GCC does not need this path specified
 -- as compiler automatically knows where to look for system libs. Insertion of this path causes issues
@@ -20,7 +19,7 @@ if is_vagrant() then
 end
 
 function get_llvm_rev()
-	return cat(basedir .. "/LLVM-commit")
+	return cat(builddir .. "/LLVM-commit")
 end
 
 function clone_llvm()
@@ -142,8 +141,7 @@ function get_llvm_package_name(rev, conf, arch)
 end
 
 function get_llvm_configuration_name(debug)
-	debug = _OPTIONS["debug"]
-	if debug == true then
+	if string.find(_OPTIONS["configuration"], "Debug") then
 		return "Debug"
 	end
 	return os.istarget("windows") and "RelWithDebInfo" or "Release"

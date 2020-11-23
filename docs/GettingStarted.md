@@ -15,104 +15,89 @@ binary releases (only provided for Windows, at the moment):
 ## Common setup
 
 1. Clone CppSharp Git repository
-2. Setup LLVM and Clang dependencies
-3. Generate build files using Premake
-4. Build the source code
-5. Generate bindings
+2. Generate build files
+3. Build the source code
+4. Generate bindings
 
-## Setting up LLVM and Clang dependencies
+## Pre-requisites
 
-You can either build LLVM and Clang from source or download one of our pre-built binary 
-dependency packages (the same ones we use for all our continuous integration (CI) builds).
+LLVM is a core dependency of CppSharp.
 
-### Downloading the LLVM and Clang packages
+By default, the `build.sh` command will automatically download a pre-built binary LLVM package
+compatible with your system and version of CppSharp (the same ones we use for all our
+continuous integration (CI) builds).
 
-The dependencies can be automatically downloaded by running:
+Or you can choose to build LLVM and Clang from source if you prefer,
+please check the [LLVM](LLVM.md) documentation page for more information.
 
-```shell
-cd <CppSharp>\build
-premake5 --file=scripts/LLVM.lua download_llvm # on Windows
-premake5-osx --file=scripts/LLVM.lua download_llvm # on OSX
-premake5-linux --file=scripts/LLVM.lua download_llvm # on Linux
-```
-
-Alternatively, if on Windows, just run `<CppSharp>/build/DownloadDeps.bat` from a Visual Studio command prompt
-corresponding to the VS version you want to use.
-
-After this, you should end up with one or multiple `<CppSharp>/build/scripts/llvm-<revision>-<os>-<configuration>` folders
-containing the headers and libraries for LLVM.
-
-If you do not end up with the folder, which can happen due to, for instance, not having 7-Zip on the path on Windows,
-then you can manually extract the .7z archives in `<CppSharp>/build/scripts` to their respective folders.
-
-### Building LLVM and Clang from source
-
-Please check the guide in [Compiling LLVM and Clang from source](BuildingLLVM.md)
+The build scripts also depend on `curl` command and 7-Zip on Windows, so please
+make sure those are installed on your system.
 
 ## Compiling on Windows/Visual Studio
 
-1. Generate the VS solution and project files 
+1. Generate the VS solution
 
-```shell
-cd <CppSharp>\build
-GenerateProjects.bat
-```
+    ```shell
+    cd <CppSharp>\build
+    ./build.sh generate -configuration Release -platform x64
+    ```
 
-2. Compile the project
+2. Compile the VS projects
 
-You can open `CppSharp.sln` and hit F5 or compile via the command line:
+    You can open `CppSharp.sln` and hit F5 or compile via the command line:
 
-```
-msbuild vs2017\CppSharp.sln /p:Configuration=Release;Platform=x86
-```
+    ```
+    ./build.sh -configuration Release -platform x64
+    ```
 
 Building in *Release* is recommended because else we will use the Clang parser
 debug configuration, which will be too slow for practical use beyond debugging.
 
 ## Compiling on macOS or Linux
 
-1. Change directory to `<CppSharp>\build`
-2. Run `./Compile.sh` to generate the project files and compile the code.
+1. Generate the VS solution and makefiles 
+
+    ```shell
+    cd <CppSharp>\build
+    ./build.sh generate -configuration Release -platform x64
+    ```
+
+2. Compile the csproj files and makefiles
+
+    ```
+    ./build.sh -configuration Release -platform x64
+    ```
 
 If the above script fails, you can try these equivalent manual steps:
 
-1. Generate the Makefiles
+1. Build the generated makefiles:
 
-```
-./premake5-osx gmake # if on OSX
-./premake5-linux gmake # if on Linux
-```
+    ```
+    make -C gmake config=release_x64
+    ```
 
-2. Build the generated makefiles:
-    - 32-bit builds: `make -C gmake config=release_x86`
-    - 64-bit builds: `make -C gmake config=release_x64`
+2. Build the generated VS solution:
 
-The version you compile needs to match the version of the Mono VM installed on your 
-system which you can find by running `mono --version`. The reason for this is because
-a 32-bit VM will only be able to load 32-bit shared libraries and vice-versa for 64-bits.
+    ```
+    msbuild CppSharp.sln -p:Configuration=Release -p:Platform=x64
+    ```
 
-If you need more verbosity from the builds invoke `make` as:
+If you need more verbosity from the builds invoke `make` and `msbuild` as:
 
 ```shell
 make -C gmake config=release_x64 verbose=true
+msbuild CppSharp.sln -p:Configuration=Release -p:Platform=x64 -verbosity:detailed
 ```
 
 ## Running the testsuite
 
 1. Change directory to `<CppSharp>\build`
-2. Run `./InstallNugets.sh` to install the NUnit test runner from Nuget.
-3. Run `./RunTests.sh` to run the tests.
+2. Run `./test.sh` to run the tests.
 
 ## Linux notes
 
 Only 64-bits builds are supported. 
 
-We depend on a recent version of Mono.
-
-Please look into the [download page](http://www.mono-project.com/download/#download-lin) on the
-Mono website for official install instructions.
-
 # Generating bindings
 
 You can now progress to generating your first bindings, explained in our [Generating bindings](GeneratingBindings.md) page.
-

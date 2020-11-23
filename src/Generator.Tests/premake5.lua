@@ -3,16 +3,6 @@ project "CppSharp.Generator.Tests"
   kind "SharedLib"
   SetupManagedProject()
 
-  files { "**.cs" }
-  excludes { "obj/**" }
-  vpaths { ["*"] = "*" }
-
-  libdirs
-  {
-    depsdir .. "/NUnit",
-    depsdir .. "/NSubstitute"
-  }
-
   files { testsdir .. "/Native/AST.h", testsdir .. "/Native/ASTExtensions.h", testsdir .. "/Native/Passes.h" }
   filter "files:**.h"
      buildaction "None"
@@ -28,19 +18,11 @@ project "CppSharp.Generator.Tests"
     "CppSharp.Parser",
   }
 
-  filter { "action:netcore"}
-    nuget
-    {
-      "NUnit:3.11.0",
-      "NSubstitute:4.0.0-rc1"
-    }
-
-  filter { "action:not netcore"}
-    links
-    {
-      "System",
-      "System.Core",
-      "Microsoft.CSharp",
-      "nunit.framework",
-      "NSubstitute"
-    }
+  nuget
+  {
+    "System.CodeDom:4.7.0",
+    "Microsoft.CSharp:4.7.0",
+    "Microsoft.NET.Test.Sdk:16.8.0",
+    "NUnit:3.11.0",
+    "NUnit3TestAdapter:3.17.0",
+  }

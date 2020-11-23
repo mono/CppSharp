@@ -1,14 +1,10 @@
 project "CppSharp.Generator"
 
   SetupManagedProject()
+  SetupParser()
 
   kind "SharedLib"
   language "C#"
-
-  files   { "**.cs", "**verbs.txt" }
-  excludes { "obj/**/*", "Filter.cs" }
-  vpaths { ["*"] = "*" }
-
   dependson { "Std-symbols" }
 
   links
@@ -18,23 +14,13 @@ project "CppSharp.Generator"
   	"CppSharp.Parser"
   }
 
-  SetupParser()
+  nuget
+  {
+    "System.CodeDom:4.7.0",
+    "Microsoft.CSharp:4.7.0"
+  }
 
-  filter { "action:netcore"}
-    nuget
-    {
-      "System.CodeDom:4.5.0",
-      "Microsoft.CSharp:4.5.0"
-    }
-
-  filter { "action:not netcore"}
-    links
-    {
-      "System",
-      "System.Core",
-      "Microsoft.CSharp"
-    }
-
+  files { "**verbs.txt" }
   filter { 'files:**verbs.txt' }
     buildaction "Embed"
 

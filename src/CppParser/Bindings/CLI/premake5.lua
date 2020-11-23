@@ -1,15 +1,14 @@
 include "../../../../build/LLVM.lua"
 
 project "CppSharp.Parser.CLI"
+  SetupNativeProject()
 
   kind "SharedLib"
   language "C++"
-  SetupNativeProject()
-  SetupLLVMIncludes()
 
   dependson { "CppSharp.CppParser" }
   flags { common_flags }
-  clr "On"
+  clr "NetCore"
 
   filter "toolset:msc*"
     buildoptions { clang_msvc_flags }
@@ -28,6 +27,8 @@ project "CppSharp.Parser.CLI"
     "../../../../include/",
     "../../../../src/CppParser/"
   }
+  
+  SetupLLVMIncludes()
 
   filter {}
 

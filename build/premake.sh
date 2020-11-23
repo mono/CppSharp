@@ -4,16 +4,12 @@ DIR=$( cd "$( dirname "$0" )" && pwd )
 
 case "$(uname -s)" in
 
-   Darwin)
-     $DIR/premake5-osx $*
-     ;;
-
-   Linux)
-     $DIR/premake5-linux $*
+   Darwin|Linux)
+     $DIR/premake/premake5 $*
      ;;
 
    CYGWIN*|MINGW32*|MSYS*|MINGW*)
-     $DIR/premake5.exe $*
+     $DIR/premake/premake5.exe $*
      ;;
 
    *)

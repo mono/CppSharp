@@ -1,12 +1,11 @@
 project "CppSharp.Parser.Gen"
 
+  SetupManagedProject()
+  SetupParser()
+
   kind "ConsoleApp"
   language "C#"
-  SetupManagedProject()
   debugdir "."
-  
-  files { "ParserGen.cs", "*.lua" }
-  vpaths { ["*"] = "*" }
 
   links
   {
@@ -15,8 +14,3 @@ project "CppSharp.Parser.Gen"
     "CppSharp.Generator",
     "CppSharp.Parser",
   }
-
-  SetupParser()
-
-  filter { "action:not netcore"}
-    links { "System.Core" }

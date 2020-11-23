@@ -26,7 +26,7 @@ namespace CppSharp.Utils
         {
             var options = driver.Options;
             options.GeneratorKind = kind;
-            options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
+            options.OutputDir = Path.Combine(GetOutputDirectory(), "build", "gen", name);
             options.Quiet = true;
             options.GenerateDebugOutput = true;
             options.GenerateSequentialLayout = true;
@@ -95,7 +95,7 @@ namespace CppSharp.Utils
 
             while (directory != null)
             {
-                var path = Path.Combine(directory.FullName, "obj");
+                var path = Path.Combine(directory.FullName, "build");
 
                 if (Directory.Exists(path))
                     return directory.FullName;

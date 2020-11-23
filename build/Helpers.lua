@@ -1,12 +1,15 @@
 -- This module checks for the all the project dependencies.
+require('vstudio')
+require('premake/premake.fixes')
+require('premake/premake.extensions')
 
 newoption {
    trigger     = "arch",
    description = "Choose a particular architecture / bitness",
+   default = "x64",
    allowed = {
       { "x86",  "x86 32-bits" },
       { "x64",  "x64 64-bits" },
-      { "AnyCPU",  "Any CPU (.NET)" },
    }
 }
 
@@ -26,99 +29,34 @@ newoption {
  }
 
 newoption {
-  trigger = "debug",
-  description = "enable debug mode"
+  trigger = "configuration",
+  description = "Choose a configuration",
+  default = "Release",
+  allowed = {
+    { "Release",  "Release" },
+    { "Debug",  "Debug" },
+ }
 }
 
-explicit_target_architecture = _OPTIONS["arch"]
-
-function get_mono_path()
-  local mono = "mono"
-  local result, errorcode = os.outputof(mono .. " --version")
-  if result == nil and os.ishost("macosx") then
-    mono = "/Library/Frameworks/Mono.framework/Versions/Current/bin/" .. mono
-    result, errorcode = os.outputof(mono .. " --version")
-  end
-  if result == nil then
-    print("Could not find Mono executable, please make sure it is in PATH.")
-    os.exit(1)
-  end
-  return mono
-end
-
-function is_64_bits_mono_runtime()
-  local result, errorcode = os.outputof(get_mono_path() .. " --version")
-  local arch = string.match(result, "Architecture:%s*([%w]+)")
-  return arch == "amd64"
-end
-default_gcc_version = "9.0.0"
-
-function target_architecture()
-  if _ACTION == "netcore" then
-    return "AnyCPU"
-  end
-
-  -- Default to 64-bit on Windows and Mono architecture otherwise.
-  if explicit_target_architecture ~= nil then
-    return explicit_target_architecture
-  end
-  if os.ishost("windows") then return "x64" end
-  return is_64_bits_mono_runtime() and "x64" or "x86"
-end
-
-if not _OPTIONS["arch"] then
-  _OPTIONS["arch"] = target_architecture()
-end
-
--- Uncomment to enable Roslyn compiler.
---[[
-premake.override(premake.tools.dotnet, "gettoolname", function(base, cfg, tool)
-  if tool == "csc" then
-    return "csc"
-  end
-  return base(cfg, tool)
-end)
-]]
-
-basedir = path.getdirectory(_PREMAKE_COMMAND)
-premake.path = premake.path .. ";" .. path.join(basedir, "modules")
-
-depsdir = path.getabsolute("../deps");
-srcdir = path.getabsolute("../src");
-incdir = path.getabsolute("../include");
-bindir = path.getabsolute("../bin");
-examplesdir = path.getabsolute("../examples");
-testsdir = path.getabsolute("../tests");
-
-local function get_build_dir()
-  if _ARGS[1] then
-    return  _ARGS[1]
-  end
-
-  if not _ACTION then
-    return ""
-  end
-
-  return _ACTION == "gmake2" and "gmake" or _ACTION
-end
-
-builddir = path.getabsolute("./" .. get_build_dir());
-
-if _ACTION ~= "netcore" then
-  objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}_%{cfg.platform}");
-  libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
-else
-  objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}");
-  libdir = path.join(builddir, "lib", "%{cfg.buildcfg}");
-end
-
+rootdir = path.getabsolute("../")
+depsdir = path.join(rootdir, "deps");
+srcdir = path.join(rootdir, "src");
+incdir = path.join(rootdir, "include");
+examplesdir = path.join(rootdir, "examples");
+testsdir = path.join(rootdir, "tests");
+builddir = path.join(rootdir, "build")
+bindir = path.join(rootdir, "bin")
+objsdir = path.join(builddir, "obj");
 gendir = path.join(builddir, "gen");
+actionbuilddir = path.join(builddir, _ACTION == "gmake2" and "gmake" or (_ACTION and _ACTION or ""));
+bindircfg = path.join(bindir, "%{cfg.buildcfg}_%{cfg.platform}");
+prjobjdir = path.join(objsdir, "%{prj.name}", "%{cfg.buildcfg}")
 
 msvc_buildflags = { "/MP", "/wd4267" }
-
 msvc_cpp_defines = { }
-
+default_gcc_version = "9.0.0"
 generate_build_config = true
+premake.path = premake.path .. ";" .. path.join(builddir, "modules")
 
 function string.starts(str, start)
    if str == nil then return end
@@ -129,8 +67,13 @@ function SafePath(path)
   return "\"" .. path .. "\""
 end
 
+function target_architecture()
+  return _OPTIONS["arch"]
+end
+
 function SetupNativeProject()
   location ("%{wks.location}/projects")
+  files { "*.lua" }
 
   filter { "configurations:Debug" }
     defines { "DEBUG" }
@@ -177,21 +120,7 @@ end
 
 function SetupManagedProject()
   language "C#"
-  location ("%{wks.location}/projects")
-  buildoptions {"/langversion:7.3"}
-  buildoptions {"/platform:".._OPTIONS["arch"]}
-
-  dotnetframework "4.7.2"
-
-  if not os.istarget("macosx") then
-    filter { "action:vs* or netcore" }
-      location "."
-    filter {}
-  end
-
-  filter { "action:netcore" }
-    dotnetframework "netstandard2.0"
-
+  location "."
   filter {}
 end
 
@@ -271,15 +200,15 @@ function UseCxx11ABI()
 end
 
 function EnableNativeProjects()
-  if _ACTION == "netcore" then
-    return false
-  end
+  return not (string.starts(_ACTION, "vs") and not os.ishost("windows"))
+end
 
-  if string.starts(_ACTION, "vs") and not os.ishost("windows") then
-    return false
-  end
+function EnabledManagedProjects()
+  return string.starts(_ACTION, "vs")
+end
 
-  return true
+function EnabledCLIProjects()
+  return EnabledManagedProjects() and os.istarget("windows")
 end
 
 function AddPlatformSpecificFiles(folder, filename)
