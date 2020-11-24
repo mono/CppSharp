@@ -139,6 +139,10 @@ while [[ $# > 0 ]]; do
     -debug)
       configuration=Debug
       ;;
+    -configuration)
+      configuration=$2
+      shift
+      ;;      
     -platform)
       platform=$2
       shift
