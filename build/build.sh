@@ -181,6 +181,9 @@ case "$cmd" in
   download_llvm)
     download_llvm
     ;;
+  install_tools)
+    download_premake
+    ;;
    *)
     build
     ;;

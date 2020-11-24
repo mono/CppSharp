@@ -45,6 +45,10 @@ jobs:
         shell: powershell
         run: build/intrin.ps1
 
+      - name: Install dependencies
+        shell: bash
+        run: build/build.sh install_tools
+
       - name: Clone LLVM
         shell: bash
         run: build/premake.sh --file=build/scripts/LLVM.lua clone_llvm
