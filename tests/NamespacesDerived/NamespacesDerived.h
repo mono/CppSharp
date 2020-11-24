@@ -44,9 +44,11 @@ class Base3
 
 template <typename T> class TemplateClass;
 
-class Derived2 : public Base3
+class DLL_API Derived2 : public Base3
 {
 public:
+    Derived2();
+    ~Derived2();
     Base3 baseComponent;
     Base3 getBase();
     void setBase(Base3);
@@ -56,6 +58,7 @@ public:
     void setNestedNSComponent(OverlappingNamespace::InDerivedLib);
     void defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c = OverlappingNamespace::ColorsEnum::black);
 
+    TemplateClass<int> getTemplate();
     Abstract* getAbstract();
 private:
     TemplateClass<int> t;

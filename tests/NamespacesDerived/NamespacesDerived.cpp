@@ -33,6 +33,14 @@ void Derived::setNestedNSComponent(OverlappingNamespace::InBaseLib c)
     nestedNSComponent = c;
 }
 
+Derived2::Derived2()
+{
+}
+
+Derived2::~Derived2()
+{
+}
+
 Base3 Derived2::getBase()
 {
     return baseComponent;
@@ -55,6 +63,11 @@ void Derived2::setNestedNSComponent(OverlappingNamespace::InDerivedLib c)
 
 void Derived2::defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c)
 {
+}
+
+TemplateClass<int> Derived2::getTemplate()
+{
+    return t;
 }
 
 Abstract* Derived2::getAbstract()

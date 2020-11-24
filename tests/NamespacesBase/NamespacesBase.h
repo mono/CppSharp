@@ -51,6 +51,10 @@ public:
 template <typename T>
 class TemplateClass
 {
+public:
+    T getField() const;
+    void setField(const T& value);
+private:
     union
     {
         int i;
@@ -58,6 +62,18 @@ class TemplateClass
     };
     T t;
 };
+
+template <typename T>
+T TemplateClass<T>::getField() const
+{
+    return t;
+}
+
+template <typename T>
+void TemplateClass<T>::setField(const T& value)
+{
+    t = value;
+}
 
 template <typename T>
 class DLL_API TemplateWithIndependentFields
@@ -84,3 +100,6 @@ public:
     ~SecondaryBase();
     void function();
 };
+
+// force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
+template class DLL_API TemplateClass<int>;
