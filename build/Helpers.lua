@@ -72,7 +72,7 @@ function target_architecture()
 end
 
 function SetupNativeProject()
-  location ("%{wks.location}/projects")
+  location (path.join(actionbuilddir, "projects"))
   files { "*.lua" }
 
   filter { "configurations:Debug" }
