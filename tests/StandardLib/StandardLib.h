@@ -20,20 +20,18 @@ struct DLL_API TestVectors
     std::vector<int> GetIntVector();
     int SumIntVector(std::vector<int>& vec);
     
-    DISABLE_WARNING_ONCE(4251,
-        // Should get mapped to List<int>
-        std::vector<int> IntVector;
-        // Should get mapped to List<IntPtr>
-        std::vector<int*> IntPtrVector;
-        // Should get mapped to List<IntWrapper>
-        std::vector<IntWrapper> IntWrapperVector;
-        // Should get mapped to List<IntWrapper>
-        std::vector<IntWrapper*> IntWrapperPtrVector;
-        // Should get mapped to List<IntWrapperValueType>
-        std::vector<IntWrapperValueType> IntWrapperValueTypeVector;
-        // Should get mapped to List<IntWrapperValueType>
-        VectorTypedef IntWrapperValueTypeVectorTypedef;
-    )
+    // Should get mapped to List<int>
+    std::vector<int> IntVector;
+    // Should get mapped to List<IntPtr>
+    std::vector<int*> IntPtrVector;
+    // Should get mapped to List<IntWrapper>
+    std::vector<IntWrapper> IntWrapperVector;
+    // Should get mapped to List<IntWrapper>
+    std::vector<IntWrapper*> IntWrapperPtrVector;
+    // Should get mapped to List<IntWrapperValueType>
+    std::vector<IntWrapperValueType> IntWrapperValueTypeVector;
+    // Should get mapped to List<IntWrapperValueType>
+    VectorTypedef IntWrapperValueTypeVectorTypedef;
 };
 
 struct DLL_API OStreamTest

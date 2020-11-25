@@ -20,11 +20,9 @@
 #define THISCALL __thiscall
 #endif
 
-#define DISABLE_WARNING_ONCE(id, block) \
-__pragma(warning(push)) \
-__pragma(warning(disable: id)) \
-block \
-__pragma(warning(pop))
+// HACK: work around https://developercommunity.visualstudio.com/content/problem/1269158/c4251-shown-for-any-not-explicitly-exported-templa.html
+// harmless and requires exporting all template specializations
+#pragma warning (disable : 4251 )
 
 #else
 #define DLL_API __attribute__ ((visibility ("default")))
@@ -45,8 +43,6 @@ __pragma(warning(pop))
 #ifndef THISCALL
 #define THISCALL
 #endif
-
-#define DISABLE_WARNING_ONCE(id, block) block
 
 #endif
 

@@ -4,14 +4,11 @@
 class DLL_API Foo
 {
 public:
-    DISABLE_WARNING_ONCE(4251,
-        static std::string StringVariable;
-    )
-
     Foo();
     ~Foo();
 
     const char* Unicode;
+    static std::string StringVariable;
 
 	// TODO: VC++ does not support char16
 	// char16 chr16;    

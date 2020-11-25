@@ -17,10 +17,7 @@ public:
     virtual int append();
     virtual int append(int a);
     int callVirtualWithParameter(int a);
-
-    DISABLE_WARNING_ONCE(4251,
-        std::string s;
-    )
+    std::string s;
 };
 
 DLL_API int FooCallFoo(Foo* foo);

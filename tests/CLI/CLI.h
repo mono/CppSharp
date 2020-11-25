@@ -68,9 +68,7 @@ public:
     TestMappedTypeNonConstRefParam(const std::string);
     const TestMappedTypeNonConstRefParam& operator=(const std::string);
 
-    DISABLE_WARNING_ONCE(4251,
-        std::string m_str;
-    )
+    std::string m_str;
 };
 
 class DLL_API TestMappedTypeNonConstRefParamConsumer
