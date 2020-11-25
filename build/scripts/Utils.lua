@@ -93,19 +93,23 @@ function http.progress (total, prev, curr)
   end
 end
 
-function download(url, file)
+function download(url, file, try)
   print("Downloading: " .. url)
   local prev = 0
-  local res = http.download(url, file, function(total, curr)
+  local res, code = http.download(url, file, function(total, curr)
     http.progress(total, prev, curr)
     prev = curr
   end)
 
   if res ~= "OK" then
     os.remove(file)
-    error(res)
+
+    if not try then
+      error(res)
+    end
   end
-  return res
+  
+  return res, code
 end
 
 --
