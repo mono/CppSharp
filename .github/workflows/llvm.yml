@@ -22,6 +22,7 @@ jobs:
       CXX: ${{ matrix.config.cxx }}
       VS_VERSION: ${{ matrix.config.vs }}
       PLATFORM: ${{ matrix.config.platform }}
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
       - uses: actions/checkout@v2
