@@ -62,4 +62,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: llvm
-          path: build/scripts/llvm-*-*.*
+          path: build/llvm/llvm-*-*.*

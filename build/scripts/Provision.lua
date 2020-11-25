@@ -57,7 +57,7 @@ end
 
 function restore_nuget_packages()
   local nugetexe = os.ishost("windows") and "NuGet.exe" or "mono ./NuGet.exe"
-  execute(nugetexe .. " restore packages.config -PackagesDirectory " .. depsdir)
+  execute(nugetexe .. " restore packages.config -PackagesDirectory " .. path.join(rootdir, "deps"))
 end
 
 local compile_llvm = is_vagrant()

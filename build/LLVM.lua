@@ -1,17 +1,17 @@
 -- Setup the LLVM dependency directories
 
-LLVMRootDir = depsdir .. "/llvm/"
+LLVMRootDir = builddir .. "/llvm/llvm-project"
 
 local LLVMDirPerConfiguration = false
 
 local LLVMRootDirDebug = ""
 local LLVMRootDirRelease = ""
 
-require "scripts/LLVM"
+require "llvm/LLVM"
 
 function SearchLLVM()
-  LLVMRootDirDebug = builddir .. "/scripts/" .. get_llvm_package_name(nil, "Debug")
-  LLVMRootDirRelease = builddir .. "/scripts/" .. get_llvm_package_name()
+  LLVMRootDirDebug = builddir .. "/llvm/" .. get_llvm_package_name(nil, "Debug")
+  LLVMRootDirRelease = builddir .. "/llvm/" .. get_llvm_package_name()
 
   if os.isdir(LLVMRootDirDebug) or os.isdir(LLVMRootDirRelease) then
     LLVMDirPerConfiguration = true

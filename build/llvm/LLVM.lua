@@ -1,8 +1,8 @@
-require "Build"
-require "Utils"
+require "../scripts/Build"
+require "../scripts/Utils"
 require "../Helpers"
 
-local llvm = path.getabsolute(builddir .. "/../deps/llvm")
+local llvm = path.getabsolute(builddir .. "/llvm/llvm-project")
 
 -- Prevent premake from inserting /usr/lib64 search path on linux. GCC does not need this path specified
 -- as compiler automatically knows where to look for system libs. Insertion of this path causes issues
@@ -19,7 +19,7 @@ if is_vagrant() then
 end
 
 function get_llvm_rev()
-	return cat(builddir .. "/LLVM-commit")
+	return cat(builddir .. "/llvm/LLVM-commit")
 end
 
 function clone_llvm()

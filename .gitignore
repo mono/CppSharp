@@ -35,8 +35,8 @@ src/generator/generator
 *DesignTime*
 *TemporaryGeneratedFile*
 *FileListAbsolute*
-/build/scripts/llvm**
-/build/scripts/*.tar.gz
+/build/llvm/llvm-*
+/build/llvm/*.tar.gz
 /build/scripts/.vagrant
 /build/*.zip
 /build/*.pkg

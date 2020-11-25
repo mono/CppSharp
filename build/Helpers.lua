@@ -39,7 +39,6 @@ newoption {
 }
 
 rootdir = path.getabsolute("../")
-depsdir = path.join(rootdir, "deps");
 srcdir = path.join(rootdir, "src");
 incdir = path.join(rootdir, "include");
 examplesdir = path.join(rootdir, "examples");
