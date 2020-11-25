@@ -7,16 +7,9 @@ function SetupExampleProject()
   language "C#"
   debugdir "."
 
-  links
-  {
-    "CppSharp",
-    "CppSharp.AST",
-    "CppSharp.Generator",
-    "CppSharp.Parser"
-  }
+  links { "CppSharp.Parser" }
 
   SetupManagedProject()
-  SetupParser()
 end
 
 function SetupTestProject(name, extraFiles, suffix)
@@ -53,20 +46,12 @@ function SetupTestGeneratorProject(name, depends)
   end
   project(name .. ".Gen")
     SetupManagedTestProject()
-    SetupParser()
     kind "ConsoleApp"
     enabledefaultnoneitems "false"
 
     files { name .. ".cs" }
     dependson { name .. ".Native" }
-
-    links {
-      "CppSharp",
-      "CppSharp.AST",
-      "CppSharp.Generator",
-      "CppSharp.Generator.Tests",
-      "CppSharp.Parser"
-    }
+    links { "CppSharp.Generator.Tests" }
 
     if depends ~= nil then
       links { depends .. ".Gen" }

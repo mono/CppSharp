@@ -34,6 +34,4 @@ project "CppSharp.Parser.CLI"
 
   links { "CppSharp.CppParser" }
 
-function SetupParser()
-  links { "CppSharp.Parser.CLI" }
-end
+CppSharpParserBindings = "CppSharp.Parser.CLI"

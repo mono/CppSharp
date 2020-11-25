@@ -18,7 +18,6 @@ end
 project "CppSharp.Parser"
 
   SetupManagedProject()
-  SetupParser()
 
   kind "SharedLib"
   language "C#"
@@ -33,5 +32,6 @@ project "CppSharp.Parser"
   {
     "CppSharp",
     "CppSharp.AST",
-    "CppSharp.Runtime"
+    "CppSharp.Runtime",
+    CppSharpParserBindings
   }

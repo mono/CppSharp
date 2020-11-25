@@ -17,10 +17,4 @@ project "CppSharp.Parser.CSharp"
   AddPlatformSpecificFiles("", "**.cs")
   AddPlatformSpecificFiles("", "**.cpp")
 
-function SetupParser()
-  links
-  {
-    "CppSharp.Parser.CSharp",
-    "CppSharp.Runtime"
-  }
-end
+CppSharpParserBindings = "CppSharp.Parser.CSharp"

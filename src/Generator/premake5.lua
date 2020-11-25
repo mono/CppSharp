@@ -1,18 +1,11 @@
 project "CppSharp.Generator"
 
   SetupManagedProject()
-  SetupParser()
 
   kind "SharedLib"
   language "C#"
   dependson { "Std-symbols" }
-
-  links
-  {
-  	"CppSharp",
-  	"CppSharp.AST",
-  	"CppSharp.Parser"
-  }
+  links { "CppSharp.Parser" }
 
   nuget
   {

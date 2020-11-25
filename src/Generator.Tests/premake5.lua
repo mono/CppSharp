@@ -8,15 +8,7 @@ project "CppSharp.Generator.Tests"
      buildaction "None"
   filter {}
 
-  SetupParser()
-
-  links
-  {
-    "CppSharp",
-    "CppSharp.AST",
-    "CppSharp.Generator",
-    "CppSharp.Parser",
-  }
+  links { "CppSharp.Generator" }
 
   nuget
   {
