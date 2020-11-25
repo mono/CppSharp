@@ -21,14 +21,12 @@ Check the official download pages for each project for further instructions:
 2. Navigate to the `<CppSharp>/build` directory
 3. Clone, build and package LLVM with
 ```
-$PREMAKE --file=scripts/LLVM.lua clone_llvm
-$PREMAKE --file=scripts/LLVM.lua build_llvm
-$PREMAKE --file=scripts/LLVM.lua package_llvm
+./build.sh clone_llvm
+./build.sh build_llvm
+./build.sh package_llvm
 ```
 
-`$PREMAKE` should be replaced with `premake5.exe`, `premake5-osx` or `premake5-linux` depending on environment.
-
-You can specify an `--arch=x86` or `--arch=x64` flag to the invocations above to specify an explicit build architecture.  
+You can specify an `--platform=x86` or `--platform=x64` flag to the invocations above to specify an explicit build architecture.  
 
 If the `clone_llvm` step fails, you can try to manually clone LLVM and Clang as explained below.
 You should still run clone_llvm to ensure that you are on the correct revision.

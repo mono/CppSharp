@@ -75,11 +75,6 @@ clean()
   rm -rf $slnpath
 }
 
-download_llvm()
-{
-  $builddir/premake.sh --file=$builddir/scripts/LLVM.lua download_llvm --os=$os --arch=$platform --configuration=$configuration
-}
-
 download_premake()
 {
   premake_dir=$builddir/premake
@@ -97,6 +92,26 @@ download_premake()
     chmod +x $premake_path
     rm premake-$oshost-$platform.zip
   fi
+}
+
+download_llvm()
+{
+  $builddir/premake.sh --file=$builddir/llvm/LLVM.lua download_llvm --os=$os --arch=$platform --configuration=$configuration
+}
+
+clone_llvm()
+{
+  $builddir/premake.sh --file=$builddir/llvm/LLVM.lua clone_llvm --os=$os --arch=$platform --configuration=$configuration
+}
+
+build_llvm()
+{
+  $builddir/premake.sh --file=$builddir/llvm/LLVM.lua build_llvm --os=$os --arch=$platform --configuration=$configuration
+}
+
+package_llvm()
+{
+  $builddir/premake.sh --file=$builddir/llvm/LLVM.lua package_llvm --os=$os --arch=$platform --configuration=$configuration
 }
 
 detect_os()
@@ -180,6 +195,15 @@ case "$cmd" in
     ;;
   download_llvm)
     download_llvm
+    ;;
+  clone_llvm)
+    clone_llvm
+    ;;
+  build_llvm)
+    build_llvm
+    ;;
+  package_llvm)
+    package_llvm
     ;;
   install_tools)
     download_premake
