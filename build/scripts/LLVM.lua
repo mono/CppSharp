@@ -186,9 +186,22 @@ function download_llvm()
 
   -- check if we already have the file downloaded
   if os.isfile(archive) then
-  	  print("Archive " .. archive .. " already exists.")
-  else
-	  download(base .. archive, archive)
+    print("Archive " .. archive .. " already exists.")
+  else  
+    msg, code = download(base .. archive, archive, true)
+    
+    if msg ~= "OK" then
+    	if code == 404 then
+        print("Error: " .. archive .. " is unavailable.")
+        print("Please create your own LLVM package by executing the following commands:")
+        print("./build.sh clone_llvm")
+        print("./build.sh build_llvm")
+        print("./build.sh package_llvm")
+        os.exit(1)
+      end
+      
+      error(msg)
+    end
   end
 
   -- extract the package
