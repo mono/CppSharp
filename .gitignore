@@ -43,6 +43,7 @@ src/generator/generator
 /build/vs20*
 /build/gmake
 /build/headers
+/build/premake/premake5*
 /build/gen
 /deps/llvm
 /extra
