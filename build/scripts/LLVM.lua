@@ -120,13 +120,7 @@ function get_llvm_package_name(rev, conf, arch)
 		if UseClang() then
 			table.insert(components, "clang")
 		else
-			local version = GccVersion()
-			if version < "5.0.0" then
-				-- Minor version matters only with gcc 4.8/4.9
-				version = string.match(version, "%d+.%d+")
-			else
-				version = string.match(version, "%d+")
-			end
+			local version = string.match(GccVersion(), "%d+")
 			table.insert(components, "gcc-"..version)
 		end
   end
