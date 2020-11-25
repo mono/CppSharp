@@ -184,11 +184,12 @@ function GccVersion()
   if out == nil then
     return default_gcc_version
   end
-  local version = string.match(out, "gcc version [0-9\\.]+")
-  if version == nil then
-    version = string.match(out, "clang version [0-9\\.]+")
+  local version = string.match(out, "gcc[ -][Vv]ersion [0-9\\.]+")
+  if version ~= nil then
+    return string.sub(version, 13)
   end
-  return string.sub(version, 13)
+  version = string.match(out, "clang[ -][Vv]ersion [0-9\\.]+")
+  return string.sub(version, 15)
 end
 
 function UseCxx11ABI()
