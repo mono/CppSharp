@@ -35,13 +35,13 @@ If using Visual Studio / MSVC, be sure to run the scripts from a [VS Command Pro
 
 ## Cloning from Git
 
-1. Clone LLVM to `<CppSharp>\deps\llvm`
+1. Clone LLVM to `<CppSharp>\build\llvm\llvm`
 
 ```
 git clone http://llvm.org/git/llvm.git
 ```
 
-2. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
+2. Clone Clang to `<CppSharp>\build\llvm\llvm\tools\clang`
 
 ```
 cd llvm/tools
@@ -54,7 +54,7 @@ Make sure to use the revisions specified below, or you will most likely get comp
 
 Required LLVM/Clang commits:
 
-[LLVM: see /build/LLVM-commit.](https://github.com/mono/CppSharp/tree/master/build/LLVM-commit)
+[LLVM: see /build/llvm/LLVM-commit.](https://github.com/mono/CppSharp/tree/master/build/LLVM-commit)
 
 [Clang: see /build/Clang-commit.](https://github.com/mono/CppSharp/tree/master/build/Clang-commit)
 
@@ -74,8 +74,8 @@ cd <CppSharp>\build
 ./build.sh download_llvm
 ```
 
-After this, you should end up with one or multiple <CppSharp>/build/scripts/llvm-<revision>-<os>-<configuration> folders
+After this, you should end up with one or multiple <CppSharp>/build/llvm/llvm-<revision>-<os>-<configuration> folders
 containing the headers and libraries for LLVM.
 
 If you do not end up with the folder, which can happen due to, for instance, not having 7-Zip on the path on Windows,
-then you can manually extract the .7z archives in <CppSharp>/build/scripts to their respective folders.
+then you can manually extract the .7z archives in <CppSharp>/build/llvm to their respective folders.
