@@ -469,10 +469,7 @@ function archive_llvm(dir)
 	else
 		execute_or_die("tar cJf " .. path.join("..", archive) .. " *")
 	end
-
-	archive = dir .. ".tar.zst"
-	execute_or_die("tar --use-compress-program zstd -cf " .. path.join("..", archive) .. " *")
-
+	
 	os.chdir(cwd)
 	if is_vagrant() then
 		os.copyfile(archive, "/cppsharp")
