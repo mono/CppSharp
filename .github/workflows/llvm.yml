@@ -45,21 +45,17 @@ jobs:
         shell: powershell
         run: build/intrin.ps1
 
-      - name: Install dependencies
-        shell: bash
-        run: build/build.sh install_tools
-
       - name: Clone LLVM
         shell: bash
-        run: build/premake.sh --file=build/scripts/LLVM.lua clone_llvm
+        run: build/build.sh clone_llvm
           
       - name: Build LLVM
         shell: bash
-        run: build/premake.sh --file=build/scripts/LLVM.lua build_llvm --arch=$PLATFORM
+        run: build/build.sh build_llvm -platform $PLATFORM
 
       - name: Package LLVM
         shell: bash
-        run: build/premake.sh --file=build/scripts/LLVM.lua package_llvm --arch=$PLATFORM
+        run: build/build.sh package_llvm -platform $PLATFORM
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
