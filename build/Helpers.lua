@@ -193,7 +193,7 @@ function GccVersion()
 end
 
 function UseCxx11ABI()
-  if os.istarget("linux") and GccVersion() >= '4.9.0' and _OPTIONS["no-cxx11-abi"] == nil then
+  if os.istarget("linux") and premake.checkVersion(GccVersion(), '4.9.0') and _OPTIONS["no-cxx11-abi"] == nil then
     return true
   end
   return false
