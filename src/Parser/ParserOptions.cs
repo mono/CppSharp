@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using LanguageVersion = CppSharp.Parser.LanguageVersion;
 
 namespace CppSharp.Parser
 {
@@ -158,9 +157,8 @@ namespace CppSharp.Parser
                 }
             }
 
-            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
-                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+                LanguageVersion = Parser.LanguageVersion.CPP14_GNU;
 
             AddArguments("-fms-extensions");
             AddArguments("-fms-compatibility");
@@ -201,7 +199,7 @@ namespace CppSharp.Parser
                 var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
                     "usr", "include", "c++"));
 
-                if (versions.Count() == 0)
+                if (!versions.Any())
                     throw new Exception("No valid GCC version found on system include paths");
 
                 string gccVersionPath = versions.First();
@@ -211,10 +209,12 @@ namespace CppSharp.Parser
                 return;
             }
 
-            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
-            info.RedirectStandardError = true;
-            info.CreateNoWindow = true;
-            info.UseShellExecute = false;
+            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v")
+            {
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
 
             var process = Process.Start(info);
             if (process == null)
@@ -238,8 +238,8 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
 
-            string compiler, longVersion, shortVersion;
-            GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
+            GetUnixCompilerInfo(headersPath,
+                out string compiler, out string longVersion, out string shortVersion);
 
             AddSystemIncludeDirs(BuiltinsDir);
             AddArguments($"-fgnuc-version={longVersion}");
@@ -288,9 +288,8 @@ namespace CppSharp.Parser
 
         private void SetupArguments()
         {
-            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
-                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+                LanguageVersion = Parser.LanguageVersion.CPP14_GNU;
 
             // As of Clang revision 5e866e411caa we are required to pass "-fgnuc-version="
             // to get the __GNUC__ symbol defined. macOS and Linux system headers require
@@ -311,8 +310,8 @@ namespace CppSharp.Parser
 
             switch (LanguageVersion)
             {
-                case CppSharp.Parser.LanguageVersion.C99:
-                case CppSharp.Parser.LanguageVersion.C99_GNU:
+                case Parser.LanguageVersion.C99:
+                case Parser.LanguageVersion.C99_GNU:
                     AddArguments("-xc");
                     break;
                 default:
@@ -322,34 +321,34 @@ namespace CppSharp.Parser
 
             switch (LanguageVersion)
             {
-                case CppSharp.Parser.LanguageVersion.C99:
+                case Parser.LanguageVersion.C99:
                     AddArguments("-std=c99");
                     break;
-                case CppSharp.Parser.LanguageVersion.C99_GNU:
+                case Parser.LanguageVersion.C99_GNU:
                     AddArguments("-std=gnu99");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP98:
+                case Parser.LanguageVersion.CPP98:
                     AddArguments("-std=c++98");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP98_GNU:
+                case Parser.LanguageVersion.CPP98_GNU:
                     AddArguments("-std=gnu++98");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP11:
+                case Parser.LanguageVersion.CPP11:
                     AddArguments("-std=c++11");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP11_GNU:
+                case Parser.LanguageVersion.CPP11_GNU:
                     AddArguments("-std=gnu++11");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP14:
+                case Parser.LanguageVersion.CPP14:
                     AddArguments("-std=c++14");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP14_GNU:
+                case Parser.LanguageVersion.CPP14_GNU:
                     AddArguments("-std=gnu++14");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP17:
+                case Parser.LanguageVersion.CPP17:
                     AddArguments("-std=c++1z");
                     break;
-                case CppSharp.Parser.LanguageVersion.CPP17_GNU:
+                case Parser.LanguageVersion.CPP17_GNU:
                     AddArguments("-std=gnu++1z");
                     break;
             }
@@ -358,13 +357,12 @@ namespace CppSharp.Parser
                 AddArguments("-fno-rtti");
         }
 
-        public string BuiltinsDir 
+        public string BuiltinsDir
         {
             get
             {
                 var assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var builtinsDir = Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
-                return builtinsDir;
+                return Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
             }
         }
 
