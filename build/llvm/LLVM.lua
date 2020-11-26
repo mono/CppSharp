@@ -187,7 +187,9 @@ function download_llvm()
   -- check if we already have the file downloaded
   if os.isfile(archive) then
     print("Archive " .. archive .. " already exists.")
-  else  
+  elseif os.isdir(pkg_name) then
+    print("Directory " .. pkg_name .. " already exists.")
+  else
     msg, code = download(base .. archive, archive, true)
     
     if msg ~= "OK" then
