@@ -705,7 +705,7 @@ namespace CppSharp.Generators.CLI
 
             Write(")");
 
-            if (method.IsOverride)
+            if (method.IsGeneratedOverride())
                 Write(" override");
         }
 
