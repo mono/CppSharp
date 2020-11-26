@@ -18,7 +18,7 @@ namespace CppSharp
     /// </summary>
     class Bootstrap : ILibrary
     {
-        static string GetSourceDirectory(string dir)
+        private static string GetSourceDirectory(string dir)
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory());
 
@@ -35,22 +35,15 @@ namespace CppSharp
             throw new Exception("Could not find build directory: " + dir);
         }
 
-        static string GetLLVMRevision()
+        private static string GetLLVMRevision(string llvmDir)
+            => File.ReadAllText(Path.Combine(llvmDir, "LLVM-commit"));
+
+        private static string GetLLVMBuildDirectory()
         {
-            var buildDir = GetSourceDirectory("build");
-            return File.ReadAllText(Path.Combine(buildDir, "LLVM-commit"));
-        }
+            var llvmDir = Path.Combine(GetSourceDirectory("build"), "llvm");
+            var llvmRevision = GetLLVMRevision(llvmDir).Substring(0, 6);
 
-        static string GetLLVMBuildDirectory()
-        {
-            var llvmRevision = GetLLVMRevision().Substring(0, 6);
-
-            var scriptsDir = Path.Combine(GetSourceDirectory("build"), "scripts");
-            var entries = Directory.EnumerateDirectories(scriptsDir);
-
-            var llvmPath = entries.FirstOrDefault(entry => entry.Contains(llvmRevision));
-
-            return llvmPath;
+            return Directory.EnumerateDirectories(llvmDir, $"*{llvmRevision}*").FirstOrDefault();
         }
 
         public void Setup(Driver driver)
@@ -75,8 +68,8 @@ namespace CppSharp
             {
                 Path.Combine(llvmPath, "include"),
                 Path.Combine(llvmPath, "build", "include"),
-                Path.Combine(llvmPath, "build", "tools", "clang", "include"),
-                Path.Combine(llvmPath, "tools", "clang", "include")
+                Path.Combine(llvmPath, "build", "clang", "include"),
+                Path.Combine(llvmPath, "clang", "include")
             });
 
             module.Headers.AddRange(new[]
