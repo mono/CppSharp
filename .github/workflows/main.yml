@@ -45,3 +45,9 @@ jobs:
       - name: Test
         shell: bash
         run: build/test.sh -platform $PLATFORM
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: cppsharp-${{ matrix.config.os }}-${{ matrix.config.platform }}-${{ matrix.config.cc }}
+          path: bin/
