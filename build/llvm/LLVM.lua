@@ -187,34 +187,32 @@ function download_llvm()
   -- check if we already have the file downloaded
   if os.isfile(archive) then
     print("Archive " .. archive .. " already exists.")
+	return
   elseif os.isdir(pkg_name) then
     print("Directory " .. pkg_name .. " already exists.")
-  else
-    msg, code = download(base .. archive, archive, true)
-    
-    if msg ~= "OK" then
-    	if code == 404 then
-        print("Error: " .. archive .. " is unavailable.")
-        print("Please create your own LLVM package by executing the following commands:")
-        print("./build.sh clone_llvm")
-        print("./build.sh build_llvm")
-        print("./build.sh package_llvm")
-        os.exit(1)
-      end
-      
-      error(msg)
+	return
+  end
+	
+  msg, code = download(base .. archive, archive, true)
+  
+  if msg ~= "OK" then
+  	if code == 404 then
+      print("Error: " .. archive .. " is unavailable.")
+      print("Please create your own LLVM package by executing the following commands:")
+      print("./build.sh clone_llvm")
+      print("./build.sh build_llvm")
+      print("./build.sh package_llvm")
+      os.exit(1)
     end
+    
+    error(msg)
   end
 
   -- extract the package
-  if os.isdir(pkg_name) then
-  	print("Directory " .. pkg_name .. " already exists.")
+  if use_7zip then
+    extract_7z(archive, pkg_name)
   else
-  	if use_7zip then
-  		extract_7z(archive, pkg_name)
-  	else
-  		extract_tar_xz(archive, pkg_name)
-  	end
+    extract_tar_xz(archive, pkg_name)
   end
 end
 
