@@ -36,11 +36,17 @@ jobs:
 
       - name: Setup
         shell: bash
-        run: build/build.sh download_llvm -platform $PLATFORM
-          
+        run: |
+          build/build.sh generate -platform $PLATFORM
+          build/build.sh download_llvm -platform $PLATFORM
+
+      - name: Restore
+        shell: bash
+        run: build/build.sh restore -platform $PLATFORM
+
       - name: Build
         shell: bash
-        run: build/build.sh -platform $PLATFORM
+        run: build/build.sh -platform $PLATFORM -build_only
 
       - name: Test
         shell: bash
