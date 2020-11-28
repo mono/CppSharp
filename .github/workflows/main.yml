@@ -57,6 +57,6 @@ jobs:
         with:
           name: cppsharp-${{ matrix.config.os }}-${{ matrix.config.platform }}-${{ matrix.config.cc }}
           path: |
-            bin/CppSharp*
-            bin/Std-symbols*
-            bin/lib
+            bin/**/CppSharp*
+            bin/**/Std-symbols*
+            include/**/*.h
