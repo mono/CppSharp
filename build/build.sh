@@ -35,8 +35,7 @@ build()
     config=$(tr '[:upper:]' '[:lower:]' <<< ${configuration}_$platform) make -C $builddir/gmake/
   fi
 
-  find_msbuild
-  $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity
+  dotnet build $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity
 
   if [ $ci = true ]; then
     test
@@ -56,8 +55,7 @@ generate()
 
 restore()
 {
-  find_msbuild
-  $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -t:restore 
+  dotnet build $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -t:restore 
 }
 
 test()
@@ -133,15 +131,6 @@ detect_os()
   esac
 
   os=$oshost
-}
-
-find_msbuild()
-{
-  if [ -x "$(command -v MSBuild.exe)" ]; then
-    msbuild="MSBuild.exe"
-  else
-    msbuild="msbuild"
-  fi
 }
 
 cmd=$(tr '[:upper:]' '[:lower:]' <<< $1)
