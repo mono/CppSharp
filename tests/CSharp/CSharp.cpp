@@ -310,6 +310,8 @@ ForceCreationOfInterface::~ForceCreationOfInterface()
 {
 }
 
+Baz::Baz() : P(5) {}
+
 Baz::Baz(Bar::Items item)
 {
 }
@@ -368,6 +370,8 @@ AbstractProprietor::AbstractProprietor()
 AbstractProprietor::AbstractProprietor(int i)
 {
 }
+
+Proprietor::Proprietor() : _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1) {}
 
 Proprietor::Proprietor(int i) : AbstractProprietor(i)
 {
@@ -500,6 +504,9 @@ void TestDestructors::InitMarker()
 {
     Marker = 0;
 }
+
+TestDestructors::TestDestructors() { Marker = 0xf00d; }
+TestDestructors::~TestDestructors() { Marker = 0xcafe; }
 
 int TestDestructors::Marker = 0;
 
@@ -905,6 +912,20 @@ void PropertyWithIgnoredType::setIgnoredType(const IgnoredType& value)
     _ignoredType = value;
 }
 
+MI_A0::MI_A0() : F(50) {}
+int MI_A0::get() { return F; };
+
+MI_A::MI_A() {}
+void MI_A::v(int i) {}
+
+MI_B::MI_B() {}
+
+MI_C::MI_C() {}
+
+MI_A1::MI_A1() {}
+
+MI_D::MI_D() {}
+
 StructWithPrivateFields::StructWithPrivateFields(int simplePrivateField, Foo complexPrivateField)
 {
     this->simplePrivateField = simplePrivateField;
@@ -919,6 +940,14 @@ int StructWithPrivateFields::getSimplePrivateField()
 Foo StructWithPrivateFields::getComplexPrivateField()
 {
     return complexPrivateField;
+}
+
+void TestPointers::TestDoubleCharPointers(const char** names)
+{
+}
+
+void TestPointers::TestTripleCharPointers(const char*** names)
+{
 }
 
 HasVirtualDtor1::HasVirtualDtor1()
@@ -1611,6 +1640,17 @@ HasComplexArray::HasComplexArray()
 
 TestIndexedProperties::TestIndexedProperties() : field(0)
 {
+}
+
+int TestIndexedProperties::operator[](const int& key)
+{
+    return key;
+}
+
+void* TestIndexedProperties::operator[](size_t n) const
+{
+    field = n;
+    return &field;
 }
 
 void useStdStringJustAsParameter(std::string s)
