@@ -1866,3 +1866,25 @@ ConversionFunctions::operator short() { return field; }
 ConversionFunctions::operator const short*() const { return &field; }
 ConversionFunctions::operator const short&() const { return field; }
 ConversionFunctions::operator const short() const { return field; }
+
+const unsigned ClassCustomTypeAlignmentOffsets[5]
+{
+    offsetof(ClassCustomTypeAlignment, boolean),
+    offsetof(ClassCustomTypeAlignment, align16),
+    offsetof(ClassCustomTypeAlignment, align1),
+    offsetof(ClassCustomTypeAlignment, dbl),
+    offsetof(ClassCustomTypeAlignment, align8),
+};
+
+const unsigned ClassCustomObjectAlignmentOffsets[2] { 
+    offsetof(ClassCustomObjectAlignment, boolean),
+    offsetof(ClassCustomObjectAlignment, charAligned8),
+};
+
+const unsigned ClassMicrosoftObjectAlignmentOffsets[4]
+{
+    offsetof(ClassMicrosoftObjectAlignment, u8),
+    offsetof(ClassMicrosoftObjectAlignment, dbl),
+    offsetof(ClassMicrosoftObjectAlignment, i16),
+    offsetof(ClassMicrosoftObjectAlignment, boolean),
+};

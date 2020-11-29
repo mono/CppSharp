@@ -1482,23 +1482,10 @@ struct DLL_API ClassCustomTypeAlignment
     Align8 align8;
 };
 
-static constexpr const int ClassCustomTypeAlignmentOffsets[] { 
-    offsetof(ClassCustomTypeAlignment, boolean),
-    offsetof(ClassCustomTypeAlignment, align16),
-    offsetof(ClassCustomTypeAlignment, align1),
-    offsetof(ClassCustomTypeAlignment, dbl),
-    offsetof(ClassCustomTypeAlignment, align8),
-};
-
-struct DLL_API ClassCustomObjectAligment
+struct DLL_API ClassCustomObjectAlignment
 {
     bool boolean;
     alignas(alignof(ClassCustomTypeAlignment)) char charAligned8;
-};
-
-static constexpr const int ClassCustomObjectAligmentOffsets[] { 
-    offsetof(ClassCustomObjectAligment, boolean),
-    offsetof(ClassCustomObjectAligment, charAligned8),
 };
 
 struct DLL_API ClassMicrosoftObjectAlignmentBase
@@ -1514,13 +1501,9 @@ struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
     bool boolean;
 };
 
-static constexpr const int ClassMicrosoftObjectAlignmentOffsets[]
-{
-    offsetof(ClassMicrosoftObjectAlignment, u8),
-    offsetof(ClassMicrosoftObjectAlignment, dbl),
-    offsetof(ClassMicrosoftObjectAlignment, i16),
-    offsetof(ClassMicrosoftObjectAlignment, boolean),
-};
+DLL_API extern const unsigned ClassCustomTypeAlignmentOffsets[5];
+DLL_API extern const unsigned ClassCustomObjectAlignmentOffsets[2];
+DLL_API extern const unsigned ClassMicrosoftObjectAlignmentOffsets[4];
 
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
