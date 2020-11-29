@@ -115,7 +115,6 @@ namespace CppSharp.Passes
             var method = function as Method;
             bool isInImplicitSpecialization;
             var declarationContext = function.Namespace;
-            var @class = declarationContext as Class;
             do
             {
                 isInImplicitSpecialization =

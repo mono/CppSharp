@@ -158,7 +158,7 @@ namespace CppSharp.Passes
             bool needSubclass = method.Access == AccessSpecifier.Protected || @class.IsAbstract;
             if (needSubclass)
             {
-                Write($"extern \"C\" void {wrapper}({signature}) ");
+                Write($"extern \"C\" {GetExporting()}void {wrapper}({signature}) ");
                 WriteLine($"{{ ::new ({Helpers.InstanceField}) {wrapper}{method.Namespace.Name}({@params}); }}");
             }
             else
