@@ -1099,7 +1099,7 @@ public:
     static const void* VoidPtrArray[2];
 };
 
-static constexpr double ConstexprCreateDoubleValue(double value) {
+DLL_API constexpr double ConstexprCreateDoubleValue(double value) {
     return value;
 }
 
@@ -1146,10 +1146,10 @@ public:
     wchar_t* unicode;
 };
 
-void decltypeFunctionPointer();
+DLL_API void decltypeFunctionPointer();
 
 using funcPtr = decltype(&decltypeFunctionPointer);
-void usesDecltypeFunctionPointer(funcPtr func);
+DLL_API void usesDecltypeFunctionPointer(funcPtr func);
 
 class DLL_API PrimaryBaseWithAbstractWithDefaultArg
 {
@@ -1315,7 +1315,7 @@ public:
 
 extern const ComplexArrayElement ArrayOfVariableSize[];
 
-void useStdStringJustAsParameter(std::string s);
+DLL_API void useStdStringJustAsParameter(std::string s);
 
 typedef int (typedefedFuncPtr)(Foo* a, Bar b);
 int DLL_API funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func);

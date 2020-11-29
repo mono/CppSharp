@@ -1308,7 +1308,7 @@ public:
     virtual bool virtualFunctionWithBoolParamAndReturnsBool(bool testBool);
 };
 
-class HasProtectedCtorWithProtectedParam
+class DLL_API HasProtectedCtorWithProtectedParam
 {
 protected:
     enum ProtectedEnum

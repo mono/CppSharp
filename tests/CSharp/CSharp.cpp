@@ -1452,6 +1452,10 @@ TestString::TestString() : unicodeConst(L"ქართული ენა"), uni
 {
 }
 
+void decltypeFunctionPointer() {}
+
+void usesDecltypeFunctionPointer(funcPtr func) {}
+
 TestString::~TestString()
 {
 }

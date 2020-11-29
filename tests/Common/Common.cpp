@@ -1284,6 +1284,10 @@ bool HasVirtualFunctionWithBoolParams::virtualFunctionWithBoolParamAndReturnsBoo
     return testBool;
 }
 
+HasProtectedCtorWithProtectedParam::HasProtectedCtorWithProtectedParam(ProtectedEnum protectedParam)
+{
+}
+
 SecondaryBaseWithIgnoredVirtualMethod::SecondaryBaseWithIgnoredVirtualMethod()
 {
 }

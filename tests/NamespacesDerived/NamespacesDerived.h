@@ -5,7 +5,7 @@
 // Test whether qualified names turn out right.
 namespace OverlappingNamespace
 {
-    class InDerivedLib
+    class DLL_API InDerivedLib
     {
     public:
         InDerivedLib();
