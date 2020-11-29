@@ -59,4 +59,5 @@ jobs:
           path: |
             bin/**/CppSharp*
             bin/**/Std-symbols*
+            bin/**/lib/**
             include/**/*.h
