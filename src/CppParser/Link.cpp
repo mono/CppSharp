@@ -79,7 +79,9 @@ void Parser::LinkMSVC(const LinkerOptions* LinkerOptions,
         args.push_back(LibraryPath.data());
 
     args.push_back("-dll");
+    args.push_back("-noentry");
     args.push_back("libcmt.lib");
+    args.push_back("libucrt.lib");
 
     std::vector<std::string> Libraries;
     for (const auto& Library : LinkerOptions->Libraries)
@@ -92,6 +94,11 @@ void Parser::LinkMSVC(const LinkerOptions* LinkerOptions,
     sys::path::append(Output, Stem + ".dll");
     std::string Out("-out:" + std::string(Output));
     args.push_back(Out.data());
+
+    SmallString<1024> Outputsees(Dir);
+    sys::path::append(Outputsees, Stem + ".lib");
+    std::string Outsees("-implib:" + std::string(Outputsees));
+    args.push_back(Outsees.data());
 
     lld::coff::link(args, false, outs(), errs());
 #endif

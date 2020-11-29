@@ -125,6 +125,8 @@ clone_llvm()
 
 build_llvm()
 {
+  rm -rf "$builddir/../Directory.Build.props"
+  rm -rf "$builddir/../Directory.Packages.props"
   "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" build_llvm --os=$os --arch=$platform --configuration=$configuration
 }
 

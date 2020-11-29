@@ -100,8 +100,6 @@ static CppAbi GetClassLayoutAbi(clang::TargetCXXABI::Kind abi)
         return CppAbi::ARM;
     case clang::TargetCXXABI::iOS:
         return CppAbi::iOS;
-    case clang::TargetCXXABI::iOS64:
-        return CppAbi::iOS64;
     default:
         llvm_unreachable("Unsupported C++ ABI kind");
     }
@@ -229,8 +227,6 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
         return TargetCXXABI::GenericARM;
     case CppSharp::CppParser::AST::CppAbi::iOS:
         return TargetCXXABI::iOS;
-    case CppSharp::CppParser::AST::CppAbi::iOS64:
-        return TargetCXXABI::iOS64;
     }
 
     llvm_unreachable("Unsupported C++ ABI.");
@@ -3710,7 +3706,7 @@ AST::ExpressionObsolete* Parser::WalkVariableInitializerExpression(const clang::
       return WalkExpressionObsolete(Expr);
 
     clang::Expr::EvalResult result;
-    if (Expr->EvaluateAsConstantExpr(result, clang::Expr::ConstExprUsage::EvaluateForCodeGen, c->getASTContext(), false))
+    if (Expr->EvaluateAsConstantExpr(result, c->getASTContext()))
     {
         std::string s;
         llvm::raw_string_ostream out(s);
@@ -4423,9 +4419,9 @@ static ArchType ConvertArchType(unsigned int archType)
 }
 
 template<class ELFT>
-static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
+static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>& ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
-    ELFDumper<ELFT> ELFDumper(ELFFile);
+    ELFDumper<ELFT> ELFDumper(&ELFFile);
     for (const auto& Dependency : ELFDumper.getNeededLibraries())
         NativeLib->Dependencies.push_back(Dependency.str());
 }

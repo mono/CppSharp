@@ -2074,7 +2074,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->typeAsWritten = GetQualifiedType(S->getTypeAsWritten());
         _S->isListInitialization = S->isListInitialization();
-        _S->arg_size = S->arg_size();
+        _S->arg_size = S->getNumArgs();
         for (auto _E : S->arguments())
         {
             auto _ES = WalkExpression(_E);

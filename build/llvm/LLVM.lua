@@ -260,7 +260,6 @@ function cmake(gen, conf, builddir, options)
  		.. ' -DLLVM_TOOL_DSYMUTIL_BUILD=false'
  		.. ' -DLLVM_TOOL_GOLD_BUILD=false'
  		.. ' -DLLVM_TOOL_LLC_BUILD=false'
- 		.. ' -DLLVM_TOOL_LLD_BUILD=false'
  		.. ' -DLLVM_TOOL_LLDB_BUILD=false'
  		.. ' -DLLVM_TOOL_LLGO_BUILD=false'
  		.. ' -DLLVM_TOOL_LLI_BUILD=false'

@@ -53,6 +53,11 @@ jobs:
         shell: bash
         run: build/build.sh clone_llvm
         working-directory: C:\CppSharp
+
+      - name: Patch LLD
+        shell: powershell
+        run: build/lld.ps1
+        working-directory: C:\CppSharp
           
       - name: Build LLVM
         shell: bash
