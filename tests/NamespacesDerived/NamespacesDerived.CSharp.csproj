@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <EnableGeneratorCompileItems>false</EnableGeneratorCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(GenDir)NamespacesDerived\NamespacesDerived.cs" />
+    <Compile Include="$(GenDir)NamespacesDerived\Std.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\NamespacesBase\NamespacesBase.CSharp.csproj" />
+  </ItemGroup>
+</Project>

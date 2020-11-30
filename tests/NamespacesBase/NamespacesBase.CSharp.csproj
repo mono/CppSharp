@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TestGeneratorName>NamespacesDerived.Gen</TestGeneratorName>
+    <TestGeneratorProjectDir>$(MSBuildProjectDirectory)\..\NamespacesDerived\</TestGeneratorProjectDir>
+    <EnableGeneratorCompileItems>false</EnableGeneratorCompileItems>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="$(GenDir)NamespacesDerived\NamespacesBase.cs" />
+  </ItemGroup>
+</Project>

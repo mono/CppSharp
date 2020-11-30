@@ -8,10 +8,9 @@ include "Helpers.lua"
 include "LLVM.lua"
 
 workspace "CppSharp"
-
   configurations { _OPTIONS["configuration"] }
   platforms { target_architecture() }
-  dotnetframework "netcoreapp3.1"
+  dotnetframework (targetframework)
   enabledefaultcompileitems "true"
   characterset "Unicode"
   symbols "On"
@@ -34,6 +33,11 @@ workspace "CppSharp"
       workspacefiles(file)
     end
   end
+
+  workspacefiles(path.join(builddir, "premake5.lua"))
+  workspacefiles(path.join(builddir, "*.sh"))
+  workspacefiles(path.join(rootdir, "tests/Test*.props"))
+  WriteConfigForMSBuild()
 
   group "Libraries"
     if EnableNativeProjects() then

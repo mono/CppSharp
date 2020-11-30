@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup>
+    <EnableGeneratorCompileItems>true</EnableGeneratorCompileItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <IsTestBindings>false</IsTestBindings>
+    <IsTestGenerator>false</IsTestGenerator>
+    <IsTest>false</IsTest>
+    <IsTest Condition="$(MSBuildProjectName.Contains('.Tests'))">true</IsTest>
+    <IsTestGenerator Condition="$(MSBuildProjectName.EndsWith('.Gen'))">true</IsTestGenerator>
+    <IsTestBindings Condition="!$(IsTest) AND ($(MSBuildProjectName.EndsWith('.CSharp')) OR $(MSBuildProjectName.EndsWith('.CLI')))">true</IsTestBindings>
+    <TestName>$(MSBuildProjectName.Substring(0, $(MSBuildProjectName.IndexOf('.'))))</TestName>
+    <TestGeneratorName>$(TestName).Gen</TestGeneratorName>
+    <OutputType Condition="$(IsTestGenerator)">Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="premake4.lua" />
+  </ItemGroup>
+</Project>

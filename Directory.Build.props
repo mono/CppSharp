@@ -1,10 +1,36 @@
 <Project>
+  <Import Project="build/config.props" />
+
   <PropertyGroup>
     <RootDir>$(MSBuildThisFileDirectory)</RootDir>
     <Platforms>x86;x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <BaseIntermediateOutputPath>$(RootDir)build\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <TargetDir Condition="$(Configuration) != ''">$(RootDir)bin\$(Configuration)_$(Platform)</TargetDir>
+    <BuildDir>$(RootDir)build\</BuildDir>
+    <ObjDir>$(BuildDir)obj\</ObjDir>
+    <GenDir>$(BuildDir)gen\</GenDir>
+    <SrcDir>$(RootDir)src\</SrcDir>
+    <BaseIntermediateOutputPath>$(ObjDir)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(RootDir)bin\</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)_$(PlatformTarget)\</OutputPath>
+    <ActionDir>$(BuildDir)$(PremakeAction)\</ActionDir>
+    <NativeProjectsDir>$(ActionDir)projects\</NativeProjectsDir>
+    <TargetDir>$(OutputPath)</TargetDir>
     <LangVersion>7.3</LangVersion>
+    <WarningLevel>4</WarningLevel>
+    <DotNetCmd>dotnet</DotNetCmd>
+    <GeneratorFileExtension>dll</GeneratorFileExtension>
+    <DotNetCmd Condition="'$(PlatformTarget)' == 'x86' AND Exists('$(MSBuildProgramFiles32)\dotnet\dotnet.exe')">"$(MSBuildProgramFiles32)\dotnet\dotnet.exe"</DotNetCmd>
+    <DotNetCmd Condition="'$(PlatformTarget)' == 'x64' AND Exists('$(ProgramW6432)\dotnet\dotnet.exe')">"$(ProgramW6432)\dotnet\dotnet.exe"</DotNetCmd>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CPPSHARP_RELEASE)' != 'true'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(DotNetCmd)' == 'dotnet' AND $(IsWindows)">
+    <GeneratorFileExtension>exe</GeneratorFileExtension>
+    <DotNetCmd></DotNetCmd>
   </PropertyGroup>
 </Project>
