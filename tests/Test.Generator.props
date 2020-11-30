@@ -1,0 +1,31 @@
+<Project>
+  <PropertyGroup>
+    <GeneratorOutput>$(BaseIntermediateOutputPath)$(TestName).Bindings.timestamp</GeneratorOutput>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="$(TestName).Gen.cs" />
+    <Compile Include="$(SrcDir)Generator.Tests\GeneratorTest.cs" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(NativeProjectsDir)$(TestName).Native.vcxproj" ReferenceOutputAssembly="false" Condition="$(IsWindows)" />
+    <ProjectReference Include="$(SrcDir)Generator\CppSharp.Generator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <GeneratorInputs Include="*.h" />
+    <GeneratorInputs Include="$(TestName).Gen.cs" />
+    <UpToDateCheckInput Include="@(GeneratorInputs)" Set="Bindings" />
+    <UpToDateCheckBuilt Include="$(GeneratorOutput)" Set="Bindings" />
+  </ItemGroup>
+
+  <Target Name="GenerateBindings" Inputs="@(GeneratorInputs)" Outputs="$(GeneratorOutput)" AfterTargets="AfterBuild">
+    <Exec command='$(DotNetCmd) "$(OutputPath)$(TestGeneratorName).$(GeneratorFileExtension)"' />
+    <Touch Files="$(GeneratorOutput)" AlwaysCreate="true" />
+
+    <ItemGroup>
+      <FileWrites Include="$(GeneratorOutput)"/>
+    </ItemGroup>
+  </Target>
+</Project>

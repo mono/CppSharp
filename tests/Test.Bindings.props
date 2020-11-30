@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableGeneratorCompileItems>true</EnableGeneratorCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <GeneratedCSharpFiles Include="$(GenDir)$(TestName)\*.cs"></GeneratedCSharpFiles>
+    <Compile Include="@(GeneratedCSharpFiles)" Condition="$(EnableGeneratorCompileItems)"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(TestGeneratorProjectDir)$(TestGeneratorName).csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(SrcDir)Runtime\CppSharp.Runtime.csproj" />
+  </ItemGroup>
+
+  <Target Name="AddGeneratedCompileItems" BeforeTargets="BeforeCompile">
+    <ItemGroup Condition="$(EnableGeneratorCompileItems)">
+      <Compile Remove="@(GeneratedCSharpFiles)" />
+      <Compile Include="$(GenDir)$(TestName)\*.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

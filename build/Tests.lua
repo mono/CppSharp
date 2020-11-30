@@ -40,32 +40,15 @@ function SetupManagedTestProject()
   files { "*.lua" }
 end
 
-function SetupTestGeneratorProject(name, depends)
-  if not EnabledManagedProjects() then
-    return
-  end
-  project(name .. ".Gen")
-    SetupManagedTestProject()
-    kind "ConsoleApp"
-    enabledefaultnoneitems "false"
-
-    files { name .. ".cs" }
-    dependson { name .. ".Native" }
-    links { "CppSharp.Generator.Tests" }
-
-    if depends ~= nil then
-      links { depends .. ".Gen" }
-    end
-
-    local command = os.ishost("windows") and "type nul >" or "touch"
-    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cs")) }
-    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cpp")) }
+function SetupExternalManagedTestProject(name)
+  externalproject (name)
+  SetupManagedTestProject()
 end
 
-function SetupTestGeneratorBuildEvent(name)
-  local cmd = os.ishost("windows") and "" or "dotnet "
-  local ext = os.ishost("windows") and "exe" or "dll"
-  prebuildcommands { cmd .. SafePath(path.join("%{cfg.buildtarget.directory}", name .. ".Gen." .. ext)) }
+function SetupTestGeneratorProject(name, depends)
+  if EnabledManagedProjects() then
+    SetupExternalManagedTestProject(name .. ".Gen")
+  end
 end
 
 function SetupTestNativeProject(name, depends)
@@ -86,10 +69,6 @@ function SetupTestNativeProject(name, depends)
     if depends ~= nil then
       links { depends .. ".Native" }
     end
-
-    local command = os.ishost("windows") and "type nul >" or "touch"
-    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cs")) }
-    postbuildcommands { command .. " " .. SafePath(path.join(objsdir, name .. ".Native", "timestamp.cpp")) }
 end
 
 function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
@@ -103,35 +82,9 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
       nm = name
       str = "Std"
     end
-  project(name .. ".CSharp")
-    SetupManagedTestProject()
-
-    dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
-    SetupTestGeneratorBuildEvent(name)
-    enabledefaultnoneitems "false"
-
-    files
-    {
-      path.join(gendir, name, nm .. ".cs"),
-      path.join(gendir, name, str .. ".cs"),
-      path.join(objsdir, name .. ".Native", "timestamp.cs")
-    }
-
-    links { "CppSharp.Runtime" }
-
-    if depends ~= nil then
-      links { depends .. ".CSharp" }
-    end
-
-  project(name .. ".Tests.CSharp")
-    SetupManagedTestProject()
-
-    enabledefaultnoneitems "false"
-    files { name .. ".Tests.cs" }
-
-    links { name .. ".CSharp", "CppSharp.Generator.Tests", "CppSharp.Runtime" }
-    nuget { "Microsoft.NET.Test.Sdk:16.8.0" }
-    dependson { name .. ".Native" }
+  
+  SetupExternalManagedTestProject(name .. ".CSharp")
+  SetupExternalManagedTestProject(name .. ".Tests.CSharp")
 end
 
 function SetupTestProjectsCLI(name, extraFiles, suffix)
@@ -142,14 +95,11 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
   project(name .. ".CLI")
     SetupNativeProject()
 
-    enabledefaultcompileitems "false"
-    enabledefaultnoneitems "false"
     kind "SharedLib"
     language "C++"
     clr "NetCore"
 
-    dependson { name .. ".Gen", name .. ".Native", "CppSharp.Generator" }
-    SetupTestGeneratorBuildEvent(name)
+    dependson { name .. ".Gen" }
 
     if (suffix ~= nil) then 
       nm = name .. suffix
@@ -174,16 +124,9 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
 
     includedirs { path.join(testsdir, name), incdir }
     links { name .. ".Native" }    
-    files { path.join(objsdir, name .. ".Native", "timestamp.cpp") }
+    files { path.join(objsdir, name .. ".Native") }
 
-  project(name .. ".Tests.CLI")
-    SetupManagedTestProject()
-    enabledefaultnoneitems "false"
-    files { name .. ".Tests.cs" }
-
-    links { name .. ".CLI", "CppSharp.Generator.Tests" }
-    dependson { name .. ".Native" }
-    nuget { "Microsoft.NET.Test.Sdk:16.8.0" }
+  SetupExternalManagedTestProject(name .. ".Tests.CLI")
 end
 
 function IncludeExamples()

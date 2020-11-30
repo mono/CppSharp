@@ -1,6 +1,1 @@
-project "CppSharp.AST"
-
-  kind  "SharedLib"
-  language "C#"
-
-  SetupManagedProject()
+SetupExternalManagedProject("CppSharp.AST")

@@ -56,6 +56,7 @@ msvc_cpp_defines = { }
 default_gcc_version = "9.0.0"
 generate_build_config = true
 premake.path = premake.path .. ";" .. path.join(builddir, "modules")
+targetframework = "netcoreapp3.1"
 
 function string.starts(str, start)
    if str == nil then return end
@@ -73,6 +74,10 @@ end
 function SetupNativeProject()
   location (path.join(actionbuilddir, "projects"))
   files { "*.lua" }
+  
+  if os.getenv("CPPSHARP_RELEASE") == "true" then
+    symbols "off"
+  end
 
   filter { "configurations:Debug" }
     defines { "DEBUG" }
@@ -118,9 +123,15 @@ function SetupNativeProject()
 end
 
 function SetupManagedProject()
+  kind "SharedLib"
   language "C#"
   location "."
   filter {}
+end
+
+function SetupExternalManagedProject(name)
+  externalproject (name)
+    SetupManagedProject()
 end
 
 function IncludeDir(dir)
@@ -229,4 +240,31 @@ function AddPlatformSpecificFiles(folder, filename)
   else
     print "Unknown architecture"
   end
+end
+
+function WriteConfigForMSBuild()
+  local file = io.open("config.props", "w+")
+  function writeProperty(name, value)
+    file:write("    <" .. name .. ">" .. (value ~= nil and value or "") .. "</" .. name .. ">\n")
+  end
+  function writeBooleanProperty(name, value)
+    writeProperty(name, value and "true" or "false")
+  end
+
+  file:write("<!-- GENERATED FILE -->\n")
+  file:write("<Project>\n")
+  file:write("  <PropertyGroup>\n")
+  writeProperty("PlatformTarget", target_architecture())
+  writeProperty("TargetFramework", targetframework)
+  writeProperty("Configuration", _OPTIONS["configuration"])
+  writeBooleanProperty("IsWindows", os.istarget("windows"))
+  writeBooleanProperty("IsLinux", os.istarget("linux"))
+  writeBooleanProperty("IsMacOSX", os.istarget("macosx")) 
+  writeBooleanProperty("CI", os.getenv("CI") == "true")
+  writeBooleanProperty("GenerateBuildConfig", generate_build_config == true)
+  writeBooleanProperty("UseCXX11ABI", UseCxx11ABI())
+  writeProperty("PremakeAction", _ACTION) 
+  file:write("  </PropertyGroup>\n")
+  file:write("</Project>")
+  file:close()
 end

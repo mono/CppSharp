@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(TestName).Tests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SrcDir)Generator.Tests\CppSharp.Generator.Tests.csproj" />
+    <ProjectReference Include="$(TestName).CSharp.csproj" Condition="$(MSBuildProjectName.EndsWith('CSharp'))" />
+    <ProjectReference Include="$(NativeProjectsDir)$(TestName).Native.vcxproj" Condition="$(IsWindows)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(NativeProjectsDir)$(TestName).CLI.vcxproj" Condition="$(MSBuildProjectName.EndsWith('CLI')) AND $(IsWindows)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+  </ItemGroup>
+</Project>

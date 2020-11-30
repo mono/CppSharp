@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformParserFolder Condition="$(IsWindows) AND $(PlatformTarget) == x64">x86_64-pc-win32-msvc</PlatformParserFolder>
+    <PlatformParserFolder Condition="$(IsLinux) AND $(PlatformTarget) == x64 AND $(UseCXX11ABI)">x86_64-linux-gnu-cxx11abi</PlatformParserFolder>
+    <PlatformParserFolder Condition="$(IsLinux) AND $(PlatformTarget) == x64 AND !$(UseCXX11ABI)">x86_64-linux-gnu</PlatformParserFolder>
+    <PlatformParserFolder Condition="$(IsMacOSX) AND $(PlatformTarget) == x64">x86_64-apple-darwin12.4.0</PlatformParserFolder>
+    <PlatformParserFolder Condition="$(IsWindows) AND $(PlatformTarget) == x86">i686-pc-win32-msvc</PlatformParserFolder>
+    <PlatformParserFolder Condition="$(IsMacOSX) AND $(PlatformTarget) == x86">i686-apple-darwin12.4.0</PlatformParserFolder>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="$(PlatformParserFolder)\*.cs" />  
+    <None Include="$(PlatformParserFolder)\*.cpp" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Runtime\CppSharp.Runtime.csproj" />
+    <ProjectReference Include="$(NativeProjectsDir)CppSharp.CppParser.vcxproj" ReferenceOutputAssembly="false" Condition="$(IsWindows)" />
+  </ItemGroup>
+</Project>

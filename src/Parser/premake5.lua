@@ -15,23 +15,4 @@ if generate_build_config == true and _ACTION then
   GenerateBuildConfig()
 end
 
-project "CppSharp.Parser"
-
-  SetupManagedProject()
-
-  kind "SharedLib"
-  language "C#"
-  clr "Unsafe"
-
-  if generate_build_config == true then
-    files { buildconfig }
-    removecompilefiles { "BuildConfig.cs" }
-  end
-
-  links
-  {
-    "CppSharp",
-    "CppSharp.AST",
-    "CppSharp.Runtime",
-    CppSharpParserBindings
-  }
+SetupExternalManagedProject("CppSharp.Parser")

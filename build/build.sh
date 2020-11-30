@@ -140,7 +140,7 @@ find_msbuild()
   if [ -x "$(command -v MSBuild.exe)" ]; then
     msbuild="MSBuild.exe"
   else
-    msbuild="msbuild"
+    msbuild="dotnet msbuild"
   fi
 }
 

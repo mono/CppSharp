@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <EmbeddedResource Include="Passes\verbs.txt" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Parser\CppSharp.Parser.csproj" />
+    <ProjectReference Include="$(NativeProjectsDir)Std-symbols.vcxproj" ReferenceOutputAssembly="false" Condition="$(IsWindows)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="4.7.0" PrivateAssets="All"/>
+  </ItemGroup>
+</Project>

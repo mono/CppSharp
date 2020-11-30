@@ -3,17 +3,7 @@ function SetupWrapper(name)
     return
   end
 
-  project(name .. ".CSharp")
-    SetupManagedTestProject()
-
-    dependson { name .. ".Native", "NamespacesDerived.Gen" }
-    links { "CppSharp.Runtime" }
-    SetupTestGeneratorBuildEvent("NamespacesDerived")
-
-    files
-    {
-      path.join(gendir, "NamespacesDerived", name .. ".cs"),
-    }
+  SetupExternalManagedTestProject(name .. ".CSharp")
 end
 
 group "Tests/Namespaces"
