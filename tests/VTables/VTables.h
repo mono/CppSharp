@@ -9,8 +9,6 @@ public:
 
     };
 
-    Foo();
-    ~Foo();
     virtual int vfoo();
     virtual int vbar();
 
@@ -37,6 +35,5 @@ public:
 class DLL_API DerivedClassVirtual : public BaseClassVirtual
 {
 public:
-    DerivedClassVirtual();
     virtual int retInt() override;
 };

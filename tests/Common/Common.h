@@ -14,39 +14,26 @@ public:
     int i1;
     int i2;
     bool b;
-    TestPacking();
 };
 
 #pragma pack(1)
 class DLL_API TestPacking1: public TestPacking
 {
-public:
-    TestPacking1();
-    ~TestPacking1();
 };
 
 #pragma pack(2)
 class DLL_API TestPacking2: public TestPacking
 {
-public:
-    TestPacking2();
-    ~TestPacking2();
 };
 
 #pragma pack(4)
 class DLL_API TestPacking4: public TestPacking
 {
-public:
-    TestPacking4();
-    ~TestPacking4();
 };
 
 #pragma pack(8)
 class DLL_API TestPacking8: public TestPacking
 {
-public:
-    TestPacking8();
-    ~TestPacking8();
 };
 #pragma pack()
 
@@ -76,7 +63,7 @@ public:
         EmptyEnum2
     };
 
-    class NestedAbstract
+    class DLL_API NestedAbstract
     {
     public:
         virtual ~NestedAbstract();
@@ -168,7 +155,6 @@ struct DLL_API Bar2 : public Bar
 
     struct DLL_API Nested
     {
-        Nested();
         operator int() const;
     };
 
@@ -605,7 +591,6 @@ private:
 class DLL_API HasOverridenSetter : public TestProperties
 {
 public:
-    HasOverridenSetter();
     void setVirtual(bool value) override;
 
     int virtualSetterReturnsBoolean() override;
@@ -660,7 +645,6 @@ public:
 // Tests variables
 struct DLL_API TestVariables
 {
-    TestVariables();
     static int VALUE;
     void SetValue(int value = VALUE);
 };
@@ -668,7 +652,6 @@ struct DLL_API TestVariables
 typedef const wchar_t * LPCWSTR;
 struct DLL_API TestWideStrings
 {
-    TestWideStrings();
     LPCWSTR GetWidePointer();
     LPCWSTR GetWideNullPointer();
 };
@@ -680,7 +663,6 @@ typedef void (*VoidPtrRetFunctionTypedef) ();
 class DLL_API TestFixedArrays
 {
 public:
-    TestFixedArrays();
     VoidPtrRetFunctionTypedef Array[10];
 #ifndef _MSC_VER
     TestWideStrings ZeroSizedClassArray[0];
@@ -700,7 +682,6 @@ public:
 class DLL_API NonPrimitiveType
 {
 public:
-    NonPrimitiveType();
     int GetFoo();
 
     int foo;
@@ -709,13 +690,11 @@ public:
 class DLL_API TestFixedNonPrimitiveArrays
 {
 public:
-    TestFixedNonPrimitiveArrays();
     NonPrimitiveType NonPrimitiveTypeArray[3];
 };
 
 struct DLL_API TestGetterSetterToProperties
 {
-    TestGetterSetterToProperties();
     int getWidth();
     int getHeight();
 };
@@ -784,8 +763,6 @@ DLL_API void va_listFunction(va_list v);
 struct DLL_API TestNestedTypes
 {
 public:
-    TestNestedTypes();
-    ~TestNestedTypes();
     union as_types
     {
         int as_int;
@@ -806,8 +783,6 @@ public:
 class DLL_API HasStdString
 {
 public:
-    HasStdString();
-    ~HasStdString();
     std::string testStdString(const std::string& s);
     std::string testStdStringPassedByValue(std::string s);
     std::string s;
@@ -909,7 +884,6 @@ protected:
 class DLL_API ChangedAccessOfInheritedProperty : public HasVirtualProperty
 {
 public:
-    ChangedAccessOfInheritedProperty();
     int getProtectedProperty();
     void setProtectedProperty(int value);
 protected:
@@ -924,7 +898,6 @@ class DLL_API Empty
 class DLL_API ReturnsEmpty
 {
 public:
-    ReturnsEmpty();
     Empty getEmpty();
 };
 
@@ -944,7 +917,6 @@ public:
 class DLL_API HasVirtualReturningHasProblematicFields
 {
 public:
-    HasVirtualReturningHasProblematicFields();
     virtual HasProblematicFields returnsProblematicFields();
 };
 
@@ -966,27 +938,22 @@ public:
 class DLL_API DerivedClassAbstractVirtual : public DerivedClassVirtual
 {
 public:
-    ~DerivedClassAbstractVirtual();
     virtual int retInt(const Foo& foo) = 0;
 };
 
 class DLL_API DerivedClassOverrideAbstractVirtual : public DerivedClassAbstractVirtual
 {
 public:
-    DerivedClassOverrideAbstractVirtual();
     virtual int retInt(const Foo& foo);
 };
 
 class DLL_API BufferForVirtualFunction : public BaseClassVirtual
 {
-public:
-    BufferForVirtualFunction();
 };
 
 class DLL_API OverridesNonDirectVirtual : public BufferForVirtualFunction
 {
 public:
-    OverridesNonDirectVirtual();
     virtual int retInt(const Foo& foo);
 };
 
@@ -1064,7 +1031,6 @@ AbstractTemplate<T>::AbstractTemplate()
 class DLL_API AbstractWithVirtualDtor
 {
 public:
-    AbstractWithVirtualDtor();
     virtual ~AbstractWithVirtualDtor();
     virtual void abstract() = 0;
 };
@@ -1072,7 +1038,6 @@ public:
 class DLL_API NonTrivialDtorBase
 {
 public:
-    NonTrivialDtorBase();
     ~NonTrivialDtorBase();
 };
 
@@ -1127,8 +1092,6 @@ int FunctionTemplateWithDependentTypeDefaultExpr(size_t size = sizeof(T)) {
 
 class DLL_API DerivedFromTemplateInstantiationWithVirtual : public TemplateWithVirtual<int>
 {
-public:
-    DerivedFromTemplateInstantiationWithVirtual();
 };
 
 typedef union
@@ -1140,8 +1103,6 @@ int DLL_API func_union(union_t u);
 
 class DLL_API HasProtectedEnum
 {
-public:
-    HasProtectedEnum();
 protected:
     enum class ProtectedEnum
     {
@@ -1191,7 +1152,6 @@ private:
 class DLL_API HasAbstractOperator
 {
 public:
-    ~HasAbstractOperator();
     virtual bool operator==(const HasAbstractOperator& other) = 0;
 };
 
@@ -1251,8 +1211,6 @@ enum
 class DLL_API HasOverloadsWithDifferentPointerKindsToSameType
 {
 public:
-    HasOverloadsWithDifferentPointerKindsToSameType();
-    ~HasOverloadsWithDifferentPointerKindsToSameType();
     void overload(int& i);
     void overload(int&& i);
     void overload(const int& i);
@@ -1278,7 +1236,6 @@ public:
     HasCopyAndMoveConstructor(int value);
     HasCopyAndMoveConstructor(const HasCopyAndMoveConstructor& other);
     HasCopyAndMoveConstructor(HasCopyAndMoveConstructor&& other);
-    ~HasCopyAndMoveConstructor();
     int getField();
 private:
     int field;
@@ -1287,8 +1244,6 @@ private:
 class DLL_API HasVirtualFunctionsWithStringParams
 {
 public:
-    HasVirtualFunctionsWithStringParams();
-    ~HasVirtualFunctionsWithStringParams();
     virtual void PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2) = 0;
     virtual int VirtualFunctionWithStringParam(std::string testString);
 };
@@ -1296,16 +1251,12 @@ public:
 class DLL_API ImplementsVirtualFunctionsWithStringParams : public HasVirtualFunctionsWithStringParams
 {
 public:
-    ImplementsVirtualFunctionsWithStringParams();
-    ~ImplementsVirtualFunctionsWithStringParams();
     virtual void PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2);
 };
 
 class DLL_API HasVirtualFunctionWithBoolParams
 {
 public:
-    HasVirtualFunctionWithBoolParams();
-    ~HasVirtualFunctionWithBoolParams();
     virtual bool virtualFunctionWithBoolParamAndReturnsBool(bool testBool);
 };
 
@@ -1322,7 +1273,7 @@ protected:
 class DLL_API SecondaryBaseWithIgnoredVirtualMethod
 {
 public:
-    SecondaryBaseWithIgnoredVirtualMethod();
+    // HACK: do not delete: work around https://github.com/mono/CppSharp/issues/1534
     ~SecondaryBaseWithIgnoredVirtualMethod();
     virtual void generated();
     virtual void ignored(const IgnoredType& ignoredParam);
@@ -1331,7 +1282,7 @@ public:
 class DLL_API DerivedFromSecondaryBaseWithIgnoredVirtualMethod : public Foo, public SecondaryBaseWithIgnoredVirtualMethod
 {
 public:
-    DerivedFromSecondaryBaseWithIgnoredVirtualMethod();
+    // HACK: do not delete: work around https://github.com/mono/CppSharp/issues/1534
     ~DerivedFromSecondaryBaseWithIgnoredVirtualMethod();
     void generated();
     void ignored(const IgnoredType& ignoredParam);
@@ -1347,8 +1298,6 @@ public:
 class DLL_API HasPropertyNamedAsParent
 {
 public:
-    HasPropertyNamedAsParent();
-    ~HasPropertyNamedAsParent();
     int hasPropertyNamedAsParent;
 };
 
@@ -1539,7 +1488,6 @@ QScopedPointer<QObjectData> d_ptr;
 
 struct DLL_API PointerToTypedefPointerTest
 {
-    PointerToTypedefPointerTest();
     int val;
 };
 typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;

@@ -24,7 +24,6 @@ public:
     Foo(char16_t ch);
     Foo(wchar_t ch);
     Foo(const Foo& other);
-    ~Foo();
     int method();
     int operator[](int i) const;
     int operator[](unsigned int i);
@@ -111,7 +110,6 @@ public:
     Bar();
     Bar(Qux qux);
     Bar(Items item);
-    ~Bar();
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);
@@ -143,13 +141,8 @@ private:
     Foo m_foo;
 };
 
-Bar::Bar() : index(0) {}
-
 class DLL_API ForceCreationOfInterface : public Foo, public Bar
 {
-public:
-    ForceCreationOfInterface();
-    ~ForceCreationOfInterface();
 };
 
 class DLL_API Baz : public Foo, public Bar
@@ -165,7 +158,6 @@ public:
 
     Baz();
     Baz(Bar::Items item);
-    ~Baz();
 
     int P;
 
@@ -293,8 +285,6 @@ public:
 class DLL_API TestRenaming
 {
 public:
-    TestRenaming();
-    ~TestRenaming();
     void name();
     void Name();
     int property();
@@ -312,7 +302,6 @@ enum class Flags
 class DLL_API UsesPointerToEnum
 {
 public:
-    UsesPointerToEnum();
     Flags* _flags;
     void hasPointerToEnumInParam(Flags* flag);
 };
@@ -364,7 +353,6 @@ namespace Qt
 class DLL_API QColor
 {
 public:
-    QColor();
     QColor(Qt::GlobalColor color);
 };
 
@@ -498,7 +486,6 @@ public:
 class DLL_API HasOverridesWithChangedAccessBase
 {
 public:
-    HasOverridesWithChangedAccessBase();
     virtual void privateOverride(int i = 5);
 protected:
     virtual void publicOverride();
@@ -549,8 +536,6 @@ class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 class DLL_API HasOverriddenInManaged
 {
 public:
-    HasOverriddenInManaged();
-    ~HasOverriddenInManaged();
     void setOverriddenInManaged(Baz *value);
     int callOverriddenInManaged();
 private:
@@ -700,7 +685,6 @@ private:
 class DLL_API CallDtorVirtually : public HasVirtualDtor1
 {
 public:
-    CallDtorVirtually();
     ~CallDtorVirtually();
     static bool Destroyed;
     static HasVirtualDtor1* getHasVirtualDtor1(HasVirtualDtor1* returned);
@@ -751,23 +735,17 @@ public:
 
 class DLL_API HasProtectedVirtual
 {
-public:
-    HasProtectedVirtual();
 protected:
     virtual void protectedVirtual();
 };
 
 class DLL_API InheritanceBuffer : public Foo, public HasProtectedVirtual
 {
-public:
-    InheritanceBuffer();
-    ~InheritanceBuffer();
 };
 
 class DLL_API InheritsProtectedVirtualFromSecondaryBase : public InheritanceBuffer
 {
 public:
-    InheritsProtectedVirtualFromSecondaryBase();
     ~InheritsProtectedVirtualFromSecondaryBase();
 protected:
     void protectedVirtual();
@@ -787,7 +765,6 @@ class HasOverrideOfHasPropertyWithDerivedType;
 class DLL_API HasPropertyWithDerivedType
 {
 public:
-    HasPropertyWithDerivedType();
     HasOverrideOfHasPropertyWithDerivedType* hasPropertyWithDerivedTypeSubclass;
     virtual void causeRenamingError();
 };
@@ -795,7 +772,6 @@ public:
 class DLL_API HasOverrideOfHasPropertyWithDerivedType : public HasPropertyWithDerivedType
 {
 public:
-    HasOverrideOfHasPropertyWithDerivedType();
     virtual void causeRenamingError();
 };
 
@@ -815,20 +791,16 @@ public:
 class DLL_API OverrideFromIndirectSecondaryBaseBase
 {
 public:
-    OverrideFromIndirectSecondaryBaseBase();
     virtual int property();
 };
 
 class DLL_API OverrideFromDirectSecondaryBase : public Foo, public OverrideFromIndirectSecondaryBaseBase
 {
-public:
-    OverrideFromDirectSecondaryBase();
 };
 
 class DLL_API OverrideFromIndirectSecondaryBase : public OverrideFromDirectSecondaryBase
 {
 public:
-    OverrideFromIndirectSecondaryBase();
     int property();
 };
 
@@ -861,8 +833,6 @@ TemplateWithDependentField<T>::TemplateWithDependentField()
 
 class DLL_API DerivesFromTemplateInstantiation : public TemplateWithDependentField<int>
 {
-public:
-    DerivesFromTemplateInstantiation();
 };
 
 DLL_API int PassConstantArrayRef(int(&arr)[2]);
@@ -870,7 +840,6 @@ DLL_API int PassConstantArrayRef(int(&arr)[2]);
 class DLL_API TestComparison
 {
 public:
-    TestComparison();
     int A;
     float B;
     bool operator ==(const TestComparison& other) const;
@@ -879,7 +848,6 @@ public:
 class DLL_API OverridePropertyFromIndirectPrimaryBaseBase
 {
 public:
-    OverridePropertyFromIndirectPrimaryBaseBase();
     virtual ~OverridePropertyFromIndirectPrimaryBaseBase();
     virtual int property() = 0;
     virtual void setProperty(int value) = 0;
@@ -888,21 +856,18 @@ public:
 class DLL_API OverridePropertyFromDirectPrimaryBase : public OverridePropertyFromIndirectPrimaryBaseBase
 {
 public:
-    OverridePropertyFromDirectPrimaryBase();
     void setProperty(int value);
 };
 
 class DLL_API OverridePropertyFromIndirectPrimaryBase : public OverridePropertyFromDirectPrimaryBase
 {
 public:
-    OverridePropertyFromIndirectPrimaryBase();
     int property();
 };
 
 class DLL_API AbstractOverrideFromSecondaryBase : public Foo, public OverridePropertyFromIndirectPrimaryBaseBase
 {
 public:
-    AbstractOverrideFromSecondaryBase();
     virtual ~AbstractOverrideFromSecondaryBase();
     virtual void setProperty(int value) = 0;
 };
@@ -910,7 +875,6 @@ public:
 class DLL_API QObject
 {
 public:
-    QObject();
     virtual ~QObject();
     virtual void event();
 };
@@ -919,7 +883,6 @@ class DLL_API QPaintDevice
 {
 public:
     QPaintDevice();
-    ~QPaintDevice();
     int test;
     virtual void changeVTableLayout();
 };
@@ -928,7 +891,6 @@ class DLL_API QWidget : public QObject, QPaintDevice
 {
 public:
     QWidget();
-    ~QWidget();
     virtual void event();
 private:
     QObject child;
@@ -938,7 +900,6 @@ class DLL_API QPainter
 {
 public:
     QPainter(QPaintDevice& paintDevice);
-    ~QPainter();
 };
 
 class DLL_API QApplication : public QObject
@@ -956,10 +917,9 @@ public:
     char* property();
 };
 
-class InheritsFromHasSamePropertyInDerivedAbstractType : public HasSamePropertyInDerivedAbstractType
+class DLL_API InheritsFromHasSamePropertyInDerivedAbstractType : public HasSamePropertyInDerivedAbstractType
 {
 public:
-    InheritsFromHasSamePropertyInDerivedAbstractType();
     virtual ~InheritsFromHasSamePropertyInDerivedAbstractType();
     virtual int property() = 0;
 };
@@ -989,7 +949,6 @@ public:
 class DLL_API VirtualDtorAddedInDerived : public Foo
 {
 public:
-    VirtualDtorAddedInDerived();
     virtual ~VirtualDtorAddedInDerived();
     static bool dtorCalled;
 };
@@ -1141,7 +1100,6 @@ class DLL_API TestString
 {
 public:
     TestString();
-    ~TestString();
     const wchar_t* unicodeConst;
     wchar_t* unicode;
 };
@@ -1154,7 +1112,6 @@ DLL_API void usesDecltypeFunctionPointer(funcPtr func);
 class DLL_API PrimaryBaseWithAbstractWithDefaultArg
 {
 public:
-    PrimaryBaseWithAbstractWithDefaultArg();
     ~PrimaryBaseWithAbstractWithDefaultArg();
     virtual void abstractWithNoDefaultArg(const Foo& foo) = 0;
 };
@@ -1162,7 +1119,6 @@ public:
 class DLL_API SecondaryBaseWithAbstractWithDefaultArg
 {
 public:
-    SecondaryBaseWithAbstractWithDefaultArg();
     ~SecondaryBaseWithAbstractWithDefaultArg();
     virtual void abstract(const Foo& foo = Foo()) = 0;
 };
@@ -1170,7 +1126,6 @@ public:
 class DLL_API HasSecondaryBaseWithAbstractWithDefaultArg : public PrimaryBaseWithAbstractWithDefaultArg, public SecondaryBaseWithAbstractWithDefaultArg
 {
 public:
-    HasSecondaryBaseWithAbstractWithDefaultArg();
     ~HasSecondaryBaseWithAbstractWithDefaultArg();
     virtual void abstract(const Foo& foo = Foo());
     virtual void abstractWithNoDefaultArg(const Foo& foo = Foo());
@@ -1179,21 +1134,18 @@ public:
 class DLL_API MissingObjectOnVirtualCallSecondaryBase
 {
 public:
-    MissingObjectOnVirtualCallSecondaryBase();
     virtual int f();
 };
 
 class DLL_API MissingObjectOnVirtualCall : public HasVirtualDtor1, public MissingObjectOnVirtualCallSecondaryBase
 {
 public:
-    MissingObjectOnVirtualCall();
     int f();
 };
 
 class DLL_API HasMissingObjectOnVirtualCall
 {
 public:
-    HasMissingObjectOnVirtualCall();
     int makeMissingObjectOnVirtualCall();
     void setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value);
 private:
@@ -1232,16 +1184,12 @@ private:
 class DLL_API HasBaseSetter
 {
 public:
-    HasBaseSetter();
-    ~HasBaseSetter();
     virtual void setBaseSetter(int value);
 };
 
 class DLL_API HasGetterAndOverriddenSetter : public HasBaseSetter
 {
 public:
-    HasGetterAndOverriddenSetter();
-    ~HasGetterAndOverriddenSetter();
     void setBaseSetter(int value);
     int baseSetter();
 protected:
@@ -1300,7 +1248,6 @@ struct DLL_API ComplexArrayElement
 
 struct DLL_API HasComplexArray
 {
-    HasComplexArray();
     ComplexArrayElement complexArray[ARRAY_LENGTH_MACRO];
 };
 
@@ -1335,8 +1282,6 @@ inline namespace InlineNamespace
 class DLL_API TestArrays
 {
 public:
-    TestArrays();
-    ~TestArrays();
     int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
     int takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
                    int* fixedArrayOfPointersToPrimitives[5]) const;
@@ -1355,7 +1300,6 @@ class TestForwardedClassInAnotherUnit
 class DLL_API HasFixedArrayOfPointers
 {
 public:
-    HasFixedArrayOfPointers();
     ~HasFixedArrayOfPointers();
     Foo* fixedArrayOfPointers[3];
 };
@@ -1371,8 +1315,6 @@ static int FOOBAR_CONSTANT = 42;
 class DLL_API SimpleInterface
 {
 public:
-    SimpleInterface();
-    ~SimpleInterface();
     virtual int size() const = 0;
     virtual int capacity() const = 0;
     virtual void* get(int n) = 0;
@@ -1383,7 +1325,6 @@ class DLL_API InterfaceTester
 {
 public:
     InterfaceTester();
-    ~InterfaceTester();
     int capacity();
     int size();
     void* get(int n);
@@ -1395,8 +1336,6 @@ private:
 class DLL_API HasFunctionPtrField
 {
 public:
-    HasFunctionPtrField();
-    ~HasFunctionPtrField();
     int (*functionPtrField)(const char*);
     int (*functionPtrTakeFunctionPtrField)(int(*TakenInFuncPtrField)());
 };
@@ -1456,7 +1395,6 @@ struct TestVariableWithoutType
 
 struct DLL_API ConversionFunctions
 {
-    ConversionFunctions();
     operator short* ();
     operator short& ();
     operator short();

@@ -1,42 +1,6 @@
 #include "Common.h"
 #include <string.h>
 
-TestPacking::TestPacking()
-{
-}
-
-TestPacking1::TestPacking1()
-{
-}
-
-TestPacking1::~TestPacking1()
-{
-}
-
-TestPacking2::TestPacking2()
-{
-}
-
-TestPacking2::~TestPacking2()
-{
-}
-
-TestPacking4::TestPacking4()
-{
-}
-
-TestPacking4::~TestPacking4()
-{
-}
-
-TestPacking8::TestPacking8()
-{
-}
-
-TestPacking8::~TestPacking8()
-{
-}
-
 Foo::NestedAbstract::~NestedAbstract()
 {
 }
@@ -153,10 +117,6 @@ bool Bar::operator ==(const Bar& arg1) const
 bool operator ==(Bar::Item item, const Bar& bar)
 {
     return item == bar.RetItem1();
-}
-
-Bar2::Nested::Nested()
-{
 }
 
 Bar2::Nested::operator int() const
@@ -483,14 +443,6 @@ void va_listFunction(va_list v)
 {
 }
 
-TestNestedTypes::TestNestedTypes()
-{
-}
-
-TestNestedTypes::~TestNestedTypes()
-{
-}
-
 void TestDelegates::MarshalUnattributedDelegate(DelegateInGlobalNamespace del)
 {
 }
@@ -581,14 +533,6 @@ DelegateNullCheck TestDelegates::MarshalNullDelegate()
 }
 
 void DelegateNamespace::f2(void (*)())
-{
-}
-
-HasStdString::HasStdString()
-{
-}
-
-HasStdString::~HasStdString()
 {
 }
 
@@ -810,11 +754,6 @@ int TestProperties::GetArchiveName() const
 {
     return 20;
 }
-
-HasOverridenSetter::HasOverridenSetter()
-{
-}
-
 void HasOverridenSetter::setVirtual(bool value)
 {
 }
@@ -873,22 +812,12 @@ Bar& TestIndexedProperties::operator[](const Foo& key)
     return bar;
 }
 
-TestVariables::TestVariables()
-{
-}
-
 int TestVariables::VALUE;
 void TestVariables::SetValue(int value) { VALUE = value; }
-
-TestWideStrings::TestWideStrings()
-{
-}
 
 LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
 
 LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
-
-TestFixedArrays::TestFixedArrays() {}
 
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
@@ -977,10 +906,6 @@ void HasVirtualProperty::setProtectedProperty(int value)
 {
 }
 
-ChangedAccessOfInheritedProperty::ChangedAccessOfInheritedProperty()
-{
-}
-
 int ChangedAccessOfInheritedProperty::getProperty()
 {
     return 2;
@@ -996,10 +921,6 @@ int ChangedAccessOfInheritedProperty::getProtectedProperty()
 }
 
 void ChangedAccessOfInheritedProperty::setProtectedProperty(int value)
-{
-}
-
-ReturnsEmpty::ReturnsEmpty()
 {
 }
 
@@ -1032,10 +953,6 @@ HasProblematicFields::HasProblematicFields() : b(false), c(0)
 {
 }
 
-HasVirtualReturningHasProblematicFields::HasVirtualReturningHasProblematicFields()
-{
-}
-
 HasProblematicFields HasVirtualReturningHasProblematicFields::returnsProblematicFields()
 {
     return HasProblematicFields();
@@ -1055,26 +972,9 @@ int DerivedClassVirtual::retInt(const Foo2& foo)
 {
     return 2;
 }
-
-DerivedClassAbstractVirtual::~DerivedClassAbstractVirtual()
-{
-}
-
-DerivedClassOverrideAbstractVirtual::DerivedClassOverrideAbstractVirtual()
-{
-}
-
 int DerivedClassOverrideAbstractVirtual::retInt(const Foo& foo)
 {
     return 1;
-}
-
-BufferForVirtualFunction::BufferForVirtualFunction()
-{
-}
-
-OverridesNonDirectVirtual::OverridesNonDirectVirtual()
-{
 }
 
 int OverridesNonDirectVirtual::retInt(const Foo& foo)
@@ -1082,15 +982,7 @@ int OverridesNonDirectVirtual::retInt(const Foo& foo)
     return 3;
 }
 
-AbstractWithVirtualDtor::AbstractWithVirtualDtor()
-{
-}
-
 AbstractWithVirtualDtor::~AbstractWithVirtualDtor()
-{
-}
-
-NonTrivialDtorBase::NonTrivialDtorBase()
 {
 }
 
@@ -1120,17 +1012,9 @@ void NonTrivialDtor::setDtorCalled(bool value)
 
 bool NonTrivialDtor::dtorCalled = false;
 
-DerivedFromTemplateInstantiationWithVirtual::DerivedFromTemplateInstantiationWithVirtual()
-{
-}
-
 int func_union(union_t u)
 {
     return u.c;
-}
-
-HasProtectedEnum::HasProtectedEnum()
-{
 }
 
 void HasProtectedEnum::function(ProtectedEnum param)
@@ -1142,18 +1026,6 @@ void FuncWithTypeAlias(custom_int_t i)
 }
 
 void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i)
-{
-}
-
-HasAbstractOperator::~HasAbstractOperator()
-{
-}
-
-HasOverloadsWithDifferentPointerKindsToSameType::HasOverloadsWithDifferentPointerKindsToSameType()
-{
-}
-
-HasOverloadsWithDifferentPointerKindsToSameType::~HasOverloadsWithDifferentPointerKindsToSameType()
 {
 }
 
@@ -1237,29 +1109,9 @@ HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(HasCopyAndMoveConstructor&&
     field = other.field;
 }
 
-HasCopyAndMoveConstructor::~HasCopyAndMoveConstructor()
-{
-}
-
 int HasCopyAndMoveConstructor::getField()
 {
     return field;
-}
-
-HasVirtualFunctionsWithStringParams::HasVirtualFunctionsWithStringParams()
-{
-}
-
-HasVirtualFunctionsWithStringParams::~HasVirtualFunctionsWithStringParams()
-{
-}
-
-ImplementsVirtualFunctionsWithStringParams::ImplementsVirtualFunctionsWithStringParams()
-{
-}
-
-ImplementsVirtualFunctionsWithStringParams::~ImplementsVirtualFunctionsWithStringParams()
-{
 }
 
 void ImplementsVirtualFunctionsWithStringParams::PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2)
@@ -1271,24 +1123,12 @@ int HasVirtualFunctionsWithStringParams::VirtualFunctionWithStringParam(std::str
     return 5;
 }
 
-HasVirtualFunctionWithBoolParams::HasVirtualFunctionWithBoolParams()
-{
-}
-
-HasVirtualFunctionWithBoolParams::~HasVirtualFunctionWithBoolParams()
-{
-}
-
 bool HasVirtualFunctionWithBoolParams::virtualFunctionWithBoolParamAndReturnsBool(bool testBool)
 {
     return testBool;
 }
 
 HasProtectedCtorWithProtectedParam::HasProtectedCtorWithProtectedParam(ProtectedEnum protectedParam)
-{
-}
-
-SecondaryBaseWithIgnoredVirtualMethod::SecondaryBaseWithIgnoredVirtualMethod()
 {
 }
 
@@ -1301,10 +1141,6 @@ void SecondaryBaseWithIgnoredVirtualMethod::generated()
 }
 
 void SecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType& ignoredParam)
-{
-}
-
-DerivedFromSecondaryBaseWithIgnoredVirtualMethod::DerivedFromSecondaryBaseWithIgnoredVirtualMethod()
 {
 }
 
@@ -1325,14 +1161,6 @@ AmbiguousParamNames::AmbiguousParamNames(int instance, int in)
 }
 
 AmbiguousParamNames::~AmbiguousParamNames()
-{
-}
-
-HasPropertyNamedAsParent::HasPropertyNamedAsParent()
-{
-}
-
-HasPropertyNamedAsParent::~HasPropertyNamedAsParent()
 {
 }
 
@@ -1380,7 +1208,7 @@ LPCSTR TakeTypedefedMappedType(LPCSTR string)
     return UTF8.data();
 }
 
-StructWithCopyCtor::StructWithCopyCtor() {}
+StructWithCopyCtor::StructWithCopyCtor() : mBits(0) {}
 StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
 
 uint16_t TestStructWithCopyCtorByValue(StructWithCopyCtor s)
@@ -1396,29 +1224,13 @@ DerivedCovariant::~DerivedCovariant()
 {
 }
 
-NonPrimitiveType::NonPrimitiveType()
-{
-}
-
 int NonPrimitiveType::GetFoo()
 {
     return foo;
 }
 
-TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() 
-{
-}
-
-TestGetterSetterToProperties::TestGetterSetterToProperties()
-{
-}
-
 int TestGetterSetterToProperties::getWidth() { return 640; }
 int TestGetterSetterToProperties::getHeight() { return 480; }
-
-PointerToTypedefPointerTest::PointerToTypedefPointerTest()
-{
-}
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
 {
@@ -1435,7 +1247,7 @@ TestArraysPointers::TestArraysPointers(MyEnum* values, int count)
     if (values && count) Value = values[0];
 }
 
-TestCopyConstructorRef::TestCopyConstructorRef()
+TestCopyConstructorRef::TestCopyConstructorRef() : A(0), B(0)
 {
 }
 

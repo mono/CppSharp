@@ -13,11 +13,6 @@ namespace OverlappingNamespace
 
     class DLL_API InBaseLib
     {
-    public:
-        InBaseLib()
-        {
-        
-        };
     };
 }
 
@@ -96,10 +91,5 @@ typedef DerivedFromSecondaryBaseInDependency RenameDerivedBeforeBase;
 class DLL_API SecondaryBase
 {
 public:
-    SecondaryBase();
-    ~SecondaryBase();
     void function();
 };
-
-// force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
-template class DLL_API TemplateClass<int>;

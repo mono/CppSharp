@@ -33,14 +33,6 @@ void Derived::setNestedNSComponent(OverlappingNamespace::InBaseLib c)
     nestedNSComponent = c;
 }
 
-Derived2::Derived2()
-{
-}
-
-Derived2::~Derived2()
-{
-}
-
 Base3 Derived2::getBase()
 {
     return baseComponent;
@@ -89,24 +81,26 @@ TemplateWithIndependentFields<Base3> DerivedFromExternalSpecialization::returnEx
     return TemplateWithIndependentFields<Base3>();
 }
 
-HasVirtualInDependency::HasVirtualInDependency()
-{
-}
-
 int HasVirtualInDependency::callManagedOverride()
 {
     return managedObject->virtualInCore(0);
 }
 
-DerivedFromSecondaryBaseInDependency::DerivedFromSecondaryBaseInDependency()
-{
-}
-
-DerivedFromSecondaryBaseInDependency::~DerivedFromSecondaryBaseInDependency()
-{
-}
-
 bool operator<<(const Base& b, const char* str)
 {
     return false;
+}
+
+const char* TestComments::GetIOHandlerControlSequence(char ch)
+{
+    return 0;
+}
+
+int TestComments::SBAttachInfo(const char* path, bool wait_for)
+{
+    return 0;
+}
+
+void TestComments::glfwDestroyWindow(int *window)
+{
 }

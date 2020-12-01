@@ -40301,6 +40301,9 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?ParseLibrary@ClangParser@CppParser@CppSharp@@SAPEAUParserResult@23@PEAULinkerOptions@23@@Z", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr ParseLibrary(__IntPtr Opts);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?Build@ClangParser@CppParser@CppSharp@@SAPEAUParserResult@23@PEAUCppParserOptions@23@PEBULinkerOptions@23@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_N@Z", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Build(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
             }
 
             public __IntPtr __Instance { get; protected set; }
@@ -40394,6 +40397,19 @@ namespace CppSharp
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
                 var __ret = __Internal.ParseLibrary(__arg0);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                return __result0;
+            }
+
+            public static global::CppSharp.Parser.ParserResult Build(global::CppSharp.Parser.CppParserOptions Opts, global::CppSharp.Parser.LinkerOptions LinkerOptions, string File, bool Last)
+            {
+                var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
+                var __arg1 = LinkerOptions is null ? __IntPtr.Zero : LinkerOptions.__Instance;
+                var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
+                global::Std.BasicStringExtensions.Assign(__basicString2, File);
+                var __arg2 = __basicString2.__Instance;
+                var __ret = __Internal.Build(__arg0, __arg1, __arg2, Last);
+                __basicString2.Dispose();
                 var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
                 return __result0;
             }

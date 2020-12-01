@@ -6,6 +6,12 @@
 #include <string>
 #include <map>
 
+class DeriveProtectedDtor
+{
+protected:
+    ~DeriveProtectedDtor() {}
+};
+
 class DLL_API QString
 {
 };
@@ -451,6 +457,7 @@ class TemplateWithIndexer
 {
 public:
     TemplateWithIndexer();
+    ~TemplateWithIndexer();
     T& operator[](int i);
     T& operator[](const T& key);
     T& operator[](const char* string);
@@ -463,6 +470,11 @@ private:
 
 template <typename T>
 TemplateWithIndexer<T>::TemplateWithIndexer()
+{
+}
+
+template <typename T>
+TemplateWithIndexer<T>::~TemplateWithIndexer<T>()
 {
 }
 
@@ -783,36 +795,6 @@ template<> inline void* qbswap<1>(const void *source, size_t count, void *dest) 
 {
     return 0;
 }
-
-// force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
-template class DLL_API IndependentFields<int>;
-template class DLL_API IndependentFields<bool>;
-template class DLL_API IndependentFields<T1>;
-template class DLL_API IndependentFields<const T1>;
-template class DLL_API IndependentFields<std::string>;
-template class DLL_API Base<int>;
-template class DLL_API DependentValueFields<int>;
-template class DLL_API DependentValueFields<int*>;
-template class DLL_API DependentValueFields<float>;
-template class DLL_API DependentPointerFields<float>;
-template class DLL_API VirtualTemplate<int>;
-template class DLL_API VirtualTemplate<bool>;
-template class DLL_API HasDefaultTemplateArgument<int, int>;
-template class DLL_API DerivedChangesTypeName<T1>;
-template class DLL_API TemplateWithIndexer<int>;
-template class DLL_API TemplateWithIndexer<void*>;
-template class DLL_API TemplateWithIndexer<UsedInTemplatedIndexer>;
-template class DLL_API TemplateWithIndexer<T1>;
-template class DLL_API TemplateWithIndexer<T2*>;
-template class DLL_API TemplateWithIndexer<float>;
-template class DLL_API TemplateWithIndexer<const char*>;
-template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
-template class DLL_API HasCtorWithMappedToEnum<TestFlag>;
-template class DLL_API TwoTemplateArgs<int*, int*>;
-template class DLL_API TwoTemplateArgs<int*, int>;
-template class DLL_API TwoTemplateArgs<int*, float>;
-template class DLL_API TwoTemplateArgs<const char*, int>;
-template class DLL_API TwoTemplateArgs<QString, int>;
 
 class TestForwardedClassInAnotherUnit;
 
