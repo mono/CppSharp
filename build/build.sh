@@ -62,7 +62,7 @@ restore()
 
 test()
 {
-  dotnet test $bindir/${configuration}_$platform/*.Tests*.dll --nologo
+  dotnet test {$bindir/${configuration}_$platform,$gendir/*}/*.Tests*.dll --nologo
 }
 
 clean()

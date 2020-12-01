@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableGeneratorCompileItems>true</EnableGeneratorCompileItems>
+    <OutputPath>$(GenDir)$(TestName)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
