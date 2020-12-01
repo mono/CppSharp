@@ -110,7 +110,11 @@ namespace CppSharp.Passes
 
         private string GetExporting()
         {
-            return Context.ParserOptions.IsMicrosoftAbi ?
+            return Context.ParserOptions.IsMicrosoftAbi || true ?
+                // TODO: MinGW linked with LLD seems to need exporting too - unless the now not working direct MinGW linking takes care of it as the regular ld does
+                // strange behaviour with Std-symbols: not exporting exports everything (system C functions) but the only important custom code; exporting only exports the important custom code
+                // however, if exporting is required after all, IsMicrosoftAbi is no good; TargetTriple.IsWindows should be extended to also cover "x86_64-w64-mingw32"
+                // the Qt libs still work fine without exporting so why does Std-symbols cause trouble? Why aren't the symbols (of std::string) we need it for in the first place exported?
                 "__declspec(dllexport) " : string.Empty;
         }
 
