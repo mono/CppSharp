@@ -3,6 +3,7 @@
     <TestGeneratorName>NamespacesDerived.Gen</TestGeneratorName>
     <TestGeneratorProjectDir>$(MSBuildProjectDirectory)\..\NamespacesDerived\</TestGeneratorProjectDir>
     <EnableGeneratorCompileItems>false</EnableGeneratorCompileItems>
+    <OutputPath>$(GenDir)NamespacesDerived</OutputPath>
   </PropertyGroup>
   
   <ItemGroup>

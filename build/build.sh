@@ -62,7 +62,7 @@ restore()
 
 test()
 {
-  dotnet test $bindir/${configuration}_$platform/*.Tests*.dll
+  dotnet test $bindir/${configuration}_$platform/{**/*,*}.Tests*.dll
 }
 
 clean()

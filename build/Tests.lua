@@ -62,6 +62,7 @@ function SetupTestNativeProject(name, depends)
 
     kind "SharedLib"
     language "C++"
+    targetdir (path.join(gendir, name))
 
     files { "**.h", "**.cpp" }
     defines { "DLL_EXPORT" }
@@ -98,6 +99,7 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
     kind "SharedLib"
     language "C++"
     clr "NetCore"
+    targetdir (path.join(gendir, name))
 
     dependson { name .. ".Gen" }
 

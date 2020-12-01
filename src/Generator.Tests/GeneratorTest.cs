@@ -24,7 +24,8 @@ namespace CppSharp.Utils
         {
             var options = driver.Options;
             options.GeneratorKind = kind;
-            options.OutputDir = Path.Combine(GetOutputDirectory(), "build", "gen", name);
+            options.OutputDir = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), name);
             options.Quiet = true;
             options.GenerateDebugOutput = true;
             options.GenerateSequentialLayout = true;
@@ -41,7 +42,7 @@ namespace CppSharp.Utils
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
             testModule.IncludeDirs.Add(path);
-            testModule.Defines.Add("DLL_EXPORT");
+            testModule.LibraryDirs.Add(options.OutputDir);
 
             Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");

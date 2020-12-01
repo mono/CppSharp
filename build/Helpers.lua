@@ -46,10 +46,10 @@ testsdir = path.join(rootdir, "tests");
 builddir = path.join(rootdir, "build")
 bindir = path.join(rootdir, "bin")
 objsdir = path.join(builddir, "obj");
-gendir = path.join(builddir, "gen");
 actionbuilddir = path.join(builddir, _ACTION == "gmake2" and "gmake" or (_ACTION and _ACTION or ""));
 bindircfg = path.join(bindir, "%{cfg.buildcfg}_%{cfg.platform}");
 prjobjdir = path.join(objsdir, "%{prj.name}", "%{cfg.buildcfg}")
+gendir = bindircfg;
 
 msvc_buildflags = { "/MP", "/wd4267" }
 msvc_cpp_defines = { }

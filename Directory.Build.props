@@ -7,11 +7,11 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <BuildDir>$(RootDir)build\</BuildDir>
     <ObjDir>$(BuildDir)obj\</ObjDir>
-    <GenDir>$(BuildDir)gen\</GenDir>
     <SrcDir>$(RootDir)src\</SrcDir>
     <BaseIntermediateOutputPath>$(ObjDir)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <BaseOutputPath>$(RootDir)bin\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)_$(PlatformTarget)\</OutputPath>
+    <GenDir>$(OutputPath)</GenDir>
     <ActionDir>$(BuildDir)$(PremakeAction)\</ActionDir>
     <NativeProjectsDir>$(ActionDir)projects\</NativeProjectsDir>
     <TargetDir>$(OutputPath)</TargetDir>

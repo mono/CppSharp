@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>$(GenDir)$(TestName)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
