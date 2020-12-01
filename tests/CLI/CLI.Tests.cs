@@ -1,10 +1,10 @@
-using CppSharp.Utils;
 using NUnit.Framework;
 using CLI;
 using System.Text;
 using System;
 
-public class CLITests : GeneratorTestFixture
+[TestFixture]
+public class CLITests
 {
     [Test]
     public void TestTypes()

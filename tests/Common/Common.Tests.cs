@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using CommonTest;
-using CppSharp.Utils;
 using NUnit.Framework;
 using Enum = CommonTest.Enum;
 
 [TestFixture]
-public class CommonTests : GeneratorTestFixture
+public class CommonTests
 {
     [Test]
     public unsafe void TestCodeGeneration()

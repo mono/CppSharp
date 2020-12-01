@@ -1,8 +1,8 @@
-﻿using CppSharp.Utils;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Foo = Encodings.Foo;
 
-public class EncodingsTests : GeneratorTestFixture
+[TestFixture]
+public class EncodingsTests
 {
     [Test]
     public void TestFoo()

@@ -1,12 +1,12 @@
-﻿using CppSharp.Utils;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using StandardLib;
 
-public class StandardLibTests : GeneratorTestFixture
+[TestFixture]
+public class StandardLibTests
 {
     [Test]
     public void TestVectors()

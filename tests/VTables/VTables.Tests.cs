@@ -1,5 +1,4 @@
 using System;
-using CppSharp.Utils;
 using NUnit.Framework;
 using VTables;
 
@@ -31,7 +30,8 @@ public class ManagedDerivedClassVirtualRetBase : DerivedClassVirtual
     }
 }
 
-public class VTablesTests : GeneratorTestFixture
+[TestFixture]
+public class VTablesTests
 {
     [Test]
     public void TestFoo()
