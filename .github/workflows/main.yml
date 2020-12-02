@@ -54,6 +54,7 @@ jobs:
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/master'
         with:
           name: cppsharp-${{ matrix.config.os }}-${{ matrix.config.platform }}-${{ matrix.config.cc }}
           path: |
