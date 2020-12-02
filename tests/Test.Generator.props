@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <GeneratorOutput>$(BaseIntermediateOutputPath)$(TestName).Bindings.timestamp</GeneratorOutput>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <PostBuildEvent>$(DotNetCmd) "$(OutputPath)$(TestGeneratorName).$(GeneratorFileExtension)"</PostBuildEvent>
   </PropertyGroup>
@@ -17,14 +16,7 @@
 
   <ItemGroup>
     <GeneratorInputs Include="*.h" />
-    <GeneratorInputs Include="$(TestName).Gen.cs" />
-    <UpToDateCheckInput Include="@(GeneratorInputs)" Set="Bindings" />
-    <UpToDateCheckBuilt Include="$(GeneratorOutput)" Set="Bindings" />
+    <CustomAdditionalCompileInputs Include="@(GeneratorInputs)" />
+    <UpToDateCheckInput Include="@(GeneratorInputs)" />
   </ItemGroup>
-
-  <Target Name="UpdateBindingsTimestamp" AfterTargets="PostBuildEvent">
-    <Touch Files="$(GeneratorOutput)" AlwaysCreate="true">
-      <Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
-    </Touch>
-  </Target>
 </Project>
