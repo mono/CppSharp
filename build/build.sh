@@ -36,7 +36,7 @@ build()
   fi
 
   find_msbuild
-  $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity
+  $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -nologo
 
   if [ $ci = true ]; then
     test
@@ -57,12 +57,12 @@ generate()
 restore()
 {
   find_msbuild
-  $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -t:restore 
+  $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -t:restore -nologo
 }
 
 test()
 {
-  dotnet test $bindir/${configuration}_$platform/*.Tests*.dll
+  dotnet test $bindir/${configuration}_$platform/*.Tests*.dll --nologo
 }
 
 clean()
