@@ -53,6 +53,14 @@ namespace CppSharp.Parser
         /// C++ programming language (year 2017, GNU variant).
         /// </summary>
         CPP17_GNU,
+        /// <summary>
+        /// C++ programming language (year 2020).
+        /// </summary>
+        CPP20,
+        /// <summary>
+        /// C++ programming language (year 2020, GNU variant).
+        /// </summary>
+        CPP20_GNU,
     }
 
     public class ParserOptions : CppParserOptions
@@ -351,6 +359,12 @@ namespace CppSharp.Parser
                     break;
                 case CppSharp.Parser.LanguageVersion.CPP17_GNU:
                     AddArguments("-std=gnu++1z");
+                    break;
+                case CppSharp.Parser.LanguageVersion.CPP20:
+                    AddArguments("-std=c++2z");
+                    break;
+                case CppSharp.Parser.LanguageVersion.CPP20_GNU:
+                    AddArguments("-std=gnu++2z");
                     break;
             }
 
