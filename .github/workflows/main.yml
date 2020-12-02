@@ -21,6 +21,7 @@ jobs:
       CXX: ${{ matrix.config.cxx }}
       PLATFORM: ${{ matrix.config.platform }}
       DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
 
     steps:
       - uses: actions/checkout@v2
