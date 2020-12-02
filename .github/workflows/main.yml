@@ -20,6 +20,7 @@ jobs:
       CC: ${{ matrix.config.cc }}
       CXX: ${{ matrix.config.cxx }}
       PLATFORM: ${{ matrix.config.platform }}
+      DOTNET_NOLOGO: true
 
     steps:
       - uses: actions/checkout@v2
