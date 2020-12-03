@@ -5,6 +5,7 @@
     <RootDir>$(MSBuildThisFileDirectory)</RootDir>
     <Platforms>x86;x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <BuildDir>$(RootDir)build\</BuildDir>
     <ObjDir>$(BuildDir)obj\</ObjDir>
     <GenDir>$(BuildDir)gen\</GenDir>
