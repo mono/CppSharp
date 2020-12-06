@@ -12,6 +12,7 @@ bindir="$rootdir/bin"
 objdir="$builddir/obj"
 gendir="$builddir/gen"
 slnpath="$rootdir/CppSharp.sln"
+artifacts="$rootdir/artifacts"
 oshost=""
 os=""
 test=
@@ -43,6 +44,11 @@ build()
   fi
 }
 
+generate_config()
+{
+  $builddir/premake.sh --file=$builddir/premake5.lua $vs --os=$os --arch=$platform --configuration=$configuration --config_only
+}
+
 generate()
 {
   download_llvm
@@ -58,6 +64,19 @@ restore()
 {
   find_msbuild
   $msbuild $slnpath -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -t:restore -nologo
+}
+
+prepack()
+{
+  find_msbuild
+  $msbuild $slnpath -t:prepack -p:Configuration=$configuration -p:Platform=$platform -v:$verbosity -nologo
+}
+
+pack()
+{
+  find_msbuild
+  $msbuild -t:restore $rootdir/src/Package/CppSharp.Package.csproj -p:Configuration=$configuration -p:Platform=$platform
+  $msbuild -t:pack $rootdir/src/Package/CppSharp.Package.csproj -p:Configuration=$configuration -p:Platform=$platform -p:PackageOutputPath=$rootdir/artifacts
 }
 
 test()
@@ -172,6 +191,7 @@ while [[ $# > 0 ]]; do
       ;;
     -ci)
       ci=true
+      export CI=true
       ;;
     -build_only)
       build_only=true
@@ -186,6 +206,15 @@ case "$cmd" in
     ;;
   generate)
     generate
+    ;;
+  generate_config)
+    generate_config
+    ;;    
+  prepack)
+    prepack
+    ;;
+  pack)
+    pack
     ;;
   restore)
     restore

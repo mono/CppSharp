@@ -54,13 +54,46 @@ jobs:
         shell: bash
         run: build/test.sh -platform $PLATFORM
 
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
-        if: github.ref == 'refs/heads/master'
+      - name: Pack
+        shell: bash
+        run: build/build.sh prepack -platform $PLATFORM
+
+      - uses: actions/upload-artifact@v2
         with:
-          name: cppsharp-${{ matrix.config.os }}-${{ matrix.config.platform }}-${{ matrix.config.cc }}
+          name: intermediate
           path: |
-            bin/**/CppSharp*
-            bin/**/Std-symbols*
-            bin/**/lib/**
+            artifacts
             include/**/*.h
+
+  create_package:
+    runs-on: windows-2019
+    needs: build
+    if: |
+      (github.event_name == 'push' && (github.ref == 'refs/heads/master' || contains(github.ref, 'nuget'))) ||
+      (github.event.pull_request.head.repo.full_name != github.repository && contains(github.event.pull_request.head.ref, 'nuget'))
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: intermediate
+
+      - name: Setup
+        shell: bash
+        run: build/build.sh generate_config
+
+      - name: Create package
+        shell: bash
+        run: build/build.sh pack
+
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: CppSharp.nupkg
+          path: |
+            artifacts/*.nupkg

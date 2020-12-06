@@ -1,4 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+  
   <ItemGroup>
     <EmbeddedResource Include="Passes\verbs.txt" />
   </ItemGroup>

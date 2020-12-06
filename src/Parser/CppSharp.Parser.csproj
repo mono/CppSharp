@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <IsPackable>true</IsPackable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NativeTargetExt Condition="$(IsWindows)">dll</NativeTargetExt>
+    <NativeTargetExt Condition="$(IsLinux)">so</NativeTargetExt>
+    <NativeTargetExt Condition="$(IsMacOSX)">dylib</NativeTargetExt>
+    <NativeTargetPrefix Condition="!$(IsWindows)">lib</NativeTargetPrefix>
   </PropertyGroup>
   
   <ItemGroup Condition="$(GenerateBuildConfig)">
@@ -15,4 +21,19 @@
     <ProjectReference Include="..\CppParser\Bindings\CSharp\CppSharp.Parser.CSharp.csproj" Condition="!$(IsWindows) OR $(CI)" />
     <ProjectReference Include="$(NativeProjectsDir)\CppSharp.Parser.CLI.vcxproj" Condition="$(IsWindows) AND !$(CI)" />
   </ItemGroup>
+
+  <Target Name="PackNativeHeaders" AfterTargets="prepack" Condition="'$(RID)' == 'win-x64'">
+    <ItemGroup>
+      <ClangHeaders Include="$(SrcDir)lib\**" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ClangHeaders)" DestinationFiles="@(ClangHeaders->'$(PackageDir)contentFiles\any\any\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <Target Name="PackNativeLibs" AfterTargets="prepack">
+    <ItemGroup>
+      <NativeLibs Include="$(OutputPath)$(NativeTargetPrefix)CppSharp.CppParser.$(NativeTargetExt)" />
+      <NativeLibs Include="$(OutputPath)$(NativeTargetPrefix)Std-symbols.$(NativeTargetExt)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NativeLibs)" DestinationFolder="$(PackageDir)runtimes\$(RID)\native" />
+  </Target>
 </Project>
