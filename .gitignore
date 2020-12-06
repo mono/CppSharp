@@ -45,6 +45,7 @@ src/generator/generator
 /build/config.props
 /build/premake/premake5*
 /build/gen
+/artifacts
 /deps/llvm
 /extra
 /include/include

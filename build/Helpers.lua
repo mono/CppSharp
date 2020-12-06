@@ -38,6 +38,11 @@ newoption {
  }
 }
 
+newoption {
+  trigger = "config_only",
+  description = "Only generate configuration file",
+}
+
 rootdir = path.getabsolute("../")
 srcdir = path.join(rootdir, "src");
 incdir = path.join(rootdir, "include");

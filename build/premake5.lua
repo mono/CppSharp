@@ -5,6 +5,13 @@
 config = {}
 
 include "Helpers.lua"
+
+WriteConfigForMSBuild()
+
+if _OPTIONS["config_only"] then
+  return
+end
+
 include "LLVM.lua"
 
 workspace "CppSharp"
@@ -38,7 +45,6 @@ workspace "CppSharp"
   workspacefiles(path.join(builddir, "*.sh"))
   workspacefiles(path.join(rootdir, ".github/workflows/*.yml"))
   workspacefiles(path.join(rootdir, "tests/Test*.props"))
-  WriteConfigForMSBuild()
 
   group "Libraries"
     if EnableNativeProjects() then

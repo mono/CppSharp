@@ -3,5 +3,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 </Project>

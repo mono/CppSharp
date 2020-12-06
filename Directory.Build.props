@@ -5,16 +5,25 @@
     <RootDir>$(MSBuildThisFileDirectory)</RootDir>
     <Platforms>x86;x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/mono/CppSharp</RepositoryUrl>
+    <RepositoryCommit>$(GITHUB_SHA)</RepositoryCommit>
+    <Authors>João Matos, Dimitar Dobrev, Jose Torres</Authors>
+    <Copyright>João Matos, Dimitar Dobrev</Copyright>
+    <Version>0.10.6</Version>
+    <IsPackable>false</IsPackable>
     <BuildDir>$(RootDir)build\</BuildDir>
     <ObjDir>$(BuildDir)obj\</ObjDir>
     <GenDir>$(BuildDir)gen\</GenDir>
     <SrcDir>$(RootDir)src\</SrcDir>
+    <GlobalTargetFramework>$(TargetFramework)</GlobalTargetFramework>
     <BaseIntermediateOutputPath>$(ObjDir)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <BaseOutputPath>$(RootDir)bin\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)_$(PlatformTarget)\</OutputPath>
     <ActionDir>$(BuildDir)$(PremakeAction)\</ActionDir>
     <NativeProjectsDir>$(ActionDir)projects\</NativeProjectsDir>
+    <PackageDir>$(RootDir)artifacts\package\</PackageDir>
     <TargetDir>$(OutputPath)</TargetDir>
     <LangVersion>7.3</LangVersion>
     <WarningLevel>4</WarningLevel>
@@ -22,6 +31,10 @@
     <GeneratorFileExtension>dll</GeneratorFileExtension>
     <DotNetCmd Condition="'$(PlatformTarget)' == 'x86' AND Exists('$(MSBuildProgramFiles32)\dotnet\dotnet.exe')">"$(MSBuildProgramFiles32)\dotnet\dotnet.exe"</DotNetCmd>
     <DotNetCmd Condition="'$(PlatformTarget)' == 'x64' AND Exists('$(ProgramW6432)\dotnet\dotnet.exe')">"$(ProgramW6432)\dotnet\dotnet.exe"</DotNetCmd>
+    <RID Condition="$(IsWindows)">win</RID>    
+    <RID Condition="$(IsLinux)">linux</RID>
+    <RID Condition="$(IsMacOSX)">osx</RID>
+    <RID>$(RID)-$(PlatformTarget)</RID>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CPPSHARP_RELEASE)' != 'true'">
@@ -34,4 +47,9 @@
     <GeneratorFileExtension>exe</GeneratorFileExtension>
     <DotNetCmd></DotNetCmd>
   </PropertyGroup>
+
+  <Target Name="prepack" DependsOnTargets="Build" Condition="'$(IsPackable)' == 'true'">
+    <Copy SourceFiles="$(TargetDir)ref\$(TargetFileName)" DestinationFolder="$(PackageDir)ref\$(GlobalTargetFramework)" Condition="'$(ProduceReferenceAssembly)' == 'true' AND '$(RID)' == 'win-x64'" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PackageDir)runtimes\$(RID)\lib\$(GlobalTargetFramework)" />
+  </Target>
 </Project>

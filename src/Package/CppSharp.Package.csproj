@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.Build.NoTargets/2.0.1">
+  <PropertyGroup>
+    <PackageId>CppSharp</PackageId>
+    <IsPackable>true</IsPackable>
+    <PackageDescription>CppSharp is a tool and set of libraries which allows programmers to use C/C++ libraries with high-level programming languages (such as C#).
+
+It is a tool that takes C/C++ header and library files and generates the necessary glue to surface the native API as a managed API. Such an API can be used to consume an existing native library in your high-level code or add scripting support to a native codebase.
+
+The supported target languages at present are C# and C++/CLI.
+
+It can also be used as a library to parse native code into a syntax tree with a rich declaration and type information model.</PackageDescription>
+    <PackageReleaseNotes>https://github.com/mono/CppSharp/CHANGELOG.md</PackageReleaseNotes>
+    <NoWarn>NU5131</NoWarn>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.CodeDom" />    
+    <PackageReference Include="Microsoft.Win32.Registry" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
+    <Content Include="$(PackageDir)runtimes\**" PackagePath="runtimes" />
+    <Content Include="$(PackageDir)ref\**" PackagePath="ref" />
+    <Content Include="$(PackageDir)contentFiles\**" PackagePath="contentFiles" PackageCopyToOutput="true" />
+ </ItemGroup>
+</Project>
