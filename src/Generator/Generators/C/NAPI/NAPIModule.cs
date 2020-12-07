@@ -20,24 +20,34 @@ namespace CppSharp.Generators.Cpp
 
         public override void Process()
         {
-            var include = new CInclude()
-            {
-                File = "node/node_api.h",
-                Kind = CInclude.IncludeKind.Angled
-            };
-
-            WriteInclude(include);
+            WriteInclude("node/node_api.h", CInclude.IncludeKind.Angled);
+            WriteInclude("NAPIHelpers.h", CInclude.IncludeKind.Quoted);
             NewLine();
 
+            PushBlock();
+            foreach (var unit in TranslationUnits)
+            {
+                var name = NAPISources.GetTranslationUnitName(unit);
+                WriteLine($"extern void register_{name}(napi_env env, napi_value exports);");
+            }
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            PushBlock();
+            WriteLine("// napi_value NAPI_MODULE_INITIALIZER(napi_env env, napi_value exports)");
             WriteLine("NAPI_MODULE_INIT()");
             WriteOpenBraceAndIndent();
 
-            WriteLine("napi_value result;");
-            WriteLine("NAPI_CALL(env, napi_create_object(env, &result));");
+            foreach (var unit in TranslationUnits)
+            {
+                var name = NAPISources.GetTranslationUnitName(unit);
+                WriteLine($"register_{name}(env, exports);");
+            }
+            NewLine();
 
-            WriteLine("return result;");
+            WriteLine("return nullptr;");
 
             UnindentAndWriteCloseBrace();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
     }
 }

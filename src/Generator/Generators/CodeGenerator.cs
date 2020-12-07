@@ -261,15 +261,88 @@ namespace CppSharp.Generators
         public virtual bool VisitDeclContext(DeclarationContext context)
         {
             foreach (var decl in context.Declarations)
+            {
+                if (decl is Function) continue;
                 if (decl.IsGenerated)
                     decl.Visit(this);
+            }
+
+            VisitDeclContextFunctions(context);
 
             return true;
         }
 
+        public virtual void VisitDeclContextFunctions(DeclarationContext context)
+        {
+            foreach (var decl in context.Functions)
+                decl.Visit(this);
+        }
+
         public virtual bool VisitClassDecl(Class @class)
         {
-            return VisitDeclContext(@class);
+            if (@class.IsIncomplete)
+                return false;
+
+            return VisitClassDeclContext(@class);
+        }
+
+        public virtual bool VisitClassDeclContext(Class @class)
+        {
+            if (!VisitDeclContext(@class))
+                return false;
+
+            foreach (var field in @class.Fields.Where(f => !ASTUtils.CheckIgnoreField(f)))
+            {
+                field.Visit(this);
+            }
+
+            foreach (var property in @class.Properties.Where(p => !ASTUtils.CheckIgnoreProperty(p)))
+            {
+                property.Visit(this);
+            }
+
+            VisitClassConstructors(@class);
+            VisitClassMethods(@class);
+
+            foreach (var @event in @class.Events)
+            {
+                if (!@event.IsGenerated)
+                    continue;
+
+                @event.Visit(this);
+            }
+
+            foreach (var variable in @class.Variables)
+            {
+                if (!variable.IsGenerated)
+                    continue;
+
+                if (variable.Access != AccessSpecifier.Public)
+                    continue;
+
+                variable.Visit(this);
+            }
+
+            return true;
+        }
+
+        public virtual void VisitClassMethods(Class @class)
+        {
+            foreach (var method in @class.Methods.Where(c => !ASTUtils.CheckIgnoreMethod(c)))
+            {
+                if (method.IsConstructor)
+                    continue;
+
+                method.Visit(this);
+            }
+        }
+
+        public virtual void VisitClassConstructors(Class @class)
+        {
+            foreach (var ctor in @class.Constructors.Where(c => !ASTUtils.CheckIgnoreMethod(c)))
+            {
+                ctor.Visit(this);
+            }
         }
 
         public virtual bool VisitFieldDecl(Field field)
