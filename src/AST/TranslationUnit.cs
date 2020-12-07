@@ -62,15 +62,10 @@ namespace CppSharp.AST
                 if (fileRelativeDirectory != null)
                     return fileRelativeDirectory;
 
-                if (IncludePath == null)
-                    return string.Empty;
+                var dir = Path.GetDirectoryName(IncludePath) ?? string.Empty;
+                fileRelativeDirectory = dir.Replace('\\', '/');
 
-                var path = IncludePath.Replace('\\', '/');
-                var index = path.LastIndexOf('/');
-                if (index == -1)
-                    return string.Empty;
-
-                return fileRelativeDirectory = path.Substring(0, index);
+                return fileRelativeDirectory;
             }
         }
 
