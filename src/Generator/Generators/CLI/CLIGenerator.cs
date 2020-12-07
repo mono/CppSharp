@@ -37,7 +37,7 @@ namespace CppSharp.Generators.CLI
             if (@class.IsStatic)
                 return false;
 
-            return @class.IsRefType && (!@class.HasBase || !@class.HasRefBase());
+            return @class.IsRefType && (!@class.NeedsBase || !@class.HasRefBase());
         }
 
         protected override string TypePrinterDelegate(Type type)
