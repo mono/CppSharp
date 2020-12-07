@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
@@ -71,6 +72,22 @@ namespace CppSharp.Generators
             }
 
             return type.Desugar();
+        }
+
+        public static string GetIncludePath(this DriverOptions driverOptions, TranslationUnit translationUnit)
+        {
+            if (driverOptions.GenerateName != null)
+            {
+                var extension = Path.GetExtension(translationUnit.FileName);
+                return $"{driverOptions.GenerateName(translationUnit)}{extension}";
+            }
+            else if (driverOptions.UseHeaderDirectories)
+            {
+                var path = Path.Combine(translationUnit.FileRelativeDirectory, translationUnit.FileName);
+                return path;
+            }
+
+            return translationUnit.FileName;
         }
     }
 }

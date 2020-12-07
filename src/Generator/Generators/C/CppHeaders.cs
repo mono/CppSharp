@@ -96,8 +96,10 @@ namespace CppSharp.Generators.Cpp
                 if (typeRefUnit != null && !typeRefUnit.IsDeclared)
                     continue;
 
-                if(!string.IsNullOrEmpty(include.File) && include.InHeader)
-                    includes.Add(include.ToString());
+                if (!string.IsNullOrEmpty(include.File) && include.InHeader)
+                {
+                    includes.Add(Context.Options.GetIncludePath(typeRefUnit));
+                }
             }
 
             foreach (var include in includes)

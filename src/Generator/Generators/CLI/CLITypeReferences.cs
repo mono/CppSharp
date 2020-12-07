@@ -59,7 +59,7 @@ namespace CppSharp.Generators.CLI
 
                 @ref.Include = new CInclude
                 {
-                    File = GetIncludePath(translationUnit),
+                    File = DriverOptions.GetIncludePath(translationUnit),
                     TranslationUnit = translationUnit,
                     Kind = translationUnit.IsGenerated ? CInclude.IncludeKind.Quoted : CInclude.IncludeKind.Angled
                 };
@@ -143,22 +143,6 @@ namespace CppSharp.Generators.CLI
         private bool ShouldIncludeTranslationUnit(TranslationUnit unit)
         {
             return !unit.IsSystemHeader && unit.IsValid && !unit.Ignore;
-        }
-
-        private string GetIncludePath(TranslationUnit translationUnit)
-        {
-            if (!DriverOptions.UseHeaderDirectories && DriverOptions.GenerateName != null)
-            {
-                var extension = Path.GetExtension(TranslationUnit.FileName);
-                return $"{DriverOptions.GenerateName(translationUnit)}{extension}";
-            }
-            else if (DriverOptions.UseHeaderDirectories)
-            {
-                var path = Path.Combine(translationUnit.FileRelativeDirectory, translationUnit.FileName);
-                return path;
-            }
-
-            return translationUnit.FileName;
         }
 
         private bool IsBuiltinTypedef(Declaration decl)
