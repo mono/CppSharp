@@ -123,6 +123,7 @@ namespace CppSharp
 
             module.Headers.AddRange(options.HeaderFiles);
             module.Libraries.AddRange(options.Libraries);
+            module.IncludeDirs.AddRange(options.IncludeDirs);
             module.OutputNamespace = options.OutputNamespace;
 
             if (abi == CppAbi.Microsoft)
@@ -138,9 +139,6 @@ namespace CppSharp
 
             foreach (string s in options.Arguments)
                 parserOptions.AddArguments(s);
-
-            foreach (string s in options.IncludeDirs)
-                parserOptions.AddIncludeDirs(s);
 
             foreach (KeyValuePair<string, string> d in options.Defines)
             {
