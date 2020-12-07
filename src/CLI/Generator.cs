@@ -174,6 +174,10 @@ namespace CppSharp
             driver.Context.TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
         }
 
+        public void GenerateCode(Driver driver, List<GeneratorOutput> outputs)
+        {
+        }
+
         public void Preprocess(Driver driver, ASTContext ctx)
         {
         }
