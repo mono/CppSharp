@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using CppSharp.AST;
 
 namespace CppSharp.Generators.Cpp
@@ -17,7 +18,7 @@ namespace CppSharp.Generators.Cpp
 
         public override void Process()
         {
-            base.Process();
+            return;
         }
     }
 }

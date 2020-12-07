@@ -7,6 +7,27 @@ namespace CppSharp.Extensions
 {
     public static class PrimitiveTypeExtensions
     {
+        public static bool IsIntegerType(this PrimitiveType type)
+        {
+            switch (type)
+            {
+                case PrimitiveType.Char:
+                case PrimitiveType.SChar:
+                case PrimitiveType.UChar:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static (uint Width, uint Alignment) GetInfo(this PrimitiveType primitive, ParserTargetInfo targetInfo, out bool signed)
         {
             signed = false;

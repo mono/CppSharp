@@ -31,15 +31,30 @@ namespace CppSharp.Generators.C
                 }
             }
 
+            var helpers = GenerateHelpers();
+            OnUnitGenerated(helpers);
+            outputs.Add(helpers);
+
             return outputs;
+        }
+
+        public GeneratorOutput GenerateHelpers()
+        {
+            var helpersGen = new NAPIHelpers(Context);
+            helpersGen.Process();
+
+            var output = new GeneratorOutput
+            {
+                TranslationUnit = new TranslationUnit { FilePath = "NAPIHelpers.h" },
+                Outputs = new List<CodeGenerator> { helpersGen }
+            };
+
+            return output;
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<CodeGenerator>();
-
-            var header = new NAPIHeaders(Context, units);
-            outputs.Add(header);
 
             var source = new NAPISources(Context, units);
             outputs.Add(source);
