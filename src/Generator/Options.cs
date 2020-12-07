@@ -94,7 +94,7 @@ namespace CppSharp
         /// </value>
         public bool GenerateClassTemplates { get; set; }
         public bool GenerateInternalImports;
-        public bool GenerateSequentialLayout { get; set; }
+        public bool GenerateSequentialLayout { get; set; } = true;
         public bool UseHeaderDirectories;
 
         /// <summary>

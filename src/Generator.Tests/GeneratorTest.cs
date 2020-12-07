@@ -27,7 +27,6 @@ namespace CppSharp.Utils
             options.OutputDir = Path.Combine(GetOutputDirectory(), "build", "gen", name);
             options.Quiet = true;
             options.GenerateDebugOutput = true;
-            options.GenerateSequentialLayout = true;
             var testModule = options.AddModule(name);
             testModule.SharedLibraryName = $"{name}.Native";
 
