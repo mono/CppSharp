@@ -16,7 +16,7 @@
     <ActionDir>$(BuildDir)$(PremakeAction)\</ActionDir>
     <NativeProjectsDir>$(ActionDir)projects\</NativeProjectsDir>
     <TargetDir>$(OutputPath)</TargetDir>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <WarningLevel>4</WarningLevel>
     <DotNetCmd>dotnet</DotNetCmd>
     <GeneratorFileExtension>dll</GeneratorFileExtension>
