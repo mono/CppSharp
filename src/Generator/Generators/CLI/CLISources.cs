@@ -21,7 +21,7 @@ namespace CppSharp.Generators.CLI
         {
         }
 
-        public override string FileExtension { get { return "cpp"; } }
+        public override string FileExtension => "cpp";
 
         public override void Process()
         {
@@ -45,7 +45,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("using namespace System::Runtime::InteropServices;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
-                WriteLine(string.Format("using namespace {0};", customUsingStatement)); ;
+                WriteLine($"using namespace {customUsingStatement};"); ;
             }
             NewLine();
             PopBlock();
