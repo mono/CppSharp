@@ -114,7 +114,9 @@ namespace CppSharp.Generators
                     }
                 }
 
-                if (Context.Options.SystemModule != null)
+                var generateSystemModule = Context.Options.SystemModule != null  &&
+                    Context.Options.GeneratorKind == GeneratorKind.CSharp;
+                if (generateSystemModule)
                 {
                     var output = GenerateModule(Context.Options.SystemModule);
                     if (output != null)
@@ -150,6 +152,10 @@ namespace CppSharp.Generators
 
         public virtual GeneratorOutput GenerateModule(Module module)
         {
+            var generatedUnits = module.Units.GetGenerated().ToList();
+            if (generatedUnits.Count == 0)
+                return null;
+
             var output = new GeneratorOutput
             {
                 TranslationUnit = new TranslationUnit
@@ -157,7 +163,7 @@ namespace CppSharp.Generators
                     FilePath = $"{module.LibraryName}",
                     Module = module
                 },
-                Outputs = Generate(module.Units.GetGenerated())
+                Outputs = Generate(generatedUnits)
             };
 
             output.Outputs[0].Process();

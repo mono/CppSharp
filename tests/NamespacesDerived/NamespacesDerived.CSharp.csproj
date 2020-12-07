@@ -5,7 +5,6 @@
 
   <ItemGroup>
     <Compile Include="$(GenDir)NamespacesDerived\NamespacesDerived.cs" />
-    <Compile Include="$(GenDir)NamespacesDerived\Std.cs" />
   </ItemGroup>
   
   <ItemGroup>
