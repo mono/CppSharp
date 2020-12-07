@@ -71,6 +71,9 @@ namespace CppSharp.AST
 
                 var path = IncludePath.Replace('\\', '/');
                 var index = path.LastIndexOf('/');
+                if (index == -1)
+                    return string.Empty;
+
                 return fileRelativeDirectory = path.Substring(0, index);
             }
         }
