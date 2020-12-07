@@ -101,7 +101,7 @@ namespace CppSharp.Generators.Cpp
             }
 
             foreach (var include in includes)
-                WriteLine(include);
+                WriteLine($"#include \"{include}\"");
         }
 
         private Namespace FindCreateNamespace(Namespace @namespace, Declaration decl)
