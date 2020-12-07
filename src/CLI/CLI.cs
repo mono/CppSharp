@@ -219,6 +219,9 @@ namespace CppSharp
                 case "cpp":
                     options.Kind = CppSharp.Generators.GeneratorKind.CPlusPlus;
                     return;
+                case "napi":
+                    options.Kind = CppSharp.Generators.GeneratorKind.NAPI;
+                    return;
                 case "qjs":
                     options.Kind = CppSharp.Generators.GeneratorKind.QuickJS;
                     return;
