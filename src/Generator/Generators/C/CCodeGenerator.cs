@@ -37,6 +37,8 @@ namespace CppSharp.Generators.C
 
         public override string FileExtension { get; } = "h";
 
+        public virtual string ClassCtorInstanceParamIdentifier => "instance";
+
         public override void Process()
         {
 

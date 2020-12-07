@@ -162,7 +162,7 @@ namespace CppSharp.Generators.Cpp
                 return;
 
             // Output a default constructor that takes the native instance.
-            GenerateClassConstructor(@class);
+            GenerateClassConstructor(@class, withOwnNativeInstanceParam: true);
 
             if (@class.IsRefType)
             {
@@ -290,15 +290,26 @@ namespace CppSharp.Generators.Cpp
             return true;
         }
 
-        public virtual string ClassCtorInstanceParamIdentifier => "instance";
-
-        public virtual void GenerateClassConstructor(Class @class)
+        public virtual void GenerateClassConstructor(Class @class, bool withOwnNativeInstanceParam = false)
         {
             Write($"{QualifiedIdentifier(@class)}::{@class.Name}(");
 
             var nativeType = $"::{@class.QualifiedOriginalName}*";
-            WriteLine($"{nativeType} {ClassCtorInstanceParamIdentifier})");
-            GenerateClassConstructorBase(@class);
+            //WriteLine($"{nativeType} {ClassCtorInstanceParamIdentifier})");
+            WriteLine(!withOwnNativeInstanceParam ? $"{nativeType} {ClassCtorInstanceParamIdentifier})" :
+                $"{nativeType} {ClassCtorInstanceParamIdentifier}, bool ownNativeInstance)");
+
+            var hasBase = GenerateClassConstructorBase(@class, null, withOwnNativeInstanceParam);
+
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
+            {
+                Indent();
+                Write(hasBase ? "," : ":");
+                Unindent();
+
+                WriteLine(!withOwnNativeInstanceParam ? " {0}(false)" : " {0}(ownNativeInstance)",
+                    Helpers.OwnsNativeInstanceIdentifier);
+            }
 
             WriteOpenBraceAndIndent();
 
@@ -312,30 +323,29 @@ namespace CppSharp.Generators.Cpp
             NewLine();
         }
 
-        private bool GenerateClassConstructorBase(Class @class, Method method = null)
+        private bool GenerateClassConstructorBase(Class @class, Method method = null,
+            bool withOwnNativeInstanceParam = false)
         {
-            var hasBase = @class.HasBase && @class.Bases[0].IsClass && @class.Bases[0].Class.IsGenerated;
-            if (!hasBase)
+            if (@class.IsValueType)
+                return true;
+
+            if (!@class.NeedsBase)
                 return false;
 
-            if (!@class.IsValueType)
-            {
-                Indent();
+            Indent();
 
-                var baseClass = @class.Bases[0].Class;
-                Write($": {QualifiedIdentifier(baseClass)}(");
+            Write($": {QualifiedIdentifier(@class.BaseClass)}(");
 
-                // We cast the value to the base class type since otherwise there
-                // could be ambiguous call to overloaded constructors.
-                CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                var nativeTypeName = baseClass.Visit(CTypePrinter);
-                CTypePrinter.PopContext();
-                Write($"({nativeTypeName}*)");
+            // We cast the value to the base class type since otherwise there
+            // could be ambiguous call to overloaded constructors.
+            var cppTypePrinter = new CppTypePrinter(Context);
+            var nativeTypeName = @class.BaseClass.Visit(cppTypePrinter);
 
-                WriteLine("{0})", method != null ? "nullptr" : ClassCtorInstanceParamIdentifier);
+            Write($"({nativeTypeName}*)");
+            WriteLine("{0}{1})", method != null ? "nullptr" : ClassCtorInstanceParamIdentifier,
+                !withOwnNativeInstanceParam ? "" : ", ownNativeInstance");
 
-                Unindent();
-            }
+            Unindent();
 
             return true;
         }

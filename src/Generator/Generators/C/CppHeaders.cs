@@ -409,7 +409,7 @@ namespace CppSharp.Generators.Cpp
             var classNativeName = @class.Visit(CTypePrinter);
             CTypePrinter.PopContext();
 
-            WriteLine($"{@class.Name}({classNativeName}* instance);");
+            WriteLine($"{@class.Name}({classNativeName}* {ClassCtorInstanceParamIdentifier}, bool ownNativeInstance = false);");
             NewLine();
 
             foreach (var ctor in @class.Constructors)
