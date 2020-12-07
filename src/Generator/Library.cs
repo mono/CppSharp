@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
+using CppSharp.Generators;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -33,6 +34,11 @@ namespace CppSharp
         /// </summary>
         /// <param name="driver"></param>
         void SetupPasses(Driver driver);
+
+        /// <summary>
+        /// Generate custom code here.
+        /// </summary>
+        void GenerateCode(Driver driver, List<GeneratorOutput> outputs) { }
     }
 
     public static class LibraryHelpers

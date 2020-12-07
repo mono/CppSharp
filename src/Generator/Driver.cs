@@ -486,6 +486,8 @@ namespace CppSharp
                 {
                     var outputs = driver.GenerateCode();
 
+                    library.GenerateCode(driver, outputs);
+
                     foreach (var output in outputs)
                     {
                         foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
