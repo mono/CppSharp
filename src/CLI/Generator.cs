@@ -223,6 +223,8 @@ namespace CppSharp
                     return "C++/CLI";
                 case GeneratorKind.CSharp:
                     return "C#";
+                case GeneratorKind.NAPI:
+                    return "N-API";
                 default:
                     return kind.ToString();
             }
