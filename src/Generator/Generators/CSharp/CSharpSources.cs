@@ -149,6 +149,9 @@ namespace CppSharp.Generators.CSharp
                     UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+
+            if (Options.GenerationOutputMode == GenerationOutputMode.FilePerUnit)
+                Module.ExternalClassTemplateSpecializations.Clear();
         }
 
         public virtual void GenerateUsings()
