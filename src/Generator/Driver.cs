@@ -66,6 +66,12 @@ namespace CppSharp
 
                 if (module.OutputNamespace == null)
                     module.OutputNamespace = module.LibraryName;
+
+                for (int i = 0; i < module.IncludeDirs.Count; i++)
+                {
+                    var dir = new DirectoryInfo(module.IncludeDirs[i]);
+                    module.IncludeDirs[i] = dir.FullName;
+                }
             }
 
             if (Options.NoGenIncludeDirs != null)
