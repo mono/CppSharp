@@ -355,16 +355,16 @@ namespace CppSharp.Parser
                     AddArguments("-std=gnu++14");
                     break;
                 case CppSharp.Parser.LanguageVersion.CPP17:
-                    AddArguments("-std=c++1z");
+                    AddArguments("-std=c++17");
                     break;
                 case CppSharp.Parser.LanguageVersion.CPP17_GNU:
-                    AddArguments("-std=gnu++1z");
+                    AddArguments("-std=gnu++17");
                     break;
                 case CppSharp.Parser.LanguageVersion.CPP20:
-                    AddArguments("-std=c++2z");
+                    AddArguments("-std=c++20");
                     break;
                 case CppSharp.Parser.LanguageVersion.CPP20_GNU:
-                    AddArguments("-std=gnu++2z");
+                    AddArguments("-std=gnu++20");
                     break;
             }
 
