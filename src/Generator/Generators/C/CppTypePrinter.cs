@@ -463,22 +463,32 @@ namespace CppSharp.Generators.C
                     return PrintLogicalNames ? declaration.LogicalName : declaration.Name;
                 }
 
+                if (PrintFlavorKind == CppTypePrintFlavorKind.C)
+                {
+                    if (declaration is Function function && function.IsOperator)
+                        return $"operator_{function.OperatorKind}";
+                }
+
                 return PrintLogicalNames ? declaration.LogicalOriginalName
                     : declaration.OriginalName;
             }
             case TypePrintScopeKind.Qualified:
             {
+                var namespaceSep = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : "_";
+
                 if (ContextKind == TypePrinterContextKind.Managed)
                 {
                     var outputNamespace = declaration.TranslationUnit?.Module?.OutputNamespace;
                     if (!string.IsNullOrEmpty(outputNamespace))
-                        return $"{outputNamespace}::{declaration.QualifiedName}";
+                    {
+                        return $"{outputNamespace}{namespaceSep}{declaration.QualifiedName}";
+                    }
 
                     return declaration.QualifiedName;
                 }
 
                 if (declaration.Namespace is Class)
-                    return $"{declaration.Namespace.Visit(this)}::{declaration.OriginalName}";
+                    return $"{declaration.Namespace.Visit(this)}{namespaceSep}{GetDeclName(declaration, TypePrintScopeKind.Local)}";
 
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
