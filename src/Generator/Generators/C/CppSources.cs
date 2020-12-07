@@ -28,14 +28,9 @@ namespace CppSharp.Generators.Cpp
         {
             GenerateFilePreamble(CommentKind.BCPL);
 
-            var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName)
-                .Replace('\\', '/');
-
-            if (Context.Options.GenerateName != null)
-                file = Context.Options.GenerateName(TranslationUnit);
-
             PushBlock(BlockKind.Includes);
-            WriteLine("#include \"{0}.h\"", file);
+            var file = Context.Options.GetIncludePath(TranslationUnit);
+            WriteLine($"#include \"{file}\"");
             GenerateForwardReferenceHeaders();
 
             NewLine();

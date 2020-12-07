@@ -105,6 +105,7 @@ namespace CppSharp.Generators.Cpp
         public static string GetIncludeFileName(BindingContext context,
             TranslationUnit unit)
         {
+            // TODO: Replace with GetIncludePath
             string file;
             if (context.Options.GenerateName != null)
                 file = context.Options.GenerateName(unit);
