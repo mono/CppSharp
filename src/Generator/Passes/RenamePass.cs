@@ -141,7 +141,8 @@ namespace CppSharp.Passes
             if (decl.Name == null)
                 return true;
 
-            return Rename(decl);
+            Rename(decl);
+            return true;
         }
 
         private bool Rename(Declaration decl)
@@ -345,6 +346,8 @@ namespace CppSharp.Passes
             newName = null;
             return false;
         }
+
+        public override string ToString() => $"RegexRenamePass: {Pattern}";
     }
 
     public enum RenameCasePattern
