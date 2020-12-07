@@ -227,7 +227,7 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add($"Unknown generator kind: {generator}. Defaulting to {options.Kind}");
+            errorMessages.Add($"Unknown generator kind: {generator}.");
         }
 
         static void GetDestinationPlatform(string platform, List<string> errorMessages)
@@ -274,8 +274,6 @@ namespace CppSharp
             List<string> errorMessages = new List<string>();
             bool helpShown = false;
 
-            try
-            {
                 if (!ParseCommandLineArgs(args, errorMessages, ref helpShown))
                 {
                     PrintErrorMessages(errorMessages);
@@ -287,19 +285,12 @@ namespace CppSharp
                 Generator gen = new Generator(options);
 
                 bool validOptions = gen.ValidateOptions(errorMessages);
-
                 PrintErrorMessages(errorMessages);
 
-                if (validOptions)
-                    gen.Run();
-            }
-            catch (Exception ex)
-            {
-                PrintErrorMessages(errorMessages);
-                Console.Error.WriteLine();
+                if (errorMessages.Any() || !validOptions)
+                    Environment.Exit(1);
 
-                throw ex;
-            }
+                gen.Run();
         }
     }
 }
