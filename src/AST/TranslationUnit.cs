@@ -38,18 +38,14 @@ namespace CppSharp.AST
         private string fileNameWithoutExtension;
 
         /// Contains the name of the file.
-        public string FileName
-        {
-            get { return !IsValid ? FilePath : fileName ?? (fileName = Path.GetFileName(FilePath)); }
-        }
+        public string FileName => !IsValid ? FilePath : fileName ??= Path.GetFileName(FilePath);
 
         /// Contains the name of the module.
         public string FileNameWithoutExtension
         {
             get
             {
-                return fileNameWithoutExtension ??
-                    (fileNameWithoutExtension = Path.GetFileNameWithoutExtension(FileName));
+                return fileNameWithoutExtension ??= Path.GetFileNameWithoutExtension(FileName);
             }
         }
 
@@ -83,8 +79,7 @@ namespace CppSharp.AST
             get
             {
                 if (!IsValid) return string.Empty;
-                return fileRelativePath ??
-                    (fileRelativePath = Path.Combine(FileRelativeDirectory, FileName));
+                return fileRelativePath ??= Path.Combine(FileRelativeDirectory, FileName);
             }
         }
 
