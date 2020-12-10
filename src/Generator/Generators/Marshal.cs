@@ -9,7 +9,9 @@ namespace CppSharp.Generators
             Context = context;
             Before = new TextGenerator { CurrentIndentation = indentation };
             Return = new TextGenerator { CurrentIndentation = indentation };
-            MarshalVarPrefix = string.Empty;
+            Cleanup = new TextGenerator { CurrentIndentation = indentation };
+            VarPrefix = new TextGenerator();
+            ArgumentPrefix = new TextGenerator();
             this.Indentation = indentation;
         }
 
@@ -19,6 +21,9 @@ namespace CppSharp.Generators
 
         public TextGenerator Before { get; }
         public TextGenerator Return { get; }
+        public TextGenerator Cleanup { get; }
+        public TextGenerator VarPrefix;
+        public TextGenerator ArgumentPrefix;
 
         public string ReturnVarName { get; set; }
         public QualifiedType ReturnType { get; set; }
@@ -27,7 +32,6 @@ namespace CppSharp.Generators
         public int ParameterIndex { get; set; }
         public Function Function { get; set; }
 
-        public string MarshalVarPrefix { get; set; }
         public uint Indentation { get; }
     }
 

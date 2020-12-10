@@ -738,7 +738,7 @@ namespace CppSharp.Generators.CLI
 
         public void MarshalValueClass(Class @class)
         {
-            var marshalVar = Context.MarshalVarPrefix + "_marshal" +
+            var marshalVar = Context.VarPrefix + "_marshal" +
                 Context.ParameterIndex++;
 
             Context.Before.WriteLine("auto {0} = ::{1}();", marshalVar,
@@ -774,14 +774,12 @@ namespace CppSharp.Generators.CLI
 
         private void MarshalValueClassProperty(Property property, string marshalVar)
         {
-            var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
-                                         property.Name);
+            var fieldRef = $"{Context.Parameter.Name}.{property.Name}";
 
             var marshalCtx = new MarshalContext(Context.Context, Context.Indentation)
                                  {
                                      ArgName = fieldRef,
                                      ParameterIndex = Context.ParameterIndex++,
-                                     MarshalVarPrefix = Context.MarshalVarPrefix,
                                      ReturnVarName = $"{marshalVar}.{property.Field.OriginalName}"
                                  };
 
