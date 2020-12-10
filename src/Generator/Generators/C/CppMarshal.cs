@@ -333,15 +333,9 @@ namespace CppSharp.Generators.Cpp
 
     public class CppMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext>
     {
-        public readonly TextGenerator VarPrefix;
-        public readonly TextGenerator ArgumentPrefix;
-
         public CppMarshalManagedToNativePrinter(MarshalContext ctx) 
             : base(ctx)
         {
-            VarPrefix = new TextGenerator();
-            ArgumentPrefix = new TextGenerator();
-
             Context.MarshalToNative = this;
         }
 
@@ -414,7 +408,7 @@ namespace CppSharp.Generators.Cpp
                 var isRef = Context.Parameter.Usage == ParameterUsage.Out ||
                     Context.Parameter.Usage == ParameterUsage.InOut;
 
-                ArgumentPrefix.Write("&");
+                Context.ArgumentPrefix.Write("&");
                 Context.Return.Write($"(::{@enum.QualifiedOriginalName}){0}{Context.Parameter.Name}",
                     isRef ? string.Empty : "*");
                 return true;
@@ -586,7 +580,7 @@ namespace CppSharp.Generators.Cpp
                 Context.Return.Write("*");
 
                 if (Context.Parameter.Type.IsReference())
-                    VarPrefix.Write("&");
+                    Context.VarPrefix.Write("&");
             }
 
             var method = Context.Function as Method;

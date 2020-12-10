@@ -968,9 +968,9 @@ namespace CppSharp.Generators.CLI
                 var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                     {
-                        MarshalVarPrefix = valueMarshalName,
                         Parameter = param
                     };
+                ctx.VarPrefix.Write(valueMarshalName);
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 marshal.MarshalValueClassProperties(@class, valueMarshalName);

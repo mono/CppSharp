@@ -12,12 +12,8 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalContext(BindingContext context, uint indentation)
             : base(context, indentation)
         {
-            ArgumentPrefix = new TextGenerator { CurrentIndentation = indentation };
-            Cleanup = new TextGenerator { CurrentIndentation = indentation };
         }
 
-        public TextGenerator ArgumentPrefix { get; }
-        public TextGenerator Cleanup { get; }
         public bool HasCodeBlock { get; set; }
     }
 
